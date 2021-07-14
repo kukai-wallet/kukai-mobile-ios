@@ -17,6 +17,7 @@
 		C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */; };
 		C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */; };
 		C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B03679269F1E450071ACD0 /* ExportOptions.plist */; };
+		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,6 +53,7 @@
 		C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kukai_MobileUITests.swift; sourceTree = "<group>"; };
 		C0B03666269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B03679269F1E450071ACD0 /* ExportOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
+		C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ExportOptions-Beta.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 		C0B03641269EE2070071ACD0 /* Kukai Mobile */ = {
 			isa = PBXGroup;
 			children = (
+				C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */,
 				C0B03679269F1E450071ACD0 /* ExportOptions.plist */,
 				C0B03642269EE2070071ACD0 /* AppDelegate.swift */,
 				C0B03644269EE2070071ACD0 /* SceneDelegate.swift */,
@@ -244,6 +247,7 @@
 			files = (
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
+				C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */,
 				C0B0364A269EE2070071ACD0 /* Main.storyboard in Resources */,
 				C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */,
 			);
@@ -454,6 +458,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -477,6 +482,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -637,9 +643,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUNDLE_ID_SUFFIX = .beta;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -648,7 +655,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dist App Store";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
