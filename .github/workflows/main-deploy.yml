@@ -1,0 +1,31 @@
+name: Main - Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    name: Deploying to Testflight
+    runs-on: macOS-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.4
+      - name: Install gpg
+        run: brew install gnupg
+      - name: Setup provisioning profile
+        env:
+          KUKAI_DIST_PW: ${{ secrets.KUKAI_DIST_PW }}
+          KUKAI_PROV_PW: ${{ secrets.KUKAI_PROV_PW }}
+        run: ./.github/secrets/decrypt_secrets.sh
+      - name: Archiving project
+        env:
+          PR_NUMBER: $(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+        run: ./.github/scripts/archive_app.sh
+      - name: Exporting .ipa
+        run: ./.github/scripts/export_ipa.sh
+      - name: Publishing app
+        if: success()
+        env:
+          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
+          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
+        run: ./.github/scripts/publish_testflight.sh
