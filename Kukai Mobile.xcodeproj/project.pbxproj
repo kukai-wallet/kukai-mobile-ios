@@ -1,0 +1,757 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03642269EE2070071ACD0 /* AppDelegate.swift */; };
+		C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03644269EE2070071ACD0 /* SceneDelegate.swift */; };
+		C0B03647269EE2070071ACD0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03646269EE2070071ACD0 /* ViewController.swift */; };
+		C0B0364A269EE2070071ACD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B03648269EE2070071ACD0 /* Main.storyboard */; };
+		C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364B269EE2070071ACD0 /* Assets.xcassets */; };
+		C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */; };
+		C0B0365A269EE2070071ACD0 /* Kukai_MobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */; };
+		C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */; };
+		C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		C0B03656269EE2070071ACD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0B03637269EE2070071ACD0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0B0363E269EE2070071ACD0;
+			remoteInfo = "Kukai Mobile";
+		};
+		C0B03661269EE2070071ACD0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0B03637269EE2070071ACD0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0B0363E269EE2070071ACD0;
+			remoteInfo = "Kukai Mobile";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kukai Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0B03642269EE2070071ACD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C0B03644269EE2070071ACD0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		C0B03646269EE2070071ACD0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C0B03649269EE2070071ACD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		C0B0364B269EE2070071ACD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		C0B0364E269EE2070071ACD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C0B03650269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0B03655269EE2070071ACD0 /* Kukai MobileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kukai MobileTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kukai_MobileTests.swift; sourceTree = "<group>"; };
+		C0B0365B269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C0B03660269EE2070071ACD0 /* Kukai MobileUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kukai MobileUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kukai_MobileUITests.swift; sourceTree = "<group>"; };
+		C0B03666269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		C0B0363C269EE2070071ACD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B03652269EE2070071ACD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B0365D269EE2070071ACD0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		C0B03636269EE2070071ACD0 = {
+			isa = PBXGroup;
+			children = (
+				C0B03641269EE2070071ACD0 /* Kukai Mobile */,
+				C0B03658269EE2070071ACD0 /* Kukai MobileTests */,
+				C0B03663269EE2070071ACD0 /* Kukai MobileUITests */,
+				C0B03640269EE2070071ACD0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		C0B03640269EE2070071ACD0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */,
+				C0B03655269EE2070071ACD0 /* Kukai MobileTests.xctest */,
+				C0B03660269EE2070071ACD0 /* Kukai MobileUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C0B03641269EE2070071ACD0 /* Kukai Mobile */ = {
+			isa = PBXGroup;
+			children = (
+				C0B03642269EE2070071ACD0 /* AppDelegate.swift */,
+				C0B03644269EE2070071ACD0 /* SceneDelegate.swift */,
+				C0B03646269EE2070071ACD0 /* ViewController.swift */,
+				C0B03648269EE2070071ACD0 /* Main.storyboard */,
+				C0B0364B269EE2070071ACD0 /* Assets.xcassets */,
+				C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */,
+				C0B03650269EE2070071ACD0 /* Info.plist */,
+			);
+			path = "Kukai Mobile";
+			sourceTree = "<group>";
+		};
+		C0B03658269EE2070071ACD0 /* Kukai MobileTests */ = {
+			isa = PBXGroup;
+			children = (
+				C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */,
+				C0B0365B269EE2070071ACD0 /* Info.plist */,
+			);
+			path = "Kukai MobileTests";
+			sourceTree = "<group>";
+		};
+		C0B03663269EE2070071ACD0 /* Kukai MobileUITests */ = {
+			isa = PBXGroup;
+			children = (
+				C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */,
+				C0B03666269EE2070071ACD0 /* Info.plist */,
+			);
+			path = "Kukai MobileUITests";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C0B0363E269EE2070071ACD0 /* Kukai Mobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0B03669269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai Mobile" */;
+			buildPhases = (
+				C0B0363B269EE2070071ACD0 /* Sources */,
+				C0B0363C269EE2070071ACD0 /* Frameworks */,
+				C0B0363D269EE2070071ACD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Kukai Mobile";
+			packageProductDependencies = (
+				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
+			);
+			productName = "Kukai Mobile";
+			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C0B03654269EE2070071ACD0 /* Kukai MobileTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0B0366C269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai MobileTests" */;
+			buildPhases = (
+				C0B03651269EE2070071ACD0 /* Sources */,
+				C0B03652269EE2070071ACD0 /* Frameworks */,
+				C0B03653269EE2070071ACD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0B03657269EE2070071ACD0 /* PBXTargetDependency */,
+			);
+			name = "Kukai MobileTests";
+			productName = "Kukai MobileTests";
+			productReference = C0B03655269EE2070071ACD0 /* Kukai MobileTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		C0B0365F269EE2070071ACD0 /* Kukai MobileUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C0B0366F269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai MobileUITests" */;
+			buildPhases = (
+				C0B0365C269EE2070071ACD0 /* Sources */,
+				C0B0365D269EE2070071ACD0 /* Frameworks */,
+				C0B0365E269EE2070071ACD0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C0B03662269EE2070071ACD0 /* PBXTargetDependency */,
+			);
+			name = "Kukai MobileUITests";
+			productName = "Kukai MobileUITests";
+			productReference = C0B03660269EE2070071ACD0 /* Kukai MobileUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C0B03637269EE2070071ACD0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1250;
+				LastUpgradeCheck = 1250;
+				TargetAttributes = {
+					C0B0363E269EE2070071ACD0 = {
+						CreatedOnToolsVersion = 12.5;
+					};
+					C0B03654269EE2070071ACD0 = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = C0B0363E269EE2070071ACD0;
+					};
+					C0B0365F269EE2070071ACD0 = {
+						CreatedOnToolsVersion = 12.5;
+						TestTargetID = C0B0363E269EE2070071ACD0;
+					};
+				};
+			};
+			buildConfigurationList = C0B0363A269EE2070071ACD0 /* Build configuration list for PBXProject "Kukai Mobile" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = C0B03636269EE2070071ACD0;
+			packageReferences = (
+				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
+			);
+			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C0B0363E269EE2070071ACD0 /* Kukai Mobile */,
+				C0B03654269EE2070071ACD0 /* Kukai MobileTests */,
+				C0B0365F269EE2070071ACD0 /* Kukai MobileUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		C0B0363D269EE2070071ACD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
+				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
+				C0B0364A269EE2070071ACD0 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B03653269EE2070071ACD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B0365E269EE2070071ACD0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C0B0363B269EE2070071ACD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B03647269EE2070071ACD0 /* ViewController.swift in Sources */,
+				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
+				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B03651269EE2070071ACD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B0365A269EE2070071ACD0 /* Kukai_MobileTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C0B0365C269EE2070071ACD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		C0B03657269EE2070071ACD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0B0363E269EE2070071ACD0 /* Kukai Mobile */;
+			targetProxy = C0B03656269EE2070071ACD0 /* PBXContainerItemProxy */;
+		};
+		C0B03662269EE2070071ACD0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0B0363E269EE2070071ACD0 /* Kukai Mobile */;
+			targetProxy = C0B03661269EE2070071ACD0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		C0B03648269EE2070071ACD0 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0B03649269EE2070071ACD0 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0B0364E269EE2070071ACD0 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C0B03667269EE2070071ACD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = Kuaki;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C0B03668269EE2070071ACD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = Kukai;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C0B0366A269EE2070071ACD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUNDLE_ID_SUFFIX = .dev;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Debug Prov Dev";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C0B0366B269EE2070071ACD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUNDLE_ID_SUFFIX = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Prov Dev";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C0B0366D269EE2070071ACD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kukai Mobile.app/Kukai Mobile";
+			};
+			name = Debug;
+		};
+		C0B0366E269EE2070071ACD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kukai Mobile.app/Kukai Mobile";
+			};
+			name = Release;
+		};
+		C0B03670269EE2070071ACD0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Kukai Mobile";
+			};
+			name = Debug;
+		};
+		C0B03671269EE2070071ACD0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Kukai Mobile";
+			};
+			name = Release;
+		};
+		C0B03675269EE3080071ACD0 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "Kukai Beta";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
+		C0B03676269EE3080071ACD0 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUNDLE_ID_SUFFIX = .beta;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dev";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Beta;
+		};
+		C0B03677269EE3080071ACD0 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Kukai Mobile.app/Kukai Mobile";
+			};
+			name = Beta;
+		};
+		C0B03678269EE3080071ACD0 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = TK7KK2VPJP;
+				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.Kukai-MobileUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "Kukai Mobile";
+			};
+			name = Beta;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C0B0363A269EE2070071ACD0 /* Build configuration list for PBXProject "Kukai Mobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0B03667269EE2070071ACD0 /* Debug */,
+				C0B03668269EE2070071ACD0 /* Release */,
+				C0B03675269EE3080071ACD0 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0B03669269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai Mobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0B0366A269EE2070071ACD0 /* Debug */,
+				C0B0366B269EE2070071ACD0 /* Release */,
+				C0B03676269EE3080071ACD0 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0B0366C269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai MobileTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0B0366D269EE2070071ACD0 /* Debug */,
+				C0B0366E269EE2070071ACD0 /* Release */,
+				C0B03677269EE3080071ACD0 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C0B0366F269EE2070071ACD0 /* Build configuration list for PBXNativeTarget "Kukai MobileUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C0B03670269EE2070071ACD0 /* Debug */,
+				C0B03671269EE2070071ACD0 /* Release */,
+				C0B03678269EE3080071ACD0 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
+			productName = KukaiCoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = C0B03637269EE2070071ACD0 /* Project object */;
+}
