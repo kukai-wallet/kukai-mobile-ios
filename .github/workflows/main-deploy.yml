@@ -43,7 +43,7 @@ jobs:
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       
       - name: Build and Archive
-        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       - name: Export .ipa
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist Kukai\ Mobile/ExportOptions.plist -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
