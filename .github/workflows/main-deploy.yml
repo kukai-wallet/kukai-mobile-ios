@@ -46,7 +46,7 @@ jobs:
         run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       - name: Export .ipa
-        run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist Kukai\ Mobile/ExportOptions.plist -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
+        run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
       - name: Upload to TestFlight
         if: success()
