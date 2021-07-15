@@ -46,7 +46,7 @@ jobs:
         run: agvtool next-version -all
 
       - name: Build and Archive
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile-beta.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile-beta.xcarchive clean archive
 
       - name: Export .ipa
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile-beta.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
