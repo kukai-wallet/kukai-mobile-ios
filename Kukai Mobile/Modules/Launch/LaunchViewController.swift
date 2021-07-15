@@ -41,6 +41,13 @@ class LaunchViewController: UIViewController {
 		kukaiLabelTopConstraint.constant = roughDistanceToBottom
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
+		self.navigationItem.hidesBackButton = true
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
 		
@@ -66,6 +73,7 @@ class LaunchViewController: UIViewController {
 			self?.view.layoutIfNeeded()
 		} completion: { success in
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+				self?.showNavigationBar()
 				self?.performSegue(withIdentifier: "onboarding", sender: nil)
 			}
 		}
@@ -87,5 +95,11 @@ class LaunchViewController: UIViewController {
 		
 		view.layer.position = position
 		view.layer.anchorPoint = anchorPoint
+	}
+	
+	func showNavigationBar() {
+		self.navigationController?.setNavigationBarHidden(false, animated: false)
+		self.navigationItem.hidesBackButton = true
+		self.navigationItem.largeTitleDisplayMode = .never
 	}
 }

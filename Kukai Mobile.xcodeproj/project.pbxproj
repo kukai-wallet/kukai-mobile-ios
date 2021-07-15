@@ -10,6 +10,12 @@
 		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
 		C049B5A526A0497D00F1C5E0 /* Onboading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
+		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
+		C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */; };
+		C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */; };
+		C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */; };
+		C049B5B526A07B1000F1C5E0 /* NewWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B426A07B1000F1C5E0 /* NewWalletViewController.swift */; };
+		C049B5B726A07B1A00F1C5E0 /* ImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B626A07B1A00F1C5E0 /* ImportViewController.swift */; };
 		C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03642269EE2070071ACD0 /* AppDelegate.swift */; };
 		C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03644269EE2070071ACD0 /* SceneDelegate.swift */; };
 		C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364B269EE2070071ACD0 /* Assets.xcassets */; };
@@ -42,6 +48,12 @@
 		C049B5A226A0496C00F1C5E0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboading.storyboard; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
+		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extensions.swift"; sourceTree = "<group>"; };
+		C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChooserViewController.swift; sourceTree = "<group>"; };
+		C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectAuthViewController.swift; sourceTree = "<group>"; };
+		C049B5B426A07B1000F1C5E0 /* NewWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletViewController.swift; sourceTree = "<group>"; };
+		C049B5B626A07B1A00F1C5E0 /* ImportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportViewController.swift; sourceTree = "<group>"; };
 		C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kukai Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0B03642269EE2070071ACD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0B03644269EE2070071ACD0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -107,8 +119,21 @@
 			isa = PBXGroup;
 			children = (
 				C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */,
+				C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */,
+				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
+				C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */,
+				C049B5B426A07B1000F1C5E0 /* NewWalletViewController.swift */,
+				C049B5B626A07B1A00F1C5E0 /* ImportViewController.swift */,
 			);
 			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		C049B5AD26A0799300F1C5E0 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		C0B03636269EE2070071ACD0 = {
@@ -141,6 +166,7 @@
 				C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */,
 				C0B03679269F1E450071ACD0 /* ExportOptions.plist */,
 				C049B59F26A0492600F1C5E0 /* Modules */,
+				C049B5AD26A0799300F1C5E0 /* Extensions */,
 			);
 			path = "Kukai Mobile";
 			sourceTree = "<group>";
@@ -302,9 +328,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C049B5B726A07B1A00F1C5E0 /* ImportViewController.swift in Sources */,
+				C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
+				C049B5B526A07B1000F1C5E0 /* NewWalletViewController.swift in Sources */,
+				C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
+				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
+				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
