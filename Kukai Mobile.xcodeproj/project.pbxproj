@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
+		C049B5A526A0497D00F1C5E0 /* Onboading.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */; };
+		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03642269EE2070071ACD0 /* AppDelegate.swift */; };
 		C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03644269EE2070071ACD0 /* SceneDelegate.swift */; };
-		C0B03647269EE2070071ACD0 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03646269EE2070071ACD0 /* ViewController.swift */; };
-		C0B0364A269EE2070071ACD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B03648269EE2070071ACD0 /* Main.storyboard */; };
 		C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364B269EE2070071ACD0 /* Assets.xcassets */; };
 		C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */; };
 		C0B0365A269EE2070071ACD0 /* Kukai_MobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */; };
@@ -38,11 +39,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C049B5A226A0496C00F1C5E0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboading.storyboard; sourceTree = "<group>"; };
+		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kukai Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0B03642269EE2070071ACD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0B03644269EE2070071ACD0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C0B03646269EE2070071ACD0 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		C0B03649269EE2070071ACD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0B0364B269EE2070071ACD0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C0B0364E269EE2070071ACD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0B03650269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -82,6 +84,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C049B59F26A0492600F1C5E0 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				C049B5A026A0493500F1C5E0 /* Launch */,
+				C049B5A126A0494300F1C5E0 /* Onboarding */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		C049B5A026A0493500F1C5E0 /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */,
+				C049B5A226A0496C00F1C5E0 /* Main.storyboard */,
+				C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */,
+			);
+			path = Launch;
+			sourceTree = "<group>";
+		};
+		C049B5A126A0494300F1C5E0 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				C049B5A426A0497D00F1C5E0 /* Onboading.storyboard */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		C0B03636269EE2070071ACD0 = {
 			isa = PBXGroup;
 			children = (
@@ -107,13 +136,11 @@
 			children = (
 				C0B03642269EE2070071ACD0 /* AppDelegate.swift */,
 				C0B03644269EE2070071ACD0 /* SceneDelegate.swift */,
-				C0B03646269EE2070071ACD0 /* ViewController.swift */,
-				C0B03648269EE2070071ACD0 /* Main.storyboard */,
 				C0B0364B269EE2070071ACD0 /* Assets.xcassets */,
-				C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */,
 				C0B03650269EE2070071ACD0 /* Info.plist */,
 				C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */,
 				C0B03679269F1E450071ACD0 /* ExportOptions.plist */,
+				C049B59F26A0492600F1C5E0 /* Modules */,
 			);
 			path = "Kukai Mobile";
 			sourceTree = "<group>";
@@ -246,9 +273,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
+				C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
 				C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */,
-				C0B0364A269EE2070071ACD0 /* Main.storyboard in Resources */,
+				C049B5A526A0497D00F1C5E0 /* Onboading.storyboard in Resources */,
 				C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,8 +302,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0B03647269EE2070071ACD0 /* ViewController.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
+				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,14 +340,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		C0B03648269EE2070071ACD0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C0B03649269EE2070071ACD0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
