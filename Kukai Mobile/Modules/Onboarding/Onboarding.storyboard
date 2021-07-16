@@ -32,8 +32,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t2i-m9-oIO">
-                                <rect key="frame" x="144.5" y="124" width="125" height="37"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="t2i-m9-oIO">
+                                <rect key="frame" x="20" y="124" width="374" height="37"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -47,90 +47,99 @@ Choose from the options below</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm6-pL-Voh">
-                                <rect key="frame" x="0.0" y="603" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="604" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="jvd-kO-7ru"/>
                                 </constraints>
                                 <state key="normal" title="CustomAuth">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="QBJ-bs-3eL" kind="show" id="nIN-rp-5N0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PGy-dT-1kF">
-                                <rect key="frame" x="0.0" y="726" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="726" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Uoh-F8-v8L"/>
                                 </constraints>
                                 <state key="normal" title="Create from a seed phrase">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="JzG-9c-9hk" kind="show" id="Jc5-to-21v"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkw-VQ-LxP">
-                                <rect key="frame" x="0.0" y="792" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="792" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="t3A-Ib-b5A"/>
                                 </constraints>
                                 <state key="normal" title="Import existing wallet">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="dLs-B5-OLS" kind="show" id="qcK-q2-0K8"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create/recover a wallet with CustomAuth, using services such as &quot;Sign in with Apple&quot;, Twitter, facebook, Google sing in etc" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lsT-du-jG1">
-                                <rect key="frame" x="20" y="526" width="374" height="61"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- or -" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Al-IF-Jvf">
-                                <rect key="frame" x="20" y="689" width="374" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="PGy-dT-1kF" firstAttribute="top" secondItem="7Al-IF-Jvf" secondAttribute="bottom" constant="16" id="0Df-bt-Jba"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="t2i-m9-oIO" secondAttribute="trailing" constant="20" id="09b-1I-U9p"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="hbt-m0-gW1" secondAttribute="trailing" constant="36" id="1eU-Xa-QCe"/>
-                            <constraint firstItem="Lm6-pL-Voh" firstAttribute="top" secondItem="lsT-du-jG1" secondAttribute="bottom" constant="16" id="ByL-9W-EZU"/>
-                            <constraint firstItem="Lm6-pL-Voh" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="CUn-st-gmb"/>
+                            <constraint firstItem="Lm6-pL-Voh" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="CUn-st-gmb"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="36" id="G7R-c8-MYU"/>
                             <constraint firstItem="Mkw-VQ-LxP" firstAttribute="top" secondItem="PGy-dT-1kF" secondAttribute="bottom" constant="16" id="HL0-bK-SrC"/>
-                            <constraint firstItem="7Al-IF-Jvf" firstAttribute="top" secondItem="Lm6-pL-Voh" secondAttribute="bottom" constant="36" id="IG6-Ym-DKH"/>
-                            <constraint firstItem="lsT-du-jG1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="O2i-ek-xfH"/>
-                            <constraint firstAttribute="trailing" secondItem="PGy-dT-1kF" secondAttribute="trailing" id="RU0-l7-SWt"/>
+                            <constraint firstAttribute="trailing" secondItem="PGy-dT-1kF" secondAttribute="trailing" constant="24" id="RU0-l7-SWt"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Mkw-VQ-LxP" secondAttribute="bottom" constant="20" id="SAb-0F-hkB"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="36" id="UI6-7t-EKM"/>
-                            <constraint firstAttribute="trailing" secondItem="lsT-du-jG1" secondAttribute="trailing" constant="20" id="UR1-hW-xdS"/>
-                            <constraint firstItem="PGy-dT-1kF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="XnA-RT-Rb3"/>
+                            <constraint firstItem="PGy-dT-1kF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="XnA-RT-Rb3"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="top" secondItem="t2i-m9-oIO" secondAttribute="bottom" constant="8" id="YMS-xh-f0j"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" id="aMU-la-ZTD"/>
-                            <constraint firstAttribute="trailing" secondItem="Mkw-VQ-LxP" secondAttribute="trailing" id="lgz-hf-qig"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="7Al-IF-Jvf" secondAttribute="trailing" constant="20" id="moR-Hp-3nb"/>
-                            <constraint firstItem="7Al-IF-Jvf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="rQF-RG-cBA"/>
-                            <constraint firstItem="Mkw-VQ-LxP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="wFQ-OO-MiE"/>
+                            <constraint firstItem="t2i-m9-oIO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="ZFo-lc-qFa"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" constant="24" id="aMU-la-ZTD"/>
+                            <constraint firstAttribute="trailing" secondItem="Mkw-VQ-LxP" secondAttribute="trailing" constant="24" id="lgz-hf-qig"/>
+                            <constraint firstItem="PGy-dT-1kF" firstAttribute="top" secondItem="Lm6-pL-Voh" secondAttribute="bottom" constant="72" id="oPK-2w-5YY"/>
+                            <constraint firstItem="Mkw-VQ-LxP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="wFQ-OO-MiE"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="xhV-fz-pad"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Kūkai" id="UNV-ze-fgv">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="AhM-zg-l1m">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="AhM-zg-l1m">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="2rj-IA-ODL">
-                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <rect key="frame" x="20" y="7" width="92" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Mainnet"/>
                                 <connections>
                                     <segue destination="q9W-sK-Twb" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="AII-fA-KnJ"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="8xe-3L-Trh">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="LAK-fz-XR2">
+                                <rect key="frame" x="302" y="7" width="92" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Help"/>
+                                <connections>
+                                    <segue destination="IfC-Q8-z4S" kind="presentation" id="JMZ-4i-leW"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -286,7 +295,7 @@ Users should be aware that using this option removes some anonimity, as once cre
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFW-mO-gv7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1293" y="-806"/>
+            <point key="canvasLocation" x="2386" y="-794"/>
         </scene>
         <!--New Wallet-->
         <scene sceneID="ZmR-B1-wyJ">
@@ -306,14 +315,19 @@ However it requires users to remember a 24 word phrase. Loosing this phrase mean
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Glb-DA-L1s">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="y3Y-Jo-293"/>
                                 </constraints>
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="5It-wy-6Cz" kind="show" id="33g-bB-yWZ"/>
                                 </connections>
@@ -322,8 +336,8 @@ However it requires users to remember a 24 word phrase. Loosing this phrase mean
                         <viewLayoutGuide key="safeArea" id="1i0-WV-Lwr"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Glb-DA-L1s" firstAttribute="trailing" secondItem="1i0-WV-Lwr" secondAttribute="trailing" id="QBj-KX-gXS"/>
-                            <constraint firstItem="Glb-DA-L1s" firstAttribute="leading" secondItem="1i0-WV-Lwr" secondAttribute="leading" id="Qn8-0s-BES"/>
+                            <constraint firstItem="1i0-WV-Lwr" firstAttribute="trailing" secondItem="Glb-DA-L1s" secondAttribute="trailing" constant="24" id="QBj-KX-gXS"/>
+                            <constraint firstItem="Glb-DA-L1s" firstAttribute="leading" secondItem="1i0-WV-Lwr" secondAttribute="leading" constant="24" id="Qn8-0s-BES"/>
                             <constraint firstItem="1i0-WV-Lwr" firstAttribute="trailing" secondItem="Ud4-SV-yKh" secondAttribute="trailing" constant="36" id="U3o-Q8-3cq"/>
                             <constraint firstItem="1i0-WV-Lwr" firstAttribute="bottom" secondItem="Glb-DA-L1s" secondAttribute="bottom" constant="16" id="dYN-4K-Ysy"/>
                             <constraint firstItem="Ud4-SV-yKh" firstAttribute="top" secondItem="1i0-WV-Lwr" secondAttribute="top" constant="36" id="f20-BN-RKV"/>
@@ -334,7 +348,7 @@ However it requires users to remember a 24 word phrase. Loosing this phrase mean
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Km-aG-zmQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1292.753623188406" y="12.723214285714285"/>
+            <point key="canvasLocation" x="2386" y="25"/>
         </scene>
         <!--Password-->
         <scene sceneID="LVk-Ls-kAf">
@@ -359,14 +373,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vFF-GS-lql">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="SLB-Mr-lTb"/>
                                 </constraints>
                                 <state key="normal" title="Create seed phrase">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="TcJ-o9-tgB" kind="show" id="Ysk-ko-l0P"/>
                                 </connections>
@@ -376,9 +395,9 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="a5h-Z0-GGJ" firstAttribute="top" secondItem="seb-Mw-gfE" secondAttribute="bottom" constant="16" id="2KB-4J-1Gb"/>
-                            <constraint firstItem="vFF-GS-lql" firstAttribute="leading" secondItem="y5h-F8-glo" secondAttribute="leading" id="BUk-Xr-tHL"/>
+                            <constraint firstItem="vFF-GS-lql" firstAttribute="leading" secondItem="y5h-F8-glo" secondAttribute="leading" constant="24" id="BUk-Xr-tHL"/>
                             <constraint firstItem="seb-Mw-gfE" firstAttribute="leading" secondItem="mvy-xk-lwp" secondAttribute="leading" constant="36" id="BWP-M4-tnX"/>
-                            <constraint firstItem="mvy-xk-lwp" firstAttribute="trailing" secondItem="vFF-GS-lql" secondAttribute="trailing" id="DpE-BK-26r"/>
+                            <constraint firstItem="mvy-xk-lwp" firstAttribute="trailing" secondItem="vFF-GS-lql" secondAttribute="trailing" constant="24" id="DpE-BK-26r"/>
                             <constraint firstItem="mvy-xk-lwp" firstAttribute="bottom" secondItem="vFF-GS-lql" secondAttribute="bottom" constant="16" id="FID-AC-RZV"/>
                             <constraint firstItem="seb-Mw-gfE" firstAttribute="top" secondItem="mvy-xk-lwp" secondAttribute="top" constant="36" id="SyG-pM-dXa"/>
                             <constraint firstItem="mvy-xk-lwp" firstAttribute="trailing" secondItem="a5h-Z0-GGJ" secondAttribute="trailing" constant="20" id="VMU-yV-Fxa"/>
@@ -390,7 +409,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGw-uN-g1a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2383" y="13"/>
+            <point key="canvasLocation" x="3475" y="25"/>
         </scene>
         <!--Seed phrase-->
         <scene sceneID="4Pc-cB-I7G">
@@ -572,14 +591,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-do-mS0">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5GX-aE-Buh"/>
                                 </constraints>
                                 <state key="normal" title="I've written it down">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="mFI-ag-dIg" kind="show" id="RTg-v7-I9m"/>
                                 </connections>
@@ -591,19 +615,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                             <constraint firstItem="vbj-e7-TP0" firstAttribute="leading" secondItem="aLz-tT-2Bd" secondAttribute="leading" constant="36" id="C4m-qf-abL"/>
                             <constraint firstItem="aLz-tT-2Bd" firstAttribute="trailing" secondItem="vbj-e7-TP0" secondAttribute="trailing" constant="36" id="McT-Bf-T8i"/>
                             <constraint firstItem="vbj-e7-TP0" firstAttribute="top" secondItem="aLz-tT-2Bd" secondAttribute="top" constant="36" id="T4I-Il-B6C"/>
-                            <constraint firstItem="oJb-do-mS0" firstAttribute="leading" secondItem="oBE-LA-Nb9" secondAttribute="leading" id="X19-xB-J7K"/>
+                            <constraint firstItem="oJb-do-mS0" firstAttribute="leading" secondItem="oBE-LA-Nb9" secondAttribute="leading" constant="24" id="X19-xB-J7K"/>
                             <constraint firstItem="aLz-tT-2Bd" firstAttribute="bottom" secondItem="oJb-do-mS0" secondAttribute="bottom" constant="16" id="f0B-wu-FtQ"/>
                             <constraint firstItem="vfb-j9-wuK" firstAttribute="top" secondItem="vbj-e7-TP0" secondAttribute="bottom" constant="36" id="g99-WB-48S"/>
                             <constraint firstItem="vfb-j9-wuK" firstAttribute="leading" secondItem="aLz-tT-2Bd" secondAttribute="leading" constant="24" id="jEq-Uh-yQq"/>
                             <constraint firstItem="aLz-tT-2Bd" firstAttribute="trailing" secondItem="vfb-j9-wuK" secondAttribute="trailing" constant="24" id="lDw-ID-bCp"/>
-                            <constraint firstItem="aLz-tT-2Bd" firstAttribute="trailing" secondItem="oJb-do-mS0" secondAttribute="trailing" id="pdU-K0-nYe"/>
+                            <constraint firstItem="aLz-tT-2Bd" firstAttribute="trailing" secondItem="oJb-do-mS0" secondAttribute="trailing" constant="24" id="pdU-K0-nYe"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Seed phrase" id="7QY-q8-h18"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GYx-Zi-4uD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3492.753623188406" y="12.723214285714285"/>
+            <point key="canvasLocation" x="4586" y="25"/>
         </scene>
         <!--Confirm-->
         <scene sceneID="xac-Cm-wYi">
@@ -679,14 +703,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HW7-ez-Qlq">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="YxS-67-W2s"/>
                                 </constraints>
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="8CA-56-t0k" kind="show" id="vyt-Gq-SoI"/>
                                 </connections>
@@ -699,8 +728,8 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                             <constraint firstItem="fI4-MF-X1L" firstAttribute="top" secondItem="q0T-uC-IIt" secondAttribute="bottom" constant="36" id="Byd-Wd-1sZ"/>
                             <constraint firstItem="clG-mZ-vQT" firstAttribute="trailing" secondItem="q0T-uC-IIt" secondAttribute="trailing" constant="36" id="ENY-ma-PCh"/>
                             <constraint firstItem="fI4-MF-X1L" firstAttribute="leading" secondItem="clG-mZ-vQT" secondAttribute="leading" constant="20" id="K9v-Sv-fxP"/>
-                            <constraint firstAttribute="trailing" secondItem="HW7-ez-Qlq" secondAttribute="trailing" id="YZ5-Cq-WFz"/>
-                            <constraint firstItem="HW7-ez-Qlq" firstAttribute="leading" secondItem="clG-mZ-vQT" secondAttribute="leading" id="e4c-2b-EsJ"/>
+                            <constraint firstAttribute="trailing" secondItem="HW7-ez-Qlq" secondAttribute="trailing" constant="24" id="YZ5-Cq-WFz"/>
+                            <constraint firstItem="HW7-ez-Qlq" firstAttribute="leading" secondItem="clG-mZ-vQT" secondAttribute="leading" constant="24" id="e4c-2b-EsJ"/>
                             <constraint firstItem="clG-mZ-vQT" firstAttribute="bottom" secondItem="HW7-ez-Qlq" secondAttribute="bottom" constant="16" id="ftm-gU-Oxq"/>
                             <constraint firstItem="q0T-uC-IIt" firstAttribute="leading" secondItem="clG-mZ-vQT" secondAttribute="leading" constant="36" id="sIH-rh-ucB"/>
                             <constraint firstItem="q0T-uC-IIt" firstAttribute="top" secondItem="clG-mZ-vQT" secondAttribute="top" constant="36" id="sq1-9w-OHC"/>
@@ -710,7 +739,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xcy-hm-s1B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4636" y="13"/>
+            <point key="canvasLocation" x="5728" y="25"/>
         </scene>
         <!--PIN-->
         <scene sceneID="rsO-1B-0kc">
@@ -732,14 +761,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="olP-LI-gCm">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="KPt-Vb-cJk"/>
                                 </constraints>
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="4p9-CR-48m" kind="show" id="fAq-qd-Xjk"/>
                                 </connections>
@@ -751,19 +785,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                             <constraint firstItem="eER-HH-V5G" firstAttribute="leading" secondItem="Oa6-EH-sLf" secondAttribute="leading" constant="36" id="I12-YP-y8s"/>
                             <constraint firstItem="Oa6-EH-sLf" firstAttribute="trailing" secondItem="Cu1-Wo-ac8" secondAttribute="trailing" constant="20" id="U2v-Fv-Nbz"/>
                             <constraint firstItem="Oa6-EH-sLf" firstAttribute="bottom" secondItem="olP-LI-gCm" secondAttribute="bottom" constant="16" id="XBd-Y8-g1K"/>
-                            <constraint firstItem="olP-LI-gCm" firstAttribute="trailing" secondItem="Oa6-EH-sLf" secondAttribute="trailing" id="YDF-az-92a"/>
+                            <constraint firstItem="Oa6-EH-sLf" firstAttribute="trailing" secondItem="olP-LI-gCm" secondAttribute="trailing" constant="24" id="YDF-az-92a"/>
                             <constraint firstItem="Cu1-Wo-ac8" firstAttribute="leading" secondItem="Oa6-EH-sLf" secondAttribute="leading" constant="20" id="hZm-7s-NsV"/>
                             <constraint firstItem="Oa6-EH-sLf" firstAttribute="trailing" secondItem="eER-HH-V5G" secondAttribute="trailing" constant="36" id="lpR-g8-SDb"/>
                             <constraint firstItem="Cu1-Wo-ac8" firstAttribute="top" secondItem="eER-HH-V5G" secondAttribute="bottom" constant="36" id="nwM-ku-xX6"/>
                             <constraint firstItem="eER-HH-V5G" firstAttribute="top" secondItem="Oa6-EH-sLf" secondAttribute="top" constant="36" id="sAW-ya-ocV"/>
-                            <constraint firstItem="olP-LI-gCm" firstAttribute="leading" secondItem="Oa6-EH-sLf" secondAttribute="leading" id="xA9-EN-7z7"/>
+                            <constraint firstItem="olP-LI-gCm" firstAttribute="leading" secondItem="Oa6-EH-sLf" secondAttribute="leading" constant="24" id="xA9-EN-7z7"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="PIN" id="32C-Vr-lRb"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uEu-Qn-rmY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5793" y="11"/>
+            <point key="canvasLocation" x="6886" y="23"/>
         </scene>
         <!--Confirm PIN-->
         <scene sceneID="wlA-hv-c9T">
@@ -785,14 +819,19 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zyu-18-ctw">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="zZi-mb-4Nu"/>
                                 </constraints>
                                 <state key="normal" title="Continue">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="jCg-5q-zWd" kind="show" id="6B8-mM-VTL"/>
                                 </connections>
@@ -801,9 +840,9 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         <viewLayoutGuide key="safeArea" id="Me4-bx-8fw"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="zyu-18-ctw" secondAttribute="trailing" id="2oO-F8-aLa"/>
+                            <constraint firstAttribute="trailing" secondItem="zyu-18-ctw" secondAttribute="trailing" constant="24" id="2oO-F8-aLa"/>
                             <constraint firstItem="Ucv-ah-J7L" firstAttribute="leading" secondItem="Me4-bx-8fw" secondAttribute="leading" constant="36" id="55N-Ah-V3f"/>
-                            <constraint firstItem="zyu-18-ctw" firstAttribute="leading" secondItem="Me4-bx-8fw" secondAttribute="leading" id="BX9-zM-03j"/>
+                            <constraint firstItem="zyu-18-ctw" firstAttribute="leading" secondItem="Me4-bx-8fw" secondAttribute="leading" constant="24" id="BX9-zM-03j"/>
                             <constraint firstItem="Me4-bx-8fw" firstAttribute="bottom" secondItem="zyu-18-ctw" secondAttribute="bottom" constant="16" id="CGw-dP-ely"/>
                             <constraint firstItem="Ucv-ah-J7L" firstAttribute="top" secondItem="Me4-bx-8fw" secondAttribute="top" constant="36" id="HLX-X0-IGj"/>
                             <constraint firstItem="RYI-dm-4ig" firstAttribute="top" secondItem="Ucv-ah-J7L" secondAttribute="bottom" constant="36" id="QAJ-xQ-FJb"/>
@@ -816,7 +855,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FUM-JY-Ezi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6886" y="11"/>
+            <point key="canvasLocation" x="7978" y="23"/>
         </scene>
         <!--Biometrics-->
         <scene sceneID="lyk-3p-VsA">
@@ -833,26 +872,31 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jF4-WM-QGu">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="LfY-Vs-LW2"/>
                                 </constraints>
                                 <state key="normal" title="Use FaceID / TouchID">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="4Cu-BH-tBM" kind="show" id="JzY-2m-ccN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QEL-Rj-A7P">
                                 <rect key="frame" x="0.0" y="730" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="q9Z-ks-IeM"/>
                                 </constraints>
                                 <state key="normal" title="Skip">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
                                     <segue destination="4Cu-BH-tBM" kind="show" id="sLr-a1-OLV"/>
@@ -862,13 +906,13 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         <viewLayoutGuide key="safeArea" id="MlB-dB-89j"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="jF4-WM-QGu" firstAttribute="leading" secondItem="MlB-dB-89j" secondAttribute="leading" id="5EW-oX-Api"/>
+                            <constraint firstItem="jF4-WM-QGu" firstAttribute="leading" secondItem="MlB-dB-89j" secondAttribute="leading" constant="24" id="5EW-oX-Api"/>
                             <constraint firstItem="MlB-dB-89j" firstAttribute="trailing" secondItem="A8a-Md-p1q" secondAttribute="trailing" constant="36" id="94H-eT-2cI"/>
                             <constraint firstItem="jF4-WM-QGu" firstAttribute="top" secondItem="QEL-Rj-A7P" secondAttribute="bottom" constant="16" id="Kh4-s6-mcZ"/>
                             <constraint firstItem="A8a-Md-p1q" firstAttribute="top" secondItem="MlB-dB-89j" secondAttribute="top" constant="36" id="M5i-US-PFm"/>
                             <constraint firstItem="MlB-dB-89j" firstAttribute="trailing" secondItem="QEL-Rj-A7P" secondAttribute="trailing" id="Wo4-LF-ywp"/>
                             <constraint firstItem="A8a-Md-p1q" firstAttribute="leading" secondItem="MlB-dB-89j" secondAttribute="leading" constant="36" id="jMZ-9p-F6M"/>
-                            <constraint firstItem="jF4-WM-QGu" firstAttribute="trailing" secondItem="MlB-dB-89j" secondAttribute="trailing" id="mmw-I5-ydx"/>
+                            <constraint firstItem="MlB-dB-89j" firstAttribute="trailing" secondItem="jF4-WM-QGu" secondAttribute="trailing" constant="24" id="mmw-I5-ydx"/>
                             <constraint firstItem="MlB-dB-89j" firstAttribute="bottom" secondItem="jF4-WM-QGu" secondAttribute="bottom" constant="16" id="pug-2k-yhq"/>
                             <constraint firstItem="QEL-Rj-A7P" firstAttribute="leading" secondItem="pib-KA-dYl" secondAttribute="leading" id="u3Y-xH-5Xd"/>
                         </constraints>
@@ -877,7 +921,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWh-JN-Vxo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7959" y="11"/>
+            <point key="canvasLocation" x="9051" y="23"/>
         </scene>
         <!--Complete-->
         <scene sceneID="JQV-B1-sdU">
@@ -906,23 +950,28 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l2K-H7-Sz3">
-                                <rect key="frame" x="0.0" y="796" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <rect key="frame" x="24" y="796" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="f5V-Ls-HTY"/>
                                 </constraints>
                                 <state key="normal" title="Show me how to get the most out of Tezos">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KJe-ib-krX">
                                 <rect key="frame" x="0.0" y="730" width="414" height="50"/>
-                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="P09-gG-KpJ"/>
                                 </constraints>
                                 <state key="normal" title="Bring me stright to my wallet">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                             </button>
                         </subviews>
@@ -941,16 +990,16 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                             <constraint firstItem="KJe-ib-krX" firstAttribute="leading" secondItem="19q-ne-ebY" secondAttribute="leading" id="hTz-Tg-hHq"/>
                             <constraint firstItem="q5a-Hz-DPJ" firstAttribute="bottom" secondItem="l2K-H7-Sz3" secondAttribute="bottom" constant="16" id="jzT-M7-4kd"/>
                             <constraint firstItem="q5a-Hz-DPJ" firstAttribute="trailing" secondItem="Ens-kz-gvi" secondAttribute="trailing" constant="36" id="mwd-9z-FfK"/>
-                            <constraint firstItem="l2K-H7-Sz3" firstAttribute="leading" secondItem="q5a-Hz-DPJ" secondAttribute="leading" id="qP3-ub-1BJ"/>
+                            <constraint firstItem="l2K-H7-Sz3" firstAttribute="leading" secondItem="q5a-Hz-DPJ" secondAttribute="leading" constant="24" id="qP3-ub-1BJ"/>
                             <constraint firstItem="q5a-Hz-DPJ" firstAttribute="trailing" secondItem="V5P-Mw-Fnk" secondAttribute="trailing" constant="36" id="wTo-6I-hrH"/>
-                            <constraint firstAttribute="trailing" secondItem="l2K-H7-Sz3" secondAttribute="trailing" id="ySP-IH-I1W"/>
+                            <constraint firstAttribute="trailing" secondItem="l2K-H7-Sz3" secondAttribute="trailing" constant="24" id="ySP-IH-I1W"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Complete" id="GCk-Uu-ppp"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zu8-F3-RGq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9026" y="11"/>
+            <point key="canvasLocation" x="10117" y="23"/>
         </scene>
         <!--Import-->
         <scene sceneID="fxe-vk-yig">
@@ -966,7 +1015,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VBu-eq-Mb9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1293" y="810"/>
+            <point key="canvasLocation" x="2386" y="822"/>
         </scene>
         <!--Network Chooser View Controller-->
         <scene sceneID="F31-XU-qgl">
@@ -977,16 +1026,16 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GPc-C3-A4c">
-                                <rect key="frame" x="0.0" y="457.5" width="414" height="438.5"/>
+                                <rect key="frame" x="0.0" y="462.5" width="414" height="433.5"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7t-0W-jSr">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7t-0W-jSr">
                                         <rect key="frame" x="362" y="8" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="Bz1-xZ-7yk"/>
                                             <constraint firstAttribute="height" constant="44" id="m5h-UI-kaL"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
-                                        <state key="normal" title="x">
+                                        <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="xmark" catalog="system">
                                             <color key="titleColor" systemColor="labelColor"/>
                                         </state>
                                         <connections>
@@ -994,14 +1043,14 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </connections>
                                     </button>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="yMJ-od-i9W">
-                                        <rect key="frame" x="20" y="90" width="374" height="32"/>
+                                        <rect key="frame" x="20" y="85" width="374" height="32"/>
                                         <segments>
                                             <segment title="Mainnet"/>
                                             <segment title="Testnet (Florence)"/>
                                         </segments>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMd-YQ-3wd">
-                                        <rect key="frame" x="20" y="145" width="374" height="243.5"/>
+                                        <rect key="frame" x="20" y="140" width="374" height="243.5"/>
                                         <string key="text">Mainnet:
 Live network with real XTZ and Tokens with real value
 
@@ -1013,7 +1062,7 @@ Mainly used by developers to experiment / test. Or members of the public when te
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Change network settings" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8vF-iy-pBb">
-                                        <rect key="frame" x="8" y="25" width="190" height="21"/>
+                                        <rect key="frame" x="8" y="20" width="190" height="21"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1047,7 +1096,251 @@ Mainly used by developers to experiment / test. Or members of the public when te
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WHy-Eb-7NL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="89.855072463768124" y="809.59821428571422"/>
+            <point key="canvasLocation" x="-530" y="822"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="Woo-k2-hqZ">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qFA-yB-4YO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewController id="IfC-Q8-z4S" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fm2-kb-YmE">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ScO-x3-IfF">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <connections>
+                                    <segue destination="uEg-Tr-5qt" kind="embed" id="VvI-rh-3a8"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vw7-gU-ZtY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ScO-x3-IfF" firstAttribute="trailing" secondItem="vw7-gU-ZtY" secondAttribute="trailing" id="57q-gV-Ada"/>
+                            <constraint firstItem="vw7-gU-ZtY" firstAttribute="bottom" secondItem="ScO-x3-IfF" secondAttribute="bottom" id="hdJ-bF-zie"/>
+                            <constraint firstItem="ScO-x3-IfF" firstAttribute="top" secondItem="vw7-gU-ZtY" secondAttribute="top" id="oJ3-rQ-vSW"/>
+                            <constraint firstItem="ScO-x3-IfF" firstAttribute="leading" secondItem="vw7-gU-ZtY" secondAttribute="leading" id="uBB-HR-RE1"/>
+                        </constraints>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="623.1884057971015" y="821.65178571428567"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="XhF-SA-QfD">
+            <objects>
+                <viewController storyboardIdentifier="welcome-help-page-1" id="QVr-q9-Djg" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="sAN-QK-VMl">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Need a hand?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HR1-vn-J5E">
+                                <rect key="frame" x="24" y="68" width="366" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PVo-K5-bUo">
+                                <rect key="frame" x="24" y="246" width="366" height="131"/>
+                                <string key="text">"CustomAuth", "Seed phrase",  "Wallet" ... theres a lot of new terms to learn when it comes to Tezos and the blockchain.
+
+Fear not, we are here to help. Swipe right for an intro into everything you need to know to get started. We'll explain more along the way.</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="questionmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="rNQ-mB-dzO">
+                                <rect key="frame" x="157" y="122.5" width="100" height="99"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="dgr-IP-kel"/>
+                                    <constraint firstAttribute="height" constant="100" id="yfC-M4-VIj"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="eat-4a-UFq"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="eat-4a-UFq" firstAttribute="trailing" secondItem="PVo-K5-bUo" secondAttribute="trailing" constant="24" id="6PP-f4-RyA"/>
+                            <constraint firstItem="PVo-K5-bUo" firstAttribute="leading" secondItem="eat-4a-UFq" secondAttribute="leading" constant="24" id="GOC-HF-5Jc"/>
+                            <constraint firstItem="PVo-K5-bUo" firstAttribute="top" secondItem="rNQ-mB-dzO" secondAttribute="bottom" constant="24" id="bfW-5g-TXX"/>
+                            <constraint firstItem="rNQ-mB-dzO" firstAttribute="top" secondItem="HR1-vn-J5E" secondAttribute="bottom" constant="24" id="g1k-87-6U9"/>
+                            <constraint firstItem="rNQ-mB-dzO" firstAttribute="centerX" secondItem="sAN-QK-VMl" secondAttribute="centerX" id="pbc-Yt-qfm"/>
+                            <constraint firstItem="HR1-vn-J5E" firstAttribute="leading" secondItem="eat-4a-UFq" secondAttribute="leading" constant="24" id="qZI-Fv-uDQ"/>
+                            <constraint firstItem="HR1-vn-J5E" firstAttribute="top" secondItem="eat-4a-UFq" secondAttribute="top" constant="24" id="szK-4k-2wL"/>
+                            <constraint firstItem="eat-4a-UFq" firstAttribute="trailing" secondItem="HR1-vn-J5E" secondAttribute="trailing" constant="24" id="vPE-k8-C7g"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="olu-o3-i7P" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-509" y="2261"/>
+        </scene>
+        <!--Welcome Help Page View Controller-->
+        <scene sceneID="OdH-I7-okw">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EAL-7v-gcX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="uEg-Tr-5qt" customClass="WelcomeHelpPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController"/>
+            </objects>
+            <point key="canvasLocation" x="623" y="1576"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="jhp-V3-nyl">
+            <objects>
+                <viewController storyboardIdentifier="welcome-help-page-2" id="Jfo-Ho-Mrt" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="lq3-Ac-1qv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is a Wallet?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f40-la-Wge">
+                                <rect key="frame" x="24" y="68" width="366" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQz-UQ-kYp">
+                                <rect key="frame" x="24" y="246" width="366" height="226"/>
+                                <string key="text">Think of a Wallet as your bank account, on the blockchain. Its where you store all your tokens, NFT's, earn interest etc.
+
+Walletss have an address That comes with a prefix of "TZ1", "TZ2" or "TZ3". Sometimes referred to as you "TZ address".
+
+It is safe to give this address to other people, as they can't do anything with this address, other than make transfer to you, or view its details on a blockchian explorer</string>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="folder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="PZu-RA-3xs">
+                                <rect key="frame" x="157" y="123" width="100" height="97.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="fDm-n2-IHs"/>
+                                    <constraint firstAttribute="height" constant="100" id="z1z-po-Bxo"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="RxY-Rq-g6K"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="RxY-Rq-g6K" firstAttribute="trailing" secondItem="hQz-UQ-kYp" secondAttribute="trailing" constant="24" id="UO7-vx-0Rv"/>
+                            <constraint firstItem="hQz-UQ-kYp" firstAttribute="top" secondItem="PZu-RA-3xs" secondAttribute="bottom" constant="24" id="c7h-Ss-TFe"/>
+                            <constraint firstItem="f40-la-Wge" firstAttribute="leading" secondItem="RxY-Rq-g6K" secondAttribute="leading" constant="24" id="cv4-ji-Drn"/>
+                            <constraint firstItem="hQz-UQ-kYp" firstAttribute="leading" secondItem="RxY-Rq-g6K" secondAttribute="leading" constant="24" id="duf-fE-py5"/>
+                            <constraint firstItem="PZu-RA-3xs" firstAttribute="top" secondItem="f40-la-Wge" secondAttribute="bottom" constant="24" id="iyg-9g-RU5"/>
+                            <constraint firstItem="PZu-RA-3xs" firstAttribute="centerX" secondItem="lq3-Ac-1qv" secondAttribute="centerX" id="lPr-3N-0hy"/>
+                            <constraint firstItem="RxY-Rq-g6K" firstAttribute="trailing" secondItem="f40-la-Wge" secondAttribute="trailing" constant="24" id="uRX-AB-jrs"/>
+                            <constraint firstItem="f40-la-Wge" firstAttribute="top" secondItem="RxY-Rq-g6K" secondAttribute="top" constant="24" id="z12-Zg-kiD"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bc4-n7-MGg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="257" y="2261"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="XA8-Ii-W6L">
+            <objects>
+                <viewController storyboardIdentifier="welcome-help-page-3" id="wOq-9N-h9J" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="skj-fV-pic">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is CustomAuth?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSq-Ym-hQy">
+                                <rect key="frame" x="24" y="68" width="366" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCh-5R-nfU">
+                                <rect key="frame" x="24" y="246" width="366" height="340"/>
+                                <mutableString key="text">CustomAuth is the name of a service provided by the Torus Network.
+
+Originally created for the Ethereum network, and now updated to work with Tezos, Torus allows you to create a wallet by logging into a third party provider. Such as "Sign in with Apple", Twitter, Google, Facebook, Reddit etc.
+
+Instead of having to remember extra details and passwords for your wallet, you can just login with the provider of your choice.
+
+Note:
+While doing this makes using the blockchain easier, be aware of the fact that you loose anonimity this way. Anyone could type in your Twitter/Facebook username, google email etc, and get your wallet address.</mutableString>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="link.icloud.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vIj-iP-075">
+                                <rect key="frame" x="157" y="123" width="100" height="96.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="l26-YW-v8Q"/>
+                                    <constraint firstAttribute="width" constant="100" id="t50-Ub-z4u"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="fu8-0u-hPX"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="QCh-5R-nfU" firstAttribute="top" secondItem="vIj-iP-075" secondAttribute="bottom" constant="24" id="Ly5-6P-FO6"/>
+                            <constraint firstItem="QCh-5R-nfU" firstAttribute="leading" secondItem="fu8-0u-hPX" secondAttribute="leading" constant="24" id="TdV-i9-PnH"/>
+                            <constraint firstAttribute="trailing" secondItem="QCh-5R-nfU" secondAttribute="trailing" constant="24" id="UDf-bX-f2T"/>
+                            <constraint firstItem="QSq-Ym-hQy" firstAttribute="top" secondItem="fu8-0u-hPX" secondAttribute="top" constant="24" id="a1c-ud-o4l"/>
+                            <constraint firstItem="vIj-iP-075" firstAttribute="centerX" secondItem="skj-fV-pic" secondAttribute="centerX" id="bG4-5k-0Fb"/>
+                            <constraint firstItem="fu8-0u-hPX" firstAttribute="trailing" secondItem="QSq-Ym-hQy" secondAttribute="trailing" constant="24" id="nGg-OY-cMg"/>
+                            <constraint firstItem="vIj-iP-075" firstAttribute="top" secondItem="QSq-Ym-hQy" secondAttribute="bottom" constant="24" id="pzd-d2-Sa8"/>
+                            <constraint firstItem="QSq-Ym-hQy" firstAttribute="leading" secondItem="fu8-0u-hPX" secondAttribute="leading" constant="24" id="v1f-Mr-Sxz"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bGi-hE-EiJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1010" y="2261"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="PHz-hf-qFE">
+            <objects>
+                <viewController storyboardIdentifier="welcome-help-page-4" id="HII-Na-Y0N" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="tfC-7r-X7V">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is a Seed Phrase?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tQQ-Fh-4UK">
+                                <rect key="frame" x="24" y="68" width="366" height="30"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I27-45-x8X">
+                                <rect key="frame" x="24" y="246" width="366" height="321"/>
+                                <mutableString key="text">A seed phrase (sometimes called a Mnemonic), is a collection of random words used to create a private key, that will in turn create a wallet.
+
+This phrase or collection of words acts as a recovery mechanism for you to retrieve your wallet on another app, phone, computer, web app etc. The same words will always produce the same wallet.
+
+It is critically important to write these words down, in order, and keep a paper backup. It is NOT possible to recover them any other way.
+
+If you delete your app, reset you phone, or a critical secutiry update is needed that deletes the data from the app ... you will have no other way to access your funds without that phrase</mutableString>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="text.alignleft" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="huO-Tm-hPP">
+                                <rect key="frame" x="157" y="123.5" width="100" height="96.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="8BK-jL-0at"/>
+                                    <constraint firstAttribute="height" constant="100" id="dV1-Vp-ktd"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ixb-6g-XoW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tQQ-Fh-4UK" firstAttribute="leading" secondItem="tfC-7r-X7V" secondAttribute="leading" constant="24" id="4bS-Mv-W6f"/>
+                            <constraint firstItem="tQQ-Fh-4UK" firstAttribute="top" secondItem="Ixb-6g-XoW" secondAttribute="top" constant="24" id="E9W-1D-aiK"/>
+                            <constraint firstItem="Ixb-6g-XoW" firstAttribute="trailing" secondItem="tQQ-Fh-4UK" secondAttribute="trailing" constant="24" id="NQG-Bw-FF5"/>
+                            <constraint firstItem="I27-45-x8X" firstAttribute="leading" secondItem="Ixb-6g-XoW" secondAttribute="leading" constant="24" id="bSA-hb-6O9"/>
+                            <constraint firstItem="I27-45-x8X" firstAttribute="top" secondItem="huO-Tm-hPP" secondAttribute="bottom" constant="24" id="brD-Z4-4VQ"/>
+                            <constraint firstItem="huO-Tm-hPP" firstAttribute="centerX" secondItem="tfC-7r-X7V" secondAttribute="centerX" id="fSj-Sw-Q3j"/>
+                            <constraint firstItem="huO-Tm-hPP" firstAttribute="top" secondItem="tQQ-Fh-4UK" secondAttribute="bottom" constant="24" id="gCx-at-rb3"/>
+                            <constraint firstAttribute="trailing" secondItem="I27-45-x8X" secondAttribute="trailing" constant="24" id="gTA-Dr-L2v"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="izJ-Pu-uPF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1746" y="2261"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
@@ -1056,9 +1349,14 @@ Mainly used by developers to experiment / test. Or members of the public when te
     <resources>
         <image name="applelogo" catalog="system" width="103" height="128"/>
         <image name="facebook-small" width="36" height="48"/>
+        <image name="folder" catalog="system" width="128" height="97"/>
         <image name="google-small" width="36" height="36"/>
+        <image name="link.icloud.fill" catalog="system" width="128" height="88"/>
+        <image name="questionmark.circle.fill" catalog="system" width="128" height="121"/>
         <image name="reddit-small" width="36" height="36"/>
+        <image name="text.alignleft" catalog="system" width="128" height="100"/>
         <image name="twitter-small" width="36" height="36"/>
+        <image name="xmark" catalog="system" width="128" height="113"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
@@ -1071,8 +1369,8 @@ Mainly used by developers to experiment / test. Or members of the public when te
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
-        <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
