@@ -47,7 +47,7 @@ Choose from the options below</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm6-pL-Voh">
-                                <rect key="frame" x="24" y="604" width="366" height="50"/>
+                                <rect key="frame" x="24" y="597" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="jvd-kO-7ru"/>
@@ -100,13 +100,28 @@ Choose from the options below</string>
                                     <segue destination="dLs-B5-OLS" kind="show" id="qcK-q2-0K8"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a wallet by logging in with Apple, Google, Twitter, Facebook or Reddit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kM-mD-JgK">
+                                <rect key="frame" x="24" y="548" width="366" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4CX-Nj-4Yh">
+                                <rect key="frame" x="24" y="697" width="366" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="t2i-m9-oIO" secondAttribute="trailing" constant="20" id="09b-1I-U9p"/>
+                            <constraint firstItem="4CX-Nj-4Yh" firstAttribute="trailing" secondItem="PGy-dT-1kF" secondAttribute="trailing" id="1UP-Ba-4bo"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="hbt-m0-gW1" secondAttribute="trailing" constant="36" id="1eU-Xa-QCe"/>
+                            <constraint firstItem="Lm6-pL-Voh" firstAttribute="top" secondItem="1kM-mD-JgK" secondAttribute="bottom" constant="8" symbolic="YES" id="3Df-cW-Vpa"/>
                             <constraint firstItem="Lm6-pL-Voh" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="CUn-st-gmb"/>
+                            <constraint firstItem="4CX-Nj-4Yh" firstAttribute="top" secondItem="Lm6-pL-Voh" secondAttribute="bottom" constant="50" id="F2u-JH-CMp"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="36" id="G7R-c8-MYU"/>
                             <constraint firstItem="Mkw-VQ-LxP" firstAttribute="top" secondItem="PGy-dT-1kF" secondAttribute="bottom" constant="16" id="HL0-bK-SrC"/>
                             <constraint firstAttribute="trailing" secondItem="PGy-dT-1kF" secondAttribute="trailing" constant="24" id="RU0-l7-SWt"/>
@@ -114,12 +129,15 @@ Choose from the options below</string>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="36" id="UI6-7t-EKM"/>
                             <constraint firstItem="PGy-dT-1kF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="XnA-RT-Rb3"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="top" secondItem="t2i-m9-oIO" secondAttribute="bottom" constant="8" id="YMS-xh-f0j"/>
+                            <constraint firstItem="1kM-mD-JgK" firstAttribute="leading" secondItem="Lm6-pL-Voh" secondAttribute="leading" id="YuX-VJ-iny"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="ZFo-lc-qFa"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" constant="24" id="aMU-la-ZTD"/>
                             <constraint firstAttribute="trailing" secondItem="Mkw-VQ-LxP" secondAttribute="trailing" constant="24" id="lgz-hf-qig"/>
-                            <constraint firstItem="PGy-dT-1kF" firstAttribute="top" secondItem="Lm6-pL-Voh" secondAttribute="bottom" constant="72" id="oPK-2w-5YY"/>
+                            <constraint firstItem="PGy-dT-1kF" firstAttribute="top" secondItem="4CX-Nj-4Yh" secondAttribute="bottom" constant="8" symbolic="YES" id="nLy-nJ-eBF"/>
                             <constraint firstItem="Mkw-VQ-LxP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="wFQ-OO-MiE"/>
+                            <constraint firstItem="1kM-mD-JgK" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" id="wKW-fa-cBK"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="xhV-fz-pad"/>
+                            <constraint firstItem="4CX-Nj-4Yh" firstAttribute="leading" secondItem="PGy-dT-1kF" secondAttribute="leading" id="ycv-ya-D9V"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Kūkai" id="UNV-ze-fgv">
@@ -1101,7 +1119,6 @@ Mainly used by developers to experiment / test. Or members of the public when te
         <!--View Controller-->
         <scene sceneID="Woo-k2-hqZ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qFA-yB-4YO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController id="IfC-Q8-z4S" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fm2-kb-YmE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
@@ -1124,6 +1141,7 @@ Mainly used by developers to experiment / test. Or members of the public when te
                         </constraints>
                     </view>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qFA-yB-4YO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="623.1884057971015" y="821.65178571428567"/>
         </scene>
@@ -1176,11 +1194,15 @@ Fear not, we are here to help. Swipe right for an intro into everything you need
             </objects>
             <point key="canvasLocation" x="-509" y="2261"/>
         </scene>
-        <!--Welcome Help Page View Controller-->
+        <!--Onboarding Page View Controller-->
         <scene sceneID="OdH-I7-okw">
             <objects>
+                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="uEg-Tr-5qt" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="welcome-help-page-1,welcome-help-page-2,welcome-help-page-3,welcome-help-page-4"/>
+                    </userDefinedRuntimeAttributes>
+                </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EAL-7v-gcX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="uEg-Tr-5qt" customClass="WelcomeHelpPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController"/>
             </objects>
             <point key="canvasLocation" x="623" y="1576"/>
         </scene>
@@ -1188,7 +1210,7 @@ Fear not, we are here to help. Swipe right for an intro into everything you need
         <scene sceneID="jhp-V3-nyl">
             <objects>
                 <viewController storyboardIdentifier="welcome-help-page-2" id="Jfo-Ho-Mrt" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="lq3-Ac-1qv">
+                    <view key="view" tag="1" contentMode="scaleToFill" id="lq3-Ac-1qv">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1239,7 +1261,7 @@ It is safe to give this address to other people, as they can't do anything with 
         <scene sceneID="XA8-Ii-W6L">
             <objects>
                 <viewController storyboardIdentifier="welcome-help-page-3" id="wOq-9N-h9J" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="skj-fV-pic">
+                    <view key="view" tag="2" contentMode="scaleToFill" id="skj-fV-pic">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1251,14 +1273,14 @@ It is safe to give this address to other people, as they can't do anything with 
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QCh-5R-nfU">
                                 <rect key="frame" x="24" y="246" width="366" height="340"/>
-                                <mutableString key="text">CustomAuth is the name of a service provided by the Torus Network.
+                                <string key="text">CustomAuth is the name of a service provided by the Torus Network.
 
 Originally created for the Ethereum network, and now updated to work with Tezos, Torus allows you to create a wallet by logging into a third party provider. Such as "Sign in with Apple", Twitter, Google, Facebook, Reddit etc.
 
 Instead of having to remember extra details and passwords for your wallet, you can just login with the provider of your choice.
 
 Note:
-While doing this makes using the blockchain easier, be aware of the fact that you loose anonimity this way. Anyone could type in your Twitter/Facebook username, google email etc, and get your wallet address.</mutableString>
+While doing this makes using the blockchain easier, be aware of the fact that you loose anonimity this way. Anyone could type in your Twitter/Facebook username, google email etc, and get your wallet address.</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1293,7 +1315,7 @@ While doing this makes using the blockchain easier, be aware of the fact that yo
         <scene sceneID="PHz-hf-qFE">
             <objects>
                 <viewController storyboardIdentifier="welcome-help-page-4" id="HII-Na-Y0N" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="tfC-7r-X7V">
+                    <view key="view" tag="3" contentMode="scaleToFill" id="tfC-7r-X7V">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -1305,13 +1327,13 @@ While doing this makes using the blockchain easier, be aware of the fact that yo
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I27-45-x8X">
                                 <rect key="frame" x="24" y="246" width="366" height="321"/>
-                                <mutableString key="text">A seed phrase (sometimes called a Mnemonic), is a collection of random words used to create a private key, that will in turn create a wallet.
+                                <string key="text">A seed phrase (sometimes called a Mnemonic), is a collection of random words used to create a private key, that will in turn create a wallet.
 
 This phrase or collection of words acts as a recovery mechanism for you to retrieve your wallet on another app, phone, computer, web app etc. The same words will always produce the same wallet.
 
 It is critically important to write these words down, in order, and keep a paper backup. It is NOT possible to recover them any other way.
 
-If you delete your app, reset you phone, or a critical secutiry update is needed that deletes the data from the app ... you will have no other way to access your funds without that phrase</mutableString>
+If you delete your app, reset you phone, or a critical secutiry update is needed that deletes the data from the app ... you will have no other way to access your funds without that phrase</string>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

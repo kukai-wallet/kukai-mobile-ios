@@ -1,29 +1,36 @@
 //
-//  WelcomeHelpPageViewController.swift
+//  OnboardingPageViewController.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 16/07/2021.
+//  Created by Simon Mcloughlin on 19/07/2021.
 //
 
 import UIKit
 
-class WelcomeHelpPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+/// A wrapper around the UIPageViewController that takes in a collection of viewControllers via an `IBInspectable`, and implements all the standard scroll logic and UIPageControl
+/// to create an onboarding / intro / explanitory section in the app, to visually explain a topic or collection of topics to the user.
+class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 	
 	public var items: [UIViewController] = []
 	private var pageControl: UIPageControl? = nil
 	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	/**
+	comma separated string containing any number of UIViewController storyboard ids, used to init UIViewControllers to act as pages in the page view controller
+	*/
+	@IBInspectable var commaSeperatedStoryboardIds: String = ""
+	
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
 		
-		items.append(UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(identifier: "welcome-help-page-1"))
-		items.append(UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(identifier: "welcome-help-page-2"))
-		items.append(UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(identifier: "welcome-help-page-3"))
-		items.append( UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(identifier: "welcome-help-page-4"))
+		let ids = commaSeperatedStoryboardIds.components(separatedBy: ",")
+		for id in ids {
+			items.append(self.storyboard?.instantiateViewController(identifier: id) ?? UIViewController())
+		}
 		
 		setViewControllers([items[0]], direction: .forward, animated: true, completion: nil)
 		self.dataSource = self
 		self.delegate = self
-		
 		
 		pageControl = UIPageControl()
 		pageControl?.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +48,7 @@ class WelcomeHelpPageViewController: UIPageViewController, UIPageViewControllerD
 				NSLayoutConstraint(item: pc, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
 			])
 		}
-    }
+	}
 	
 	func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
 		guard let viewControllerIndex = items.firstIndex(of: viewController) else {
