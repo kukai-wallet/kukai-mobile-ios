@@ -392,7 +392,7 @@ However it requires users to remember a 24 word phrase. Loosing this phrase mean
         <!--Password-->
         <scene sceneID="LVk-Ls-kAf">
             <objects>
-                <viewController id="5It-wy-6Cz" sceneMemberID="viewController">
+                <viewController id="5It-wy-6Cz" customClass="NewWalletPasswordViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="y5h-F8-glo">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -426,7 +426,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="TcJ-o9-tgB" kind="show" id="Ysk-ko-l0P"/>
+                                    <action selector="continueTapped:" destination="5It-wy-6Cz" eventType="touchUpInside" id="bRK-b0-Ufl"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -445,6 +445,10 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Password" id="l3O-gP-5Hb"/>
+                    <connections>
+                        <outlet property="passwordTextField" destination="a5h-Z0-GGJ" id="asK-3W-Vvh"/>
+                        <segue destination="TcJ-o9-tgB" kind="show" identifier="next" id="mbp-Fb-xcy"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGw-uN-g1a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -453,7 +457,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
         <!--Seed phrase-->
         <scene sceneID="4Pc-cB-I7G">
             <objects>
-                <viewController id="TcJ-o9-tgB" sceneMemberID="viewController">
+                <viewController id="TcJ-o9-tgB" customClass="NewWalletMnemonicViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oBE-LA-Nb9">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -663,6 +667,11 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Seed phrase" id="7QY-q8-h18"/>
+                    <connections>
+                        <outlet property="leftStackView" destination="euk-jq-Tnl" id="iCr-Ms-EK3"/>
+                        <outlet property="middleStackView" destination="sdv-6h-qP4" id="lgc-qt-F2B"/>
+                        <outlet property="rightStackView" destination="B2C-Ye-nqv" id="srI-7f-e3I"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GYx-Zi-4uD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

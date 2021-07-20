@@ -1,0 +1,33 @@
+//
+//  NewWalletPasswordViewController.swift
+//  Kukai Mobile
+//
+//  Created by Simon Mcloughlin on 20/07/2021.
+//
+
+import UIKit
+import KukaiCoreSwift
+
+class NewWalletPasswordViewController: UIViewController {
+
+	@IBOutlet weak var passwordTextField: UITextField!
+	
+	override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+	
+	@IBAction func continueTapped(_ sender: Any) {
+		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: passwordTextField.text ?? "") {
+			let walletCache = WalletCacheService()
+			let _ = walletCache.deleteCacheAndKeys()
+			
+			if walletCache.cache(wallet: wallet) {
+				self.performSegue(withIdentifier: "next", sender: self)
+			} else {
+				self.alert(withTitle: "Error", andMessage: "Unable to cache")
+			}
+		} else {
+			self.alert(withTitle: "Error", andMessage: "Unable to create wallet")
+		}
+	}
+}
