@@ -187,7 +187,7 @@ Users should be aware that using this option removes some anonimity, as once cre
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Szp-hu-rsF">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Szp-hu-rsF">
                                 <rect key="frame" x="16" y="606" width="382" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="gU3-hy-Kgy"/>
@@ -263,7 +263,7 @@ Users should be aware that using this option removes some anonimity, as once cre
                                     <action selector="redditTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="v04-8x-b7i"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e2T-ac-YNu">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e2T-ac-YNu">
                                 <rect key="frame" x="16" y="738" width="382" height="50"/>
                                 <color key="backgroundColor" red="0.23727124929999999" green="0.35415893790000003" blue="0.60265469549999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -328,6 +328,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="CustomAuth" id="YCF-gR-aFd"/>
+                    <connections>
+                        <segue destination="4jg-5C-hey" kind="show" identifier="complete" id="LoH-Ee-G0O"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFW-mO-gv7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2203,7 +2206,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qUc-nz-2Wz"/>
+        <segue reference="LoH-Ee-G0O"/>
         <segue reference="gfQ-1x-Mkd"/>
     </inferredMetricsTieBreakers>
     <resources>

@@ -15,17 +15,60 @@ class DirectAuthViewController: UIViewController {
     }
 	
 	@IBAction func appleTapped(_ sender: Any) {
+		self.showActivity(clearBackground: false)
+		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
+		self.showActivity(clearBackground: false)
+		DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
+		self.showActivity(clearBackground: false)
+		DependencyManager.shared.torusAuthService.createWallet(from: .twitter, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
+		self.showActivity(clearBackground: false)
+		DependencyManager.shared.torusAuthService.createWallet(from: .facebook, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
+		self.showActivity(clearBackground: false)
+		DependencyManager.shared.torusAuthService.createWallet(from: .reddit, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
+	}
+	
+	func handleResult(result: Result<TorusWallet, ErrorResponse>) {
+		switch result {
+			case .success(let wallet):
+				
+				// Clear out any other wallets
+				let walletCache = WalletCacheService()
+				let _ = walletCache.deleteCacheAndKeys()
+				
+				// try to cache new one, and move on if successful
+				if walletCache.cache(wallet: wallet) {
+					self.performSegue(withIdentifier: "complete", sender: self)
+					
+				} else {
+					self.alert(withTitle: "Error", andMessage: "Unable to cache")
+				}
+				
+			case .failure(let error):
+				self.alert(withTitle: "Error", andMessage: error.description)
+		}
+		
+		self.hideActivity()
 	}
 }
