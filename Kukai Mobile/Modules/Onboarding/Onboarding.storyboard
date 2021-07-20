@@ -162,6 +162,9 @@ Choose from the options below</string>
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="networkButton" destination="2rj-IA-ODL" id="lgz-L9-LVm"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -205,6 +208,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="googleTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="WY7-IQ-jUs"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jZE-Zh-tc5">
                                 <rect key="frame" x="16" y="672" width="382" height="50"/>
@@ -228,6 +234,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="twitterTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="tzE-af-GMH"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YAm-Eq-Wau">
                                 <rect key="frame" x="16" y="804" width="382" height="50"/>
@@ -250,6 +259,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                                         <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="redditTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="v04-8x-b7i"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e2T-ac-YNu">
                                 <rect key="frame" x="16" y="738" width="382" height="50"/>
@@ -267,6 +279,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="facebookTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="yVa-DS-cKY"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XIs-JF-LwY">
                                 <rect key="frame" x="16" y="540" width="382" height="50"/>
@@ -284,6 +299,9 @@ Users should be aware that using this option removes some anonimity, as once cre
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="appleTapped:" destination="QBJ-bs-3eL" eventType="touchUpInside" id="Buh-mH-gPe"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="tdb-Fv-8Vm"/>
@@ -1264,6 +1282,9 @@ Address:</string>
                                             <segment title="Mainnet"/>
                                             <segment title="Testnet (Florence)"/>
                                         </segments>
+                                        <connections>
+                                            <action selector="networkConfigChanged:" destination="q9W-sK-Twb" eventType="valueChanged" id="ysj-XB-dx7"/>
+                                        </connections>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMd-YQ-3wd">
                                         <rect key="frame" x="20" y="140" width="374" height="243.5"/>
@@ -1309,6 +1330,9 @@ Mainly used by developers to experiment / test. Or members of the public when te
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="qVV-lk-R66"/>
+                    <connections>
+                        <outlet property="networkChoiceControl" destination="yMJ-od-i9W" id="Cve-Vp-mJX"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WHy-Eb-7NL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

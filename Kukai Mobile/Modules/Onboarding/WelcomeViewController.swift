@@ -8,8 +8,10 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-
-    override func viewDidLoad() {
+	
+	@IBOutlet weak var networkButton: UIButton!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
     }
 	
@@ -18,5 +20,8 @@ class WelcomeViewController: UIViewController {
 		
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
+		
+		let buttonText = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Testnet"
+		networkButton.setTitle(buttonText, for: .normal)
 	}
 }
