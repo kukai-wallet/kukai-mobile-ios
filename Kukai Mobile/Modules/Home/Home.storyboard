@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dhs-YA-Nqx">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -8,35 +8,100 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="s0d-6b-0kx">
+        <!--Settings-->
+        <scene sceneID="3DY-Wp-lJL">
             <objects>
-                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                <viewController id="OYm-bQ-PRg" customClass="SettingsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="4FX-gq-c5T">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="home" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z8h-fJ-77u">
-                                <rect key="frame" x="185.5" y="437.5" width="43" height="21"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUG-JJ-gte">
+                                <rect key="frame" x="161.5" y="433" width="91" height="30"/>
+                                <state key="normal" title="Delete Wallet"/>
+                                <connections>
+                                    <action selector="deleteWallet:" destination="OYm-bQ-PRg" eventType="touchUpInside" id="OKr-it-Olq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ifv-Hd-lq8"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="lUG-JJ-gte" firstAttribute="centerX" secondItem="4FX-gq-c5T" secondAttribute="centerX" id="Sgf-wN-K4M"/>
+                            <constraint firstItem="lUG-JJ-gte" firstAttribute="centerY" secondItem="4FX-gq-c5T" secondAttribute="centerY" id="a6V-zS-VrB"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Settings" image="gearshape" catalog="system" id="Nh7-FD-ja7"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jJ2-iX-2DA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1501" y="1045"/>
+        </scene>
+        <!--Wallet-->
+        <scene sceneID="kTp-fR-cJl">
+            <objects>
+                <viewController id="0CQ-PP-S8B" customClass="HomeWalletViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mbm-Lb-FTJ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fES-H0-YV0">
+                                <rect key="frame" x="24" y="112" width="366" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VaZ-AO-9Qv">
+                                <rect key="frame" x="24" y="141" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <viewLayoutGuide key="safeArea" id="t5S-RC-65T"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Z8h-fJ-77u" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="4Ri-Rl-357"/>
-                            <constraint firstItem="Z8h-fJ-77u" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="XJi-c1-CbM"/>
+                            <constraint firstItem="fES-H0-YV0" firstAttribute="leading" secondItem="t5S-RC-65T" secondAttribute="leading" constant="24" id="C89-Gk-gSd"/>
+                            <constraint firstItem="VaZ-AO-9Qv" firstAttribute="top" secondItem="fES-H0-YV0" secondAttribute="bottom" constant="8" symbolic="YES" id="Drw-gp-9Zo"/>
+                            <constraint firstItem="VaZ-AO-9Qv" firstAttribute="leading" secondItem="fES-H0-YV0" secondAttribute="leading" id="NRr-fj-KI8"/>
+                            <constraint firstItem="t5S-RC-65T" firstAttribute="trailing" secondItem="fES-H0-YV0" secondAttribute="trailing" constant="24" id="PVM-IQ-Son"/>
+                            <constraint firstItem="VaZ-AO-9Qv" firstAttribute="trailing" secondItem="fES-H0-YV0" secondAttribute="trailing" id="qfN-nD-0Xh"/>
+                            <constraint firstItem="fES-H0-YV0" firstAttribute="top" secondItem="t5S-RC-65T" secondAttribute="top" constant="24" id="xME-n9-aBb"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Wallet" image="folder" catalog="system" id="IsC-Pr-EGw"/>
+                    <connections>
+                        <outlet property="addressLabel" destination="VaZ-AO-9Qv" id="elV-7T-6JG"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Be3-GJ-jXR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="135"/>
+            <point key="canvasLocation" x="351" y="1045"/>
+        </scene>
+        <!--Kūkai-->
+        <scene sceneID="0zp-ti-oaQ">
+            <objects>
+                <tabBarController id="Dhs-YA-Nqx" customClass="HomeTabBarController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" title="Kūkai" id="HMx-OL-92K"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="HHh-3t-kwM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="0CQ-PP-S8B" kind="relationship" relationship="viewControllers" id="GNk-xP-BaM"/>
+                        <segue destination="OYm-bQ-PRg" kind="relationship" relationship="viewControllers" id="bwz-wh-cfe"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ttp-yj-CSU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="880" y="261"/>
         </scene>
     </scenes>
     <resources>
+        <image name="folder" catalog="system" width="128" height="97"/>
+        <image name="gearshape" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

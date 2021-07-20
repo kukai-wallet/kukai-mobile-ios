@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class LaunchViewController: UIViewController {
 
@@ -23,6 +24,13 @@ class LaunchViewController: UIViewController {
 		// Set anchor point of safe image, to the left hand side, so it acts like a door closing
 		setAnchorPoint(anchorPoint: CGPoint(x: 0, y: 0.5), forView: safeImage)
 		tezosImage.layer.zPosition = -10000
+    }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
+		self.navigationItem.hidesBackButton = true
 		
 		
 		// Start off with safe rotated to left (door open)
@@ -39,13 +47,6 @@ class LaunchViewController: UIViewController {
 		// Start with Kuaki text beneath screen
 		let roughDistanceToBottom = UIScreen.main.bounds.height / 2
 		kukaiLabelTopConstraint.constant = roughDistanceToBottom
-    }
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		self.navigationController?.setNavigationBarHidden(true, animated: false)
-		self.navigationItem.hidesBackButton = true
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -74,7 +75,12 @@ class LaunchViewController: UIViewController {
 		} completion: { success in
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
 				self?.showNavigationBar()
-				self?.performSegue(withIdentifier: "onboarding", sender: nil)
+				
+				if WalletCacheService().fetchPrimaryWallet() != nil {
+					self?.performSegue(withIdentifier: "home", sender: nil)
+				} else {
+					self?.performSegue(withIdentifier: "onboarding", sender: nil)
+				}
 			}
 		}
 	}
