@@ -2043,7 +2043,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
         <!--Fundraiser / Fuacet-->
         <scene sceneID="R5m-xC-7ju">
             <objects>
-                <viewController id="Ato-v6-VTX" sceneMemberID="viewController">
+                <viewController id="Ato-v6-VTX" customClass="ImportFaucetViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XP1-B0-9kW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2066,7 +2066,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="..." textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yL2-ul-kH5">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yL2-ul-kH5">
                                 <rect key="frame" x="24" y="141" width="366" height="75"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -2113,9 +2113,20 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="kH7-xQ-Tj9" kind="show" id="7on-LY-fJ0"/>
+                                    <action selector="importTapped:" destination="Ato-v6-VTX" eventType="touchUpInside" id="mGS-K9-wDX"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secret" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQU-eg-4Wu">
+                                <rect key="frame" x="24" y="450" width="366" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BXq-P8-xRs">
+                                <rect key="frame" x="24" y="479" width="366" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hUk-BZ-WV6"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -2125,25 +2136,38 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                             <constraint firstItem="m5p-u8-Bzr" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="3mX-a8-HG2"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="qke-tG-5Db" secondAttribute="trailing" constant="24" id="8kk-iN-Chj"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="lOn-ab-27C" secondAttribute="trailing" constant="24" id="9Kf-kY-OPO"/>
+                            <constraint firstItem="BXq-P8-xRs" firstAttribute="top" secondItem="bQU-eg-4Wu" secondAttribute="bottom" constant="8" symbolic="YES" id="AgO-6x-HYs"/>
                             <constraint firstItem="RvV-ez-ppB" firstAttribute="top" secondItem="yL2-ul-kH5" secondAttribute="bottom" constant="36" id="Bzs-bK-2ZS"/>
                             <constraint firstItem="yL2-ul-kH5" firstAttribute="top" secondItem="LTM-P5-8io" secondAttribute="bottom" constant="8" symbolic="YES" id="GzQ-1X-3BT"/>
                             <constraint firstItem="qke-tG-5Db" firstAttribute="top" secondItem="buf-8H-W2b" secondAttribute="bottom" constant="36" id="KHJ-Yw-mNB"/>
+                            <constraint firstItem="bQU-eg-4Wu" firstAttribute="top" secondItem="lOn-ab-27C" secondAttribute="bottom" constant="36" id="LsK-Xp-Zf2"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="RvV-ez-ppB" secondAttribute="trailing" constant="24" id="NX3-AF-LN8"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="m5p-u8-Bzr" secondAttribute="trailing" constant="24" id="Nua-oL-QDk"/>
                             <constraint firstItem="buf-8H-W2b" firstAttribute="top" secondItem="RvV-ez-ppB" secondAttribute="bottom" constant="8" symbolic="YES" id="OYT-HR-9A3"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="buf-8H-W2b" secondAttribute="trailing" constant="24" id="Oe3-Lu-iVc"/>
                             <constraint firstItem="yL2-ul-kH5" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="P21-is-e5K"/>
+                            <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="bQU-eg-4Wu" secondAttribute="trailing" constant="24" id="SlR-rm-FnT"/>
+                            <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="BXq-P8-xRs" secondAttribute="trailing" constant="24" id="V5y-mw-gZ0"/>
                             <constraint firstItem="buf-8H-W2b" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="aW6-GH-GVg"/>
                             <constraint firstItem="LTM-P5-8io" firstAttribute="top" secondItem="hUk-BZ-WV6" secondAttribute="top" constant="24" id="cPM-Xr-rGP"/>
                             <constraint firstItem="RvV-ez-ppB" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="gVk-I4-swU"/>
+                            <constraint firstItem="BXq-P8-xRs" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="hEz-Yb-9Bd"/>
                             <constraint firstItem="qke-tG-5Db" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="mbp-ix-xJ3"/>
                             <constraint firstItem="LTM-P5-8io" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="nWF-O6-Wka"/>
+                            <constraint firstItem="bQU-eg-4Wu" firstAttribute="leading" secondItem="hUk-BZ-WV6" secondAttribute="leading" constant="24" id="oFM-PI-mew"/>
                             <constraint firstItem="m5p-u8-Bzr" firstAttribute="bottom" secondItem="hUk-BZ-WV6" secondAttribute="bottom" id="orB-5C-kVO"/>
                             <constraint firstItem="hUk-BZ-WV6" firstAttribute="trailing" secondItem="yL2-ul-kH5" secondAttribute="trailing" constant="24" id="pAv-gN-3bU"/>
                             <constraint firstItem="lOn-ab-27C" firstAttribute="top" secondItem="qke-tG-5Db" secondAttribute="bottom" constant="8" symbolic="YES" id="zHf-7v-Cap"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Fundraiser / Fuacet" id="h1D-ph-c5a"/>
+                    <connections>
+                        <outlet property="emailTextField" destination="buf-8H-W2b" id="qEq-WG-ITV"/>
+                        <outlet property="passwordTextField" destination="lOn-ab-27C" id="QCR-eg-uC6"/>
+                        <outlet property="secretTextField" destination="BXq-P8-xRs" id="VZC-id-nCP"/>
+                        <outlet property="seedPhraseTextView" destination="yL2-ul-kH5" id="Po1-Qp-5A8"/>
+                        <segue destination="kH7-xQ-Tj9" kind="show" identifier="complete" id="Liq-8Z-Hqs"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FpV-Du-Dug" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2347,7 +2371,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="qUc-nz-2Wz"/>
-        <segue reference="E3n-LN-SQK"/>
+        <segue reference="Liq-8Z-Hqs"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="applelogo" catalog="system" width="103" height="128"/>
