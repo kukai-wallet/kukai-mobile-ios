@@ -25,6 +25,16 @@ class ImportMnemonicViewController: UIViewController {
 		}
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.addKeyboardObservers()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.removeKeyboardObservers()
+	}
+	
 	@IBAction func importTapped(_ sender: Any) {
 		guard let seedPhrase = seedPhraseTextView.text, seedPhrase != "" else {
 			self.alert(withTitle: "Error", andMessage: "No seed")

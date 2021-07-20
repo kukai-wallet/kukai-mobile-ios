@@ -14,6 +14,7 @@
 		C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082BFC26A70D3C00DB160B /* ImportFaucetViewController.swift */; };
 		C0082BFF26A713A000DB160B /* NewWalletPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082BFE26A713A000DB160B /* NewWalletPasswordViewController.swift */; };
 		C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0026A715C400DB160B /* NewWalletMnemonicViewController.swift */; };
+		C0082C0426A7218D00DB160B /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0082C0326A7218D00DB160B /* Home.storyboard */; };
 		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
 		C049B5A526A0497D00F1C5E0 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
@@ -59,6 +60,7 @@
 		C0082BFC26A70D3C00DB160B /* ImportFaucetViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportFaucetViewController.swift; sourceTree = "<group>"; };
 		C0082BFE26A713A000DB160B /* NewWalletPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletPasswordViewController.swift; sourceTree = "<group>"; };
 		C0082C0026A715C400DB160B /* NewWalletMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewWalletMnemonicViewController.swift; sourceTree = "<group>"; };
+		C0082C0326A7218D00DB160B /* Home.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Home.storyboard; sourceTree = "<group>"; };
 		C049B5A226A0496C00F1C5E0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
@@ -118,11 +120,20 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		C0082C0226A7217000DB160B /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				C0082C0326A7218D00DB160B /* Home.storyboard */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		C049B59F26A0492600F1C5E0 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				C049B5A026A0493500F1C5E0 /* Launch */,
 				C049B5A126A0494300F1C5E0 /* Onboarding */,
+				C0082C0226A7217000DB160B /* Home */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -335,6 +346,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0082C0426A7218D00DB160B /* Home.storyboard in Resources */,
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
 				C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,

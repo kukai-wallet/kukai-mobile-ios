@@ -16,6 +16,16 @@ class NewWalletPasswordViewController: UIViewController {
         super.viewDidLoad()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.addKeyboardObservers()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.removeKeyboardObservers()
+	}
+	
 	@IBAction func continueTapped(_ sender: Any) {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: passwordTextField.text ?? "") {
 			let walletCache = WalletCacheService()

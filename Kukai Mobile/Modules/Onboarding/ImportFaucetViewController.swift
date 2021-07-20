@@ -19,6 +19,16 @@ class ImportFaucetViewController: UIViewController {
         super.viewDidLoad()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.addKeyboardObservers()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.removeKeyboardObservers()
+	}
+	
 	@IBAction func importTapped(_ sender: Any) {
 		guard let seed = seedPhraseTextView.text, seed != "",
 			  let email = emailTextField.text,
