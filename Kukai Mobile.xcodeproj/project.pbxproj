@@ -38,6 +38,7 @@
 		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
 		C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; };
 		C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +116,7 @@
 			files = (
 				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
 				C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */,
+				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,6 +293,7 @@
 			packageProductDependencies = (
 				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
 				C0BBD29B26A97CFD0097B63A /* Sodium */,
+				C0BBD2A426A9A7980097B63A /* Sentry */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -366,6 +369,7 @@
 			packageReferences = (
 				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */,
+				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -606,6 +610,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 10;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
@@ -922,6 +927,14 @@
 				kind = branch;
 			};
 		};
+		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.1.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -934,6 +947,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */;
 			productName = Sodium;
+		};
+		C0BBD2A426A9A7980097B63A /* Sentry */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */;
+			productName = Sentry;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
