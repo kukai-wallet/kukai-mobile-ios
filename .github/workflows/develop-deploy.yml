@@ -69,15 +69,11 @@ jobs:
           echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
           echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
           
-          if which sentry-cli >/dev/null; then
-            ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-            ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
-            
-            if [ ! $? -eq 0 ]; then
-              echo "warning: sentry-cli - $ERROR"
-	          fi
-          else
-            echo "warning: sentry-cli not installed, download from https://github.com/getsentry/sentry-cli/releases"
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+          
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
           fi
 
       - name: Commit new version number
