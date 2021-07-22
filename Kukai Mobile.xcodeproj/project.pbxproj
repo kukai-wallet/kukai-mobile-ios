@@ -26,7 +26,6 @@
 		C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */; };
 		C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */; };
 		C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */; };
-		C06E665F26A86EC000770A83 /* KukaiCoreSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
 		C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03642269EE2070071ACD0 /* AppDelegate.swift */; };
 		C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03644269EE2070071ACD0 /* SceneDelegate.swift */; };
@@ -37,6 +36,8 @@
 		C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */; };
 		C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B03679269F1E450071ACD0 /* ExportOptions.plist */; };
 		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
+		C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; };
+		C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,13 +58,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C06E666026A86EC000770A83 /* Embed Frameworks */ = {
+		C0BBD29E26A97CFD0097B63A /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C06E665F26A86EC000770A83 /* KukaiCoreSwift in Embed Frameworks */,
+				C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,6 +114,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
+				C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,7 +281,7 @@
 				C0B0363B269EE2070071ACD0 /* Sources */,
 				C0B0363C269EE2070071ACD0 /* Frameworks */,
 				C0B0363D269EE2070071ACD0 /* Resources */,
-				C06E666026A86EC000770A83 /* Embed Frameworks */,
+				C0BBD29E26A97CFD0097B63A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -288,6 +290,7 @@
 			name = "Kukai Mobile";
 			packageProductDependencies = (
 				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
+				C0BBD29B26A97CFD0097B63A /* Sodium */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -362,6 +365,7 @@
 			mainGroup = C0B03636269EE2070071ACD0;
 			packageReferences = (
 				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
+				C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -906,8 +910,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
 			requirement = {
-				kind = revision;
-				revision = 52f8cfadb7e12fc0e153bcdc382a4cf1e40f95e0;
+				branch = develop;
+				kind = branch;
+			};
+		};
+		C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/junelife/swift-sodium";
+			requirement = {
+				branch = spm;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -917,6 +929,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
+		};
+		C0BBD29B26A97CFD0097B63A /* Sodium */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */;
+			productName = Sodium;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
