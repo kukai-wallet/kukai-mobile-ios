@@ -51,6 +51,31 @@ jobs:
       - name: Export .ipa
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
       
+      - name: Install Sentry CLI
+        if: ${{ success() }}
+        run: brew install getsentry/tools/sentry-cli
+
+      - name: Upload dSYM
+        if: ${{ success() }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          export SENTRY_ORG=simon-mcloughlin
+          export SENTRY_PROJECT=simon-mcloughlin
+          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
+          
+          echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
+          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
+          
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+          
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
+          fi
+        
       - name: Commit new version number
         if: ${{ success() }}
         run: |

@@ -46,10 +46,10 @@ jobs:
         run: agvtool next-version -all
 
       - name: Build and Archive
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile-beta.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       - name: Export .ipa
-        run: xcodebuild -archivePath $PWD/build/Kukai-mobile-beta.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
+        run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
       
       - name: Install Sentry CLI
         if: ${{ success() }}
@@ -63,8 +63,8 @@ jobs:
           export PATH=/usr/local/bin:$PATH
           export SENTRY_ORG=simon-mcloughlin
           export SENTRY_PROJECT=simon-mcloughlin
-          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile-beta.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile-beta.xcarchive/dSYMs/Sodium.framework.dSYM"
+          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
           echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
           echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
