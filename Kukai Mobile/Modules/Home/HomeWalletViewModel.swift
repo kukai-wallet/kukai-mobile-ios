@@ -23,7 +23,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var walletAddress: String = ""
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let xtzBalance = item as? XTZAmount {
@@ -33,6 +32,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let token = item as? Token, token.nfts == nil {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
+				cell?.iconView.setImageToCurrentSize(url: token.icon)
 				cell?.amountLabel.text = token.balance.normalisedRepresentation
 				cell?.symbolLabel.text = token.symbol
 				return cell
@@ -67,13 +67,34 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		walletAddress = address
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
-			switch result {
-				case .failure(let error):
-					self?.state = .failure(error, "Unable to fetch data. Please check internet connection and try again")
-					
-				case .success(let account):
-					self?.processAccount(account, forDataSource: ds, animate: animate)
+			guard let account = try? result.get() else {
+				guard case .failure(let error) = result else {
+					self?.state = .failure(ErrorResponse.unknownError(), "Unable to fetch data. Please check internet connection and try again")
+					return
+				}
+				self?.state = .failure(error, "Unable to fetch data. Please check internet connection and try again")
+				return
 			}
+			
+			var snapshot = NSDiffableDataSourceSnapshot<HomeWalletSection, AnyHashable>()
+			snapshot.appendSections(HomeWalletSection.allCases)
+			
+			snapshot.appendItems([account.xtzBalance], toSection: .balance)
+			snapshot.appendItems(account.tokens, toSection: .tokens)
+			
+			var nftArray: [AnyHashable] = []
+			for nftToken in account.nfts {
+				nftArray.append(nftToken)
+				
+				for nft in nftToken.nfts ?? [] {
+					nftArray.append(nft)
+				}
+			}
+			
+			snapshot.appendItems(nftArray, toSection: .nfts)
+			ds.apply(snapshot, animatingDifferences: animate)
+			
+			self?.state = .success
 		}
 	}
 	
