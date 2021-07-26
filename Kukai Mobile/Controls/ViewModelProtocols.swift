@@ -8,33 +8,38 @@
 
 import UIKit
 import Combine
+import KukaiCoreSwift
 
 public enum ViewModelError: Error {
-	case invalidDataSourcePassedToRefresh
+	case dataSourceNotCreated
 }
 
 public class ViewModel: ObservableObject {
 	enum State {
 		case loading
-		case failure(Error, String)
+		case failure(ErrorResponse, String)
 		case success
 	}
 	
 	@Published var state = State.loading
 }
 
-protocol UITableViewDiffableDataSourceHandler {
+public protocol UITableViewDiffableDataSourceHandler {
 	associatedtype SectionEnum: CaseIterable, Hashable
 	associatedtype CellDataType: Hashable
 	
-	func makeDataSource(withTableView tableView: UITableView) -> UITableViewDiffableDataSource<SectionEnum, CellDataType>
-	func refresh(dataSource: UITableViewDataSource?, animate: Bool)
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? { get }
+	
+	func makeDataSource(withTableView tableView: UITableView)
+	func refresh(animate: Bool)
 }
 
-protocol UICollectionViewDiffableDataSourceHandler {
+public protocol UICollectionViewDiffableDataSourceHandler {
 	associatedtype SectionEnum: CaseIterable, Hashable
 	associatedtype CellDataType: Hashable
 	
-	func makeDataSource(withCollectionView collectionView: UICollectionView) -> UICollectionViewDiffableDataSource<SectionEnum, CellDataType>
-	func refresh(dataSource: UICollectionViewDataSource?, animate: Bool)
+	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? { get }
+	
+	func makeDataSource(withCollectionView collectionView: UICollectionView)
+	func refresh(animate: Bool)
 }

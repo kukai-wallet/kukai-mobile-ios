@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import KukaiCoreSwift
 
 class HomeWalletViewController: UIViewController {
@@ -13,44 +14,34 @@ class HomeWalletViewController: UIViewController {
 	@IBOutlet weak var addressLabel: UILabel!
 	@IBOutlet weak var tableView: UITableView!
 	
-	override func viewDidLoad() {
-        super.viewDidLoad()
-		
-		let address = WalletCacheService().fetchPrimaryWallet()?.address
-		addressLabel.text = address
-    }
-}
-
-
-/*
-class TableViewTest: UITableViewController {
-	private var viewModel = ProfileViewModel()
+	private let viewModel = HomeWalletViewModel()
 	private var cancellable: AnyCancellable?
 	
 	override func viewDidLoad() {
-		super.viewDidLoad()
+        super.viewDidLoad()
 		
-		tableView.dataSource = viewModel.makeDataSource(withTableView: self.tableView)
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
 		
-		cancellable = viewModel.$state.sink { state in
-			
+		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					print("loading")
+					self?.showActivity(clearBackground: false)
 					
-				case .failure(let error, let errorString):
-					print("failure: \(errorString), \(error)")
+				case .failure(_, let errorString):
+					self?.hideActivity()
+					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					print("success")
+					self?.hideActivity()
+					self?.addressLabel.text = self?.viewModel.walletAddress
 			}
 		}
-	}
+    }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		viewModel.refresh(dataSource: tableView.dataSource, animate: true)
+		viewModel.refresh(animate: true)
 	}
 }
-*/

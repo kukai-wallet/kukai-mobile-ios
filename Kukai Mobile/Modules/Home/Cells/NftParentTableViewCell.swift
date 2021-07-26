@@ -10,7 +10,6 @@ import UIKit
 class NftParentTableViewCell: UITableViewCell {
 
 	@IBOutlet weak var titleLabel: UILabel!
-	@IBOutlet weak var descLabel: UILabel!
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
