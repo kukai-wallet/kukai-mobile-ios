@@ -33,10 +33,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
-		transitionPrivacyProtectionToLogin()
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
+		
+		// When entering background, cover the screen in a new window containing a nav controller and the login flow
+		// They will auto trigger themselves based on `viewDidAppear` methods
 		showPrivacyProtectionWindow()
 	}
 
@@ -60,36 +62,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		
 		privacyProtectionWindow = UIWindow(windowScene: windowScene)
-		privacyProtectionWindow?.rootViewController = UIStoryboard.multitaskingCoverViewController()
+		privacyProtectionWindow?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
 		privacyProtectionWindow?.windowLevel = .alert + 1
 		privacyProtectionWindow?.makeKeyAndVisible()
 	}
 	
-	func transitionPrivacyProtectionToLogin() {
-		guard let pWindow = privacyProtectionWindow else {
-			os_log("Can't find multitasking window", log: .default, type: .debug)
-			return
-		}
-		
-		pWindow.rootViewController = UIStoryboard.loginViewController()
-		
-		let options: UIView.AnimationOptions = .transitionCrossDissolve
-		UIView.transition(with: pWindow, duration: 0.3, options: options, animations: {}, completion: nil)
-	}
 	
 	func hidePrivacyProtectionWindow() {
-		guard let pWindow = privacyProtectionWindow else {
-			os_log("Can't find multitasking window", log: .default, type: .debug)
-			return
-		}
-		
-		UIView.animate(withDuration: 0.3) {
-			pWindow.alpha = 0
+		UIView.animate(withDuration: 0.3) { [weak self] in
+			self?.privacyProtectionWindow?.alpha = 0
 			
 		} completion: { [weak self] finish in
 			self?.privacyProtectionWindow = nil
 		}
-
 	}
 }
 

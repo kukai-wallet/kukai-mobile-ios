@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ucd-wd-Doi">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
@@ -8,10 +8,25 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="T7W-Tb-M9P">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="ucd-wd-Doi" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cBU-Tz-Dfs">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="TD5-RI-MAZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mx1-qf-tKc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-890" y="137"/>
+        </scene>
+        <!--Pre Login View Controller-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController storyboardIdentifier="MultitaskingCoverViewController" id="Y6W-OH-hqX" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PreLoginViewController" id="Y6W-OH-hqX" customClass="PreLoginViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,6 +55,10 @@
                             <constraint firstItem="Pls-1e-KWG" firstAttribute="top" secondItem="OUa-BS-h3b" secondAttribute="bottom" constant="8" symbolic="YES" id="wiN-Nc-RUo"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="BIo-S1-wxv"/>
+                    <connections>
+                        <segue destination="omX-7m-ObT" kind="show" identifier="login" animates="NO" id="zsL-g5-Mkk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -91,6 +110,7 @@
                             <constraint firstItem="qZQ-Ih-YU4" firstAttribute="top" secondItem="N6U-eR-uHy" secondAttribute="bottom" constant="8" symbolic="YES" id="sjj-G7-TPs"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="XHZ-7g-1zu"/>
                     <connections>
                         <outlet property="activityIndicator" destination="qZQ-Ih-YU4" id="fkh-6x-HKk"/>
                     </connections>

@@ -27,6 +27,7 @@
 		C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */; };
 		C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
+		C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */; };
 		C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03642269EE2070071ACD0 /* AppDelegate.swift */; };
 		C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03644269EE2070071ACD0 /* SceneDelegate.swift */; };
 		C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364B269EE2070071ACD0 /* Assets.xcassets */; };
@@ -47,7 +48,6 @@
 		C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
 		C0DAD65426B00ABD001DF430 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0DAD65326B00ABD001DF430 /* Login.storyboard */; };
-		C0DAD65626B00B24001DF430 /* UIStoryboard+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */; };
 		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -103,6 +103,7 @@
 		C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectAuthViewController.swift; sourceTree = "<group>"; };
 		C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+extensions.swift"; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
 		C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Kukai Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0B03642269EE2070071ACD0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0B03644269EE2070071ACD0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -125,7 +126,6 @@
 		C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftChildTableViewCell.swift; sourceTree = "<group>"; };
 		C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extensions.swift"; sourceTree = "<group>"; };
 		C0DAD65326B00ABD001DF430 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
-		C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+extensions.swift"; sourceTree = "<group>"; };
 		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -222,7 +222,6 @@
 				C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */,
 				C0082BF426A6DFBA00DB160B /* String+extensions.swift */,
 				C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */,
-				C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -314,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				C0DAD65326B00ABD001DF430 /* Login.storyboard */,
+				C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */,
 				C0DAD65726B00D64001DF430 /* LoginViewController.swift */,
 			);
 			path = Login;
@@ -478,7 +478,6 @@
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0082BFB26A70B5900DB160B /* ImportSuccessViewController.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
-				C0DAD65626B00B24001DF430 /* UIStoryboard+extensions.swift in Sources */,
 				C0082BF326A6C6B300DB160B /* DependencyManager.swift in Sources */,
 				C0B743BE26AB226700377A9B /* NftParentTableViewCell.swift in Sources */,
 				C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */,
@@ -490,6 +489,7 @@
 				C0B743BC26AB223800377A9B /* TokenBalanceTableViewCell.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
+				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
 				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 				C0B743C026AB227400377A9B /* NftChildTableViewCell.swift in Sources */,
