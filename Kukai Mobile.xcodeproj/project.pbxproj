@@ -46,6 +46,9 @@
 		C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; };
 		C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
+		C0DAD65426B00ABD001DF430 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0DAD65326B00ABD001DF430 /* Login.storyboard */; };
+		C0DAD65626B00B24001DF430 /* UIStoryboard+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */; };
+		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,6 +124,9 @@
 		C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftParentTableViewCell.swift; sourceTree = "<group>"; };
 		C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftChildTableViewCell.swift; sourceTree = "<group>"; };
 		C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extensions.swift"; sourceTree = "<group>"; };
+		C0DAD65326B00ABD001DF430 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
+		C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+extensions.swift"; sourceTree = "<group>"; };
+		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +182,7 @@
 			isa = PBXGroup;
 			children = (
 				C049B5A026A0493500F1C5E0 /* Launch */,
+				C0DAD65226B00AA6001DF430 /* Login */,
 				C049B5A126A0494300F1C5E0 /* Onboarding */,
 				C0082C0226A7217000DB160B /* Home */,
 			);
@@ -215,6 +222,7 @@
 				C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */,
 				C0082BF426A6DFBA00DB160B /* String+extensions.swift */,
 				C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */,
+				C0DAD65526B00B24001DF430 /* UIStoryboard+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -300,6 +308,15 @@
 				C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		C0DAD65226B00AA6001DF430 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				C0DAD65326B00ABD001DF430 /* Login.storyboard */,
+				C0DAD65726B00D64001DF430 /* LoginViewController.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -416,6 +433,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0DAD65426B00ABD001DF430 /* Login.storyboard in Resources */,
 				C0082C0426A7218D00DB160B /* Home.storyboard in Resources */,
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
 				C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */,
@@ -447,6 +465,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */,
 				C0082BFF26A713A000DB160B /* NewWalletPasswordViewController.swift in Sources */,
 				C0082BF526A6DFBA00DB160B /* String+extensions.swift in Sources */,
 				C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */,
@@ -459,6 +478,7 @@
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0082BFB26A70B5900DB160B /* ImportSuccessViewController.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
+				C0DAD65626B00B24001DF430 /* UIStoryboard+extensions.swift in Sources */,
 				C0082BF326A6C6B300DB160B /* DependencyManager.swift in Sources */,
 				C0B743BE26AB226700377A9B /* NftParentTableViewCell.swift in Sources */,
 				C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */,

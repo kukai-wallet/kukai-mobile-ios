@@ -7,10 +7,13 @@
 
 import UIKit
 import TorusSwiftDirectSDK
+import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
+	
+	private var privacyProtectionWindow: UIWindow?
 
 
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -21,31 +24,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
-		// Called as the scene is being released by the system.
-		// This occurs shortly after the scene enters the background, or when its session is discarded.
-		// Release any resources associated with this scene that can be re-created the next time the scene connects.
-		// The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
 	}
 
 	func sceneDidBecomeActive(_ scene: UIScene) {
-		// Called when the scene has moved from an inactive state to an active state.
-		// Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
-		// Called when the scene will move from an active state to an inactive state.
-		// This may occur due to temporary interruptions (ex. an incoming phone call).
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
-		// Called as the scene transitions from the background to the foreground.
-		// Use this method to undo the changes made on entering the background.
+		transitionPrivacyProtectionToLogin()
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
-		// Called as the scene transitions from the foreground to the background.
-		// Use this method to save data, release shared resources, and store enough scene-specific state information
-		// to restore the scene back to its current state.
+		showPrivacyProtectionWindow()
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -54,6 +46,50 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		
 		TorusSwiftDirectSDK.handle(url: url)
+	}
+	
+	
+	
+	
+	
+	// MARK: - Non system functions
+	
+	func showPrivacyProtectionWindow() {
+		guard let windowScene = self.window?.windowScene else {
+			return
+		}
+		
+		privacyProtectionWindow = UIWindow(windowScene: windowScene)
+		privacyProtectionWindow?.rootViewController = UIStoryboard.multitaskingCoverViewController()
+		privacyProtectionWindow?.windowLevel = .alert + 1
+		privacyProtectionWindow?.makeKeyAndVisible()
+	}
+	
+	func transitionPrivacyProtectionToLogin() {
+		guard let pWindow = privacyProtectionWindow else {
+			os_log("Can't find multitasking window", log: .default, type: .debug)
+			return
+		}
+		
+		pWindow.rootViewController = UIStoryboard.loginViewController()
+		
+		let options: UIView.AnimationOptions = .transitionCrossDissolve
+		UIView.transition(with: pWindow, duration: 0.3, options: options, animations: {}, completion: nil)
+	}
+	
+	func hidePrivacyProtectionWindow() {
+		guard let pWindow = privacyProtectionWindow else {
+			os_log("Can't find multitasking window", log: .default, type: .debug)
+			return
+		}
+		
+		UIView.animate(withDuration: 0.3) {
+			pWindow.alpha = 0
+			
+		} completion: { [weak self] finish in
+			self?.privacyProtectionWindow = nil
+		}
+
 	}
 }
 

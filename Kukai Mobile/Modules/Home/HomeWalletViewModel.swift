@@ -97,27 +97,4 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.state = .success
 		}
 	}
-	
-	private func processAccount(_ account: Account, forDataSource ds: UITableViewDiffableDataSource<HomeWalletSection, CellDataType>, animate: Bool) {
-		var snapshot = NSDiffableDataSourceSnapshot<HomeWalletSection, AnyHashable>()
-		snapshot.appendSections(HomeWalletSection.allCases)
-		
-		
-		snapshot.appendItems([account.xtzBalance], toSection: .balance)
-		snapshot.appendItems(account.tokens, toSection: .tokens)
-		
-		var nftArray: [AnyHashable] = []
-		for nftToken in account.nfts {
-			nftArray.append(nftToken)
-			
-			for nft in nftToken.nfts ?? [] {
-				nftArray.append(nft)
-			}
-		}
-		
-		snapshot.appendItems(nftArray, toSection: .nfts)
-		state = .success
-		
-		ds.apply(snapshot, animatingDifferences: animate)
-	}
 }
