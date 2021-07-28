@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import KukaiCoreSwift
 
 class HomeWalletViewController: UIViewController {
 
@@ -16,12 +15,20 @@ class HomeWalletViewController: UIViewController {
 	
 	private let viewModel = HomeWalletViewModel()
 	private var cancellable: AnyCancellable?
+	private var refreshControl = UIRefreshControl()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
+		
+		
+		refreshControl.addAction(UIAction(handler: { [weak self] action in
+			self?.viewModel.refresh(animate: true)
+		}), for: .valueChanged)
+		tableView.refreshControl = refreshControl
+		
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -30,10 +37,12 @@ class HomeWalletViewController: UIViewController {
 					
 				case .failure(_, let errorString):
 					self?.hideActivity()
+					self?.refreshControl.endRefreshing()
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
 					self?.hideActivity()
+					self?.refreshControl.endRefreshing()
 					self?.addressLabel.text = self?.viewModel.walletAddress
 			}
 		}

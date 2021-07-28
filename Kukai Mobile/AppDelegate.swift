@@ -12,6 +12,24 @@ import os.log
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
+	
+	// Liquidity baking
+	// Granadanet dex contract: 	KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5
+	// Granadanet lq token:			KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo
+	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn
+	
+	
+	
+	// Pull to refresh home page
+	// Side nav
+	//	- multi wallet account
+	//	- network switching
+	// exchange tab
+	//	- granada liquidity baking
+	//	- Quipu swap
+	
+	
+	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		
 		// Global appearenace proxy styles

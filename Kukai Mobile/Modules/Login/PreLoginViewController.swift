@@ -13,17 +13,8 @@ class PreLoginViewController: UIViewController {
         super.viewDidLoad()
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		print("viewWillAppear")
-		
-	}
-	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
-		print("viewDidAppear")
 		
 		self.performSegue(withIdentifier: "login", sender: self)
 	}

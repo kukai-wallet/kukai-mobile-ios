@@ -52,6 +52,8 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return UITableViewCell()
 			}
 		})
+		
+		dataSource?.defaultRowAnimation = .fade
 	}
 	
 	func refresh(animate: Bool) {
