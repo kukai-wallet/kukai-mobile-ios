@@ -9,6 +9,21 @@ import UIKit
 
 extension UIViewController {
 	
+	// MARK: - Flow
+	
+	func isPartOfSideMenuImportFlow() -> Bool {
+		return self.navigationController?.presentingViewController is SideMenuViewController
+	}
+	
+	func completeAndCloseSideMenuImport() {
+		if let sideMenu = self.navigationController?.presentingViewController as? SideMenuViewController {
+			sideMenu.viewModel.refresh(animate: true)
+			self.navigationController?.dismiss(animated: true, completion: nil)
+		}
+	}
+	
+	
+	
 	// MARK: - Activity display
 	
 	private static var activityView = UIView()
@@ -102,7 +117,7 @@ extension UIViewController {
 	
 	
 	
-	// MARK: -Keyboard
+	// MARK: - Keyboard
 
 	func addKeyboardObservers() {
 		NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)

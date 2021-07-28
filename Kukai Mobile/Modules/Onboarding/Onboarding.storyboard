@@ -173,7 +173,7 @@ Choose from the options below</string>
         <!--CustomAuth-->
         <scene sceneID="1ra-e8-a6v">
             <objects>
-                <viewController id="QBJ-bs-3eL" customClass="DirectAuthViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="customAuthWallet" id="QBJ-bs-3eL" customClass="DirectAuthViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pEx-F6-4BO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -339,7 +339,7 @@ Users should be aware that using this option removes some anonimity, as once cre
         <!--New Wallet-->
         <scene sceneID="ZmR-B1-wyJ">
             <objects>
-                <viewController id="JzG-9c-9hk" customClass="NewWalletViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="newWallet" id="JzG-9c-9hk" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fIw-6J-fcF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -680,7 +680,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
         <!--Confirm-->
         <scene sceneID="xac-Cm-wYi">
             <objects>
-                <viewController id="mFI-ag-dIg" sceneMemberID="viewController">
+                <viewController id="mFI-ag-dIg" customClass="ConfirmMnemonicViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HlT-Dp-NLB">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -765,7 +765,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="8CA-56-t0k" kind="show" id="vyt-Gq-SoI"/>
+                                    <action selector="continueTapped:" destination="mFI-ag-dIg" eventType="touchUpInside" id="e3p-UM-3Bd"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -784,6 +784,9 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Confirm" id="tIG-ff-sT9"/>
+                    <connections>
+                        <segue destination="8CA-56-t0k" kind="show" identifier="next" id="4lO-Ke-Id7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xcy-hm-s1B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -974,7 +977,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
         <!--Import-->
         <scene sceneID="8h7-5U-ken">
             <objects>
-                <tableViewController id="qB0-nM-3m7" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="importWallet" id="qB0-nM-3m7" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fbR-FS-mhT">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1409,7 +1412,7 @@ Mainly used by developers to experiment / test. Or members of the public when te
         <!--View Controller-->
         <scene sceneID="Woo-k2-hqZ">
             <objects>
-                <viewController id="IfC-Q8-z4S" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="walletHelp" id="IfC-Q8-z4S" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fm2-kb-YmE">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2405,7 +2408,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="qUc-nz-2Wz"/>
+        <segue reference="LoH-Ee-G0O"/>
         <segue reference="UId-fV-bje"/>
     </inferredMetricsTieBreakers>
     <resources>

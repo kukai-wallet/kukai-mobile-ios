@@ -55,11 +55,10 @@ class DirectAuthViewController: UIViewController {
 				
 				// Clear out any other wallets
 				let walletCache = WalletCacheService()
-				let _ = walletCache.deleteCacheAndKeys()
 				
 				// try to cache new one, and move on if successful
 				if walletCache.cache(wallet: wallet) {
-					self.performSegue(withIdentifier: "complete", sender: self)
+					handleSuccessNavigation()
 					
 				} else {
 					self.alert(withTitle: "Error", andMessage: "Unable to cache")
@@ -70,5 +69,14 @@ class DirectAuthViewController: UIViewController {
 		}
 		
 		self.hideActivity()
+	}
+	
+	func handleSuccessNavigation() {
+		if self.isPartOfSideMenuImportFlow() {
+			self.completeAndCloseSideMenuImport()
+			
+		} else {
+			self.performSegue(withIdentifier: "complete", sender: self)
+		}
 	}
 }

@@ -44,8 +44,6 @@ class ImportMnemonicViewController: UIViewController {
 		let walletCache = WalletCacheService()
 		
 		if isHDWallet, let hdWallet = HDWallet(withMnemonic: seedPhraseTextView.text, passphrase: passwordTextField.text ?? "", derivationPath: derivationPathTextField?.text ?? HDWallet.defaultDerivationPath) {
-			let _ = walletCache.deleteCacheAndKeys()
-			
 			if walletCache.cache(wallet: hdWallet) {
 				self.performSegue(withIdentifier: "complete", sender: self)
 			} else {
@@ -53,16 +51,23 @@ class ImportMnemonicViewController: UIViewController {
 			}
 			
 		} else if let linearWallet = LinearWallet(withMnemonic: seedPhraseTextView.text, passphrase: passwordTextField.text ?? "") {
-			let _ = walletCache.deleteCacheAndKeys()
-			
 			if walletCache.cache(wallet: linearWallet) {
-				self.performSegue(withIdentifier: "complete", sender: self)
+				handleSuccessNavigation()
 			} else {
 				alert(withTitle: "Error", andMessage: "unable to cache")
 			}
 			
 		} else {
 			self.alert(withTitle: "Error", andMessage: "invalid wallet details supplied")
+		}
+	}
+	
+	func handleSuccessNavigation() {
+		if self.isPartOfSideMenuImportFlow() {
+			self.completeAndCloseSideMenuImport()
+			
+		} else {
+			self.performSegue(withIdentifier: "complete", sender: self)
 		}
 	}
 }

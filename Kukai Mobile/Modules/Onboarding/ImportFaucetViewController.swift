@@ -85,7 +85,6 @@ class ImportFaucetViewController: UIViewController {
 	
 	func cahceWalletAndSegue(wallet: LinearWallet) {
 		let walletCache = WalletCacheService()
-		let _ = walletCache.deleteCacheAndKeys()
 		
 		if walletCache.cache(wallet: wallet) {
 			self.hideActivity()

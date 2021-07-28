@@ -18,8 +18,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lUG-JJ-gte">
-                                <rect key="frame" x="161.5" y="433" width="91" height="30"/>
-                                <state key="normal" title="Delete Wallet"/>
+                                <rect key="frame" x="147" y="433" width="120" height="30"/>
+                                <state key="normal" title="Delete All Wallets"/>
                                 <connections>
                                     <action selector="deleteWallet:" destination="OYm-bQ-PRg" eventType="touchUpInside" id="OKr-it-Olq"/>
                                 </connections>
@@ -57,10 +57,10 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="xtzBalanceCell" id="iOZ-DW-KGb" customClass="XTZBalanceTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="49.5" width="414" height="82.5"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="414" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iOZ-DW-KGb" id="0mt-Kj-AoW">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="82.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="82"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XTZ Balance:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GAt-Xh-KO9">
@@ -70,7 +70,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="123 XTZ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7R-wv-f0w">
-                                                    <rect key="frame" x="20" y="45" width="374" height="21.5"/>
+                                                    <rect key="frame" x="20" y="45" width="374" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -92,7 +92,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="tokenBalanceCell" id="dHw-1E-P1W" customClass="TokenBalanceTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="132" width="414" height="67.5"/>
+                                        <rect key="frame" x="0.0" y="131.5" width="414" height="67.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dHw-1E-P1W" id="QPw-Ht-9jh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="67.5"/>
@@ -137,14 +137,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="nftParentCell" id="3ZV-5m-7H9" customClass="NftParentTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="199.5" width="414" height="53.5"/>
+                                        <rect key="frame" x="0.0" y="199" width="414" height="53"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3ZV-5m-7H9" id="cBS-wp-yuC">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzE-JZ-F3d">
-                                                    <rect key="frame" x="20" y="16" width="374" height="21.5"/>
+                                                    <rect key="frame" x="20" y="16" width="374" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -163,14 +163,14 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="nftChildCell" id="n30-Pi-Uge" customClass="NftChildTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="253" width="414" height="53"/>
+                                        <rect key="frame" x="0.0" y="252" width="414" height="53.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="n30-Pi-Uge" id="a4q-vo-Tew">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="53.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NFT Token Name/Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDt-zr-DLU">
-                                                    <rect key="frame" x="40" y="16" width="354" height="21"/>
+                                                    <rect key="frame" x="40" y="16" width="354" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -296,6 +296,7 @@
                                         </state>
                                         <connections>
                                             <action selector="addButtonTapped:" destination="jXL-Kq-30K" eventType="touchUpInside" id="pYj-rL-3dj"/>
+                                            <segue destination="6S6-5j-mWj" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="14v-SF-S7l"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -335,6 +336,190 @@
             </objects>
             <point key="canvasLocation" x="1934.7826086956522" y="-467.41071428571428"/>
         </scene>
+        <!--Side Menu Import View Controller-->
+        <scene sceneID="AbP-Mr-B09">
+            <objects>
+                <viewController id="2Jw-Oo-BbC" customClass="SideMenuImportViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="UjL-At-64P">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S64-NK-WfT">
+                                <rect key="frame" x="0.0" y="580" width="414" height="316"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggP-0X-fQm">
+                                        <rect key="frame" x="370" y="8" width="44" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="44" id="D00-dJ-mbm"/>
+                                            <constraint firstAttribute="height" constant="44" id="GNr-J9-AUh"/>
+                                        </constraints>
+                                        <state key="normal">
+                                            <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="modalCloseButtonTapped:" destination="2Jw-Oo-BbC" eventType="touchUpInside" id="uUH-TJ-hha"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vz6-mf-Hzk">
+                                        <rect key="frame" x="314" y="8" width="32" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="B9l-qV-JbK"/>
+                                        </constraints>
+                                        <state key="normal" title="Help"/>
+                                        <connections>
+                                            <segue destination="U0x-CZ-0eA" kind="presentation" modalPresentationStyle="automatic" id="vFx-VF-fyT"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BDb-mV-5zK">
+                                        <rect key="frame" x="24" y="76" width="366" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="rD2-Sh-A7s"/>
+                                        </constraints>
+                                        <state key="normal" title="CustomAuth">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="oO7-GF-a0L" kind="show" id="KSD-bh-Puz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="exz-FF-P5q">
+                                        <rect key="frame" x="24" y="142" width="366" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="gLT-PI-zP6"/>
+                                        </constraints>
+                                        <state key="normal" title="Create from a seed phrase">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="PO4-hZ-CPo" kind="show" id="qrw-1s-BOR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xtx-kw-hm1">
+                                        <rect key="frame" x="24" y="208" width="366" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Wi3-yj-in7"/>
+                                        </constraints>
+                                        <state key="normal" title="Import existing wallet">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="Wf2-nh-ePc" kind="show" id="vAn-RC-Q2I"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add another wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Rn-qC-7aC">
+                                        <rect key="frame" x="20" y="19.5" width="278" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="BDb-mV-5zK" secondAttribute="trailing" constant="24" id="3J9-7H-6Ni"/>
+                                    <constraint firstAttribute="trailing" secondItem="Xtx-kw-hm1" secondAttribute="trailing" constant="24" id="4xE-Lo-4Zl"/>
+                                    <constraint firstItem="Xtx-kw-hm1" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="BmO-jY-dQt"/>
+                                    <constraint firstItem="ggP-0X-fQm" firstAttribute="leading" secondItem="vz6-mf-Hzk" secondAttribute="trailing" constant="24" id="I8Y-da-a4f"/>
+                                    <constraint firstItem="5Rn-qC-7aC" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="20" id="Mxy-1J-oRB"/>
+                                    <constraint firstItem="vz6-mf-Hzk" firstAttribute="top" secondItem="S64-NK-WfT" secondAttribute="top" constant="8" id="Pue-Pc-QEd"/>
+                                    <constraint firstItem="vz6-mf-Hzk" firstAttribute="leading" secondItem="5Rn-qC-7aC" secondAttribute="trailing" constant="16" id="YKW-1m-9ko"/>
+                                    <constraint firstAttribute="trailing" secondItem="exz-FF-P5q" secondAttribute="trailing" constant="24" id="aa6-Vx-p4a"/>
+                                    <constraint firstAttribute="trailing" secondItem="ggP-0X-fQm" secondAttribute="trailing" id="anQ-s9-uuv"/>
+                                    <constraint firstItem="5Rn-qC-7aC" firstAttribute="firstBaseline" secondItem="vz6-mf-Hzk" secondAttribute="firstBaseline" id="h5n-uG-zu4"/>
+                                    <constraint firstItem="ggP-0X-fQm" firstAttribute="top" secondItem="S64-NK-WfT" secondAttribute="top" constant="8" id="i8d-1A-c8W"/>
+                                    <constraint firstItem="Xtx-kw-hm1" firstAttribute="top" secondItem="exz-FF-P5q" secondAttribute="bottom" constant="16" id="qD8-bd-dGS"/>
+                                    <constraint firstItem="BDb-mV-5zK" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="tEW-ae-CCg"/>
+                                    <constraint firstItem="exz-FF-P5q" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="xtl-EX-71X"/>
+                                    <constraint firstItem="exz-FF-P5q" firstAttribute="top" secondItem="BDb-mV-5zK" secondAttribute="bottom" constant="16" id="yba-IX-gzj"/>
+                                    <constraint firstItem="BDb-mV-5zK" firstAttribute="top" secondItem="vz6-mf-Hzk" secondAttribute="bottom" constant="24" id="zGZ-vZ-T0l"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="w7p-nb-GMb"/>
+                        <color key="backgroundColor" red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="w7p-nb-GMb" firstAttribute="bottom" secondItem="Xtx-kw-hm1" secondAttribute="bottom" constant="24" id="5h2-1w-zZb"/>
+                            <constraint firstAttribute="bottom" secondItem="S64-NK-WfT" secondAttribute="bottom" id="Qcp-ir-QOZ"/>
+                            <constraint firstItem="S64-NK-WfT" firstAttribute="trailing" secondItem="w7p-nb-GMb" secondAttribute="trailing" id="ciV-zg-FmE"/>
+                            <constraint firstItem="S64-NK-WfT" firstAttribute="leading" secondItem="w7p-nb-GMb" secondAttribute="leading" id="mjK-dI-vBF"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="RNk-mF-vBb"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="549-E3-ONc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4090" y="-467"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="k8V-l8-Mg7">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="6S6-5j-mWj" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="UgD-XQ-elu">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2Jw-Oo-BbC" kind="relationship" relationship="rootViewController" id="b1y-IB-s5d"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ryv-BZ-Cws" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3129" y="-467"/>
+        </scene>
+        <!--customAuthWallet-->
+        <scene sceneID="23B-8q-WEK">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="customAuthWallet" id="oO7-GF-a0L" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="qcT-eW-Qbe"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fVp-zC-KD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4986" y="-502"/>
+        </scene>
+        <!--newWallet-->
+        <scene sceneID="6NJ-Yh-i4t">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="newWallet" id="PO4-hZ-CPo" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="CKq-2f-bMg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vhn-Br-ldb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4951" y="-467"/>
+        </scene>
+        <!--walletHelp-->
+        <scene sceneID="phz-Ue-a7i">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="walletHelp" id="U0x-CZ-0eA" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VIi-r7-90H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4091" y="-25"/>
+        </scene>
+        <!--importWallet-->
+        <scene sceneID="JKj-6Q-Qf0">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="importWallet" id="Wf2-nh-ePc" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="fDX-fY-KqC"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wuu-vN-ugn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4962" y="-434"/>
+        </scene>
     </scenes>
     <resources>
         <image name="dollarsign.circle" catalog="system" width="128" height="121"/>
@@ -345,6 +530,9 @@
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
             <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

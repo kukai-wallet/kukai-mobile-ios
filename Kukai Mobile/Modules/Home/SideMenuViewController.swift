@@ -20,7 +20,7 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var closeButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
 	
-	private let viewModel = SideMenuViewModel()
+	public let viewModel = SideMenuViewModel()
 	private var cancellable: AnyCancellable?
 	
 	public weak var delegate: SideMenuDelegate? = nil
@@ -45,7 +45,6 @@ class SideMenuViewController: UIViewController {
 			}
 		}
     }
-	
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)

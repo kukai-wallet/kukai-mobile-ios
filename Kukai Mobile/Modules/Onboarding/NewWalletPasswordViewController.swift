@@ -29,7 +29,6 @@ class NewWalletPasswordViewController: UIViewController {
 	@IBAction func continueTapped(_ sender: Any) {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: passwordTextField.text ?? "") {
 			let walletCache = WalletCacheService()
-			let _ = walletCache.deleteCacheAndKeys()
 			
 			if walletCache.cache(wallet: wallet) {
 				self.performSegue(withIdentifier: "next", sender: self)
