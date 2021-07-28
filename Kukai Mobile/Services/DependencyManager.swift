@@ -56,6 +56,23 @@ class DependencyManager {
 	}
 	
 	
+	// Selected Wallet data
+	var selectedWalletIndex: Int {
+		set { UserDefaults.standard.setValue(newValue, forKey: "app.kukai.mobile.selected.wallet") }
+		get { return UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet") }
+	}
+	
+	var selectedWallet: Wallet? {
+		get {
+			if let wallets = WalletCacheService().fetchWallets() {
+				return wallets[selectedWalletIndex]
+			}
+			
+			return nil
+		}
+	}
+	
+	
 	
 	// MARK: - Init
 	

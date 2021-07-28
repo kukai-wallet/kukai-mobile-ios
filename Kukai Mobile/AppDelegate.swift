@@ -20,7 +20,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	
 	
-	// Pull to refresh home page
 	// Side nav
 	//	- multi wallet account
 	//	- network switching

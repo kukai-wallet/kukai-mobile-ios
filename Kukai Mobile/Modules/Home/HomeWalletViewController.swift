@@ -33,7 +33,8 @@ class HomeWalletViewController: UIViewController {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showActivity(clearBackground: false)
+					print("")
+					//self?.showActivity(clearBackground: false)
 					
 				case .failure(_, let errorString):
 					self?.hideActivity()
@@ -51,6 +52,6 @@ class HomeWalletViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		viewModel.refresh(animate: true)
+		// viewModel.refresh(animate: true)
 	}
 }
