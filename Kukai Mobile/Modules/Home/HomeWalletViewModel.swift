@@ -57,12 +57,16 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
 		guard let ds = dataSource else {
 			state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		
-		guard let address = WalletCacheService().fetchPrimaryWallet()?.address else {
+		guard let address = DependencyManager.shared.selectedWallet?.address else {
 			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 			return
 		}

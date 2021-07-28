@@ -28,12 +28,6 @@ class SideMenuViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
-		// Begin off screen to left, on a clear background
-		contentViewLeftConstraint.constant = contentViewWidthConstraint.constant * -1
-		self.view.layoutIfNeeded()
-		self.view.backgroundColor = .clear
-		
-		
 		// Setup data
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -45,6 +39,14 @@ class SideMenuViewController: UIViewController {
 			}
 		}
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		// Begin off screen to left, on a clear background
+		contentViewLeftConstraint.constant = contentViewWidthConstraint.constant * -1
+		self.view.backgroundColor = .clear
+	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -83,15 +85,15 @@ class SideMenuViewController: UIViewController {
 			self?.dismiss(animated: false, completion: nil)
 		}
 	}
-	
-	@IBAction func addButtonTapped(_ sender: Any) {
-	}
 }
 
 extension SideMenuViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row != DependencyManager.shared.selectedWalletIndex {
+			tableView.cellForRow(at: IndexPath(row: DependencyManager.shared.selectedWalletIndex, section: 0))?.accessoryType = .none
+			tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+			
 			DependencyManager.shared.selectedWalletIndex = indexPath.row
 			self.delegate?.walletDidChange()
 			closeButtonTapped(self)

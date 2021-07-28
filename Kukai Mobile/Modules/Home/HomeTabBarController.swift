@@ -17,4 +17,10 @@ class HomeTabBarController: UITabBarController {
 		super.viewWillAppear(animated)
 		self.navigationItem.hidesBackButton = true
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "sideMenu", let vc = segue.destination as? SideMenuViewController {
+			vc.delegate = viewControllers?.first as? HomeWalletViewController
+		}
+	}
 }

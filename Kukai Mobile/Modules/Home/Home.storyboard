@@ -220,7 +220,7 @@
                     <navigationItem key="navigationItem" title="Kūkai" id="HMx-OL-92K">
                         <barButtonItem key="leftBarButtonItem" image="slider.horizontal.3" catalog="system" id="HCt-yN-qMm">
                             <connections>
-                                <segue destination="jXL-Kq-30K" kind="presentation" animates="NO" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="PPC-zE-xHb"/>
+                                <segue destination="jXL-Kq-30K" kind="presentation" identifier="sideMenu" animates="NO" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="PPC-zE-xHb"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -295,7 +295,6 @@
                                             <imageReference key="image" image="folder.badge.plus" catalog="system" symbolScale="large"/>
                                         </state>
                                         <connections>
-                                            <action selector="addButtonTapped:" destination="jXL-Kq-30K" eventType="touchUpInside" id="pYj-rL-3dj"/>
                                             <segue destination="6S6-5j-mWj" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="14v-SF-S7l"/>
                                         </connections>
                                     </button>

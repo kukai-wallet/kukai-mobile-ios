@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	
 	// Side nav
-	//	- multi wallet account
 	//	- network switching
 	// exchange tab
 	//	- granada liquidity baking
