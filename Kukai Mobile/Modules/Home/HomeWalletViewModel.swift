@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 import KukaiCoreSwift
 import OSLog
 
@@ -19,10 +20,27 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = HomeWalletSection
 	typealias CellDataType = AnyHashable
 	
+	private var networkChangeCancellable: AnyCancellable?
+	private var walletChangeCancellable: AnyCancellable?
+	
 	var dataSource: UITableViewDiffableDataSource<HomeWalletSection, AnyHashable>? = nil
 	var walletAddress: String = ""
 	
 	func makeDataSource(withTableView tableView: UITableView) {
+		
+		networkChangeCancellable = DependencyManager.shared.$networkDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.refresh(animate: true)
+			}
+		
+		walletChangeCancellable = DependencyManager.shared.$walletDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.refresh(animate: true)
+			}
+		
+		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let xtzBalance = item as? XTZAmount {

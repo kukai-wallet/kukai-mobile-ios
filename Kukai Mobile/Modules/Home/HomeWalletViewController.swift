@@ -56,10 +56,3 @@ class HomeWalletViewController: UIViewController {
 		viewModel.refresh(animate: true)
 	}
 }
-
-extension HomeWalletViewController: SideMenuDelegate {
-	
-	func walletDidChange() {
-		viewModel.refresh(animate: true)
-	}
-}

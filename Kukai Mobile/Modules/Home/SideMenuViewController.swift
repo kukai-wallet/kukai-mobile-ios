@@ -8,10 +8,6 @@
 import UIKit
 import Combine
 
-protocol SideMenuDelegate: AnyObject {
-	func walletDidChange()
-}
-
 class SideMenuViewController: UIViewController {
 
 	@IBOutlet weak var contentView: UIView!
@@ -22,8 +18,6 @@ class SideMenuViewController: UIViewController {
 	
 	public let viewModel = SideMenuViewModel()
 	private var cancellable: AnyCancellable?
-	
-	public weak var delegate: SideMenuDelegate? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,7 +89,6 @@ extension SideMenuViewController: UITableViewDelegate {
 			tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
 			
 			DependencyManager.shared.selectedWalletIndex = indexPath.row
-			self.delegate?.walletDidChange()
 			closeButtonTapped(self)
 		}
 	}

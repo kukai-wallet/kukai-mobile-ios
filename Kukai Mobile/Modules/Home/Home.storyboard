@@ -250,21 +250,43 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RhL-hF-bGI">
                                 <rect key="frame" x="0.0" y="0.0" width="250" height="896"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJK-Zt-yCu">
-                                        <rect key="frame" x="198" y="52" width="44" height="44"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="jbe-oE-1Ob">
+                                        <rect key="frame" x="8" y="52" width="242" height="44"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H7t-qn-xzY">
+                                                <rect key="frame" x="0.0" y="0.0" width="75.5" height="44"/>
+                                                <state key="normal">
+                                                    <imageReference key="image" image="network" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <connections>
+                                                    <segue destination="bD3-xo-HlE" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="mbc-9I-u3W"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j34-qD-sw8">
+                                                <rect key="frame" x="83.5" y="0.0" width="75" height="44"/>
+                                                <state key="normal">
+                                                    <imageReference key="image" image="folder.badge.plus" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <connections>
+                                                    <segue destination="6S6-5j-mWj" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="14v-SF-S7l"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EJK-Zt-yCu">
+                                                <rect key="frame" x="166.5" y="0.0" width="75.5" height="44"/>
+                                                <state key="normal">
+                                                    <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="closeButtonTapped:" destination="jXL-Kq-30K" eventType="touchUpInside" id="ws6-jM-PfQ"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="44" id="WSG-3k-aD7"/>
-                                            <constraint firstAttribute="height" constant="44" id="hFB-ne-eoU"/>
+                                            <constraint firstAttribute="height" constant="44" id="hDA-hf-EZy"/>
                                         </constraints>
-                                        <state key="normal">
-                                            <imageReference key="image" image="xmark.circle" catalog="system" symbolScale="large"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="closeButtonTapped:" destination="jXL-Kq-30K" eventType="touchUpInside" id="ws6-jM-PfQ"/>
-                                        </connections>
-                                    </button>
+                                    </stackView>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Nln-7g-dwb">
-                                        <rect key="frame" x="0.0" y="104" width="250" height="758"/>
+                                        <rect key="frame" x="0.0" y="112" width="250" height="750"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="checkmark" indentationWidth="10" reuseIdentifier="basicCell" textLabel="Asw-Ip-MB3" style="IBUITableViewCellStyleDefault" id="CPc-Ws-IoX">
@@ -286,29 +308,15 @@
                                             </tableViewCell>
                                         </prototypes>
                                     </tableView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j34-qD-sw8">
-                                        <rect key="frame" x="8" y="52" width="55" height="44"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="55" id="2lC-1f-ljL"/>
-                                        </constraints>
-                                        <state key="normal">
-                                            <imageReference key="image" image="folder.badge.plus" catalog="system" symbolScale="large"/>
-                                        </state>
-                                        <connections>
-                                            <segue destination="6S6-5j-mWj" kind="presentation" modalPresentationStyle="overCurrentContext" modalTransitionStyle="coverVertical" id="14v-SF-S7l"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstItem="Nln-7g-dwb" firstAttribute="top" secondItem="EJK-Zt-yCu" secondAttribute="bottom" constant="8" symbolic="YES" id="3Rt-QA-Qzz"/>
                                     <constraint firstAttribute="width" constant="250" id="8b5-Fj-PGv"/>
                                     <constraint firstItem="Nln-7g-dwb" firstAttribute="leading" secondItem="RhL-hF-bGI" secondAttribute="leading" id="Jad-um-VwR"/>
-                                    <constraint firstItem="j34-qD-sw8" firstAttribute="top" secondItem="EJK-Zt-yCu" secondAttribute="top" id="SCa-Rz-wm6"/>
                                     <constraint firstAttribute="trailing" secondItem="Nln-7g-dwb" secondAttribute="trailing" id="VHi-jn-mLq"/>
-                                    <constraint firstAttribute="trailing" secondItem="EJK-Zt-yCu" secondAttribute="trailing" constant="8" id="Ybf-0h-lg0"/>
-                                    <constraint firstItem="j34-qD-sw8" firstAttribute="bottom" secondItem="EJK-Zt-yCu" secondAttribute="bottom" id="ks3-7w-guh"/>
-                                    <constraint firstItem="j34-qD-sw8" firstAttribute="leading" secondItem="RhL-hF-bGI" secondAttribute="leading" constant="8" id="sdt-o7-XPA"/>
+                                    <constraint firstItem="Nln-7g-dwb" firstAttribute="top" secondItem="jbe-oE-1Ob" secondAttribute="bottom" constant="16" id="dUK-WO-1Nb"/>
+                                    <constraint firstAttribute="trailing" secondItem="jbe-oE-1Ob" secondAttribute="trailing" id="n95-1N-f0q"/>
+                                    <constraint firstItem="jbe-oE-1Ob" firstAttribute="leading" secondItem="RhL-hF-bGI" secondAttribute="leading" constant="8" id="rD5-dI-s1f"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -317,7 +325,7 @@
                         <constraints>
                             <constraint firstItem="RhL-hF-bGI" firstAttribute="top" secondItem="G9C-jz-uEZ" secondAttribute="top" id="1qx-Dd-o2w"/>
                             <constraint firstAttribute="bottom" secondItem="RhL-hF-bGI" secondAttribute="bottom" id="2pA-c1-Sf8"/>
-                            <constraint firstItem="EJK-Zt-yCu" firstAttribute="top" secondItem="d7d-yZ-tIC" secondAttribute="top" constant="8" id="FbA-cl-PD6"/>
+                            <constraint firstItem="jbe-oE-1Ob" firstAttribute="top" secondItem="d7d-yZ-tIC" secondAttribute="top" constant="8" id="9Db-6k-inc"/>
                             <constraint firstItem="d7d-yZ-tIC" firstAttribute="bottom" secondItem="Nln-7g-dwb" secondAttribute="bottom" id="MYo-eh-9aK"/>
                             <constraint firstItem="RhL-hF-bGI" firstAttribute="leading" secondItem="d7d-yZ-tIC" secondAttribute="leading" id="N3t-ik-9g4"/>
                         </constraints>
@@ -333,7 +341,15 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WHh-l8-Uwm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1934.7826086956522" y="-467.41071428571428"/>
+            <point key="canvasLocation" x="3087" y="-467"/>
+        </scene>
+        <!--networkSwitcher-->
+        <scene sceneID="IJq-rB-OzS">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="networkSwitcher" id="bD3-xo-HlE" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fHB-a9-Buo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3088" y="52"/>
         </scene>
         <!--Side Menu Import View Controller-->
         <scene sceneID="AbP-Mr-B09">
@@ -464,7 +480,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="549-E3-ONc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4090" y="-467"/>
+            <point key="canvasLocation" x="5242" y="-467"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="k8V-l8-Mg7">
@@ -479,7 +495,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ryv-BZ-Cws" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3129" y="-467"/>
+            <point key="canvasLocation" x="4281" y="-467"/>
         </scene>
         <!--customAuthWallet-->
         <scene sceneID="23B-8q-WEK">
@@ -489,7 +505,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVp-zC-KD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4986" y="-502"/>
+            <point key="canvasLocation" x="6137" y="-502"/>
         </scene>
         <!--newWallet-->
         <scene sceneID="6NJ-Yh-i4t">
@@ -499,7 +515,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vhn-Br-ldb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4951" y="-467"/>
+            <point key="canvasLocation" x="6102" y="-467"/>
         </scene>
         <!--walletHelp-->
         <scene sceneID="phz-Ue-a7i">
@@ -507,7 +523,7 @@
                 <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="walletHelp" id="U0x-CZ-0eA" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VIi-r7-90H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4091" y="-25"/>
+            <point key="canvasLocation" x="5243" y="1"/>
         </scene>
         <!--importWallet-->
         <scene sceneID="JKj-6Q-Qf0">
@@ -517,7 +533,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wuu-vN-ugn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4962" y="-434"/>
+            <point key="canvasLocation" x="6113" y="-435"/>
         </scene>
     </scenes>
     <resources>
@@ -525,6 +541,7 @@
         <image name="folder" catalog="system" width="128" height="97"/>
         <image name="folder.badge.plus" catalog="system" width="128" height="91"/>
         <image name="gearshape" catalog="system" width="128" height="121"/>
+        <image name="network" catalog="system" width="128" height="121"/>
         <image name="slider.horizontal.3" catalog="system" width="128" height="100"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="systemBackgroundColor">

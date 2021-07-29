@@ -19,9 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn
 	
 	
-	
-	// Side nav
-	//	- network switching
 	// exchange tab
 	//	- granada liquidity baking
 	//	- Quipu swap

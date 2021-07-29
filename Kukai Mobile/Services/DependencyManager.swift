@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 import KukaiCoreSwift
 
 class DependencyManager {
@@ -58,7 +59,10 @@ class DependencyManager {
 	
 	// Selected Wallet data
 	var selectedWalletIndex: Int {
-		set { UserDefaults.standard.setValue(newValue, forKey: "app.kukai.mobile.selected.wallet") }
+		set {
+			UserDefaults.standard.setValue(newValue, forKey: "app.kukai.mobile.selected.wallet")
+			walletDidChange = true
+		}
 		get { return UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet") }
 	}
 	
@@ -71,6 +75,13 @@ class DependencyManager {
 			return nil
 		}
 	}
+	
+	
+	// Combine publishers to serve as notifications across multiple screens
+	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults
+	// We create dummy published vars, where the actual value isn't relevant, we only care about triggering logic from these when a value is set
+	@Published var networkDidChange: Bool = false
+	@Published var walletDidChange: Bool = false
 	
 	
 	
@@ -145,5 +156,7 @@ class DependencyManager {
 			googleRedirectURL: "com.googleusercontent.apps.238941746713-vfap8uumijal4ump28p9jd3lbe6onqt4:/oauthredirect",
 			browserRedirectURL: "https://scripts.toruswallet.io/redirect.html"
 		)
+		
+		networkDidChange = true
 	}
 }
