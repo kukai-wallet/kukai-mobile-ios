@@ -17,8 +17,8 @@ class DependencyManager {
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://api.tez.ie/rpc/florencenet")!
-	static let defaultTzktURL_testnet = URL(string: "https://api.florencenet.tzkt.io")!
+	static let defaultNodeURL_testnet = URL(string: "https://api.tez.ie/rpc/granadanet")!
+	static let defaultTzktURL_testnet = URL(string: "https://api.granadanet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
 	
 	
@@ -109,7 +109,7 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
-		tezosChainName = .florencenet
+		tezosChainName = .granadanet
 		
 		
 		updateKukaiCoreClients()
@@ -129,7 +129,7 @@ class DependencyManager {
 		currentNodeURL = DependencyManager.defaultNodeURL_testnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
-		tezosChainName = .florencenet
+		tezosChainName = .granadanet
 		currentNetworkType = .testnet
 		
 		updateKukaiCoreClients()

@@ -40,7 +40,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				self?.refresh(animate: true)
 			}
 		
-		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let xtzBalance = item as? XTZAmount {

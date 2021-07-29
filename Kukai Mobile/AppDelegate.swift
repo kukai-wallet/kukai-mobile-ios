@@ -16,12 +16,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// Liquidity baking
 	// Granadanet dex contract: 	KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5
 	// Granadanet lq token:			KT1AafHA1C1vk959wvHWBispY9Y2f3fxBUUo
-	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn
+	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn (docs / comment says this one)   or   KT1VqarPDicMFn1ejmQqqshUkUXTCTXwmkCN (tzkt says this one)
 	
 	
 	// exchange tab
 	//	- granada liquidity baking
 	//	- Quipu swap
+	// onboarding
+	//	- Faucet, import and activate worked, but balance not available via BCD / Tzkt for a while. Might need to wait for injection before moving on
+	// Kukai-core-swift
+	//	- unit tests for
+	//		- dexter pool data functions
+	//		- dexter operation factory functions
 	
 	
 	
