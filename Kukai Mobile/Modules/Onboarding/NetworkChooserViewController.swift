@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class NetworkChooserViewController: UIViewController {
 
@@ -14,8 +15,7 @@ class NetworkChooserViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
-		let testnetString = DependencyManager.shared.tezosChainName.rawValue
-		networkChoiceControl.setTitle("Testnet (\(testnetString))", forSegmentAt: 1)
+		networkChoiceControl.setTitle("Testnet (\(TezosChainName.granadanet))", forSegmentAt: 1)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -28,7 +28,6 @@ class DependencyManager {
 	var tzktClient: TzKTClient
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
-	var tezosChainName: TezosChainName
 	
 	
 	// Properties and helpers
@@ -54,6 +53,11 @@ class DependencyManager {
 	var currentNetworkType: TezosNodeClientConfig.NetworkType {
 		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.type") }
 		get { return TezosNodeClientConfig.NetworkType(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.type") ?? "") ?? .mainnet }
+	}
+	
+	var tezosChainName: TezosChainName {
+		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.chainname") }
+		get { return TezosChainName(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.chainname") ?? "") ?? .mainnet }
 	}
 	
 	
@@ -109,8 +113,6 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
-		tezosChainName = .granadanet
-		
 		
 		updateKukaiCoreClients()
 	}
