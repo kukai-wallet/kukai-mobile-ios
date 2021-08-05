@@ -551,7 +551,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Yer-eH-46a">
-                                <rect key="frame" x="0.0" y="149" width="414" height="648"/>
+                                <rect key="frame" x="0.0" y="148.5" width="414" height="648.5"/>
                                 <connections>
                                     <segue destination="4Sb-Tn-A9x" kind="embed" id="PgE-bq-a9J"/>
                                 </connections>
@@ -642,8 +642,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="swapButton:" destination="K0p-0T-sIt" eventType="touchUpInside" id="Qe9-BI-F6y"/>
-                                            <action selector="swapButton:" destination="7Tx-2R-541" eventType="touchUpInside" id="x1n-0T-dDw"/>
+                                            <action selector="swapButton:" destination="7Tx-2R-541" eventType="touchUpInside" id="JU6-70-mRj"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dQi-45-PuI">
@@ -702,6 +701,9 @@
                             <constraint firstItem="sHv-nv-var" firstAttribute="trailing" secondItem="94g-5Y-x2J" secondAttribute="trailing" constant="20" id="vNI-B0-fSx"/>
                         </constraints>
                     </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="isXtzToToken" value="YES"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <outlet property="inputTextField" destination="y6u-9J-3ac" id="e8A-Io-Ui3"/>
                         <outlet property="outputTextField" destination="wxk-I9-qGa" id="hzK-p8-Mnu"/>
@@ -767,8 +769,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="swapButton:" destination="4Nt-uZ-8lh" eventType="touchUpInside" id="c1W-e2-g6b"/>
-                                            <action selector="swapButton:" destination="K0p-0T-sIt" eventType="touchUpInside" id="hLr-UG-0yZ"/>
+                                            <action selector="swapButton:" destination="4Nt-uZ-8lh" eventType="touchUpInside" id="3MV-mX-iB6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JlS-E5-IbJ">

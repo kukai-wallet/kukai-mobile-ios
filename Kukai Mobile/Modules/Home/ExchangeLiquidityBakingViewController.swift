@@ -19,7 +19,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 	private var poolData: (xtzPool: XTZAmount, tokenPool: TokenAmount)? = nil
 	private var xtzToSwap: XTZAmount? = nil
 	private var tokenToSwap: TokenAmount? = nil
-	private var calculationResult: DexterCalculationResult? = nil
+	private var calculationResult: LiquidityBakingCalculationResult? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,12 @@ class ExchangeLiquidityBakingViewController: UIViewController {
     }
 	
 	@IBAction func checkPriceTapped(_ sender: Any) {
+		if isXtzToToken, let xtzText = inputTextField.text, let xtz = XTZAmount(fromNormalisedAmount: xtzText, decimalPlaces: 6) {
+			xtzToSwap = xtz
+		} else if let tokenText = inputTextField.text, let token = TokenAmount(fromNormalisedAmount: tokenText, decimalPlaces: 8) {
+			tokenToSwap = token
+		}
+		
 		DependencyManager.shared.tezosNodeClient.getLiquidityBakingPoolData(forContract: (address: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", decimalPlaces: 8)) { [weak self] result in
 			switch result {
 				case .success(let poolData):
@@ -41,12 +47,15 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 	}
 	
 	@IBAction func swapButton(_ sender: Any) {
+		print("inside SWap button")
+		
 		guard let calc = calculationResult, calc.minimum > TokenAmount.zero(), let wallet = DependencyManager.shared.selectedWallet else {
+			self.alert(withTitle: "Error", andMessage: "Invalid calcualtion or wallet")
 			return
 		}
 		
-		
 		if isXtzToToken, let xtz = xtzToSwap {
+			self.showActivity(clearBackground: false)
 			
 			let operations = OperationFactory.liquidityBakingXtzToToken(xtzAmount: xtz, minTokenAmount: calc.minimum, contract: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", wallet: wallet, timeout: 60 * 5)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
@@ -61,14 +70,19 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 								case .failure(let error):
 									self.alert(withTitle: "Error", andMessage: error.description)
 							}
+							
+							self.hideActivity()
 						}
 					
 					case .failure(let error):
 						self.alert(withTitle: "Error", andMessage: error.description)
+						self.hideActivity()
 				}
 			}
 			
 		} else if let token = tokenToSwap {
+			self.showActivity(clearBackground: false)
+			
 			let operations = OperationFactory.liquidityBakingTokenToXTZ(
 				tokenAmount: token,
 				minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(),
@@ -91,12 +105,17 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 								case .failure(let error):
 									self.alert(withTitle: "Error", andMessage: error.description)
 							}
+							
+							self.hideActivity()
 						}
 					
 					case .failure(let error):
 						self.alert(withTitle: "Error", andMessage: error.description)
+						self.hideActivity()
 				}
 			}
+		} else {
+			self.alert(withTitle: "Error", andMessage: "Check the price before trying to swap")
 		}
 	}
 	
@@ -112,7 +131,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 				return
 			}
 			
-			self.calculationResult = DexterCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, dexterXtzPool: pData.xtzPool, dexterTokenPool: pData.tokenPool, maxSlippage: 0.5)
+			self.calculationResult = LiquidityBakingCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: pData.xtzPool, tokenPool: pData.tokenPool, maxSlippage: 0.5)
 			
 		} else {
 			guard let input = inputTextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: 8) else {
@@ -120,7 +139,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 				return
 			}
 			
-			self.calculationResult = DexterCalculationService.shared.calcualteTokenToXTZ(tokenToSell: token, dexterXtzPool: pData.xtzPool, dexterTokenPool:  pData.tokenPool, maxSlippage: 0.5)
+			self.calculationResult = LiquidityBakingCalculationService.shared.calcualteTokenToXTZ(tokenToSell: token, xtzPool: pData.xtzPool, tokenPool:  pData.tokenPool, maxSlippage: 0.5)
 		}
 		
 		
