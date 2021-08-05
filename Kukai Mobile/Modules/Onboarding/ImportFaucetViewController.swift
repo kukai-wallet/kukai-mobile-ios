@@ -73,8 +73,14 @@ class ImportFaucetViewController: UIViewController {
 		let operations = [OperationActivateAccount(wallet: wallet, andSecret: withSecret)]
 		DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] (result) in
 			switch result {
-				case .success(_):
-					self?.cahceWalletAndSegue(wallet: wallet)
+				case .success(let opHash):
+					DependencyManager.shared.tzktClient.waitForInjection(ofHash: opHash) { success, systemError, serviceError in
+						if success {
+							self?.cahceWalletAndSegue(wallet: wallet)
+						} else {
+							self?.alert(withTitle: "Error", andMessage: "Encountered error trying to verify activation")
+						}
+					}
 					
 				case .failure(let error):
 					self?.hideActivity()

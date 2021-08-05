@@ -19,8 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn (docs / comment says this one)   or   KT1VqarPDicMFn1ejmQqqshUkUXTCTXwmkCN (tzkt says this one)
 	
 	
-	// onboarding
-	//	- Faucet, import and activate worked, but balance not available via BCD / Tzkt for a while. Might need to wait for injection before moving on
 	// Kukai-core-swift
 	//	- unit tests for
 	//		- dexter pool data functions
