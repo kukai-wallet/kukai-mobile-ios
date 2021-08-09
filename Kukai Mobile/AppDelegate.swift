@@ -19,11 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	// Granadanet tzBTC token:		KT1PWx2mnDueood7fEmfbBDKx1D9BAnnXitn (docs / comment says this one)   or   KT1VqarPDicMFn1ejmQqqshUkUXTCTXwmkCN (tzkt says this one)
 	
 	
-	// Kukai-core-swift
-	//	- unit tests for
-	//		- dexter pool data functions
-	//		- dexter operation factory functions
-	// Beacon
+	// TODO / Experiment with:
+		// Beacon
+		// Tests:
+			// Token
+			// TZKTOperation
+			// OperationResponse
+			// OperationKind
+			// CurrentDevice
+			// BetterCallDevOperation
+			// BetterCallDevAccount
+			// TezosNodeClientConfig
 	
 	
 	
