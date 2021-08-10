@@ -12,14 +12,17 @@ class AddLiquidityViewController: UIViewController {
 
 	@IBOutlet weak var xtzTextField: UITextField!
 	@IBOutlet weak var tzbtcTextField: UITextField!
+	@IBOutlet weak var liquidityTextField: UITextField!
 	
 	private var poolData: LiquidityBakingData? = nil
 	private var xtzToDeposit: XTZAmount? = nil
 	private var tokenToDeposit: TokenAmount? = nil
-	private var calculationResult: (tokenRequired: TokenAmount, liquidity: TokenAmount)? = nil
+	private var calculationResult: LiquidityBakingAddCalculationResult? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		xtzTextField.addDoneToolbar()
     }
 	
 	@IBAction func refreshButtonTapped(_ sender: Any) {
@@ -48,35 +51,27 @@ class AddLiquidityViewController: UIViewController {
 			return
 		}
 			
-		calculationResult = LiquidityBakingCalculationService.shared.calculateAddLiquidity(xtz: xtzToDeposit ?? XTZAmount.zero(), xtzPool: pData.xtzPool, tokenPool: pData.tokenPool, totalLiquidity: pData.totalLiquidity)
-		
-		print("\n\n\n calculationResult: \(calculationResult) \n\n\n")
+		calculationResult = LiquidityBakingCalculationService.shared.calculateAddLiquidity(xtz: xtzToDeposit ?? XTZAmount.zero(), xtzPool: pData.xtzPool, tokenPool: pData.tokenPool, totalLiquidity: pData.totalLiquidity, maxSlippage: 0.05)
 		
 		guard let calc = self.calculationResult else {
 			tzbtcTextField.text = "0"
+			liquidityTextField.text = "0"
 			return
 		}
 		
 		tzbtcTextField.text = calc.tokenRequired.normalisedRepresentation
+		liquidityTextField.text = calc.expectedLiquidity.normalisedRepresentation
 	}
 	
 	@IBAction func swapButtonTapped(_ sender: Any) {
-		guard let calc = calculationResult, calc.tokenRequired > TokenAmount.zero(), let wallet = DependencyManager.shared.selectedWallet, let xtz = xtzToDeposit else {
+		guard let calc = calculationResult, calc.tokenRequired > TokenAmount.zero(), calc.expectedLiquidity > TokenAmount.zero(), let wallet = DependencyManager.shared.selectedWallet, let xtz = xtzToDeposit else {
 			self.alert(withTitle: "Error", andMessage: "Invalid calcualtion or wallet")
 			return
 		}
 		
 		self.showActivity(clearBackground: false)
 		
-		let operations = OperationFactory.liquidityBakingAddLiquidity(xtzToDeposit: xtz, tokensToDeposit: calc.tokenRequired, minLiquidtyMinted: calc.liquidity, tokenContract: poolData?.tokenContractAddress ?? "", dexContract: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", currentAllowance: TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0), wallet: wallet, timeout: 60 * 5)
-		
-		
-		
-		
-		//let allowanceOps = [operations[0], operations[1]]
-		//let liquidityOp = [operations[2]]
-		
-		
+		let operations = OperationFactory.liquidityBakingAddLiquidity(xtzToDeposit: xtz, tokensToDeposit: calc.tokenRequired, minLiquidtyMinted: calc.minimumLiquidity, tokenContract: poolData?.tokenContractAddress ?? "", dexContract: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", currentAllowance: TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0), wallet: wallet, timeout: 60 * 5)
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 			switch result {

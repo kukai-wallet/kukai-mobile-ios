@@ -19,7 +19,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 	private var poolData: LiquidityBakingData? = nil
 	private var xtzToSwap: XTZAmount? = nil
 	private var tokenToSwap: TokenAmount? = nil
-	private var calculationResult: LiquidityBakingCalculationResult? = nil
+	private var calculationResult: LiquidityBakingSwapCalculationResult? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
