@@ -10,20 +10,14 @@ import Combine
 import KukaiCoreSwift
 import OSLog
 
-enum HomeWalletSection: CaseIterable {
-	case balance
-	case tokens
-	case nfts
-}
-
 class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
-	typealias SectionEnum = HomeWalletSection
+	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
 	private var networkChangeCancellable: AnyCancellable?
 	private var walletChangeCancellable: AnyCancellable?
 	
-	var dataSource: UITableViewDiffableDataSource<HomeWalletSection, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var walletAddress: String = ""
 	
 	func makeDataSource(withTableView tableView: UITableView) {
@@ -99,22 +93,19 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			var snapshot = NSDiffableDataSourceSnapshot<HomeWalletSection, AnyHashable>()
-			snapshot.appendSections(HomeWalletSection.allCases)
+			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+			snapshot.appendSections(Array(0...account.nfts.count+2))
 			
-			snapshot.appendItems([account.xtzBalance], toSection: .balance)
-			snapshot.appendItems(account.tokens, toSection: .tokens)
+			snapshot.appendItems([account.xtzBalance], toSection: 0)
+			snapshot.appendItems(account.tokens, toSection: 1)
 			
-			var nftArray: [AnyHashable] = []
-			for nftToken in account.nfts {
-				nftArray.append(nftToken)
+			for (index, nft) in account.nfts.enumerated() {
+				var nfts: [AnyHashable] = [nft]
+				nfts.append(contentsOf: nft.nfts ?? [])
 				
-				for nft in nftToken.nfts ?? [] {
-					nftArray.append(nft)
-				}
+				snapshot.appendItems(nfts, toSection: index+2)
 			}
 			
-			snapshot.appendItems(nftArray, toSection: .nfts)
 			ds.apply(snapshot, animatingDifferences: animate)
 			
 			self?.state = .success

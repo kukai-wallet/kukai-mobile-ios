@@ -37,7 +37,7 @@ public class ViewModel: ObservableObject {
 }
 
 public protocol UITableViewDiffableDataSourceHandler {
-	associatedtype SectionEnum: CaseIterable, Hashable
+	associatedtype SectionEnum: Hashable
 	associatedtype CellDataType: Hashable
 	
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? { get }
