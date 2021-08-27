@@ -9,6 +9,7 @@ import UIKit
 
 class NftChildTableViewCell: UITableViewCell {
 
+	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	
 	override func awakeFromNib() {
