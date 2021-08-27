@@ -43,7 +43,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let token = item as? Token, token.nfts == nil {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
-				cell?.iconView.setImageToCurrentSize(url: token.icon)
+				cell?.iconView.setImageToCurrentSize(url: token.thumbnailURL)
 				cell?.amountLabel.text = token.balance.normalisedRepresentation
 				cell?.symbolLabel.text = token.symbol
 				return cell
@@ -85,11 +85,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletAddress = address
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
 			guard let account = try? result.get() else {
-				guard case .failure(let error) = result else {
-					self?.state = .failure(ErrorResponse.unknownError(), "Unable to fetch data. Please check internet connection and try again")
-					return
-				}
-				self?.state = .failure(error, "Unable to fetch data. Please check internet connection and try again")
+				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
 				return
 			}
 			

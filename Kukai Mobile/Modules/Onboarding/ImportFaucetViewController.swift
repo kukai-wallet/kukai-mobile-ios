@@ -74,7 +74,7 @@ class ImportFaucetViewController: UIViewController {
 		DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] (result) in
 			switch result {
 				case .success(let opHash):
-					DependencyManager.shared.tzktClient.waitForInjection(ofHash: opHash) { success, systemError, serviceError in
+					DependencyManager.shared.tzktClient.waitForInjection(ofHash: opHash, fromAddress: wallet.address) { success, systemError, serviceError in
 						if success {
 							self?.cahceWalletAndSegue(wallet: wallet)
 						} else {

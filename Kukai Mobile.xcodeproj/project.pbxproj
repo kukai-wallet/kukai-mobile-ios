@@ -18,6 +18,7 @@
 		C0082C0626A7249200DB160B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0526A7249200DB160B /* SettingsViewController.swift */; };
 		C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0726A7278000DB160B /* HomeTabBarController.swift */; };
 		C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */; };
+		C024038726D91FC200E1CB80 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C024038626D91FC200E1CB80 /* BeaconSDK */; };
 		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
 		C049B5A526A0497D00F1C5E0 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
@@ -155,6 +156,7 @@
 				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
 				C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
+				C024038726D91FC200E1CB80 /* BeaconSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +369,7 @@
 				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
 				C0BBD29B26A97CFD0097B63A /* Sodium */,
 				C0BBD2A426A9A7980097B63A /* Sentry */,
+				C024038626D91FC200E1CB80 /* BeaconSDK */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -443,6 +446,7 @@
 				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */,
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
+				C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -1003,6 +1007,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonmcl/beacon-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
@@ -1030,6 +1042,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C024038626D91FC200E1CB80 /* BeaconSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			productName = BeaconSDK;
+		};
 		C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
