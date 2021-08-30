@@ -19,6 +19,8 @@
 		C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0726A7278000DB160B /* HomeTabBarController.swift */; };
 		C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */; };
 		C024038726D91FC200E1CB80 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C024038626D91FC200E1CB80 /* BeaconSDK */; };
+		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
+		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
 		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
 		C049B5A526A0497D00F1C5E0 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
@@ -104,6 +106,8 @@
 		C0082C0526A7249200DB160B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C0082C0726A7278000DB160B /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
 		C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWalletViewController.swift; sourceTree = "<group>"; };
+		C024038826D925FB00E1CB80 /* BeaconService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconService.swift; sourceTree = "<group>"; };
+		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		C049B5A226A0496C00F1C5E0 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Onboarding.storyboard; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
@@ -181,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				C0082BF226A6C6B300DB160B /* DependencyManager.swift */,
+				C024038826D925FB00E1CB80 /* BeaconService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 				C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */,
 				C0D74CC626C12CDA0096F845 /* LiquidtyBalanceViewController.swift */,
 				C0082C0526A7249200DB160B /* SettingsViewController.swift */,
+				C024038A26D92B0E00E1CB80 /* ScanViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -513,6 +519,8 @@
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
 				C0082BF926A7076500DB160B /* ImportMnemonicViewController.swift in Sources */,
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
+				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
+				C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */,
 				C0082BFB26A70B5900DB160B /* ImportSuccessViewController.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
 				C0082BF326A6C6B300DB160B /* DependencyManager.swift in Sources */,
@@ -1019,7 +1027,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
 			requirement = {
-				branch = develop;
+				branch = feature/beacon_modifications;
 				kind = branch;
 			};
 		};
