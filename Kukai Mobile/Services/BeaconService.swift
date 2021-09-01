@@ -113,8 +113,7 @@ public class BeaconService {
 	
 	
 	
-	
-	
+	// MARK: - Completion actions
 	
 	public func acceptPermissionRequest(permission: Beacon.Request.Permission, wallet: Wallet, completion: @escaping ((Result<(), Beacon.Error>) -> ())) {
 		let response = Beacon.Response.Permission(from: permission, publicKey: wallet.publicKeyBase58encoded())
@@ -133,44 +132,64 @@ public class BeaconService {
 	
 	
 	
+	// MARK: - Helpers and parsers
 	
-	
-	
-	public static func processOperation(operation: Beacon.Request.Operation, forWallet wallet: Wallet) -> [KukaiCoreSwift.Operation] {
+	public static func process(operation: Beacon.Request.Operation, forWallet wallet: Wallet) -> [KukaiCoreSwift.Operation] {
 		var ops: [KukaiCoreSwift.Operation] = []
 		
 		for op in operation.operationDetails {
+			
+			// Extract Beacon Operation JSON as Data
 			guard let opJson = try? JSONEncoder().encode(op) else {
 				continue
 			}
 			
+			// Convert Beacon Type into Kukai type, so that we can run our own estimation and injection logic
+			var convertedOp: KukaiCoreSwift.Operation? = nil
 			switch op {
-				case .transaction(let transaction):
-					if transaction.parameters != nil {
-						
-						do {
-							let convertedOp = try JSONDecoder().decode(OperationSmartContractInvocation.self, from: opJson)
-							convertedOp.source = wallet.address
-							ops.append(convertedOp)
-							
-						} catch (let error) {
-							print("Parsing error: \(error)")
-						}
-						
-						
-					} else if let convertedOp = try? JSONDecoder().decode(OperationTransaction.self, from: opJson) {
-						convertedOp.source = wallet.address
-						ops.append(convertedOp)
-						
-					} else {
-						print("Error - processOperation: of type transaction, but doesn't match OperationTransaction")
-					}
-				
-				default:
-					print("Error")
+				case .activateAccount(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationActivateAccount.self, forWallet: wallet)
+				case .ballot(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationBallot.self, forWallet: wallet)
+				case .delegation(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDelegation.self, forWallet: wallet)
+				case .doubleBakingEvidence(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDoubleBakingEvidence.self, forWallet: wallet)
+				case .doubleEndorsementEvidence(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDoubleEndorsementEvidence.self, forWallet: wallet)
+				case .endorsement(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationEndorsement.self, forWallet: wallet)
+				case .origination(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationOrigination.self, forWallet: wallet)
+				case .proposals(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationProposals.self, forWallet: wallet)
+				case .reveal(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationReveal.self, forWallet: wallet)
+				case .seedNonceRevelation(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationSeedNonceRevelation.self, forWallet: wallet)
+				case .transaction(_):
+					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationTransaction.self, forWallet: wallet)
+			}
+			
+			// If it worked, add to array
+			if let kukaiOp = convertedOp {
+				ops.append(kukaiOp)
 			}
 		}
 		
 		return ops
+	}
+	
+	public static func convert(beaconOp: Data, toKukaioOpType kukaiType: KukaiCoreSwift.Operation.Type, forWallet wallet: Wallet) -> KukaiCoreSwift.Operation? {
+		do {
+			let convertedOp = try JSONDecoder().decode(kukaiType.self, from: beaconOp)
+			convertedOp.source = wallet.address
+			return convertedOp
+			
+		} catch (let error) {
+			os_log("Failed to parse BeaconOperation into KukaiOperation: %@", log: .default, type: .error, "\(error)")
+		}
+		
+		return nil
 	}
 }

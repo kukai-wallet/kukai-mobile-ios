@@ -21,15 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	// TODO / Experiment with:
 		// Beacon
-		// Tests:
-			// Token
-			// TZKTOperation
-			// OperationResponse
-			// OperationKind
-			// CurrentDevice
-			// BetterCallDevOperation
-			// BetterCallDevAccount
-			// TezosNodeClientConfig
 	
 	
 	
