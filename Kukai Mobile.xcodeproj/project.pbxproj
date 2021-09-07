@@ -48,7 +48,6 @@
 		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
 		C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743A626AAC44A00377A9B /* ViewModelProtocols.swift */; };
 		C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743B626AB197E00377A9B /* HomeWalletViewModel.swift */; };
-		C0B743BA26AB221E00377A9B /* XTZBalanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743B926AB221E00377A9B /* XTZBalanceTableViewCell.swift */; };
 		C0B743BC26AB223800377A9B /* TokenBalanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BB26AB223800377A9B /* TokenBalanceTableViewCell.swift */; };
 		C0B743BE26AB226700377A9B /* NftParentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */; };
 		C0B743C026AB227400377A9B /* NftChildTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */; };
@@ -140,7 +139,6 @@
 		C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ExportOptions-Beta.plist"; sourceTree = "<group>"; };
 		C0B743A626AAC44A00377A9B /* ViewModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelProtocols.swift; sourceTree = "<group>"; };
 		C0B743B626AB197E00377A9B /* HomeWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWalletViewModel.swift; sourceTree = "<group>"; };
-		C0B743B926AB221E00377A9B /* XTZBalanceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XTZBalanceTableViewCell.swift; sourceTree = "<group>"; };
 		C0B743BB26AB223800377A9B /* TokenBalanceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenBalanceTableViewCell.swift; sourceTree = "<group>"; };
 		C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftParentTableViewCell.swift; sourceTree = "<group>"; };
 		C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftChildTableViewCell.swift; sourceTree = "<group>"; };
@@ -336,7 +334,6 @@
 		C0B743B826AB220300377A9B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C0B743B926AB221E00377A9B /* XTZBalanceTableViewCell.swift */,
 				C0B743BB26AB223800377A9B /* TokenBalanceTableViewCell.swift */,
 				C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */,
 				C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */,
@@ -506,7 +503,6 @@
 				C0082BFF26A713A000DB160B /* NewWalletPasswordViewController.swift in Sources */,
 				C0082BF526A6DFBA00DB160B /* String+extensions.swift in Sources */,
 				C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */,
-				C0B743BA26AB221E00377A9B /* XTZBalanceTableViewCell.swift in Sources */,
 				C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */,
 				C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */,
 				C085EAB326B175F600B37A15 /* SideMenuViewController.swift in Sources */,
@@ -1027,7 +1023,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
 			requirement = {
-				branch = develop;
+				branch = feature/bcd_improvements;
 				kind = branch;
 			};
 		};

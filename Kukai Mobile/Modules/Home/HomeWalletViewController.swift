@@ -10,7 +10,17 @@ import Combine
 
 class HomeWalletViewController: UIViewController {
 
+	@IBOutlet weak var headerBackgroundView: UIView!
+	@IBOutlet weak var bottomBackgroundView: UIView!
+	
 	@IBOutlet weak var addressLabel: UILabel!
+	@IBOutlet weak var sendButton: UIButton!
+	@IBOutlet weak var receiveButton: UIButton!
+	@IBOutlet weak var buyButton: UIButton!
+	
+	@IBOutlet weak var tokensSegmentedButton: UIButton!
+	@IBOutlet weak var nftsSegmentedButton: UIButton!
+	
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = HomeWalletViewModel()
@@ -53,6 +63,122 @@ class HomeWalletViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		setupUI()
 		viewModel.refresh(animate: true)
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		bottomBackgroundView.roundCorners(corners: [.topLeft, .topRight], radius: 36)
+		sendButton.roundCorners(corners: .allCorners, radius: 16)
+		receiveButton.roundCorners(corners: .allCorners, radius: 16)
+		buyButton.roundCorners(corners: .allCorners, radius: 16)
+	}
+	
+	func setupUI() {
+		headerBackgroundView.maskToBounds = true
+		
+		let containerWidth = headerBackgroundView.frame.size.width
+		let containerHeight = headerBackgroundView.frame.size.height
+		
+		
+		// Large Gradient circle
+		let lightBlue = UIColor(red: 54/255, green: 213/255, blue: 244/255, alpha: 1)
+		let mediumBlue = UIColor(red: 63/255, green: 175/255, blue: 238/255, alpha: 1)
+		
+		let bigGradientCircle = CGRect(x: headerBackgroundView.frame.origin.x - 100,
+								   y: headerBackgroundView.frame.origin.y - 50,
+								   width: containerWidth * 1.25,
+								   height: containerHeight * 1.25)
+		
+		let bigGradientCirclePath = UIBezierPath(ovalIn: bigGradientCircle)
+		let bigGradientCircleShapeLayer = CAShapeLayer()
+		bigGradientCircleShapeLayer.path = bigGradientCirclePath.cgPath
+		
+		let gradientLayer = CAGradientLayer()
+		gradientLayer.startPoint = CGPoint(x: 0.2, y: 0.0)
+		gradientLayer.endPoint = CGPoint(x: 0.7, y: 0.4)
+		gradientLayer.colors = [lightBlue.cgColor, mediumBlue.cgColor]
+		gradientLayer.frame = headerBackgroundView.bounds
+		gradientLayer.mask = bigGradientCircleShapeLayer
+		
+		headerBackgroundView.layer.insertSublayer(gradientLayer, at: 0)
+		
+		
+		// Curvy diagonal line
+		let curveStartPoint = CGPoint(x: 0, y: containerHeight * 0.55)
+		let curveEndPoint = CGPoint(x: containerWidth, y: containerHeight * 0.1)
+		
+		let curvyPath = UIBezierPath()
+		curvyPath.move(to: curveEndPoint)
+		curvyPath.addLine(to: CGPoint(x: containerWidth, y: containerHeight))
+		curvyPath.addLine(to: CGPoint(x: 0, y: containerHeight))
+		curvyPath.addLine(to: curveStartPoint)
+		curvyPath.addCurve(to: curveEndPoint,
+						   controlPoint1: CGPoint(x: curveStartPoint.x + containerWidth * 0.2,
+											 y: curveStartPoint.y - containerHeight * 0.25),
+						   controlPoint2: CGPoint(x: curveEndPoint.x - containerWidth * 0.2,
+											 y: curveEndPoint.y + containerHeight * 0.5))
+		
+		let curvyShapeLayer = CAShapeLayer()
+		curvyShapeLayer.path = curvyPath.cgPath
+		
+		let gradientLayer2 = CAGradientLayer()
+		gradientLayer.startPoint = CGPoint(x: 0.2, y: 0.0)
+		gradientLayer.endPoint = CGPoint(x: 0.7, y: 0.4)
+		gradientLayer2.colors = [lightBlue.cgColor, mediumBlue.cgColor]
+		gradientLayer2.frame = headerBackgroundView.bounds
+		gradientLayer2.mask = curvyShapeLayer
+		
+		headerBackgroundView.layer.insertSublayer(gradientLayer2, at: 1)
+		
+		
+		// Black transparent circle
+		let bigAlphaBlackCircle = CGRect(x: headerBackgroundView.frame.origin.x - 250,
+										 y: headerBackgroundView.frame.origin.y + 100,
+								   width: headerBackgroundView.frame.size.width,
+								   height: headerBackgroundView.frame.size.width)
+		
+		let bigAlphaBlackPath = UIBezierPath(ovalIn: bigAlphaBlackCircle)
+		let bigAlphaBlackPathShapeLayer = CAShapeLayer()
+		bigAlphaBlackPathShapeLayer.path = bigAlphaBlackPath.cgPath
+		bigAlphaBlackPathShapeLayer.fillColor = UIColor.black.cgColor
+		bigAlphaBlackPathShapeLayer.opacity = 0.05
+		
+		headerBackgroundView.layer.insertSublayer(bigAlphaBlackPathShapeLayer, at: 2)
+		unselect(button: nftsSegmentedButton)
+	}
+	
+	func unselect(button: UIButton) {
+		button.backgroundColor = UIColor(red: 231/255, green: 227/255, blue: 228/255, alpha: 1)
+		button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
+		
+		if button.title(for: .normal) == "Tokens" {
+			button.roundCorners(corners: [.bottomRight], radius: 16)
+		} else {
+			button.roundCorners(corners: [.bottomLeft], radius: 16)
+		}
+	}
+	
+	func select(button: UIButton) {
+		button.backgroundColor = UIColor.white
+		button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+	}
+	
+	@IBAction func tokensButtonTapped(_ sender: Any) {
+		select(button: tokensSegmentedButton)
+		unselect(button: nftsSegmentedButton)
+		
+		viewModel.tokensSelected = true
+		viewModel.updateTableView(animate: true)
+	}
+	
+	@IBAction func nftsButtonTapped(_ sender: Any) {
+		select(button: nftsSegmentedButton)
+		unselect(button: tokensSegmentedButton)
+		
+		viewModel.tokensSelected = false
+		viewModel.updateTableView(animate: true)
 	}
 }

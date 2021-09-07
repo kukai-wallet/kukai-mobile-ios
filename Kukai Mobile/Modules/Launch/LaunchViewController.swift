@@ -15,6 +15,7 @@ class LaunchViewController: UIViewController {
 	@IBOutlet weak var kukaiLabel: UILabel!
 	@IBOutlet weak var kukaiLabelTopConstraint: NSLayoutConstraint!
 	
+	
 	private var transformToLeft: CATransform3D? = nil
 	private var transformToRight: CATransform3D? = nil
 	

@@ -20,6 +20,9 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var walletAddress: String = ""
 	
+	var account: Account? = nil
+	var tokensSelected = true
+	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
@@ -37,8 +40,10 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let xtzBalance = item as? XTZAmount {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "xtzBalanceCell", for: indexPath) as? XTZBalanceTableViewCell
-				cell?.balanceLabel.text = xtzBalance.normalisedRepresentation
+				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
+				cell?.iconView.image = UIImage(named: "tezos-xtz-logo")
+				cell?.amountLabel.text = xtzBalance.normalisedRepresentation
+				cell?.symbolLabel.text = "XTZ"
 				return cell
 				
 			} else if let token = item as? Token, token.nfts == nil {
@@ -68,6 +73,67 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
+	func refresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		guard let address = DependencyManager.shared.selectedWallet?.address else {
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+			return
+		}
+		
+		walletAddress = address
+		
+		/*
+		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
+			guard let acc = try? result.get() else {
+				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
+				return
+			}
+			
+			self?.account = acc
+			self?.updateTableView(animate: animate)
+		}
+		*/
+		
+		self.account = DependencyManager.shared.betterCallDevClient.cachedAccountInfo()
+		self.updateTableView(animate: animate)
+	}
+	
+	func updateTableView(animate: Bool) {
+		guard let ds = dataSource, let acc = account else {
+			state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
+			return
+		}
+		
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		
+		if tokensSelected {
+			snapshot.appendSections([0])
+			
+			var tokens: [AnyHashable] = [acc.xtzBalance]
+			tokens.append(contentsOf: acc.tokens)
+			
+			snapshot.appendItems(tokens, toSection: 0)
+			
+		} else {
+			snapshot.appendSections(Array(0...acc.nfts.count))
+			
+			for (index, nft) in acc.nfts.enumerated() {
+				var nfts: [AnyHashable] = [nft]
+				nfts.append(contentsOf: nft.nfts ?? [])
+				
+				snapshot.appendItems(nfts, toSection: index)
+			}
+		}
+		
+		ds.apply(snapshot, animatingDifferences: animate)
+		
+		self.state = .success
+	}
+	
+	/*
 	func refresh(animate: Bool) {
 		if !state.isLoading() {
 			state = .loading
@@ -108,4 +174,38 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.state = .success
 		}
 	}
+	
+	func toggleTokensAndNFTs(accountInfo: Account? = nil, tokensSelected: Bool) {
+		var account = accountInfo
+		
+		if account == nil {
+			account = DependencyManager.shared.betterCallDevClient.cachedAccountInfo()
+		}
+		
+		guard let account = account else {
+			return
+		}
+		
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		
+		if tokensSelected {
+			snapshot.appendSections([0])
+			
+			var tokens: [AnyHashable] = [account.xtzBalance]
+			tokens.append(contentsOf: account.tokens)
+			
+			snapshot.appendItems(tokens, toSection: 0)
+			
+		} else {
+			snapshot.appendSections(Array(0...account.nfts.count))
+			
+			for (index, nft) in account.nfts.enumerated() {
+				var nfts: [AnyHashable] = [nft]
+				nfts.append(contentsOf: nft.nfts ?? [])
+				
+				snapshot.appendItems(nfts, toSection: index)
+			}
+		}
+	}
+	*/
 }
