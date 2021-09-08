@@ -64,6 +64,11 @@ class HomeWalletViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		setupUI()
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
 		viewModel.refresh(animate: true)
 	}
 	
@@ -71,9 +76,6 @@ class HomeWalletViewController: UIViewController {
 		super.viewDidLayoutSubviews()
 		
 		bottomBackgroundView.roundCorners(corners: [.topLeft, .topRight], radius: 36)
-		sendButton.roundCorners(corners: .allCorners, radius: 16)
-		receiveButton.roundCorners(corners: .allCorners, radius: 16)
-		buyButton.roundCorners(corners: .allCorners, radius: 16)
 	}
 	
 	func setupUI() {
@@ -84,13 +86,13 @@ class HomeWalletViewController: UIViewController {
 		
 		
 		// Large Gradient circle
-		let lightBlue = UIColor(red: 54/255, green: 213/255, blue: 244/255, alpha: 1)
-		let mediumBlue = UIColor(red: 63/255, green: 175/255, blue: 238/255, alpha: 1)
+		let lightBlue = UIColor(named: "gradient-light") ?? UIColor.white
+		let mediumBlue = UIColor(named: "gradient-medium") ?? UIColor.black
 		
 		let bigGradientCircle = CGRect(x: headerBackgroundView.frame.origin.x - 100,
-								   y: headerBackgroundView.frame.origin.y - 50,
-								   width: containerWidth * 1.25,
-								   height: containerHeight * 1.25)
+									   y: headerBackgroundView.frame.origin.y - 50,
+									   width: containerWidth * 1.25,
+									   height: containerHeight * 1.25)
 		
 		let bigGradientCirclePath = UIBezierPath(ovalIn: bigGradientCircle)
 		let bigGradientCircleShapeLayer = CAShapeLayer()
@@ -148,10 +150,22 @@ class HomeWalletViewController: UIViewController {
 		
 		headerBackgroundView.layer.insertSublayer(bigAlphaBlackPathShapeLayer, at: 2)
 		unselect(button: nftsSegmentedButton)
+		
+		sendButton.layer.borderColor = UIColor(named: "button-primary-border")?.cgColor ?? UIColor.clear.cgColor
+		sendButton.layer.borderWidth = 1
+		sendButton.layer.cornerRadius = 16
+		
+		receiveButton.layer.borderColor = UIColor(named: "button-primary-border")?.cgColor ?? UIColor.clear.cgColor
+		receiveButton.layer.borderWidth = 1
+		receiveButton.layer.cornerRadius = 16
+		
+		buyButton.layer.borderColor = UIColor(named: "button-primary-border")?.cgColor ?? UIColor.clear.cgColor
+		buyButton.layer.borderWidth = 1
+		buyButton.layer.cornerRadius = 16
 	}
 	
 	func unselect(button: UIButton) {
-		button.backgroundColor = UIColor(red: 231/255, green: 227/255, blue: 228/255, alpha: 1)
+		button.backgroundColor = UIColor(named: "segmented-button-background-unselected") ?? UIColor.black
 		button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .light)
 		
 		if button.title(for: .normal) == "Tokens" {
@@ -162,7 +176,7 @@ class HomeWalletViewController: UIViewController {
 	}
 	
 	func select(button: UIButton) {
-		button.backgroundColor = UIColor.white
+		button.backgroundColor = UIColor(named: "segmented-button-background") ?? UIColor.white
 		button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
 	}
 	

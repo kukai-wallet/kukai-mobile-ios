@@ -105,7 +105,7 @@ class LaunchViewController: UIViewController {
 	}
 	
 	func showNavigationBar() {
-		self.navigationController?.setNavigationBarHidden(false, animated: false)
+		//self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.largeTitleDisplayMode = .never
 	}
