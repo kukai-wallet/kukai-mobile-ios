@@ -85,7 +85,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		walletAddress = address
 		
-		/*
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
 			guard let acc = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
@@ -95,10 +94,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.account = acc
 			self?.updateTableView(animate: animate)
 		}
-		*/
-		
-		self.account = DependencyManager.shared.betterCallDevClient.cachedAccountInfo()
-		self.updateTableView(animate: animate)
 	}
 	
 	func updateTableView(animate: Bool) {
