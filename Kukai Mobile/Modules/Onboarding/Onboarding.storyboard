@@ -47,7 +47,7 @@ Choose from the options below</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lm6-pL-Voh">
-                                <rect key="frame" x="24" y="609" width="366" height="50"/>
+                                <rect key="frame" x="24" y="543" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="jvd-kO-7ru"/>
@@ -65,7 +65,7 @@ Choose from the options below</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PGy-dT-1kF">
-                                <rect key="frame" x="24" y="738" width="366" height="50"/>
+                                <rect key="frame" x="24" y="672" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Uoh-F8-v8L"/>
@@ -83,7 +83,7 @@ Choose from the options below</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mkw-VQ-LxP">
-                                <rect key="frame" x="24" y="804" width="366" height="50"/>
+                                <rect key="frame" x="24" y="738" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="t3A-Ib-b5A"/>
@@ -101,17 +101,35 @@ Choose from the options below</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a wallet by logging in with Apple, Google, Twitter, Facebook or Reddit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1kM-mD-JgK">
-                                <rect key="frame" x="24" y="560" width="366" height="41"/>
+                                <rect key="frame" x="24" y="494" width="366" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="or" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4CX-Nj-4Yh">
-                                <rect key="frame" x="24" y="709" width="366" height="21"/>
+                                <rect key="frame" x="24" y="643" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qTz-PV-XNV">
+                                <rect key="frame" x="24" y="804" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="1D4-QJ-99m"/>
+                                </constraints>
+                                <state key="normal" title="Import from Ledger">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="og5-cX-dVV" kind="show" id="sr9-NQ-YBb"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -123,9 +141,10 @@ Choose from the options below</string>
                             <constraint firstItem="Lm6-pL-Voh" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="CUn-st-gmb"/>
                             <constraint firstItem="4CX-Nj-4Yh" firstAttribute="top" secondItem="Lm6-pL-Voh" secondAttribute="bottom" constant="50" id="F2u-JH-CMp"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="36" id="G7R-c8-MYU"/>
+                            <constraint firstItem="qTz-PV-XNV" firstAttribute="top" secondItem="Mkw-VQ-LxP" secondAttribute="bottom" constant="16" id="Gyz-Hn-ZoW"/>
                             <constraint firstItem="Mkw-VQ-LxP" firstAttribute="top" secondItem="PGy-dT-1kF" secondAttribute="bottom" constant="16" id="HL0-bK-SrC"/>
+                            <constraint firstItem="qTz-PV-XNV" firstAttribute="trailing" secondItem="Mkw-VQ-LxP" secondAttribute="trailing" id="Pdv-lm-sam"/>
                             <constraint firstAttribute="trailing" secondItem="PGy-dT-1kF" secondAttribute="trailing" constant="24" id="RU0-l7-SWt"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="Mkw-VQ-LxP" secondAttribute="bottom" constant="8" id="SAb-0F-hkB"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="36" id="UI6-7t-EKM"/>
                             <constraint firstItem="PGy-dT-1kF" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="XnA-RT-Rb3"/>
                             <constraint firstItem="hbt-m0-gW1" firstAttribute="top" secondItem="t2i-m9-oIO" secondAttribute="bottom" constant="8" id="YMS-xh-f0j"/>
@@ -134,6 +153,8 @@ Choose from the options below</string>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" constant="24" id="aMU-la-ZTD"/>
                             <constraint firstAttribute="trailing" secondItem="Mkw-VQ-LxP" secondAttribute="trailing" constant="24" id="lgz-hf-qig"/>
                             <constraint firstItem="PGy-dT-1kF" firstAttribute="top" secondItem="4CX-Nj-4Yh" secondAttribute="bottom" constant="8" symbolic="YES" id="nLy-nJ-eBF"/>
+                            <constraint firstItem="qTz-PV-XNV" firstAttribute="leading" secondItem="Mkw-VQ-LxP" secondAttribute="leading" id="tWe-UM-LTF"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="bottom" secondItem="qTz-PV-XNV" secondAttribute="bottom" constant="8" id="vcy-AQ-UZ1"/>
                             <constraint firstItem="Mkw-VQ-LxP" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="24" id="wFQ-OO-MiE"/>
                             <constraint firstItem="1kM-mD-JgK" firstAttribute="trailing" secondItem="Lm6-pL-Voh" secondAttribute="trailing" id="wKW-fa-cBK"/>
                             <constraint firstItem="t2i-m9-oIO" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="xhV-fz-pad"/>
@@ -334,7 +355,7 @@ Users should be aware that using this option removes some anonimity, as once cre
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFW-mO-gv7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4265" y="-804"/>
+            <point key="canvasLocation" x="4264" y="-2296"/>
         </scene>
         <!--New Wallet-->
         <scene sceneID="ZmR-B1-wyJ">
@@ -387,7 +408,7 @@ However it requires users to remember a 24 word phrase. Loosing this phrase mean
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8Km-aG-zmQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4265" y="13"/>
+            <point key="canvasLocation" x="4264" y="-1479"/>
         </scene>
         <!--Password-->
         <scene sceneID="LVk-Ls-kAf">
@@ -452,7 +473,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kGw-uN-g1a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5354" y="13"/>
+            <point key="canvasLocation" x="5354" y="-1479"/>
         </scene>
         <!--Seed phrase-->
         <scene sceneID="4Pc-cB-I7G">
@@ -675,7 +696,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GYx-Zi-4uD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6465" y="13"/>
+            <point key="canvasLocation" x="6464" y="-1479"/>
         </scene>
         <!--Confirm-->
         <scene sceneID="xac-Cm-wYi">
@@ -790,7 +811,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xcy-hm-s1B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7609" y="13"/>
+            <point key="canvasLocation" x="7609" y="-1479"/>
         </scene>
         <!--PIN-->
         <scene sceneID="rsO-1B-0kc">
@@ -848,7 +869,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uEu-Qn-rmY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="8765" y="13"/>
+            <point key="canvasLocation" x="8764" y="-1479"/>
         </scene>
         <!--Confirm PIN-->
         <scene sceneID="wlA-hv-c9T">
@@ -906,7 +927,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FUM-JY-Ezi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="9857" y="13"/>
+            <point key="canvasLocation" x="9857" y="-1479"/>
         </scene>
         <!--Biometrics-->
         <scene sceneID="lyk-3p-VsA">
@@ -972,7 +993,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWh-JN-Vxo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10933" y="13"/>
+            <point key="canvasLocation" x="10932" y="-1479"/>
         </scene>
         <!--Import-->
         <scene sceneID="8h7-5U-ken">
@@ -985,11 +1006,11 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         <sections>
                             <tableViewSection id="ZwH-q8-2v8">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" id="a1Q-hB-xtB">
-                                        <rect key="frame" x="0.0" y="24.5" width="414" height="86"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="44" id="a1Q-hB-xtB">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a1Q-hB-xtB" id="Zie-gL-NMa">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="86"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from one of the options" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFD-UV-quU">
@@ -1008,7 +1029,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2C4-Rd-kp8">
-                                        <rect key="frame" x="0.0" y="110.5" width="414" height="103"/>
+                                        <rect key="frame" x="0.0" y="68.5" width="414" height="103"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2C4-Rd-kp8" id="BZ3-Ok-AkA">
                                             <rect key="frame" x="0.0" y="0.0" width="384.5" height="103"/>
@@ -1042,7 +1063,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="SfX-0b-jDY">
-                                        <rect key="frame" x="0.0" y="213.5" width="414" height="103"/>
+                                        <rect key="frame" x="0.0" y="171.5" width="414" height="103"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SfX-0b-jDY" id="o5x-Ld-bMr">
                                             <rect key="frame" x="0.0" y="0.0" width="384.5" height="103"/>
@@ -1076,7 +1097,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="HoZ-M1-5gO">
-                                        <rect key="frame" x="0.0" y="316.5" width="414" height="103"/>
+                                        <rect key="frame" x="0.0" y="274.5" width="414" height="103"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HoZ-M1-5gO" id="J4q-LZ-MOK">
                                             <rect key="frame" x="0.0" y="0.0" width="384.5" height="103"/>
@@ -1121,7 +1142,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wC4-ge-8dN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4265" y="1773"/>
+            <point key="canvasLocation" x="4263.768115942029" y="1772.5446428571429"/>
         </scene>
         <!--Mnemonic-->
         <scene sceneID="qoB-xk-BPf">
@@ -1734,7 +1755,7 @@ If you delete your app, reset you phone, or a critical secutiry update is needed
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XbI-ve-7rH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12209" y="13"/>
+            <point key="canvasLocation" x="12209" y="-1479"/>
         </scene>
         <!--Home-->
         <scene sceneID="n8F-Np-vGv">
@@ -1744,7 +1765,7 @@ If you delete your app, reset you phone, or a critical secutiry update is needed
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fju-f4-iII" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13152" y="13"/>
+            <point key="canvasLocation" x="13151" y="-1479"/>
         </scene>
         <!--Onboarding Page View Controller-->
         <scene sceneID="yVC-LS-bPQ">
@@ -1758,7 +1779,7 @@ If you delete your app, reset you phone, or a critical secutiry update is needed
                 </pageViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bCM-CR-AbI" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12209" y="769"/>
+            <point key="canvasLocation" x="12209" y="-717"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="DBr-bU-tu1">
@@ -1825,7 +1846,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Trl-60-Gq2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10199" y="1412"/>
+            <point key="canvasLocation" x="12209" y="-9"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="AWo-Da-Svq">
@@ -1871,7 +1892,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kkd-1j-6VK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10859" y="1410"/>
+            <point key="canvasLocation" x="12867" y="-11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Fzx-tk-dEa">
@@ -1917,7 +1938,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OcR-Ut-HbD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="11533" y="1410"/>
+            <point key="canvasLocation" x="13541" y="-11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="0sq-dK-X67">
@@ -1968,7 +1989,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QU3-6y-OrB" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12883" y="1410"/>
+            <point key="canvasLocation" x="14893" y="-11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="aqD-nd-smj">
@@ -2023,7 +2044,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1L8-hb-htk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14854" y="1410"/>
+            <point key="canvasLocation" x="16864" y="-11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="EDS-gI-ADc">
@@ -2076,7 +2097,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DgB-3s-mjg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="12209" y="1410"/>
+            <point key="canvasLocation" x="14217" y="-11"/>
         </scene>
         <!--Fundraiser / Fuacet-->
         <scene sceneID="R5m-xC-7ju">
@@ -2258,7 +2279,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="snO-dk-v9T" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="13538" y="1410"/>
+            <point key="canvasLocation" x="15546" y="-11"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Rit-Bk-Ih6">
@@ -2307,7 +2328,7 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d2m-1D-x1i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="14199" y="1410"/>
+            <point key="canvasLocation" x="16209" y="-11"/>
         </scene>
         <!--Mnemonic-->
         <scene sceneID="17g-dl-kqj">
@@ -2406,9 +2427,192 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
             </objects>
             <point key="canvasLocation" x="5354" y="1000"/>
         </scene>
+        <!--Import Ledger-->
+        <scene sceneID="SeA-JB-1aS">
+            <objects>
+                <viewController storyboardIdentifier="importLedger" id="og5-cX-dVV" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="p1r-IL-ZUy">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wiT-mG-Kzn">
+                                <rect key="frame" x="36" y="124" width="342" height="162.5"/>
+                                <string key="text">Before continuing, please make sure your ledger is setup, using the latest firmware, has the Tezos app installed and has an account created.
+
+If some or none of this has been done, please donwload the ledger live iOS app from the app store, and setup a Tezos wallet</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZDS-yP-c2w">
+                                <rect key="frame" x="24" y="804" width="366" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="g2p-Nq-Xat"/>
+                                </constraints>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="AL3-CF-HZm" kind="show" id="5iT-Ke-Pv8"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ugK-bb-STc"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="ugK-bb-STc" firstAttribute="bottom" secondItem="ZDS-yP-c2w" secondAttribute="bottom" constant="8" id="1st-Rn-JJX"/>
+                            <constraint firstItem="wiT-mG-Kzn" firstAttribute="top" secondItem="ugK-bb-STc" secondAttribute="top" constant="36" id="CUG-b0-rbb"/>
+                            <constraint firstItem="ugK-bb-STc" firstAttribute="trailing" secondItem="ZDS-yP-c2w" secondAttribute="trailing" constant="24" id="LvL-ma-iav"/>
+                            <constraint firstItem="ZDS-yP-c2w" firstAttribute="leading" secondItem="ugK-bb-STc" secondAttribute="leading" constant="24" id="PiP-zU-ptA"/>
+                            <constraint firstItem="wiT-mG-Kzn" firstAttribute="leading" secondItem="ugK-bb-STc" secondAttribute="leading" constant="36" id="cyC-b9-KE5"/>
+                            <constraint firstItem="ugK-bb-STc" firstAttribute="trailing" secondItem="wiT-mG-Kzn" secondAttribute="trailing" constant="36" id="y7C-Tk-Cxr"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Import Ledger" id="X7K-z7-8NT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4fB-dV-6Jw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4264" y="23"/>
+        </scene>
+        <!--Scan-->
+        <scene sceneID="Enb-GE-wjq">
+            <objects>
+                <viewController id="AL3-CF-HZm" customClass="LedgerScanningViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2Pn-YH-0hv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning for ledger devices ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0De-21-5Bd">
+                                <rect key="frame" x="36" y="124" width="342" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="mAL-dm-cEY">
+                                <rect key="frame" x="0.0" y="160.5" width="414" height="701.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ledgerDeviceCell" id="X2P-5y-J6c" customClass="LedgerDeviceCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="24.5" width="414" height="69.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X2P-5y-J6c" id="teb-G5-mbc">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDY-1L-jAb">
+                                                    <rect key="frame" x="16" y="8" width="382" height="30"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="UUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="va4-Yp-MG1">
+                                                    <rect key="frame" x="16" y="46" width="382" height="15.5"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="va4-Yp-MG1" firstAttribute="top" secondItem="dDY-1L-jAb" secondAttribute="bottom" constant="8" id="A8y-gq-Xhz"/>
+                                                <constraint firstAttribute="bottom" secondItem="va4-Yp-MG1" secondAttribute="bottom" constant="8" id="AJz-xc-3ax"/>
+                                                <constraint firstItem="va4-Yp-MG1" firstAttribute="trailing" secondItem="dDY-1L-jAb" secondAttribute="trailing" id="EiS-pz-WfZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="dDY-1L-jAb" secondAttribute="trailing" constant="16" id="QSn-eV-CAD"/>
+                                                <constraint firstItem="va4-Yp-MG1" firstAttribute="leading" secondItem="dDY-1L-jAb" secondAttribute="leading" id="VFh-G8-piD"/>
+                                                <constraint firstItem="dDY-1L-jAb" firstAttribute="leading" secondItem="teb-G5-mbc" secondAttribute="leading" constant="16" id="ifR-Mh-69o"/>
+                                                <constraint firstItem="dDY-1L-jAb" firstAttribute="top" secondItem="teb-G5-mbc" secondAttribute="top" constant="8" id="k7d-vZ-7Ko"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="nameLabel" destination="dDY-1L-jAb" id="NSO-KD-yNt"/>
+                                            <outlet property="uuidLabel" destination="va4-Yp-MG1" id="rhC-91-lfR"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="0ge-sx-rbp"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="0De-21-5Bd" firstAttribute="leading" secondItem="0ge-sx-rbp" secondAttribute="leading" constant="36" id="03d-4G-caf"/>
+                            <constraint firstItem="mAL-dm-cEY" firstAttribute="bottom" secondItem="0ge-sx-rbp" secondAttribute="bottom" id="3N0-UI-55d"/>
+                            <constraint firstItem="mAL-dm-cEY" firstAttribute="top" secondItem="0De-21-5Bd" secondAttribute="bottom" constant="16" id="B4l-2n-HTM"/>
+                            <constraint firstItem="0ge-sx-rbp" firstAttribute="trailing" secondItem="0De-21-5Bd" secondAttribute="trailing" constant="36" id="B7g-Fc-FbN"/>
+                            <constraint firstItem="0De-21-5Bd" firstAttribute="top" secondItem="0ge-sx-rbp" secondAttribute="top" constant="36" id="Cdr-hu-m6b"/>
+                            <constraint firstItem="mAL-dm-cEY" firstAttribute="trailing" secondItem="0ge-sx-rbp" secondAttribute="trailing" id="Qpf-Kx-Nx3"/>
+                            <constraint firstItem="mAL-dm-cEY" firstAttribute="leading" secondItem="0ge-sx-rbp" secondAttribute="leading" id="qdw-YN-Tq0"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Scan" id="1tZ-4k-4pR"/>
+                    <connections>
+                        <outlet property="tableView" destination="mAL-dm-cEY" id="sKZ-Hd-ztJ"/>
+                        <segue destination="1a4-fY-1LL" kind="show" identifier="setup" id="K4L-LY-PDW"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iOl-Zo-dgZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5353.6231884057979" y="22.767857142857142"/>
+        </scene>
+        <!--Verify-->
+        <scene sceneID="YBq-sr-iSN">
+            <objects>
+                <viewController id="1a4-fY-1LL" customClass="LedgerVerifyViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dgg-uh-mg8">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Check your ledger device and ensure the details displayed below match whats stored on the device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rs8-bX-5xQ">
+                                <rect key="frame" x="36" y="124" width="342" height="61"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Address:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ndh-C1-xbJ">
+                                <rect key="frame" x="36" y="221" width="342" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tz123abc" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lOU-vW-lxb">
+                                <rect key="frame" x="36" y="250" width="342" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="YU6-pa-blv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="lOU-vW-lxb" firstAttribute="leading" secondItem="Ndh-C1-xbJ" secondAttribute="leading" id="0jw-1C-dMT"/>
+                            <constraint firstItem="Rs8-bX-5xQ" firstAttribute="top" secondItem="YU6-pa-blv" secondAttribute="top" constant="36" id="Cfj-91-KQc"/>
+                            <constraint firstItem="Rs8-bX-5xQ" firstAttribute="leading" secondItem="YU6-pa-blv" secondAttribute="leading" constant="36" id="GtK-L2-5dz"/>
+                            <constraint firstItem="Ndh-C1-xbJ" firstAttribute="top" secondItem="Rs8-bX-5xQ" secondAttribute="bottom" constant="36" id="JKB-gV-VSD"/>
+                            <constraint firstItem="lOU-vW-lxb" firstAttribute="top" secondItem="Ndh-C1-xbJ" secondAttribute="bottom" constant="8" symbolic="YES" id="eyx-iv-KhJ"/>
+                            <constraint firstItem="lOU-vW-lxb" firstAttribute="trailing" secondItem="Ndh-C1-xbJ" secondAttribute="trailing" id="iU7-Kf-gdY"/>
+                            <constraint firstItem="YU6-pa-blv" firstAttribute="trailing" secondItem="Rs8-bX-5xQ" secondAttribute="trailing" constant="36" id="sH5-Kv-6PK"/>
+                            <constraint firstItem="Ndh-C1-xbJ" firstAttribute="leading" secondItem="Rs8-bX-5xQ" secondAttribute="leading" id="sb0-Ae-N9l"/>
+                            <constraint firstItem="Ndh-C1-xbJ" firstAttribute="trailing" secondItem="Rs8-bX-5xQ" secondAttribute="trailing" id="xZ8-8f-dRm"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Verify" id="Q35-6a-jrh"/>
+                    <connections>
+                        <outlet property="addressHeadingLabel" destination="Ndh-C1-xbJ" id="yif-m0-TfE"/>
+                        <outlet property="addressLabel" destination="lOU-vW-lxb" id="D1w-9a-hbk"/>
+                        <segue destination="4jg-5C-hey" kind="show" identifier="vErr" id="g7W-ka-Y3Y"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Fvc-sI-gVb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6464" y="23"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="LoH-Ee-G0O"/>
+        <segue reference="g7W-ka-Y3Y"/>
         <segue reference="Liq-8Z-Hqs"/>
     </inferredMetricsTieBreakers>
     <resources>

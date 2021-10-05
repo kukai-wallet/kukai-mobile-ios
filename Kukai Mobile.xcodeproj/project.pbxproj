@@ -60,6 +60,9 @@
 		C0D74CC926C12D010096F845 /* RemoveLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */; };
 		C0DAD65426B00ABD001DF430 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0DAD65326B00ABD001DF430 /* Login.storyboard */; };
 		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
+		C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */; };
+		C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */; };
+		C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -148,6 +151,9 @@
 		C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLiquidityViewController.swift; sourceTree = "<group>"; };
 		C0DAD65326B00ABD001DF430 /* Login.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerScanningViewController.swift; sourceTree = "<group>"; };
+		C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceCell.swift; sourceTree = "<group>"; };
+		C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerVerifyViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -233,6 +239,7 @@
 		C049B5A126A0494300F1C5E0 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				C0E921EB270C8C5C00F3B0B9 /* Cells */,
 				C049B5A426A0497D00F1C5E0 /* Onboarding.storyboard */,
 				C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */,
 				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
@@ -243,6 +250,8 @@
 				C0082BF826A7076500DB160B /* ImportMnemonicViewController.swift */,
 				C0082BFC26A70D3C00DB160B /* ImportFaucetViewController.swift */,
 				C0082BFA26A70B5900DB160B /* ImportSuccessViewController.swift */,
+				C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */,
+				C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -349,6 +358,14 @@
 				C0DAD65726B00D64001DF430 /* LoginViewController.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		C0E921EB270C8C5C00F3B0B9 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -525,15 +542,18 @@
 				C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */,
 				C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */,
 				C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */,
+				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
 				C0082C0626A7249200DB160B /* SettingsViewController.swift in Sources */,
 				C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */,
 				C0B743BC26AB223800377A9B /* TokenBalanceTableViewCell.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
+				C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
 				C0D74CC926C12D010096F845 /* RemoveLiquidityViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
+				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
 				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 				C085EAB526B192A600B37A15 /* SideMenuViewModel.swift in Sources */,
 				C0B743C026AB227400377A9B /* NftChildTableViewCell.swift in Sources */,
@@ -1023,7 +1043,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
 			requirement = {
-				branch = feature/bcd_improvements;
+				branch = develop;
 				kind = branch;
 			};
 		};

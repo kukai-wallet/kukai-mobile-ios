@@ -205,7 +205,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S64-NK-WfT">
-                                <rect key="frame" x="0.0" y="580" width="414" height="316"/>
+                                <rect key="frame" x="0.0" y="514" width="414" height="382"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ggP-0X-fQm">
                                         <rect key="frame" x="370" y="8" width="44" height="44"/>
@@ -290,12 +290,32 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eVo-Pu-Uiy">
+                                        <rect key="frame" x="24" y="274" width="366" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="TND-Rk-but"/>
+                                        </constraints>
+                                        <state key="normal" title="Import from ledger">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="WN3-fE-iAq" kind="show" id="bpu-Gb-SGf"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
+                                    <constraint firstItem="eVo-Pu-Uiy" firstAttribute="top" secondItem="Xtx-kw-hm1" secondAttribute="bottom" constant="16" id="2wc-YJ-8Fq"/>
                                     <constraint firstAttribute="trailing" secondItem="BDb-mV-5zK" secondAttribute="trailing" constant="24" id="3J9-7H-6Ni"/>
                                     <constraint firstAttribute="trailing" secondItem="Xtx-kw-hm1" secondAttribute="trailing" constant="24" id="4xE-Lo-4Zl"/>
                                     <constraint firstItem="Xtx-kw-hm1" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="BmO-jY-dQt"/>
+                                    <constraint firstItem="eVo-Pu-Uiy" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="EZh-g2-pdP"/>
                                     <constraint firstItem="ggP-0X-fQm" firstAttribute="leading" secondItem="vz6-mf-Hzk" secondAttribute="trailing" constant="24" id="I8Y-da-a4f"/>
                                     <constraint firstItem="5Rn-qC-7aC" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="20" id="Mxy-1J-oRB"/>
                                     <constraint firstItem="vz6-mf-Hzk" firstAttribute="top" secondItem="S64-NK-WfT" secondAttribute="top" constant="8" id="Pue-Pc-QEd"/>
@@ -304,6 +324,7 @@
                                     <constraint firstAttribute="trailing" secondItem="ggP-0X-fQm" secondAttribute="trailing" id="anQ-s9-uuv"/>
                                     <constraint firstItem="5Rn-qC-7aC" firstAttribute="firstBaseline" secondItem="vz6-mf-Hzk" secondAttribute="firstBaseline" id="h5n-uG-zu4"/>
                                     <constraint firstItem="ggP-0X-fQm" firstAttribute="top" secondItem="S64-NK-WfT" secondAttribute="top" constant="8" id="i8d-1A-c8W"/>
+                                    <constraint firstAttribute="trailing" secondItem="eVo-Pu-Uiy" secondAttribute="trailing" constant="24" id="mMW-QU-Ydx"/>
                                     <constraint firstItem="Xtx-kw-hm1" firstAttribute="top" secondItem="exz-FF-P5q" secondAttribute="bottom" constant="16" id="qD8-bd-dGS"/>
                                     <constraint firstItem="BDb-mV-5zK" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="tEW-ae-CCg"/>
                                     <constraint firstItem="exz-FF-P5q" firstAttribute="leading" secondItem="S64-NK-WfT" secondAttribute="leading" constant="24" id="xtl-EX-71X"/>
@@ -315,8 +336,8 @@
                         <viewLayoutGuide key="safeArea" id="w7p-nb-GMb"/>
                         <color key="backgroundColor" red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="w7p-nb-GMb" firstAttribute="bottom" secondItem="Xtx-kw-hm1" secondAttribute="bottom" constant="24" id="5h2-1w-zZb"/>
                             <constraint firstAttribute="bottom" secondItem="S64-NK-WfT" secondAttribute="bottom" id="Qcp-ir-QOZ"/>
+                            <constraint firstItem="w7p-nb-GMb" firstAttribute="bottom" secondItem="eVo-Pu-Uiy" secondAttribute="bottom" constant="24" id="aHK-2Y-U63"/>
                             <constraint firstItem="S64-NK-WfT" firstAttribute="trailing" secondItem="w7p-nb-GMb" secondAttribute="trailing" id="ciV-zg-FmE"/>
                             <constraint firstItem="S64-NK-WfT" firstAttribute="leading" secondItem="w7p-nb-GMb" secondAttribute="leading" id="mjK-dI-vBF"/>
                         </constraints>
@@ -350,7 +371,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fVp-zC-KD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5707" y="-502"/>
+            <point key="canvasLocation" x="5705" y="-521"/>
         </scene>
         <!--newWallet-->
         <scene sceneID="6NJ-Yh-i4t">
@@ -360,7 +381,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vhn-Br-ldb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5670" y="-467"/>
+            <point key="canvasLocation" x="5667" y="-486"/>
         </scene>
         <!--walletHelp-->
         <scene sceneID="phz-Ue-a7i">
@@ -378,7 +399,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wuu-vN-ugn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5681" y="-435"/>
+            <point key="canvasLocation" x="5678" y="-454"/>
         </scene>
         <!--Exchange-->
         <scene sceneID="Lm0-SE-MPJ">
@@ -1522,6 +1543,16 @@
             </objects>
             <point key="canvasLocation" x="-1230.4347826086957" y="851.78571428571422"/>
         </scene>
+        <!--importLedger-->
+        <scene sceneID="iJc-nG-btF">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="importLedger" id="WN3-fE-iAq" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="qMT-a3-Pvg"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z9U-LV-cOz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5678" y="-413"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="DKG-zl-eBl"/>
@@ -1556,10 +1587,10 @@
             <color red="0.90588235294117647" green="0.8901960784313725" blue="0.89411764705882357" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="segmented-text">
-            <color red="0.2053279579" green="0.25961297750000001" blue="0.39957857130000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.20499999821186066" green="0.25999999046325684" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="separator">
-            <color red="0.32941176470588235" green="0.32941176470588235" blue="0.34509803921568627" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.32899999618530273" green="0.32899999618530273" blue="0.3449999988079071" alpha="0.60000002384185791" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
