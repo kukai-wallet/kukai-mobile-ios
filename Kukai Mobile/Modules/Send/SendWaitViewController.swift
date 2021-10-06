@@ -39,7 +39,7 @@ class SendWaitViewController: UIViewController {
 			DependencyManager.shared.tezosNodeClient.send(operations: estimatedOps, withWallet: wallet) { sendResult in
 				guard let opHash = try? sendResult.get() else {
 					self?.hideActivity()
-					self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
+					self?.alert(errorWithMessage: "Couldn't send transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
 					return
 				}
 				

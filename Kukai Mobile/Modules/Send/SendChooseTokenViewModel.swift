@@ -71,7 +71,10 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 	}
 	
 	func token(forIndexPath indexPath: IndexPath) -> Token? {
-		if indexPath.row < (account?.tokens.count ?? 0), let token = account?.tokens[indexPath.row] {
+		if indexPath.row == 0 {
+			return Token.xtz()
+			
+		} else if let token = account?.tokens[indexPath.row] {
 			return token
 		}
 		

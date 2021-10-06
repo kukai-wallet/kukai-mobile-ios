@@ -101,7 +101,9 @@ class SendLedgerApproveViewController: UIViewController {
 			}
 			
 			self?.hideActivity()
-			self?.alert(withTitle: "Success", andMessage: "Operation injected, hash: \(opHash)")
+			self?.alert(withTitle: "Success", andMessage: "Operation injected, hash: \(opHash)", okAction: { action in
+				self?.dismiss(animated: true, completion: nil)
+			})
 		}
 	}
 }
@@ -126,6 +128,8 @@ extension SendLedgerApproveViewController: LedgerServiceDelegate {
 					self?.handle(signature: signature, andError: error)
 				}
 			}
+		} else {
+			self.alert(errorWithMessage: "Unable to connect to ledger or can't find data")
 		}
 	}
 	

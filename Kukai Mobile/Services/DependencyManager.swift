@@ -27,7 +27,7 @@ class DependencyManager {
 	var tezosNodeClient: TezosNodeClient
 	var tzktClient: TzKTClient
 	var betterCallDevClient: BetterCallDevClient
-	var torusAuthService: TorusAuthService
+	//var torusAuthService: TorusAuthService
 	
 	
 	// Properties and helpers
@@ -112,7 +112,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
-		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
+		//torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
 		
 		updateKukaiCoreClients()
 	}
@@ -151,6 +151,7 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		
+		/*
 		torusAuthService = TorusAuthService(
 			networkType: tezosClientConfig.networkType,
 			networkService: tezosNodeClient.networkService,
@@ -158,6 +159,7 @@ class DependencyManager {
 			googleRedirectURL: "com.googleusercontent.apps.238941746713-vfap8uumijal4ump28p9jd3lbe6onqt4:/oauthredirect",
 			browserRedirectURL: "https://scripts.toruswallet.io/redirect.html"
 		)
+		*/
 		
 		networkDidChange = true
 	}
