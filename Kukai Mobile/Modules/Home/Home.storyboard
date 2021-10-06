@@ -440,6 +440,16 @@
             </objects>
             <point key="canvasLocation" x="-125" y="852"/>
         </scene>
+        <!--Send-->
+        <scene sceneID="oyf-7W-8ka">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" id="15J-CK-zvW" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="QTi-AL-gg0"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dhr-PN-sE8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1230" y="1390"/>
+        </scene>
         <!--Onboarding Page View Controller-->
         <scene sceneID="VST-Cb-NgX">
             <objects>
@@ -1258,6 +1268,9 @@
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="large"/>
                                                         </state>
+                                                        <connections>
+                                                            <segue destination="15J-CK-zvW" kind="show" id="g1c-yg-ax8"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PnN-C0-oV4">
                                                         <rect key="frame" x="8" y="58" width="34.5" height="17"/>
