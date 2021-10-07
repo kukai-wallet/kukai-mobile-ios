@@ -14,7 +14,6 @@ class DirectAuthViewController: UIViewController {
         super.viewDidLoad()
     }
 	
-	/*
 	@IBAction func appleTapped(_ sender: Any) {
 		self.showActivity(clearBackground: false)
 		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self) { [weak self] result in
@@ -80,5 +79,4 @@ class DirectAuthViewController: UIViewController {
 			self.performSegue(withIdentifier: "complete", sender: self)
 		}
 	}
-	*/
 }

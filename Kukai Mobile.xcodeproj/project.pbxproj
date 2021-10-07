@@ -18,7 +18,7 @@
 		C0082C0626A7249200DB160B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0526A7249200DB160B /* SettingsViewController.swift */; };
 		C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0726A7278000DB160B /* HomeTabBarController.swift */; };
 		C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */; };
-		C024038726D91FC200E1CB80 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C024038626D91FC200E1CB80 /* BeaconSDK */; };
+		C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C021FA2B270F45A700BD9CF3 /* BeaconSDK */; };
 		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
 		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
 		C049B5A326A0496C00F1C5E0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C049B5A226A0496C00F1C5E0 /* Main.storyboard */; };
@@ -60,8 +60,6 @@
 		C0B743BE26AB226700377A9B /* NftParentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */; };
 		C0B743C026AB227400377A9B /* NftChildTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */; };
 		C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */; };
-		C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; };
-		C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD29B26A97CFD0097B63A /* Sodium */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
 		C0D74CC526C12CC90096F845 /* AddLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC426C12CC90096F845 /* AddLiquidityViewController.swift */; };
 		C0D74CC726C12CDA0096F845 /* LiquidtyBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC626C12CDA0096F845 /* LiquidtyBalanceViewController.swift */; };
@@ -97,7 +95,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				C0BBD29D26A97CFD0097B63A /* Sodium in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -178,9 +175,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
-				C0BBD29C26A97CFD0097B63A /* Sodium in Frameworks */,
+				C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
-				C024038726D91FC200E1CB80 /* BeaconSDK in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,9 +415,8 @@
 			name = "Kukai Mobile";
 			packageProductDependencies = (
 				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
-				C0BBD29B26A97CFD0097B63A /* Sodium */,
 				C0BBD2A426A9A7980097B63A /* Sentry */,
-				C024038626D91FC200E1CB80 /* BeaconSDK */,
+				C021FA2B270F45A700BD9CF3 /* BeaconSDK */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -496,9 +491,8 @@
 			mainGroup = C0B03636269EE2070071ACD0;
 			packageReferences = (
 				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
-				C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */,
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
-				C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
+				C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -1071,11 +1065,11 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
+		C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simonmcl/beacon-ios-sdk";
 			requirement = {
-				branch = master;
+				branch = develop;
 				kind = branch;
 			};
 		};
@@ -1084,14 +1078,6 @@
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
 			requirement = {
 				branch = develop;
-				kind = branch;
-			};
-		};
-		C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/junelife/swift-sodium";
-			requirement = {
-				branch = spm;
 				kind = branch;
 			};
 		};
@@ -1106,20 +1092,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C024038626D91FC200E1CB80 /* BeaconSDK */ = {
+		C021FA2B270F45A700BD9CF3 /* BeaconSDK */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C024038526D91FC200E1CB80 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			package = C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
 			productName = BeaconSDK;
 		};
 		C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
-		};
-		C0BBD29B26A97CFD0097B63A /* Sodium */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0BBD29A26A97CFD0097B63A /* XCRemoteSwiftPackageReference "swift-sodium" */;
-			productName = Sodium;
 		};
 		C0BBD2A426A9A7980097B63A /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;
