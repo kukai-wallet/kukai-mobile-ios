@@ -36,20 +36,15 @@ class LedgerVerifyViewController: UIViewController {
 			.flatMap { _ in
 				return LedgerService.shared.getAddress(verify: true)
 			}
-			.convertToResult()
-			.sink { [weak self] result in
+			.sink(onError: { [weak self] error in
 				LedgerService.shared.disconnectFromDevice()
+				self?.alert(errorWithMessage: "Error from ledger: \( error )")
+				self?.navigationController?.popViewController(animated: true)
 				
-				guard let addressObj2 = try? result.get() else {
-					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
-					
-					self?.alert(errorWithMessage: "Error from ledger: \( error )")
-					self?.navigationController?.popViewController(animated: true)
-					return
-				}
-				
+			}, onSuccess: { [weak self] addressObj2 in
+				LedgerService.shared.disconnectFromDevice()
 				self?.createWallet(address: addressObj2.address, publicKey: addressObj2.publicKey)
-			}
+			})
 			.store(in: &bag)
 	}
 	

@@ -80,15 +80,11 @@ class SendLedgerApproveViewController: UIViewController {
 				
 				return LedgerService.shared.sign(hex: ledgerPrep.blake2bHash, parse: false)
 			}
-			.convertToResult()
-			.sink(receiveValue: { [weak self] signatureResult in
-				guard let sig = try? signatureResult.get() else {
-					let error = (try? signatureResult.getError()) ?? ErrorResponse.unknownError()
-					self?.alert(errorWithMessage: "Error from ledger: \( error )")
-					return
-				}
+			.sink(onError: { [weak self] error in
+				self?.alert(errorWithMessage: "Error from ledger: \( error )")
 				
-				self?.handle(signature: sig)
+			}, onSuccess: { [weak self] signature in
+				self?.handle(signature: signature)
 			})
 			.store(in: &bag)
 		

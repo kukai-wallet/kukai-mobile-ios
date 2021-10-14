@@ -66,27 +66,23 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 		let itemIndex = deviceList.index(deviceList.startIndex, offsetBy: indexPath.row)
 		let selectedUUID = deviceList.keys[itemIndex]
 		
-		print("Searching for: \(selectedUUID)")
-		
 		self.showActivity(clearBackground: false)
 		LedgerService.shared.connectTo(uuid: selectedUUID)
-			.convertToResult()
-			.sink { [weak self] result in
+			.sink(onError: { [weak self] error in
+				self?.hideActivity()
+				self?.alert(errorWithMessage: "Error from ledger: \( error )")
+				
+			}, onSuccess: { [weak self] success in
 				self?.hideActivity()
 				
-				guard let bool = try? result.get() else {
-					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
-					self?.alert(errorWithMessage: "Error from ledger: \( error )")
-					return
-				}
-				
-				if !bool {
+				if !success {
 					self?.alert(errorWithMessage: "Unable to connect to device, please try again")
+					return
 				}
 				
 				LedgerService.shared.stopListening()
 				self?.performSegue(withIdentifier: "setup", sender: self)
-			}
+			})
 			.store(in: &bag)
 	}
 }
