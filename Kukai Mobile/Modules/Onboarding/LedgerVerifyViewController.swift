@@ -7,11 +7,14 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 class LedgerVerifyViewController: UIViewController {
 
 	@IBOutlet weak var addressHeadingLabel: UILabel!
 	@IBOutlet weak var addressLabel: UILabel!
+	
+	private var bag = Set<AnyCancellable>()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,27 +27,30 @@ class LedgerVerifyViewController: UIViewController {
 		super.viewDidAppear(animated)
 		self.showActivity(clearBackground: false)
 		
-		LedgerService.shared.getAddress(verify: false) { [weak self] address, publicKey, error in
-			if let err = error {
-				self?.alert(errorWithMessage: "\(err)")
-				self?.navigationController?.popViewController(animated: true)
+		LedgerService.shared.getAddress(verify: false)
+			.onReceiveOutput { [weak self] addressObj in
+				self?.hideActivity()
+				self?.addressHeadingLabel.text = "Address:"
+				self?.addressLabel.text = addressObj.address
 			}
-			
-			self?.hideActivity()
-			self?.addressHeadingLabel.text = "Address:"
-			self?.addressLabel.text = address
-			
-			
-			LedgerService.shared.getAddress(verify: true) { [weak self] verifyAddress, verifyPublicKey, verifyError in
-				if let vErr = verifyError {
-					self?.alert(errorWithMessage: "\(vErr)")
-					LedgerService.shared.disconnectFromDevice()
+			.flatMap { _ in
+				return LedgerService.shared.getAddress(verify: true)
+			}
+			.convertToResult()
+			.sink { [weak self] result in
+				LedgerService.shared.disconnectFromDevice()
+				
+				guard let addressObj2 = try? result.get() else {
+					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
+					
+					self?.alert(errorWithMessage: "Error from ledger: \( error )")
 					self?.navigationController?.popViewController(animated: true)
+					return
 				}
 				
-				self?.createWallet(address: address, publicKey: publicKey)
+				self?.createWallet(address: addressObj2.address, publicKey: addressObj2.publicKey)
 			}
-		}
+			.store(in: &bag)
 	}
 	
 	func createWallet(address: String?, publicKey: String?) {

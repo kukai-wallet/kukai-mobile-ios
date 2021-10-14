@@ -7,11 +7,13 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 	@IBOutlet weak var tableView: UITableView!
 	
+	private var bag = Set<AnyCancellable>()
 	private var deviceList: [String: String] = [:]
 	
 	override func viewDidLoad() {
@@ -24,16 +26,19 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		LedgerService.shared.setupBluetoothConnection { success in
-			if !success {
-				self.alert(errorWithMessage: "Unable to open bluetooth connection, please make sure bluetooth is turned on")
-				self.navigationController?.popViewController(animated: true)
-				return
+		LedgerService.shared.listenForDevices()
+			.convertToResult()
+			.sink { [weak self] result in
+				guard let devices = try? result.get() else {
+					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
+					self?.alert(errorWithMessage: "Error from ledger: \( error )")
+					return
+				}
+				
+				self?.deviceList = devices
+				self?.tableView.reloadData()
 			}
-			
-			LedgerService.shared.delegate = self
-			LedgerService.shared.listenForDevices()
-		}
+			.store(in: &bag)
 	}
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
@@ -65,29 +70,23 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 		
 		self.showActivity(clearBackground: false)
 		LedgerService.shared.connectTo(uuid: selectedUUID)
-	}
-}
-
-extension LedgerScanningViewController: LedgerServiceDelegate {
-	
-	func deviceListUpdated(devices: [String : String]) {
-		self.deviceList = devices
-		self.tableView.reloadData()
-	}
-	
-	func deviceConnectedStatus(success: Bool) {
-		self.hideActivity()
-		
-		if !success {
-			self.alert(errorWithMessage: "Unable to connect to device, please try again")
-			return
-		}
-		
-		LedgerService.shared.stopListening()
-		self.performSegue(withIdentifier: "setup", sender: self)
-	}
-	
-	func partialMessageSuccessReceived() {
-		
+			.convertToResult()
+			.sink { [weak self] result in
+				self?.hideActivity()
+				
+				guard let bool = try? result.get() else {
+					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
+					self?.alert(errorWithMessage: "Error from ledger: \( error )")
+					return
+				}
+				
+				if !bool {
+					self?.alert(errorWithMessage: "Unable to connect to device, please try again")
+				}
+				
+				LedgerService.shared.stopListening()
+				self?.performSegue(withIdentifier: "setup", sender: self)
+			}
+			.store(in: &bag)
 	}
 }

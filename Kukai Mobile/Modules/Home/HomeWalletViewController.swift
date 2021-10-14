@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import KukaiCoreSwift
 
 class HomeWalletViewController: UIViewController {
 
@@ -29,6 +30,14 @@ class HomeWalletViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		/// temp to remove last wallet
+		//DependencyManager.shared.selectedWalletIndex = 0
+		//let service = WalletCacheService()
+		//let wallets = service.fetchWallets()?.dropLast() ?? []
+		//service.encryptAndWriteToDisk(wallets: wallets)
+		
+		
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource

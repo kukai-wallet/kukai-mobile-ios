@@ -8,10 +8,13 @@
 import UIKit
 import KukaiCoreSwift
 import Sodium
+import Combine
 
 class SendLedgerApproveViewController: UIViewController {
 	
 	@IBOutlet weak var statusLabel: UILabel!
+	
+	private var bag = Set<AnyCancellable>()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,29 +63,49 @@ class SendLedgerApproveViewController: UIViewController {
 					}
 					
 					TransactionService.shared.sendData.ledgerPrep = ledgerPrep
-					LedgerService.shared.setupBluetoothConnection { success in
-						guard success else {
-							self?.alert(errorWithMessage: "Unable to setup bluetooth connection. Check bluetooth is enabled in settings")
-							return
-						}
-						
-						LedgerService.shared.delegate = self
-						LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
-					}
+					self?.handleLedgerSend(ledgerPrep: ledgerPrep, wallet: wallet)
 				}
 			}
 		}
 	}
 	
-	func handle(signature: String?, andError error: ErrorResponse?) {
-		guard let sig = signature else {
-			self.hideActivity()
-			self.alert(errorWithMessage: "Error from ledger: \( error ?? ErrorResponse.unknownError() )")
-			return
-		}
+	func handleLedgerSend(ledgerPrep: OperationService.LedgerPayloadPrepResponse, wallet: LedgerWallet) {
 		
+		// Connect to the ledger wallet, and request a signature from the device using the ledger prep
+		LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
+			.flatMap { _ -> AnyPublisher<String, ErrorResponse> in
+				if ledgerPrep.canLedgerParse {
+					return LedgerService.shared.sign(hex: ledgerPrep.watermarkedOp, parse: true)
+				}
+				
+				return LedgerService.shared.sign(hex: ledgerPrep.blake2bHash, parse: false)
+			}
+			.convertToResult()
+			.sink(receiveValue: { [weak self] signatureResult in
+				guard let sig = try? signatureResult.get() else {
+					let error = (try? signatureResult.getError()) ?? ErrorResponse.unknownError()
+					self?.alert(errorWithMessage: "Error from ledger: \( error )")
+					return
+				}
+				
+				self?.handle(signature: sig)
+			})
+			.store(in: &bag)
+		
+		
+		// Listen for partial success messages
+		LedgerService.shared
+			.$partialSuccessMessageReceived
+			.dropFirst()
+			.sink { _ in
+				self.statusLabel.text = "Please approve the signing request on your ledger device"
+			}
+			.store(in: &bag)
+	}
+	
+	func handle(signature: String) {
 		self.statusLabel.text = "Signature received, Injecting ..."
-		guard let ledgerPrep = TransactionService.shared.sendData.ledgerPrep, let binarySignature = Sodium.shared.utils.hex2bin(sig) else {
+		guard let ledgerPrep = TransactionService.shared.sendData.ledgerPrep, let binarySignature = Sodium.shared.utils.hex2bin(signature) else {
 			self.hideActivity()
 			self.alert(errorWithMessage: "Unable to inject, as can't find prep data")
 			return
@@ -105,35 +128,5 @@ class SendLedgerApproveViewController: UIViewController {
 				self?.dismiss(animated: true, completion: nil)
 			})
 		}
-	}
-}
-
-extension SendLedgerApproveViewController: LedgerServiceDelegate {
-	
-	func deviceListUpdated(devices: [String : String]) {
-		
-	}
-	
-	func deviceConnectedStatus(success: Bool) {
-		if success, let ledgerPrep = TransactionService.shared.sendData.ledgerPrep {
-			self.statusLabel.text = "Ledger found, requesting signature"
-			
-			if ledgerPrep.canLedgerParse {
-				LedgerService.shared.sign(hex: ledgerPrep.watermarkedOp, parse: true) { [weak self] signature, error in
-					self?.handle(signature: signature, andError: error)
-				}
-				
-			} else {
-				LedgerService.shared.sign(hex: ledgerPrep.blake2bHash, parse: false) { [weak self] signature, error in
-					self?.handle(signature: signature, andError: error)
-				}
-			}
-		} else {
-			self.alert(errorWithMessage: "Unable to connect to ledger or can't find data")
-		}
-	}
-	
-	func partialMessageSuccessReceived() {
-		self.statusLabel.text = "Please approve the signing request on your ledger device"
 	}
 }

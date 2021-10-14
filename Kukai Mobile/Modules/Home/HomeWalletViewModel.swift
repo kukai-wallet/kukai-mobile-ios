@@ -23,7 +23,8 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var account: Account? = nil
 	var tokensSelected = true
 	
-	func makeDataSource(withTableView tableView: UITableView) {
+	override init() {
+		super.init()
 		
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
 			.dropFirst()
@@ -36,7 +37,14 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			.sink { [weak self] _ in
 				self?.refresh(animate: true)
 			}
-		
+	}
+	
+	deinit {
+		networkChangeCancellable?.cancel()
+		walletChangeCancellable?.cancel()
+	}
+	
+	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let xtzBalance = item as? XTZAmount {
