@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="2mK-hk-rbP">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="Dp3-KA-w54" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yb0-ZP-kfb">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="8ga-5r-6QX"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Feo-oq-io3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-957" y="139"/>
+        </scene>
+        <!--Launch View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" customClass="LaunchViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tezos-launch-logo" translatesAutoresizingMaskIntoConstraints="NO" id="rHh-rC-Am3">
+                                <rect key="frame" x="179.5" y="414.5" width="55" height="67"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe" translatesAutoresizingMaskIntoConstraints="NO" id="G9g-ER-nPw">
+                                <rect key="frame" x="107" y="395" width="100" height="106"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Rbg-JF-FS9"/>
+                                    <constraint firstAttribute="height" constant="106" id="XQp-3v-kFo"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kūkai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekb-6d-V1k">
+                                <rect key="frame" x="145" y="509" width="124" height="58"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="3EV-Q1-7pC"/>
+                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9NW-dW-61k"/>
+                            <constraint firstItem="Ekb-6d-V1k" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Ysa-Lg-nwu"/>
+                            <constraint firstItem="G9g-ER-nPw" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="-50" id="ci9-zT-YC5"/>
+                            <constraint firstItem="G9g-ER-nPw" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="kb1-E5-r3Q"/>
+                            <constraint firstItem="Ekb-6d-V1k" firstAttribute="top" secondItem="G9g-ER-nPw" secondAttribute="bottom" constant="8" symbolic="YES" id="wSO-2p-rBz"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="wat-Df-g1q"/>
+                    <connections>
+                        <outlet property="kukaiLabel" destination="Ekb-6d-V1k" id="5Cs-b6-w6i"/>
+                        <outlet property="kukaiLabelTopConstraint" destination="wSO-2p-rBz" id="6Ka-pC-VDv"/>
+                        <outlet property="safeImage" destination="G9g-ER-nPw" id="AzV-mg-JVA"/>
+                        <outlet property="tezosImage" destination="rHh-rC-Am3" id="izg-ks-ikI"/>
+                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" id="mlf-fv-fJw"/>
+                        <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="d30-CS-0YC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
+        </scene>
+        <!--Onboarding-->
+        <scene sceneID="5W5-l9-FJm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Onboarding" id="u9J-qk-3Bf" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Zl1-XK-stm"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="trw-99-FrK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="985" y="42"/>
+        </scene>
+        <!--Home-->
+        <scene sceneID="TCV-Of-zIe">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Home" id="8m8-pH-KTs" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="WlC-DJ-n4w"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G1b-Rb-7s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="958" y="230"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="safe" width="389" height="401"/>
+        <image name="tezos-launch-logo" width="55" height="67"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
