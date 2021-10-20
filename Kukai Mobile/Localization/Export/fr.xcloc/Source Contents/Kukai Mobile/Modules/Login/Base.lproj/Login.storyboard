@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ucd-wd-Doi">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="T7W-Tb-M9P">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="ucd-wd-Doi" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="cBU-Tz-Dfs">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="TD5-RI-MAZ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mx1-qf-tKc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-890" y="137"/>
+        </scene>
+        <!--Pre Login View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController storyboardIdentifier="PreLoginViewController" id="Y6W-OH-hqX" customClass="PreLoginViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe" translatesAutoresizingMaskIntoConstraints="NO" id="OUa-BS-h3b">
+                                <rect key="frame" x="157" y="395" width="100" height="106"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="6IV-Pe-51M"/>
+                                    <constraint firstAttribute="height" constant="106" id="gUj-Eb-FvC"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kūkai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pls-1e-KWG">
+                                <rect key="frame" x="145" y="509" width="124" height="58"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="OUa-BS-h3b" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="6b9-MK-hX7"/>
+                            <constraint firstItem="Pls-1e-KWG" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="Fmt-hL-Biz"/>
+                            <constraint firstItem="OUa-BS-h3b" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="e7x-JF-Yi3"/>
+                            <constraint firstItem="Pls-1e-KWG" firstAttribute="top" secondItem="OUa-BS-h3b" secondAttribute="bottom" constant="8" symbolic="YES" id="wiN-Nc-RUo"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="BIo-S1-wxv"/>
+                    <connections>
+                        <segue destination="omX-7m-ObT" kind="show" identifier="login" animates="NO" id="zsL-g5-Mkk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="139" y="137"/>
+        </scene>
+        <!--Login View Controller-->
+        <scene sceneID="Ezz-QJ-KjU">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" id="omX-7m-ObT" customClass="LoginViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="u9M-Lq-H2Y">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe" translatesAutoresizingMaskIntoConstraints="NO" id="iAE-k5-4cv">
+                                <rect key="frame" x="157" y="395" width="100" height="106"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="ITE-Jr-ixD"/>
+                                    <constraint firstAttribute="height" constant="106" id="qpZ-J6-fNv"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kūkai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6U-eR-uHy">
+                                <rect key="frame" x="145" y="509" width="124" height="58"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="qZQ-Ih-YU4">
+                                <rect key="frame" x="197" y="575" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is where we check for pin or run Face ID" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vzm-y2-QQ6">
+                                <rect key="frame" x="20" y="603" width="374" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ZqB-3W-TcA"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="iAE-k5-4cv" firstAttribute="centerY" secondItem="u9M-Lq-H2Y" secondAttribute="centerY" id="0br-hc-rHz"/>
+                            <constraint firstItem="Vzm-y2-QQ6" firstAttribute="leading" secondItem="ZqB-3W-TcA" secondAttribute="leading" constant="20" id="1U6-yM-1F6"/>
+                            <constraint firstItem="iAE-k5-4cv" firstAttribute="centerX" secondItem="u9M-Lq-H2Y" secondAttribute="centerX" id="34r-YV-YrH"/>
+                            <constraint firstItem="ZqB-3W-TcA" firstAttribute="trailing" secondItem="Vzm-y2-QQ6" secondAttribute="trailing" constant="20" id="RZA-8I-Em3"/>
+                            <constraint firstItem="qZQ-Ih-YU4" firstAttribute="centerX" secondItem="u9M-Lq-H2Y" secondAttribute="centerX" id="fz2-De-xhV"/>
+                            <constraint firstItem="N6U-eR-uHy" firstAttribute="centerX" secondItem="u9M-Lq-H2Y" secondAttribute="centerX" id="kMT-I8-glR"/>
+                            <constraint firstItem="N6U-eR-uHy" firstAttribute="top" secondItem="iAE-k5-4cv" secondAttribute="bottom" constant="8" symbolic="YES" id="lge-V1-zkr"/>
+                            <constraint firstItem="Vzm-y2-QQ6" firstAttribute="top" secondItem="qZQ-Ih-YU4" secondAttribute="bottom" constant="8" id="m8h-va-ku2"/>
+                            <constraint firstItem="qZQ-Ih-YU4" firstAttribute="top" secondItem="N6U-eR-uHy" secondAttribute="bottom" constant="8" symbolic="YES" id="sjj-G7-TPs"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="XHZ-7g-1zu"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="qZQ-Ih-YU4" id="fkh-6x-HKk"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NyM-R3-JMJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1229" y="137"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="safe" width="389" height="401"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

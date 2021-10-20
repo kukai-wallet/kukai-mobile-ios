@@ -115,7 +115,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	func setupBlurView() {
-		titleLabel.text = "snd_scan_qr".localized
+		titleLabel.text = "snd_scan_qr"
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.textColor = .white
 		titleLabel.numberOfLines = 0
@@ -164,9 +164,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		if permissionsDenied {
 			os_log(.error, log: .default, "User revoked camera permissions")
-			alertController = UIAlertController(title: "error".localized, message: "NSCameraUsageDescription".localized, preferredStyle: .alert)
+			alertController = UIAlertController(title: "error", message: "NSCameraUsageDescription", preferredStyle: .alert)
 			
-			let systemSettingsAction = UIAlertAction(title: "wlt_navigation_settings".localized, style: .default) { (action) in
+			let systemSettingsAction = UIAlertAction(title: "wlt_navigation_settings", style: .default) { (action) in
 				guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
 					return
 				}
@@ -176,13 +176,13 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				}
 			}
 			
-			alertController?.addAction(UIAlertAction(title: "cancel".localized, style: .default))
+			alertController?.addAction(UIAlertAction(title: "cancel", style: .default))
 			alertController?.addAction(systemSettingsAction)
 			
 		} else {
 			os_log(.error, log: .default, "Unable to scan on this device")
-			alertController = UIAlertController(title: "error".localized, message: "error_cant_scan".localized, preferredStyle: .alert)
-			alertController?.addAction(UIAlertAction(title: "ok".localized, style: .default))
+			alertController = UIAlertController(title: "error", message: "error_cant_scan", preferredStyle: .alert)
+			alertController?.addAction(UIAlertAction(title: "ok", style: .default))
 		}
 		
 		if let ac = alertController {
