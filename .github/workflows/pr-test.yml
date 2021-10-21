@@ -23,11 +23,11 @@ jobs:
       
       - name: print branch name
         env:
-          BASE_BRANCH: ${{ github.base_ref }}
-        run: echo "Pull request's base branch is ${BASE_BRANCH}"
+          HEAD_BRANCH: ${{ github.head_ref }}
+        run: echo "Pull request's base branch is ${HEAD_BRANCH}"
 
       - name: Find localisation files to import, if this is a lokalise PR
-        if: ${{contains(github.base_ref, 'lokalise')}}
+        if: ${{contains(github.head_ref, 'lokalise')}}
         id: localisation-file-finder
         uses: Rishabh510/Path-lister-action@master
         with:
@@ -35,7 +35,7 @@ jobs:
           type: ".xliff"
 
       - name: For each localisation file, import to Xcode
-        if: ${{contains(github.base_ref, 'lokalise')}}
+        if: ${{contains(github.head_ref, 'lokalise')}}
         run: |
           echo "Found ${{ steps.localisation-file-finder.outputs.path_count }} file(s) with this extension:"
           for i in ${{ steps.localisation-file-finder.outputs.paths }}; do
@@ -43,7 +43,7 @@ jobs:
           done
 
       - name: Commit changes
-        if: ${{ success() && contains(github.base_ref, 'lokalise') }}
+        if: ${{ success() && contains(github.head_ref, 'lokalise') }}
         run: |
           git add .
           git commit -m "CI: import lokalise updates"
