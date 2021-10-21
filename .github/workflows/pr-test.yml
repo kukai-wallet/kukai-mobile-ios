@@ -17,6 +17,8 @@ jobs:
 
       - name: Checkout repository
         uses: actions/checkout@v2.3.5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }} # PR's by default are pulled down as detached heads, meaning they can't be pushed back. Instead, checkout the actual branch, not the PR
 
       #- name: Run Unit tests
       #  run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
