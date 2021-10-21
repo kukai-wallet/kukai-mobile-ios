@@ -9,20 +9,38 @@ on:
 # Checkout the code, and run mxcl's xcodebuild action to run the unit tests
 jobs:
   build:
+    name: Build and unit test
     runs-on: macos-11
-    strategy:
-      matrix:
-        platform:
-          - iOS
-        xcode:
-          - ^13
     steps:
-      - uses: actions/checkout@v2.3.4
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_13.0.app/Contents/Developer'
 
-      - uses: mxcl/xcodebuild@v1.9.2
+      - name: Checkout repository
+        uses: actions/checkout@v2.3.4
+
+      - name: Run Unit tests
+        run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
+      
+      - name: Find localisation files to import, if this is a lokalise PR
+        if: ${{contains(github.event.pull_request.base.ref, 'lokalise')}}
+        id: localisation-file-finder
+        uses: Rishabh510/Path-lister-action@master
         with:
-          platform: ${{ matrix.platform }}
-          xcode: ${{ matrix.xcode }}
-          action: test
-          code-coverage: true
-          upload-logs: always
+          path: "$PWD/Kukai Mobile/Localization/Import/"
+          type: ".xliff"
+
+      - name: For each localisation file, import to Xcode
+        if: ${{contains(github.event.pull_request.base.ref, 'lokalise')}}
+        run: |
+          echo "Found ${{ steps.localisation-file-finder.outputs.path_count }} file(s) with this extension:"
+          for i in ${{ steps.localisation-file-finder.outputs.paths }}; do
+            xcodebuild -importLocalizations -project "Kukai Mobile.xcodeproj" -localizationPath $i
+          done
+
+      - name: Commit changes
+        if: ${{ success() && contains(github.event.pull_request.base.ref, 'lokalise') }}
+        run: |
+          git add .
+          git commit -m "CI: import lokalise updates"
+          git push origin HEAD
+        

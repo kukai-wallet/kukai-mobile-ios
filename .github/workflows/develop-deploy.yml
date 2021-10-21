@@ -55,6 +55,9 @@ jobs:
       - name: Export .ipa
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
       
+      - name: Export strings
+        run: xcodebuild -exportLocalizations -project "Kukai Mobile.xcodeproj" -localizationPath $PWD/Kukai\ Mobile/Localization/Export -exportLanguage en -exportLanguage fr
+      
       - name: Install Sentry CLI
         if: ${{ success() }}
         run: brew install getsentry/tools/sentry-cli
@@ -84,7 +87,7 @@ jobs:
         if: ${{ success() }}
         run: |
           git add .
-          git commit -m "bump version"
+          git commit -m "CI: bump version and update strings"
           git push origin HEAD
 
       - name: Upload to TestFlight
