@@ -16,7 +16,7 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_13.0.app/Contents/Developer'
 
       - name: Checkout repository
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v2.3.5
 
       #- name: Run Unit tests
       #  run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
@@ -43,10 +43,7 @@ jobs:
 
       - name: Commit changes
         if: ${{ success() && contains(github.head_ref, 'lokalise') }}
-        env:
-          HEAD_BRANCH: ${{ github.head_ref }}
         run: |
-          git add .
           git commit -m "CI: import lokalise updates"
-          git push origin ${HEAD_BRANCH}
+          git push -u origin HEAD
         
