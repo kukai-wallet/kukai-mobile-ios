@@ -46,6 +46,7 @@ jobs:
       - name: Commit changes
         if: ${{ success() && contains(github.head_ref, 'lokalise') }}
         run: |
+          git add .
           git commit -m "CI: import lokalise updates"
           git push -u origin HEAD
         
