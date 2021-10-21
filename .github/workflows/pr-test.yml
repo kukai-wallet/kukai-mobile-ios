@@ -37,8 +37,8 @@ jobs:
       - name: For each localisation file, import to Xcode
         if: ${{contains(github.head_ref, 'lokalise')}}
         run: |
-          find "$PWD/Kukai Mobile/Localization/Import/" -type f -name "*.xliff" -maxdepth 1 | while read f ; do
-            xcodebuild -importLocalizations -project "Kukai Mobile.xcodeproj" -localizationPath $f ;
+          find "$PWD/Kukai Mobile/Localization/Import" -type f -name "*.xliff" -maxdepth 1 | while read f ; do
+            xcodebuild -importLocalizations -project "Kukai Mobile.xcodeproj" -localizationPath "$f" ;
           done
 
       - name: Commit changes
