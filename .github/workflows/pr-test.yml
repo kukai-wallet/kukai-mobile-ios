@@ -18,26 +18,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2.3.5
         with:
-          ref: ${{ github.event.pull_request.head.ref }} # PR's by default are pulled down as detached heads, meaning they can't be pushed back. Instead, checkout the actual branch, not the PR
+          # PR's by default are pulled down as detached heads, meaning they can't be pushed back. Instead, checkout the actual branch, not the PR
+          ref: ${{ github.event.pull_request.head.ref }}
 
-      #- name: Run Unit tests
-      #  run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
-      
-      - name: print branch name
-        env:
-          HEAD_BRANCH: ${{ github.head_ref }}
-        run: echo "Pull request's head branch is ${HEAD_BRANCH}"
-
-      #- name: Find localisation files to import, if this is a lokalise PR
-      #  if: ${{contains(github.head_ref, 'lokalise')}}
-      #  id: localisation-file-finder
-      #  uses: Rishabh510/Path-lister-action@master
-      #  with:
-      #    path: "$PWD/Kukai Mobile/Localization/Import/"
-       #   type: ".xliff"
+      - name: Run Unit tests
+        # If its not a lokalise PR, run unit tests
+        if: ${{ !contains(github.head_ref, 'lokalise') }}
+        run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
 
       - name: For each localisation file, import to Xcode
-        if: ${{contains(github.head_ref, 'lokalise')}}
+         # If it is a lokalise PR, find and import all .xliff files, and commit changes
+        if: ${{ contains(github.head_ref, 'lokalise') }}
         run: |
           find "$PWD/Kukai Mobile/Localization/Import" -type f -name "*.xliff" -maxdepth 1 | while read f ; do
             xcodebuild -importLocalizations -project "Kukai Mobile.xcodeproj" -localizationPath "$f" ;
