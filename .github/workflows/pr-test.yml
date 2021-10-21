@@ -18,11 +18,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2.3.4
 
-      - name: Run Unit tests
-        run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
+      #- name: Run Unit tests
+      #  run: xcodebuild -project "Kukai Mobile.xcodeproj" -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 12,OS=15.0' -scheme "Kukai Mobile Debug" test
       
+      - name: print branch name
+        env:
+          BASE_BRANCH: ${{ github.base_ref }}
+        run: echo "Pull request's base branch is ${BASE_BRANCH}"
+
       - name: Find localisation files to import, if this is a lokalise PR
-        if: ${{contains(github.event.pull_request.base.ref, 'lokalise')}}
+        if: ${{contains(github.base_ref, 'lokalise')}}
         id: localisation-file-finder
         uses: Rishabh510/Path-lister-action@master
         with:
@@ -30,7 +35,7 @@ jobs:
           type: ".xliff"
 
       - name: For each localisation file, import to Xcode
-        if: ${{contains(github.event.pull_request.base.ref, 'lokalise')}}
+        if: ${{contains(github.base_ref, 'lokalise')}}
         run: |
           echo "Found ${{ steps.localisation-file-finder.outputs.path_count }} file(s) with this extension:"
           for i in ${{ steps.localisation-file-finder.outputs.paths }}; do
@@ -38,7 +43,7 @@ jobs:
           done
 
       - name: Commit changes
-        if: ${{ success() && contains(github.event.pull_request.base.ref, 'lokalise') }}
+        if: ${{ success() && contains(github.base_ref, 'lokalise') }}
         run: |
           git add .
           git commit -m "CI: import lokalise updates"
