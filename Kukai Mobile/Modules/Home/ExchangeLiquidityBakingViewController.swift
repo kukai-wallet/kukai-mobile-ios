@@ -52,6 +52,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 			return
 		}
 		
+		/*
 		if isXtzToToken, let xtz = xtzToSwap {
 			self.showActivity(clearBackground: false)
 			
@@ -115,6 +116,7 @@ class ExchangeLiquidityBakingViewController: UIViewController {
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Check the price before trying to swap")
 		}
+		*/
 	}
 	
 	func calculateReturn() {

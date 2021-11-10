@@ -16,10 +16,12 @@ class DependencyManager {
 	static let defaultNodeURL_mainnet = URL(string: "https://api.tez.ie/rpc/mainnet")!
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	
 	static let defaultNodeURL_testnet = URL(string: "https://api.tez.ie/rpc/granadanet")!
 	static let defaultTzktURL_testnet = URL(string: "https://api.granadanet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_testnet = URL(string: "https://granadanet-api.tezos.domains/graphql")!
 	
 	
 	// Kukai Core clients and properties
@@ -28,6 +30,7 @@ class DependencyManager {
 	var tzktClient: TzKTClient
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
+	var tezToolsClient: TezToolsClient
 	
 	
 	// Properties and helpers
@@ -48,6 +51,11 @@ class DependencyManager {
 	var currentBcdURL: URL {
 		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.bcd.url") }
 		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.bcd.url") ?? "") ?? DependencyManager.defaultBcdURL_mainnet }
+	}
+	
+	var currentTezosDomainsURL: URL {
+		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tezos-domains.url") }
+		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tezos-domains.url") ?? "") ?? DependencyManager.defaultTezosDomainsURL_mainnet }
 	}
 	
 	var currentNetworkType: TezosNodeClientConfig.NetworkType {
@@ -113,6 +121,7 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
+		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		updateKukaiCoreClients()
 	}
@@ -121,6 +130,7 @@ class DependencyManager {
 		currentNodeURL = DependencyManager.defaultNodeURL_mainnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
+		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
 		tezosChainName = .mainnet
 		currentNetworkType = .mainnet
 		
@@ -131,6 +141,7 @@ class DependencyManager {
 		currentNodeURL = DependencyManager.defaultNodeURL_testnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
+		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
 		tezosChainName = .granadanet
 		currentNetworkType = .testnet
 		
@@ -143,6 +154,7 @@ class DependencyManager {
 			tezosChainName: tezosChainName,
 			tzktURL: currentTzktURL,
 			betterCallDevURL: currentBcdURL,
+			tezosDomainsURL: currentTezosDomainsURL,
 			urlSession: sharedSession,
 			networkType: currentNetworkType
 		)
@@ -150,6 +162,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
+		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		torusAuthService = TorusAuthService(
 			networkType: tezosClientConfig.networkType,
