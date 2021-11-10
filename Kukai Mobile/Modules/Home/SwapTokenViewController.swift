@@ -39,7 +39,10 @@ class SwapTokenViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		TransactionService.shared.exchangeData.selectedPair = self.viewModel.pairFor(indexPath: indexPath)
+		let pairData = self.viewModel.pairDataFor(indexPath: indexPath)
+		TransactionService.shared.exchangeData.selectedPair = pairData.pair
+		TransactionService.shared.exchangeData.selectedPairDecimals = pairData.decimals
+		
 		self.navigationController?.popViewController(animated: true)
 	}
 }
