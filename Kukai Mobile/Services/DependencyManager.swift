@@ -8,6 +8,7 @@
 import Foundation
 import Combine
 import KukaiCoreSwift
+import TorusSwiftDirectSDK
 
 class DependencyManager {
 	
@@ -96,6 +97,51 @@ class DependencyManager {
 	@Published var walletDidChange: Bool = false
 	
 	
+	// Torus / Social data
+	private let testnetVerifiers: [TorusAuthProvider: SubverifierWrapper] = [
+		.apple: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
+			loginType: .web,
+			loginProvider: .apple,
+			clientId: "m1Q0gvDfOyZsJCZ3cucSQEe9XMvl9d9L",
+			verifierName: "torus-auth0-apple-lrc",
+			redirectURL: "tdsdk://tdsdk/oauthCallback",
+			jwtParams: ["domain": "torus-test.auth0.com"]
+		)),
+		.twitter: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
+			loginType: .web,
+			loginProvider: .twitter,
+			clientId: "A7H8kkcmyFRlusJQ9dZiqBLraG2yWIsO",
+			verifierName: "torus-auth0-twitter-lrc",
+			redirectURL: "tdsdk://tdsdk/oauthCallback",
+			jwtParams: ["domain": "torus-test.auth0.com"]
+		)),
+		.google: SubverifierWrapper(aggregateVerifierName: "kukai-google", subverifier: SubVerifierDetails(
+			loginType: .installed,
+			loginProvider: .google,
+			clientId: "952872982551-os146b77tatd0o36q9l195s3s674odv8.apps.googleusercontent.com",
+			verifierName: "mobile-kukai-dev",
+			redirectURL: "com.googleusercontent.apps.952872982551-os146b77tatd0o36q9l195s3s674odv8:/oauthredirect"
+		)),
+		.reddit: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
+			loginType: .web,
+			loginProvider: .reddit,
+			clientId: "rXIp6g2y3h1wqg",
+			verifierName: "reddit-shubs",
+			redirectURL: "tdsdk://tdsdk/oauthCallback"
+		)),
+		.facebook: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
+			loginType: .web,
+			loginProvider: .facebook,
+			clientId: "659561074900150",
+			verifierName: "facebook-shubs",
+			redirectURL: "tdsdk://tdsdk/oauthCallback",
+			browserRedirectURL: "https://scripts.toruswallet.io/redirect.html"
+		))
+	]
+	
+	
+	
+	
 	
 	// MARK: - Init
 	
@@ -120,7 +166,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
-		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, nativeRedirectURL: "", googleRedirectURL: "", browserRedirectURL: "")
+		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
 		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		updateKukaiCoreClients()
@@ -163,14 +209,7 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		
-		torusAuthService = TorusAuthService(
-			networkType: tezosClientConfig.networkType,
-			networkService: tezosNodeClient.networkService,
-			nativeRedirectURL: "tdsdk://tdsdk/oauthCallback",
-			googleRedirectURL: "com.googleusercontent.apps.238941746713-vfap8uumijal4ump28p9jd3lbe6onqt4:/oauthredirect",
-			browserRedirectURL: "https://scripts.toruswallet.io/redirect.html"
-		)
+		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
 		
 		networkDidChange = true
 	}
