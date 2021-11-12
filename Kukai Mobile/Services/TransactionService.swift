@@ -26,7 +26,7 @@ public class TransactionService {
 	
 	public struct ExchangeData {
 		var selectedPair: TezToolPair?
-		var selectedPairDecimals: Int?
+		var selectedPrice: TezToolPrice?
 	}
 	
 	
@@ -42,7 +42,7 @@ public class TransactionService {
 	private init() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedPair: nil, selectedPairDecimals: nil)
+		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
 	}
 	
 	
@@ -50,6 +50,6 @@ public class TransactionService {
 	public func resetState() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedPair: nil, selectedPairDecimals: nil)
+		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
 	}
 }

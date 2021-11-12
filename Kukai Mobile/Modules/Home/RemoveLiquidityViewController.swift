@@ -45,7 +45,7 @@ class RemoveLiquidityViewController: UIViewController {
 	}
 	
 	func calculateReturn() {
-		guard let pData = poolData else {
+		/*guard let pData = poolData else {
 			self.alert(withTitle: "Error", andMessage: "Please refresh the pool data first, to estimate return")
 			return
 		}
@@ -59,7 +59,7 @@ class RemoveLiquidityViewController: UIViewController {
 		}
 		
 		xtzTextField.text = calc.expectedXTZ.normalisedRepresentation
-		tzbtcTextField.text = calc.expectedToken.normalisedRepresentation
+		tzbtcTextField.text = calc.expectedToken.normalisedRepresentation*/
 	}
 	 
 	@IBAction func removeTapped(_ sender: Any) {
