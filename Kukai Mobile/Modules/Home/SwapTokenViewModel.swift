@@ -17,7 +17,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	private var filteredPairs: [TezToolPair] = []
-	private var pairDecimals: [String: Int] = [:]
+	private var pairPriceObjects: [String: TezToolPrice] = [:]
 	
 	override init() {
 		super.init()
@@ -69,7 +69,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				for pair in token.price.pairs {
 					if pair.dex == .liquidityBaking || pair.dex == .quipuswap {
 						self?.filteredPairs.append(pair)
-						self?.pairDecimals[pair.address] = token.price.decimals
+						self?.pairPriceObjects[pair.address] = token.price
 					}
 				}
 			}
@@ -81,10 +81,12 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func pairDataFor(indexPath: IndexPath) -> (pair: TezToolPair, decimals: Int) {
+	func pairDataFor(indexPath: IndexPath) -> (pair: TezToolPair, price: TezToolPrice)? {
 		let pair = self.filteredPairs[indexPath.row]
-		let decimals = self.pairDecimals[pair.address] ?? 0
+		guard let price = self.pairPriceObjects[pair.address] else {
+			return nil
+		}
 		
-		return (pair: pair, decimals: decimals)
+		return (pair: pair, price: price)
 	}
 }

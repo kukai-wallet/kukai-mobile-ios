@@ -46,7 +46,7 @@ class AddLiquidityViewController: UIViewController {
 	}
 	
 	func calculateReturn() {
-		guard let pData = poolData else {
+		/*guard let pData = poolData else {
 			self.alert(withTitle: "Error", andMessage: "Please refresh the pool data first, to estimate return")
 			return
 		}
@@ -60,7 +60,7 @@ class AddLiquidityViewController: UIViewController {
 		}
 		
 		tzbtcTextField.text = calc.tokenRequired.normalisedRepresentation
-		liquidityTextField.text = calc.expectedLiquidity.normalisedRepresentation
+		liquidityTextField.text = calc.expectedLiquidity.normalisedRepresentation*/
 	}
 	
 	@IBAction func swapButtonTapped(_ sender: Any) {
