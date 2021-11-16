@@ -66,9 +66,9 @@
 		C0B743C026AB227400377A9B /* NftChildTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */; };
 		C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
-		C0D74CC526C12CC90096F845 /* AddLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC426C12CC90096F845 /* AddLiquidityViewController.swift */; };
 		C0D74CC726C12CDA0096F845 /* LiquidtyBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC626C12CDA0096F845 /* LiquidtyBalanceViewController.swift */; };
 		C0D74CC926C12D010096F845 /* RemoveLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */; };
+		C0D914CC2743F75C0027DE10 /* AddLiquidity2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D914CB2743F75C0027DE10 /* AddLiquidity2ViewController.swift */; };
 		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
 		C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */; };
 		C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */; };
@@ -182,9 +182,9 @@
 		C0B743BD26AB226700377A9B /* NftParentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftParentTableViewCell.swift; sourceTree = "<group>"; };
 		C0B743BF26AB227400377A9B /* NftChildTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftChildTableViewCell.swift; sourceTree = "<group>"; };
 		C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extensions.swift"; sourceTree = "<group>"; };
-		C0D74CC426C12CC90096F845 /* AddLiquidityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLiquidityViewController.swift; sourceTree = "<group>"; };
 		C0D74CC626C12CDA0096F845 /* LiquidtyBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidtyBalanceViewController.swift; sourceTree = "<group>"; };
 		C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLiquidityViewController.swift; sourceTree = "<group>"; };
+		C0D914CB2743F75C0027DE10 /* AddLiquidity2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLiquidity2ViewController.swift; sourceTree = "<group>"; };
 		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerScanningViewController.swift; sourceTree = "<group>"; };
 		C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceCell.swift; sourceTree = "<group>"; };
@@ -240,7 +240,6 @@
 				C085EAB626B1A95A00B37A15 /* SideMenuImportViewController.swift */,
 				C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */,
 				C0B743B626AB197E00377A9B /* HomeWalletViewModel.swift */,
-				C0D74CC426C12CC90096F845 /* AddLiquidityViewController.swift */,
 				C0D74CC826C12D010096F845 /* RemoveLiquidityViewController.swift */,
 				C0D74CC626C12CDA0096F845 /* LiquidtyBalanceViewController.swift */,
 				C0082C0526A7249200DB160B /* SettingsViewController.swift */,
@@ -248,6 +247,7 @@
 				C08F690C273AB8F300CCB6E3 /* SwapViewController.swift */,
 				C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */,
 				C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */,
+				C0D914CB2743F75C0027DE10 /* AddLiquidity2ViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -591,12 +591,12 @@
 				C0B08A35270DC26700075618 /* SendWaitViewController.swift in Sources */,
 				C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */,
 				C085EAB726B1A95A00B37A15 /* SideMenuImportViewController.swift in Sources */,
-				C0D74CC526C12CC90096F845 /* AddLiquidityViewController.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
 				C085EAB926B1ADC700B37A15 /* ConfirmMnemonicViewController.swift in Sources */,
 				C08F690D273AB8F300CCB6E3 /* SwapViewController.swift in Sources */,
 				C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
+				C0D914CC2743F75C0027DE10 /* AddLiquidity2ViewController.swift in Sources */,
 				C0082BF926A7076500DB160B /* ImportMnemonicViewController.swift in Sources */,
 				C0B08A31270DC24800075618 /* SendEnterDestinationViewController.swift in Sources */,
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,

@@ -14,6 +14,7 @@ class RemoveLiquidityViewController: UIViewController {
 	@IBOutlet weak var xtzTextField: UITextField!
 	@IBOutlet weak var tzbtcTextField: UITextField!
 	
+	/*
 	private var poolData: LiquidityBakingData? = nil
 	private var liquidityToBurn: TokenAmount? = nil
 	private var calculationResult: LiquidityBakingRemoveCalculationResult? = nil
@@ -95,4 +96,5 @@ class RemoveLiquidityViewController: UIViewController {
 			}
 		}
 	}
+	*/
 }

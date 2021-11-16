@@ -19,7 +19,7 @@ class SwapViewController: UIViewController {
 	@IBOutlet weak var swapButton: UIButton!
 	
 	private var isXtzToToken = true
-	private var calculationResult: LiquidityBakingSwapCalculationResult? = nil
+	private var calculationResult: DexSwapCalculationResult? = nil
 	
 	
 	
@@ -31,6 +31,8 @@ class SwapViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		TransactionService.shared.currentTransactionType = .exchange
+		
 		
 		if let pair = TransactionService.shared.exchangeData.selectedPair {
 			fromTokenButton.setTitle(pair.baseTokenSide()?.symbol, for: .normal)
@@ -84,7 +86,7 @@ class SwapViewController: UIViewController {
 				return
 			}
 			
-			self.calculationResult = LiquidityBakingCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: pair.dex)
+			self.calculationResult = DexCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: pair.dex)
 			
 		} else {
 			guard let input = fromTokentextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: 8) else {
@@ -92,7 +94,7 @@ class SwapViewController: UIViewController {
 				return
 			}
 			
-			self.calculationResult = LiquidityBakingCalculationService.shared.calculateTokenToXTZ(tokenToSell: token, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: pair.dex)
+			self.calculationResult = DexCalculationService.shared.calculateTokenToXTZ(tokenToSell: token, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: pair.dex)
 		}
 		
 		
@@ -111,8 +113,6 @@ class SwapViewController: UIViewController {
 			  let wallet = DependencyManager.shared.selectedWallet,
 			  let pair = TransactionService.shared.exchangeData.selectedPair,
 			  let price = TransactionService.shared.exchangeData.selectedPrice
-			  //let baseToken = pair.baseTokenSide(),
-			  //let nonBaseToken = pair.nonBaseTokenSide()
 		else {
 			self.alert(withTitle: "Error", andMessage: "Invalid calculation or wallet")
 			return
@@ -146,15 +146,13 @@ class SwapViewController: UIViewController {
 		} else if let input = fromTokentextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: price.decimals) {
 			self.showActivity(clearBackground: false)
 			
-			let operations = OperationFactory.swapTokenToXTZ(
-				withdex: pair.dex,
-				tokenAmount: token,
-				minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(),
-				dexContract: pair.address,
-				tokenContract: price.tokenAddress,
-				wallet: wallet,
-				timeout: 60 * 5
-			)
+			let operations = OperationFactory.swapTokenToXTZ(withDex: pair.dex,
+															 tokenAmount: token,
+															 minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(),
+															 dexContract: pair.address,
+															 tokenContract: price.tokenAddress,
+															 wallet: wallet,
+															 timeout: 60 * 5)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 				switch result {
 					case .success(let ops):

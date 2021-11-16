@@ -44,8 +44,7 @@ class SwapTokenViewController: UITableViewController {
 			return
 		}
 		
-		TransactionService.shared.exchangeData.selectedPair = pairData.pair
-		TransactionService.shared.exchangeData.selectedPrice = pairData.price
+		TransactionService.shared.record(pair: pairData.pair, price: pairData.price)
 		self.navigationController?.popViewController(animated: true)
 	}
 }
