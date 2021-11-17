@@ -48,7 +48,7 @@ class RemoveLiquidityViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let position = self.viewModel.position(forIndexPath: indexPath)
 		
-		self.alert(withTitle: "Remove?", andMessage: "Are you sure you want to remove liquidity for \(position.token.symbol)", okText: "Ok", okAction: { [weak self] action in
+		self.alert(withTitle: "Remove?", andMessage: "Are you sure you want to remove liquidity for \(position.token.symbol) - \(position.exchange.name.rawValue)", okText: "Ok", okAction: { [weak self] action in
 			self?.viewModel.removeLiquidity(forIndexPath: indexPath)
 			
 		}, cancelText: "Cancel") { action in

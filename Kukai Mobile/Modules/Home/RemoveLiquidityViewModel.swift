@@ -62,7 +62,7 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		}
 	}
 	
-	func refresh(animate: Bool) {
+	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
 			state = .loading
 		}
@@ -91,7 +91,7 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			
 			for position in self?.positions ?? [] {
 				let liquidity = position.tokenAmount()
-				let totalLiquidity = position.exchange.totalLiquidity(decimals: position.token.decimals)
+				let totalLiquidity = position.exchange.totalLiquidity()
 				let xtzPool = position.exchange.xtzPool()
 				let tokenPool = position.exchange.tokenPool(decimals: position.token.decimals)
 				let dex = self?.dipdupExchangeToTezTool(exchange: position.exchange.name)
@@ -100,6 +100,7 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 				if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex ?? .unknown) {
 					calculation = calc
 				}
+				
 				self?.calculations.append(calculation)
 			}
 			
@@ -107,7 +108,7 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			snapshot.appendItems(self?.positions ?? [], toSection: 0)
 			ds.apply(snapshot, animatingDifferences: animate)
 			
-			self?.state = .success(nil)
+			self?.state = .success(successMessage)
 		}
 	}
 	
@@ -137,21 +138,16 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
 			switch result {
 				case .success(let ops):
-					
-					/*
 					DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] innerResult in
 						switch innerResult {
 							case .success(let opHash):
-								
-								self?.state = .success("Op hash: \(opHash)")
+								//self?.refresh(animate: true, successMessage: "Success: \(opHash)") // Need to wait for the transaction to actually go through
+								self?.state = .success("Success: \(opHash)")
 								
 							case .failure(let error):
 								self?.state = .failure(error, error.description)
 						}
 					}
-					*/
-					
-					self?.state = .success("Op hash: \( "Test" )")
 				
 				case .failure(let error):
 					self?.state = .failure(error, error.description)

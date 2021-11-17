@@ -43,7 +43,7 @@ public protocol UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? { get }
 	
 	func makeDataSource(withTableView tableView: UITableView)
-	func refresh(animate: Bool)
+	func refresh(animate: Bool, successMessage: String?)
 }
 
 public protocol UICollectionViewDiffableDataSourceHandler {
@@ -53,5 +53,5 @@ public protocol UICollectionViewDiffableDataSourceHandler {
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? { get }
 	
 	func makeDataSource(withCollectionView collectionView: UICollectionView)
-	func refresh(animate: Bool)
+	func refresh(animate: Bool, successMessage: String?)
 }
