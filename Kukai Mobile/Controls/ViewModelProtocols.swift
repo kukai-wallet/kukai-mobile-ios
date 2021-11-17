@@ -18,7 +18,7 @@ public class ViewModel: ObservableObject {
 	enum State {
 		case loading
 		case failure(ErrorResponse, String)
-		case success
+		case success(String?)
 		
 		/**
 		State uses assocaited types inside .failure to return error messages. THis makes it impossible to run logic like `if state != .loading`.
@@ -43,7 +43,7 @@ public protocol UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? { get }
 	
 	func makeDataSource(withTableView tableView: UITableView)
-	func refresh(animate: Bool)
+	func refresh(animate: Bool, successMessage: String?)
 }
 
 public protocol UICollectionViewDiffableDataSourceHandler {
@@ -53,5 +53,5 @@ public protocol UICollectionViewDiffableDataSourceHandler {
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? { get }
 	
 	func makeDataSource(withCollectionView collectionView: UICollectionView)
-	func refresh(animate: Bool)
+	func refresh(animate: Bool, successMessage: String?)
 }

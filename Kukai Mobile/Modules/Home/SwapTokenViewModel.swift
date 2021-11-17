@@ -44,7 +44,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
-	func refresh(animate: Bool) {
+	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
 			state = .loading
 		}
@@ -77,7 +77,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(self?.filteredPairs ?? [], toSection: 0)
 			ds.apply(snapshot, animatingDifferences: animate)
 			
-			self?.state = .success
+			self?.state = .success(nil)
 		}
 	}
 	

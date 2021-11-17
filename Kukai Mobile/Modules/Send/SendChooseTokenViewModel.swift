@@ -43,7 +43,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
-	func refresh(animate: Bool) {
+	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
 			state = .loading
 		}
@@ -67,7 +67,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		snapshot.appendItems(tokens, toSection: 0)
 		ds.apply(snapshot, animatingDifferences: animate)
 		
-		self.state = .success
+		self.state = .success(nil)
 	}
 	
 	func token(forIndexPath indexPath: IndexPath) -> Token? {

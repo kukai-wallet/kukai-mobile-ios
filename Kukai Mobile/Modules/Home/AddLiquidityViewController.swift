@@ -1,5 +1,5 @@
 //
-//  AddLiquidity2ViewController.swift
+//  AddLiquidityViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 16/11/2021.
@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class AddLiquidity2ViewController: UIViewController {
+class AddLiquidityViewController: UIViewController {
 
 	@IBOutlet weak var baseTokenButton: UIButton!
 	@IBOutlet weak var baseTokenTextField: UITextField!
@@ -50,7 +50,7 @@ class AddLiquidity2ViewController: UIViewController {
 		let xtzPool = XTZAmount(fromNormalisedAmount: baseToken.pool)
 		let tokenPool = TokenAmount(fromNormalisedAmount: nonBaseToken.pool, decimalPlaces: price.decimals)
 		
-		self.calculationResult = DexCalculationService.shared.calculateAddLiquidity(xtz: xtz, xtzPool: xtzPool, tokenPool: tokenPool, totalLiquidity: pair.liquiditySupply(decimals: price.decimals), maxSlippage: 0.5, dex: pair.dex)
+		self.calculationResult = DexCalculationService.shared.calculateAddLiquidity(xtz: xtz, xtzPool: xtzPool, tokenPool: tokenPool, totalLiquidity: pair.liquiditySupply(decimals: liquidityDecimalsForDex(dex: pair.dex)), maxSlippage: 0.5, dex: pair.dex)
 		
 		guard let calc = self.calculationResult else {
 			nonBaseTokenTextField.text = "0"
@@ -61,6 +61,19 @@ class AddLiquidity2ViewController: UIViewController {
 		nonBaseTokenTextField.text = calc.tokenRequired.normalisedRepresentation
 		liquidityTextField.text = calc.expectedLiquidity.normalisedRepresentation
 		addButton.isEnabled = true
+	}
+	
+	func liquidityDecimalsForDex(dex: TezToolDex) -> Int {
+		switch dex {
+			case .quipuswap:
+				return 6
+				
+			case .liquidityBaking:
+				return 0
+			
+			case .unknown:
+				return 0
+		}
 	}
 	
 	@IBAction func addButtonTapped(_ sender: Any) {

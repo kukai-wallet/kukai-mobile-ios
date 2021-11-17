@@ -81,7 +81,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
-	func refresh(animate: Bool) {
+	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
 			state = .loading
 		}
@@ -133,6 +133,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
-		self.state = .success
+		self.state = .success(nil)
 	}
 }

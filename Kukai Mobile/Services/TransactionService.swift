@@ -37,8 +37,7 @@ public class TransactionService {
 	}
 	
 	public struct RemoveLiquidityData {
-		var selectedPair: TezToolPair?
-		var selectedPrice: TezToolPrice?
+		var position: DipDupPositionData?
 	}
 	
 	
@@ -58,7 +57,7 @@ public class TransactionService {
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
 		self.addLiquidityData = AddLiquidityData(selectedPair: nil, selectedPrice: nil)
-		self.removeLiquidityData = RemoveLiquidityData(selectedPair: nil, selectedPrice: nil)
+		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 	}
 	
 	
@@ -68,7 +67,7 @@ public class TransactionService {
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
 		self.addLiquidityData = AddLiquidityData(selectedPair: nil, selectedPrice: nil)
-		self.removeLiquidityData = RemoveLiquidityData(selectedPair: nil, selectedPrice: nil)
+		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 	}
 	
 	public func record(pair: TezToolPair, price: TezToolPrice) {
@@ -80,10 +79,6 @@ public class TransactionService {
 			case .addLiquidity:
 				self.addLiquidityData.selectedPair = pair
 				self.addLiquidityData.selectedPrice = price
-				
-			case .removeLiquidity:
-				self.removeLiquidityData.selectedPair = pair
-				self.removeLiquidityData.selectedPrice = price
 			
 			default:
 				break

@@ -39,7 +39,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
-	func refresh(animate: Bool) {
+	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
 			state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
@@ -54,6 +54,6 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 			
-		self.state = .success
+		self.state = .success(nil)
 	}
 }
