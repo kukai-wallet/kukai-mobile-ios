@@ -133,6 +133,6 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
-		self.state = .success
+		self.state = .success(nil)
 	}
 }

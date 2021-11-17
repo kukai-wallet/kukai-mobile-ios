@@ -1,5 +1,5 @@
 //
-//  AddLiquidity2ViewController.swift
+//  AddLiquidityViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 16/11/2021.
@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class AddLiquidity2ViewController: UIViewController {
+class AddLiquidityViewController: UIViewController {
 
 	@IBOutlet weak var baseTokenButton: UIButton!
 	@IBOutlet weak var baseTokenTextField: UITextField!

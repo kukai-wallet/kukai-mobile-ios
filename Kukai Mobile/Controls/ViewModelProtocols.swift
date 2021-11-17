@@ -18,7 +18,7 @@ public class ViewModel: ObservableObject {
 	enum State {
 		case loading
 		case failure(ErrorResponse, String)
-		case success
+		case success(String?)
 		
 		/**
 		State uses assocaited types inside .failure to return error messages. THis makes it impossible to run logic like `if state != .loading`.

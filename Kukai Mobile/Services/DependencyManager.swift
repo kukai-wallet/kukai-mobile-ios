@@ -32,6 +32,7 @@ class DependencyManager {
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
 	var tezToolsClient: TezToolsClient
+	var dipDupClient: DipDupClient
 	
 	
 	// Properties and helpers
@@ -168,6 +169,7 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
 		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		updateKukaiCoreClients()
 	}
@@ -210,6 +212,8 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
+		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		networkDidChange = true
 	}

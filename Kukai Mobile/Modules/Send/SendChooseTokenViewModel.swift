@@ -67,7 +67,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		snapshot.appendItems(tokens, toSection: 0)
 		ds.apply(snapshot, animatingDifferences: animate)
 		
-		self.state = .success
+		self.state = .success(nil)
 	}
 	
 	func token(forIndexPath indexPath: IndexPath) -> Token? {
