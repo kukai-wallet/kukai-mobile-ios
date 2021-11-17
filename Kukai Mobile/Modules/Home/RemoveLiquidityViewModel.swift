@@ -87,7 +87,7 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 			snapshot.appendSections([0])
 			
-			self?.positions = res.data?.position.filter({ $0.sharesQty != "0" }) ?? []
+			self?.positions = res.data?.position ?? []
 			
 			for position in self?.positions ?? [] {
 				let liquidity = position.tokenAmount()
