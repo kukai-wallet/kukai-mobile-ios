@@ -622,6 +622,181 @@
             </objects>
             <point key="canvasLocation" x="352" y="1649"/>
         </scene>
+        <!--Details-->
+        <scene sceneID="yuv-oQ-NkY">
+            <objects>
+                <viewController id="XoR-eh-gde" customClass="LiquidityDetailsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LzE-Av-Eze">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;token&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fp8-3D-5So">
+                                <rect key="frame" x="20" y="112" width="63" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;amount&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jCv-uB-JVd">
+                                <rect key="frame" x="99" y="112" width="295" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KmW-h5-keW">
+                                <rect key="frame" x="97.5" y="157" width="296.5" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remove" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uqw-AB-5F2">
+                                <rect key="frame" x="20" y="163.5" width="61.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yso-o3-frX">
+                                <rect key="frame" x="73" y="281" width="321" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XTZ:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mD-YC-qVx">
+                                <rect key="frame" x="20" y="287.5" width="37" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9jp-Ye-ejg">
+                                <rect key="frame" x="20" y="529" width="374" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="P0H-Uj-F1q"/>
+                                </constraints>
+                                <state key="normal" title="Withdraw Rewards">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="withdrawTapped:" destination="XoR-eh-gde" eventType="touchUpInside" id="mcB-tf-DXh"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bdI-iV-nmM">
+                                <rect key="frame" x="86.5" y="323" width="307.5" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zxD-E2-isR">
+                                <rect key="frame" x="20" y="329.5" width="50.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IuT-QS-qG0">
+                                <rect key="frame" x="20" y="207" width="374" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Wxv-fT-qvf"/>
+                                </constraints>
+                                <state key="normal" title="Check price">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="checkPricetapped:" destination="XoR-eh-gde" eventType="touchUpInside" id="iNe-om-nBN"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Pending rewards:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tXV-xd-1IU">
+                                <rect key="frame" x="20" y="485.5" width="132" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uHY-EJ-U83">
+                                <rect key="frame" x="168" y="479" width="226" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fua-I4-BXy">
+                                <rect key="frame" x="20" y="373" width="374" height="50"/>
+                                <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="VpA-Nf-QiO"/>
+                                </constraints>
+                                <state key="normal" title="Remove Liquidity">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="removeLiquidityTapped:" destination="XoR-eh-gde" eventType="touchUpInside" id="r5j-4h-48J"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="0Pk-bG-65S"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="jCv-uB-JVd" firstAttribute="leading" secondItem="fp8-3D-5So" secondAttribute="trailing" constant="16" id="0eR-6p-qCj"/>
+                            <constraint firstItem="zxD-E2-isR" firstAttribute="centerY" secondItem="bdI-iV-nmM" secondAttribute="centerY" id="4xf-6g-cJc"/>
+                            <constraint firstItem="zxD-E2-isR" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="ALc-rb-8z0"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="Yso-o3-frX" secondAttribute="trailing" constant="20" id="Cwh-yz-yeO"/>
+                            <constraint firstItem="uHY-EJ-U83" firstAttribute="top" secondItem="Fua-I4-BXy" secondAttribute="bottom" constant="56" id="Eo5-Ud-7rB"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="uHY-EJ-U83" secondAttribute="trailing" constant="20" id="F5W-c7-Jec"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="KmW-h5-keW" secondAttribute="trailing" constant="20" id="Fv6-O5-mbA"/>
+                            <constraint firstItem="IuT-QS-qG0" firstAttribute="top" secondItem="KmW-h5-keW" secondAttribute="bottom" constant="16" id="GnL-Gh-L5T"/>
+                            <constraint firstItem="9jp-Ye-ejg" firstAttribute="top" secondItem="uHY-EJ-U83" secondAttribute="bottom" constant="16" id="Guy-rQ-DCY"/>
+                            <constraint firstItem="tXV-xd-1IU" firstAttribute="centerY" secondItem="uHY-EJ-U83" secondAttribute="centerY" id="M58-Fe-xww"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="IuT-QS-qG0" secondAttribute="trailing" constant="20" id="MLL-Oz-7fe"/>
+                            <constraint firstItem="Yso-o3-frX" firstAttribute="leading" secondItem="2mD-YC-qVx" secondAttribute="trailing" constant="16" id="Mfa-ps-dhz"/>
+                            <constraint firstItem="bdI-iV-nmM" firstAttribute="leading" secondItem="zxD-E2-isR" secondAttribute="trailing" constant="16" id="Q1m-lY-9J9"/>
+                            <constraint firstItem="fp8-3D-5So" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="R0k-Ta-sua"/>
+                            <constraint firstItem="Fua-I4-BXy" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="TP3-qd-YsC"/>
+                            <constraint firstItem="9jp-Ye-ejg" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="Vuj-JO-2re"/>
+                            <constraint firstItem="KmW-h5-keW" firstAttribute="leading" secondItem="Uqw-AB-5F2" secondAttribute="trailing" constant="16" id="WBm-us-ll5"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="9jp-Ye-ejg" secondAttribute="trailing" constant="20" id="XoK-og-kEz"/>
+                            <constraint firstItem="2mD-YC-qVx" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="YHa-eo-QoR"/>
+                            <constraint firstItem="tXV-xd-1IU" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="ZJc-aq-NrY"/>
+                            <constraint firstItem="2mD-YC-qVx" firstAttribute="centerY" secondItem="Yso-o3-frX" secondAttribute="centerY" id="ZYr-XJ-LrH"/>
+                            <constraint firstItem="Uqw-AB-5F2" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="a2w-CM-qDJ"/>
+                            <constraint firstItem="IuT-QS-qG0" firstAttribute="leading" secondItem="0Pk-bG-65S" secondAttribute="leading" constant="20" id="bRg-Pg-IM2"/>
+                            <constraint firstItem="uHY-EJ-U83" firstAttribute="leading" secondItem="tXV-xd-1IU" secondAttribute="trailing" constant="16" id="bTV-c9-E8L"/>
+                            <constraint firstItem="Uqw-AB-5F2" firstAttribute="centerY" secondItem="KmW-h5-keW" secondAttribute="centerY" id="fAA-Zv-wDi"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="Fua-I4-BXy" secondAttribute="trailing" constant="20" id="fLc-ay-Iof"/>
+                            <constraint firstItem="jCv-uB-JVd" firstAttribute="top" secondItem="0Pk-bG-65S" secondAttribute="top" constant="24" id="h8j-XC-2cM"/>
+                            <constraint firstItem="Yso-o3-frX" firstAttribute="top" secondItem="IuT-QS-qG0" secondAttribute="bottom" constant="24" id="qBa-RZ-HhJ"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="bdI-iV-nmM" secondAttribute="trailing" constant="20" id="rBC-iB-bzA"/>
+                            <constraint firstItem="0Pk-bG-65S" firstAttribute="trailing" secondItem="jCv-uB-JVd" secondAttribute="trailing" constant="20" id="vqG-js-p5D"/>
+                            <constraint firstItem="Fua-I4-BXy" firstAttribute="top" secondItem="bdI-iV-nmM" secondAttribute="bottom" constant="16" id="yOU-mg-1dR"/>
+                            <constraint firstItem="KmW-h5-keW" firstAttribute="top" secondItem="jCv-uB-JVd" secondAttribute="bottom" constant="24" id="yYZ-YV-o7G"/>
+                            <constraint firstItem="fp8-3D-5So" firstAttribute="top" secondItem="0Pk-bG-65S" secondAttribute="top" constant="24" id="ya5-rj-Hbc"/>
+                            <constraint firstItem="bdI-iV-nmM" firstAttribute="top" secondItem="Yso-o3-frX" secondAttribute="bottom" constant="8" id="z5L-iG-bg4"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Details" id="9VS-q8-7ta"/>
+                    <connections>
+                        <outlet property="amountLabel" destination="jCv-uB-JVd" id="rfh-hx-S3X"/>
+                        <outlet property="pendingRewardsLabel" destination="tXV-xd-1IU" id="MNa-IE-aSw"/>
+                        <outlet property="pendingRewardsTextField" destination="uHY-EJ-U83" id="cGW-C9-XhY"/>
+                        <outlet property="removeTextField" destination="KmW-h5-keW" id="9F3-tV-u4m"/>
+                        <outlet property="returnedTokenLabel" destination="zxD-E2-isR" id="OoZ-ta-Cdf"/>
+                        <outlet property="returnedTokenTextField" destination="bdI-iV-nmM" id="zsh-rA-KHB"/>
+                        <outlet property="returnedXTZTextField" destination="Yso-o3-frX" id="Cfp-Th-ojb"/>
+                        <outlet property="tokenLabel" destination="fp8-3D-5So" id="D2r-F6-IiT"/>
+                        <outlet property="withdrawButton" destination="9jp-Ye-ejg" id="ypm-aw-hfq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="p1d-75-b9Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1753.6231884057972" y="1648.6607142857142"/>
+        </scene>
         <!--Add Liquidity-->
         <scene sceneID="Jz4-6a-39F">
             <objects>
@@ -1398,7 +1573,7 @@
         <!--Remove Liquidity-->
         <scene sceneID="vSI-MT-1yS">
             <objects>
-                <viewController id="d4Z-v8-aqU" customClass="RemoveLiquidityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="d4Z-v8-aqU" customClass="LiquidityTokensViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="rZw-Fa-unh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1492,6 +1667,7 @@
                     <tabBarItem key="tabBarItem" title="Remove Liquidity" image="bag.badge.minus" catalog="system" id="g7s-xK-wkd"/>
                     <connections>
                         <outlet property="tableView" destination="b7j-Gs-l3d" id="5Nc-wD-adN"/>
+                        <segue destination="XoR-eh-gde" kind="show" identifier="liquidityDetails" id="fYI-HB-q0H"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RpH-gA-LYg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

@@ -1,5 +1,5 @@
 //
-//  RemoveLiquidityViewController.swift
+//  LiquidityTokensViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 17/11/2021.
@@ -8,11 +8,11 @@
 import UIKit
 import Combine
 
-class RemoveLiquidityViewController: UIViewController, UITableViewDelegate {
+class LiquidityTokensViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
-	private let viewModel = RemoveLiquidityViewModel()
+	private let viewModel = LiquidityTokensViewModel()
 	private var cancellable: AnyCancellable?
 	
 	override func viewDidLoad() {
@@ -42,17 +42,14 @@ class RemoveLiquidityViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
+		self.navigationItem.hidesBackButton = true
+		
 		viewModel.refresh(animate: true)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let position = self.viewModel.position(forIndexPath: indexPath)
-		
-		self.alert(withTitle: "Remove?", andMessage: "Are you sure you want to remove liquidity for \(position.token.symbol) - \(position.exchange.name.rawValue)", okText: "Ok", okAction: { [weak self] action in
-			self?.viewModel.removeLiquidity(forIndexPath: indexPath)
-			
-		}, cancelText: "Cancel") { action in
-			
-		}
+		TransactionService.shared.removeLiquidityData.position = self.viewModel.position(forIndexPath: indexPath)
+		self.performSegue(withIdentifier: "liquidityDetails", sender: self)
 	}
 }
