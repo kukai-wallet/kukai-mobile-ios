@@ -1,5 +1,5 @@
 //
-//  RemoveLiquidityViewModel.swift
+//  LiquidityTokensViewModel.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 17/11/2021.
@@ -10,7 +10,7 @@ import Combine
 import KukaiCoreSwift
 import OSLog
 
-class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
@@ -74,7 +74,6 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		
 		DependencyManager.shared.dipDupClient.getLiquidityFor(address: address) { [weak self] result in
 			guard let res = try? result.get() else {
-				print("\(result.getFailure())")
 				self?.state = .failure(result.getFailure(), "DipDup query return failure")
 				return
 			}
@@ -114,44 +113,5 @@ class RemoveLiquidityViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 	
 	func position(forIndexPath indexPath: IndexPath) -> DipDupPositionData {
 		return self.positions[indexPath.row]
-	}
-	
-	func removeLiquidity(forIndexPath indexPath: IndexPath) {
-		state = .loading
-		
-		guard let wallet = DependencyManager.shared.selectedWallet else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find wallet")
-			return
-		}
-		
-		let position = positions[indexPath.row]
-		let calculation = calculations[indexPath.row]
-		
-		let dex = dipdupExchangeToTezTool(exchange: position.exchange.name)
-		let operations = OperationFactory.removeLiquidity(withDex: dex, minXTZ:calculation.minimumXTZ,
-														  minToken: calculation.minimumToken,
-														  liquidityToBurn: position.tokenAmount(),
-														  dexContract: position.exchange.address,
-														  wallet: wallet,
-														  timeout: 60 * 5)
-		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
-			switch result {
-				case .success(let ops):
-					DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] innerResult in
-						switch innerResult {
-							case .success(let opHash):
-								//self?.refresh(animate: true, successMessage: "Success: \(opHash)") // Need to wait for the transaction to actually go through
-								self?.state = .success("Success: \(opHash)")
-								
-							case .failure(let error):
-								self?.state = .failure(error, error.description)
-						}
-					}
-				
-				case .failure(let error):
-					self?.state = .failure(error, error.description)
-			}
-		}
 	}
 }
