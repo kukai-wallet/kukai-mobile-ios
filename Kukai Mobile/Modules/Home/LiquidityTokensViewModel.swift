@@ -35,31 +35,17 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			}
 			
 			let calc = self?.calculations[indexPath.row]
-			let dex = self?.dipdupExchangeToTezTool(exchange: position.exchange.name)
 			let cell = tableView.dequeueReusableCell(withIdentifier: "liquidityTokenCell", for: indexPath) as? LiquidityTokenCell
 			
-			cell?.setup(tokenSymbol: position.token.symbol,
+			cell?.setup(tokenSymbol: position.exchange.token.symbol,
 						liquidityAmount: position.tokenAmount().normalisedRepresentation,
-						dex: dex?.rawValue ?? "",
+						dex: position.exchange.name.rawValue,
 						xtzValue: calc?.expectedXTZ.normalisedRepresentation ?? "0",
 						tokenValue: calc?.expectedToken.normalisedRepresentation ?? "0")
 			return cell
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
-	}
-	
-	func dipdupExchangeToTezTool(exchange: DipDupExchangeName) -> TezToolDex {
-		switch exchange {
-			case .quipuswap:
-				return .quipuswap
-				
-			case .lb:
-				return .liquidityBaking
-				
-			case .unknown:
-				return .unknown
-		}
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
@@ -91,12 +77,12 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			for position in self?.positions ?? [] {
 				let liquidity = position.tokenAmount()
 				let totalLiquidity = position.exchange.totalLiquidity()
-				let xtzPool = position.exchange.xtzPool()
-				let tokenPool = position.exchange.tokenPool(decimals: position.token.decimals)
-				let dex = self?.dipdupExchangeToTezTool(exchange: position.exchange.name)
+				let xtzPool = position.exchange.xtzPoolAmount()
+				let tokenPool = position.exchange.tokenPoolAmount()
+				let dex = position.exchange.name
 				
 				var calculation = DexRemoveCalculationResult(expectedXTZ: XTZAmount.zero(), minimumXTZ: XTZAmount.zero(), expectedToken: TokenAmount.zero(), minimumToken: TokenAmount.zero(), exchangeRate: 0)
-				if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex ?? .unknown) {
+				if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex) {
 					calculation = calc
 				}
 				

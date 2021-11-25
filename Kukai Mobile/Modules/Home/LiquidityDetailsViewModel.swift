@@ -35,7 +35,7 @@ class LiquidityDetailsViewModel: ViewModel {
 			return
 		}
 		
-		self.token = selectedPosition.token.symbol
+		self.token = selectedPosition.exchange.token.symbol
 		self.amount = selectedPosition.tokenAmount().normalisedRepresentation
 		
 		self.pendingRewardsSupported = (selectedPosition.exchange.name == .quipuswap)
@@ -65,9 +65,9 @@ class LiquidityDetailsViewModel: ViewModel {
 		
 		
 		let totalLiquidity = selectedPosition.exchange.totalLiquidity()
-		let xtzPool = selectedPosition.exchange.xtzPool()
-		let tokenPool = selectedPosition.exchange.tokenPool(decimals: selectedPosition.token.decimals)
-		let dex = self.dipdupExchangeToTezTool(exchange: selectedPosition.exchange.name)
+		let xtzPool = selectedPosition.exchange.xtzPoolAmount()
+		let tokenPool = selectedPosition.exchange.tokenPoolAmount()
+		let dex = selectedPosition.exchange.name
 		
 		if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex) {
 			calculation = calc
@@ -105,8 +105,7 @@ class LiquidityDetailsViewModel: ViewModel {
 			return
 		}
 		
-		let dex = dipdupExchangeToTezTool(exchange: selectedPosition.exchange.name)
-		let operations = OperationFactory.removeLiquidity(withDex: dex,
+		let operations = OperationFactory.removeLiquidity(withDex: selectedPosition.exchange.name,
 														  minXTZ: calc.minimumXTZ,
 														  minToken: calc.minimumToken,
 														  liquidityToBurn: selectedPosition.tokenAmount(),
@@ -146,8 +145,7 @@ class LiquidityDetailsViewModel: ViewModel {
 			return
 		}
 		
-		let dex = dipdupExchangeToTezTool(exchange: selectedPosition.exchange.name)
-		let operations = OperationFactory.withdrawRewards(withDex: dex, dexContract: selectedPosition.exchange.address, wallet: wallet)
+		let operations = OperationFactory.withdrawRewards(withDex: selectedPosition.exchange.name, dexContract: selectedPosition.exchange.address, wallet: wallet)
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
 			switch result {

@@ -9,12 +9,12 @@ import UIKit
 
 class SwapTokenCell: UITableViewCell {
 	
-	@IBOutlet weak var tokenLabel: UILabel!
-	@IBOutlet weak var buyPriceLabel: UILabel!
 	@IBOutlet weak var dexLabel: UILabel!
+	@IBOutlet weak var priceLabel: UILabel!
+	@IBOutlet weak var xtzPoolLabel: UILabel!
+	@IBOutlet weak var tokenPoolLabel: UILabel!
 	
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 }
