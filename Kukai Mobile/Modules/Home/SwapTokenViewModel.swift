@@ -16,8 +16,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
-	private var filteredPairs: [TezToolPair] = []
-	private var pairPriceObjects: [String: TezToolPrice] = [:]
+	private var tokens: [DipDupExchangesAndTokens] = []
 	
 	override init() {
 		super.init()
@@ -26,22 +25,47 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	deinit {
 	}
 	
-	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+	private class DiffableTableViewWithSectionHeaders: UITableViewDiffableDataSource<Int, AnyHashable> {
+		override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+			guard let exchange = self.itemIdentifier(for: IndexPath(item: 0, section: section)) as? DipDupExchange else {
+				return ""
+			}
 			
-			guard let pair = item as? TezToolPair, let side = pair.nonBaseTokenSide() else {
+			return exchange.token.symbol
+		}
+	}
+	
+	func makeDataSource(withTableView tableView: UITableView) {
+		dataSource = DiffableTableViewWithSectionHeaders(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			
+			guard let exchange = item as? DipDupExchange else {
 				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
 				return UITableViewCell()
 			}
 			
 			let cell = tableView.dequeueReusableCell(withIdentifier: "tokenCell", for: indexPath) as? SwapTokenCell
-			cell?.tokenLabel.text = side.symbol
-			cell?.buyPriceLabel.text = side.price.rounded(scale: 6, roundingMode: .bankers).description
-			cell?.dexLabel.text = pair.dex.rawValue
+			cell?.dexLabel.text = self?.dexName(dex: exchange.name)
+			cell?.priceLabel.text = exchange.midPrice + " XTZ"
+			cell?.xtzPoolLabel.text = exchange.xtzPoolAmount().normalisedRepresentation
+			cell?.tokenPoolLabel.text = exchange.tokenPoolAmount().normalisedRepresentation
+			
 			return cell
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
+	}
+	
+	func dexName(dex: DipDupExchangeName) -> String {
+		switch dex {
+			case .quipuswap:
+				return "Quipuswap"
+				
+			case .lb:
+				return "Liquidity Baking"
+				
+			case .unknown:
+				return "Unknown"
+		}
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
@@ -50,7 +74,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		
-		DependencyManager.shared.tezToolsClient.fetchTokens { [weak self] result in
+		DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
 			guard let tokens = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
 				return
@@ -61,32 +85,22 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
+			self?.tokens = tokens
 			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0])
 			
-			self?.filteredPairs = []
-			for token in tokens {
-				for pair in token.price.pairs {
-					if pair.dex == .liquidityBaking || pair.dex == .quipuswap {
-						self?.filteredPairs.append(pair)
-						self?.pairPriceObjects[pair.address] = token.price
-					}
-				}
+			snapshot.appendSections(Array(0...tokens.count))
+			
+			for (index, tokenObj) in tokens.enumerated() {
+				snapshot.appendItems(tokenObj.exchanges, toSection: index)
 			}
 			
-			snapshot.appendItems(self?.filteredPairs ?? [], toSection: 0)
 			ds.apply(snapshot, animatingDifferences: animate)
 			
 			self?.state = .success(nil)
 		}
 	}
 	
-	func pairDataFor(indexPath: IndexPath) -> (pair: TezToolPair, price: TezToolPrice)? {
-		let pair = self.filteredPairs[indexPath.row]
-		guard let price = self.pairPriceObjects[pair.address] else {
-			return nil
-		}
-		
-		return (pair: pair, price: price)
+	func exchange(forIndexPath indexPath: IndexPath) -> DipDupExchange {
+		return tokens[indexPath.section].exchanges[indexPath.row]
 	}
 }

@@ -28,29 +28,28 @@ class AddLiquidityViewController: UIViewController {
 		super.viewWillAppear(animated)
 		TransactionService.shared.currentTransactionType = .addLiquidity
 		
-		if let pair = TransactionService.shared.addLiquidityData.selectedPair {
-			baseTokenButton.setTitle(pair.baseTokenSide()?.symbol, for: .normal)
-			nonBaseTokenButton.setTitle(pair.nonBaseTokenSide()?.symbol, for: .normal)
+		if let exchange = TransactionService.shared.addLiquidityData.selectedExchangeAndToken {
+			baseTokenButton.setTitle("XTZ", for: .normal)
+			nonBaseTokenButton.setTitle(exchange.token.symbol, for: .normal)
 			
 			self.addButton.isEnabled = false
 		}
 	}
 	
 	@IBAction func checkPriceTapped(_ sender: Any) {
-		guard let pair = TransactionService.shared.addLiquidityData.selectedPair,
-			  let price = TransactionService.shared.addLiquidityData.selectedPrice,
-			  let baseToken = pair.baseTokenSide(),
-			  let nonBaseToken = pair.nonBaseTokenSide(),
+		guard let exchange = TransactionService.shared.addLiquidityData.selectedExchangeAndToken,
 			  let input = baseTokenTextField.text,
 			  let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6) else {
 				  self.alert(withTitle: "Error", andMessage: "Can't get pair data")
 				  return
 		}
 		
-		let xtzPool = XTZAmount(fromNormalisedAmount: baseToken.pool)
-		let tokenPool = TokenAmount(fromNormalisedAmount: nonBaseToken.pool, decimalPlaces: price.decimals)
-		
-		self.calculationResult = DexCalculationService.shared.calculateAddLiquidity(xtz: xtz, xtzPool: xtzPool, tokenPool: tokenPool, totalLiquidity: pair.liquiditySupply(decimals: liquidityDecimalsForDex(dex: pair.dex)), maxSlippage: 0.5, dex: pair.dex)
+		self.calculationResult = DexCalculationService.shared.calculateAddLiquidity(xtz: xtz,
+																					xtzPool: exchange.xtzPoolAmount(),
+																					tokenPool: exchange.tokenPoolAmount(),
+																					totalLiquidity: exchange.totalLiquidity(),
+																					maxSlippage: 0.5,
+																					dex: exchange.name)
 		
 		guard let calc = self.calculationResult else {
 			nonBaseTokenTextField.text = "0"
@@ -80,8 +79,7 @@ class AddLiquidityViewController: UIViewController {
 		guard let calc = calculationResult,
 			  calc.expectedLiquidity > TokenAmount.zero(),
 			  let wallet = DependencyManager.shared.selectedWallet,
-			  let pair = TransactionService.shared.addLiquidityData.selectedPair,
-			  let price = TransactionService.shared.addLiquidityData.selectedPrice,
+			  let exchange = TransactionService.shared.addLiquidityData.selectedExchangeAndToken,
 			  let input = baseTokenTextField.text,
 			  let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6)
 		else {
@@ -91,13 +89,13 @@ class AddLiquidityViewController: UIViewController {
 		
 		
 		self.showActivity(clearBackground: false)
-		let operations = OperationFactory.addLiquidity(withDex: pair.dex,
+		let operations = OperationFactory.addLiquidity(withDex: exchange.name,
 													   xtzToDeposit: xtz,
 													   tokensToDeposit: calc.tokenRequired,
 													   minLiquidtyMinted: calc.minimumLiquidity,
-													   tokenContract: price.tokenAddress,
-													   dexContract: pair.address,
-													   isInitialLiquidity: pair.arePoolsEmpty(),
+													   tokenContract: exchange.token.address,
+													   dexContract: exchange.address,
+													   isInitialLiquidity: exchange.arePoolsEmpty(),
 													   wallet: wallet,
 													   timeout: 60 * 5)
 		

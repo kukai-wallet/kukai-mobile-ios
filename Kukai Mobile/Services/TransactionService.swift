@@ -27,13 +27,11 @@ public class TransactionService {
 	}
 	
 	public struct ExchangeData {
-		var selectedPair: TezToolPair?
-		var selectedPrice: TezToolPrice?
+		var selectedExchangeAndToken: DipDupExchange?
 	}
 	
 	public struct AddLiquidityData {
-		var selectedPair: TezToolPair?
-		var selectedPrice: TezToolPrice?
+		var selectedExchangeAndToken: DipDupExchange?
 	}
 	
 	public struct RemoveLiquidityData {
@@ -55,8 +53,8 @@ public class TransactionService {
 	private init() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
-		self.addLiquidityData = AddLiquidityData(selectedPair: nil, selectedPrice: nil)
+		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
+		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 	}
 	
@@ -65,20 +63,18 @@ public class TransactionService {
 	public func resetState() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedPair: nil, selectedPrice: nil)
-		self.addLiquidityData = AddLiquidityData(selectedPair: nil, selectedPrice: nil)
+		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
+		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 	}
 	
-	public func record(pair: TezToolPair, price: TezToolPrice) {
+	public func record(exchange: DipDupExchange) {
 		switch self.currentTransactionType {
 			case .exchange:
-				self.exchangeData.selectedPair = pair
-				self.exchangeData.selectedPrice = price
+				self.exchangeData.selectedExchangeAndToken = exchange
 				
 			case .addLiquidity:
-				self.addLiquidityData.selectedPair = pair
-				self.addLiquidityData.selectedPrice = price
+				self.addLiquidityData.selectedExchangeAndToken = exchange
 			
 			default:
 				break

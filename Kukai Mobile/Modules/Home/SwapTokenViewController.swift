@@ -39,12 +39,7 @@ class SwapTokenViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let pairData = self.viewModel.pairDataFor(indexPath: indexPath) else {
-			self.alert(errorWithMessage: "Can't get pricing info")
-			return
-		}
-		
-		TransactionService.shared.record(pair: pairData.pair, price: pairData.price)
+		TransactionService.shared.record(exchange: self.viewModel.exchange(forIndexPath: indexPath))
 		self.navigationController?.popViewController(animated: true)
 	}
 }
