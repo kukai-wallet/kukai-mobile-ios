@@ -30,6 +30,8 @@
 		C050365D271ED8E600E7A664 /* Onboarding.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C050365F271ED8E600E7A664 /* Onboarding.storyboard */; };
 		C0503660271ED8F300E7A664 /* Home.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0503662271ED8F300E7A664 /* Home.storyboard */; };
 		C0503663271ED8FD00E7A664 /* Send.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0503665271ED8FD00E7A664 /* Send.storyboard */; };
+		C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */; };
+		C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05240A82770E1210031B5D1 /* GetStartedViewController.swift */; };
 		C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */; };
 		C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DC5272056D400DEF1CB /* Localizable.strings */; };
 		C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DDD27205FE300DEF1CB /* InfoPlist.strings */; };
@@ -49,7 +51,6 @@
 		C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */; };
 		C0B0365A269EE2070071ACD0 /* Kukai_MobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */; };
 		C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */; };
-		C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */; };
 		C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B03679269F1E450071ACD0 /* ExportOptions.plist */; };
 		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
 		C0B08A2D270DC22700075618 /* SendChooseTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B08A2C270DC22700075618 /* SendChooseTokenViewController.swift */; };
@@ -132,6 +133,7 @@
 		C050365E271ED8E600E7A664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Onboarding.storyboard; sourceTree = "<group>"; };
 		C0503661271ED8F300E7A664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Home.storyboard; sourceTree = "<group>"; };
 		C0503664271ED8FD00E7A664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Send.storyboard; sourceTree = "<group>"; };
+		C05240A82770E1210031B5D1 /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+extensions.swift"; sourceTree = "<group>"; };
 		C0678DC4272056D400DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0678DC727205A7700DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -204,8 +206,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0B03674269EE2A40071ACD0 /* KukaiCoreSwift in Frameworks */,
 				C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */,
+				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -291,6 +293,7 @@
 				C0E921EB270C8C5C00F3B0B9 /* Cells */,
 				C050365F271ED8E600E7A664 /* Onboarding.storyboard */,
 				C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */,
+				C05240A82770E1210031B5D1 /* GetStartedViewController.swift */,
 				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
 				C049B5B226A07B0500F1C5E0 /* DirectAuthViewController.swift */,
 				C0082BFE26A713A000DB160B /* NewWalletPasswordViewController.swift */,
@@ -460,9 +463,9 @@
 			);
 			name = "Kukai Mobile";
 			packageProductDependencies = (
-				C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */,
 				C0BBD2A426A9A7980097B63A /* Sentry */,
 				C021FA2B270F45A700BD9CF3 /* BeaconSDK */,
+				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -537,9 +540,9 @@
 			);
 			mainGroup = C0B03636269EE2070071ACD0;
 			packageReferences = (
-				C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
+				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -636,6 +639,7 @@
 				C0B08A37270DDD5100075618 /* SendChooseTokenViewModel.swift in Sources */,
 				C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
+				C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
@@ -814,7 +818,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -872,7 +876,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = Kukai;
@@ -897,7 +901,7 @@
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -924,7 +928,7 @@
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -947,7 +951,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -969,7 +973,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1069,7 +1073,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "Kukai Beta";
@@ -1093,7 +1097,7 @@
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1116,7 +1120,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1196,17 +1200,17 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
+		C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simonmcl/beacon-ios-sdk";
+			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
 				branch = develop;
 				kind = branch;
 			};
 		};
-		C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
+		C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift.git";
+			repositoryURL = "https://github.com/simonmcl/beacon-ios-sdk";
 			requirement = {
 				branch = develop;
 				kind = branch;
@@ -1228,9 +1232,9 @@
 			package = C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
 			productName = BeaconSDK;
 		};
-		C0B03673269EE2A40071ACD0 /* KukaiCoreSwift */ = {
+		C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C0B03672269EE2A40071ACD0 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
+			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
 		};
 		C0BBD2A426A9A7980097B63A /* Sentry */ = {
