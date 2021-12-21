@@ -26,17 +26,4 @@ class WelcomeViewController: UIViewController {
 		networkButton.setTitle(buttonText, for: .normal)
 		*/
 	}
-	
-	@IBAction func getStartedTapped(_ sender: Any) {
-		let storyboard = UIStoryboard(name: "Onboarding", bundle: nil)
-		let viewController = storyboard.instantiateViewController(withIdentifier: "GetStartedBottomSheet")
-		
-		if let presentationController = viewController.presentationController as? UISheetPresentationController {
-			presentationController.detents = [.medium()]
-			presentationController.prefersGrabberVisible = true
-			presentationController.preferredCornerRadius = 16
-		}
-		
-		self.present(viewController, animated: true)
-	}
 }
