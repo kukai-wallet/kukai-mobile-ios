@@ -111,7 +111,7 @@ class SwapViewController: UIViewController {
 		}
 		
 		if isXtzToToken, let input = fromTokentextField.text, let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6) {
-			self.showActivity(clearBackground: false)
+			self.showLoadingModal(completion: nil)
 			
 			let operations = OperationFactory.swapXtzToToken(withdex: exchange.name, xtzAmount: xtz, minTokenAmount: calc.minimum, dexContract: exchange.address, wallet: wallet, timeout: 60 * 5)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
@@ -127,16 +127,16 @@ class SwapViewController: UIViewController {
 									self.alert(withTitle: "Error", andMessage: error.description)
 							}
 							
-							self.hideActivity()
+							self.hideLoadingModal(completion: nil)
 						}
 					
 					case .failure(let error):
 						self.alert(withTitle: "Error", andMessage: error.description)
-						self.hideActivity()
+						self.hideLoadingModal(completion: nil)
 				}
 			}
 		} else if let input = fromTokentextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: exchange.token.decimals) {
-			self.showActivity(clearBackground: false)
+			self.showLoadingModal(completion: nil)
 			
 			let operations = OperationFactory.swapTokenToXTZ(withDex: exchange.name,
 															 tokenAmount: token,
@@ -158,12 +158,12 @@ class SwapViewController: UIViewController {
 									self.alert(withTitle: "Error", andMessage: error.description)
 							}
 							
-							self.hideActivity()
+							self.hideLoadingModal(completion: nil)
 						}
 					
 					case .failure(let error):
 						self.alert(withTitle: "Error", andMessage: error.description)
-						self.hideActivity()
+						self.hideLoadingModal(completion: nil)
 				}
 			}
 		} else {

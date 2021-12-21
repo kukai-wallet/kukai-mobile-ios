@@ -15,35 +15,35 @@ class DirectAuthViewController: UIViewController {
     }
 	
 	@IBAction func appleTapped(_ sender: Any) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
 		}
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
 		}
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.torusAuthService.createWallet(from: .twitter, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
 		}
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.torusAuthService.createWallet(from: .facebook, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
 		}
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.torusAuthService.createWallet(from: .reddit, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
 		}
@@ -68,7 +68,7 @@ class DirectAuthViewController: UIViewController {
 				self.alert(withTitle: "Error", andMessage: error.description)
 		}
 		
-		self.hideActivity()
+		self.hideLoadingModal(completion: nil)
 	}
 	
 	func handleSuccessNavigation() {

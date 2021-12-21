@@ -25,11 +25,11 @@ class LedgerVerifyViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		
 		LedgerService.shared.getAddress(verify: false)
 			.onReceiveOutput { [weak self] addressObj in
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.addressHeadingLabel.text = "Address:"
 				self?.addressLabel.text = addressObj.address
 			}

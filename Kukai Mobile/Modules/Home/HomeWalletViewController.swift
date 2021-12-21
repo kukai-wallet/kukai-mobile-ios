@@ -53,16 +53,16 @@ class HomeWalletViewController: UIViewController {
 			switch state {
 				case .loading:
 					if !(self?.refreshControl.isRefreshing ?? false) {
-						self?.showActivity(clearBackground: false)
+						self?.showLoadingModal(completion: nil)
 					}
 					
 				case .failure(_, let errorString):
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.refreshControl.endRefreshing()
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.refreshControl.endRefreshing()
 					self?.addressLabel.text = self?.viewModel.walletAddress
 			}

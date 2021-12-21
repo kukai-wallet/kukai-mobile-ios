@@ -88,7 +88,7 @@ class AddLiquidityViewController: UIViewController {
 		}
 		
 		
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		let operations = OperationFactory.addLiquidity(withDex: exchange.name,
 													   xtzToDeposit: xtz,
 													   tokensToDeposit: calc.tokenRequired,
@@ -112,12 +112,12 @@ class AddLiquidityViewController: UIViewController {
 								self.alert(withTitle: "Error", andMessage: error.description)
 						}
 						
-						self.hideActivity()
+						self.hideLoadingModal(completion: nil)
 					}
 				
 				case .failure(let error):
 					self.alert(withTitle: "Error", andMessage: error.description)
-					self.hideActivity()
+					self.hideLoadingModal(completion: nil)
 			}
 		}
 	}

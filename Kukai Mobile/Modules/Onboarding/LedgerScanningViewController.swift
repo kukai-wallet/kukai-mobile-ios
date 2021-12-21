@@ -66,14 +66,14 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 		let itemIndex = deviceList.index(deviceList.startIndex, offsetBy: indexPath.row)
 		let selectedUUID = deviceList.keys[itemIndex]
 		
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		LedgerService.shared.connectTo(uuid: selectedUUID)
 			.sink(onError: { [weak self] error in
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.alert(errorWithMessage: "Error from ledger: \( error )")
 				
 			}, onSuccess: { [weak self] success in
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				
 				if !success {
 					self?.alert(errorWithMessage: "Unable to connect to device, please try again")

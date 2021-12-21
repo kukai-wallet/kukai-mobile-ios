@@ -25,14 +25,14 @@ class LiquidityTokensViewController: UIViewController, UITableViewDelegate {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showActivity(clearBackground: false)
+					self?.showLoadingModal(completion: nil)
 					
 				case .failure(_, let errorString):
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success(let message):
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					
 					if let m = message {
 						self?.alert(withTitle: "Success", andMessage: m)

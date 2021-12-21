@@ -34,12 +34,12 @@ class SendLedgerApproveViewController: UIViewController {
 			return
 		}
 		
-		self.showActivity(clearBackground: true)
+		self.showLoadingModal(completion: nil)
 		
 		let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estiamteResult in
 			guard let estimatedOps = try? estiamteResult.get() else {
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
 				return
 			}
@@ -48,7 +48,7 @@ class SendLedgerApproveViewController: UIViewController {
 			DependencyManager.shared.tezosNodeClient.getOperationMetadata(forWallet: wallet) { metadataResult in
 				self?.statusLabel.text = "Fetching metadata"
 				guard let metadata = try? metadataResult.get() else {
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
 					return
 				}
@@ -57,7 +57,7 @@ class SendLedgerApproveViewController: UIViewController {
 				DependencyManager.shared.tezosNodeClient.operationService.ledgerOperationPrepWithLocalForge(metadata: metadata, operations: estimatedOps, wallet: wallet) { ledgerPrepResult in
 					self?.statusLabel.text = "Setting up Ledger connection"
 					guard let ledgerPrep = try? ledgerPrepResult.get() else {
-						self?.hideActivity()
+						self?.hideLoadingModal(completion: nil)
 						self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
 						return
 					}
@@ -102,7 +102,7 @@ class SendLedgerApproveViewController: UIViewController {
 	func handle(signature: String) {
 		self.statusLabel.text = "Signature received, Injecting ..."
 		guard let ledgerPrep = TransactionService.shared.sendData.ledgerPrep, let binarySignature = Sodium.shared.utils.hex2bin(signature) else {
-			self.hideActivity()
+			self.hideLoadingModal(completion: nil)
 			self.alert(errorWithMessage: "Unable to inject, as can't find prep data")
 			return
 		}
@@ -114,12 +114,12 @@ class SendLedgerApproveViewController: UIViewController {
 																					operationMetadata: ledgerPrep.metadata) { [weak self] injectionResult in
 			
 			guard let opHash = try? injectionResult.get() else {
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? ErrorResponse.unknownError() )")
 				return
 			}
 			
-			self?.hideActivity()
+			self?.hideLoadingModal(completion: nil)
 			self?.alert(withTitle: "Success", andMessage: "Operation injected, hash: \(opHash)", okAction: { action in
 				self?.dismiss(animated: true, completion: nil)
 			})

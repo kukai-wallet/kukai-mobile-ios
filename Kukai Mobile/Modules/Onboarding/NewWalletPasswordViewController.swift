@@ -19,6 +19,9 @@ class NewWalletPasswordViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		self.addKeyboardObservers()
+		
+		self.navigationController?.setNavigationBarHidden(false, animated: false)
+		self.navigationItem.hidesBackButton = false
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {

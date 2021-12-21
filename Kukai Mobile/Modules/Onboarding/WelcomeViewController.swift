@@ -18,10 +18,13 @@ class WelcomeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		/*
-		self.navigationController?.setNavigationBarHidden(false, animated: false)
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
+		// TODO: remove when we have Torus verifiers
+		DependencyManager.shared.setDefaultTestnetURLs()
+		
+		/*
 		let buttonText = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Testnet"
 		networkButton.setTitle(buttonText, for: .normal)
 		*/

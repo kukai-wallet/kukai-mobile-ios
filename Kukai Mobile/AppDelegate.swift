@@ -69,6 +69,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			NSAttributedString.Key.foregroundColor: UIColor.clear
 		]
 		barButtonAppearence.setTitleTextAttributes(barButtonTextAttributes, for: .normal)
+		barButtonAppearence.tintColor = UIColor(named: "text-title")
 	}
 }
 

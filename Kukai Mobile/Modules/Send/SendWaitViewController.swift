@@ -26,24 +26,24 @@ class SendWaitViewController: UIViewController {
 			return
 		}
 		
-		self.showActivity(clearBackground: true)
+		self.showLoadingModal(completion: nil)
 		
 		let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estiamteResult in
 			guard let estimatedOps = try? estiamteResult.get() else {
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
 				return
 			}
 			
 			DependencyManager.shared.tezosNodeClient.send(operations: estimatedOps, withWallet: wallet) { sendResult in
 				guard let opHash = try? sendResult.get() else {
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.alert(errorWithMessage: "Couldn't send transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
 					return
 				}
 				
-				self?.hideActivity()
+				self?.hideLoadingModal(completion: nil)
 				self?.alert(withTitle: "Success", andMessage: "Operation injected, hash: \(opHash)")
 			}
 		}

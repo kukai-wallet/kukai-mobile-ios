@@ -47,7 +47,7 @@ class ImportFaucetViewController: UIViewController {
 	}
 	
 	func checkForMangerAndActivate(wallet: LinearWallet, andSecret: String) {
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		
 		let networkService = DependencyManager.shared.tezosNodeClient.networkService
 		
@@ -63,7 +63,7 @@ class ImportFaucetViewController: UIViewController {
 					}
 					
 				case .failure(let error):
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: "Unable to verify this wallets details. Please try again: \(error.description)")
 			}
 		}
@@ -83,7 +83,7 @@ class ImportFaucetViewController: UIViewController {
 					}
 					
 				case .failure(let error):
-					self?.hideActivity()
+					self?.hideLoadingModal(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: "Unable to activate: \(error.description)")
 			}
 		}
@@ -93,7 +93,7 @@ class ImportFaucetViewController: UIViewController {
 		let walletCache = WalletCacheService()
 		
 		if walletCache.cache(wallet: wallet) {
-			self.hideActivity()
+			self.hideLoadingModal(completion: nil)
 			self.performSegue(withIdentifier: "complete", sender: self)
 			
 		} else {

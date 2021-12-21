@@ -24,9 +24,9 @@ class LiquidtyBalanceViewController: UIViewController {
 	
 	@IBAction func refreshTapped(_ sender: Any) {
 		
-		self.showActivity(clearBackground: false)
+		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.tezosNodeClient.getLiquidityBakingData(forContract: (address: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", decimalPlaces: 8)) { [weak self] result in
-			self?.hideActivity()
+			self?.hideLoadingModal(completion: nil)
 			
 			switch result {
 				case .success(let poolData):

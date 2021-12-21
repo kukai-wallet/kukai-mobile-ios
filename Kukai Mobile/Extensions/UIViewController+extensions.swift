@@ -26,35 +26,38 @@ extension UIViewController {
 	
 	// MARK: - Activity display
 	
-	private static var activityView = UIView()
+	private static var activityIndicator = UIActivityIndicatorView()
+	private static var loadingModal = UIViewController.createLoadingModal()
 	
-	func showActivity(clearBackground: Bool = true) {
-		UIViewController.activityView = UIView(frame: UIScreen.main.bounds)
-		UIViewController.activityView.translatesAutoresizingMaskIntoConstraints = false
-		UIViewController.activityView.backgroundColor = clearBackground ? .clear : UIColor.lightGray.withAlphaComponent(0.7)
+	static func createLoadingModal() -> UIViewController {
+		let vc = UIViewController()
+		vc.view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
 		
-		let activityIndicator = UIActivityIndicatorView(style: .medium)
-		activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-		UIViewController.activityView.addSubview(activityIndicator)
-		self.view.addSubview(UIViewController.activityView)
-		self.view.bringSubviewToFront(UIViewController.activityView)
+		UIViewController.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+		UIViewController.activityIndicator.color = UIColor.white
+		
+		vc.view.addSubview(UIViewController.activityIndicator)
+		vc.view.bringSubviewToFront(UIViewController.activityIndicator)
 		
 		NSLayoutConstraint.activate([
-			activityIndicator.centerXAnchor.constraint(equalTo: UIViewController.activityView.centerXAnchor),
-			activityIndicator.centerYAnchor.constraint(equalTo: UIViewController.activityView.centerYAnchor),
-			
-			UIViewController.activityView.topAnchor.constraint(equalTo: self.view.topAnchor),
-			UIViewController.activityView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-			UIViewController.activityView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-			UIViewController.activityView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+			activityIndicator.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor),
+			activityIndicator.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor)
 		])
 		
-		activityIndicator.startAnimating()
+		vc.modalPresentationStyle = .overFullScreen
+		vc.modalTransitionStyle = .crossDissolve
+		
+		return vc
 	}
 	
-	func hideActivity() {
-		self.view.removeConstraints(UIViewController.activityView.constraints)
-		UIViewController.activityView.removeFromSuperview()
+	func showLoadingModal(completion: (() -> Void)? = nil) {
+		UIViewController.activityIndicator.startAnimating()
+		self.present(UIViewController.loadingModal, animated: true, completion: completion)
+	}
+	
+	func hideLoadingModal(completion: (() -> Void)? = nil) {
+		UIViewController.activityIndicator.stopAnimating()
+		UIViewController.loadingModal.dismiss(animated: true, completion: completion)
 	}
 	
 	var isModal: Bool {
