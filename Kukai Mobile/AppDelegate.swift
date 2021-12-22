@@ -62,14 +62,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func setAppearenceProxies() {
 		
-		// Hide back button text
+		// Change back button tint
 		let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
-		let barButtonTextAttributes: [NSAttributedString.Key: Any] = [
-			NSAttributedString.Key.font: UIFont.systemFont(ofSize: 0.1),
-			NSAttributedString.Key.foregroundColor: UIColor.clear
-		]
-		barButtonAppearence.setTitleTextAttributes(barButtonTextAttributes, for: .normal)
-		barButtonAppearence.tintColor = UIColor(named: "text-title")
+		barButtonAppearence.tintColor = UIColor(named: "text-primary")
 	}
 }
 

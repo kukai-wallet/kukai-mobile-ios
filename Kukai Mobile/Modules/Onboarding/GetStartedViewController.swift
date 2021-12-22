@@ -8,14 +8,26 @@
 import UIKit
 import KukaiCoreSwift
 
+import JWTDecode
+import AuthenticationServices
+import TorusSwiftDirectSDK
+
+
 class GetStartedViewController: UIViewController, UIPopoverPresentationControllerDelegate {
 
-    override func viewDidLoad() {
+	@IBOutlet weak var appleSignInButton: MyAuthorizationAppleIDButton!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
     }
 	
+	
 	@IBAction func appleTapped(_ sender: Any) {
-		self.alert(withTitle: "Error", andMessage: "Unsupported")
+		self.showLoadingModal {
+			DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
+				self?.handleResult(result: result)
+			}
+		}
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {

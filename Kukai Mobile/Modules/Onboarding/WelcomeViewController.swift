@@ -20,6 +20,7 @@ class WelcomeViewController: UIViewController {
 		
 		self.navigationController?.setNavigationBarHidden(true, animated: false)
 		self.navigationItem.hidesBackButton = true
+		self.navigationItem.backButtonDisplayMode = .minimal
 		
 		// TODO: remove when we have Torus verifiers
 		DependencyManager.shared.setDefaultTestnetURLs()

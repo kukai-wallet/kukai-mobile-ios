@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import Combine
 
 class SideMenuViewController: UIViewController {
@@ -78,6 +79,12 @@ class SideMenuViewController: UIViewController {
 		} completion: { [weak self] finish in
 			self?.dismiss(animated: false, completion: nil)
 		}
+	}
+	
+	@IBAction func deleteAllTapped(_ sender: Any) {
+		closeButtonTapped(self)
+		let _ = WalletCacheService().deleteCacheAndKeys()
+		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
 	}
 }
 

@@ -153,15 +153,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byj-1y-kD2">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byj-1y-kD2" customClass="MyAuthorizationAppleIDButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="24" y="68" width="366" height="48"/>
-                                <color key="backgroundColor" name="tertiary-button-background"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="FyI-Cq-QcF"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                 <inset key="imageEdgeInsets" minX="-130" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="SIGN IN WITH APPLE" image="apple">
+                                <state key="normal">
                                     <color key="titleColor" name="tertiary-button-text"/>
                                 </state>
                                 <state key="highlighted">
@@ -169,7 +169,13 @@
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="16"/>
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="authButtonType">
+                                        <integer key="value" value="0"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="authButtonStyle">
+                                        <integer key="value" value="2"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
@@ -183,7 +189,7 @@
                                     <constraint firstAttribute="height" constant="48" id="tJn-qg-gjE"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
-                                <inset key="imageEdgeInsets" minX="-85" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="-15" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="CONTINUE WITH GOOGLE" image="google">
                                     <color key="titleColor" name="tertiary-button-text"/>
                                 </state>
@@ -335,6 +341,9 @@
                             <constraint firstItem="tHR-Q3-Ju9" firstAttribute="leading" secondItem="aw4-bc-7aq" secondAttribute="leading" id="uXz-jm-jZw"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="appleSignInButton" destination="byj-1y-kD2" id="Awf-7Y-Yh6"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m3J-hR-aVe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2584,10 +2593,10 @@ If some or none of this has been done, please donwload the ledger live iOS app f
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ledgerDeviceCell" id="X2P-5y-J6c" customClass="LedgerDeviceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="69.5"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X2P-5y-J6c" id="teb-G5-mbc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDY-1L-jAb">
@@ -2597,7 +2606,7 @@ If some or none of this has been done, please donwload the ledger live iOS app f
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="UUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="va4-Yp-MG1">
-                                                    <rect key="frame" x="16" y="46" width="382" height="15.5"/>
+                                                    <rect key="frame" x="16" y="46" width="382" height="15"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2696,12 +2705,16 @@ If some or none of this has been done, please donwload the ledger live iOS app f
             <point key="canvasLocation" x="3306" y="366"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="byj-1y-kD2">
+            <size key="intrinsicContentSize" width="30" height="32"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="g7W-ka-Y3Y"/>
         <segue reference="Liq-8Z-Hqs"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="apple" width="15" height="20"/>
         <image name="arrow.down.circle" catalog="system" width="128" height="121"/>
         <image name="arrowshape.bounce.right" catalog="system" width="128" height="86"/>
         <image name="banner-logo" width="118" height="32"/>
@@ -2727,7 +2740,7 @@ If some or none of this has been done, please donwload the ledger live iOS app f
         <image name="twitter" width="25" height="24"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="background">
-            <color red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="modal-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
