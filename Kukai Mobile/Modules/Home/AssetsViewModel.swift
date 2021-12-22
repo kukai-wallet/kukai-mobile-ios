@@ -22,7 +22,7 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var walletAddress: String = ""
 	
 	var account: Account? = nil
-	
+	var heading: String = ""
 	
 	
 	// MARk: - Init
@@ -49,40 +49,66 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	
+	// AssetsTotalCell
+	// AssetsChartCell
+	// AssetsBuyTezCell
+	// AssetsTokenTezCell
+	// AssetsTokenCell
+	
+	
 	
 	// MARK: - Functions
 	
+	private class DiffableTableViewWithSectionHeaders: UITableViewDiffableDataSource<Int, AnyHashable> {
+		override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+			if section == 0 {
+				return "Total Balance"
+				
+			} else if section == 1 {
+				return "Your Assets"
+				
+			} else {
+				return ""
+			}
+		}
+	}
+	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let xtzBalance = item as? XTZAmount {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
+			if indexPath.section == 0 {
+				if indexPath.row == 0, let xtzBalance = item as? XTZAmount {
+					let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTotalCell", for: indexPath) as? AssetsTotalCell
+					cell?.tezLabel.text = xtzBalance.normalisedRepresentation + " tez"
+					cell?.fiatLabel.text = "$0.00"
+					return cell
+					
+				} else if indexPath.row == 1 {
+					return tableView.dequeueReusableCell(withIdentifier: "AssetsChartCell", for: indexPath)
+					
+				} else {
+					return tableView.dequeueReusableCell(withIdentifier: "AssetsBuyTezCell", for: indexPath)
+				}
+				
+			} else if indexPath.section == 1, let token = item as? XTZAmount {
+				let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTokenTezCell", for: indexPath) as? AssetsTokenCell
 				cell?.iconView.image = UIImage(named: "tezos-xtz-logo")
-				cell?.amountLabel.text = xtzBalance.normalisedRepresentation
-				cell?.symbolLabel.text = "XTZ"
-				return cell
-				
-			} else if let token = item as? Token, token.nfts == nil {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
-				cell?.iconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
-				cell?.amountLabel.text = token.balance.normalisedRepresentation
-				cell?.symbolLabel.text = token.symbol
-				return cell
-				
-			} else if let token = item as? Token, token.nfts != nil {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "nftParentCell", for: indexPath) as? NftParentTableViewCell
-				cell?.titleLabel.text = token.name
-				return cell
-				
-			} else if let nft = item as? NFT {
-				let cell = tableView.dequeueReusableCell(withIdentifier: "nftChildCell", for: indexPath) as? NftChildTableViewCell
-				cell?.iconView.setKuakiImage(withURL: nft.thumbnailURL, downSampleStandardImage: nil)
-				cell?.titleLabel.text = nft.name
+				cell?.tokenLabel.text = token.normalisedRepresentation + " tez"
+				cell?.conversionLabel.text = "$0.00"
 				return cell
 				
 			} else {
-				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
-				return UITableViewCell()
+				guard let token = item as? Token else {
+					print("Couldn't cast \(item) as Token")
+					return UITableViewCell()
+				}
+				
+				let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTokenCell", for: indexPath) as? AssetsTokenCell
+				cell?.iconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+				cell?.tokenLabel.text = token.balance.normalisedRepresentation
+				cell?.symbolLabel?.text = token.symbol
+				cell?.conversionLabel.text = "$0.00"
+				return cell
 			}
 		})
 		
@@ -101,6 +127,32 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		walletAddress = address
 		
+		
+		guard let ac = DependencyManager.shared.betterCallDevClient.cachedAccountInfo() else {
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to fetch data")
+			return
+		}
+		
+		self.account = ac
+		self.heading = address
+		
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		snapshot.appendSections([0, 1, 2])
+		
+		snapshot.appendItems([ac.xtzBalance + XTZAmount(fromNormalisedAmount: 0.000001), "chart", "buyTez"], toSection: 0)
+		snapshot.appendItems([ac.xtzBalance], toSection: 1)
+		snapshot.appendItems(ac.tokens, toSection: 2)
+		
+		ds.apply(snapshot, animatingDifferences: animate)
+		
+		
+		// TODO: figure out race condition
+		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+			self.state = .success(nil)
+		}
+		
+		
+		/*
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
 			guard let acc = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
@@ -108,20 +160,19 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self?.account = acc
-			
+			self?.heading = address
 			
 			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0])
+			snapshot.appendSections([0, 1, 2])
 			
-			var tokens: [AnyHashable] = [acc.xtzBalance]
-			tokens.append(contentsOf: acc.tokens)
-			
-			snapshot.appendItems(tokens, toSection: 0)
-			
+			snapshot.appendItems([acc.xtzBalance + XTZAmount(fromNormalisedAmount: 0.000001), "chart", "buyTez"], toSection: 0)
+			snapshot.appendItems([acc.xtzBalance], toSection: 1)
+			snapshot.appendItems(acc.tokens, toSection: 2)
 			
 			ds.apply(snapshot, animatingDifferences: animate)
 			
 			self?.state = .success(nil)
 		}
+		*/
 	}
 }

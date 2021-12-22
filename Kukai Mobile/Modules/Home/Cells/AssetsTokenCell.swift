@@ -11,6 +11,7 @@ class AssetsTokenCell: UITableViewCell {
 
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var tokenLabel: UILabel!
+	@IBOutlet weak var symbolLabel: UILabel?
 	@IBOutlet weak var conversionLabel: UILabel!
 	
 	override func awakeFromNib() {

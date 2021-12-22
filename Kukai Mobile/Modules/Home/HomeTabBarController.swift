@@ -28,6 +28,8 @@ class HomeTabBarController: UITabBarController {
 		middleButton.tintColor = UIColor.black
 		middleButton.center = CGPoint(x: tabBar.frame.width/2, y: 25)
 		self.tabBar.addSubview(middleButton)
+		
+		self.view.backgroundColor = UIColor(named: "background")
 	}
 	
 	override func viewDidLayoutSubviews() {
