@@ -17,6 +17,7 @@ class HomeTabBarController: UITabBarController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.navigationController?.setNavigationBarHidden(true, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
 		guard let tabItems = tabBar.items else { return }

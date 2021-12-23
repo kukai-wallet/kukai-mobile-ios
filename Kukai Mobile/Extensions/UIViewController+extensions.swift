@@ -26,8 +26,37 @@ extension UIViewController {
 	
 	// MARK: - Activity display
 	
+	private static var activityView = createActivityView()
+	private static var activityViewActivityIndicator = UIActivityIndicatorView()
+	
 	private static var activityIndicator = UIActivityIndicatorView()
 	private static var loadingModal = UIViewController.createLoadingModal()
+	
+	static func createActivityView() -> UIView {
+		let view = UIView(frame: UIScreen.main.bounds)
+		view.translatesAutoresizingMaskIntoConstraints = false
+		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+		
+		UIViewController.activityViewActivityIndicator.translatesAutoresizingMaskIntoConstraints = false
+		UIViewController.activityViewActivityIndicator.color = UIColor.white
+		
+		view.addSubview(UIViewController.activityViewActivityIndicator)
+		view.bringSubviewToFront(UIViewController.activityViewActivityIndicator)
+		
+		UIViewController.activityViewActivityIndicator.center = view.center
+		
+		return view
+	}
+	
+	func showLoadingView(completion: (() -> Void)? = nil) {
+		UIViewController.activityViewActivityIndicator.startAnimating()
+		UIApplication.shared.currentWindow?.addSubview(UIViewController.activityView)
+	}
+	
+	func hideLoadingView(completion: (() -> Void)? = nil) {
+		UIViewController.activityViewActivityIndicator.stopAnimating()
+		UIViewController.activityView.removeFromSuperview()
+	}
 	
 	static func createLoadingModal() -> UIViewController {
 		let vc = UIViewController()

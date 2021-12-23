@@ -77,23 +77,33 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if indexPath.section == 0 {
-				if indexPath.row == 0, let xtzBalance = item as? XTZAmount {
+				if indexPath.row == 0, let title = item as? String {
+					let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsSectionHeaderCell", for: indexPath) as? AssetsSectionHeaderCell
+					cell?.titleLabel.text = title
+					return cell
+				}
+				if indexPath.row == 1, let xtzBalance = item as? XTZAmount {
 					let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTotalCell", for: indexPath) as? AssetsTotalCell
 					cell?.tezLabel.text = xtzBalance.normalisedRepresentation + " tez"
 					cell?.fiatLabel.text = "$0.00"
 					return cell
 					
-				} else if indexPath.row == 1 {
+				} else if indexPath.row == 2 {
 					return tableView.dequeueReusableCell(withIdentifier: "AssetsChartCell", for: indexPath)
 					
 				} else {
 					return tableView.dequeueReusableCell(withIdentifier: "AssetsBuyTezCell", for: indexPath)
 				}
 				
-			} else if indexPath.section == 1, let token = item as? XTZAmount {
+			} else if indexPath.section == 1, let title = item as? String {
+				let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsSectionHeaderCell", for: indexPath) as? AssetsSectionHeaderCell
+				cell?.titleLabel.text = title
+				return cell
+				
+			} else if indexPath.section == 2, let token = item as? String {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTokenTezCell", for: indexPath) as? AssetsTokenCell
 				cell?.iconView.image = UIImage(named: "tezos-xtz-logo")
-				cell?.tokenLabel.text = token.normalisedRepresentation + " tez"
+				cell?.tokenLabel.text = token
 				cell?.conversionLabel.text = "$0.00"
 				return cell
 				
@@ -128,6 +138,7 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletAddress = address
 		
 		
+		/*
 		guard let ac = DependencyManager.shared.betterCallDevClient.cachedAccountInfo() else {
 			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to fetch data")
 			return
@@ -137,22 +148,18 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.heading = address
 		
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		snapshot.appendSections([0, 1, 2])
+		snapshot.appendSections([0, 1, 2, 3])
 		
-		snapshot.appendItems([ac.xtzBalance + XTZAmount(fromNormalisedAmount: 0.000001), "chart", "buyTez"], toSection: 0)
-		snapshot.appendItems([ac.xtzBalance], toSection: 1)
-		snapshot.appendItems(ac.tokens, toSection: 2)
+		snapshot.appendItems(["Total Balance", ac.xtzBalance, "chart", "buyTez"], toSection: 0)
+		snapshot.appendItems(["Your Assets"], toSection: 1)
+		snapshot.appendItems([ac.xtzBalance.normalisedRepresentation + " tez"], toSection: 2)
+		snapshot.appendItems(ac.tokens, toSection: 3)
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
+		self.state = .success(nil)
+		*/
 		
-		// TODO: figure out race condition
-		DispatchQueue.main.asyncAfter(deadline: .now()+1) {
-			self.state = .success(nil)
-		}
-		
-		
-		/*
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
 			guard let acc = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
@@ -163,16 +170,16 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.heading = address
 			
 			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0, 1, 2])
+			snapshot.appendSections([0, 1, 2, 3])
 			
-			snapshot.appendItems([acc.xtzBalance + XTZAmount(fromNormalisedAmount: 0.000001), "chart", "buyTez"], toSection: 0)
-			snapshot.appendItems([acc.xtzBalance], toSection: 1)
-			snapshot.appendItems(acc.tokens, toSection: 2)
+			snapshot.appendItems(["Total Balance", acc.xtzBalance, "chart", "buyTez"], toSection: 0)
+			snapshot.appendItems(["Your Assets"], toSection: 1)
+			snapshot.appendItems([acc.xtzBalance.normalisedRepresentation + " tez"], toSection: 2)
+			snapshot.appendItems(acc.tokens, toSection: 3)
 			
 			ds.apply(snapshot, animatingDifferences: animate)
 			
 			self?.state = .success(nil)
 		}
-		*/
 	}
 }

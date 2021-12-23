@@ -9,6 +9,7 @@ import UIKit
 
 class AssetsTokenCell: UITableViewCell {
 
+	@IBOutlet weak var iconBackgroundView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var tokenLabel: UILabel!
 	@IBOutlet weak var symbolLabel: UILabel?
@@ -16,6 +17,9 @@ class AssetsTokenCell: UITableViewCell {
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+		iconBackgroundView.customCornerRadius = 18
+		iconBackgroundView.borderColor = UIColor(named: "image-border") ?? .lightGray
+		iconBackgroundView.borderWidth = 1
     }
 }

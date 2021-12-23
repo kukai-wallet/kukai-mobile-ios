@@ -1092,38 +1092,16 @@ Would you like to add a password (of your own choosing) to the end of your seed 
         <!--Import-->
         <scene sceneID="8h7-5U-ken">
             <objects>
-                <tableViewController storyboardIdentifier="importWallet" id="qB0-nM-3m7" customClass="ImportChoiceViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="importWallet" modalPresentationStyle="fullScreen" id="qB0-nM-3m7" customClass="ImportChoiceViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="fbR-FS-mhT">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
                             <tableViewSection id="ZwH-q8-2v8">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="44" id="a1Q-hB-xtB">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="a1Q-hB-xtB" id="Zie-gL-NMa">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose from one of the options" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vFD-UV-quU">
-                                                    <rect key="frame" x="24" y="24" width="366" height="0.0"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle2"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailing" secondItem="vFD-UV-quU" secondAttribute="trailing" constant="24" id="1DK-Pp-tJ3"/>
-                                                <constraint firstItem="vFD-UV-quU" firstAttribute="leading" secondItem="Zie-gL-NMa" secondAttribute="leading" constant="24" id="ANY-S7-Tfi"/>
-                                                <constraint firstItem="vFD-UV-quU" firstAttribute="top" secondItem="Zie-gL-NMa" secondAttribute="top" constant="24" id="GhO-zg-FPJ"/>
-                                                <constraint firstAttribute="bottom" secondItem="vFD-UV-quU" secondAttribute="bottom" constant="48" id="zWH-yD-uba"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="2C4-Rd-kp8">
-                                        <rect key="frame" x="0.0" y="88.5" width="414" height="109"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="109"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2C4-Rd-kp8" id="BZ3-Ok-AkA">
                                             <rect key="frame" x="0.0" y="0.0" width="385.5" height="109"/>
@@ -1157,7 +1135,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="SfX-0b-jDY">
-                                        <rect key="frame" x="0.0" y="197.5" width="414" height="109"/>
+                                        <rect key="frame" x="0.0" y="153.5" width="414" height="109"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SfX-0b-jDY" id="o5x-Ld-bMr">
                                             <rect key="frame" x="0.0" y="0.0" width="385.5" height="109"/>
@@ -1191,7 +1169,7 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="HoZ-M1-5gO">
-                                        <rect key="frame" x="0.0" y="306.5" width="414" height="89"/>
+                                        <rect key="frame" x="0.0" y="262.5" width="414" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HoZ-M1-5gO" id="J4q-LZ-MOK">
                                             <rect key="frame" x="0.0" y="0.0" width="385.5" height="89"/>
@@ -1233,39 +1211,40 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Import" id="XzF-as-t5j"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wC4-ge-8dN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1054" y="1683"/>
+            <point key="canvasLocation" x="1053.6231884057972" y="1682.8125"/>
         </scene>
         <!--Mnemonic-->
         <scene sceneID="qoB-xk-BPf">
             <objects>
                 <viewController id="4OY-Zj-KHS" customClass="ImportMnemonicViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5a4-iV-83E">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seed phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="naN-ad-6p0">
-                                <rect key="frame" x="24" y="24" width="366" height="21"/>
+                                <rect key="frame" x="24" y="112" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qsh-Jy-1Bn">
-                                <rect key="frame" x="24" y="119" width="366" height="21"/>
+                                <rect key="frame" x="24" y="207" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Derivation Path" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hkz-ao-zYY">
-                                <rect key="frame" x="24" y="198" width="366" height="21"/>
+                                <rect key="frame" x="24" y="286" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cgy-x4-sxF">
-                                <rect key="frame" x="24" y="53" width="366" height="50"/>
+                                <rect key="frame" x="24" y="141" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Sba-KV-kTa"/>
@@ -1287,17 +1266,17 @@ Would you like to add a password (of your own choosing) to the end of your seed 
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xyQ-QR-QBa">
-                                <rect key="frame" x="24" y="148" width="366" height="34"/>
+                                <rect key="frame" x="24" y="236" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u4V-D7-e4t">
-                                <rect key="frame" x="24" y="227" width="366" height="34"/>
+                                <rect key="frame" x="24" y="315" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iau-Da-m6q">
-                                <rect key="frame" x="24" y="758" width="366" height="50"/>
+                                <rect key="frame" x="24" y="812" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="3sy-Yx-mKS"/>
@@ -1358,18 +1337,18 @@ Would you like to add a password (of your own choosing) to the end of your seed 
             <objects>
                 <viewController id="kH7-xQ-Tj9" customClass="ImportSuccessViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="BqA-Zb-Ews">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkmark.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="zpa-pM-2mo">
-                                <rect key="frame" x="157" y="24.5" width="100" height="99"/>
+                                <rect key="frame" x="157" y="112.5" width="100" height="99"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="GRN-QE-5nC"/>
                                     <constraint firstAttribute="height" constant="100" id="hnE-Ib-Y8X"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9SG-iy-SwW">
-                                <rect key="frame" x="24" y="148" width="366" height="61"/>
+                                <rect key="frame" x="24" y="236" width="366" height="61"/>
                                 <string key="text">Wallet successfully imported
 
 Address:</string>
@@ -1378,13 +1357,13 @@ Address:</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="tz1abc123def456ghi789" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zw2-zz-V1C">
-                                <rect key="frame" x="24" y="233" width="366" height="21"/>
+                                <rect key="frame" x="24" y="321" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SCT-RT-GhX">
-                                <rect key="frame" x="24" y="758" width="366" height="50"/>
+                                <rect key="frame" x="24" y="812" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="hl1-0e-A1y"/>
@@ -2198,29 +2177,29 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
             <objects>
                 <viewController id="Ato-v6-VTX" customClass="ImportFaucetViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="XP1-B0-9kW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seed phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LTM-P5-8io">
-                                <rect key="frame" x="24" y="24" width="366" height="21"/>
+                                <rect key="frame" x="24" y="112" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qke-tG-5Db">
-                                <rect key="frame" x="24" y="198" width="366" height="21"/>
+                                <rect key="frame" x="24" y="286" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="email" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RvV-ez-ppB">
-                                <rect key="frame" x="24" y="119" width="366" height="21"/>
+                                <rect key="frame" x="24" y="207" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yL2-ul-kH5">
-                                <rect key="frame" x="24" y="53" width="366" height="50"/>
+                                <rect key="frame" x="24" y="141" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="S9F-Ra-Ffu"/>
@@ -2242,17 +2221,17 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="buf-8H-W2b">
-                                <rect key="frame" x="24" y="148" width="366" height="34"/>
+                                <rect key="frame" x="24" y="236" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lOn-ab-27C">
-                                <rect key="frame" x="24" y="227" width="366" height="34"/>
+                                <rect key="frame" x="24" y="315" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m5p-u8-Bzr">
-                                <rect key="frame" x="24" y="758" width="366" height="50"/>
+                                <rect key="frame" x="24" y="812" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="QEk-2w-H6J"/>
@@ -2270,13 +2249,13 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secret" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQU-eg-4Wu">
-                                <rect key="frame" x="24" y="277" width="366" height="21"/>
+                                <rect key="frame" x="24" y="365" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BXq-P8-xRs">
-                                <rect key="frame" x="24" y="306" width="366" height="34"/>
+                                <rect key="frame" x="24" y="394" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -2429,23 +2408,23 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
             <objects>
                 <viewController id="YAm-hi-eGn" customClass="ImportMnemonicViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="d9I-Lb-Iz9">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seed phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dmg-8q-e2g">
-                                <rect key="frame" x="24" y="24" width="366" height="21"/>
+                                <rect key="frame" x="24" y="112" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Password (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcn-4R-xep">
-                                <rect key="frame" x="24" y="119" width="366" height="21"/>
+                                <rect key="frame" x="24" y="207" width="366" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="0pg-al-jaG">
-                                <rect key="frame" x="24" y="53" width="366" height="50"/>
+                                <rect key="frame" x="24" y="141" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="Go2-kk-UwJ"/>
@@ -2467,12 +2446,12 @@ Want to get the most out of your wallet and earn interest? Swipe right to learn 
                                 </userDefinedRuntimeAttributes>
                             </textView>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="kvu-I0-J6c">
-                                <rect key="frame" x="24" y="148" width="366" height="34"/>
+                                <rect key="frame" x="24" y="236" width="366" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cz0-av-afn">
-                                <rect key="frame" x="24" y="758" width="366" height="50"/>
+                                <rect key="frame" x="24" y="812" width="366" height="50"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="5AR-W5-0Ax"/>
@@ -2593,10 +2572,10 @@ If some or none of this has been done, please donwload the ledger live iOS app f
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ledgerDeviceCell" id="X2P-5y-J6c" customClass="LedgerDeviceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="69"/>
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="69.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X2P-5y-J6c" id="teb-G5-mbc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="69.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDY-1L-jAb">
@@ -2606,7 +2585,7 @@ If some or none of this has been done, please donwload the ledger live iOS app f
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="UUID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="va4-Yp-MG1">
-                                                    <rect key="frame" x="16" y="46" width="382" height="15"/>
+                                                    <rect key="frame" x="16" y="46" width="382" height="15.5"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>

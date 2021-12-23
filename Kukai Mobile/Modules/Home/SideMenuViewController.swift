@@ -49,12 +49,12 @@ class SideMenuViewController: UIViewController {
 		viewModel.refresh(animate: true)
 		
 		// Fade in background and slide in content view
-		UIView.animate(withDuration: 0.3) { [weak self] in
+		UIView.animate(withDuration: 0.25) { [weak self] in
 			self?.view.backgroundColor = UIColor(red: 125/255, green: 125/255, blue: 125/255, alpha: 0.5)
 		}
 		
 		contentViewLeftConstraint.constant = 0
-		UIView.animate(withDuration: 1) { [weak self] in
+		UIView.animate(withDuration: 0.5) { [weak self] in
 			self?.closeButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
 			self?.view.layoutIfNeeded()
 		}
@@ -66,11 +66,11 @@ class SideMenuViewController: UIViewController {
 		anticlockAnimation.fromValue = CGFloat.pi
 		anticlockAnimation.toValue = 0
 		anticlockAnimation.isAdditive = true
-		anticlockAnimation.duration = 1.0
+		anticlockAnimation.duration = 0.5
 		
 		contentViewLeftConstraint.constant = contentViewWidthConstraint.constant * -1
 		
-		UIView.animate(withDuration: 1) { [weak self] in
+		UIView.animate(withDuration: 0.5) { [weak self] in
 			self?.closeButton.layer.add(anticlockAnimation, forKey: "rotate")
 			self?.closeButton.transform = CGAffineTransform(rotationAngle: -CGFloat.pi)
 			self?.view.backgroundColor = .clear

@@ -22,18 +22,21 @@ class AssetsViewController: UIViewController {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		
+		// Prevent nav button from consuming the entire nav bar
+		accountNavButton.addConstraint(NSLayoutConstraint(item: accountNavButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 140))
+		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingModal(completion: nil)
+					self?.showLoadingView(completion: nil)
 					
 				case .failure(_, let errorString):
-					self?.hideLoadingModal(completion: nil)
+					self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
 					self?.accountNavButton.setTitle(self?.viewModel.heading, for: .normal)
-					self?.hideLoadingModal(completion: nil)
+					self?.hideLoadingView(completion: nil)
 			}
 		}
     }

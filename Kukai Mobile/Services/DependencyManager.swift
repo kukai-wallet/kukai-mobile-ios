@@ -83,6 +83,15 @@ class DependencyManager {
 	var selectedWallet: Wallet? {
 		get {
 			if let wallets = WalletCacheService().fetchWallets() {
+				
+				if wallets.count == 0 {
+					return nil
+				}
+				
+				if selectedWalletIndex >= wallets.count {
+					selectedWalletIndex = wallets.count-1
+				}
+				
 				return wallets[selectedWalletIndex]
 			}
 			
@@ -100,13 +109,12 @@ class DependencyManager {
 	
 	// Torus / Social data
 	private let testnetVerifiers: [TorusAuthProvider: SubverifierWrapper] = [
-		.apple: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
-			loginType: .web,
+		.apple: SubverifierWrapper(aggregateVerifierName: "kukai-apple-testnet", subverifier: SubVerifierDetails(
+			loginType: .installed,
 			loginProvider: .apple,
-			clientId: "m1Q0gvDfOyZsJCZ3cucSQEe9XMvl9d9L",
-			verifierName: "torus-auth0-apple-lrc",
-			redirectURL: "tdsdk://tdsdk/oauthCallback",
-			jwtParams: ["domain": "torus-test.auth0.com"]
+			clientId: "",
+			verifierName: "kukai-apple",
+			redirectURL: "tdsdk://tdsdk/oauthCallback"
 		)),
 		.twitter: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
 			loginType: .web,

@@ -23,8 +23,8 @@ class WelcomeViewController: UIViewController {
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
 		// TODO: remove when we have Torus verifiers
-		//DependencyManager.shared.setDefaultTestnetURLs()
-		DependencyManager.shared.setDefaultMainnetURLs()
+		DependencyManager.shared.setDefaultTestnetURLs()
+		//DependencyManager.shared.setDefaultMainnetURLs()
 		
 		
 		
