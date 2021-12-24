@@ -113,7 +113,7 @@ class DependencyManager {
 			loginType: .installed,
 			loginProvider: .apple,
 			clientId: "",
-			verifierName: "kukai-apple",
+			verifierName: "kukai-apple-beta",
 			redirectURL: "tdsdk://tdsdk/oauthCallback"
 		)),
 		.twitter: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(
