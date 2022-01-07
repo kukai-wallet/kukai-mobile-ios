@@ -31,20 +31,30 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private var rightTextPosition = CGPoint(x: 0, y: 0)
 	private var readyToShrinkSafe = false
 	private var readyToShrinkText = false
+	private var runOnce = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		setAnchorPoint(anchorPoint: CGPoint(x: 1, y: 0.5), forView: kukaiLogo)
-		kukaiLogo.layer.zPosition = 10000
+		if !runOnce {
+			setAnchorPoint(anchorPoint: CGPoint(x: 1, y: 0.5), forView: kukaiLogo)
+			kukaiLogo.layer.zPosition = 10000
+		}
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		leftSafePosition = CGPoint(x: kukaiLogo.center.x - 180, y: kukaiLogo.center.y)
-		rightTextPosition = CGPoint(x: kukaiTextImage.center.x + 80, y: kukaiTextImage.center.y)
-		openSafeDoor()
+		if !runOnce {
+			leftSafePosition = CGPoint(x: kukaiLogo.center.x - 180, y: kukaiLogo.center.y)
+			rightTextPosition = CGPoint(x: kukaiTextImage.center.x + 80, y: kukaiTextImage.center.y)
+			openSafeDoor()
+			
+		} else {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+				self?.disolveTransition()
+			}
+		}
 	}
 	
 	func animationDidStart(_ anim: CAAnimation) {
@@ -87,7 +97,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		
 		
 		if id == "moveTextRight" {
-			print("moving right")
 			kukaiTextCoverView.isHidden = true
 			kukaiTextImage.center = rightTextPosition
 			readyToShrinkText = true
@@ -304,12 +313,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.largeTitleDisplayMode = .never
 		
-		let transition = CATransition()
-		transition.duration = 0.5
-		transition.type = CATransitionType.fade
-		transition.isRemovedOnCompletion = true
-		self.navigationController?.view.layer.add(transition, forKey: nil)
-		
+		runOnce = true
 		if WalletCacheService().fetchPrimaryWallet() != nil {
 			self.performSegue(withIdentifier: "home", sender: nil)
 		} else {
