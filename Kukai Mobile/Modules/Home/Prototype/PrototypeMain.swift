@@ -34,6 +34,16 @@ public class PrototypeMain: UIViewController {
 		self.performSegue(withIdentifier: "allvertical", sender: self)
 	}
 	
+	@IBAction func option4(_ sender: Any) {
+		PrototypeData.shared.selectedOption = 4
+		self.performSegue(withIdentifier: "segmented", sender: self)
+	}
+	
+	@IBAction func option5(_ sender: Any) {
+		PrototypeData.shared.selectedOption = 5
+		self.performSegue(withIdentifier: "segmented", sender: self)
+	}
+	
 	@IBAction func deleteWallet(_ sender: Any) {
 		let _ = WalletCacheService().deleteCacheAndKeys()
 		self.navigationController?.popToRootViewController(animated: true)
