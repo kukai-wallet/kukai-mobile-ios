@@ -15,7 +15,7 @@ class DependencyManager {
 	static let shared = DependencyManager()
 	
 	static let defaultNodeURL_mainnet = URL(string: "https://api.tez.ie/rpc/mainnet")!
-	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
+	static let defaultTzktURL_mainnet = URL(string: "https://staging.api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	
@@ -99,6 +99,8 @@ class DependencyManager {
 		}
 	}
 	
+	var currentAccount: Account? = nil
+	
 	
 	// Combine publishers to serve as notifications across multiple screens
 	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults
@@ -179,7 +181,9 @@ class DependencyManager {
 		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
-		updateKukaiCoreClients()
+		// TODO: remove
+		//updateKukaiCoreClients()
+		setDefaultMainnetURLs()
 	}
 	
 	func setDefaultMainnetURLs() {

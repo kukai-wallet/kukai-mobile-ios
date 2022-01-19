@@ -27,7 +27,6 @@ class WelcomeViewController: UIViewController {
 		//DependencyManager.shared.setDefaultMainnetURLs()
 		
 		
-		
 		/*
 		let buttonText = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Testnet"
 		networkButton.setTitle(buttonText, for: .normal)

@@ -31,42 +31,47 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tezos-launch-logo" translatesAutoresizingMaskIntoConstraints="NO" id="rHh-rC-Am3">
-                                <rect key="frame" x="179.5" y="414.5" width="55" height="67"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai-text-medium" translatesAutoresizingMaskIntoConstraints="NO" id="trG-h5-KOb">
+                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
                             </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe" translatesAutoresizingMaskIntoConstraints="NO" id="G9g-ER-nPw">
-                                <rect key="frame" x="107" y="395" width="100" height="106"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="100" id="Rbg-JF-FS9"/>
-                                    <constraint firstAttribute="height" constant="106" id="XQp-3v-kFo"/>
-                                </constraints>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seu-gn-HeW">
+                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe-full" translatesAutoresizingMaskIntoConstraints="NO" id="obb-AB-lJ7">
+                                <rect key="frame" x="157" y="398" width="100" height="100"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kūkai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ekb-6d-V1k">
-                                <rect key="frame" x="145" y="509" width="124" height="58"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="48"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai-logo-medium" translatesAutoresizingMaskIntoConstraints="NO" id="rHh-rC-Am3">
+                                <rect key="frame" x="207" y="398" width="100" height="100"/>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="rHh-rC-Am3" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="3EV-Q1-7pC"/>
-                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9NW-dW-61k"/>
-                            <constraint firstItem="Ekb-6d-V1k" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Ysa-Lg-nwu"/>
-                            <constraint firstItem="G9g-ER-nPw" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="-50" id="ci9-zT-YC5"/>
-                            <constraint firstItem="G9g-ER-nPw" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="kb1-E5-r3Q"/>
-                            <constraint firstItem="Ekb-6d-V1k" firstAttribute="top" secondItem="G9g-ER-nPw" secondAttribute="bottom" constant="8" symbolic="YES" id="wSO-2p-rBz"/>
+                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="50" id="9NW-dW-61k"/>
+                            <constraint firstItem="seu-gn-HeW" firstAttribute="height" secondItem="trG-h5-KOb" secondAttribute="height" id="B9y-gp-APg"/>
+                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="Fc0-zQ-eaD"/>
+                            <constraint firstItem="seu-gn-HeW" firstAttribute="width" secondItem="trG-h5-KOb" secondAttribute="width" id="X3d-ap-aDE"/>
+                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="-25" id="XYg-WT-D1h"/>
+                            <constraint firstItem="seu-gn-HeW" firstAttribute="top" secondItem="trG-h5-KOb" secondAttribute="top" id="aUC-pg-SLX"/>
+                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="dml-oX-3wB"/>
+                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="hoj-X0-PeA"/>
+                            <constraint firstItem="seu-gn-HeW" firstAttribute="trailing" secondItem="trG-h5-KOb" secondAttribute="trailing" id="xdl-HM-Bdj"/>
+                            <constraint firstItem="seu-gn-HeW" firstAttribute="leading" secondItem="trG-h5-KOb" secondAttribute="leading" id="xsd-7n-Mdj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="wat-Df-g1q"/>
                     <connections>
-                        <outlet property="kukaiLabel" destination="Ekb-6d-V1k" id="5Cs-b6-w6i"/>
-                        <outlet property="kukaiLabelTopConstraint" destination="wSO-2p-rBz" id="6Ka-pC-VDv"/>
-                        <outlet property="safeImage" destination="G9g-ER-nPw" id="AzV-mg-JVA"/>
-                        <outlet property="tezosImage" destination="rHh-rC-Am3" id="izg-ks-ikI"/>
-                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" id="mlf-fv-fJw"/>
+                        <outlet property="constraintKukaiLogoXCenter" destination="9NW-dW-61k" id="NF9-6m-7xo"/>
+                        <outlet property="constraintKukaiLogoYCenter" destination="3EV-Q1-7pC" id="dBU-v3-OHi"/>
+                        <outlet property="constraintKukaiTextX" destination="XYg-WT-D1h" id="NHA-G2-vs2"/>
+                        <outlet property="constraintKukaiTextY" destination="Fc0-zQ-eaD" id="txY-Wb-9Kf"/>
+                        <outlet property="kukaiLogo" destination="rHh-rC-Am3" id="vai-I2-pws"/>
+                        <outlet property="kukaiTextCoverView" destination="seu-gn-HeW" id="3RG-ZA-pMF"/>
+                        <outlet property="kukaiTextImage" destination="trG-h5-KOb" id="eR4-DR-lL4"/>
+                        <outlet property="safeImage" destination="obb-AB-lJ7" id="PFn-i2-i9R"/>
+                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="mlf-fv-fJw"/>
                         <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="d30-CS-0YC"/>
                     </connections>
                 </viewController>
@@ -96,8 +101,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="safe" width="389" height="401"/>
-        <image name="tezos-launch-logo" width="55" height="67"/>
+        <image name="kukai-logo-medium" width="100" height="100"/>
+        <image name="kukai-text-medium" width="247" height="100"/>
+        <image name="safe-full" width="100" height="100"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
