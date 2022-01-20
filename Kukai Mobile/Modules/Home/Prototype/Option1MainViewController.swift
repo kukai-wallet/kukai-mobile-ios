@@ -33,6 +33,8 @@ public class Option1MainViewController: UIViewController, UITableViewDelegate, U
 				guard let acc = try? result.get() else {
 					self?.hideLoadingView(completion: nil)
 					self?.alert(errorWithMessage: "can't get balances, yell at Simon")
+					
+					print("Error: \(result.getFailure())")
 					return
 				}
 				
