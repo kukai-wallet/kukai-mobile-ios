@@ -9,6 +9,7 @@ import UIKit
 
 public class SegmentedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
+	@IBOutlet weak var addressLabel: UILabel!
 	@IBOutlet weak var xtzBalanceLabel: UILabel!
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	@IBOutlet weak var tableView: UITableView!
@@ -49,6 +50,7 @@ public class SegmentedViewController: UIViewController, UITableViewDelegate, UIT
 	}
 	
 	public func numberOfSections(in tableView: UITableView) -> Int {
+		self.addressLabel.text = DependencyManager.shared.selectedWallet?.address
 		self.xtzBalanceLabel.text = (DependencyManager.shared.currentAccount?.xtzBalance.normalisedRepresentation ?? "") + " XTZ"
 		
 		return 1
