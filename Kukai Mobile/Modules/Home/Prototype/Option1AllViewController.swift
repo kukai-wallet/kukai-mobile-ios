@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 public class Option1AllViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -36,7 +37,7 @@ public class Option1AllViewController: UIViewController, UITableViewDelegate, UI
 				return UITableViewCell()
 			}
 			
-			cell.tokenIconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 			cell.titleLabel.text = "\(token.balance.normalisedRepresentation) \(token.symbol)"
 			return cell
 		} else {
@@ -44,7 +45,7 @@ public class Option1AllViewController: UIViewController, UITableViewDelegate, UI
 				return UITableViewCell()
 			}
 			
-			cell.tokenIconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 			cell.titleLabel.text = token.name
 			return cell
 		}

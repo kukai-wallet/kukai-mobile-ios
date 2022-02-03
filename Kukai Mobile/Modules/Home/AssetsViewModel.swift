@@ -114,7 +114,7 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 				
 				let cell = tableView.dequeueReusableCell(withIdentifier: "AssetsTokenCell", for: indexPath) as? AssetsTokenCell
-				cell?.iconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+				MediaProxyService.load(url: token.thumbnailURL, to: cell?.iconView ?? UIImageView(), fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 				cell?.tokenLabel.text = token.balance.normalisedRepresentation
 				cell?.symbolLabel?.text = token.symbol
 				cell?.conversionLabel.text = "$0.00"
@@ -160,6 +160,9 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 		*/
 		
+		
+		
+		/*
 		DependencyManager.shared.betterCallDevClient.fetchAccountInfo(forAddress: address) { [weak self] result in
 			guard let acc = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Unable to fetch data. Please check internet connection and try again")
@@ -181,5 +184,6 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			self?.state = .success(nil)
 		}
+		*/
 	}
 }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 public class SegmentedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
@@ -74,7 +75,7 @@ public class SegmentedViewController: UIViewController, UITableViewDelegate, UIT
 				return UITableViewCell()
 			}
 			
-			cell.tokenIconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 			cell.titleLabel.text = "\(token.balance.normalisedRepresentation) \(token.symbol)"
 			return cell
 			
@@ -83,7 +84,7 @@ public class SegmentedViewController: UIViewController, UITableViewDelegate, UIT
 				return UITableViewCell()
 			}
 			
-			cell.tokenIconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 			cell.titleLabel.text = token.name
 			return cell
 			

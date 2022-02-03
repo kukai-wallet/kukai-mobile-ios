@@ -34,6 +34,7 @@ class LiquidtyBalanceViewController: UIViewController {
 					self?.xtzPoolLabel.text = poolData.xtzPool.normalisedRepresentation
 					self?.tokenPoolLabel.text = poolData.tokenPool.normalisedRepresentation
 					
+					/*
 					if let cachedAccount = DependencyManager.shared.betterCallDevClient.cachedAccountInfo() {
 						
 						for token in cachedAccount.tokens {
@@ -57,6 +58,7 @@ class LiquidtyBalanceViewController: UIViewController {
 					} else {
 						self?.alert(withTitle: "Error", andMessage: "No cached BCD data, try again later")
 					}
+					*/
 					
 				case .failure(let error):
 					self?.alert(withTitle: "Error", andMessage: error.description)

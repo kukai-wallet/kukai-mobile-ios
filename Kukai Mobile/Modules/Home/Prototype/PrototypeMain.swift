@@ -46,6 +46,7 @@ public class PrototypeMain: UIViewController {
 	
 	@IBAction func deleteWallet(_ sender: Any) {
 		let _ = WalletCacheService().deleteCacheAndKeys()
+		PrototypeData.shared.reset()
 		self.navigationController?.popToRootViewController(animated: true)
 	}
 }
