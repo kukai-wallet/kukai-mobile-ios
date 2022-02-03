@@ -18,6 +18,7 @@ public class PrototypeData {
 	
 	public var selected: PrototypeSelection = .token
 	public var selectedIndex = 0
+	public var selectedNFT = 0
 	public var selectedOption = 0
 	
 	private init () {}
@@ -25,6 +26,7 @@ public class PrototypeData {
 	public func reset() {
 		selected = .token
 		selectedIndex = 0
+		selectedNFT = 0
 		selectedOption = 0
 	}
 }

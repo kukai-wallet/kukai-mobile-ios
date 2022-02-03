@@ -29,7 +29,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 				
 			} else if let token = item as? Token, token.nfts == nil {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
-				cell?.iconView.setKuakiImage(withURL: token.thumbnailURL, downSampleStandardImage: (width: 30, height: 30))
+				MediaProxyService.load(url: token.thumbnailURL, to: cell?.iconView ?? UIImageView(), fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
 				cell?.amountLabel.text = token.balance.normalisedRepresentation
 				cell?.symbolLabel.text = token.symbol
 				return cell
@@ -48,7 +48,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			state = .loading
 		}
 		
-		self.account = DependencyManager.shared.betterCallDevClient.cachedAccountInfo()
+		//self.account = DependencyManager.shared.betterCallDevClient.cachedAccountInfo()
 		self.updateTableView(animate: animate)
 	}
 	
