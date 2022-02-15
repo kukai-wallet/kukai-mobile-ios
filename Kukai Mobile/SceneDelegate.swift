@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import TorusSwiftDirectSDK
+import CustomAuth
 import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -47,7 +47,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
-		TorusSwiftDirectSDK.handle(url: url)
+		CustomAuth.handle(url: url)
 	}
 	
 	
