@@ -58,7 +58,7 @@ class LiquidityDetailsViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		self.viewModel.refresh(animate: true, successMessage: nil)
+		//self.viewModel.refresh(animate: true, successMessage: nil)
 	}
 	
 	func updateUI() {
@@ -82,6 +82,7 @@ class LiquidityDetailsViewController: UIViewController {
 		}
 	}
 	
+	/*
 	@IBAction func checkPricetapped(_ sender: Any) {
 		self.viewModel.checkPrice(forEnteredLiquidity: removeTextField.text ?? "")
 	}
@@ -93,4 +94,5 @@ class LiquidityDetailsViewController: UIViewController {
 	@IBAction func withdrawTapped(_ sender: Any) {
 		self.viewModel.withdrawRewards()
 	}
+	*/
 }

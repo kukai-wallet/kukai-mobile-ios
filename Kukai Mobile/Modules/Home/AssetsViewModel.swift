@@ -130,12 +130,17 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
+		/*
 		guard let address = DependencyManager.shared.selectedWallet?.address, let ds = dataSource else {
 			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 			return
 		}
 		
 		walletAddress = address
+		*/
+		
+		
+		
 		
 		
 		/*
@@ -159,6 +164,8 @@ class AssetsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		self.state = .success(nil)
 		*/
+		
+		
 		
 		
 		

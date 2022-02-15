@@ -24,6 +24,7 @@ class AddLiquidityViewController: UIViewController {
         super.viewDidLoad()
     }
 	
+	/*
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		TransactionService.shared.currentTransactionType = .addLiquidity
@@ -121,4 +122,5 @@ class AddLiquidityViewController: UIViewController {
 			}
 		}
 	}
+	*/
 }

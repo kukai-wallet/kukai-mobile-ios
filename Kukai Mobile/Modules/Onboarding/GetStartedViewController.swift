@@ -7,8 +7,6 @@
 
 import UIKit
 import KukaiCoreSwift
-
-import JWTDecode
 import AuthenticationServices
 import CustomAuth
 

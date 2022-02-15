@@ -15,14 +15,14 @@ class DependencyManager {
 	static let shared = DependencyManager()
 	
 	static let defaultNodeURL_mainnet = URL(string: "https://api.tez.ie/rpc/mainnet")!
-	static let defaultTzktURL_mainnet = URL(string: "https://staging.api.tzkt.io")!
+	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://api.tez.ie/rpc/granadanet")!
-	static let defaultTzktURL_testnet = URL(string: "https://api.granadanet.tzkt.io")!
+	static let defaultNodeURL_testnet = URL(string: "https://hangzhounet.api.tez.ie")!
+	static let defaultTzktURL_testnet = URL(string: "https://api.hangzhounet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
-	static let defaultTezosDomainsURL_testnet = URL(string: "https://granadanet-api.tezos.domains/graphql")!
+	static let defaultTezosDomainsURL_testnet = URL(string: "https://hangzhounet-api.tezos.domains/graphql")!
 	
 	
 	// Kukai Core clients and properties
@@ -31,7 +31,6 @@ class DependencyManager {
 	var tzktClient: TzKTClient
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
-	var tezToolsClient: TezToolsClient
 	var dipDupClient: DipDupClient
 	
 	
@@ -178,12 +177,9 @@ class DependencyManager {
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
-		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
-		// TODO: remove
-		//updateKukaiCoreClients()
-		setDefaultMainnetURLs()
+		updateKukaiCoreClients()
 	}
 	
 	func setDefaultMainnetURLs() {
@@ -202,7 +198,7 @@ class DependencyManager {
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
-		tezosChainName = .granadanet
+		tezosChainName = .hangzhounet
 		currentNetworkType = .testnet
 		
 		updateKukaiCoreClients()
@@ -222,9 +218,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
-		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
-		tezToolsClient = TezToolsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		networkDidChange = true

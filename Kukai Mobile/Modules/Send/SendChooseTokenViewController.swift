@@ -17,7 +17,7 @@ class SendChooseTokenViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		
+		/*
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -35,12 +35,13 @@ class SendChooseTokenViewController: UIViewController {
 					self?.hideLoadingModal(completion: nil)
 			}
 		}
+		*/
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		viewModel.refresh(animate: true)
+		//viewModel.refresh(animate: true)
 	}
 }
 

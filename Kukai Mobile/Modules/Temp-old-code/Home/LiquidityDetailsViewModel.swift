@@ -24,7 +24,7 @@ class LiquidityDetailsViewModel: ViewModel {
 	
 	private var calculation: DexRemoveCalculationResult? = nil
 	
-	
+	/*
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
 			state = .loading
@@ -165,4 +165,5 @@ class LiquidityDetailsViewModel: ViewModel {
 			}
 		}
 	}
+	*/
 }
