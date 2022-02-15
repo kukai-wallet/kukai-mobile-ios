@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 import KukaiCoreSwift
-import TorusSwiftDirectSDK
+import CustomAuth
 
 class DependencyManager {
 	
@@ -115,7 +115,7 @@ class DependencyManager {
 			loginType: .installed,
 			loginProvider: .apple,
 			clientId: "",
-			verifierName: "kukai-apple-beta",
+			verifierName: "kukai-apple-dev", // TODO: change back
 			redirectURL: "tdsdk://tdsdk/oauthCallback"
 		)),
 		.twitter: SubverifierWrapper(aggregateVerifierName: nil, subverifier: SubVerifierDetails(

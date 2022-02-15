@@ -10,7 +10,7 @@ import KukaiCoreSwift
 
 import JWTDecode
 import AuthenticationServices
-import TorusSwiftDirectSDK
+import CustomAuth
 
 
 class GetStartedViewController: UIViewController, UIPopoverPresentationControllerDelegate {
