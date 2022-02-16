@@ -48,12 +48,12 @@ class SendChooseTokenViewController: UIViewController {
 extension SendChooseTokenViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let chosenToken = viewModel.token(forIndexPath: indexPath) {
+		/*if let chosenToken = viewModel.token(forIndexPath: indexPath) {
 			TransactionService.shared.sendData.chosenToken = chosenToken
 			self.performSegue(withIdentifier: "chooseAmount", sender: self)
 			
 		} else {
 			self.alert(errorWithMessage: "Can't find token info")
-		}
+		}*/
 	}
 }

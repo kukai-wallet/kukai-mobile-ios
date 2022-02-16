@@ -35,7 +35,7 @@ class HomeTabBarController: UITabBarController {
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 		accountButton.frame.size = CGSize(width: (self.view.frame.width * 0.75), height: 40)
-		 
+		
 		updateAccountButton()
 	}
 	
@@ -58,6 +58,13 @@ class HomeTabBarController: UITabBarController {
 	
 	
 	/*
+	 // Prevent nav button from consuming the entire nav bar
+	 //accountNavButton.addConstraint(NSLayoutConstraint(item: accountNavButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 140))
+	 
+	 
+	 
+	 
+	 
 	private let middleButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
 	 
 	 

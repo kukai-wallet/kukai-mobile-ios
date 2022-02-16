@@ -18,7 +18,7 @@ class LiquidityTokensViewController: UIViewController, UITableViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		viewModel.makeDataSource(withTableView: tableView)
+		//viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
@@ -45,11 +45,11 @@ class LiquidityTokensViewController: UIViewController, UITableViewDelegate {
 		self.navigationController?.setNavigationBarHidden(true, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
-		viewModel.refresh(animate: true)
+		//viewModel.refresh(animate: true)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		TransactionService.shared.removeLiquidityData.position = self.viewModel.position(forIndexPath: indexPath)
+		//TransactionService.shared.removeLiquidityData.position = self.viewModel.position(forIndexPath: indexPath)
 		self.performSegue(withIdentifier: "liquidityDetails", sender: self)
 	}
 }

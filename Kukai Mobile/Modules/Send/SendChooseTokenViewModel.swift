@@ -19,7 +19,7 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
-			
+			/*
 			if let xtzBalance = item as? XTZAmount {
 				let cell = tableView.dequeueReusableCell(withIdentifier: "tokenBalanceCell", for: indexPath) as? TokenBalanceTableViewCell
 				cell?.iconView.image = UIImage(named: "tezos-xtz-logo")
@@ -34,10 +34,10 @@ class SendChooseTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 				cell?.symbolLabel.text = token.symbol
 				return cell
 				
-			} else {
+			} else {*/
 				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
 				return UITableViewCell()
-			}
+			//}
 		})
 		
 		dataSource?.defaultRowAnimation = .fade

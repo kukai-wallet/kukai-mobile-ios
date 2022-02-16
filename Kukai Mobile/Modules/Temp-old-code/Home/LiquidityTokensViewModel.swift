@@ -27,8 +27,9 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 	}
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
+			/*
 			guard let position = item as? DipDupPositionData else {
 				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
 				return UITableViewCell()
@@ -43,6 +44,9 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 						xtzValue: calc?.expectedXTZ.normalisedRepresentation ?? "0",
 						tokenValue: calc?.expectedToken.normalisedRepresentation ?? "0")
 			return cell
+			*/
+			
+			return UITableViewCell()
 		})
 		
 		dataSource?.defaultRowAnimation = .fade

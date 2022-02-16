@@ -36,8 +36,9 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = DiffableTableViewWithSectionHeaders(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		dataSource = DiffableTableViewWithSectionHeaders(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
+			/*
 			guard let exchange = item as? DipDupExchange else {
 				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
 				return UITableViewCell()
@@ -50,6 +51,9 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell?.tokenPoolLabel.text = exchange.tokenPoolAmount().normalisedRepresentation
 			
 			return cell
+			*/
+			
+			return UITableViewCell()
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
