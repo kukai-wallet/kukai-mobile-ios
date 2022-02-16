@@ -34,7 +34,7 @@ class HomeTabBarController: UITabBarController {
 		
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.frame.size = CGSize(width: (self.view.frame.width * 0.75), height: 40)
+		accountButton.frame.size = CGSize(width: (self.view.frame.width * 0.75), height: 44)
 		
 		updateAccountButton()
 	}

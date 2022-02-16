@@ -20,6 +20,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
+		tableView.delegate = self
 		
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
@@ -40,5 +41,27 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		//tableView.contentInset = UIEdgeInsets(top: -35, left: 0, bottom: 0, right: 0);
 		viewModel.refresh(animate: true)
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		if indexPath.section == 0 {
+			
+		} else {
+			guard let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) else {
+				return
+			}
+			
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		}
 	}
 }

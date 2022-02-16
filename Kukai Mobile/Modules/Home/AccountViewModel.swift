@@ -10,6 +10,17 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
+struct TotalEstiamtedValue: Hashable {
+	let tez: XTZAmount
+	let value: String
+}
+
+struct DiscoverItem: Hashable {
+	let heading: String
+	let imageName: String
+	let url: String
+}
+
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -21,6 +32,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	var account: Account? = nil
+	var tokens: [Token] = []
+	var discoverItems: [DiscoverItem] = []
 	
 	
 	// MARk: - Init
@@ -53,7 +66,15 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+				cell.iconView.image = UIImage(named: "tezos-xtz-logo")
+				cell.symbolLabel.text = "Tezos"
+				cell.balanceLabel.text = amount.normalisedRepresentation
+				cell.rateLabel.text = ""
+				cell.valuelabel.text = "$0.00"
+				return cell
+				
+			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 40, height: 40))
 				
 				cell.symbolLabel.text = token.symbol
@@ -62,9 +83,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.valuelabel.text = "$0.00"
 				return cell
 				
-			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
-				cell.balanceLabel.text = amount.normalisedRepresentation
-				cell.valueLabel.text = "$0.00"
+			} else if let total = item as? TotalEstiamtedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
+				cell.balanceLabel.text = total.tez.normalisedRepresentation
+				cell.valueLabel.text = total.value
+				return cell
+				
+			} else if let discoverItem = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
+				cell.headingLabel.text = discoverItem.heading
+				cell.iconView.image = UIImage(named: discoverItem.imageName)
 				return cell
 				
 			} else {
@@ -92,11 +118,18 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self?.account = res
+			self?.discoverItems = [
+				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
+				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
+			]
 			
 			
 			// Build arrays of data
-			var section1Data: [AnyHashable] = res.tokens
-			section1Data.append(res.xtzBalance)
+			let total = TotalEstiamtedValue(tez: res.xtzBalance+XTZAmount(fromNormalisedAmount: 1), value: "$0.00")
+			
+			var section1Data: [AnyHashable] = [res.xtzBalance]
+			section1Data.append(contentsOf: res.tokens)
+			section1Data.append(total)
 			
 			
 			// Build snapshot
@@ -104,6 +137,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendSections([0, 1])
 			
 			snapshot.appendItems(section1Data, toSection: 0)
+			snapshot.appendItems(self?.discoverItems ?? [], toSection: 1)
 			
 			ds.apply(snapshot, animatingDifferences: animate)
 			
@@ -113,7 +147,33 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func viewForHeaderInSection(_ section: Int) -> UIView {
-		return UIView()
+	func heightForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> CGFloat {
+		let view = viewForHeaderInSection(section, forTableView: tableView)
+		view.sizeToFit()
+		
+		return view.frame.size.height
+	}
+	
+	func viewForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> UIView {
+		
+		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingLargeButtonCell") as? HeadingLargeButtonCell {
+			cell.setup(heading: "Balances", buttonTitle: "DISCOVER")
+			return cell.contentView
+			
+		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingMediumButtonCell") as? HeadingMediumButtonCell {
+			cell.setup(heading: "Featured Discoveries", buttonTitle: "ALL")
+			return cell.contentView
+			
+		} else {
+			return UIView()
+		}
+	}
+	
+	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
+		if atIndexPath.section == 1, atIndexPath.row < discoverItems.count  {
+			return URL(string: discoverItems[atIndexPath.row].url)
+		}
+		
+		return nil
 	}
 }
