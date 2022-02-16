@@ -58,6 +58,10 @@
 		C08694E227BD1BB1000A4909 /* DiscoverCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694E127BD1BB1000A4909 /* DiscoverCell.swift */; };
 		C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694E327BD1D86000A4909 /* AccountViewController.swift */; };
 		C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694E527BD1D93000A4909 /* AccountViewModel.swift */; };
+		C08694E827BD5D01000A4909 /* BalanceService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694E727BD5D01000A4909 /* BalanceService.swift */; };
+		C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694E927BD5F7D000A4909 /* CoinGeckoService.swift */; };
+		C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694EB27BD5F8C000A4909 /* RequestIfService.swift */; };
+		C08694EF27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08694EE27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift */; };
 		C08F690D273AB8F300CCB6E3 /* SwapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F690C273AB8F300CCB6E3 /* SwapViewController.swift */; };
 		C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */; };
 		C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */; };
@@ -194,6 +198,10 @@
 		C08694E127BD1BB1000A4909 /* DiscoverCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverCell.swift; sourceTree = "<group>"; };
 		C08694E327BD1D86000A4909 /* AccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewController.swift; sourceTree = "<group>"; };
 		C08694E527BD1D93000A4909 /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
+		C08694E727BD5D01000A4909 /* BalanceService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceService.swift; sourceTree = "<group>"; };
+		C08694E927BD5F7D000A4909 /* CoinGeckoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinGeckoService.swift; sourceTree = "<group>"; };
+		C08694EB27BD5F8C000A4909 /* RequestIfService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestIfService.swift; sourceTree = "<group>"; };
+		C08694EE27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinGeckoExchangeRateResponse.swift; sourceTree = "<group>"; };
 		C08F690C273AB8F300CCB6E3 /* SwapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewController.swift; sourceTree = "<group>"; };
 		C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewController.swift; sourceTree = "<group>"; };
 		C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewModel.swift; sourceTree = "<group>"; };
@@ -274,6 +282,9 @@
 				C0082BF226A6C6B300DB160B /* DependencyManager.swift */,
 				C024038826D925FB00E1CB80 /* BeaconService.swift */,
 				C0B08A38270DDED300075618 /* TransactionService.swift */,
+				C08694E727BD5D01000A4909 /* BalanceService.swift */,
+				C08694E927BD5F7D000A4909 /* CoinGeckoService.swift */,
+				C08694EB27BD5F8C000A4909 /* RequestIfService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -434,6 +445,14 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		C08694ED27BD69B6000A4909 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C08694EE27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		C0B03636269EE2070071ACD0 = {
 			isa = PBXGroup;
 			children = (
@@ -468,6 +487,7 @@
 				C0678DC0272056A900DEF1CB /* Localization */,
 				C049B59F26A0492600F1C5E0 /* Modules */,
 				C0082BF126A6C69C00DB160B /* Services */,
+				C08694ED27BD69B6000A4909 /* Models */,
 				C06EA1A426A56C3F006029CF /* Controls */,
 				C049B5AD26A0799300F1C5E0 /* Extensions */,
 			);
@@ -702,6 +722,7 @@
 				C085EAB326B175F600B37A15 /* SideMenuViewController.swift in Sources */,
 				C0D74CC726C12CDA0096F845 /* LiquidtyBalanceViewController.swift in Sources */,
 				C0B08A35270DC26700075618 /* SendWaitViewController.swift in Sources */,
+				C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */,
 				C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */,
 				C085EAB726B1A95A00B37A15 /* SideMenuImportViewController.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
@@ -731,6 +752,8 @@
 				C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */,
 				C07374A7279839B800726C01 /* Option1DetailViewController.swift in Sources */,
 				C0B08A2D270DC22700075618 /* SendChooseTokenViewController.swift in Sources */,
+				C08694EF27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift in Sources */,
+				C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */,
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
 				C08694DE27BD1B84000A4909 /* TokenBalanceCell.swift in Sources */,
 				C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */,
@@ -745,6 +768,7 @@
 				C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */,
 				C0B08A37270DDD5100075618 /* SendChooseTokenViewModel.swift in Sources */,
 				C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */,
+				C08694E827BD5D01000A4909 /* BalanceService.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
 				C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
