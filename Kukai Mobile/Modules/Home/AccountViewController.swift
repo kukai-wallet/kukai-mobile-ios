@@ -15,6 +15,9 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	private let viewModel = AccountViewModel()
 	private var cancellable: AnyCancellable?
 	
+	
+	private var coingeckservice: CoinGeckoService? = nil
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -39,8 +42,13 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		//tableView.contentInset = UIEdgeInsets(top: -35, left: 0, bottom: 0, right: 0);
 		viewModel.refresh(animate: true)
+		
+		self.coingeckservice = CoinGeckoService(networkService: DependencyManager.shared.tezosNodeClient.networkService)
+		
+		self.coingeckservice?.fetchTezosPrice(completion: { result in
+			print("Result: \(result)")
+		})
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

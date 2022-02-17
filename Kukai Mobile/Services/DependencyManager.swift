@@ -32,6 +32,8 @@ class DependencyManager {
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
 	var dipDupClient: DipDupClient
+	var balanceService: BalanceService
+	var coinGeckoService: CoinGeckoService
 	
 	
 	// Properties and helpers
@@ -178,6 +180,8 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		balanceService = BalanceService()
+		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		
 		updateKukaiCoreClients()
 	}
@@ -220,6 +224,8 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		torusAuthService = TorusAuthService(networkType: tezosClientConfig.networkType, networkService: tezosNodeClient.networkService, testnetVerifiers: testnetVerifiers, mainnetVerifiers: testnetVerifiers)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		balanceService = BalanceService()
+		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		
 		networkDidChange = true
 	}

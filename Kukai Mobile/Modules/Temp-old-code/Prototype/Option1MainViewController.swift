@@ -77,7 +77,7 @@ public class Option1MainViewController: UIViewController, UITableViewDelegate, U
 				return UITableViewCell()
 			}
 			
-			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconView.frame.size)
 			cell.titleLabel.text = "\(token.balance.normalisedRepresentation) \(token.symbol)"
 			return cell
 			
@@ -86,7 +86,7 @@ public class Option1MainViewController: UIViewController, UITableViewDelegate, U
 				return UITableViewCell()
 			}
 			
-			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
+			MediaProxyService.load(url: token.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconView.frame.size)
 			cell.titleLabel.text = token.name
 			return cell
 		}

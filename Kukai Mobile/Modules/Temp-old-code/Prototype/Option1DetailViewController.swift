@@ -53,7 +53,7 @@ public class Option1DetailViewController: UIViewController, UITableViewDelegate,
 			return UITableViewCell()
 		}
 		
-		MediaProxyService.load(url: nft.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: (width: 30, height: 30))
+		MediaProxyService.load(url: nft.thumbnailURL, to: cell.tokenIconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconView.frame.size)
 		cell.titleLabel.text = nft.name
 		return cell
 	}

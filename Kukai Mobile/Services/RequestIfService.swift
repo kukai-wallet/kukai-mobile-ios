@@ -57,4 +57,8 @@ public class RequestIfService {
 			completion(Result.failure(ErrorResponse.unknownError()))
 		}
 	}
+	
+	public func delete(key: String) -> Bool {
+		return DiskService.delete(fileName: key)
+	}
 }
