@@ -10,10 +10,11 @@ import KukaiCoreSwift
 
 public class BalanceService {
 	
-	public var account: Account?
+	public var account = Account(walletAddress: "")
 	public var exchangeData: [DipDupExchangesAndTokens] = []
 	
 	public var tokenValueAndRate: [String: (xtzValue: Decimal, marketRate: Decimal)] = [:]
+	public var estimatedTotalXtz = XTZAmount.zero()
 	
 	
 	private var dispatchGroupBalances = DispatchGroup()
@@ -79,12 +80,18 @@ public class BalanceService {
 				completion(err)
 				
 			} else {
-				for token in self?.account?.tokens ?? [] {
+				var estiamtedTotalDecimal: Decimal = 0
+				
+				for token in self?.account.tokens ?? [] {
 					let marketRate = self?.dexRate(forToken: token) ?? 0
 					let totalXTZValue = token.balance * marketRate
 					
+					estiamtedTotalDecimal += totalXTZValue
+					
 					self?.tokenValueAndRate[token.id] = (xtzValue: totalXTZValue, marketRate: marketRate)
 				}
+				
+				self?.estimatedTotalXtz = (self?.account.xtzBalance ?? .zero()) + XTZAmount(fromNormalisedAmount: estiamtedTotalDecimal)
 				
 				completion(nil)
 			}
@@ -103,6 +110,6 @@ public class BalanceService {
 			return 0
 		}
 
-		return DexCalculationService.shared.xtzToTokenMarketRate(xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount()) ?? 0
+		return DexCalculationService.shared.tokenToXtzMarketRate(xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount()) ?? 0
 	}
 }
