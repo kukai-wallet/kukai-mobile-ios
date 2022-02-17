@@ -43,12 +43,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		viewModel.refresh(animate: true)
-		
-		self.coingeckservice = CoinGeckoService(networkService: DependencyManager.shared.tezosNodeClient.networkService)
-		
-		self.coingeckservice?.fetchTezosPrice(completion: { result in
-			print("Result: \(result)")
-		})
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

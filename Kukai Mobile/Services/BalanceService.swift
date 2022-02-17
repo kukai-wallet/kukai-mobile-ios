@@ -13,7 +13,7 @@ public class BalanceService {
 	public var account = Account(walletAddress: "")
 	public var exchangeData: [DipDupExchangesAndTokens] = []
 	
-	public var tokenValueAndRate: [String: (xtzValue: Decimal, marketRate: Decimal)] = [:]
+	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
 	
 	
@@ -80,36 +80,42 @@ public class BalanceService {
 				completion(err)
 				
 			} else {
-				var estiamtedTotalDecimal: Decimal = 0
-				
-				for token in self?.account.tokens ?? [] {
-					let marketRate = self?.dexRate(forToken: token) ?? 0
-					let totalXTZValue = token.balance * marketRate
-					
-					estiamtedTotalDecimal += totalXTZValue
-					
-					self?.tokenValueAndRate[token.id] = (xtzValue: totalXTZValue, marketRate: marketRate)
+				guard let self = self else {
+					completion(ErrorResponse.unknownError())
+					return
 				}
 				
-				self?.estimatedTotalXtz = (self?.account.xtzBalance ?? .zero()) + XTZAmount(fromNormalisedAmount: estiamtedTotalDecimal)
+				var estiamtedTotal: XTZAmount = .zero()
+				
+				for token in self.account.tokens {
+					let dexRate = self.dexRate(forToken: token)
+					estiamtedTotal += dexRate.xtzValue
+					
+					self.tokenValueAndRate[token.id] = dexRate
+				}
+				
+				self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
 				
 				completion(nil)
 			}
 		}
 	}
 	
-	func dexRate(forToken token: Token) -> Decimal {
+	func dexRate(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
 		guard let address = token.tokenContractAddress else {
-			return 0
+			return (xtzValue: .zero(), marketRate: 0)
 		}
 		
 		let data = exchangeData.first(where: { $0.address == address && $0.tokenId == (token.tokenId ?? 0) })
 		let quipuOrFirst = data?.exchanges.first(where: { $0.name == .quipuswap }) ?? data?.exchanges.first
 		
 		guard let quipuOrFirst = quipuOrFirst else {
-			return 0
+			return (xtzValue: .zero(), marketRate: 0)
 		}
-
-		return DexCalculationService.shared.tokenToXtzMarketRate(xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount()) ?? 0
+		
+		let xtz = DexCalculationService.shared.tokenToXtzExpectedReturn(tokenToSell: token.balance, xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount(), dex: quipuOrFirst.name) ?? .zero()
+		let market = DexCalculationService.shared.tokenToXtzMarketRate(xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount()) ?? 0
+		
+		return (xtzValue: xtz, marketRate: market)
 	}
 }

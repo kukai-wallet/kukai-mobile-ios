@@ -170,43 +170,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			// Return success
 			self.state = .success(nil)
 		}
-		
-		/*
-		DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-			guard let res = try? result.get() else {
-				self?.state = .failure(result.getFailure(), "Unable to fetch data")
-				return
-			}
-			
-			self?.account = res
-			self?.discoverItems = [
-				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
-				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
-			]
-			
-			
-			// Build arrays of data
-			let total = TotalEstiamtedValue(tez: res.xtzBalance+XTZAmount(fromNormalisedAmount: 1), value: "$0.00")
-			
-			var section1Data: [AnyHashable] = [res.xtzBalance]
-			section1Data.append(contentsOf: res.tokens)
-			section1Data.append(total)
-			
-			
-			// Build snapshot
-			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0, 1])
-			
-			snapshot.appendItems(section1Data, toSection: 0)
-			snapshot.appendItems(self?.discoverItems ?? [], toSection: 1)
-			
-			ds.apply(snapshot, animatingDifferences: animate)
-			
-			
-			// Return success
-			self?.state = .success(nil)
-		}
-		*/
 	}
 	
 	func heightForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> CGFloat {
