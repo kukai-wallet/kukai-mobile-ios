@@ -10,17 +10,23 @@ import KukaiCoreSwift
 
 public class BalanceService {
 	
+	public var hasFetchedInitialData = false
+	public var currencyChanged = false
+	
 	public var account = Account(walletAddress: "")
 	public var exchangeData: [DipDupExchangesAndTokens] = []
 	
 	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
 	
+	@Published var isFetchingData: Bool = false
 	
 	private var dispatchGroupBalances = DispatchGroup()
 	
 	
 	public func fetchAllBalancesTokensAndPrices(forAddress address: String, completion: @escaping ((ErrorResponse?) -> Void)) {
+		
+		isFetchingData = true
 		
 		var error: ErrorResponse? = nil
 		dispatchGroupBalances.enter()
@@ -95,6 +101,8 @@ public class BalanceService {
 				}
 				
 				self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
+				self.hasFetchedInitialData = true
+				self.isFetchingData = false
 				
 				completion(nil)
 			}

@@ -6,41 +6,40 @@
 //
 
 import UIKit
+import Combine
 
-class ProfileViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ProfileViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
+	
+	private let viewModel = ProfileViewModel()
+	private var cancellable: AnyCancellable?
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
-		tableView.dataSource = self
+		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					self?.showLoadingView(completion: nil)
+					
+				case .failure(_, let errorString):
+					self?.hideLoadingView(completion: nil)
+					self?.alert(withTitle: "Error", andMessage: errorString)
+					
+				case .success:
+					self?.hideLoadingView(completion: nil)
+			}
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		tableView.reloadData()
-	}
-	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 1
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "TitleSubtitleCell", for: indexPath) as? TitleSubtitleCell else {
-			return UITableViewCell()
-		}
-		
-		cell.titleLabel.text = "Selected Currency"
-		cell.subTitleLabel.text = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
-		
-		return cell
+		viewModel.refresh(animate: true)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

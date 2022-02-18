@@ -5,8 +5,6 @@
 //  Created by Simon Mcloughlin on 17/02/2022.
 //
 
-import Foundation
-
 import UIKit
 import KukaiCoreSwift
 import Combine
@@ -21,6 +19,8 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
+	
+	public static let didChangeCurrencyMessage = "changed"
 	
 	private let coinGeckoService = DependencyManager.shared.coinGeckoService
 	private let popularKeys = ["usd", "eur", "gbp", "jpy", "rub", "inr", "btc", "eth"]
@@ -84,6 +84,36 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 		} else {
 			return otherCells[indexPath.row].code.lowercased()
+		}
+	}
+	
+	func changeCurrency(toIndexPath indexPath: IndexPath) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		let code = code(forIndexPath: indexPath)
+		
+		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { error in
+			if let e = error {
+				self.state = .failure(ErrorResponse.unknownError(), "Unable to change currency: \(e)")
+				return
+			}
+			
+			guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
+				self.state = .failure(ErrorResponse.unknownError(), "Can't find wallet details")
+				return
+			}
+			
+			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress) { error in
+				if let e = error {
+					self.state = .failure(ErrorResponse.unknownError(), "Unable to update balances: \(e)")
+					return
+				}
+				
+				DependencyManager.shared.balanceService.currencyChanged = true
+				self.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
+			}
 		}
 	}
 }

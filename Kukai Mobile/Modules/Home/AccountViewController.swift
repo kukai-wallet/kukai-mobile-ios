@@ -15,7 +15,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	private let viewModel = AccountViewModel()
 	private var cancellable: AnyCancellable?
 	
-	
 	private var coingeckservice: CoinGeckoService? = nil
 	
 	override func viewDidLoad() {
@@ -42,7 +41,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		viewModel.refresh(animate: true)
+		viewModel.refreshIfNeeded()
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

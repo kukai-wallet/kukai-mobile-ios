@@ -28,9 +28,13 @@ class CurrencyViewController: UITableViewController {
 				case .failure(_, let errorString):
 					self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
-					
-				case .success:
+				
+				case .success(let message):
 					self?.hideLoadingView(completion: nil)
+					
+					if message == CurrencyViewModel.didChangeCurrencyMessage {
+						self?.navigationController?.popViewController(animated: true)
+					}
 			}
 		}
     }
@@ -40,32 +44,6 @@ class CurrencyViewController: UITableViewController {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let code = viewModel.code(forIndexPath: indexPath)
-		
-		self.showLoadingView(completion: nil)
-		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { error in
-			if let e = error {
-				self.alert(errorWithMessage: "Unable to change currency: \(e)")
-				self.hideLoadingView(completion: nil)
-				return
-			}
-			
-			guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-				self.alert(errorWithMessage: "Can't find wallet details)")
-				self.hideLoadingView(completion: nil)
-				return
-			}
-			
-			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress) { error in
-				if let e = error {
-					self.alert(errorWithMessage: "Unable to update balances: \(e)")
-					self.hideLoadingView(completion: nil)
-					return
-				}
-				
-				self.navigationController?.popViewController(animated: true)
-				self.hideLoadingView(completion: nil)
-			}
-		}
+		self.viewModel.changeCurrency(toIndexPath: indexPath)
 	}
 }

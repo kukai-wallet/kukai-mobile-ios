@@ -33,9 +33,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private let coinGeckoService = DependencyManager.shared.coinGeckoService
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	
-	//var account: Account? = nil
-	//var tokens: [Token] = []
 	var discoverItems: [DiscoverItem] = []
 	
 	
@@ -139,36 +136,55 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				self.state = .failure(e, "Unable to fetch data")
 			}
 			
-			self.discoverItems = [
-				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
-				DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
-			]
-			
-			
-			// Build arrays of data
-			let totalXTZ = self.balanceService.estimatedTotalXtz
-			let totalCurrency = totalXTZ * self.coinGeckoService.selectedCurrencyRatePerXTZ
-			let totalCurrencyString = self.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
-			
-			let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
-			
-			var section1Data: [AnyHashable] = [self.balanceService.account.xtzBalance]
-			section1Data.append(contentsOf: self.balanceService.account.tokens)
-			section1Data.append(total)
-			
-			
-			// Build snapshot
-			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0, 1])
-			
-			snapshot.appendItems(section1Data, toSection: 0)
-			snapshot.appendItems(self.discoverItems, toSection: 1)
-			
-			ds.apply(snapshot, animatingDifferences: animate)
-			
+			self.reloadData(animate: animate, datasource: ds)
 			
 			// Return success
 			self.state = .success(nil)
+		}
+	}
+	
+	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<Int, AnyHashable>) {
+		self.discoverItems = [
+			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
+			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
+		]
+		
+		
+		// Build arrays of data
+		let totalXTZ = self.balanceService.estimatedTotalXtz
+		let totalCurrency = totalXTZ * self.coinGeckoService.selectedCurrencyRatePerXTZ
+		let totalCurrencyString = self.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
+		
+		let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
+		
+		var section1Data: [AnyHashable] = [self.balanceService.account.xtzBalance]
+		section1Data.append(contentsOf: self.balanceService.account.tokens)
+		section1Data.append(total)
+		
+		
+		// Build snapshot
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		snapshot.appendSections([0, 1])
+		
+		snapshot.appendItems(section1Data, toSection: 0)
+		snapshot.appendItems(self.discoverItems, toSection: 1)
+		
+		datasource.apply(snapshot, animatingDifferences: animate)
+		
+		self.balanceService.currencyChanged = false
+	}
+	
+	func refreshIfNeeded() {
+		if !self.balanceService.hasFetchedInitialData {
+			self.refresh(animate: true, successMessage: nil)
+			
+		} else if self.balanceService.currencyChanged {
+			guard let ds = dataSource else {
+				state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+				return
+			}
+			
+			self.reloadData(animate: false, datasource: ds)
 		}
 	}
 	
