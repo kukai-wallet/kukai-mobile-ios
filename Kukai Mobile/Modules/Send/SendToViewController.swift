@@ -1,5 +1,5 @@
 //
-//  SendEnterAmountViewController.swift
+//  SendToViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 21/02/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SendEnterAmountViewController: UIViewController {
+class SendToViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
