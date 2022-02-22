@@ -53,4 +53,16 @@ extension UIView {
 		mask.path = path.cgPath
 		layer.mask = mask
 	}
+	
+	
+	func parentViewController() -> UIViewController? {
+		var responder: UIResponder? = self
+		while !(responder is UIViewController) {
+			responder = responder?.next
+			if nil == responder {
+				break
+			}
+		}
+		return (responder as? UIViewController)
+	}
 }

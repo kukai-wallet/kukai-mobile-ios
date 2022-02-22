@@ -30,7 +30,8 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		super.viewDidLoad()
 		
 		if self.isModal {
-			modalBackButton.setImage(UIImage(named: "Back", in: nil, compatibleWith: nil), for: .normal)
+			modalBackButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+			modalBackButton.tintColor = UIColor.white
 			modalBackButton.translatesAutoresizingMaskIntoConstraints = false
 			modalBackButton.addTarget(self, action: #selector(back), for: .touchUpInside)
 			
@@ -38,7 +39,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			
 			NSLayoutConstraint.activate([
 				modalBackButton.leadingAnchor.constraint(equalTo: blurEffectView.leadingAnchor, constant: 24),
-				modalBackButton.topAnchor.constraint(equalTo: blurEffectView.topAnchor, constant: 24)
+				modalBackButton.topAnchor.constraint(equalTo: blurEffectView.topAnchor, constant: 24),
+				modalBackButton.heightAnchor.constraint(equalToConstant: 44),
+				modalBackButton.widthAnchor.constraint(equalToConstant: 44)
 			])
 		}
 		
@@ -115,7 +118,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	func setupBlurView() {
-		titleLabel.text = "snd_scan_qr"
+		titleLabel.text = "Scan QR Code"
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
 		titleLabel.textColor = .white
 		titleLabel.numberOfLines = 0
