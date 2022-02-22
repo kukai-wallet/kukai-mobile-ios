@@ -7,7 +7,10 @@
 
 import UIKit
 
-//@IBDesignable
+public protocol EnterAddressComponentDelegate: AnyObject {
+	func validatedInput(entered: String, validAddress: Bool)
+}
+
 public class EnterAddressComponent: UIView {
 	
 	@IBOutlet weak var containerStackView: UIStackView!
@@ -26,6 +29,9 @@ public class EnterAddressComponent: UIView {
 	private let scanVC = ScanViewController()
 	private let nibName = "EnterAddressComponent"
 	
+	public weak var delegate: EnterAddressComponentDelegate? = nil
+	
+	
 	required init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		
@@ -40,6 +46,12 @@ public class EnterAddressComponent: UIView {
 		let bundle = Bundle(for: type(of: self))
 		let nib = UINib(nibName: nibName, bundle: bundle)
 		return nib.instantiate(withOwner: self, options: nil).first as? UIView
+	}
+	
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		textField.customCornerRadius = textField.frame.height / 2
 	}
 	
 	private func setup() {
@@ -63,10 +75,29 @@ public class EnterAddressComponent: UIView {
 		self.hideError(animate: false)
 	}
 	
+	
+	
+	@IBAction func qrCodeTapped(_ sender: Any) {
+		guard let parent = self.parentViewController() else {
+			print("nope")
+			return
+		}
+		
+		scanVC.delegate = self
+		parent.present(scanVC, animated: true, completion: nil)
+	}
+	
+	@IBAction func pasteTapped(_ sender: Any) {
+		self.textField.text = UIPasteboard.general.string
+		let _ = self.validateTextField()
+	}
+	
+	
+	
 	private func animateButtonsOut() {
 		qrCodeStackView.isHidden = true
 		pasteStackView.isHidden = true
-		textField.leftView = textFieldLeftViewSpacer
+		setTextfieldLeftSpacer()
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
@@ -78,12 +109,20 @@ public class EnterAddressComponent: UIView {
 		pasteStackView.isHidden = false
 		
 		if self.textField.text == nil || self.textField.text == "" {
-			textField.leftView = textFieldLeftViewImage
+			setTextfieldLeftIcon()
 		}
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
 		}
+	}
+	
+	private func setTextfieldLeftIcon() {
+		textField.leftView = textFieldLeftViewImage
+	}
+	
+	private func setTextfieldLeftSpacer() {
+		textField.leftView = textFieldLeftViewSpacer
 	}
 	
 	public func showError(message: String) {
@@ -111,24 +150,35 @@ public class EnterAddressComponent: UIView {
 		}
 	}
 	
-	public override func layoutSubviews() {
-		super.layoutSubviews()
+	public func validateTezosAddress(_ text: String) -> Bool {
+		let is36Characters = text.count == 36
+		let specialCharacterCheck = text.range(of: "[^\\w]", options: .regularExpression) == nil
+		let startsWithCheck = text.range(of: "^(tz1|tz2|tz3|kt1|TZ1|TZ2|TZ3|KT1)", options: .regularExpression) != nil
 		
-		textField.customCornerRadius = textField.frame.height / 2
+		return is36Characters && specialCharacterCheck && startsWithCheck
 	}
 	
-	@IBAction func qrCodeTapped(_ sender: Any) {
-		guard let parent = self.parentViewController() else {
-			print("nope")
-			return
+	public func validateTextField() -> Bool {
+		guard let text = textField.text, text != "" else {
+			// Don't show error message or block content if textfield is empty, users may want to use QR code
+			self.hideError(animate: true)
+			self.setTextfieldLeftIcon()
+			self.delegate?.validatedInput(entered: "", validAddress: false)
+			return true
 		}
 		
-		scanVC.delegate = self
-		parent.present(scanVC, animated: true, completion: nil)
-	}
-	
-	@IBAction func pasteTapped(_ sender: Any) {
-		self.textField.text = UIPasteboard.general.string
+		setTextfieldLeftSpacer()
+		
+		if validateTezosAddress(text) {
+			self.hideError(animate: true)
+			self.delegate?.validatedInput(entered: text, validAddress: true)
+			return true
+			
+		} else {
+			self.showError(message: "Invalid Tezos address")
+			self.delegate?.validatedInput(entered: text, validAddress: false)
+			return false
+		}
 	}
 }
 
@@ -147,27 +197,13 @@ extension EnterAddressComponent: UITextFieldDelegate {
 		return true
 	}
 	
-	public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-		
-		// If return key is "done", automatically have the textfield resign responder and not type anything
-		if textField.returnKeyType == .done, (string as NSString).rangeOfCharacter(from: CharacterSet.newlines).location != NSNotFound {
+	public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+		if validateTextField() {
 			textField.resignFirstResponder()
-			return false
-		}
-		
-		guard let textFieldString = textField.text, let swtRange = Range(range, in: textFieldString) else {
 			return true
 		}
 		
-		let fullString = textFieldString.replacingCharacters(in: swtRange, with: string)
-		
-		if fullString == "b" {
-			showError(message: "test")
-		} else {
-			hideError(animate: true)
-		}
-		
-		return true
+		return false
 	}
 }
 
@@ -175,5 +211,6 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 	
 	func scannedQRCode(code: String) {
 		self.textField.text = code
+		let _ = self.validateTextField()
 	}
 }

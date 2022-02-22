@@ -27,7 +27,7 @@ class SendLedgerApproveViewController: UIViewController {
 		
 		guard let amount = TransactionService.shared.sendData.chosenAmount,
 			  let token = TransactionService.shared.sendData.chosenToken,
-			  let destination = TransactionService.shared.sendData.destiantion,
+			  let destination = TransactionService.shared.sendData.destination,
 			  let wallet = DependencyManager.shared.selectedWallet as? LedgerWallet
 		else {
 			self.alert(errorWithMessage: "Can't get data")

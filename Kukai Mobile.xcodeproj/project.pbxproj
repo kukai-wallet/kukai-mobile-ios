@@ -50,6 +50,9 @@
 		C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374AC27985D6E00726C01 /* SegmentedViewController.swift */; };
 		C07FA42427AC3F03004B3BDF /* DisplayImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA42327AC3F03004B3BDF /* DisplayImageViewController.swift */; };
 		C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA42527AC3F1F004B3BDF /* DisplayVideoViewController.swift */; };
+		C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */; };
+		C07FC40B27C539130056FA47 /* AddressChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */; };
+		C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40C27C539A40056FA47 /* SendToViewModel.swift */; };
 		C080CC0F2773568200780F7E /* MyAuthorizationAppleIDButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C080CC0E2773568200780F7E /* MyAuthorizationAppleIDButton.swift */; };
 		C085EAB326B175F600B37A15 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085EAB226B175F600B37A15 /* SideMenuViewController.swift */; };
 		C085EAB526B192A600B37A15 /* SideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C085EAB426B192A600B37A15 /* SideMenuViewModel.swift */; };
@@ -201,6 +204,9 @@
 		C07374AC27985D6E00726C01 /* SegmentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
 		C07FA42327AC3F03004B3BDF /* DisplayImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayImageViewController.swift; sourceTree = "<group>"; };
 		C07FA42527AC3F1F004B3BDF /* DisplayVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVideoViewController.swift; sourceTree = "<group>"; };
+		C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeadingCell.swift; sourceTree = "<group>"; };
+		C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressChoiceCell.swift; sourceTree = "<group>"; };
+		C07FC40C27C539A40056FA47 /* SendToViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToViewModel.swift; sourceTree = "<group>"; };
 		C080CC0D2773429200780F7E /* Kukai Mobile.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Kukai Mobile.entitlements"; sourceTree = "<group>"; };
 		C080CC0E2773568200780F7E /* MyAuthorizationAppleIDButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAuthorizationAppleIDButton.swift; sourceTree = "<group>"; };
 		C085EAB226B175F600B37A15 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
@@ -439,6 +445,15 @@
 			path = Prototype;
 			sourceTree = "<group>";
 		};
+		C07FC40727C538810056FA47 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */,
+				C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C080CBFD27733C7500780F7E /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -565,8 +580,10 @@
 		C0B08A29270DBF6500075618 /* Send */ = {
 			isa = PBXGroup;
 			children = (
+				C07FC40727C538810056FA47 /* Cells */,
 				C0503665271ED8FD00E7A664 /* Send.storyboard */,
 				C09860A927C3C24E00F888AF /* SendToViewController.swift */,
+				C07FC40C27C539A40056FA47 /* SendToViewModel.swift */,
 				C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */,
 				C09860AD27C3C26B00F888AF /* SendEnterAmountViewController.swift */,
 				C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */,
@@ -789,6 +806,7 @@
 				C02D7CAC27BEB0CD006A8E39 /* ProfileViewController.swift in Sources */,
 				C08694DA27BD1B46000A4909 /* HeadingLargeButtonCell.swift in Sources */,
 				C0FA565427BFB77900AFC9A7 /* ProfileViewModel.swift in Sources */,
+				C07FC40B27C539130056FA47 /* AddressChoiceCell.swift in Sources */,
 				C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */,
 				C08694E027BD1B9B000A4909 /* EstimatedTotalCell.swift in Sources */,
 				C080CC0F2773568200780F7E /* MyAuthorizationAppleIDButton.swift in Sources */,
@@ -797,6 +815,7 @@
 				C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */,
 				C0D914CC2743F75C0027DE10 /* AddLiquidityViewController.swift in Sources */,
 				C0082BF926A7076500DB160B /* ImportMnemonicViewController.swift in Sources */,
+				C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */,
 				C09860B227C3C29A00F888AF /* SendApproveViewController.swift in Sources */,
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0AC1D422771F5D4002F66C0 /* ImportChoiceViewController.swift in Sources */,
@@ -826,6 +845,7 @@
 				C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
 				C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */,
+				C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */,
 				C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */,
 				C08694E827BD5D01000A4909 /* BalanceService.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,

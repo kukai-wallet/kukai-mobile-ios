@@ -7,6 +7,7 @@
 
 import Foundation
 import KukaiCoreSwift
+import UIKit
 
 public class TransactionService {
 	
@@ -21,7 +22,9 @@ public class TransactionService {
 	public struct SendData {
 		var chosenToken: Token?
 		var chosenAmount: TokenAmount?
-		var destiantion: String?
+		var destination: String?
+		var destinationAlias: String?
+		var destinationIcon: UIImage?
 		var operations: [KukaiCoreSwift.Operation]?
 		var ledgerPrep: OperationService.LedgerPayloadPrepResponse?
 	}
@@ -52,7 +55,7 @@ public class TransactionService {
 	
 	private init() {
 		self.currentTransactionType = .none
-		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
+		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
@@ -62,7 +65,7 @@ public class TransactionService {
 	
 	public func resetState() {
 		self.currentTransactionType = .none
-		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destiantion: nil, operations: nil, ledgerPrep: nil)
+		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)

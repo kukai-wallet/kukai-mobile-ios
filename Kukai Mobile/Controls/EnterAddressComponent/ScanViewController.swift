@@ -38,7 +38,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			blurEffectView.contentView.addSubview(modalBackButton)
 			
 			NSLayoutConstraint.activate([
-				modalBackButton.leadingAnchor.constraint(equalTo: blurEffectView.leadingAnchor, constant: 24),
+				modalBackButton.trailingAnchor.constraint(equalTo: blurEffectView.trailingAnchor, constant: -24),
 				modalBackButton.topAnchor.constraint(equalTo: blurEffectView.topAnchor, constant: 24),
 				modalBackButton.heightAnchor.constraint(equalToConstant: 44),
 				modalBackButton.widthAnchor.constraint(equalToConstant: 44)

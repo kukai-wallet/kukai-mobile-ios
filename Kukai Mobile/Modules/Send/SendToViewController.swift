@@ -6,24 +6,70 @@
 //
 
 import UIKit
+import Combine
 
-class SendToViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressComponentDelegate {
+	
+	@IBOutlet weak var enterAddressComponent: EnterAddressComponent!
+	@IBOutlet weak var tableView: UITableView!
+	
+	private let viewModel = SendToViewModel()
+	private var cancellable: AnyCancellable?
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
+		tableView.delegate = self
+		enterAddressComponent.delegate = self
+		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					self?.showLoadingView(completion: nil)
+					
+				case .failure(_, let errorString):
+					self?.hideLoadingView(completion: nil)
+					self?.alert(withTitle: "Error", andMessage: errorString)
+					
+				case .success:
+					self?.hideLoadingView(completion: nil)
+			}
+		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		viewModel.refresh(animate: true, successMessage: nil)
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		TransactionService.shared.currentTransactionType = .send
+		TransactionService.shared.sendData.destination = viewModel.address(forIndexPath: indexPath)
+		
+		self.performSegue(withIdentifier: "choose-token", sender: self)
+	}
+	
+	func validatedInput(entered: String, validAddress: Bool) {
+		if !validAddress {
+			return
+		}
+		
+		TransactionService.shared.currentTransactionType = .send
+		TransactionService.shared.sendData.destination = entered
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+			self?.performSegue(withIdentifier: "choose-token", sender: self)
+		}
+	}
 }
