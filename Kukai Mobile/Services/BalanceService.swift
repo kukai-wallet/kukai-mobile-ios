@@ -24,7 +24,7 @@ public class BalanceService {
 	private var dispatchGroupBalances = DispatchGroup()
 	
 	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func fetchAllBalancesTokensAndPrices(forAddress address: String, forceRefresh: Bool, completion: @escaping ((ErrorResponse?) -> Void)) {
 		
 		isFetchingData = true
 		
@@ -34,7 +34,7 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		
-		if let account = DiskService.read(type: Account.self, fromFileName: "balance-service-account"), let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: "balance-service-exchangedata") {
+		if !forceRefresh, let account = DiskService.read(type: Account.self, fromFileName: "balance-service-account"), let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: "balance-service-exchangedata") {
 			self.account = account
 			self.exchangeData = exchangeData
 			

@@ -130,7 +130,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, forceRefresh: false) { [weak self] error in
 			guard let self = self else { return }
 			
 			if let e = error {
