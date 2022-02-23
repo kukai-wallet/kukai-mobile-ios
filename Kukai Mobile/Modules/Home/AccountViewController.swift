@@ -24,7 +24,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
@@ -41,6 +40,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		viewModel.isPresentedForSelectingToken = (self.parent != nil)
 		viewModel.refreshIfNeeded()
 	}
 	
@@ -55,14 +55,20 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		if indexPath.section == 0 {
+		if viewModel.isPresentedForSelectingToken, let parent = self.parent as? SendChooseTokenViewController {
+			TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
+			parent.tokenChosen()
 			
 		} else {
-			guard let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) else {
-				return
+			if indexPath.section == 0 {
+				
+			} else {
+				guard let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) else {
+					return
+				}
+				
+				UIApplication.shared.open(url, options: [:], completionHandler: nil)
 			}
-			
-			UIApplication.shared.open(url, options: [:], completionHandler: nil)
 		}
 	}
 }

@@ -21,6 +21,7 @@ public class TransactionService {
 	
 	public struct SendData {
 		var chosenToken: Token?
+		var chosenNFT: NFT?
 		var chosenAmount: TokenAmount?
 		var destination: String?
 		var destinationAlias: String?
@@ -55,7 +56,7 @@ public class TransactionService {
 	
 	private init() {
 		self.currentTransactionType = .none
-		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
+		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
@@ -65,7 +66,7 @@ public class TransactionService {
 	
 	public func resetState() {
 		self.currentTransactionType = .none
-		self.sendData = SendData(chosenToken: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
+		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)

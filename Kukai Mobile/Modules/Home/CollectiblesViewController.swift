@@ -22,7 +22,6 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
@@ -39,10 +38,21 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		viewModel.isPresentedForSelectingToken = (self.parent != nil)
 		viewModel.refresh(animate: true)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		viewModel.tapCell(forTableView: tableView, atIndexPath: indexPath)
+		
+		if indexPath.row == 0 {
+			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
+			
+		} else if viewModel.isPresentedForSelectingToken, let nft = viewModel.nft(atIndexPath: indexPath), let parent = self.parent as? SendChooseTokenViewController {
+			TransactionService.shared.sendData.chosenNFT = nft
+			parent.tokenChosen()
+			
+		} else {
+			// Display details
+		}
 	}
 }

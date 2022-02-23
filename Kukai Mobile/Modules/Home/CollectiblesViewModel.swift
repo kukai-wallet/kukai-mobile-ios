@@ -21,6 +21,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+	public var isPresentedForSelectingToken = false
 	
 	
 	// MARK: - Functions
@@ -70,7 +71,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func tapCell(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
+	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
 			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 			return
@@ -111,5 +112,9 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let nftGroup = balanceService.account.nfts[indexPath.section]
 		
 		currentSnapshot.deleteItems(nftGroup.nfts ?? [])
+	}
+	
+	func nft(atIndexPath: IndexPath) -> NFT? {
+		return DependencyManager.shared.balanceService.account.nfts[atIndexPath.section].nfts?[atIndexPath.row-1]
 	}
 }

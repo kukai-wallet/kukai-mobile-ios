@@ -34,51 +34,64 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		
-		// Get all balance data from TzKT
-		DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-			guard let res = try? result.get() else {
-				error = result.getFailure()
+		if let account = DiskService.read(type: Account.self, fromFileName: "balance-service-account"), let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: "balance-service-exchangedata") {
+			self.account = account
+			self.exchangeData = exchangeData
+			
+			self.dispatchGroupBalances.leave()
+			self.dispatchGroupBalances.leave()
+			self.dispatchGroupBalances.leave()
+			self.dispatchGroupBalances.leave()
+			
+		} else {
+			// Get all balance data from TzKT
+			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
+				guard let res = try? result.get() else {
+					error = result.getFailure()
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.account = res
 				self?.dispatchGroupBalances.leave()
-				return
 			}
 			
-			self?.account = res
-			self?.dispatchGroupBalances.leave()
+			// Get all exchange rate data from DipDup
+			DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
+				guard let res = try? result.get() else {
+					error = result.getFailure()
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.exchangeData = res
+				self?.dispatchGroupBalances.leave()
+			}
+			
+			// Get latest Tezos USD price
+			DependencyManager.shared.coinGeckoService.fetchTezosPrice { [weak self] result in
+				guard let _ = try? result.get() else {
+					error = result.getFailure()
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.dispatchGroupBalances.leave()
+			}
+			
+			// Get latest Exchange rates
+			DependencyManager.shared.coinGeckoService.fetchExchangeRates { [weak self] result in
+				guard let _ = try? result.get() else {
+					error = result.getFailure()
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.dispatchGroupBalances.leave()
+			}
 		}
 		
-		// Get all exchange rate data from DipDup
-		DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
-			guard let res = try? result.get() else {
-				error = result.getFailure()
-				self?.dispatchGroupBalances.leave()
-				return
-			}
-			
-			self?.exchangeData = res
-			self?.dispatchGroupBalances.leave()
-		}
 		
-		// Get latest Tezos USD price
-		DependencyManager.shared.coinGeckoService.fetchTezosPrice { [weak self] result in
-			guard let _ = try? result.get() else {
-				error = result.getFailure()
-				self?.dispatchGroupBalances.leave()
-				return
-			}
-			
-			self?.dispatchGroupBalances.leave()
-		}
-		
-		// Get latest Exchange rates
-		DependencyManager.shared.coinGeckoService.fetchExchangeRates { [weak self] result in
-			guard let _ = try? result.get() else {
-				error = result.getFailure()
-				self?.dispatchGroupBalances.leave()
-				return
-			}
-			
-			self?.dispatchGroupBalances.leave()
-		}
 		
 		// When everything fetched, process data
 		dispatchGroupBalances.notify(queue: .main) { [weak self] in
@@ -103,6 +116,9 @@ public class BalanceService {
 				self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
 				self.hasFetchedInitialData = true
 				self.isFetchingData = false
+				
+				let _ = DiskService.write(encodable: self.account, toFileName: "balance-service-account")
+				let _ = DiskService.write(encodable: self.exchangeData, toFileName: "balance-service-exchangedata")
 				
 				completion(nil)
 			}

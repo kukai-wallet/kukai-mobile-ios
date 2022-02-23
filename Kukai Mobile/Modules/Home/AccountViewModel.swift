@@ -34,6 +34,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var discoverItems: [DiscoverItem] = []
+	public var isPresentedForSelectingToken = false
 	
 	
 	// MARk: - Init
@@ -164,10 +165,16 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		snapshot.appendSections([0, 1])
 		
-		snapshot.appendItems(section1Data, toSection: 0)
-		snapshot.appendItems(self.discoverItems, toSection: 1)
+		if isPresentedForSelectingToken {
+			snapshot.appendSections([0])
+			snapshot.appendItems(section1Data, toSection: 0)
+			
+		} else {
+			snapshot.appendSections([0, 1])
+			snapshot.appendItems(section1Data, toSection: 0)
+			snapshot.appendItems(self.discoverItems, toSection: 1)
+		}
 		
 		datasource.apply(snapshot, animatingDifferences: animate)
 		
@@ -196,6 +203,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func viewForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> UIView {
+		if isPresentedForSelectingToken {
+			return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1)) // If return zero, it defaults to standard transparent headers of size ~20px
+		}
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingLargeButtonCell") as? HeadingLargeButtonCell {
 			cell.setup(heading: "Balances", buttonTitle: "DISCOVER")
@@ -216,5 +226,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return nil
+	}
+	
+	func token(atIndexPath: IndexPath) -> Token {
+		if atIndexPath.row == 0 {
+			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
+		} else {
+			return DependencyManager.shared.balanceService.account.tokens[atIndexPath.row - 1]
+		}
 	}
 }
