@@ -20,7 +20,7 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var pasteStackView: UIStackView!
 	
 	@IBOutlet weak var headerLabel: UILabel!
-	@IBOutlet weak var textField: UITextField!
+	@IBOutlet weak var textField: ValidatorTextField!
 	@IBOutlet weak var errorIcon: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
 	
@@ -55,6 +55,8 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func setup() {
+		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
+		textField.validatorTextFieldDelegate = self
 		textField.borderColor = .lightGray
 		textField.borderWidth = 1
 		textField.maskToBounds = true
@@ -69,8 +71,6 @@ public class EnterAddressComponent: UIView {
 		textField.leftView = textFieldLeftViewImage
 		
 		textFieldLeftViewSpacer.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
-		
-		textField.delegate = self
 		
 		self.hideError(animate: false)
 	}
@@ -89,7 +89,7 @@ public class EnterAddressComponent: UIView {
 	
 	@IBAction func pasteTapped(_ sender: Any) {
 		self.textField.text = UIPasteboard.general.string
-		let _ = self.validateTextField()
+		let _ = self.textField.revalidateTextfield()
 	}
 	
 	
@@ -149,40 +149,9 @@ public class EnterAddressComponent: UIView {
 			}
 		}
 	}
-	
-	public func validateTezosAddress(_ text: String) -> Bool {
-		let is36Characters = text.count == 36
-		let specialCharacterCheck = text.range(of: "[^\\w]", options: .regularExpression) == nil
-		let startsWithCheck = text.range(of: "^(tz1|tz2|tz3|kt1|TZ1|TZ2|TZ3|KT1)", options: .regularExpression) != nil
-		
-		return is36Characters && specialCharacterCheck && startsWithCheck
-	}
-	
-	public func validateTextField() -> Bool {
-		guard let text = textField.text, text != "" else {
-			// Don't show error message or block content if textfield is empty, users may want to use QR code
-			self.hideError(animate: true)
-			self.setTextfieldLeftIcon()
-			self.delegate?.validatedInput(entered: "", validAddress: false)
-			return true
-		}
-		
-		setTextfieldLeftSpacer()
-		
-		if validateTezosAddress(text) {
-			self.hideError(animate: true)
-			self.delegate?.validatedInput(entered: text, validAddress: true)
-			return true
-			
-		} else {
-			self.showError(message: "Invalid Tezos address")
-			self.delegate?.validatedInput(entered: text, validAddress: false)
-			return false
-		}
-	}
 }
 
-extension EnterAddressComponent: UITextFieldDelegate {
+extension EnterAddressComponent: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
 		animateButtonsOut()
@@ -192,18 +161,25 @@ extension EnterAddressComponent: UITextFieldDelegate {
 		animatedButtonsIn()
 	}
 	
+	public func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		if validated && text != "" {
+			self.hideError(animate: true)
+			self.delegate?.validatedInput(entered: text, validAddress: true)
+			
+		} else if text == "" {
+			self.hideError(animate: true)
+			self.setTextfieldLeftIcon()
+			self.delegate?.validatedInput(entered: "", validAddress: false)
+			
+		} else {
+			self.showError(message: "Invalid Tezos address")
+			self.delegate?.validatedInput(entered: text, validAddress: false)
+		}
+	}
+	
 	public func textFieldShouldClear(_ textField: UITextField) -> Bool {
 		self.hideError(animate: true)
 		return true
-	}
-	
-	public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-		if validateTextField() {
-			textField.resignFirstResponder()
-			return true
-		}
-		
-		return false
 	}
 }
 
@@ -211,6 +187,6 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 	
 	func scannedQRCode(code: String) {
 		self.textField.text = code
-		let _ = self.validateTextField()
+		let _ = self.textField.revalidateTextfield()
 	}
 }

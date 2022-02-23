@@ -80,6 +80,11 @@
 		C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */; };
 		C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */; };
 		C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */; };
+		C0A321D327C68B9E00D7788B /* ValidatorTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D227C68B9E00D7788B /* ValidatorTextField.swift */; };
+		C0A321D627C68C0100D7788B /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D527C68C0100D7788B /* Validator.swift */; };
+		C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D727C68C2B00D7788B /* NumberValidator.swift */; };
+		C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */; };
+		C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */; };
 		C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3B2771E263002F66C0 /* BottomSheetMediumSegue.swift */; };
 		C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3D2771E5AB002F66C0 /* BottomSheetLargeSegue.swift */; };
 		C0AC1D402771F585002F66C0 /* LedgerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3F2771F585002F66C0 /* LedgerInfoViewController.swift */; };
@@ -235,6 +240,11 @@
 		C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressComponent.swift; sourceTree = "<group>"; };
 		C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnterAddressComponent.xib; sourceTree = "<group>"; };
 		C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
+		C0A321D227C68B9E00D7788B /* ValidatorTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorTextField.swift; sourceTree = "<group>"; };
+		C0A321D527C68C0100D7788B /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
+		C0A321D727C68C2B00D7788B /* NumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberValidator.swift; sourceTree = "<group>"; };
+		C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosAddressValidator.swift; sourceTree = "<group>"; };
+		C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAmountValidator.swift; sourceTree = "<group>"; };
 		C0AC1D3B2771E263002F66C0 /* BottomSheetMediumSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetMediumSegue.swift; sourceTree = "<group>"; };
 		C0AC1D3D2771E5AB002F66C0 /* BottomSheetLargeSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetLargeSegue.swift; sourceTree = "<group>"; };
 		C0AC1D3F2771F585002F66C0 /* LedgerInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerInfoViewController.swift; sourceTree = "<group>"; };
@@ -407,7 +417,9 @@
 		C06EA1A426A56C3F006029CF /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				C0A321D427C68BA300D7788B /* Validators */,
 				C09860B527C3DE3700F888AF /* EnterAddressComponent */,
+				C0A321D227C68B9E00D7788B /* ValidatorTextField.swift */,
 				C0B743A626AAC44A00377A9B /* ViewModelProtocols.swift */,
 				C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */,
 				C0AC1D3B2771E263002F66C0 /* BottomSheetMediumSegue.swift */,
@@ -516,6 +528,17 @@
 				C024038A26D92B0E00E1CB80 /* ScanViewController.swift */,
 			);
 			path = EnterAddressComponent;
+			sourceTree = "<group>";
+		};
+		C0A321D427C68BA300D7788B /* Validators */ = {
+			isa = PBXGroup;
+			children = (
+				C0A321D527C68C0100D7788B /* Validator.swift */,
+				C0A321D727C68C2B00D7788B /* NumberValidator.swift */,
+				C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */,
+				C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */,
+			);
+			path = Validators;
 			sourceTree = "<group>";
 		};
 		C0B03636269EE2070071ACD0 = {
@@ -790,14 +813,17 @@
 				C0D8BAA5274BBC7D005C0526 /* LiquidityDetailsViewController.swift in Sources */,
 				C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */,
 				C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */,
+				C0A321D627C68C0100D7788B /* Validator.swift in Sources */,
 				C07FA42427AC3F03004B3BDF /* DisplayImageViewController.swift in Sources */,
 				C085EAB326B175F600B37A15 /* SideMenuViewController.swift in Sources */,
 				C0D74CC726C12CDA0096F845 /* LiquidtyBalanceViewController.swift in Sources */,
 				C09860B027C3C27D00F888AF /* SendReviewViewController.swift in Sources */,
 				C0B08A35270DC26700075618 /* SendWaitViewController.swift in Sources */,
+				C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */,
 				C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */,
 				C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */,
 				C085EAB726B1A95A00B37A15 /* SideMenuImportViewController.swift in Sources */,
+				C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */,
 				C0FA565A27BFFBF600AFC9A7 /* CollectiblesViewController.swift in Sources */,
 				C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
@@ -831,6 +857,7 @@
 				C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */,
 				C07374A7279839B800726C01 /* Option1DetailViewController.swift in Sources */,
 				C08694EF27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift in Sources */,
+				C0A321D327C68B9E00D7788B /* ValidatorTextField.swift in Sources */,
 				C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */,
 				C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */,
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
@@ -868,6 +895,7 @@
 				C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */,
 				C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */,
 				C0AC1D4427722EF3002F66C0 /* UIImage+extensions.swift in Sources */,
+				C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
