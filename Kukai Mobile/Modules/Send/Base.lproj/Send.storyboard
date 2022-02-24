@@ -287,7 +287,7 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V0w-lc-0to">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="V0w-lc-0to" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="8" y="55" width="358" height="50"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="ET7-9e-3IN"/>
@@ -313,8 +313,8 @@
                                         <color key="textColor" name="text-primary"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FEE:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewH-3B-6eI">
-                                        <rect key="frame" x="251.5" y="139.5" width="28.5" height="17"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="FEE:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ewH-3B-6eI">
+                                        <rect key="frame" x="153" y="139.5" width="127" height="17"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" name="text-tertiary"/>
                                         <nil key="highlightedColor"/>
@@ -348,6 +348,7 @@
                                     <constraint firstItem="V0w-lc-0to" firstAttribute="top" secondItem="hhC-YS-FYC" secondAttribute="bottom" constant="4" id="Sn2-9w-1pX"/>
                                     <constraint firstItem="SPf-JA-uuj" firstAttribute="trailing" secondItem="V0w-lc-0to" secondAttribute="trailing" id="VWZ-dI-XPQ"/>
                                     <constraint firstAttribute="bottom" secondItem="3A6-gM-jMz" secondAttribute="bottom" constant="8" id="YoC-FJ-RaM"/>
+                                    <constraint firstItem="ewH-3B-6eI" firstAttribute="leading" secondItem="sKU-6n-J27" secondAttribute="trailing" constant="16" id="ay6-M4-NAd"/>
                                     <constraint firstItem="W0H-sp-iE8" firstAttribute="leading" secondItem="9cm-1j-VYA" secondAttribute="leading" constant="8" id="bra-CT-FQX"/>
                                     <constraint firstItem="SPf-JA-uuj" firstAttribute="top" secondItem="V0w-lc-0to" secondAttribute="bottom" constant="8" id="gxs-E8-NGN"/>
                                     <constraint firstItem="3A6-gM-jMz" firstAttribute="centerY" secondItem="ewH-3B-6eI" secondAttribute="centerY" id="nhD-lG-p2k"/>

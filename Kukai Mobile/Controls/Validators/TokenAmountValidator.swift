@@ -12,7 +12,6 @@ public struct TokenAmountValidator: Validator {
 	
 	private let numberFormatter = NumberFormatter()
 	
-	public var isXTZ: Bool = true
 	public var balanceLimit: TokenAmount = TokenAmount.zero()
 	public var decimalPlaces: Int = 6
 	
@@ -20,8 +19,7 @@ public struct TokenAmountValidator: Validator {
 		
 	}
 	
-	public init (isXTZ: Bool, balanceLimit: TokenAmount, decimalPlaces: Int = 6) {
-		self.isXTZ = isXTZ
+	public init (balanceLimit: TokenAmount, decimalPlaces: Int = 6) {
 		self.balanceLimit = balanceLimit
 		self.decimalPlaces = decimalPlaces
 	}
