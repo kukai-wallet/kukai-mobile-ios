@@ -18,7 +18,7 @@ class SendEnterAmountViewController: UIViewController {
 	@IBOutlet weak var textfield: ValidatorTextField!
 	@IBOutlet weak var errorMessage: UILabel!
 	@IBOutlet weak var fiatLabel: UILabel!
-	@IBOutlet weak var fiatValue: UIView!
+	@IBOutlet weak var fiatValue: UILabel!
 	@IBOutlet weak var feeValue: UILabel!
 	@IBOutlet weak var reviewButton: UIButton!
 	
@@ -39,15 +39,18 @@ class SendEnterAmountViewController: UIViewController {
 		
 		if let token = TransactionService.shared.sendData.chosenToken {
 			isToken = true
-			balanceLabel.text = token.balance.normalisedRepresentation + " \(token.symbol)"
+			balanceLabel.text = "Balance: " + token.balance.normalisedRepresentation + " \(token.symbol)"
 			textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
-			fiatLabel.text = "0"
+			fiatValue.text = " "
+			feeValue.text = " "
+			
 			
 		} else if let nft = TransactionService.shared.sendData.chosenNFT {
 			isToken = false
 			balanceLabel.text = nft.balance.description
 			textfield.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: nft.balance, decimalPlaces: 0), decimalPlaces: 0)
-			fiatLabel.text = "0"
+			fiatValue.text = "..."
+			feeValue.text = " "
 			
 		} else {
 			balanceLabel.text = ""
@@ -112,15 +115,49 @@ class SendEnterAmountViewController: UIViewController {
 		
 		textfield.customCornerRadius = textfield.frame.height / 2
 		textfield.maskToBounds = true
+		textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
 	}
 	
 	@objc func setMax() {
-		textfield.text = balanceLabel.text?.components(separatedBy: " ").first ?? ""
-		let _ = textfield.revalidateTextfield()
+		if let components = balanceLabel.text?.components(separatedBy: " "), components.count > 1 {
+			textfield.text = components[1]
+			if textfield.revalidateTextfield() {
+				estimateFee()
+			}
+		}
 	}
 	
-	@IBAction func reviewTapped(_ sender: Any) {
+	@objc func estimateFee() {
+		textfield.resignFirstResponder()
 		
+		guard let wallet = DependencyManager.shared.selectedWallet, let destination = TransactionService.shared.sendData.destination else {
+			self.alert(errorWithMessage: "Can't find wallet")
+			return
+		}
+		
+		if isToken, let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
+			
+			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
+			let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
+			
+			self.showLoadingView(completion: nil)
+			
+			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estimationResult in
+				self?.hideLoadingView()
+				
+				switch estimationResult {
+					case .success(let estimatedOperations):
+						TransactionService.shared.sendData.operations = estimatedOperations
+						self?.feeValue.text = estimatedOperations.map({ $0.operationFees?.allFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
+						self?.reviewButton.isEnabled = true
+						
+					case .failure(let estimationError):
+						self?.alert(errorWithMessage: "\(estimationError)")
+						self?.reviewButton.isEnabled = false
+				}
+			}
+		}
 	}
 }
 
@@ -131,7 +168,7 @@ extension SendEnterAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		
+		estimateFee()
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
@@ -140,15 +177,22 @@ extension SendEnterAmountViewController: ValidatorTextFieldDelegate {
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if validated {
-			reviewButton.isEnabled = true
 			textfield.borderColor = .lightGray
 			textfield.borderWidth = 0
 			errorMessage.text = ""
+			
+			if isToken, let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: text) {
+				self.fiatValue.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
+			}
+			
 		} else if text != "" {
-			reviewButton.isEnabled = false
 			textfield.borderColor = .red
 			textfield.borderWidth = 1
 			errorMessage.text = "Invalid amount"
+			
+			if isToken {
+				self.fiatValue.text = "0"
+			}
 		}
 	}
 }

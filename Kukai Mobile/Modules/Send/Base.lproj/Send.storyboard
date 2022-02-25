@@ -293,7 +293,7 @@
                                             <constraint firstAttribute="height" constant="50" id="ET7-9e-3IN"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="decimalPad" returnKeyType="done"/>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SPf-JA-uuj">
                                         <rect key="frame" x="8" y="113" width="358" height="14.5"/>
@@ -369,7 +369,6 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="Review"/>
                                 <connections>
-                                    <action selector="reviewTapped:" destination="wMq-Xz-UTu" eventType="touchUpInside" id="0Tr-QD-feB"/>
                                     <segue destination="GkR-Ml-nCF" kind="show" identifier="review" id="jVn-qy-bJ8"/>
                                 </connections>
                             </button>
@@ -454,7 +453,7 @@
                         <outlet property="errorMessage" destination="SPf-JA-uuj" id="tGg-bv-nHb"/>
                         <outlet property="feeValue" destination="3A6-gM-jMz" id="fvc-0R-sZf"/>
                         <outlet property="fiatLabel" destination="W0H-sp-iE8" id="i2z-eQ-ETL"/>
-                        <outlet property="fiatValue" destination="9cm-1j-VYA" id="snO-aS-Cdh"/>
+                        <outlet property="fiatValue" destination="sKU-6n-J27" id="SJq-pr-hT7"/>
                         <outlet property="reviewButton" destination="PFR-z5-plZ" id="pTe-gM-q9z"/>
                         <outlet property="textfield" destination="V0w-lc-0to" id="Xfp-oc-0j4"/>
                     </connections>
