@@ -47,7 +47,7 @@ class SendEnterAmountViewController: UIViewController {
 			
 		} else if let nft = TransactionService.shared.sendData.chosenNFT {
 			isToken = false
-			balanceLabel.text = nft.balance.description
+			balanceLabel.text = "Balance: " + nft.balance.description
 			textfield.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: nft.balance, decimalPlaces: 0), decimalPlaces: 0)
 			fiatValue.text = "..."
 			feeValue.text = " "
@@ -139,6 +139,27 @@ class SendEnterAmountViewController: UIViewController {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
 			let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
+			
+			self.showLoadingView(completion: nil)
+			
+			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estimationResult in
+				self?.hideLoadingView()
+				
+				switch estimationResult {
+					case .success(let estimatedOperations):
+						TransactionService.shared.sendData.operations = estimatedOperations
+						self?.feeValue.text = estimatedOperations.map({ $0.operationFees?.allFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
+						self?.reviewButton.isEnabled = true
+						
+					case .failure(let estimationError):
+						self?.alert(errorWithMessage: "\(estimationError)")
+						self?.reviewButton.isEnabled = false
+				}
+			}
+		} else if !isToken, let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: textfield.text ?? "") {
+			
+			let operations = OperationFactory.sendOperation(textDecimal, of: nft, from: wallet.address, to: destination)
 			
 			self.showLoadingView(completion: nil)
 			
