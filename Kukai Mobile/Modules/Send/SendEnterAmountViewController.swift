@@ -29,6 +29,8 @@ class SendEnterAmountViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		setupTextField()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -60,8 +62,6 @@ class SendEnterAmountViewController: UIViewController {
 		fiatLabel.text = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased() + ":"
 		
 		reviewButton.isEnabled = false
-		
-		setupTextField()
 	}
 	
 	func setupTextField() {
@@ -130,6 +130,7 @@ class SendEnterAmountViewController: UIViewController {
 	@objc func estimateFee() {
 		textfield.resignFirstResponder()
 		
+		
 		guard let wallet = DependencyManager.shared.selectedWallet, let destination = TransactionService.shared.sendData.destination else {
 			self.alert(errorWithMessage: "Can't find wallet")
 			return
@@ -139,6 +140,7 @@ class SendEnterAmountViewController: UIViewController {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
 			let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
+			TransactionService.shared.sendData.chosenAmount = amount
 			
 			self.showLoadingView(completion: nil)
 			
@@ -160,6 +162,7 @@ class SendEnterAmountViewController: UIViewController {
 		} else if !isToken, let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: textfield.text ?? "") {
 			
 			let operations = OperationFactory.sendOperation(textDecimal, of: nft, from: wallet.address, to: destination)
+			TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: nft.decimalPlaces)
 			
 			self.showLoadingView(completion: nil)
 			

@@ -144,14 +144,14 @@ public class BalanceService {
 	}
 	
 	func fiatAmount(forToken: Token, ofAmount: TokenAmount) -> Decimal {
-		guard let exchangeData = exchangeDataForToken(forToken) else {
-			return 0
-		}
-		
 		if forToken.isXTZ() {
 			return ofAmount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			
 		} else {
+			guard let exchangeData = exchangeDataForToken(forToken) else {
+				return 0
+			}
+			
 			let xtzExchange = xtzExchange(forToken: forToken, ofAmount: ofAmount, withExchangeData: exchangeData)
 			return xtzExchange * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 		}
