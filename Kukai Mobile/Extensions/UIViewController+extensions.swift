@@ -31,6 +31,7 @@ extension UIViewController {
 	
 	private static var activityIndicator = UIActivityIndicatorView()
 	private static var loadingModal = UIViewController.createLoadingModal()
+	private static var loadingModalStatusLabel = UILabel()
 	
 	static func createActivityView() -> UIView {
 		let view = UIView(frame: UIScreen.main.bounds)
@@ -65,18 +66,32 @@ extension UIViewController {
 		UIViewController.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		UIViewController.activityIndicator.color = UIColor.white
 		
+		loadingModalStatusLabel.translatesAutoresizingMaskIntoConstraints = false
+		loadingModalStatusLabel.numberOfLines = 0
+		loadingModalStatusLabel.textColor = UIColor.white
+		loadingModalStatusLabel.textAlignment = .center
+		
 		vc.view.addSubview(UIViewController.activityIndicator)
+		vc.view.addSubview(UIViewController.loadingModalStatusLabel)
 		vc.view.bringSubviewToFront(UIViewController.activityIndicator)
 		
 		NSLayoutConstraint.activate([
 			activityIndicator.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor),
-			activityIndicator.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor)
+			activityIndicator.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor),
+			
+			loadingModalStatusLabel.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor, constant: 20),
+			loadingModalStatusLabel.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -20),
+			loadingModalStatusLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 20)
 		])
 		
 		vc.modalPresentationStyle = .overFullScreen
 		vc.modalTransitionStyle = .crossDissolve
 		
 		return vc
+	}
+	
+	func updateLoadingModalStatusLabel(message: String) {
+		UIViewController.loadingModalStatusLabel.text = message
 	}
 	
 	func showLoadingModal(completion: (() -> Void)? = nil) {

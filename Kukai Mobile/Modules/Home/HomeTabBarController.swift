@@ -12,7 +12,7 @@ class HomeTabBarController: UITabBarController {
 	
 	@IBOutlet weak var accountButtonParent: UIBarButtonItem!
 	@IBOutlet weak var accountButton: UIButton!
-	@IBOutlet weak var sendButton: UIBarButtonItem!
+	@IBOutlet weak var sendButton: UIButton!
 	
 	private var walletChangeCancellable: AnyCancellable?
 	
@@ -24,6 +24,13 @@ class HomeTabBarController: UITabBarController {
 			.sink { [weak self] _ in
 				self?.updateAccountButton()
 			}
+		
+		accountButton.titleLabel?.numberOfLines = 2
+		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
+		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: (self.view.frame.width * 0.75)))
+		
+		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 34))
+		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -33,11 +40,6 @@ class HomeTabBarController: UITabBarController {
 		self.navigationItem.hidesBackButton = true
 		
 		TransactionService.shared.resetState()
-		
-		accountButton.titleLabel?.numberOfLines = 2
-		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.frame.size = CGSize(width: (self.view.frame.width * 0.75), height: 44)
-		
 		updateAccountButton()
 	}
 	

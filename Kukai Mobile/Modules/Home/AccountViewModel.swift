@@ -30,7 +30,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var walletChangeCancellable: AnyCancellable?
 	
 	private var hasLoadedOnce = false
-	private var forceRefresh = false
+	var forceRefresh = false
 	
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
@@ -130,8 +130,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 			return
 		}
-		
-		print("force refresh: \(self.forceRefresh)")
 		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, forceRefresh: forceRefresh) { [weak self] error in
 			guard let self = self else { return }

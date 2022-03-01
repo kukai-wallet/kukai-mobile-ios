@@ -14,6 +14,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	private let viewModel = AccountViewModel()
 	private var cancellable: AnyCancellable?
+	private var refreshControl = UIRefreshControl()
 	
 	private var coingeckservice: CoinGeckoService? = nil
 	
@@ -23,6 +24,12 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
+		refreshControl.addAction(UIAction(handler: { [weak self] action in
+			self?.viewModel.forceRefresh = true
+			self?.viewModel.refresh(animate: true)
+		}), for: .valueChanged)
+		tableView.refreshControl = refreshControl
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -34,6 +41,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
+					self?.refreshControl.endRefreshing()
 					self?.hideLoadingView(completion: nil)
 			}
 		}
