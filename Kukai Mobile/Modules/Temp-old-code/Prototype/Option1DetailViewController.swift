@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
+/*
 public class Option1DetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet weak var nameLabel: UILabel!
@@ -126,3 +127,4 @@ public class Option1DetailViewController: UIViewController, UITableViewDelegate,
 		}
 	}
 }
+*/

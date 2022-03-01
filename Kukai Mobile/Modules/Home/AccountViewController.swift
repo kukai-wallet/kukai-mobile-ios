@@ -40,7 +40,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		viewModel.isPresentedForSelectingToken = (self.parent != nil)
+		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
 		viewModel.refreshIfNeeded()
 	}
 	
@@ -57,6 +57,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		
 		if viewModel.isPresentedForSelectingToken, let parent = self.parent as? SendChooseTokenViewController {
 			TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
+			TransactionService.shared.sendData.chosenNFT = nil
 			parent.tokenChosen()
 			
 		} else {

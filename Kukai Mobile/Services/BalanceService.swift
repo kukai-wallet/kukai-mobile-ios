@@ -114,6 +114,7 @@ public class BalanceService {
 				self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
 				self.hasFetchedInitialData = true
 				self.isFetchingData = false
+				DependencyManager.shared.accountBalancesDidUpdate = true
 				
 				let _ = DiskService.write(encodable: self.account, toFileName: "balance-service-account")
 				let _ = DiskService.write(encodable: self.exchangeData, toFileName: "balance-service-exchangedata")

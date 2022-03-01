@@ -49,6 +49,7 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 			
 		} else if viewModel.isPresentedForSelectingToken, let nft = viewModel.nft(atIndexPath: indexPath), let parent = self.parent as? SendChooseTokenViewController {
 			TransactionService.shared.sendData.chosenNFT = nft
+			TransactionService.shared.sendData.chosenToken = nil
 			parent.tokenChosen()
 			
 		} else {

@@ -100,14 +100,13 @@ class DependencyManager {
 		}
 	}
 	
-	var currentAccount: Account? = nil
-	
 	
 	// Combine publishers to serve as notifications across multiple screens
 	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults
 	// We create dummy published vars, where the actual value isn't relevant, we only care about triggering logic from these when a value is set
 	@Published var networkDidChange: Bool = false
 	@Published var walletDidChange: Bool = false
+	@Published var accountBalancesDidUpdate: Bool = false
 	
 	
 	// Torus / Social data
@@ -199,7 +198,7 @@ class DependencyManager {
 	
 	func setDefaultTestnetURLs() {
 		currentNodeURL = DependencyManager.defaultNodeURL_testnet
-		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
+		currentTzktURL = DependencyManager.defaultTzktURL_testnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
 		tezosChainName = .hangzhounet

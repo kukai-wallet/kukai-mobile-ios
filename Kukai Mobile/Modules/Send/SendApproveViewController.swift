@@ -29,6 +29,31 @@ class SendApproveViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		guard let wallet = DependencyManager.shared.selectedWallet, let amount = TransactionService.shared.sendData.chosenAmount else {
+			return
+		}
+		
+		fromAliasLabel.text = ""
+		fromAddressLabel.text = wallet.address
+		
+		if let token = TransactionService.shared.sendData.chosenToken {
+			amountToSend.text = amount.normalisedRepresentation + " \(token.symbol)"
+			fiatLabel.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			
+			
+		} else if let nft = TransactionService.shared.sendData.chosenNFT {
+			amountToSend.text = amount.normalisedRepresentation + " \(nft.symbol ?? "")"
+			fiatLabel.text = ""
+			
+		} else {
+			amountToSend.text = "0"
+			fiatLabel.text = ""
+		}
+		
+		toAliasLabel.text = TransactionService.shared.sendData.destinationAlias
+		toAddressLabel.text = TransactionService.shared.sendData.destination
+		
+		
 		setupSlideView()
     }
 	
@@ -77,7 +102,35 @@ class SendApproveViewController: UIViewController {
 		}
 	}
 	
-	func sendOperations() {
+	func resetSlider() {
+		slideText?.text = ">> Slide to Send >>"
+		slideText?.textColor = UIColor.lightGray
 		
+		slideImage?.center.x = ((slideImage?.frame.width ?? 2) / 2) + 4
+		slideImage?.alpha = 1
+	}
+	
+	func sendOperations() {
+		guard let ops = TransactionService.shared.sendData.operations, let wallet = DependencyManager.shared.selectedWallet else {
+			self.alert(errorWithMessage: "Unable to find ops")
+			resetSlider()
+			return
+		}
+		
+		self.showLoadingModal(completion: nil)
+		
+		DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] sendResult in
+			self?.hideLoadingModal(completion: nil)
+			
+			switch sendResult {
+				case .success(let opHash):
+					print("Sent: \(opHash)")
+					(self?.presentingViewController as? UINavigationController)?.popToHome()
+					self?.dismiss(animated: true, completion: nil)
+					
+				case .failure(let sendError):
+					self?.alert(errorWithMessage: sendError.description)
+			}
+		}
 	}
 }

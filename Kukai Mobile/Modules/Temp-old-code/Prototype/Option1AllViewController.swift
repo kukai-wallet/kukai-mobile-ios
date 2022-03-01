@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
+/*
 public class Option1AllViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet weak var tableView: UITableView!
@@ -70,3 +71,4 @@ public class Option1AllViewController: UIViewController, UITableViewDelegate, UI
 		return ""
 	}
 }
+*/

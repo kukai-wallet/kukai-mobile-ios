@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 import KukaiCoreSwift
 
+/*
 public class Option1MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet weak var tableView: UITableView!
@@ -141,3 +142,4 @@ public class Option1MainViewController: UIViewController, UITableViewDelegate, U
 		return ""
 	}
 }
+*/

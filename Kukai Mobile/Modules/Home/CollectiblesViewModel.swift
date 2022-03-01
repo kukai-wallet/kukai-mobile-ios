@@ -15,13 +15,33 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private let balanceService = DependencyManager.shared.balanceService
+	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	public var isPresentedForSelectingToken = false
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+			.dropFirst()
+			.sink { [weak self] _ in
+				if self?.dataSource != nil {
+					self?.refresh(animate: true)
+				}
+			}
+	}
+	
+	deinit {
+		accountDataRefreshedCancellable?.cancel()
+	}
 	
 	
 	// MARK: - Functions
@@ -51,16 +71,16 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
 			return
 		}
 		
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		currentSnapshot.appendSections(Array(0..<balanceService.account.nfts.count))
+		currentSnapshot.appendSections(Array(0..<DependencyManager.shared.balanceService.account.nfts.count))
 		
-		for (index, nftGroup) in balanceService.account.nfts.enumerated() {
+		for (index, nftGroup) in DependencyManager.shared.balanceService.account.nfts.enumerated() {
 			currentSnapshot.appendItems([nftGroup], toSection: index)
 		}
 		
@@ -73,7 +93,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
 			return
 		}
 		
@@ -99,7 +119,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setOpen()
 		}
 		
-		let nftGroup = balanceService.account.nfts[indexPath.section]
+		let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
 		
 		currentSnapshot.insertItems(nftGroup.nfts ?? [], afterItem: nftGroup)
 	}
@@ -109,7 +129,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}
 		
-		let nftGroup = balanceService.account.nfts[indexPath.section]
+		let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
 		
 		currentSnapshot.deleteItems(nftGroup.nfts ?? [])
 	}

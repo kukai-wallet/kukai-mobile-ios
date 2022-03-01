@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
+/*
 public class SegmentedViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet weak var addressLabel: UILabel!
@@ -120,3 +121,4 @@ public class SegmentedViewController: UIViewController, UITableViewDelegate, UIT
 		return ""
 	}
 }
+*/

@@ -32,6 +32,8 @@ class HomeTabBarController: UITabBarController {
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
+		TransactionService.shared.resetState()
+		
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 		accountButton.frame.size = CGSize(width: (self.view.frame.width * 0.75), height: 44)

@@ -136,13 +136,12 @@ class SendEnterAmountViewController: UIViewController {
 			return
 		}
 		
+		self.showLoadingView(completion: nil)
 		if isToken, let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
 			let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
 			TransactionService.shared.sendData.chosenAmount = amount
-			
-			self.showLoadingView(completion: nil)
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estimationResult in

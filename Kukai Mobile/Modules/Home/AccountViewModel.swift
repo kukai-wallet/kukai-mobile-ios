@@ -29,15 +29,16 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var networkChangeCancellable: AnyCancellable?
 	private var walletChangeCancellable: AnyCancellable?
 	
-	private let balanceService = DependencyManager.shared.balanceService
-	private let coinGeckoService = DependencyManager.shared.coinGeckoService
+	private var hasLoadedOnce = false
+	private var forceRefresh = false
+	
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var discoverItems: [DiscoverItem] = []
 	public var isPresentedForSelectingToken = false
 	
 	
-	// MARk: - Init
+	// MARK: - Init
 	
 	override init() {
 		super.init()
@@ -45,12 +46,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				self?.forceRefresh = true
 				self?.refresh(animate: true)
 			}
 		
 		walletChangeCancellable = DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				self?.forceRefresh = true
 				self?.refresh(animate: true)
 			}
 	}
@@ -65,19 +68,18 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self else { return UITableViewCell() }
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.iconView.image = UIImage(named: "tezos-xtz-logo")
 				cell.symbolLabel.text = "Tezos"
 				cell.balanceLabel.text = amount.normalisedRepresentation
 				
-				let singleXTZCurrencyString = self.coinGeckoService.format(decimal: self.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
+				let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
 				cell.rateLabel.text = "1 = \(singleXTZCurrencyString)"
 				
-				let totalXtzValue = amount * self.coinGeckoService.selectedCurrencyRatePerXTZ
-				cell.valuelabel.text = self.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 				
 				return cell
 				
@@ -87,16 +89,16 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
 				
-				if let tokenValueAndRate = self.balanceService.tokenValueAndRate[token.id] {
-					let xtzPrice = tokenValueAndRate.xtzValue * self.coinGeckoService.selectedCurrencyRatePerXTZ
-					let currencyString = self.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+					let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+					let currencyString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 					
 					cell.rateLabel.text = "1 == \(tokenValueAndRate.marketRate.rounded(scale: 6, roundingMode: .down)) XTZ"
 					cell.valuelabel.text = currencyString
 					
 				} else {
 					cell.rateLabel.text = ""
-					cell.valuelabel.text = self.coinGeckoService.placeholderCurrencyString()
+					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.placeholderCurrencyString()
 				}
 				
 				return cell
@@ -129,9 +131,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		print("force refresh: \(self.forceRefresh)")
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, forceRefresh: false) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, forceRefresh: forceRefresh) { [weak self] error in
 			guard let self = self else { return }
+			
+			self.forceRefresh = false
 			
 			if let e = error {
 				self.state = .failure(e, "Unable to fetch data")
@@ -152,15 +157,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Build arrays of data
-		let totalXTZ = self.balanceService.estimatedTotalXtz
-		let totalCurrency = totalXTZ * self.coinGeckoService.selectedCurrencyRatePerXTZ
-		let totalCurrencyString = self.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
+		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
+		let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+		let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 		
-		let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
-		
-		var section1Data: [AnyHashable] = [self.balanceService.account.xtzBalance]
-		section1Data.append(contentsOf: self.balanceService.account.tokens)
-		section1Data.append(total)
+		var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
+		section1Data.append(contentsOf: DependencyManager.shared.balanceService.account.tokens)
 		
 		
 		// Build snapshot
@@ -171,6 +173,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(section1Data, toSection: 0)
 			
 		} else {
+			let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
+			section1Data.append(total)
+			
 			snapshot.appendSections([0, 1])
 			snapshot.appendItems(section1Data, toSection: 0)
 			snapshot.appendItems(self.discoverItems, toSection: 1)
@@ -178,14 +183,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		datasource.apply(snapshot, animatingDifferences: animate)
 		
-		self.balanceService.currencyChanged = false
+		DependencyManager.shared.balanceService.currencyChanged = false
 	}
 	
 	func refreshIfNeeded() {
-		if !self.balanceService.hasFetchedInitialData {
+		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
 			self.refresh(animate: true, successMessage: nil)
 			
-		} else if self.balanceService.currencyChanged {
+		} else if DependencyManager.shared.balanceService.currencyChanged || (!self.hasLoadedOnce && self.isPresentedForSelectingToken) {
 			guard let ds = dataSource else {
 				state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 				return
