@@ -39,6 +39,12 @@ class SendChooseTokenViewController: UIViewController {
 	}
 	
 	public func tokenChosen() {
-		self.performSegue(withIdentifier: "enter-amount", sender: self)
+		
+		if let _ = TransactionService.shared.sendData.chosenToken {
+			self.performSegue(withIdentifier: "enter-amount", sender: self)
+			
+		} else {
+			self.performSegue(withIdentifier: "review-send-nft", sender: self)
+		}
 	}
 }

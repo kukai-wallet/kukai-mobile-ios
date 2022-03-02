@@ -17,8 +17,11 @@ class SendApproveViewController: UIViewController {
 	@IBOutlet weak var fromAliasLabel: UILabel!
 	@IBOutlet weak var fromAddressLabel: UILabel!
 	
-	@IBOutlet weak var amountToSend: UILabel!
-	@IBOutlet weak var fiatLabel: UILabel!
+	@IBOutlet weak var amountToSend: UILabel?
+	@IBOutlet weak var fiatLabel: UILabel?
+	
+	@IBOutlet weak var nftIcon: UIImageView?
+	@IBOutlet weak var nftName: UILabel?
 	
 	@IBOutlet weak var toIcon: UIImageView!
 	@IBOutlet weak var toAliasLabel: UILabel!
@@ -43,17 +46,17 @@ class SendApproveViewController: UIViewController {
 		fromAddressLabel.text = wallet.address
 		
 		if let token = TransactionService.shared.sendData.chosenToken {
-			amountToSend.text = amount.normalisedRepresentation + " \(token.symbol)"
-			fiatLabel.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			amountToSend?.text = amount.normalisedRepresentation + " \(token.symbol)"
+			fiatLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 			
 			
-		} else if let nft = TransactionService.shared.sendData.chosenNFT {
-			amountToSend.text = amount.normalisedRepresentation + " \(nft.symbol ?? "")"
-			fiatLabel.text = ""
+		} else if let nft = TransactionService.shared.sendData.chosenNFT, let iconView = nftIcon {
+			MediaProxyService.load(url: nft.thumbnailURL, to: iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: iconView.frame.size)
+			nftName?.text = nft.name
 			
 		} else {
-			amountToSend.text = "0"
-			fiatLabel.text = ""
+			amountToSend?.text = "0"
+			fiatLabel?.text = ""
 		}
 		
 		toAliasLabel.text = TransactionService.shared.sendData.destinationAlias

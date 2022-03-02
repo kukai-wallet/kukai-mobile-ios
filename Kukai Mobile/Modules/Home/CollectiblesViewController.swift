@@ -38,7 +38,7 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		viewModel.isPresentedForSelectingToken = (self.parent != nil)
+		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
 		viewModel.refresh(animate: true)
 	}
 	
@@ -54,6 +54,7 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 			
 		} else {
 			// Display details
+			print("test")
 		}
 	}
 }
