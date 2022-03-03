@@ -23,6 +23,10 @@
 		C02D7CAC27BEB0CD006A8E39 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAB27BEB0CD006A8E39 /* ProfileViewController.swift */; };
 		C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */; };
 		C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */; };
+		C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */; };
+		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
+		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
+		C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
 		C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */; };
@@ -170,6 +174,10 @@
 		C02D7CAB27BEB0CD006A8E39 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
 		C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
+		C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewController.swift; sourceTree = "<group>"; };
+		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
+		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
+		C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewController.swift; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extensions.swift"; sourceTree = "<group>"; };
@@ -341,8 +349,12 @@
 				C085EAB426B192A600B37A15 /* SideMenuViewModel.swift */,
 				C08694E327BD1D86000A4909 /* AccountViewController.swift */,
 				C08694E527BD1D93000A4909 /* AccountViewModel.swift */,
+				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
+				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
 				C0FA565927BFFBF600AFC9A7 /* CollectiblesViewController.swift */,
 				C0FA565B27BFFC0900AFC9A7 /* CollectiblesViewModel.swift */,
+				C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */,
+				C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */,
 				C02D7CAB27BEB0CD006A8E39 /* ProfileViewController.swift */,
 				C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */,
 				C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */,
@@ -828,6 +840,7 @@
 				C085EAB726B1A95A00B37A15 /* SideMenuImportViewController.swift in Sources */,
 				C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */,
 				C0FA565A27BFFBF600AFC9A7 /* CollectiblesViewController.swift in Sources */,
+				C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */,
 				C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
 				C085EAB926B1ADC700B37A15 /* ConfirmMnemonicViewController.swift in Sources */,
@@ -867,6 +880,7 @@
 				C08694DE27BD1B84000A4909 /* TokenBalanceCell.swift in Sources */,
 				C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */,
 				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
+				C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */,
 				C0D9B0BD2745244A00D3BAF7 /* LiquidityTokensViewController.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
 				C0082C0626A7249200DB160B /* SettingsViewController.swift in Sources */,
@@ -883,6 +897,7 @@
 				C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */,
 				C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
+				C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */,
 				C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */,
 				C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
@@ -890,6 +905,7 @@
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
 				C07374AB279854C000726C01 /* PrototypeData.swift in Sources */,
 				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
+				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
 				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 				C02D7CAA27BEB0B7006A8E39 /* TitleSubtitleCell.swift in Sources */,
 				C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */,

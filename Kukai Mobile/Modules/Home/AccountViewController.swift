@@ -70,6 +70,9 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			
 		} else {
 			if indexPath.section == 0 {
+				TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
+				TransactionService.shared.sendData.chosenNFT = nil
+				self.performSegue(withIdentifier: "details", sender: self)
 				
 			} else {
 				guard let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) else {
