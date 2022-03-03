@@ -1993,7 +1993,7 @@
                             </button>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="TrH-jo-bah">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JFG-vv-GSa">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JFG-vv-GSa">
                                 <rect key="frame" x="302" y="6.5" width="92" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -2115,19 +2115,55 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T8s-MP-pZd">
+                                                    <rect key="frame" x="10" y="55" width="83" height="24"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9AB-ft-BCe">
+                                                            <rect key="frame" x="2" y="2" width="79" height="20"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <constraints>
+                                                        <constraint firstItem="9AB-ft-BCe" firstAttribute="leading" secondItem="T8s-MP-pZd" secondAttribute="leading" constant="2" id="Gak-aD-u76"/>
+                                                        <constraint firstItem="9AB-ft-BCe" firstAttribute="top" secondItem="T8s-MP-pZd" secondAttribute="top" constant="2" id="JdA-fO-bmS"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="L0b-TM-zSO"/>
+                                                        <constraint firstAttribute="height" constant="24" id="RSX-9c-Xak"/>
+                                                        <constraint firstAttribute="trailing" secondItem="9AB-ft-BCe" secondAttribute="trailing" constant="2" id="WbG-PK-i3f"/>
+                                                        <constraint firstAttribute="bottom" secondItem="9AB-ft-BCe" secondAttribute="bottom" constant="2" id="xXB-xd-w1o"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" name="text-tertiary"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="12"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="BAE-Eq-es8" firstAttribute="leading" secondItem="jZb-Zh-pGS" secondAttribute="leading" constant="8" id="7yJ-6W-LYo"/>
                                                 <constraint firstAttribute="trailing" secondItem="rct-xC-eGh" secondAttribute="trailing" constant="16" id="Es2-5U-2CZ"/>
+                                                <constraint firstItem="T8s-MP-pZd" firstAttribute="leading" secondItem="BAE-Eq-es8" secondAttribute="leading" constant="2" id="H1p-cK-vlA"/>
                                                 <constraint firstItem="rct-xC-eGh" firstAttribute="top" secondItem="BAE-Eq-es8" secondAttribute="top" id="K1E-yL-THX"/>
                                                 <constraint firstItem="BAE-Eq-es8" firstAttribute="top" secondItem="jZb-Zh-pGS" secondAttribute="top" constant="8" id="UDJ-Hb-u7a"/>
                                                 <constraint firstItem="rct-xC-eGh" firstAttribute="leading" secondItem="BAE-Eq-es8" secondAttribute="trailing" constant="8" symbolic="YES" id="XaC-mF-eJM"/>
+                                                <constraint firstItem="T8s-MP-pZd" firstAttribute="bottom" secondItem="BAE-Eq-es8" secondAttribute="bottom" constant="-2" id="dCB-jk-Hd4"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="BAE-Eq-es8" secondAttribute="bottom" constant="8" id="deb-qc-lLS"/>
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rct-xC-eGh" secondAttribute="bottom" constant="8" id="gm8-Zo-hdA"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="iconView" destination="BAE-Eq-es8" id="rsF-yb-EkE"/>
+                                            <outlet property="quantityContainer" destination="T8s-MP-pZd" id="jKY-Su-eFS"/>
+                                            <outlet property="quantityLabel" destination="9AB-ft-BCe" id="VcN-ym-eEg"/>
                                             <outlet property="titleLabel" destination="rct-xC-eGh" id="GXj-ZV-HB0"/>
                                         </connections>
                                     </tableViewCell>

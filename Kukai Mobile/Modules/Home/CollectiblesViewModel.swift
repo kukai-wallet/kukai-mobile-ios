@@ -57,7 +57,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTItemCell", for: indexPath) as? NFTItemCell {
 				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
-				cell.titleLabel.text = obj.name
+				cell.setup(title: obj.name, balance: obj.balance)
 				
 				return cell
 				

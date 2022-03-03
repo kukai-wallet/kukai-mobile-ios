@@ -15,7 +15,7 @@ class ImportSuccessViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
-		let address = WalletCacheService().fetchPrimaryWallet()?.address
+		let address = WalletCacheService().fetchWallets()?.last?.address
 		addressLabel.text = address
     }
 }
