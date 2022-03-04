@@ -142,6 +142,8 @@
                         <outlet property="enterAddressComponent" destination="LMI-sZ-PxO" id="MCb-eA-tr6"/>
                         <outlet property="tableView" destination="ziq-vl-J6G" id="NDh-MO-Y3m"/>
                         <segue destination="xcX-fn-KlC" kind="show" identifier="choose-token" id="2tP-oS-MF6"/>
+                        <segue destination="wMq-Xz-UTu" kind="show" identifier="enter-amount" id="Cvs-vj-7ep"/>
+                        <segue destination="rPk-5W-8ea" kind="show" identifier="review-send-nft" id="ZvU-14-yNn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yya-0g-BLN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -269,7 +271,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHe-qj-pIs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1098.5507246376812" y="-1556.9196428571429"/>
+            <point key="canvasLocation" x="1361" y="-986"/>
         </scene>
         <!--Enter Amount-->
         <scene sceneID="yba-tQ-gc2">
@@ -1139,7 +1141,7 @@
                 <viewControllerPlaceholder storyboardName="Home" referencedIdentifier="account-home" id="y0o-Iw-VNB" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wwQ-GU-lK1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="814" y="-1081"/>
+            <point key="canvasLocation" x="1075" y="-511"/>
         </scene>
         <!--collectibles-home-->
         <scene sceneID="R4w-zH-gxf">
@@ -1147,7 +1149,7 @@
                 <viewControllerPlaceholder storyboardName="Home" referencedIdentifier="collectibles-home" id="Tfa-gt-uSm" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="exl-e0-sy8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1309" y="-1081"/>
+            <point key="canvasLocation" x="1570" y="-511"/>
         </scene>
         <!--Review Send-->
         <scene sceneID="Bng-c7-ct4">
@@ -1906,6 +1908,10 @@
             <point key="canvasLocation" x="5158" y="-550"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="ZvU-14-yNn"/>
+        <segue reference="Cvs-vj-7ep"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="chevron.right.circle.fill" catalog="system" width="128" height="121"/>
         <image name="circle" catalog="system" width="128" height="121"/>

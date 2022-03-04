@@ -40,6 +40,8 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
 		viewModel.refresh(animate: true, successMessage: nil)
 	}
 	
@@ -57,7 +59,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		TransactionService.shared.currentTransactionType = .send
 		TransactionService.shared.sendData.destination = viewModel.address(forIndexPath: indexPath)
 		
-		self.performSegue(withIdentifier: "choose-token", sender: self)
+		self.navigate()
 	}
 	
 	func validatedInput(entered: String, validAddress: Bool) {
@@ -69,7 +71,19 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		TransactionService.shared.sendData.destination = entered
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-			self?.performSegue(withIdentifier: "choose-token", sender: self)
+			self?.navigate()
+		}
+	}
+	
+	func navigate() {
+		if TransactionService.shared.sendData.chosenToken == nil && TransactionService.shared.sendData.chosenNFT == nil {
+			self.performSegue(withIdentifier: "choose-token", sender: self)
+			
+		} else if TransactionService.shared.sendData.chosenToken != nil {
+			self.performSegue(withIdentifier: "enter-amount", sender: self)
+			
+		} else if TransactionService.shared.sendData.chosenNFT != nil {
+			self.performSegue(withIdentifier: "review-send-nft", sender: self)
 		}
 	}
 }

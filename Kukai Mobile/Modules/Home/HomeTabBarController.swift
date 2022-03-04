@@ -52,6 +52,9 @@ class HomeTabBarController: UITabBarController {
 		accountButton.setTitle("Wallet Type: \(wallet.type.rawValue)\n\(wallet.address)", for: .normal)
 	}
 	
+	@IBAction func sendButtonTapped(_ sender: Any) {
+		self.performSegue(withIdentifier: "send", sender: nil)
+	}
 	
 	
 	

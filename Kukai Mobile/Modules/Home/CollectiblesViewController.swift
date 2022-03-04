@@ -52,9 +52,10 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 			TransactionService.shared.sendData.chosenToken = nil
 			parent.tokenChosen()
 			
-		} else {
-			// Display details
-			print("test")
+		} else if let nft = viewModel.nft(atIndexPath: indexPath) {
+			TransactionService.shared.sendData.chosenToken = nil
+			TransactionService.shared.sendData.chosenNFT = nft
+			self.performSegue(withIdentifier: "details", sender: self)
 		}
 	}
 }
