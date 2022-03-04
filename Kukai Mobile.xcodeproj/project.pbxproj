@@ -52,6 +52,8 @@
 		C07374A927983FB800726C01 /* PrototypeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A827983FB800726C01 /* PrototypeMain.swift */; };
 		C07374AB279854C000726C01 /* PrototypeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374AA279854C000726C01 /* PrototypeData.swift */; };
 		C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374AC27985D6E00726C01 /* SegmentedViewController.swift */; };
+		C07AC26727D22FA500D320D4 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = C07AC26627D22FA500D320D4 /* Charts */; };
+		C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */; };
 		C07FA42427AC3F03004B3BDF /* DisplayImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA42327AC3F03004B3BDF /* DisplayImageViewController.swift */; };
 		C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FA42527AC3F1F004B3BDF /* DisplayVideoViewController.swift */; };
 		C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */; };
@@ -216,6 +218,7 @@
 		C07374A827983FB800726C01 /* PrototypeMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeMain.swift; sourceTree = "<group>"; };
 		C07374AA279854C000726C01 /* PrototypeData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeData.swift; sourceTree = "<group>"; };
 		C07374AC27985D6E00726C01 /* SegmentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedViewController.swift; sourceTree = "<group>"; };
+		C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinGeckoMarketDataResponse.swift; sourceTree = "<group>"; };
 		C07FA42327AC3F03004B3BDF /* DisplayImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayImageViewController.swift; sourceTree = "<group>"; };
 		C07FA42527AC3F1F004B3BDF /* DisplayVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayVideoViewController.swift; sourceTree = "<group>"; };
 		C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeadingCell.swift; sourceTree = "<group>"; };
@@ -306,6 +309,7 @@
 				C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
+				C07AC26727D22FA500D320D4 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -522,6 +526,7 @@
 			isa = PBXGroup;
 			children = (
 				C08694EE27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift */,
+				C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -684,6 +689,7 @@
 				C0BBD2A426A9A7980097B63A /* Sentry */,
 				C021FA2B270F45A700BD9CF3 /* BeaconSDK */,
 				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
+				C07AC26627D22FA500D320D4 /* Charts */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -761,6 +767,7 @@
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
+				C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -862,6 +869,7 @@
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0AC1D422771F5D4002F66C0 /* ImportChoiceViewController.swift in Sources */,
 				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
+				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
 				C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */,
 				C0082BFB26A70B5900DB160B /* ImportSuccessViewController.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
@@ -1469,6 +1477,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
@@ -1505,6 +1521,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
+		};
+		C07AC26627D22FA500D320D4 /* Charts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = Charts;
 		};
 		C0BBD2A426A9A7980097B63A /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;

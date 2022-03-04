@@ -1968,9 +1968,9 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="URh-Ja-gdX">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="URh-Ja-gdX" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="20" y="105" width="374" height="200"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="j2r-Mb-dD7"/>
                                 </constraints>
@@ -1993,7 +1993,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XyN-tO-jC1">
-                                <rect key="frame" x="20" y="321" width="374" height="163"/>
+                                <rect key="frame" x="20" y="368" width="374" height="163"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RZF-AC-MSm">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
@@ -2033,28 +2033,45 @@
                                     </label>
                                 </subviews>
                             </stackView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZX6-cD-BPT">
+                                <rect key="frame" x="20" y="313" width="374" height="32"/>
+                                <segments>
+                                    <segment title="Day"/>
+                                    <segment title="Week"/>
+                                    <segment title="Month"/>
+                                    <segment title="Year"/>
+                                </segments>
+                                <connections>
+                                    <action selector="segmentedControlChanged:" destination="uNe-ha-jZC" eventType="valueChanged" id="FOv-Tf-LM9"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="nQH-R6-K4T"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="URh-Ja-gdX" firstAttribute="leading" secondItem="nQH-R6-K4T" secondAttribute="leading" constant="20" id="AuN-6P-3Pm"/>
                             <constraint firstItem="nQH-R6-K4T" firstAttribute="trailing" secondItem="mLX-vT-JRq" secondAttribute="trailing" constant="20" id="DWD-tS-SNL"/>
+                            <constraint firstItem="RZF-AC-MSm" firstAttribute="top" secondItem="ZX6-cD-BPT" secondAttribute="bottom" constant="24" id="Fko-w8-ctX"/>
+                            <constraint firstItem="ZX6-cD-BPT" firstAttribute="leading" secondItem="URh-Ja-gdX" secondAttribute="leading" id="Gx9-Ha-wiB"/>
                             <constraint firstItem="URh-Ja-gdX" firstAttribute="top" secondItem="mLX-vT-JRq" secondAttribute="bottom" constant="8" id="TFU-YF-01u"/>
                             <constraint firstItem="XyN-tO-jC1" firstAttribute="trailing" secondItem="URh-Ja-gdX" secondAttribute="trailing" id="TOV-dH-e1W"/>
                             <constraint firstItem="nQH-R6-K4T" firstAttribute="trailing" secondItem="URh-Ja-gdX" secondAttribute="trailing" constant="20" id="TaF-bS-pPH"/>
                             <constraint firstItem="XyN-tO-jC1" firstAttribute="leading" secondItem="URh-Ja-gdX" secondAttribute="leading" id="WYb-Fv-Stq"/>
+                            <constraint firstItem="ZX6-cD-BPT" firstAttribute="trailing" secondItem="URh-Ja-gdX" secondAttribute="trailing" id="WbJ-oW-M0W"/>
                             <constraint firstItem="6Hr-ng-tDT" firstAttribute="width" secondItem="ffT-S2-7ZI" secondAttribute="width" multiplier="0.75" id="Zw3-Cc-BeB"/>
                             <constraint firstItem="mLX-vT-JRq" firstAttribute="leading" secondItem="nQH-R6-K4T" secondAttribute="leading" constant="20" id="gCE-bF-aeG"/>
                             <constraint firstItem="mLX-vT-JRq" firstAttribute="top" secondItem="nQH-R6-K4T" secondAttribute="top" constant="24" id="iqB-R6-OTI"/>
                             <constraint firstItem="nQH-R6-K4T" firstAttribute="bottom" secondItem="6Hr-ng-tDT" secondAttribute="bottom" constant="8" id="kG0-4N-mq2"/>
                             <constraint firstItem="6Hr-ng-tDT" firstAttribute="centerX" secondItem="nQH-R6-K4T" secondAttribute="centerX" id="p8G-w3-Taf"/>
-                            <constraint firstItem="XyN-tO-jC1" firstAttribute="top" secondItem="URh-Ja-gdX" secondAttribute="bottom" constant="16" id="tOo-Pe-cQU"/>
+                            <constraint firstItem="ZX6-cD-BPT" firstAttribute="top" secondItem="URh-Ja-gdX" secondAttribute="bottom" constant="8" id="tRX-yV-nRH"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="balanceLabel" destination="5vV-sn-H5c" id="ihv-01-BhJ"/>
                         <outlet property="fiatLabel" destination="GaR-12-4ME" id="UOz-8t-8Ym"/>
+                        <outlet property="lineChartView" destination="URh-Ja-gdX" id="vRB-eQ-FYQ"/>
                         <outlet property="rateLabel" destination="BPu-tV-Znb" id="cwy-r0-hbP"/>
+                        <outlet property="segmentedControl" destination="ZX6-cD-BPT" id="Qva-fT-9fn"/>
                         <outlet property="symbolLabel" destination="mLX-vT-JRq" id="ioG-JI-lHG"/>
                     </connections>
                 </viewController>
@@ -2533,20 +2550,20 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleSubtitleCell" id="oxA-ui-3uc" customClass="TitleSubtitleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="20" y="49.5" width="374" height="45"/>
+                                <rect key="frame" x="20" y="49.5" width="374" height="45.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oxA-ui-3uc" id="X9U-y0-7mx">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTV-Z6-a5U">
-                                            <rect key="frame" x="20" y="12" width="49" height="21"/>
+                                            <rect key="frame" x="20" y="12" width="49" height="21.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" name="text-primary"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subTitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYO-m2-AqP">
-                                            <rect key="frame" x="85" y="14" width="273" height="17"/>
+                                            <rect key="frame" x="85" y="14.5" width="273" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" name="text-secondary"/>
                                             <nil key="highlightedColor"/>
