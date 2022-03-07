@@ -84,6 +84,9 @@ class SideMenuViewController: UIViewController {
 	@IBAction func deleteAllTapped(_ sender: Any) {
 		closeButtonTapped(self)
 		let _ = WalletCacheService().deleteCacheAndKeys()
+		DependencyManager.shared.balanceService.deleteAllCachedData()
+		TransactionService.shared.resetState()
+		
 		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
 	}
 }

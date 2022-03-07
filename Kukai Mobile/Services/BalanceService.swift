@@ -10,6 +10,12 @@ import KukaiCoreSwift
 
 public class BalanceService {
 	
+	public enum RefreshType {
+		case useCache
+		case refreshAccountOnly
+		case refreshEverything
+	}
+	
 	public var hasFetchedInitialData = false
 	public var currencyChanged = false
 	
@@ -22,9 +28,11 @@ public class BalanceService {
 	@Published var isFetchingData: Bool = false
 	
 	private var dispatchGroupBalances = DispatchGroup()
+	private static let cacheFilenameAccount = "balance-service-account"
+	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	
 	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, forceRefresh: Bool, completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: RefreshType, completion: @escaping ((ErrorResponse?) -> Void)) {
 		
 		isFetchingData = true
 		
@@ -34,11 +42,31 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		
-		if !forceRefresh, let account = DiskService.read(type: Account.self, fromFileName: "balance-service-account"), let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: "balance-service-exchangedata") {
-			self.account = account
-			self.exchangeData = exchangeData
+		if refreshType == .useCache,
+		   let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
+		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
 			
+			self.account = account
 			self.dispatchGroupBalances.leave()
+			
+			self.exchangeData = exchangeData
+			self.dispatchGroupBalances.leave()
+			
+		} else if refreshType == .refreshAccountOnly,
+				  let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+			
+			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
+				guard let res = try? result.get() else {
+					error = result.getFailure()
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.account = res
+				self?.dispatchGroupBalances.leave()
+			}
+			
+			self.exchangeData = exchangeData
 			self.dispatchGroupBalances.leave()
 			
 		} else {
@@ -116,8 +144,8 @@ public class BalanceService {
 				self.isFetchingData = false
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				
-				let _ = DiskService.write(encodable: self.account, toFileName: "balance-service-account")
-				let _ = DiskService.write(encodable: self.exchangeData, toFileName: "balance-service-exchangedata")
+				let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.cacheFilenameAccount)
+				let _ = DiskService.write(encodable: self.exchangeData, toFileName: BalanceService.cacheFilenameExchangeData)
 				
 				completion(nil)
 			}
@@ -161,5 +189,25 @@ public class BalanceService {
 	func fiatAmountDisplayString(forToken: Token, ofAmount: TokenAmount) -> String {
 		let amount = fiatAmount(forToken: forToken, ofAmount: ofAmount)
 		return DependencyManager.shared.coinGeckoService.format(decimal: amount, numberStyle: .currency, maximumFractionDigits: 2)
+	}
+	
+	func deleteAccountCachcedData() {
+		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameAccount)
+		account = Account(walletAddress: "")
+		
+		hasFetchedInitialData = false
+	}
+	
+	func deleteAllCachedData() {
+		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameAccount)
+		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
+		
+		hasFetchedInitialData = false
+		
+		account = Account(walletAddress: "")
+		exchangeData = []
+		
+		tokenValueAndRate = [:]
+		estimatedTotalXtz = XTZAmount.zero()
 	}
 }

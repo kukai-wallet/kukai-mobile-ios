@@ -105,7 +105,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, forceRefresh: true) { error in
+			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { error in
 				if let e = error {
 					self.state = .failure(ErrorResponse.unknownError(), "Unable to update balances: \(e)")
 					return

@@ -26,7 +26,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		tableView.delegate = self
 		
 		refreshControl.addAction(UIAction(handler: { [weak self] action in
-			self?.viewModel.forceRefresh = true
+			self?.viewModel.refreshType = .refreshEverything
 			self?.viewModel.refresh(animate: true)
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl

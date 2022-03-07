@@ -30,7 +30,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var walletChangeCancellable: AnyCancellable?
 	
 	private var hasLoadedOnce = false
-	var forceRefresh = false
+	var refreshType: BalanceService.RefreshType = .useCache
 	
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
@@ -46,14 +46,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				self?.forceRefresh = true
+				self?.refreshType = .refreshEverything
 				self?.refresh(animate: true)
 			}
 		
 		walletChangeCancellable = DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				self?.forceRefresh = true
+				print("\n\n\nWallet did change\n\n\n")
+				
+				DependencyManager.shared.balanceService.deleteAccountCachcedData()
+				self?.refreshType = .refreshAccountOnly
 				self?.refresh(animate: true)
 			}
 	}
@@ -131,10 +134,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, forceRefresh: forceRefresh) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
 			guard let self = self else { return }
 			
-			self.forceRefresh = false
+			self.refreshType = .useCache
 			
 			if let e = error {
 				self.state = .failure(e, "Unable to fetch data")
