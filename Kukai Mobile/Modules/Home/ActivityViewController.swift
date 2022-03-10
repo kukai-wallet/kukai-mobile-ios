@@ -10,7 +10,6 @@ import Combine
 
 class ActivityViewController: UIViewController, UITableViewDelegate {
 
-	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = ActivityViewModel()
@@ -45,11 +44,16 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		if indexPath.section == 0 {
+		if indexPath.row == 0 {
 			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
 		}
 	}
 	
-	@IBAction func segmentedControlTapped(_ sender: Any) {
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 0.1
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
 	}
 }

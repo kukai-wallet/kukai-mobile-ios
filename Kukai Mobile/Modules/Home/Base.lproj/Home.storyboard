@@ -2451,21 +2451,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="813"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="5ll-B0-Ofp">
-                                <rect key="frame" x="20" y="96" width="374" height="32"/>
-                                <segments>
-                                    <segment title="Grouped"/>
-                                    <segment title="Plain"/>
-                                </segments>
-                                <connections>
-                                    <action selector="segmentedControlTapped:" destination="uaA-v4-Akd" eventType="valueChanged" id="XEw-PH-zb5"/>
-                                </connections>
-                            </segmentedControl>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="gfL-he-lHC">
-                                <rect key="frame" x="0.0" y="135" width="414" height="678"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="gfL-he-lHC">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityGenericCell" rowHeight="111" id="8oR-Ko-3fI" customClass="ActivityGenericCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="44.5" width="414" height="111"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="414" height="111"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8oR-Ko-3fI" id="Yfj-ha-457">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
@@ -2519,6 +2510,7 @@
                                                         <constraint firstItem="5hp-bp-I1X" firstAttribute="leading" secondItem="mqf-bQ-fRf" secondAttribute="trailing" constant="8" id="9QM-Ow-Pmn"/>
                                                         <constraint firstItem="jXz-iY-NhK" firstAttribute="centerY" secondItem="AUT-XG-XUk" secondAttribute="centerY" id="H0j-iE-Lr9"/>
                                                         <constraint firstItem="5hp-bp-I1X" firstAttribute="centerY" secondItem="mqf-bQ-fRf" secondAttribute="centerY" id="OUC-87-0pz"/>
+                                                        <constraint firstAttribute="height" constant="95" id="RUW-Da-QJG"/>
                                                         <constraint firstItem="jXz-iY-NhK" firstAttribute="trailing" secondItem="5hp-bp-I1X" secondAttribute="trailing" id="ShX-ae-H3U"/>
                                                         <constraint firstItem="zXi-bm-iNG" firstAttribute="leading" secondItem="5hp-bp-I1X" secondAttribute="trailing" constant="8" id="anb-8W-6hw"/>
                                                         <constraint firstItem="mqf-bQ-fRf" firstAttribute="top" secondItem="Twg-tn-pUq" secondAttribute="top" constant="8" id="foO-wr-Xcu"/>
@@ -2563,7 +2555,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivityExchangeCell" rowHeight="111" id="wOg-E6-AGR" customClass="ActivityExchangeCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="155.5" width="414" height="111"/>
+                                        <rect key="frame" x="0.0" y="160.5" width="414" height="111"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wOg-E6-AGR" id="jPN-sT-fTd">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="111"/>
@@ -2626,6 +2618,7 @@
                                                         <constraint firstItem="V7k-fo-U2c" firstAttribute="top" secondItem="lhj-8i-imh" secondAttribute="bottom" constant="8" id="Vkw-vg-tvS"/>
                                                         <constraint firstItem="Naa-b5-R9H" firstAttribute="centerY" secondItem="lhj-8i-imh" secondAttribute="centerY" id="Y8x-U7-Mt7"/>
                                                         <constraint firstAttribute="trailing" secondItem="lhu-uq-AnK" secondAttribute="trailing" constant="8" id="cDy-TK-ucG"/>
+                                                        <constraint firstAttribute="height" constant="95" id="cKg-Kn-NLB"/>
                                                         <constraint firstAttribute="trailing" secondItem="e6g-hy-lak" secondAttribute="trailing" constant="8" id="dh6-Be-yKK"/>
                                                         <constraint firstItem="V7k-fo-U2c" firstAttribute="leading" secondItem="Tqc-9G-RbB" secondAttribute="leading" constant="8" id="rGE-mX-pcA"/>
                                                         <constraint firstItem="lhu-uq-AnK" firstAttribute="leading" secondItem="Tqc-9G-RbB" secondAttribute="leading" constant="8" id="yAn-21-wNR"/>
@@ -2660,7 +2653,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ActivitySubItemCell" rowHeight="57" id="mTi-XC-g0N" customClass="ActivitySubItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="266.5" width="414" height="57"/>
+                                        <rect key="frame" x="0.0" y="271.5" width="414" height="57"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mTi-XC-g0N" id="9Ts-6i-IQp">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="57"/>
@@ -2716,16 +2709,12 @@
                         <constraints>
                             <constraint firstItem="gfL-he-lHC" firstAttribute="leading" secondItem="jx7-mT-1wi" secondAttribute="leading" id="41k-DM-7Fx"/>
                             <constraint firstItem="gfL-he-lHC" firstAttribute="bottom" secondItem="jx7-mT-1wi" secondAttribute="bottom" id="6LG-G6-dGn"/>
-                            <constraint firstItem="5ll-B0-Ofp" firstAttribute="leading" secondItem="jx7-mT-1wi" secondAttribute="leading" constant="20" id="RLA-zb-xuU"/>
-                            <constraint firstItem="5ll-B0-Ofp" firstAttribute="top" secondItem="jx7-mT-1wi" secondAttribute="top" constant="8" id="gDS-h4-hAj"/>
-                            <constraint firstItem="jx7-mT-1wi" firstAttribute="trailing" secondItem="5ll-B0-Ofp" secondAttribute="trailing" constant="20" id="liC-L1-pbD"/>
+                            <constraint firstItem="gfL-he-lHC" firstAttribute="top" secondItem="jx7-mT-1wi" secondAttribute="top" id="miG-rL-POM"/>
                             <constraint firstItem="gfL-he-lHC" firstAttribute="trailing" secondItem="jx7-mT-1wi" secondAttribute="trailing" id="mrd-Wi-cAq"/>
-                            <constraint firstItem="gfL-he-lHC" firstAttribute="top" secondItem="5ll-B0-Ofp" secondAttribute="bottom" constant="8" id="qx8-5A-wtg"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Activity" image="hourglass" catalog="system" id="iOc-EI-EPw"/>
                     <connections>
-                        <outlet property="segmentedControl" destination="5ll-B0-Ofp" id="6VD-ca-xZ2"/>
                         <outlet property="tableView" destination="gfL-he-lHC" id="Hnq-u6-F8X"/>
                     </connections>
                 </viewController>
@@ -2746,20 +2735,20 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleSubtitleCell" id="XnV-Ay-cUs" customClass="TitleSubtitleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="49.5" width="374" height="45"/>
+                                        <rect key="frame" x="20" y="49.5" width="374" height="45.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XnV-Ay-cUs" id="uB1-cj-Flb">
-                                            <rect key="frame" x="0.0" y="0.0" width="345.5" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345.5" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESX-su-PSV">
-                                                    <rect key="frame" x="20" y="12" width="49" height="21"/>
+                                                    <rect key="frame" x="20" y="12" width="49" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" name="text-primary"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rz8-OV-KVm">
-                                                    <rect key="frame" x="85" y="14" width="244.5" height="17"/>
+                                                    <rect key="frame" x="85" y="14.5" width="244.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" name="text-secondary"/>
                                                     <nil key="highlightedColor"/>
@@ -2812,20 +2801,20 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleSubtitleCell" id="oxA-ui-3uc" customClass="TitleSubtitleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="20" y="49.5" width="374" height="45.5"/>
+                                <rect key="frame" x="20" y="49.5" width="374" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="oxA-ui-3uc" id="X9U-y0-7mx">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTV-Z6-a5U">
-                                            <rect key="frame" x="20" y="12" width="49" height="21.5"/>
+                                            <rect key="frame" x="20" y="12" width="49" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" name="text-primary"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subTitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYO-m2-AqP">
-                                            <rect key="frame" x="85" y="14.5" width="273" height="17"/>
+                                            <rect key="frame" x="85" y="14" width="273" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" name="text-secondary"/>
                                             <nil key="highlightedColor"/>

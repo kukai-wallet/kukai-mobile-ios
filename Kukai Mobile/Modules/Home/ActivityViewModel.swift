@@ -27,7 +27,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self else { return UITableViewCell() }
+			guard let self = self, let walletAddress = DependencyManager.shared.selectedWallet?.address else { return UITableViewCell() }
 			
 			if let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
 				
@@ -83,7 +83,27 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
-				cell.titleLabel.text = "\(obj.id)"
+				
+				if let entrypoint = obj.getEntrypoint(), entrypoint == "transfer", let tokenData = obj.getFaTokenTransferData() {
+					if obj.getTokenTransferDestination() == walletAddress {
+						cell.titleLabel.text = "Received: \(tokenData.tokenAmountMinusDecimalData.normalisedRepresentation) \(obj.target?.alias ?? "Token")"
+						
+					} else {
+						cell.titleLabel.text = "Sent: \(tokenData.tokenAmountMinusDecimalData.normalisedRepresentation) \(obj.target?.alias ?? "Token")"
+					}
+					
+				} else if let entrypoint = obj.getEntrypoint() {
+					cell.titleLabel.text = "Called: \(entrypoint)"
+					
+				} else if obj.sender.address == walletAddress && obj.amount != .zero() {
+					cell.titleLabel.text = "Sent: \(obj.amount.normalisedRepresentation) XTZ"
+					
+				} else if obj.sender.address != walletAddress && obj.amount != .zero() {
+					cell.titleLabel.text = "Received: \(obj.amount.normalisedRepresentation) XTZ"
+					
+				} else {
+					cell.titleLabel.text = "Unknown Operation"
+				}
 				
 				return cell
 				
@@ -108,9 +128,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		currentSnapshot.appendSections([0])
-		
-		
 		
 		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: walletAddress) { [weak self] transactions in
 			guard let self = self else {
@@ -119,7 +136,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
-			self.currentSnapshot.appendItems(self.groups, toSection: 0)
+			self.currentSnapshot.appendSections(Array(0..<self.groups.count))
+			
+			for (index, txGroup) in self.groups.enumerated() {
+				self.currentSnapshot.appendItems([txGroup], toSection: index)
+			}
 			
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
 			self.state = .success(nil)
@@ -158,7 +179,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setOpen()
 		}
 		
-		let group = self.groups[indexPath.row]
+		let group = self.groups[indexPath.section]
 		
 		currentSnapshot.insertItems(group.transactions, afterItem: group)
 	}
@@ -172,7 +193,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}
 		
-		let group = self.groups[indexPath.row]
+		let group = self.groups[indexPath.section]
 		
 		currentSnapshot.deleteItems(group.transactions)
 	}
