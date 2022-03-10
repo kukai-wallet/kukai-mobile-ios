@@ -43,8 +43,9 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
 		
-		if indexPath.row == 0 {
+		if indexPath.section == 0 {
 			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
 		}
 	}

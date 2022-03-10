@@ -16,11 +16,29 @@ class ActivityGenericCell: UITableViewCell {
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var chevronView: UIImageView!
 	
+	func setHasNoChildren() {
+		chevronView.image = UIImage()
+		self.selectionStyle = .none
+	}
+	
+	func setHasChildren() {
+		setClosed()
+		self.selectionStyle = .default
+	}
+	
 	func setClosed() {
 		chevronView.image = UIImage(systemName: "chevron.right")
 	}
 	
 	func setOpen() {
 		chevronView.image = UIImage(systemName: "chevron.down")
+	}
+	
+	func setSent() {
+		iconView.image = UIImage(systemName: "arrow.up.right")
+	}
+	
+	func setReceived() {
+		iconView.image = UIImage(systemName: "arrow.down.right")
 	}
 }

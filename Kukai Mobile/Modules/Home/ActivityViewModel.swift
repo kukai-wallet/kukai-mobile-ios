@@ -10,17 +10,6 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
-struct CellData: Hashable {
-	let type: TzKTTransactionGroup.TransactionGroupType
-	let title: String
-	let subtitle: String
-	let prefix: String
-	let address: String
-	let date: String
-	let txId: Int
-	let isSubItem: Bool
-}
-
 class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -31,33 +20,70 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-	private var cellData: [CellData] = []
-	private var expandedItems: [CellData] = []
 	private var groups: [TzKTTransactionGroup] = []
 	
 	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			guard let self = self else { return UITableViewCell() }
 			
-			if let obj = item as? CellData, obj.type != .exchange, obj.isSubItem == false, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
-				cell.titleLabel.text = obj.title
-				cell.prefixLabel.text = obj.prefix
-				cell.addressLabel.text = obj.address
-				cell.dateLabel.text = obj.date
+			if let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
+				
+				if let primaryToken = obj.primaryToken {
+					cell.titleLabel.text = self.titleTextFor(tokenDetails: primaryToken, transaction: obj.transactions.first)
+					
+				} else if let entrypoint = obj.entrypointCalled {
+					cell.titleLabel.text = "Called: \(entrypoint)"
+					
+				} else if obj.groupType == .delegate {
+					cell.titleLabel.text = "Changed Delegate"
+					
+				} else if obj.groupType == .reveal {
+					cell.titleLabel.text = "Revealed"
+					
+				} else if obj.groupType == .unknown {
+					cell.titleLabel.text = "Unknown"
+				}
+				
+				if obj.groupType == .receive {
+					cell.prefixLabel.text = "From:"
+					cell.addressLabel.text = (obj.transactions.last?.sender.alias ?? obj.transactions.last?.sender.address) ?? "-"
+					cell.setReceived()
+					
+				} else {
+					cell.prefixLabel.text = "To:"
+					cell.addressLabel.text = (obj.transactions.last?.target?.alias ?? obj.transactions.last?.target?.address) ?? "-"
+					cell.setSent()
+				}
+				
+				if obj.transactions.count > 1 {
+					cell.setHasChildren()
+					
+				} else {
+					cell.setHasNoChildren()
+				}
+				
+				cell.dateLabel.text = obj.transactions.last?.date?.timeAgoDisplay()
+				//cell.dateLabel.text = obj.hash
 				
 				return cell
 				
-			} else if let obj = item as? CellData, obj.type == .exchange, obj.isSubItem == false, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityExchangeCell", for: indexPath) as? ActivityExchangeCell {
-				cell.sentLabel.text = obj.title
-				cell.receivedLabel.text = obj.subtitle
-				cell.dateLabel.text = obj.date
+			} else if let obj = item as? TzKTTransactionGroup, obj.groupType == .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityExchangeCell", for: indexPath) as? ActivityExchangeCell {
+				
+				if let primaryToken = obj.primaryToken, let secondaryToken = obj.secondaryToken {
+					cell.sentLabel.text = self.titleTextFor(tokenDetails: primaryToken)
+					cell.receivedLabel.text = self.titleTextFor(tokenDetails: secondaryToken)
+				}
+				
+				cell.dateLabel.text = obj.transactions.last?.date?.timeAgoDisplay()
+				//cell.dateLabel.text = obj.hash
 				
 				return cell
 				
-			} else if let obj = item as? CellData, obj.isSubItem == true, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
-				cell.titleLabel.text = obj.title
+			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
+				cell.titleLabel.text = "\(obj.id)"
 				
 				return cell
 				
@@ -93,51 +119,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
-			
-			
-			var cellData: [CellData] = []
-			for group in self.groups {
-				
-				if group.groupType == .exchange {
-					cellData.append(CellData(type: group.groupType,
-											 title: "Swapped: \(group.primaryToken?.rpcAmount ?? "0") \(group.primaryToken?.target?.alias ?? "XTZ")",
-											 subtitle: "For: \(group.secondaryToken?.rpcAmount ?? "0") \(group.secondaryToken?.target?.alias ?? "XTZ")",
-											 prefix: "",
-											 address: "",
-											 date: "",
-											 txId: group.transactions.first?.id ?? 0,
-											 isSubItem: false))
-					
-				} else if group.groupType == .contractCall {
-					cellData.append(CellData(type: group.groupType, title: "Called: \(group.entrypointCalled ?? "")", subtitle: "", prefix: "", address: "", date: "", txId: group.transactions.first?.id ?? 0, isSubItem: false))
-					
-				} else if group.groupType == .send {
-					cellData.append(CellData(type: group.groupType,
-											 title: "Sent: \(group.primaryToken?.rpcAmount ?? "0") \(group.primaryToken?.target?.alias ?? "XTZ")",
-											 subtitle: "",
-											 prefix: "To:",
-											 address: group.transactions.first?.target?.address ?? "",
-											 date: "",
-											 txId: group.transactions.first?.id ?? 0,
-											 isSubItem: false))
-					
-				} else if group.groupType == .receive {
-					cellData.append(CellData(type: group.groupType,
-											 title: "Received: \(group.primaryToken?.rpcAmount ?? "0") \(group.primaryToken?.target?.alias ?? "XTZ")",
-											 subtitle: "",
-											 prefix: "From:",
-											 address: group.transactions.first?.sender.address ?? "",
-											 date: "",
-											 txId: group.transactions.first?.id ?? 0,
-											 isSubItem: false))
-					
-				} else {
-					cellData.append(CellData(type: group.groupType, title: "", subtitle: "", prefix: "", address: "", date: "", txId: group.transactions.first?.id ?? 0, isSubItem: false))
-				}
-			}
-			
-			self.cellData = cellData
-			self.currentSnapshot.appendItems(cellData, toSection: 0)
+			self.currentSnapshot.appendItems(self.groups, toSection: 0)
 			
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
 			self.state = .success(nil)
@@ -177,14 +159,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let group = self.groups[indexPath.row]
-		let cellDataParent = self.cellData[indexPath.row]
-		self.expandedItems = []
 		
-		for tx in group.transactions {
-			self.expandedItems.append(CellData(type: .send, title: "\(tx.id)", subtitle: "", prefix: "", address: "", date: "", txId: tx.id, isSubItem: true))
-		}
-		
-		currentSnapshot.insertItems(self.expandedItems, afterItem: cellDataParent)
+		currentSnapshot.insertItems(group.transactions, afterItem: group)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
@@ -196,6 +172,21 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}
 		
-		currentSnapshot.deleteItems(self.expandedItems)
+		let group = self.groups[indexPath.row]
+		
+		currentSnapshot.deleteItems(group.transactions)
+	}
+	
+	private func titleTextFor(tokenDetails: TzKTTransactionGroup.TokenDetails, transaction: TzKTTransaction? = nil) -> String {
+		if tokenDetails.isXTZ() {
+			return tokenDetails.amount.normalisedRepresentation + " XTZ"
+			
+		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(tokenDetails.token) {
+			tokenDetails.amount.decimalPlaces = exchangeData.token.decimals
+			return tokenDetails.amount.normalisedRepresentation + " \(exchangeData.token.symbol)"
+			
+		} else {
+			return tokenDetails.amount.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
+		}
 	}
 }
