@@ -28,6 +28,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private var networkChangeCancellable: AnyCancellable?
 	private var walletChangeCancellable: AnyCancellable?
+	private var activityDetectedCancellable: AnyCancellable?
 	
 	private var hasLoadedOnce = false
 	var refreshType: BalanceService.RefreshType = .useCache
@@ -46,6 +47,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				ActivityViewModel.deleteCache()
+				
+				self?.setupAccountActivityListener()
 				self?.refreshType = .refreshEverything
 				self?.refresh(animate: true)
 			}
@@ -53,12 +57,22 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletChangeCancellable = DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				print("\n\n\nWallet did change\n\n\n")
-				
 				DependencyManager.shared.balanceService.deleteAccountCachcedData()
+				ActivityViewModel.deleteCache()
+				
+				self?.setupAccountActivityListener()
 				self?.refreshType = .refreshAccountOnly
 				self?.refresh(animate: true)
 			}
+		
+		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.refreshType = .refreshEverything
+				self?.refresh(animate: true)
+			}
+		
+		setupAccountActivityListener()
 	}
 	
 	deinit {
@@ -240,5 +254,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			return DependencyManager.shared.balanceService.account.tokens[atIndexPath.row - 1]
 		}
+	}
+	
+	func setupAccountActivityListener() {
+		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
+			return
+		}
+		
+		if DependencyManager.shared.tzktClient.isListening {
+			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+		}
+		
+		DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 	}
 }

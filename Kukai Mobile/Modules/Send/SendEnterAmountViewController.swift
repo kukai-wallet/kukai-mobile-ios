@@ -130,13 +130,12 @@ class SendEnterAmountViewController: UIViewController {
 	@objc func estimateFee() {
 		textfield.resignFirstResponder()
 		
-		
 		guard let wallet = DependencyManager.shared.selectedWallet, let destination = TransactionService.shared.sendData.destination else {
 			self.alert(errorWithMessage: "Can't find wallet")
 			return
 		}
 		
-		self.showLoadingView(completion: nil)
+		self.showLoadingModal(completion: nil)
 		if isToken, let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
@@ -145,7 +144,7 @@ class SendEnterAmountViewController: UIViewController {
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estimationResult in
-				self?.hideLoadingView()
+				self?.hideLoadingModal(completion: nil)
 				
 				switch estimationResult {
 					case .success(let estimatedOperations):
@@ -169,7 +168,7 @@ extension SendEnterAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		estimateFee()
+		//estimateFee()
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {

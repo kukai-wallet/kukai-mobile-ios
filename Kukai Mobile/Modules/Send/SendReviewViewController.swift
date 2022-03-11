@@ -40,7 +40,7 @@ class SendReviewViewController: UIViewController {
 		if let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount {
 			amountToSendLabel?.text = amount.normalisedRepresentation + " \(token.symbol)"
 			fiatLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-			
+			updateFees()
 			
 		} else if let nft = TransactionService.shared.sendData.chosenNFT, let iconView = nftIcon, let displayView = nftDisplay {
 			sendButton.isEnabled = false

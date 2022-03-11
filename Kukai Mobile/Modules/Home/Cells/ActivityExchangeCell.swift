@@ -14,6 +14,26 @@ class ActivityExchangeCell: UITableViewCell {
 	@IBOutlet weak var dateLabel: UILabel!
 	@IBOutlet weak var chevronView: UIImageView!
 	
+	private var timer: Timer? = nil
+	public var date: Date? = nil {
+		didSet {
+			if timer == nil {
+				self.dateLabel.text = self.date?.timeAgoDisplay()
+				
+				timer = Timer.scheduledTimer(withTimeInterval: 15, repeats: true, block: { [weak self] timer in
+					self?.dateLabel.text = self?.date?.timeAgoDisplay()
+				})
+			}
+		}
+	}
+	
+	override func prepareForReuse() {
+		super.prepareForReuse()
+		
+		timer?.invalidate()
+		timer = nil
+	}
+	
 	func setClosed() {
 		chevronView.image = UIImage(systemName: "chevron.right")
 	}

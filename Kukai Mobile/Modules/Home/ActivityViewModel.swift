@@ -18,9 +18,38 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
+	public var forceRefresh = false
+	//public var visibleIndexPaths: [IndexPath] = []
+	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var groups: [TzKTTransactionGroup] = []
+	private static let cachedFileName = "ActivityViewModel-transactions"
+	
+	private var accountDataRefreshedCancellable: AnyCancellable?
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+			.dropFirst()
+			.sink { [weak self] _ in
+				if self?.dataSource != nil {
+					ActivityViewModel.deleteCache()
+					self?.forceRefresh = true
+					self?.refresh(animate: true)
+				}
+			}
+	}
+	
+	deinit {
+		accountDataRefreshedCancellable?.cancel()
+	}
+	
 	
 	
 	// MARK: - Functions
@@ -65,8 +94,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.setHasNoChildren()
 				}
 				
-				cell.dateLabel.text = obj.transactions.last?.date?.timeAgoDisplay()
-				//cell.dateLabel.text = obj.hash
+				cell.date = obj.transactions.last?.date
 				
 				return cell
 				
@@ -77,8 +105,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.receivedLabel.text = self.titleTextFor(tokenDetails: secondaryToken)
 				}
 				
-				cell.dateLabel.text = obj.transactions.last?.date?.timeAgoDisplay()
-				//cell.dateLabel.text = obj.hash
+				cell.date = obj.transactions.last?.date
 				
 				return cell
 				
@@ -120,31 +147,53 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		guard let ds = dataSource, let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+		guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find wallet")
 			return
 		}
 		
 		
+		if !forceRefresh, currentSnapshot.numberOfItems == 0, let cachedGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityViewModel.cachedFileName) {
+			self.groups = cachedGroups
+			self.loadGroups()
+			
+		} else if forceRefresh || currentSnapshot.numberOfItems == 0 {
+			DependencyManager.shared.tzktClient.fetchTransactions(forAddress: walletAddress) { [weak self] transactions in
+				guard let self = self else {
+					self?.state = .success(nil)
+					return
+				}
+				
+				self.forceRefresh = false
+				self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
+				let _ = DiskService.write(encodable: self.groups, toFileName: ActivityViewModel.cachedFileName)
+				
+				self.loadGroups()
+			}
+			
+		} else {
+			state = .success(nil)
+		}
+	}
+	
+	private func loadGroups() {
+		guard let ds = dataSource else {
+			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+			return
+		}
+		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
-		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: walletAddress) { [weak self] transactions in
-			guard let self = self else {
-				self?.state = .success(nil)
-				return
-			}
-			
-			self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
-			self.currentSnapshot.appendSections(Array(0..<self.groups.count))
-			
-			for (index, txGroup) in self.groups.enumerated() {
-				self.currentSnapshot.appendItems([txGroup], toSection: index)
-			}
-			
-			ds.apply(self.currentSnapshot, animatingDifferences: animate)
-			self.state = .success(nil)
+		self.currentSnapshot.appendSections(Array(0..<self.groups.count))
+		
+		for (index, txGroup) in self.groups.enumerated() {
+			self.currentSnapshot.appendItems([txGroup], toSection: index)
 		}
+		
+		ds.apply(self.currentSnapshot, animatingDifferences: true)
+		
+		self.state = .success(nil)
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
@@ -209,5 +258,9 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			return tokenDetails.amount.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
 		}
+	}
+	
+	public static func deleteCache() {
+		let _ = DiskService.delete(fileName: ActivityViewModel.cachedFileName)
 	}
 }
