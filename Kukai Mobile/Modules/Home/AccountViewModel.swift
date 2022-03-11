@@ -78,6 +78,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	deinit {
 		networkChangeCancellable?.cancel()
 		walletChangeCancellable?.cancel()
+		activityDetectedCancellable?.cancel()
 	}
 	
 	
@@ -205,13 +206,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
 			self.refresh(animate: true, successMessage: nil)
 			
-		} else if DependencyManager.shared.balanceService.currencyChanged || (!self.hasLoadedOnce && self.isPresentedForSelectingToken) {
+		} else if DependencyManager.shared.balanceService.currencyChanged || (!self.hasLoadedOnce && self.isPresentedForSelectingToken) || state.isLoading() {
 			guard let ds = dataSource else {
 				state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
 				return
 			}
 			
 			self.reloadData(animate: false, datasource: ds)
+			
+			if state.isLoading() {
+				state = .success(nil)
+			}
 		}
 	}
 	
@@ -262,9 +267,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		if DependencyManager.shared.tzktClient.isListening {
-			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
+			
+		} else {
+			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-		
-		DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 	}
 }
