@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECA27FDE9C900F64B4C /* CloudKitService.swift */; };
+		C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */; };
 		C0081FD027D8FA5B00F7FEFF /* ActivityGenericCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0081FCF27D8FA5B00F7FEFF /* ActivityGenericCell.swift */; };
 		C0081FD227D8FA6A00F7FEFF /* ActivityExchangeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0081FD127D8FA6A00F7FEFF /* ActivityExchangeCell.swift */; };
 		C0081FD427D8FA7B00F7FEFF /* ActivitySubItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0081FD327D8FA7B00F7FEFF /* ActivitySubItemCell.swift */; };
@@ -21,6 +23,7 @@
 		C0082C0626A7249200DB160B /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0526A7249200DB160B /* SettingsViewController.swift */; };
 		C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0726A7278000DB160B /* HomeTabBarController.swift */; };
 		C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */; };
+		C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01D227127F5E2DD00D3AF4B /* CloudKit.framework */; };
 		C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C021FA2B270F45A700BD9CF3 /* BeaconSDK */; };
 		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
 		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
@@ -167,6 +170,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C003CECA27FDE9C900F64B4C /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
+		C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+extensions.swift"; sourceTree = "<group>"; };
 		C0081FCF27D8FA5B00F7FEFF /* ActivityGenericCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityGenericCell.swift; sourceTree = "<group>"; };
 		C0081FD127D8FA6A00F7FEFF /* ActivityExchangeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityExchangeCell.swift; sourceTree = "<group>"; };
 		C0081FD327D8FA7B00F7FEFF /* ActivitySubItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivitySubItemCell.swift; sourceTree = "<group>"; };
@@ -181,6 +186,7 @@
 		C0082C0526A7249200DB160B /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		C0082C0726A7278000DB160B /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
 		C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWalletViewController.swift; sourceTree = "<group>"; };
+		C01D227127F5E2DD00D3AF4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C024038826D925FB00E1CB80 /* BeaconService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconService.swift; sourceTree = "<group>"; };
 		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		C02A4FD927DA421100F42DE4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
@@ -318,6 +324,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
 				C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
@@ -351,6 +358,7 @@
 				C08694E727BD5D01000A4909 /* BalanceService.swift */,
 				C08694E927BD5F7D000A4909 /* CoinGeckoService.swift */,
 				C08694EB27BD5F8C000A4909 /* RequestIfService.swift */,
+				C003CECA27FDE9C900F64B4C /* CloudKitService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -429,6 +437,7 @@
 				C05361BC277490FA002B51A4 /* UIApplication+extensions.swift */,
 				C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */,
 				C02A4FD927DA421100F42DE4 /* Date+extensions.swift */,
+				C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -445,6 +454,7 @@
 		C06E665E26A8669300770A83 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C01D227127F5E2DD00D3AF4B /* CloudKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -881,6 +891,7 @@
 				C080CC0F2773568200780F7E /* MyAuthorizationAppleIDButton.swift in Sources */,
 				C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */,
 				C0D8BAA7274BBD2A005C0526 /* LiquidityDetailsViewModel.swift in Sources */,
+				C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
 				C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */,
 				C0081FD427D8FA7B00F7FEFF /* ActivitySubItemCell.swift in Sources */,
@@ -937,6 +948,7 @@
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
 				C07374AB279854C000726C01 /* PrototypeData.swift in Sources */,
 				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
+				C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */,
 				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
 				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 				C02D7CAA27BEB0B7006A8E39 /* TitleSubtitleCell.swift in Sources */,

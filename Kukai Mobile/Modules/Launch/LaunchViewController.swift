@@ -31,7 +31,10 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private var rightTextPosition = CGPoint(x: 0, y: 0)
 	private var readyToShrinkSafe = false
 	private var readyToShrinkText = false
-	private var runOnce = true // TODO:
+	private var runOnce = false // TODO:
+	
+	private let cloudKitService = CloudKitService()
+	private var dispatchGroup = DispatchGroup()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -45,6 +48,27 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		dispatchGroup = DispatchGroup()
+		dispatchGroup.enter() // cloud config to download
+		dispatchGroup.enter() // animation to finish
+		
+		// Check to see if we need to fetch torus verfier config
+		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
+			cloudKitService.fetchConfigItems { [weak self] error in
+				if let e = error {
+					self?.alert(errorWithMessage: "Unable to fetch config settings: \(e)")
+					
+				} else {
+					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig(testnet: true) ?? [:]
+					
+					print("Verifiers: \n\(DependencyManager.shared.torusVerifiers) \n\n")
+				}
+				
+				self?.dispatchGroup.leave()
+			}
+		}
+		
+		// Check if we need to run the animation
 		if !runOnce {
 			leftSafePosition = CGPoint(x: kukaiLogo.center.x - 180, y: kukaiLogo.center.y)
 			rightTextPosition = CGPoint(x: kukaiTextImage.center.x + 80, y: kukaiTextImage.center.y)
@@ -52,8 +76,14 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			
 		} else {
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-				self?.disolveTransition()
+				self?.dispatchGroup.leave()
 			}
+		}
+		
+		
+		// When everything fetched/animated, process data
+		dispatchGroup.notify(queue: .main) { [weak self] in
+			self?.disolveTransition()
 		}
 	}
 	
@@ -110,7 +140,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			readyToShrinkText = false
 			
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-				self?.disolveTransition()
+				self?.dispatchGroup.leave()
 			}
 		}
 	}

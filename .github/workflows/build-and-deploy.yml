@@ -28,7 +28,7 @@ jobs:
       - name: Setup env variables for main
         if: github.ref == 'refs/heads/main'
         run: |
-           echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" >> $GITHUB_ENV
+          echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" >> $GITHUB_ENV
       
       - name: Setup env varibales for develop
         if: github.ref == 'refs/heads/develop'
