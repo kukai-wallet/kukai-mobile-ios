@@ -21,6 +21,11 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	
 	
 	@IBAction func appleTapped(_ sender: Any) {
+		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
+		
 		self.showLoadingModal {
 			DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
 				self?.handleResult(result: result)
@@ -29,6 +34,11 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
+		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
+		
 		self.showLoadingModal {
 			DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self.presentedViewController) { [weak self] result in
 				self?.handleResult(result: result)
@@ -37,15 +47,24 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
-		self.alert(withTitle: "Error", andMessage: "Unsupported")
+		guard DependencyManager.shared.torusVerifiers[.twitter] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
-		self.alert(withTitle: "Error", andMessage: "Unsupported")
+		guard DependencyManager.shared.torusVerifiers[.facebook] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
-		self.alert(withTitle: "Error", andMessage: "Unsupported")
+		guard DependencyManager.shared.torusVerifiers[.reddit] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
 	}
 	
 	@IBAction func newWalletTapped(_ sender: Any) {

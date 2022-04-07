@@ -60,7 +60,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 					
 				} else {
 					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig(testnet: true) ?? [:]
-					
 					print("Verifiers: \n\(DependencyManager.shared.torusVerifiers) \n\n")
 				}
 				

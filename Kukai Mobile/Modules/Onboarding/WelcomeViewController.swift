@@ -22,14 +22,6 @@ class WelcomeViewController: UIViewController {
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
-		// TODO: remove when we have Torus verifiers
-		DependencyManager.shared.setDefaultTestnetURLs()
-		//DependencyManager.shared.setDefaultMainnetURLs()
-		
-		
-		/*
-		let buttonText = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Testnet"
-		networkButton.setTitle(buttonText, for: .normal)
-		*/
+		DependencyManager.shared.setDefaultMainnetURLs()
 	}
 }
