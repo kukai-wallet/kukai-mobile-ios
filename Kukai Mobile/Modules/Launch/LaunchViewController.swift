@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import os.log
 
 class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
@@ -59,13 +60,13 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 					self?.alert(errorWithMessage: "Unable to fetch config settings: \(e)")
 					
 				} else {
-					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig(testnet: true) ?? [:]
-					print("Verifiers: \n\(DependencyManager.shared.torusVerifiers) \n\n")
+					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
 				}
 				
 				self?.dispatchGroup.leave()
 			}
 		}
+		
 		
 		// Check if we need to run the animation
 		if !runOnce {

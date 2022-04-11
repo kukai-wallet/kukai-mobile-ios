@@ -39,10 +39,10 @@ public class CloudKitService {
 		}
 	}
 	
-	public func extractTorusConfig(testnet: Bool) -> [TorusAuthProvider: SubverifierWrapper] {
+	public func extractTorusConfig() -> [TorusAuthProvider: SubverifierWrapper] {
 		var verifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
 		
-		for record in configItemRecords where record.stringForKey("serviceId") == "torus" && record.stringForKey("network") == (testnet ? "testnet" : "mainnet") {
+		for record in configItemRecords where record.stringForKey("serviceId") == "torus" {
 			
 			guard let networkStr = record.stringForKey("network"),
 				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkStr),
