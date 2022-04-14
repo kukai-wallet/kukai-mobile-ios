@@ -65,6 +65,8 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 				
 				self?.dispatchGroup.leave()
 			}
+		} else {
+			self.dispatchGroup.leave()
 		}
 		
 		

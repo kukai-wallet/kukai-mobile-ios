@@ -49,7 +49,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			.sink { [weak self] _ in
 				ActivityViewModel.deleteCache()
 				
-				self?.setupAccountActivityListener()
+				AccountViewModel.setupAccountActivityListener()
 				self?.refreshType = .refreshEverything
 				self?.refresh(animate: true)
 			}
@@ -60,7 +60,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				DependencyManager.shared.balanceService.deleteAccountCachcedData()
 				ActivityViewModel.deleteCache()
 				
-				self?.setupAccountActivityListener()
+				AccountViewModel.setupAccountActivityListener()
 				self?.refreshType = .refreshAccountOnly
 				self?.refresh(animate: true)
 			}
@@ -72,7 +72,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				self?.refresh(animate: true)
 			}
 		
-		setupAccountActivityListener()
+		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
@@ -261,7 +261,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func setupAccountActivityListener() {
+	static func setupAccountActivityListener() {
 		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
 			return
 		}

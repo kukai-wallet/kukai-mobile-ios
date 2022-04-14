@@ -63,7 +63,10 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       
+
+      # Auto increment build number on Dev builds only to avoid mismatch between TestFlight setups
       - name: Auto update build number
+        if: github.ref == 'refs/heads/develop'
         run: agvtool next-version -all
 
 

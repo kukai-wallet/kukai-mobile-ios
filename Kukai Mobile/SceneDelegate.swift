@@ -40,6 +40,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
 		// They will auto trigger themselves based on `viewDidAppear` methods
 		showPrivacyProtectionWindow()
+		
+		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

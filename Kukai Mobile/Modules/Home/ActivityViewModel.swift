@@ -113,10 +113,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				if let entrypoint = obj.getEntrypoint(), entrypoint == "transfer", let tokenData = obj.getFaTokenTransferData() {
 					if obj.getTokenTransferDestination() == walletAddress {
-						cell.titleLabel.text = "Received: \(tokenData.tokenAmountMinusDecimalData.normalisedRepresentation) \(obj.target?.alias ?? "Token")"
+						cell.titleLabel.text = "Received: \(self.titleTextFor(tokenDetails: tokenData, transaction: obj))"
 						
 					} else {
-						cell.titleLabel.text = "Sent: \(tokenData.tokenAmountMinusDecimalData.normalisedRepresentation) \(obj.target?.alias ?? "Token")"
+						cell.titleLabel.text = "Sent: \(self.titleTextFor(tokenDetails: tokenData, transaction: obj))"
 					}
 					
 				} else if let entrypoint = obj.getEntrypoint() {

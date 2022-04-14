@@ -23,6 +23,13 @@ class LoginViewController: UIViewController {
 		
 		activityIndicator.startAnimating()
 		
+		
+		
+		// When integrate pin / face id, move this call to after successful
+		reestablishConnectionsAfterLogin()
+		
+		
+		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
 			guard let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate else {
 				os_log("Can't get scene delegate", log: .default, type: .debug)
@@ -37,5 +44,10 @@ class LoginViewController: UIViewController {
 		super.viewDidDisappear(animated)
 		
 		activityIndicator.stopAnimating()
+	}
+	
+	
+	private func reestablishConnectionsAfterLogin() {
+		AccountViewModel.setupAccountActivityListener()
 	}
 }

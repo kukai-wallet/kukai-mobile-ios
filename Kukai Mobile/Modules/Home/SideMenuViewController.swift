@@ -86,6 +86,7 @@ class SideMenuViewController: UIViewController {
 		let _ = WalletCacheService().deleteCacheAndKeys()
 		DependencyManager.shared.balanceService.deleteAllCachedData()
 		TransactionService.shared.resetState()
+		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 		
 		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
 	}
