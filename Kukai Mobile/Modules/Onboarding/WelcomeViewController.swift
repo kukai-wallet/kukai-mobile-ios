@@ -13,6 +13,12 @@ class WelcomeViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+			
+			ThemeSelector.shared.selectedTheme = .dark
+			
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -23,5 +29,19 @@ class WelcomeViewController: UIViewController {
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
 		DependencyManager.shared.setDefaultMainnetURLs()
+	}
+	
+	override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+		super.traitCollectionDidChange(previousTraitCollection)
+		
+		
+		print("updating")
+		self.loadView()
+		
+		
+		
+		if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+			
+		}
 	}
 }

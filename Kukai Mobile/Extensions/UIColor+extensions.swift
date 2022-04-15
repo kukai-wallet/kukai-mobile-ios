@@ -19,7 +19,17 @@ public class ThemeSelector {
 	
 	public static let shared = ThemeSelector()
 	
-	public var selectedTheme: Theme = .dark
+	// Need to call `self.loadView()` on all open viewControllers
+	public var selectedTheme: Theme = .light {
+		didSet {
+			if selectedTheme == .dark {
+				UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .dark
+				
+			} else {
+				UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .light
+			}
+		}
+	}
 	
 	private init() {}
 }
@@ -44,6 +54,7 @@ extension UIColor {
 	private static var originalLongImplementation = class_getMethodImplementation(UIColor.self, UIColor.originalLongSelector)
 	
 	
+	
 	class func swizzleNamedColorInitToAddTheme() {
 		guard let originalShortMethod = class_getClassMethod(self, originalShortSelector),
 			  let originalLongMethod = class_getClassMethod(self, originalLongSelector),
@@ -65,12 +76,16 @@ extension UIColor {
 	@objc func theme_color(named name: String) -> UIColor? {
 		let newName = "\(ThemeSelector.shared.selectedTheme.rawValue)_\(name)"
 		
+		print("Checking for name 1: \(newName)")
+		
 		// Call the orignal UIColor(named: ...) with the new, automatically prefixed, color name
 		return unsafeBitCast(UIColor.originalShortImplementation, to: oringnalShortFunc.self)(self, UIColor.originalShortSelector, newName)
 	}
 	
 	@objc func theme_color(named name: String, inBundle: Bundle, compatibleWithTraitCollection: UITraitCollection) -> UIColor? {
 		let newName = "\(ThemeSelector.shared.selectedTheme.rawValue)_\(name)"
+		
+		print("Checking for name 2: \(newName)")
 		
 		// Call the orignal UIColor(named: ...) with the new, automatically prefixed, color name
 		return unsafeBitCast(UIColor.originalLongImplementation, to: oringnalLongFunc.self)(self, UIColor.originalLongSelector, newName, inBundle, compatibleWithTraitCollection)
