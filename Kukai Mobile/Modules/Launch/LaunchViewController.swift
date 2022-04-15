@@ -32,7 +32,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private var rightTextPosition = CGPoint(x: 0, y: 0)
 	private var readyToShrinkSafe = false
 	private var readyToShrinkText = false
-	private var runOnce = false // TODO:
+	private var runOnce = true // TODO:
 	
 	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()
@@ -51,7 +51,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		
 		dispatchGroup = DispatchGroup()
 		dispatchGroup.enter() // cloud config to download
-		dispatchGroup.enter() // animation to finish
+		/*dispatchGroup.enter() // animation to finish
 		
 		// Check to see if we need to fetch torus verfier config
 		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
@@ -67,7 +67,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			}
 		} else {
 			self.dispatchGroup.leave()
-		}
+		}*/
 		
 		
 		// Check if we need to run the animation
