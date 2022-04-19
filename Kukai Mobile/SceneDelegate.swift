@@ -27,6 +27,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidBecomeActive(_ scene: UIScene) {
+		
+		
+		// Check system colors set correctly from beginning
+		if ThemeSelector.shared.selectedTheme == .dark {
+			print("setting dark")
+			UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .dark
+			
+		} else {
+			print("setting light")
+			UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .light
+		}
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {

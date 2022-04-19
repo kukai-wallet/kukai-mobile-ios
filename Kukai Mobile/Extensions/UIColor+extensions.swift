@@ -20,8 +20,10 @@ public class ThemeSelector {
 	public static let shared = ThemeSelector()
 	
 	// Need to call `self.loadView()` on all open viewControllers
-	public var selectedTheme: Theme = .light {
-		didSet {
+	public var selectedTheme: Theme {
+		set {
+			UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.theme")
+			
 			if selectedTheme == .dark {
 				UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .dark
 				
@@ -29,11 +31,13 @@ public class ThemeSelector {
 				UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = .light
 			}
 		}
+		get {
+			return Theme(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? "") ?? .light
+		}
 	}
 	
 	private init() {}
 }
-
 
 
 
