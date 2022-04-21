@@ -36,6 +36,7 @@
 		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
 		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
 		C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */; };
+		C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0321C7C2811792D0013E72B /* ThemeManager.swift */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
 		C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */; };
@@ -55,7 +56,6 @@
 		C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DC5272056D400DEF1CB /* Localizable.strings */; };
 		C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DDD27205FE300DEF1CB /* InfoPlist.strings */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
-		C07092FB28097EBE00DD1B43 /* UIColor+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07092FA28097EBE00DD1B43 /* UIColor+extensions.swift */; };
 		C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A02798364400726C01 /* Option1MainViewController.swift */; };
 		C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A2279836F000726C01 /* Option1TokenCell.swift */; };
 		C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A42798386B00726C01 /* Option1AllViewController.swift */; };
@@ -200,6 +200,7 @@
 		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewController.swift; sourceTree = "<group>"; };
+		C0321C7C2811792D0013E72B /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extensions.swift"; sourceTree = "<group>"; };
@@ -232,7 +233,6 @@
 		C0678DDC27205FE300DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C0678DDE27205FE800DEF1CB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
-		C07092FA28097EBE00DD1B43 /* UIColor+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+extensions.swift"; sourceTree = "<group>"; };
 		C07374A02798364400726C01 /* Option1MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1MainViewController.swift; sourceTree = "<group>"; };
 		C07374A2279836F000726C01 /* Option1TokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1TokenCell.swift; sourceTree = "<group>"; };
 		C07374A42798386B00726C01 /* Option1AllViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1AllViewController.swift; sourceTree = "<group>"; };
@@ -443,7 +443,6 @@
 				C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */,
 				C02A4FD927DA421100F42DE4 /* Date+extensions.swift */,
 				C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */,
-				C07092FA28097EBE00DD1B43 /* UIColor+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -477,6 +476,7 @@
 				C0AC1D3D2771E5AB002F66C0 /* BottomSheetLargeSegue.swift */,
 				C080CC0E2773568200780F7E /* MyAuthorizationAppleIDButton.swift */,
 				C0DB48162785C6DD00D3B4F9 /* FadeSegue.swift */,
+				C0321C7C2811792D0013E72B /* ThemeManager.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -908,6 +908,7 @@
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0AC1D422771F5D4002F66C0 /* ImportChoiceViewController.swift in Sources */,
 				C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */,
+				C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */,
 				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
 				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
 				C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */,
@@ -947,7 +948,6 @@
 				C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */,
 				C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
-				C07092FB28097EBE00DD1B43 /* UIColor+extensions.swift in Sources */,
 				C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */,
 				C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */,
 				C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */,

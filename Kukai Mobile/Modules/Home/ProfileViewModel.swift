@@ -76,7 +76,7 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
-		let selectedTheme = ThemeSelector.shared.selectedTheme.rawValue
+		let selectedTheme = ThemeManager.shared.currentTheme()
 		
 		
 		// Build snapshot
