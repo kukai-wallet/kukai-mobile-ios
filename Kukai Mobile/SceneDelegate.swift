@@ -27,6 +27,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneDidBecomeActive(_ scene: UIScene) {
+		
+		// Check system colors set correctly from beginning
+		ThemeManager.shared.updateSystemInterfaceStyle()
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {

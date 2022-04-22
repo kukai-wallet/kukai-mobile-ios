@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -1701,7 +1701,7 @@
                                                     <buttonConfiguration key="configuration" style="filled" title="&lt;button-title&gt;"/>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="background"/>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="mMV-uv-QjP" secondAttribute="bottom" priority="999" constant="12" id="7Nl-JR-9fb"/>
                                                 <constraint firstAttribute="trailing" secondItem="mMV-uv-QjP" secondAttribute="trailing" constant="16" id="Kdo-On-gGz"/>
@@ -1738,7 +1738,7 @@
                                                     <buttonConfiguration key="configuration" style="plain" title="&lt;button-title&gt;"/>
                                                 </button>
                                             </subviews>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="backgroundColor" name="background"/>
                                             <constraints>
                                                 <constraint firstItem="9bN-re-wdx" firstAttribute="leading" secondItem="eSC-0P-b2K" secondAttribute="leading" constant="16" id="TAU-Lw-WHy"/>
                                                 <constraint firstItem="fma-7r-Haq" firstAttribute="top" secondItem="eSC-0P-b2K" secondAttribute="top" constant="16" id="VQF-hY-YPE"/>
@@ -1824,6 +1824,7 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
+                                            <color key="backgroundColor" name="background"/>
                                             <constraints>
                                                 <constraint firstItem="Pra-qE-0vc" firstAttribute="top" secondItem="OjP-9w-cpE" secondAttribute="top" constant="2" id="Q9l-UX-BAt"/>
                                                 <constraint firstAttribute="trailing" secondItem="Pra-qE-0vc" secondAttribute="trailing" constant="16" id="TY2-rN-tpU"/>
@@ -1879,6 +1880,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <color key="backgroundColor" name="background"/>
                                             <constraints>
                                                 <constraint firstItem="UUh-Aa-4UA" firstAttribute="leading" secondItem="ahW-zD-IoS" secondAttribute="trailing" id="26f-Dj-xyv"/>
                                                 <constraint firstItem="UUh-Aa-4UA" firstAttribute="top" secondItem="bEr-78-Leo" secondAttribute="top" constant="8" id="9xl-B3-ZYo"/>
@@ -1917,6 +1919,7 @@
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
+                                            <color key="backgroundColor" name="background"/>
                                             <constraints>
                                                 <constraint firstItem="VlU-rM-0MM" firstAttribute="top" secondItem="uJV-pH-7tg" secondAttribute="top" constant="8" id="1BM-Ej-69f"/>
                                                 <constraint firstAttribute="trailing" secondItem="wkR-Um-J4W" secondAttribute="trailing" constant="16" id="60k-97-f57"/>
@@ -2233,8 +2236,7 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="f31-ee-dpO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="background"/>
                         <color key="selectedImageTintColor" name="primary-button-background"/>
                     </tabBar>
                     <connections>
@@ -2785,6 +2787,7 @@
                     <connections>
                         <outlet property="tableView" destination="sKt-XX-QaQ" id="Yic-hV-hzZ"/>
                         <segue destination="PZB-yF-uTe" kind="show" identifier="currency" id="K1m-Jd-sia"/>
+                        <segue destination="6zR-El-zKA" kind="show" identifier="theme" id="Voz-9i-73J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p3t-ma-LWq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2844,7 +2847,46 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z4Z-oj-mZW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2109" y="-1420"/>
+            <point key="canvasLocation" x="2536" y="-1673"/>
+        </scene>
+        <!--Theme Picker View Controller-->
+        <scene sceneID="jXx-3Y-S8y">
+            <objects>
+                <tableViewController id="6zR-El-zKA" customClass="ThemePickerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="nJO-w9-9Sp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="themeCell" textLabel="ywi-Nu-DP4" style="IBUITableViewCellStyleDefault" id="Qwo-C1-NoM">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Qwo-C1-NoM" id="EkK-8M-8Wp">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="Light" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ywi-Nu-DP4">
+                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <color key="textColor" name="text-primary"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="6zR-El-zKA" id="uea-US-Fms"/>
+                            <outlet property="delegate" destination="6zR-El-zKA" id="PpI-JC-ZlE"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="ERf-Q0-axK"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="15F-u0-4bo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2535" y="-958"/>
         </scene>
         <!--Side Menu View Controller-->
         <scene sceneID="UZn-IS-eRq">
@@ -3176,7 +3218,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="9dp-5N-bqU"/>
+        <segue reference="qax-8k-q2G"/>
         <segue reference="PPC-zE-xHb"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -3208,6 +3250,9 @@
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="background">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="button-primary">
             <color red="0.56862745098039214" green="0.87450980392156863" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -3218,7 +3263,7 @@
             <color red="0.23921568627450981" green="0.71764705882352942" blue="0.93333333333333335" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="primary-button-background">
-            <color red="0.34901960784313724" green="0.38823529411764707" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.34900000691413879" green="0.3880000114440918" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="segmented-button-background">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3236,10 +3281,10 @@
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="text-secondary">
-            <color red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.33300000429153442" green="0.33300000429153442" blue="0.33300000429153442" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="text-tertiary">
-            <color red="0.44313725490196076" green="0.44313725490196076" blue="0.44313725490196076" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.44299998879432678" green="0.44299998879432678" blue="0.44299998879432678" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

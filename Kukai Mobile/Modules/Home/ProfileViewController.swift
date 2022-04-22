@@ -43,6 +43,6 @@ class ProfileViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		self.performSegue(withIdentifier: "currency", sender: self)
+		self.performSegue(withIdentifier: self.viewModel.segue(forIndexPath: indexPath), sender: self)
 	}
 }

@@ -36,6 +36,7 @@
 		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
 		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
 		C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */; };
+		C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0321C7C2811792D0013E72B /* ThemeManager.swift */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
 		C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */; };
@@ -50,6 +51,7 @@
 		C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */; };
 		C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05240A82770E1210031B5D1 /* GetStartedViewController.swift */; };
 		C05361BD277490FA002B51A4 /* UIApplication+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05361BC277490FA002B51A4 /* UIApplication+extensions.swift */; };
+		C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */; };
 		C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */; };
 		C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DC5272056D400DEF1CB /* Localizable.strings */; };
 		C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DDD27205FE300DEF1CB /* InfoPlist.strings */; };
@@ -198,6 +200,7 @@
 		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewController.swift; sourceTree = "<group>"; };
+		C0321C7C2811792D0013E72B /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		C049B5AE26A079AF00F1C5E0 /* UIViewController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+extensions.swift"; sourceTree = "<group>"; };
@@ -211,6 +214,7 @@
 		C0503664271ED8FD00E7A664 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Send.storyboard; sourceTree = "<group>"; };
 		C05240A82770E1210031B5D1 /* GetStartedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetStartedViewController.swift; sourceTree = "<group>"; };
 		C05361BC277490FA002B51A4 /* UIApplication+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+extensions.swift"; sourceTree = "<group>"; };
+		C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerViewController.swift; sourceTree = "<group>"; };
 		C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+extensions.swift"; sourceTree = "<group>"; };
 		C0678DC4272056D400DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0678DC727205A7700DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -385,6 +389,7 @@
 				C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */,
 				C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */,
 				C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */,
+				C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -471,6 +476,7 @@
 				C0AC1D3D2771E5AB002F66C0 /* BottomSheetLargeSegue.swift */,
 				C080CC0E2773568200780F7E /* MyAuthorizationAppleIDButton.swift */,
 				C0DB48162785C6DD00D3B4F9 /* FadeSegue.swift */,
+				C0321C7C2811792D0013E72B /* ThemeManager.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -901,6 +907,8 @@
 				C09860B227C3C29A00F888AF /* SendApproveViewController.swift in Sources */,
 				C0B743B726AB197E00377A9B /* HomeWalletViewModel.swift in Sources */,
 				C0AC1D422771F5D4002F66C0 /* ImportChoiceViewController.swift in Sources */,
+				C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */,
+				C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */,
 				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
 				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
 				C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */,
