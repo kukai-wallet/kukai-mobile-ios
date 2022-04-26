@@ -32,7 +32,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private var rightTextPosition = CGPoint(x: 0, y: 0)
 	private var readyToShrinkSafe = false
 	private var readyToShrinkText = false
-	private var runOnce = false // TODO:
+	private var runOnce = false
 	
 	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()

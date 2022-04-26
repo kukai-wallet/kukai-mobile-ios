@@ -24,7 +24,8 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var errorIcon: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
 	
-	private let textFieldLeftViewImage = UIView()
+	//private let textFieldLeftViewImage = UIView()
+	private let textFieldLeftViewOption = UIView()
 	private let textFieldLeftViewSpacer = UIView()
 	private let scanVC = ScanViewController()
 	private let nibName = "EnterAddressComponent"
@@ -62,6 +63,9 @@ public class EnterAddressComponent: UIView {
 		textField.maskToBounds = true
 		textField.leftViewMode = .always
 		
+		textFieldLeftViewSpacer.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+		
+		/*
 		let keyboardImage = UIImageView(image: UIImage(systemName: "keyboard"))
 		keyboardImage.frame = CGRect(x: 5, y: 0, width: 40, height: 25)
 		
@@ -69,17 +73,41 @@ public class EnterAddressComponent: UIView {
 		textFieldLeftViewImage.addSubview(keyboardImage)
 		
 		textField.leftView = textFieldLeftViewImage
+		*/
 		
-		textFieldLeftViewSpacer.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
+		textFieldLeftViewOption.frame = CGRect(x: 0, y: 0, width: 64, height: textField.frame.height)
+		textFieldLeftViewOption.backgroundColor = .white
+		textFieldLeftViewOption.isUserInteractionEnabled = true
+		textFieldLeftViewOption.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leftOptionTapped)))
+		
+		let innerView = HighlightView(frame: CGRect(x: 4, y: 4, width: textFieldLeftViewOption.frame.width - 8, height: textFieldLeftViewOption.frame.height - 8))
+		innerView.customCornerRadius = innerView.frame.height / 2
+		innerView.borderWidth = 1
+		innerView.borderColor = .lightGray
+		
+		
+		let textFieldLeftViewImage1 = UIImageView(image: UIImage(named: "tezos-xtz-logo"))
+		textFieldLeftViewImage1.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
+		
+		let textFieldLeftViewImage2 = UIImageView(image: UIImage(systemName: "chevron.down"))
+		textFieldLeftViewImage2.frame = CGRect(x: textFieldLeftViewImage1.frame.width + 4, y: (innerView.frame.height / 2) - 5, width: 20, height: 10)
+		
+		innerView.addSubview(textFieldLeftViewImage1)
+		innerView.addSubview(textFieldLeftViewImage2)
+		textFieldLeftViewOption.addSubview(innerView)
+		
+		textField.leftView = textFieldLeftViewOption
 		
 		self.hideError(animate: false)
 	}
 	
+	@objc func leftOptionTapped() {
+		
+	}
 	
 	
 	@IBAction func qrCodeTapped(_ sender: Any) {
 		guard let parent = self.parentViewController() else {
-			print("nope")
 			return
 		}
 		
@@ -118,7 +146,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func setTextfieldLeftIcon() {
-		textField.leftView = textFieldLeftViewImage
+		textField.leftView = textFieldLeftViewOption
 	}
 	
 	private func setTextfieldLeftSpacer() {
@@ -188,5 +216,35 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 	func scannedQRCode(code: String) {
 		self.textField.text = code
 		let _ = self.textField.revalidateTextfield()
+	}
+}
+
+private class HighlightView: UIView {
+	
+	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+		DispatchQueue.main.async {
+			self.backgroundColor = .white
+			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
+				self.backgroundColor = .lightGray
+			}, completion: nil)
+		}
+	}
+	
+	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+		DispatchQueue.main.async {
+			self.backgroundColor = .lightGray
+			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
+				self.backgroundColor = .white
+			}, completion: nil)
+		}
+	}
+	
+	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+		DispatchQueue.main.async {
+			self.backgroundColor = .lightGray
+			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
+				self.backgroundColor = .white
+			}, completion: nil)
+		}
 	}
 }
