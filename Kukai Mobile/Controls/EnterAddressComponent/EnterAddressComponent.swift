@@ -27,7 +27,10 @@ public class EnterAddressComponent: UIView {
 	//private let textFieldLeftViewImage = UIView()
 	private let textFieldLeftViewOption = UIView()
 	private let textFieldLeftViewSpacer = UIView()
+	private var textFieldLeftViewImageTypeLogo = UIImageView()
+	
 	private let scanVC = ScanViewController()
+	private let addressTypeVC = AddressTypeViewController()
 	private let nibName = "EnterAddressComponent"
 	
 	public weak var delegate: EnterAddressComponentDelegate? = nil
@@ -86,14 +89,14 @@ public class EnterAddressComponent: UIView {
 		innerView.borderColor = .lightGray
 		
 		
-		let textFieldLeftViewImage1 = UIImageView(image: UIImage(named: "tezos-xtz-logo"))
-		textFieldLeftViewImage1.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
+		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-xtz-logo"))
+		textFieldLeftViewImageTypeLogo.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
 		
-		let textFieldLeftViewImage2 = UIImageView(image: UIImage(systemName: "chevron.down"))
-		textFieldLeftViewImage2.frame = CGRect(x: textFieldLeftViewImage1.frame.width + 4, y: (innerView.frame.height / 2) - 5, width: 20, height: 10)
+		let textFieldLeftViewImageChevron = UIImageView(image: UIImage(systemName: "chevron.down"))
+		textFieldLeftViewImageChevron.frame = CGRect(x: textFieldLeftViewImageTypeLogo.frame.width + 4, y: (innerView.frame.height / 2) - 5, width: 20, height: 10)
 		
-		innerView.addSubview(textFieldLeftViewImage1)
-		innerView.addSubview(textFieldLeftViewImage2)
+		innerView.addSubview(textFieldLeftViewImageTypeLogo)
+		innerView.addSubview(textFieldLeftViewImageChevron)
 		textFieldLeftViewOption.addSubview(innerView)
 		
 		textField.leftView = textFieldLeftViewOption
@@ -101,8 +104,18 @@ public class EnterAddressComponent: UIView {
 		self.hideError(animate: false)
 	}
 	
+	
+	
+	// MARK: - Button actions
+	
 	@objc func leftOptionTapped() {
+		guard let parent = self.parentViewController() else {
+			return
+		}
 		
+		addressTypeVC.delegate = self
+		addressTypeVC.modalPresentationStyle = .pageSheet
+		parent.present(addressTypeVC, animated: true, completion: nil)
 	}
 	
 	
@@ -121,6 +134,8 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	
+	
+	// MARK: - UI functions
 	
 	private func animateButtonsOut() {
 		qrCodeStackView.isHidden = true
@@ -218,6 +233,39 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 		let _ = self.textField.revalidateTextfield()
 	}
 }
+
+extension EnterAddressComponent: AddressTypeDelegate {
+	
+	public func addressTypeChosen(type: AddressType) {
+		switch type {
+			case .tezosAddress:
+				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-xtz-logo")
+				textField.placeholder = "e.g. tz1abc123..."
+				
+			case .tezosDomain:
+				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
+				textField.placeholder = "e.g. johndoe.tez"
+				
+			case .gmail:
+				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
+				textField.placeholder = "e.g. johndoe@gmail.com"
+				
+			case .reddit:
+				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
+				textField.placeholder = "e.g. johndoe"
+				
+			case .twitter:
+				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
+				textField.placeholder = "e.g. johndoe"
+		}
+	}
+}
+
+
+
+
+
+
 
 private class HighlightView: UIView {
 	
