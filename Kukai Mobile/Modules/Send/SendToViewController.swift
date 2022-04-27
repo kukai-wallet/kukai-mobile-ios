@@ -62,7 +62,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		self.navigate()
 	}
 	
-	func validatedInput(entered: String, validAddress: Bool) {
+	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
 		if !validAddress {
 			return
 		}

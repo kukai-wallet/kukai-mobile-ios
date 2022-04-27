@@ -8,7 +8,7 @@
 import UIKit
 
 public protocol EnterAddressComponentDelegate: AnyObject {
-	func validatedInput(entered: String, validAddress: Bool)
+	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType)
 }
 
 public class EnterAddressComponent: UIView {
@@ -26,6 +26,7 @@ public class EnterAddressComponent: UIView {
 	
 	private let textFieldLeftViewOption = UIView()
 	private var textFieldLeftViewImageTypeLogo = UIImageView()
+	private var currentSelectedType: AddressType = .tezosAddress
 	
 	private let scanVC = ScanViewController()
 	private let addressTypeVC = AddressTypeViewController()
@@ -71,6 +72,7 @@ public class EnterAddressComponent: UIView {
 		textFieldLeftViewOption.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leftOptionTapped)))
 		
 		let innerView = HighlightView(frame: CGRect(x: 4, y: 4, width: textFieldLeftViewOption.frame.width - 8, height: textFieldLeftViewOption.frame.height - 8))
+		innerView.backgroundHighlightColor = .lightGray
 		innerView.customCornerRadius = innerView.frame.height / 2
 		innerView.borderWidth = 1
 		innerView.borderColor = .lightGray
@@ -180,15 +182,34 @@ extension EnterAddressComponent: ValidatorTextFieldDelegate {
 	public func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if validated && text != "" {
 			self.hideError(animate: true)
-			//self.delegate?.validatedInput(entered: text, validAddress: true)
+			self.delegate?.validatedInput(entered: text, validAddress: true, ofType: currentSelectedType)
 			
 		} else if text == "" {
 			self.hideError(animate: true)
-			//self.delegate?.validatedInput(entered: "", validAddress: false)
+			self.delegate?.validatedInput(entered: "", validAddress: false, ofType: currentSelectedType)
 			
 		} else {
-			self.showError(message: "Invalid Tezos address")
-			//self.delegate?.validatedInput(entered: text, validAddress: false)
+			self.showError(message: self.messageForType())
+			self.delegate?.validatedInput(entered: text, validAddress: false, ofType: currentSelectedType)
+		}
+	}
+	
+	private func messageForType() -> String {
+		switch self.currentSelectedType {
+			case .tezosAddress:
+				return "Invalid Tezos address"
+				
+			case .tezosDomain:
+				return "Invalid Tezos domain"
+				
+			case .gmail:
+				return "Invalid Gmail address"
+				
+			case .reddit:
+				return "Invalid Reddit username"
+				
+			case .twitter:
+				return "Invalid Twitter username"
 		}
 	}
 	
@@ -209,6 +230,8 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 extension EnterAddressComponent: AddressTypeDelegate {
 	
 	public func addressTypeChosen(type: AddressType) {
+		self.currentSelectedType = type
+		
 		switch type {
 			case .tezosAddress:
 				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-xtz-logo")
@@ -237,41 +260,5 @@ extension EnterAddressComponent: AddressTypeDelegate {
 		}
 		
 		let _ = textField.revalidateTextfield()
-	}
-}
-
-
-
-
-
-
-
-private class HighlightView: UIView {
-	
-	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-		DispatchQueue.main.async {
-			self.backgroundColor = .white
-			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
-				self.backgroundColor = .lightGray
-			}, completion: nil)
-		}
-	}
-	
-	override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-		DispatchQueue.main.async {
-			self.backgroundColor = .lightGray
-			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
-				self.backgroundColor = .white
-			}, completion: nil)
-		}
-	}
-	
-	override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-		DispatchQueue.main.async {
-			self.backgroundColor = .lightGray
-			UIView.animate(withDuration: 0.4, delay: 0.0, options: .curveLinear, animations: {
-				self.backgroundColor = .white
-			}, completion: nil)
-		}
 	}
 }
