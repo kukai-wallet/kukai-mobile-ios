@@ -24,6 +24,9 @@
 		C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0726A7278000DB160B /* HomeTabBarController.swift */; };
 		C0082C0A26A7282C00DB160B /* HomeWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */; };
 		C009F88B28195B9C007EA8A8 /* AddressTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88A28195B9C007EA8A8 /* AddressTypeViewController.swift */; };
+		C009F88D28197F07007EA8A8 /* TezosDomainValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */; };
+		C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88E28197F1D007EA8A8 /* GmailValidator.swift */; };
+		C009F89128197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */; };
 		C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01D227127F5E2DD00D3AF4B /* CloudKit.framework */; };
 		C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C021FA2B270F45A700BD9CF3 /* BeaconSDK */; };
 		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
@@ -190,6 +193,9 @@
 		C0082C0726A7278000DB160B /* HomeTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarController.swift; sourceTree = "<group>"; };
 		C0082C0926A7282C00DB160B /* HomeWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeWalletViewController.swift; sourceTree = "<group>"; };
 		C009F88A28195B9C007EA8A8 /* AddressTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTypeViewController.swift; sourceTree = "<group>"; };
+		C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosDomainValidator.swift; sourceTree = "<group>"; };
+		C009F88E28197F1D007EA8A8 /* GmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailValidator.swift; sourceTree = "<group>"; };
+		C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoWhiteSpaceStringValidator.swift; sourceTree = "<group>"; };
 		C01D227127F5E2DD00D3AF4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C024038826D925FB00E1CB80 /* BeaconService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconService.swift; sourceTree = "<group>"; };
 		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
@@ -591,6 +597,9 @@
 				C0A321D727C68C2B00D7788B /* NumberValidator.swift */,
 				C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */,
 				C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */,
+				C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */,
+				C009F88E28197F1D007EA8A8 /* GmailValidator.swift */,
+				C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -869,6 +878,7 @@
 				C07374A927983FB800726C01 /* PrototypeMain.swift in Sources */,
 				C09860AA27C3C24E00F888AF /* SendToViewController.swift in Sources */,
 				C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */,
+				C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */,
 				C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */,
 				C0D8BAA5274BBC7D005C0526 /* LiquidityDetailsViewController.swift in Sources */,
 				C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */,
@@ -889,6 +899,7 @@
 				C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
 				C085EAB926B1ADC700B37A15 /* ConfirmMnemonicViewController.swift in Sources */,
+				C009F88D28197F07007EA8A8 /* TezosDomainValidator.swift in Sources */,
 				C0081FD027D8FA5B00F7FEFF /* ActivityGenericCell.swift in Sources */,
 				C08F690D273AB8F300CCB6E3 /* SwapViewController.swift in Sources */,
 				C02D7CAC27BEB0CD006A8E39 /* ProfileViewController.swift in Sources */,
@@ -931,6 +942,7 @@
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
 				C08694DE27BD1B84000A4909 /* TokenBalanceCell.swift in Sources */,
 				C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */,
+				C009F89128197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift in Sources */,
 				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
 				C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */,
 				C0081FD827D8FE3700F7FEFF /* ActivityViewModel.swift in Sources */,

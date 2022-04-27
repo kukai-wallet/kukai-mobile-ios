@@ -24,9 +24,7 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var errorIcon: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
 	
-	//private let textFieldLeftViewImage = UIView()
 	private let textFieldLeftViewOption = UIView()
-	private let textFieldLeftViewSpacer = UIView()
 	private var textFieldLeftViewImageTypeLogo = UIImageView()
 	
 	private let scanVC = ScanViewController()
@@ -66,17 +64,6 @@ public class EnterAddressComponent: UIView {
 		textField.maskToBounds = true
 		textField.leftViewMode = .always
 		
-		textFieldLeftViewSpacer.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
-		
-		/*
-		let keyboardImage = UIImageView(image: UIImage(systemName: "keyboard"))
-		keyboardImage.frame = CGRect(x: 5, y: 0, width: 40, height: 25)
-		
-		textFieldLeftViewImage.frame = CGRect(x: 0, y: 0, width: 50, height: 25)
-		textFieldLeftViewImage.addSubview(keyboardImage)
-		
-		textField.leftView = textFieldLeftViewImage
-		*/
 		
 		textFieldLeftViewOption.frame = CGRect(x: 0, y: 0, width: 64, height: textField.frame.height)
 		textFieldLeftViewOption.backgroundColor = .white
@@ -87,7 +74,6 @@ public class EnterAddressComponent: UIView {
 		innerView.customCornerRadius = innerView.frame.height / 2
 		innerView.borderWidth = 1
 		innerView.borderColor = .lightGray
-		
 		
 		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-xtz-logo"))
 		textFieldLeftViewImageTypeLogo.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
@@ -140,7 +126,6 @@ public class EnterAddressComponent: UIView {
 	private func animateButtonsOut() {
 		qrCodeStackView.isHidden = true
 		pasteStackView.isHidden = true
-		setTextfieldLeftSpacer()
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
@@ -151,21 +136,9 @@ public class EnterAddressComponent: UIView {
 		qrCodeStackView.isHidden = false
 		pasteStackView.isHidden = false
 		
-		if self.textField.text == nil || self.textField.text == "" {
-			setTextfieldLeftIcon()
-		}
-		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
 		}
-	}
-	
-	private func setTextfieldLeftIcon() {
-		textField.leftView = textFieldLeftViewOption
-	}
-	
-	private func setTextfieldLeftSpacer() {
-		textField.leftView = textFieldLeftViewSpacer
 	}
 	
 	public func showError(message: String) {
@@ -207,16 +180,15 @@ extension EnterAddressComponent: ValidatorTextFieldDelegate {
 	public func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if validated && text != "" {
 			self.hideError(animate: true)
-			self.delegate?.validatedInput(entered: text, validAddress: true)
+			//self.delegate?.validatedInput(entered: text, validAddress: true)
 			
 		} else if text == "" {
 			self.hideError(animate: true)
-			self.setTextfieldLeftIcon()
-			self.delegate?.validatedInput(entered: "", validAddress: false)
+			//self.delegate?.validatedInput(entered: "", validAddress: false)
 			
 		} else {
 			self.showError(message: "Invalid Tezos address")
-			self.delegate?.validatedInput(entered: text, validAddress: false)
+			//self.delegate?.validatedInput(entered: text, validAddress: false)
 		}
 	}
 	
@@ -241,23 +213,30 @@ extension EnterAddressComponent: AddressTypeDelegate {
 			case .tezosAddress:
 				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-xtz-logo")
 				textField.placeholder = "e.g. tz1abc123..."
+				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 				
 			case .tezosDomain:
 				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
 				textField.placeholder = "e.g. johndoe.tez"
+				textField.validator = TezosDomainValidator()
 				
 			case .gmail:
 				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
 				textField.placeholder = "e.g. johndoe@gmail.com"
+				textField.validator = GmailValidator()
 				
 			case .reddit:
 				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
 				textField.placeholder = "e.g. johndoe"
+				textField.validator = NoWhiteSpaceStringValidator()
 				
 			case .twitter:
 				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
 				textField.placeholder = "e.g. johndoe"
+				textField.validator = NoWhiteSpaceStringValidator()
 		}
+		
+		let _ = textField.revalidateTextfield()
 	}
 }
 
