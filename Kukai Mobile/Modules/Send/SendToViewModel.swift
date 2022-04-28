@@ -24,6 +24,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	private var walletObjs: [WalletObj] = []
+	private var bag = Set<AnyCancellable>()
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
@@ -104,5 +105,45 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func address(forIndexPath indexPath: IndexPath) -> String {
 		return walletObjs[indexPath.row].address
+	}
+	
+	func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, ErrorResponse>) -> Void)) {
+		switch type {
+			case .tezosAddress:
+				completion(Result.success(string))
+				
+			case .tezosDomain:
+				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string).sink { error in
+					completion(Result.failure(error))
+					
+				} onSuccess: { response in
+					if let add = response.data?.domain.address {
+						completion(Result.success(add))
+						
+					} else {
+						completion(Result.failure(ErrorResponse.unknownError()))
+					}
+					
+				}.store(in: &bag)
+				
+			case .gmail:
+				handleTorus(verifier: .google, string: string, completion: completion)
+				
+			case .reddit:
+				handleTorus(verifier: .reddit, string: string, completion: completion)
+				
+			case .twitter:
+				handleTorus(verifier: .twitter, string: string, completion: completion)
+		}
+	}
+	
+	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, ErrorResponse>) -> Void)) {
+		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
+			let error = ErrorResponse.error(string: "No \(verifier.rawValue) verifier details found", errorType: .unknownError)
+			completion(Result.failure(error))
+			return
+		}
+		
+		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string, completion: completion)
 	}
 }

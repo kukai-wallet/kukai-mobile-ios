@@ -34,6 +34,7 @@ class DependencyManager {
 	var dipDupClient: DipDupClient
 	var balanceService: BalanceService
 	var coinGeckoService: CoinGeckoService
+	var tezosDomainsClient: TezosDomainsClient
 	
 	
 	// Properties and helpers
@@ -143,6 +144,7 @@ class DependencyManager {
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		balanceService = BalanceService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
+		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		updateKukaiCoreClients()
 	}
@@ -186,6 +188,7 @@ class DependencyManager {
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		balanceService = BalanceService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
+		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
 		networkDidChange = true
 	}

@@ -68,10 +68,16 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		}
 		
 		TransactionService.shared.currentTransactionType = .send
-		TransactionService.shared.sendData.destination = entered
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-			self?.navigate()
+			
+			if ofType == .tezosAddress {
+				TransactionService.shared.sendData.destination = entered
+				self?.navigate()
+				
+			} else {
+				self?.findAddressThenNavigate(text: entered, type: ofType)
+			}
 		}
 	}
 	
@@ -84,6 +90,27 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 			
 		} else if TransactionService.shared.sendData.chosenNFT != nil {
 			self.performSegue(withIdentifier: "review-send-nft", sender: self)
+		}
+	}
+	
+	func findAddressThenNavigate(text: String, type: AddressType) {
+		self.showLoadingModal()
+		
+		self.viewModel.convertStringToAddress(string: text, type: type) { [weak self] result in
+			self?.hideLoadingModal()
+			
+			guard let res = try? result.get() else {
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: result.getFailure().description)
+				})
+				return
+			}
+			
+			TransactionService.shared.sendData.destinationAlias = text
+			TransactionService.shared.sendData.destination = res
+			TransactionService.shared.sendData.destinationIcon = UIImage(systemName: "xmark.octagon")
+			
+			self?.navigate()
 		}
 	}
 }
