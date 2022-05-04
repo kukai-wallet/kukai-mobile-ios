@@ -2444,7 +2444,7 @@
                                         <rect key="frame" x="0.0" y="104" width="339" height="692"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountSocialCell" rowHeight="60" id="0jY-ta-92E" customClass="AccountSocialCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="AccountSocialCell" rowHeight="60" id="0jY-ta-92E" customClass="AccountSocialCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="49.5" width="339" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0jY-ta-92E" id="TSn-Ad-XOZ">
@@ -2508,7 +2508,7 @@
                                                     <outlet property="usernameLabel" destination="NuI-Z2-LsA" id="hEM-50-0B9"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountBasicCell" rowHeight="60" id="EcJ-yz-mxv" customClass="AccountBasicCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="AccountBasicCell" rowHeight="60" id="EcJ-yz-mxv" customClass="AccountBasicCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="109.5" width="339" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="EcJ-yz-mxv" id="yLQ-Xv-EF0">
@@ -2561,7 +2561,7 @@
                                                     <outlet property="addressLabel" destination="1y1-4i-EMx" id="xce-zZ-gNS"/>
                                                 </connections>
                                             </tableViewCell>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountSubCell" rowHeight="60" id="7t3-k6-B7R" customClass="AccountSubCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="AccountSubCell" rowHeight="60" id="7t3-k6-B7R" customClass="AccountSubCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="169.5" width="339" height="60"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="7t3-k6-B7R" id="UaL-zE-i1r">
@@ -2635,7 +2635,7 @@
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="deleteWallet:" destination="OYm-bQ-PRg" eventType="touchUpInside" id="h4u-k3-oOx"/>
-                                            <segue destination="6Vk-mo-2Fo" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="mmh-Or-hwv"/>
+                                            <segue destination="6Vk-mo-2Fo" kind="show" id="mmh-Or-hwv"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enb-kg-PJV">
@@ -2699,10 +2699,10 @@
             </objects>
             <point key="canvasLocation" x="-168" y="-2731"/>
         </scene>
-        <!--View Controller-->
+        <!--Side Menu Import View Controller-->
         <scene sceneID="a8z-Fh-p82">
             <objects>
-                <viewController id="6Vk-mo-2Fo" sceneMemberID="viewController">
+                <viewController id="6Vk-mo-2Fo" customClass="SideMenuImportViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="162-Fb-jPS">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2838,7 +2838,7 @@
                 <navigationController id="ycR-zh-ZMx" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="ef4-Bd-vpv"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="XIw-fh-x07">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -2865,7 +2865,7 @@
                 <navigationController id="q7e-0Z-dmG" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="Axz-yQ-H5V"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Iva-fH-74b">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -2892,7 +2892,7 @@
                 <navigationController id="PaJ-78-3J2" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="z5g-t7-wa8"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="JRP-IM-ZKI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>

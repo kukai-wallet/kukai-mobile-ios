@@ -11,6 +11,17 @@ class AccountBasicCell: UITableViewCell {
 	
 	@IBOutlet weak var addressLabel: UILabel!
 	
+	func setBorder(_ border: Bool) {
+		if border {
+			self.contentView.borderWidth = 1
+			self.contentView.borderColor = .blue
+			
+		} else {
+			self.contentView.borderWidth = 0
+			self.contentView.borderColor = .clear
+		}
+	}
+	
 	@IBAction func optionsTapped(_ sender: Any) {
 	}
 }

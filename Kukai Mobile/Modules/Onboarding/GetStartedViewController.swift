@@ -110,18 +110,19 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	}
 	
 	func handleSuccessNavigation() {
-		let welcome = self.welcomeViewController()
-		
-		self.presentingViewController?.dismiss(animated: true, completion: {
-			welcome?.performSegue(withIdentifier: "walletCreated", sender: nil)
-		})
-	}
-	
-	func welcomeViewController() -> UIViewController? {
-		guard let nav = self.presentingViewController as? UINavigationController else {
-			return nil
+		if self.presentingViewController is UINavigationController {
+			guard let nav = self.presentingViewController as? UINavigationController else {
+				return
+			}
+			
+			self.presentingViewController?.dismiss(animated: true, completion: {
+				nav.viewControllers.last?.performSegue(withIdentifier: "walletCreated", sender: nil)
+			})
+			
+		} else {
+			self.dismiss(animated: true)
 		}
 		
-		return nav.viewControllers.last
 	}
+	
 }

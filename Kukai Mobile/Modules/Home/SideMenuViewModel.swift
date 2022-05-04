@@ -25,22 +25,25 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
-		// let selectedAddress = DependencyManager.shared.selectedWallet?.address
+		let selectedAddress = DependencyManager.shared.selectedWallet?.address
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSubCell", for: indexPath) as? AccountSubCell {
 				cell.addressLabel.text = item.address
+				cell.setBorder(item.address == selectedAddress)
 				return cell
 				
 			} else if item.type == .torus, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
 				cell.iconView.image = self?.imageForAuthProvider(item.authProvider)
 				cell.usernameLabel.text = item.username
 				cell.addressLabel.text = item.address
+				cell.setBorder(item.address == selectedAddress)
 				return cell
 				
 			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBasicCell", for: indexPath) as? AccountBasicCell {
 				cell.addressLabel.text = item.address
+				cell.setBorder(item.address == selectedAddress)
 				return cell
 				
 			} else {

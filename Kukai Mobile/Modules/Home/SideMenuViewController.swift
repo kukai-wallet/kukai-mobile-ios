@@ -88,6 +88,10 @@ class SideMenuViewController: UIViewController {
 		}
 	}
 	
+	public func refeshWallets() {
+		viewModel.refresh(animate: true)
+	}
+	
 	
 	/*
 	@IBAction func deleteAllTapped(_ sender: Any) {
