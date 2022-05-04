@@ -13,12 +13,14 @@ class SideMenuViewController: UIViewController {
 
 	@IBOutlet weak var contentView: UIView!
 	@IBOutlet weak var contentViewLeftConstraint: NSLayoutConstraint!
-	@IBOutlet weak var contentViewWidthConstraint: NSLayoutConstraint!
+	@IBOutlet weak var contentViewRightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var closeButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
 	
 	public let viewModel = SideMenuViewModel()
 	private var cancellable: AnyCancellable?
+	
+	private var previousRightConstant: CGFloat = 0
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,10 @@ class SideMenuViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		// Begin off screen to left, on a clear background
-		contentViewLeftConstraint.constant = contentViewWidthConstraint.constant * -1
+		previousRightConstant = contentViewRightConstraint.constant
+		contentViewLeftConstraint.constant = ((UIApplication.shared.currentWindow?.frame.width ?? 0) - contentViewRightConstraint.constant) * -1
+		contentViewRightConstraint.constant = ((UIApplication.shared.currentWindow?.frame.width ?? 0) + contentViewRightConstraint.constant)
+		
 		self.view.backgroundColor = .clear
 	}
 	
@@ -54,6 +59,7 @@ class SideMenuViewController: UIViewController {
 		}
 		
 		contentViewLeftConstraint.constant = 0
+		contentViewRightConstraint.constant = self.previousRightConstant
 		UIView.animate(withDuration: 0.5) { [weak self] in
 			self?.closeButton.transform = CGAffineTransform(rotationAngle: CGFloat(Double.pi))
 			self?.view.layoutIfNeeded()
@@ -68,7 +74,8 @@ class SideMenuViewController: UIViewController {
 		anticlockAnimation.isAdditive = true
 		anticlockAnimation.duration = 0.5
 		
-		contentViewLeftConstraint.constant = contentViewWidthConstraint.constant * -1
+		contentViewLeftConstraint.constant = ((UIApplication.shared.currentWindow?.frame.width ?? 0) - contentViewRightConstraint.constant) * -1
+		contentViewRightConstraint.constant = ((UIApplication.shared.currentWindow?.frame.width ?? 0) + contentViewRightConstraint.constant)
 		
 		UIView.animate(withDuration: 0.5) { [weak self] in
 			self?.closeButton.layer.add(anticlockAnimation, forKey: "rotate")
@@ -81,6 +88,8 @@ class SideMenuViewController: UIViewController {
 		}
 	}
 	
+	
+	/*
 	@IBAction func deleteAllTapped(_ sender: Any) {
 		closeButtonTapped(self)
 		let _ = WalletCacheService().deleteCacheAndKeys()
@@ -90,6 +99,7 @@ class SideMenuViewController: UIViewController {
 		
 		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
 	}
+	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {

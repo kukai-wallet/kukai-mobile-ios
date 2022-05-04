@@ -9,31 +9,43 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
-enum SideMenutSection: CaseIterable {
-	case wallets
+struct WalletData: Hashable {
+	let type: WalletType
+	let authProvider: TorusAuthProvider?
+	let username: String?
+	let address: String
 }
 
+
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
-	typealias SectionEnum = SideMenutSection
-	typealias CellDataType = String
+	typealias SectionEnum = Int
+	typealias CellDataType = WalletData
 	
-	var dataSource: UITableViewDiffableDataSource<SideMenutSection, String>? = nil
+	var dataSource: UITableViewDiffableDataSource<Int, WalletData>? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
-		let selectedAddress = DependencyManager.shared.selectedWallet?.address
+		// let selectedAddress = DependencyManager.shared.selectedWallet?.address
 		
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
-			let cell = tableView.dequeueReusableCell(withIdentifier: "basicCell", for: indexPath)
-			cell.textLabel?.text = item
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if item == selectedAddress {
-				cell.accessoryType = .checkmark
+			if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSubCell", for: indexPath) as? AccountSubCell {
+				cell.addressLabel.text = item.address
+				return cell
+				
+			} else if item.type == .torus, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
+				cell.iconView.image = self?.imageForAuthProvider(item.authProvider)
+				cell.usernameLabel.text = item.username
+				cell.addressLabel.text = item.address
+				return cell
+				
+			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBasicCell", for: indexPath) as? AccountBasicCell {
+				cell.addressLabel.text = item.address
+				return cell
+				
 			} else {
-				cell.accessoryType = .none
+				return UITableViewCell()
 			}
-			
-			return cell
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -45,15 +57,44 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		let wallets = WalletCacheService().fetchWallets()
-		let addresses = wallets?.map({ $0.address }) ?? []
+		let wallets = WalletCacheService().fetchWallets() ?? []
+		var snapshot = NSDiffableDataSourceSnapshot<Int, WalletData>()
+		snapshot.appendSections(Array(0...wallets.count))
 		
-		var snapshot = NSDiffableDataSourceSnapshot<SideMenutSection, String>()
-		snapshot.appendSections(SideMenutSection.allCases)
-		snapshot.appendItems(addresses, toSection: .wallets)
+		for (index, wallet) in wallets.enumerated() {
+			
+			var username: String? = nil
+			var authProvider: TorusAuthProvider? = nil
+			
+			if wallet.type == .torus {
+				username = (wallet as? TorusWallet)?.socialUserId
+				authProvider = (wallet as? TorusWallet)?.authProvider
+			}
+			
+			let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address)
+			
+			snapshot.appendItems([data], toSection: index)
+		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
-			
+		
 		self.state = .success(nil)
+	}
+	
+	func imageForAuthProvider(_ provider: TorusAuthProvider?) -> UIImage? {
+		switch provider {
+			case .apple:
+				return UIImage(systemName: "xmark.octagon")
+			case .twitter:
+				return UIImage(systemName: "xmark.octagon")
+			case .google:
+				return UIImage(systemName: "xmark.octagon")
+			case .reddit:
+				return UIImage(systemName: "xmark.octagon")
+			case .facebook:
+				return UIImage(systemName: "xmark.octagon")
+			case .none:
+				return nil
+		}
 	}
 }
