@@ -12,7 +12,7 @@ extension UIViewController {
 	// MARK: - Flow
 	
 	func isPartOfSideMenuImportFlow() -> Bool {
-		return !(self.navigationController?.viewControllers.first is WelcomeViewController)
+		return (self.navigationController?.presentingViewController is SideMenuViewController)
 	}
 	
 	func completeAndCloseSideMenuImport() {

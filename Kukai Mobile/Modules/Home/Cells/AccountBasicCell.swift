@@ -10,6 +10,13 @@ import UIKit
 class AccountBasicCell: UITableViewCell {
 	
 	@IBOutlet weak var addressLabel: UILabel!
+	@IBOutlet weak var optionsButton: UIButton!
+	
+	func setup(address: String, menu: UIMenu?) {
+		self.addressLabel.text = address
+		self.optionsButton.menu = menu
+		self.optionsButton.showsMenuAsPrimaryAction = true
+	}
 	
 	func setBorder(_ border: Bool) {
 		if border {
@@ -20,8 +27,5 @@ class AccountBasicCell: UITableViewCell {
 			self.contentView.borderWidth = 0
 			self.contentView.borderColor = .clear
 		}
-	}
-	
-	@IBAction func optionsTapped(_ sender: Any) {
 	}
 }

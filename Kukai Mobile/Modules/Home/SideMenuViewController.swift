@@ -31,8 +31,23 @@ class SideMenuViewController: UIViewController {
 		tableView.delegate = self
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
-			if case .failure(_, let errorString) = state {
-				self?.alert(withTitle: "Error", andMessage: errorString)
+			guard let self = self else { return }
+			
+			switch state {
+				case .loading:
+					let _ = ""
+					
+				case .success(_):
+					print("Number of sections: \(self.viewModel.dataSource?.numberOfSections(in: self.tableView))")
+					
+					// Always seems to be an extra section, so 1 section left = no content
+					if self.viewModel.dataSource?.numberOfSections(in: self.tableView) == 1 {
+						self.closeAndBackToStart()
+					}
+					
+				case .failure(_, let message):
+					print("Error: \(message)")
+					self.alert(withTitle: "Error", andMessage: message)
 			}
 		}
     }
@@ -92,9 +107,7 @@ class SideMenuViewController: UIViewController {
 		viewModel.refresh(animate: true)
 	}
 	
-	
-	/*
-	@IBAction func deleteAllTapped(_ sender: Any) {
+	func closeAndBackToStart() {
 		closeButtonTapped(self)
 		let _ = WalletCacheService().deleteCacheAndKeys()
 		DependencyManager.shared.balanceService.deleteAllCachedData()
@@ -103,15 +116,13 @@ class SideMenuViewController: UIViewController {
 		
 		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
 	}
-	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row != DependencyManager.shared.selectedWalletIndex {
-			tableView.cellForRow(at: IndexPath(row: DependencyManager.shared.selectedWalletIndex, section: 0))?.accessoryType = .none
-			tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+			(tableView.cellForRow(at: indexPath) as? AccountBasicCell)?.setBorder(true)
 			
 			DependencyManager.shared.selectedWalletIndex = indexPath.row
 			closeButtonTapped(self)

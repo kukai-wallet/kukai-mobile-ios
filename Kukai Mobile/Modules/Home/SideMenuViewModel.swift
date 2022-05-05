@@ -14,6 +14,7 @@ struct WalletData: Hashable {
 	let authProvider: TorusAuthProvider?
 	let username: String?
 	let address: String
+	let selected: Bool
 }
 
 
@@ -25,25 +26,21 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
-		let selectedAddress = DependencyManager.shared.selectedWallet?.address
-		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSubCell", for: indexPath) as? AccountSubCell {
-				cell.addressLabel.text = item.address
-				cell.setBorder(item.address == selectedAddress)
+				cell.setup(address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
+				cell.setBorder(item.selected)
 				return cell
 				
 			} else if item.type == .torus, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
-				cell.iconView.image = self?.imageForAuthProvider(item.authProvider)
-				cell.usernameLabel.text = item.username
-				cell.addressLabel.text = item.address
-				cell.setBorder(item.address == selectedAddress)
+				cell.setup(image: self?.imageForAuthProvider(item.authProvider), username: item.username ?? "", address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
+				cell.setBorder(item.selected)
 				return cell
 				
 			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBasicCell", for: indexPath) as? AccountBasicCell {
-				cell.addressLabel.text = item.address
-				cell.setBorder(item.address == selectedAddress)
+				cell.setup(address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
+				cell.setBorder(item.selected)
 				return cell
 				
 			} else {
@@ -60,6 +57,8 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		let selectedAddress = DependencyManager.shared.selectedWallet?.address
+		
 		let wallets = WalletCacheService().fetchWallets() ?? []
 		var snapshot = NSDiffableDataSourceSnapshot<Int, WalletData>()
 		snapshot.appendSections(Array(0...wallets.count))
@@ -74,7 +73,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				authProvider = (wallet as? TorusWallet)?.authProvider
 			}
 			
-			let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address)
+			let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address, selected: wallet.address == selectedAddress)
 			
 			snapshot.appendItems([data], toSection: index)
 		}
@@ -99,5 +98,40 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			case .none:
 				return nil
 		}
+	}
+	
+	func menuFor(walletData: WalletData, indexPath: IndexPath) -> UIMenu {
+		var options: [UIAction] = []
+		
+		if walletData.type == .hd {
+			options.append(
+				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { action in
+					print("Tapped Add account")
+				})
+			)
+		}
+		
+		options.append(
+			UIAction(title: "Delete", image: UIImage(systemName: "delete.left.fill"), identifier: nil) { [weak self] action in
+				var deletingSelected = false
+				
+				if walletData.address == DependencyManager.shared.selectedWallet?.address {
+					deletingSelected = true
+				}
+				
+				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentHDWallet: nil) {
+					if deletingSelected && WalletCacheService().fetchPrimaryWallet() != nil {
+						DependencyManager.shared.selectedWalletIndex = 0
+					}
+					
+					self?.refresh(animate: true)
+					
+				} else {
+					self?.state = .failure(ErrorResponse.unknownError(), "Unable to delete wallet from cache")
+				}
+			}
+		)
+		
+		return UIMenu(title: "Actions", image: nil, identifier: nil, options: [], children: options)
 	}
 }

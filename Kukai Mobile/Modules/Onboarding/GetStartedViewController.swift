@@ -120,9 +120,7 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 			})
 			
 		} else {
-			self.dismiss(animated: true)
+			self.presentingViewController?.dismiss(animated: true)
 		}
-		
 	}
-	
 }

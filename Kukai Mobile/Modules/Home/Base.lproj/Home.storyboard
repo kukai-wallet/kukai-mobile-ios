@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="RbH-wK-mPh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
@@ -1860,22 +1860,6 @@
             </objects>
             <point key="canvasLocation" x="-2420" y="-1"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="uTd-0x-56E">
-            <objects>
-                <navigationController id="RbH-wK-mPh" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="n83-bM-w4N">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="B7V-6A-7eN" kind="relationship" relationship="rootViewController" id="jTU-8M-NnG"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QYk-0i-Jxj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2536" y="-2204"/>
-        </scene>
         <!--Home Tab Bar Controller-->
         <scene sceneID="Wvl-IH-7iX">
             <objects>
@@ -2482,9 +2466,6 @@
                                                             <state key="normal" title="...">
                                                                 <color key="titleColor" name="text-primary"/>
                                                             </state>
-                                                            <connections>
-                                                                <action selector="optionsTapped:" destination="0jY-ta-92E" eventType="touchUpInside" id="zbs-zn-HvX"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -2505,6 +2486,7 @@
                                                 <connections>
                                                     <outlet property="addressLabel" destination="9SX-4F-tNo" id="FPK-kZ-YYq"/>
                                                     <outlet property="iconView" destination="cEb-V3-PjA" id="fdx-n5-0dZ"/>
+                                                    <outlet property="optionsButton" destination="dtA-7X-iqr" id="N2R-Ee-QFx"/>
                                                     <outlet property="usernameLabel" destination="NuI-Z2-LsA" id="hEM-50-0B9"/>
                                                 </connections>
                                             </tableViewCell>
@@ -2540,9 +2522,6 @@
                                                             <state key="normal" title="...">
                                                                 <color key="titleColor" name="text-primary"/>
                                                             </state>
-                                                            <connections>
-                                                                <action selector="optionsTapped:" destination="EcJ-yz-mxv" eventType="touchUpInside" id="9RX-my-uQ6"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -2559,6 +2538,7 @@
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="addressLabel" destination="1y1-4i-EMx" id="xce-zZ-gNS"/>
+                                                    <outlet property="optionsButton" destination="BrZ-BJ-S6q" id="y5x-IU-WBx"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="gray" indentationWidth="10" reuseIdentifier="AccountSubCell" rowHeight="60" id="7t3-k6-B7R" customClass="AccountSubCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -2595,9 +2575,6 @@
                                                             <state key="normal" title="...">
                                                                 <color key="titleColor" name="text-primary"/>
                                                             </state>
-                                                            <connections>
-                                                                <action selector="optionsTapped:" destination="7t3-k6-B7R" eventType="touchUpInside" id="4k1-bx-dNQ"/>
-                                                            </connections>
                                                         </button>
                                                     </subviews>
                                                     <constraints>
@@ -2614,6 +2591,7 @@
                                                 </tableViewCellContentView>
                                                 <connections>
                                                     <outlet property="addressLabel" destination="y0d-v6-eos" id="ZLh-bw-ihX"/>
+                                                    <outlet property="optionButton" destination="8mN-3Z-CLA" id="oSk-95-mGs"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>
