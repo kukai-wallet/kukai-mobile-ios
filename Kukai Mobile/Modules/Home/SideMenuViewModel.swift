@@ -15,6 +15,8 @@ struct WalletData: Hashable {
 	let username: String?
 	let address: String
 	let selected: Bool
+	let isChild: Bool
+	let parentAddress: String?
 }
 
 
@@ -65,17 +67,23 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		for (index, wallet) in wallets.enumerated() {
 			
-			var username: String? = nil
-			var authProvider: TorusAuthProvider? = nil
-			
 			if wallet.type == .torus {
-				username = (wallet as? TorusWallet)?.socialUserId
-				authProvider = (wallet as? TorusWallet)?.authProvider
+				let username = (wallet as? TorusWallet)?.socialUserId
+				let authProvider = (wallet as? TorusWallet)?.authProvider
+				let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
+				snapshot.appendItems([data], toSection: index)
+				
+			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
+				var data: [WalletData] = [WalletData(type: wallet.type, authProvider: nil, username: nil, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)]
+				for child in hdWallet.childWallets {
+					data.append(WalletData(type: .hd, authProvider: nil, username: nil, address: child.address, selected: child.address == selectedAddress, isChild: true, parentAddress: wallet.address))
+				}
+				snapshot.appendItems(data, toSection: index)
+				
+			} else {
+				let data = WalletData(type: wallet.type, authProvider: nil, username: nil, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
+				snapshot.appendItems([data], toSection: index)
 			}
-			
-			let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address, selected: wallet.address == selectedAddress)
-			
-			snapshot.appendItems([data], toSection: index)
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
@@ -103,10 +111,20 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func menuFor(walletData: WalletData, indexPath: IndexPath) -> UIMenu {
 		var options: [UIAction] = []
 		
-		if walletData.type == .hd {
+		if walletData.type == .hd && indexPath.row == 0 {
 			options.append(
-				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { action in
-					print("Tapped Add account")
+				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { [weak self] action in
+					guard let hdWallet = WalletCacheService().fetchWallets()?[indexPath.section] as? HDWallet else {
+						self?.state = .failure(ErrorResponse.unknownError(), "Unable to add new wallet")
+						return
+					}
+					
+					if hdWallet.addNextChildWallet() && WalletCacheService().update(hdWallet: hdWallet, atIndex: indexPath.section) {
+						self?.refresh(animate: true)
+						
+					} else {
+						self?.state = .failure(ErrorResponse.unknownError(), "Unable to add new wallet")
+					}
 				})
 			)
 		}
@@ -119,9 +137,11 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					deletingSelected = true
 				}
 				
-				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentHDWallet: nil) {
+				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentHDWallet: walletData.parentAddress) {
+					
+					// If we are deleting selected, we need to select another wallet, but not if we deleted the last one
 					if deletingSelected && WalletCacheService().fetchPrimaryWallet() != nil {
-						DependencyManager.shared.selectedWalletIndex = 0
+						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: 0, child: nil)
 					}
 					
 					self?.refresh(animate: true)

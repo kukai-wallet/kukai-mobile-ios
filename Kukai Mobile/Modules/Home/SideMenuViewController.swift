@@ -38,7 +38,6 @@ class SideMenuViewController: UIViewController {
 					let _ = ""
 					
 				case .success(_):
-					print("Number of sections: \(self.viewModel.dataSource?.numberOfSections(in: self.tableView))")
 					
 					// Always seems to be an extra section, so 1 section left = no content
 					if self.viewModel.dataSource?.numberOfSections(in: self.tableView) == 1 {
@@ -46,7 +45,6 @@ class SideMenuViewController: UIViewController {
 					}
 					
 				case .failure(_, let message):
-					print("Error: \(message)")
 					self.alert(withTitle: "Error", andMessage: message)
 			}
 		}
@@ -121,10 +119,12 @@ class SideMenuViewController: UIViewController {
 extension SideMenuViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if indexPath.row != DependencyManager.shared.selectedWalletIndex {
+		let selectedIndex = DependencyManager.shared.selectedWalletIndex
+		
+		if indexPath.section != selectedIndex.parent || indexPath.row != (selectedIndex.child ?? -1) + 1 {
 			(tableView.cellForRow(at: indexPath) as? AccountBasicCell)?.setBorder(true)
 			
-			DependencyManager.shared.selectedWalletIndex = indexPath.row
+			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: indexPath.section, child: (indexPath.row == 0 ? nil : indexPath.row-1))
 			closeButtonTapped(self)
 		}
 	}

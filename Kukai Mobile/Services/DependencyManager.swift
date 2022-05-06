@@ -10,6 +10,11 @@ import Combine
 import KukaiCoreSwift
 import CustomAuth
 
+struct WalletIndex {
+	let parent: Int
+	let child: Int?
+}
+
 class DependencyManager {
 	
 	static let shared = DependencyManager()
@@ -78,12 +83,18 @@ class DependencyManager {
 	
 	
 	// Selected Wallet data
-	var selectedWalletIndex: Int {
+	var selectedWalletIndex: WalletIndex {
 		set {
-			UserDefaults.standard.setValue(newValue, forKey: "app.kukai.mobile.selected.wallet")
+			UserDefaults.standard.setValue(newValue.parent, forKey: "app.kukai.mobile.selected.wallet.parent")
+			UserDefaults.standard.setValue(newValue.child, forKey: "app.kukai.mobile.selected.wallet.child")
 			walletDidChange = true
 		}
-		get { return UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet") }
+		get {
+			let parent = UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet.parent")
+			let child = UserDefaults.standard.object(forKey: "app.kukai.mobile.selected.wallet.child") as? Int
+			return WalletIndex(parent: parent, child: child)
+			
+		}
 	}
 	
 	var selectedWallet: Wallet? {
@@ -94,11 +105,17 @@ class DependencyManager {
 					return nil
 				}
 				
-				if selectedWalletIndex >= wallets.count {
-					selectedWalletIndex = wallets.count-1
+				if selectedWalletIndex.parent >= wallets.count {
+					selectedWalletIndex = WalletIndex(parent: wallets.count-1, child: nil)
 				}
 				
-				return wallets[selectedWalletIndex]
+				let wallet = wallets[selectedWalletIndex.parent]
+				
+				if let childIndex = selectedWalletIndex.child, let hdWallet = wallet as? HDWallet {
+					return hdWallet.childWallets[childIndex]
+				} else {
+					return wallet
+				}
 			}
 			
 			return nil
