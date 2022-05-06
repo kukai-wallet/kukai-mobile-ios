@@ -121,6 +121,9 @@ extension SideMenuViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let selectedIndex = DependencyManager.shared.selectedWalletIndex
 		
+		// If we want to select the parent wallet, its WalletIndex(parent: x, child: nil)
+		// Selecting the first child, its WalletIndex(parent: x, child: 0)
+		// Because the parent is the first cell in each section, we need to add or subtract 1 from the indexPath.row when dealing with `selectedWalletIndex`
 		if indexPath.section != selectedIndex.parent || indexPath.row != (selectedIndex.child ?? -1) + 1 {
 			(tableView.cellForRow(at: indexPath) as? AccountBasicCell)?.setBorder(true)
 			

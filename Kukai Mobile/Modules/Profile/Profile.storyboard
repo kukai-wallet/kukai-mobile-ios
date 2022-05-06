@@ -22,20 +22,20 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TitleSubtitleCell" id="6UT-pH-XdQ" customClass="TitleSubtitleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="49.5" width="374" height="45"/>
+                                        <rect key="frame" x="20" y="49.5" width="374" height="45.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6UT-pH-XdQ" id="Jvg-zx-aq5">
-                                            <rect key="frame" x="0.0" y="0.0" width="345.5" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="345.5" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byV-Wa-ISR">
-                                                    <rect key="frame" x="20" y="12" width="49" height="21"/>
+                                                    <rect key="frame" x="20" y="12" width="49" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" name="text-primary"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Ug-6H-Qwa">
-                                                    <rect key="frame" x="85" y="14" width="244.5" height="17"/>
+                                                    <rect key="frame" x="85" y="14.5" width="244.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" name="text-secondary"/>
                                                     <nil key="highlightedColor"/>
@@ -75,6 +75,7 @@
                         <outlet property="tableView" destination="5fb-dL-IFR" id="Bcx-FP-Jdi"/>
                         <segue destination="bdJ-Yb-rRr" kind="show" identifier="currency" id="7gQ-GR-Sng"/>
                         <segue destination="sHl-d8-n9n" kind="show" identifier="theme" id="tsc-ay-12U"/>
+                        <segue destination="GML-tM-Zzr" kind="show" identifier="network" id="67V-0s-G5m"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KM6-sp-NCG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -91,20 +92,20 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TitleSubtitleCell" id="RPa-a0-xAG" customClass="TitleSubtitleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="20" y="49.5" width="374" height="45.5"/>
+                                <rect key="frame" x="20" y="49.5" width="374" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RPa-a0-xAG" id="I0n-tn-VQG">
-                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="45"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2W-ti-6Bw">
-                                            <rect key="frame" x="20" y="12" width="49" height="21.5"/>
+                                            <rect key="frame" x="20" y="12" width="49" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" name="text-primary"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subTitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0q6-5I-fYe">
-                                            <rect key="frame" x="85" y="14.5" width="273" height="17"/>
+                                            <rect key="frame" x="85" y="14" width="273" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" name="text-secondary"/>
                                             <nil key="highlightedColor"/>
@@ -134,7 +135,58 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXH-cY-JT8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2536" y="-1673"/>
+            <point key="canvasLocation" x="2546" y="-2135"/>
+        </scene>
+        <!--Choose Network-->
+        <scene sceneID="v1B-6c-oFr">
+            <objects>
+                <viewController id="GML-tM-Zzr" customClass="NetworkChooserViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="S3m-b4-L4j">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2nc-Wu-ZrK">
+                                <rect key="frame" x="24" y="112" width="366" height="32"/>
+                                <segments>
+                                    <segment title="Mainnet"/>
+                                    <segment title="Testnet (Florence)"/>
+                                </segments>
+                                <connections>
+                                    <action selector="networkConfigChanged:" destination="GML-tM-Zzr" eventType="valueChanged" id="7so-z5-50h"/>
+                                </connections>
+                            </segmentedControl>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uUv-b0-RFO">
+                                <rect key="frame" x="24" y="167" width="366" height="243.5"/>
+                                <string key="text">Mainnet:
+Live network with real XTZ and Tokens with real value
+
+Testnet:
+An experimental network running the latest Tezos protocol (likely different to mainnet), with fake XTZ and fake tokens with no monetary value.
+Mainly used by developers to experiment / test. Or members of the public when testing a dApp in Beta.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="UmU-f2-Rmh"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="uUv-b0-RFO" firstAttribute="top" secondItem="2nc-Wu-ZrK" secondAttribute="bottom" constant="24" id="5TA-al-jH0"/>
+                            <constraint firstItem="uUv-b0-RFO" firstAttribute="leading" secondItem="2nc-Wu-ZrK" secondAttribute="leading" id="AmP-sE-YUU"/>
+                            <constraint firstItem="2nc-Wu-ZrK" firstAttribute="top" secondItem="UmU-f2-Rmh" secondAttribute="top" constant="24" id="FjF-QU-8zT"/>
+                            <constraint firstItem="UmU-f2-Rmh" firstAttribute="trailing" secondItem="2nc-Wu-ZrK" secondAttribute="trailing" constant="24" id="es5-W3-pFH"/>
+                            <constraint firstItem="2nc-Wu-ZrK" firstAttribute="leading" secondItem="UmU-f2-Rmh" secondAttribute="leading" constant="24" id="qR2-p2-JLa"/>
+                            <constraint firstItem="uUv-b0-RFO" firstAttribute="trailing" secondItem="2nc-Wu-ZrK" secondAttribute="trailing" id="vsb-6M-f10"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Choose Network" id="ZVP-Ng-D6G"/>
+                    <connections>
+                        <outlet property="networkChoiceControl" destination="2nc-Wu-ZrK" id="YFU-Nq-BVZ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CXK-qb-VeZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2545" y="-640"/>
         </scene>
         <!--Choose Theme-->
         <scene sceneID="ZlZ-Ek-Rtr">
@@ -173,7 +225,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p14-sH-i7k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2535" y="-958"/>
+            <point key="canvasLocation" x="2546" y="-1420"/>
         </scene>
     </scenes>
     <resources>

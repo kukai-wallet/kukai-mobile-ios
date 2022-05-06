@@ -77,6 +77,7 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
 		let selectedTheme = ThemeManager.shared.currentTheme()
+		let selectedNetwork = DependencyManager.shared.currentNetworkType.rawValue
 		
 		
 		// Build snapshot
@@ -85,6 +86,7 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		snapshot.appendItems([TitleSubtitleObj(title: "Selected Currency", subtitle: selectedCurrency)], toSection: 0)
 		snapshot.appendItems([TitleSubtitleObj(title: "Theme", subtitle: selectedTheme)], toSection: 0)
+		snapshot.appendItems([TitleSubtitleObj(title: "Network", subtitle: selectedNetwork)], toSection: 0)
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
@@ -96,8 +98,11 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if forIndexPath.row == 0 {
 			return "currency"
 			
-		} else {
+		} else if forIndexPath.row == 1 {
 			return "theme"
+			
+		} else {
+			return "network"
 		}
 	}
 }
