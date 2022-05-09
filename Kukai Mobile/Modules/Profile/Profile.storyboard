@@ -76,6 +76,7 @@
                         <segue destination="bdJ-Yb-rRr" kind="show" identifier="currency" id="7gQ-GR-Sng"/>
                         <segue destination="sHl-d8-n9n" kind="show" identifier="theme" id="tsc-ay-12U"/>
                         <segue destination="GML-tM-Zzr" kind="show" identifier="network" id="67V-0s-G5m"/>
+                        <segue destination="RhU-dj-80U" kind="show" identifier="beacon" id="f8C-Io-774"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KM6-sp-NCG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -135,7 +136,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fXH-cY-JT8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2546" y="-2135"/>
+            <point key="canvasLocation" x="-329" y="-597"/>
         </scene>
         <!--Choose Network-->
         <scene sceneID="v1B-6c-oFr">
@@ -186,7 +187,87 @@ Mainly used by developers to experiment / test. Or members of the public when te
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="CXK-qb-VeZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2545" y="-640"/>
+            <point key="canvasLocation" x="1783" y="-597"/>
+        </scene>
+        <!--Beacon-->
+        <scene sceneID="Mye-bK-eQ3">
+            <objects>
+                <viewController id="RhU-dj-80U" customClass="BeaconViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="wWp-Tf-4Zn">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qwV-rT-1Ri">
+                                <rect key="frame" x="24" y="104" width="366" height="32"/>
+                                <segments>
+                                    <segment title="Peers"/>
+                                    <segment title="Permissions"/>
+                                </segments>
+                                <connections>
+                                    <action selector="networkConfigChanged:" destination="GML-tM-Zzr" eventType="valueChanged" id="UHg-rT-ARH"/>
+                                    <action selector="segmentedTapped:" destination="RhU-dj-80U" eventType="valueChanged" id="JaT-eS-Vgs"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kfy-Mw-zDX">
+                                <rect key="frame" x="24" y="761" width="366" height="44"/>
+                                <color key="backgroundColor" name="primary-button-background"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="azh-5B-byc"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Delete All">
+                                    <color key="titleColor" name="primary-button-text"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="deleteAllTapped:" destination="RhU-dj-80U" eventType="touchUpInside" id="B8M-72-UQh"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="kud-EC-jhy">
+                                <rect key="frame" x="0.0" y="143" width="414" height="610"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9gr-uR-iaS"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="kud-EC-jhy" firstAttribute="top" secondItem="qwV-rT-1Ri" secondAttribute="bottom" constant="8" id="1NH-0b-fkh"/>
+                            <constraint firstItem="kud-EC-jhy" firstAttribute="leading" secondItem="9gr-uR-iaS" secondAttribute="leading" id="2X5-ti-Hae"/>
+                            <constraint firstItem="qwV-rT-1Ri" firstAttribute="leading" secondItem="9gr-uR-iaS" secondAttribute="leading" constant="24" id="3YC-jI-UXx"/>
+                            <constraint firstItem="9gr-uR-iaS" firstAttribute="trailing" secondItem="qwV-rT-1Ri" secondAttribute="trailing" constant="24" id="7Mr-F6-kTu"/>
+                            <constraint firstItem="9gr-uR-iaS" firstAttribute="trailing" secondItem="kfy-Mw-zDX" secondAttribute="trailing" constant="24" id="O5y-En-thH"/>
+                            <constraint firstItem="9gr-uR-iaS" firstAttribute="bottom" secondItem="kfy-Mw-zDX" secondAttribute="bottom" constant="8" id="bVR-jP-Kvf"/>
+                            <constraint firstItem="kfy-Mw-zDX" firstAttribute="top" secondItem="kud-EC-jhy" secondAttribute="bottom" constant="8" id="eFv-Zl-pzI"/>
+                            <constraint firstItem="kfy-Mw-zDX" firstAttribute="leading" secondItem="9gr-uR-iaS" secondAttribute="leading" constant="24" id="g7N-Z0-Nbg"/>
+                            <constraint firstItem="qwV-rT-1Ri" firstAttribute="top" secondItem="9gr-uR-iaS" secondAttribute="top" constant="16" id="kxQ-tm-vyX"/>
+                            <constraint firstItem="kud-EC-jhy" firstAttribute="trailing" secondItem="9gr-uR-iaS" secondAttribute="trailing" id="nAD-Fv-gIC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Beacon" id="7FM-7T-ojr">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="lNc-L6-2zM">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="bhU-KP-2r8">
+                                <rect key="frame" x="376" y="11" width="18" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="plus" catalog="system"/>
+                                <connections>
+                                    <action selector="plusTapped:" destination="RhU-dj-80U" eventType="touchUpInside" id="8gY-Wj-7jH"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="deleteAllButton" destination="kfy-Mw-zDX" id="W0b-wa-DI7"/>
+                        <outlet property="tableView" destination="kud-EC-jhy" id="ryW-JH-cFF"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FbW-gE-Vcw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2871.0144927536235" y="-597.32142857142856"/>
         </scene>
         <!--Choose Theme-->
         <scene sceneID="ZlZ-Ek-Rtr">
@@ -225,11 +306,18 @@ Mainly used by developers to experiment / test. Or members of the public when te
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p14-sH-i7k" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2546" y="-1420"/>
+            <point key="canvasLocation" x="713" y="-597"/>
         </scene>
     </scenes>
     <resources>
         <image name="person" catalog="system" width="128" height="117"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
+        <namedColor name="primary-button-background">
+            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="primary-button-text">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="text-primary">
             <color red="0.10980392156862745" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -7,10 +7,11 @@
 
 import UIKit
 import KukaiCoreSwift
-import BeaconSDK
+//import BeaconSDK
 
 class SettingsViewController: UIViewController {
 	
+	/*
 	private let scanner = ScanViewController()
 	
     override func viewDidLoad() {
@@ -37,9 +38,10 @@ class SettingsViewController: UIViewController {
 	@IBAction func deleteWallet(_ sender: Any) {
 		let _ = WalletCacheService().deleteCacheAndKeys()
 		self.navigationController?.popToRootViewController(animated: true)
-	}
+	}*/
 }
 
+/*
 extension SettingsViewController: ScanViewControllerDelegate {
 	
 	func scannedQRCode(code: String) {
@@ -102,3 +104,4 @@ extension SettingsViewController: BeaconServiceOperationDelegate {
 		}
 	}
 }
+*/

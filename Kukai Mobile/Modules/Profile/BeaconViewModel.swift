@@ -1,8 +1,8 @@
 //
-//  ProfileViewModel.swift
+//  BeaconViewModel.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 18/02/2022.
+//  Created by Simon Mcloughlin on 09/05/2022.
 //
 
 import UIKit
@@ -10,47 +10,12 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
-struct TitleSubtitleObj: Hashable {
-	let title: String
-	let subtitle: String
-}
-
-class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private var fetchingDataCancellable: AnyCancellable?
-	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	
-	
-	
-	// MARK: Init
-	
-	/*
-	override init() {
-		super.init()
-		
-		fetchingDataCancellable = DependencyManager.shared.balanceService.$isFetchingData
-			.dropFirst()
-			.sink { [weak self] value in
-				guard let self = self else { return }
-				
-				if value, !self.state.isLoading() {
-					self.state = .loading
-					
-				} else if !value {
-					self.refresh(animate: true)
-				}
-			}
-	}
-	
-	deinit {
-		fetchingDataCancellable?.cancel()
-	}
-	*/
-	
 	
 	// MARK: - Functions
 	
@@ -93,22 +58,5 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Return success
 		self.state = .success(nil)
-	}
-	
-	func segue(forIndexPath: IndexPath) -> String? {
-		if forIndexPath.row == 0 {
-			return "currency"
-			
-		} else if forIndexPath.row == 1 {
-			return "theme"
-			
-		} else if forIndexPath.row == 2 {
-			return "network"
-			
-		} else if forIndexPath.row == 3 {
-			return "beacon"
-		}
-		
-		return nil
 	}
 }

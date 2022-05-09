@@ -30,8 +30,9 @@
 		C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88E28197F1D007EA8A8 /* GmailValidator.swift */; };
 		C009F89128197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */; };
 		C009F89328199073007EA8A8 /* HighlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F89228199073007EA8A8 /* HighlightView.swift */; };
+		C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3A282956B9005F50B8 /* BeaconViewController.swift */; };
+		C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */; };
 		C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01D227127F5E2DD00D3AF4B /* CloudKit.framework */; };
-		C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C021FA2B270F45A700BD9CF3 /* BeaconSDK */; };
 		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
 		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
 		C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02A4FD927DA421100F42DE4 /* Date+extensions.swift */; };
@@ -112,6 +113,10 @@
 		C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D727C68C2B00D7788B /* NumberValidator.swift */; };
 		C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */; };
 		C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */; };
+		C0A79D1B28296E9D0066924F /* BeaconBlockchainTezos in Frameworks */ = {isa = PBXBuildFile; productRef = C0A79D1A28296E9D0066924F /* BeaconBlockchainTezos */; };
+		C0A79D1D28296E9D0066924F /* BeaconClientWallet in Frameworks */ = {isa = PBXBuildFile; productRef = C0A79D1C28296E9D0066924F /* BeaconClientWallet */; };
+		C0A79D1F28296E9D0066924F /* BeaconCore in Frameworks */ = {isa = PBXBuildFile; productRef = C0A79D1E28296E9D0066924F /* BeaconCore */; };
+		C0A79D2128296E9D0066924F /* BeaconTransportP2PMatrix in Frameworks */ = {isa = PBXBuildFile; productRef = C0A79D2028296E9D0066924F /* BeaconTransportP2PMatrix */; };
 		C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3B2771E263002F66C0 /* BottomSheetMediumSegue.swift */; };
 		C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3D2771E5AB002F66C0 /* BottomSheetLargeSegue.swift */; };
 		C0AC1D402771F585002F66C0 /* LedgerInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AC1D3F2771F585002F66C0 /* LedgerInfoViewController.swift */; };
@@ -204,6 +209,8 @@
 		C009F88E28197F1D007EA8A8 /* GmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailValidator.swift; sourceTree = "<group>"; };
 		C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoWhiteSpaceStringValidator.swift; sourceTree = "<group>"; };
 		C009F89228199073007EA8A8 /* HighlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightView.swift; sourceTree = "<group>"; };
+		C015BB3A282956B9005F50B8 /* BeaconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewController.swift; sourceTree = "<group>"; };
+		C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewModel.swift; sourceTree = "<group>"; };
 		C01D227127F5E2DD00D3AF4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C024038826D925FB00E1CB80 /* BeaconService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconService.swift; sourceTree = "<group>"; };
 		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
@@ -346,8 +353,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0A79D1D28296E9D0066924F /* BeaconClientWallet in Frameworks */,
+				C0A79D1F28296E9D0066924F /* BeaconCore in Frameworks */,
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
-				C021FA2C270F45A700BD9CF3 /* BeaconSDK in Frameworks */,
+				C0A79D1B28296E9D0066924F /* BeaconBlockchainTezos in Frameworks */,
+				C0A79D2128296E9D0066924F /* BeaconTransportP2PMatrix in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
 				C07AC26727D22FA500D320D4 /* Charts in Frameworks */,
@@ -381,6 +391,8 @@
 				C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */,
 				C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */,
 				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
+				C015BB3A282956B9005F50B8 /* BeaconViewController.swift */,
+				C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -756,9 +768,12 @@
 			name = "Kukai Mobile";
 			packageProductDependencies = (
 				C0BBD2A426A9A7980097B63A /* Sentry */,
-				C021FA2B270F45A700BD9CF3 /* BeaconSDK */,
 				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
 				C07AC26627D22FA500D320D4 /* Charts */,
+				C0A79D1A28296E9D0066924F /* BeaconBlockchainTezos */,
+				C0A79D1C28296E9D0066924F /* BeaconClientWallet */,
+				C0A79D1E28296E9D0066924F /* BeaconCore */,
+				C0A79D2028296E9D0066924F /* BeaconTransportP2PMatrix */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -834,9 +849,9 @@
 			mainGroup = C0B03636269EE2070071ACD0;
 			packageReferences = (
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
-				C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */,
+				C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -995,6 +1010,7 @@
 				C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */,
 				C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
+				C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
 				C009F88B28195B9C007EA8A8 /* AddressTypeViewController.swift in Sources */,
@@ -1006,6 +1022,7 @@
 				C02D7CAA27BEB0B7006A8E39 /* TitleSubtitleCell.swift in Sources */,
 				C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */,
 				C085EAB526B192A600B37A15 /* SideMenuViewModel.swift in Sources */,
+				C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */,
 				C0B08A33270DC25900075618 /* SendLedgerApproveViewController.swift in Sources */,
 				C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */,
 				C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */,
@@ -1590,12 +1607,12 @@
 				kind = branch;
 			};
 		};
-		C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
+		C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/simonmcl/beacon-ios-sdk";
 			requirement = {
-				branch = develop;
-				kind = branch;
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
 			};
 		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -1609,11 +1626,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C021FA2B270F45A700BD9CF3 /* BeaconSDK */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C021FA2A270F45A700BD9CF3 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
-			productName = BeaconSDK;
-		};
 		C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
@@ -1623,6 +1635,26 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */;
 			productName = Charts;
+		};
+		C0A79D1A28296E9D0066924F /* BeaconBlockchainTezos */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			productName = BeaconBlockchainTezos;
+		};
+		C0A79D1C28296E9D0066924F /* BeaconClientWallet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			productName = BeaconClientWallet;
+		};
+		C0A79D1E28296E9D0066924F /* BeaconCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			productName = BeaconCore;
+		};
+		C0A79D2028296E9D0066924F /* BeaconTransportP2PMatrix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A79D1928296E9D0066924F /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */;
+			productName = BeaconTransportP2PMatrix;
 		};
 		C0BBD2A426A9A7980097B63A /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;

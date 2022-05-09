@@ -43,6 +43,10 @@ class ProfileViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		self.performSegue(withIdentifier: self.viewModel.segue(forIndexPath: indexPath), sender: self)
+		guard let id = self.viewModel.segue(forIndexPath: indexPath) else {
+			return
+		}
+		
+		self.performSegue(withIdentifier: id, sender: self)
 	}
 }

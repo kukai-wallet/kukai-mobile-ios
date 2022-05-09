@@ -7,16 +7,19 @@
 
 import UIKit
 import KukaiCoreSwift
-import BeaconSDK
+import BeaconCore
+import BeaconBlockchainTezos
+import BeaconClientWallet
+import BeaconTransportP2PMatrix
 import Base58Swift
 import os.log
 
 public protocol BeaconServiceConnectionDelegate: AnyObject {
-	func permissionRequest(requestingAppName: String, permissionRequest: Beacon.Request.Permission)
+	func permissionRequest(requestingAppName: String, permissionRequest: PermissionTezosRequest)
 }
 
 public protocol BeaconServiceOperationDelegate: AnyObject {
-	func operationRequest(requestingAppName: String, operationRequest: Beacon.Request.Operation)
+	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest)
 }
 
 public class BeaconService {
@@ -25,7 +28,7 @@ public class BeaconService {
 	public weak var connectionDelegate: BeaconServiceConnectionDelegate?
 	public weak var operationDelegate: BeaconServiceOperationDelegate?
 	
-	private var beaconClient: Beacon.Client?
+	private var beaconClient: Beacon.WalletClient?
 	
 	public func createPeerObjectFromQrCode(_ string: String) -> Beacon.P2PPeer? {
 		guard let url = URL(string: string), let params = url.query?.components(separatedBy: "&"), params.count == 2 else {
@@ -54,7 +57,13 @@ public class BeaconService {
 	}
 	
 	public func startBeacon(completion: @escaping ((Bool) -> Void)) {
-		Beacon.Client.create(with: Beacon.Client.Configuration(name: "Kukai Mobile")) { [weak self] result in
+		guard let matrix = try? Transport.P2P.Matrix.connection() else {
+			completion(false)
+			return
+		}
+		
+		let config = Beacon.WalletClient.Configuration(name: "Kukai iOS", blockchains: [Tezos.factory], connections: [matrix])
+		Beacon.WalletClient.create(with: config) { [weak self] result in
 			guard let client = try? result.get() else {
 				print("Could not create Beacon client, got error: \( String(describing: try? result.getError()) )")
 				return
@@ -73,21 +82,28 @@ public class BeaconService {
 		}
 	}
 	
-	private func onBeaconRequest(result: Result<Beacon.Request, Beacon.Error>) {
+	private func onBeaconRequest(result: Result<BeaconRequest<Tezos>, Beacon.Error>) {
 		guard let request = try? result.get() else {
 			print("Error while processing incoming messages: \( String(describing: try? result.getError()) )")
 			return
 		}
 		
 		switch request {
+				
 			case .permission(let permission):
 				connectionDelegate?.permissionRequest(requestingAppName: permission.appMetadata.name, permissionRequest: permission)
 			
-			case .operation(let operation):
-				operationDelegate?.operationRequest(requestingAppName: operation.appMetadata?.name ?? "", operationRequest: operation)
-				
-			case .signPayload(let signPayload):
-				print("signPayload: \(signPayload)")
+			case .blockchain(let blockchain):
+				switch blockchain {
+					case .operation(let operation):
+						operationDelegate?.operationRequest(requestingAppName: operation.appMetadata?.name ?? "", operationRequest: operation)
+						
+					case .signPayload(let signPayload):
+						print("signPayload: \(signPayload)")
+						
+					case .broadcast(let broadcast):
+						print("broadcast: \(broadcast)")
+				}
 				
 			default:
 				print("Unsupported request type: \(request)")
@@ -115,9 +131,22 @@ public class BeaconService {
 	
 	// MARK: - Completion actions
 	
-	public func acceptPermissionRequest(permission: Beacon.Request.Permission, wallet: Wallet, completion: @escaping ((Result<(), Beacon.Error>) -> ())) {
-		let response = Beacon.Response.Permission(from: permission, publicKey: wallet.publicKeyBase58encoded())
-		beaconClient?.respond(with: .permission(response), completion: completion)
+	public func acceptPermissionRequest(permission: PermissionTezosRequest, wallet: Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		guard let account = try? Tezos.Account(publicKey: wallet.publicKeyBase58encoded(), address: wallet.address, network: permission.network)  else {
+			completion(Result.failure(ErrorResponse.error(string: "Can't create Beacon.Tezos.Account", errorType: .unknownError)))
+			return
+		}
+		
+		let response = BeaconResponse<Tezos>.permission(PermissionTezosResponse(from: permission, account: account))
+		beaconClient?.respond(with: response, completion: { result in
+			switch result {
+				case .success():
+					completion(Result.success(()))
+				
+				case .failure(let error):
+					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+			}
+		})
 	}
 	
 	public func rejectPermissionRequest(permission: Beacon.Request.Permission, wallet: Wallet, completion: @escaping ((Result<(), Beacon.Error>) -> ())) {
