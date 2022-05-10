@@ -104,9 +104,6 @@ public class BeaconService {
 					case .broadcast(let broadcast):
 						print("broadcast: \(broadcast)")
 				}
-				
-			default:
-				print("Unsupported request type: \(request)")
 		}
 	}
 	
@@ -149,21 +146,37 @@ public class BeaconService {
 		})
 	}
 	
-	public func rejectPermissionRequest(permission: Beacon.Request.Permission, wallet: Wallet, completion: @escaping ((Result<(), Beacon.Error>) -> ())) {
-		let response = Beacon.Response.Error(id: permission.id, errorType: .aborted, version: "2", requestOrigin: permission.origin)
-		beaconClient?.respond(with: .error(response), completion: completion)
+	public func rejectPermissionRequest(permission: PermissionTezosRequest, wallet: Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		let response = BeaconResponse<Tezos>.error(ErrorBeaconResponse(from: permission, errorType: .aborted))
+		beaconClient?.respond(with: response, completion: { result in
+			switch result {
+				case .success():
+					completion(Result.success(()))
+					
+				case .failure(let error):
+					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+			}
+		})
 	}
 	
-	public func approveOperationRequest(operation: Beacon.Request.Operation, opHash: String, completion: @escaping ((Result<(), Beacon.Error>) -> ())) {
-		let response = Beacon.Response.Operation(from: operation, transactionHash: opHash)
-		beaconClient?.respond(with: .operation(response), completion: completion)
+	public func approveOperationRequest(operation: OperationTezosRequest, opHash: String, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		let response = BeaconResponse<Tezos>.blockchain(.operation(OperationTezosResponse(from: operation, transactionHash: opHash)))
+		beaconClient?.respond(with: response, completion: { result in
+			switch result {
+				case .success():
+					completion(Result.success(()))
+					
+				case .failure(let error):
+					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+			}
+		})
 	}
 	
 	
 	
 	// MARK: - Helpers and parsers
 	
-	public static func process(operation: Beacon.Request.Operation, forWallet wallet: Wallet) -> [KukaiCoreSwift.Operation] {
+	public static func process(operation: OperationTezosRequest, forWallet wallet: Wallet) -> [KukaiCoreSwift.Operation] {
 		var ops: [KukaiCoreSwift.Operation] = []
 		
 		for op in operation.operationDetails {
@@ -177,27 +190,27 @@ public class BeaconService {
 			var convertedOp: KukaiCoreSwift.Operation? = nil
 			switch op {
 				case .activateAccount(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationActivateAccount.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationActivateAccount.self, forWallet: wallet)
 				case .ballot(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationBallot.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationBallot.self, forWallet: wallet)
 				case .delegation(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDelegation.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationDelegation.self, forWallet: wallet)
 				case .doubleBakingEvidence(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDoubleBakingEvidence.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationDoubleBakingEvidence.self, forWallet: wallet)
 				case .doubleEndorsementEvidence(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationDoubleEndorsementEvidence.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationDoubleEndorsementEvidence.self, forWallet: wallet)
 				case .endorsement(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationEndorsement.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationEndorsement.self, forWallet: wallet)
 				case .origination(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationOrigination.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationOrigination.self, forWallet: wallet)
 				case .proposals(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationProposals.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationProposals.self, forWallet: wallet)
 				case .reveal(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationReveal.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationReveal.self, forWallet: wallet)
 				case .seedNonceRevelation(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationSeedNonceRevelation.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationSeedNonceRevelation.self, forWallet: wallet)
 				case .transaction(_):
-					convertedOp = convert(beaconOp: opJson, toKukaioOpType: OperationTransaction.self, forWallet: wallet)
+					convertedOp = convert(beaconOp: opJson, toKukaiOpType: OperationTransaction.self, forWallet: wallet)
 			}
 			
 			// If it worked, add to array
@@ -209,7 +222,7 @@ public class BeaconService {
 		return ops
 	}
 	
-	public static func convert(beaconOp: Data, toKukaioOpType kukaiType: KukaiCoreSwift.Operation.Type, forWallet wallet: Wallet) -> KukaiCoreSwift.Operation? {
+	public static func convert(beaconOp: Data, toKukaiOpType kukaiType: KukaiCoreSwift.Operation.Type, forWallet wallet: Wallet) -> KukaiCoreSwift.Operation? {
 		do {
 			let convertedOp = try JSONDecoder().decode(kukaiType.self, from: beaconOp)
 			convertedOp.source = wallet.address
