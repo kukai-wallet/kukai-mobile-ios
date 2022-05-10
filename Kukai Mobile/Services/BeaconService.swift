@@ -22,6 +22,18 @@ public protocol BeaconServiceOperationDelegate: AnyObject {
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest)
 }
 
+public struct PeerDisplay {
+	let name: String
+	let server: String
+	let publicKey: String
+}
+
+public struct PermissionDisplay {
+	let name: String
+	let address: String
+	let accountIdentifier: String
+}
+
 public class BeaconService {
 	
 	public static let shared = BeaconService()
@@ -82,6 +94,17 @@ public class BeaconService {
 		}
 	}
 	
+	public func stopBeacon(completion: @escaping ((Bool) -> Void)) {
+		beaconClient?.disconnect(completion: { result in
+			guard let _ = try? result.get() else {
+				completion(false)
+				return
+			}
+			
+			completion(true)
+		})
+	}
+	
 	private func onBeaconRequest(result: Result<BeaconRequest<Tezos>, Beacon.Error>) {
 		guard let request = try? result.get() else {
 			print("Error while processing incoming messages: \( String(describing: try? result.getError()) )")
@@ -123,6 +146,87 @@ public class BeaconService {
 			}
 		})
 	}
+	
+	public func getPeers(completion: @escaping ((Result<[PeerDisplay], ErrorResponse>) -> Void)) {
+		beaconClient?.getPeers(completion: { result in
+			guard let res = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			var array: [PeerDisplay] = []
+			for obj in res {
+				array.append(PeerDisplay(name: obj.name, server: "", publicKey: obj.publicKey))
+			}
+			
+			completion(Result.success(array))
+		})
+	}
+	
+	public func getPermissions(completion: @escaping ((Result<[PermissionDisplay], ErrorResponse>) -> Void)) {
+		/*beaconClient?.getPermissions(completion: { result in
+			guard let res = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			var array: [PermissionDisplay] = []
+			for obj in res {
+				
+				array.append(PermissionDisplay(name: obj, address: ""))
+			}
+			
+			completion(Result.success(array))
+		})*/
+		
+		completion(Result.success([]))
+	}
+	
+	public func removePeer(_ peer: PeerDisplay, completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+		beaconClient?.removePeer(withPublicKey: peer.publicKey, completion: { result in
+			guard let _ = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			completion(Result.success(()))
+		})
+	}
+	
+	public func removePermission(_ permission: PermissionDisplay, completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+		beaconClient?.removePermissions(forAccountIdentifier: permission.accountIdentifier, completion: { result in
+			guard let _ = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			completion(Result.success(()))
+		})
+	}
+	
+	public func removeAllPeers(completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+		beaconClient?.removeAllPeers(completion: { result in
+			guard let _ = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			completion(Result.success(()))
+		})
+	}
+	
+	public func removerAllPermissions(completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+		beaconClient?.removeAllPermissions(completion: { result in
+			guard let _ = try? result.get() else {
+				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				return
+			}
+			
+			completion(Result.success(()))
+		})
+	}
+	
+	
 	
 	
 	
@@ -171,6 +275,8 @@ public class BeaconService {
 			}
 		})
 	}
+	
+	
 	
 	
 	
