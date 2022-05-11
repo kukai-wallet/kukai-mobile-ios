@@ -12,23 +12,25 @@ import BeaconBlockchainTezos
 import BeaconClientWallet
 import BeaconTransportP2PMatrix
 import Base58Swift
+import WalletCore
 import os.log
 
 public protocol BeaconServiceConnectionDelegate: AnyObject {
 	func permissionRequest(requestingAppName: String, permissionRequest: PermissionTezosRequest)
+	func signPayload(requestingAppName: String, humanReadableString: String, payloadRequest: SignPayloadTezosRequest)
 }
 
 public protocol BeaconServiceOperationDelegate: AnyObject {
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest)
 }
 
-public struct PeerDisplay {
+public struct PeerDisplay: Hashable {
 	let name: String
 	let server: String
 	let publicKey: String
 }
 
-public struct PermissionDisplay {
+public struct PermissionDisplay: Hashable {
 	let name: String
 	let address: String
 	let accountIdentifier: String
@@ -114,15 +116,22 @@ public class BeaconService {
 		switch request {
 				
 			case .permission(let permission):
-				connectionDelegate?.permissionRequest(requestingAppName: permission.appMetadata.name, permissionRequest: permission)
+				DispatchQueue.main.async { [weak self] in
+					self?.connectionDelegate?.permissionRequest(requestingAppName: permission.appMetadata.name, permissionRequest: permission)
+				}
 			
 			case .blockchain(let blockchain):
 				switch blockchain {
 					case .operation(let operation):
-						operationDelegate?.operationRequest(requestingAppName: operation.appMetadata?.name ?? "", operationRequest: operation)
+						DispatchQueue.main.async { [weak self] in
+							self?.operationDelegate?.operationRequest(requestingAppName: operation.appMetadata?.name ?? "", operationRequest: operation)
+						}
 						
 					case .signPayload(let signPayload):
-						print("signPayload: \(signPayload)")
+						DispatchQueue.main.async { [weak self] in
+							let readableString = self?.convert(hexString: signPayload.payload) ?? ""
+							self?.connectionDelegate?.signPayload(requestingAppName: signPayload.appMetadata?.name ?? "", humanReadableString: readableString, payloadRequest: signPayload)
+						}
 						
 					case .broadcast(let broadcast):
 						print("broadcast: \(broadcast)")
@@ -156,7 +165,9 @@ public class BeaconService {
 			
 			var array: [PeerDisplay] = []
 			for obj in res {
-				array.append(PeerDisplay(name: obj.name, server: "", publicKey: obj.publicKey))
+				if case let .p2p(p2p) = obj {
+					array.append(PeerDisplay(name: p2p.name, server: p2p.relayServer, publicKey: p2p.publicKey))
+				}
 			}
 			
 			completion(Result.success(array))
@@ -164,7 +175,7 @@ public class BeaconService {
 	}
 	
 	public func getPermissions(completion: @escaping ((Result<[PermissionDisplay], ErrorResponse>) -> Void)) {
-		/*beaconClient?.getPermissions(completion: { result in
+		beaconClient?.getPermissions { (result: Result<[Tezos.Permission], Beacon.Error>) in
 			guard let res = try? result.get() else {
 				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
@@ -172,14 +183,11 @@ public class BeaconService {
 			
 			var array: [PermissionDisplay] = []
 			for obj in res {
-				
-				array.append(PermissionDisplay(name: obj, address: ""))
+				array.append(PermissionDisplay(name: obj.appMetadata.name, address: obj.address, accountIdentifier: obj.accountID))
 			}
 			
 			completion(Result.success(array))
-		})*/
-		
-		completion(Result.success([]))
+		}
 	}
 	
 	public func removePeer(_ peer: PeerDisplay, completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
@@ -232,7 +240,7 @@ public class BeaconService {
 	
 	// MARK: - Completion actions
 	
-	public func acceptPermissionRequest(permission: PermissionTezosRequest, wallet: Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func acceptPermissionRequest(permission: PermissionTezosRequest, wallet: KukaiCoreSwift.Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
 		guard let account = try? Tezos.Account(publicKey: wallet.publicKeyBase58encoded(), address: wallet.address, network: permission.network)  else {
 			completion(Result.failure(ErrorResponse.error(string: "Can't create Beacon.Tezos.Account", errorType: .unknownError)))
 			return
@@ -242,23 +250,51 @@ public class BeaconService {
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
 				case .success():
-					completion(Result.success(()))
+					DispatchQueue.main.async {
+						completion(Result.success(()))
+					}
 				
 				case .failure(let error):
-					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					DispatchQueue.main.async {
+						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					}
 			}
 		})
 	}
 	
-	public func rejectPermissionRequest(permission: PermissionTezosRequest, wallet: Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func rejectPermissionRequest(permission: PermissionTezosRequest, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
 		let response = BeaconResponse<Tezos>.error(ErrorBeaconResponse(from: permission, errorType: .aborted))
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
 				case .success():
-					completion(Result.success(()))
+					DispatchQueue.main.async {
+						completion(Result.success(()))
+					}
 					
 				case .failure(let error):
-					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					DispatchQueue.main.async {
+						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					}
+			}
+		})
+	}
+	
+	public func signPayloadRequest(request: SignPayloadTezosRequest, withWallet wallet: KukaiCoreSwift.Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		let signature = wallet.sign(request.payload)
+		let obj = SignPayloadTezosResponse(from: request, signature: signature?.toHexString() ?? "")
+		let response = BeaconResponse<Tezos>.blockchain(.signPayload(obj))
+		
+		beaconClient?.respond(with: response, completion: { result in
+			switch result {
+				case .success():
+					DispatchQueue.main.async {
+						completion(Result.success(()))
+					}
+					
+				case .failure(let error):
+					DispatchQueue.main.async {
+						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					}
 			}
 		})
 	}
@@ -268,10 +304,31 @@ public class BeaconService {
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
 				case .success():
-					completion(Result.success(()))
+					DispatchQueue.main.async {
+						completion(Result.success(()))
+					}
 					
 				case .failure(let error):
-					completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					DispatchQueue.main.async {
+						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					}
+			}
+		})
+	}
+	
+	public func rejectRequest(request: Tezos.Request.Blockchain, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		let response = BeaconResponse<Tezos>.error(ErrorBeaconResponse(from: request, errorType: .aborted))
+		beaconClient?.respond(with: response, completion: { result in
+			switch result {
+				case .success():
+					DispatchQueue.main.async {
+						completion(Result.success(()))
+					}
+					
+				case .failure(let error):
+					DispatchQueue.main.async {
+						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+					}
 			}
 		})
 	}
@@ -282,7 +339,7 @@ public class BeaconService {
 	
 	// MARK: - Helpers and parsers
 	
-	public static func process(operation: OperationTezosRequest, forWallet wallet: Wallet) -> [KukaiCoreSwift.Operation] {
+	public static func process(operation: OperationTezosRequest, forWallet wallet: KukaiCoreSwift.Wallet) -> [KukaiCoreSwift.Operation] {
 		var ops: [KukaiCoreSwift.Operation] = []
 		
 		for op in operation.operationDetails {
@@ -328,7 +385,7 @@ public class BeaconService {
 		return ops
 	}
 	
-	public static func convert(beaconOp: Data, toKukaiOpType kukaiType: KukaiCoreSwift.Operation.Type, forWallet wallet: Wallet) -> KukaiCoreSwift.Operation? {
+	public static func convert(beaconOp: Data, toKukaiOpType kukaiType: KukaiCoreSwift.Operation.Type, forWallet wallet: KukaiCoreSwift.Wallet) -> KukaiCoreSwift.Operation? {
 		do {
 			let convertedOp = try JSONDecoder().decode(kukaiType.self, from: beaconOp)
 			convertedOp.source = wallet.address
@@ -339,5 +396,22 @@ public class BeaconService {
 		}
 		
 		return nil
+	}
+	
+	public func convert(hexString: String) -> String {
+		if String(hexString.prefix(6)) == "050100" {
+			let index = hexString.index(hexString.startIndex, offsetBy: 10)
+			let subString = String(hexString.suffix(from: index))
+			
+			let d = Data(hexString: subString) ?? Data()
+			let readable = String(data: d, encoding: .isoLatin1)
+			
+			return readable ?? ""
+		}
+		
+		let d = Data(hexString: hexString) ?? Data()
+		let readable = String(data: d, encoding: .isoLatin1)
+		
+		return readable ?? ""
 	}
 }

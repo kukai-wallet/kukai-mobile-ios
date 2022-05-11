@@ -130,33 +130,33 @@ extension UIViewController {
 	}
 	
 	func alert(withTitle title: String, andMessage message: String) {
-		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-		let action = UIAlertAction(title: "ok", style: .default, handler: nil)
-		alert.addAction(action)
-		
 		DispatchQueue.main.async {
+			let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+			let action = UIAlertAction(title: "ok", style: .default, handler: nil)
+			alert.addAction(action)
+			
 			self.present(alert, animated: Thread.current.isRunningXCTest ? false : true, completion: nil)
 		}
 	}
 	
 	func alert(withTitle title: String, andMessage message: String, okText: String = "ok", okAction: @escaping ((UIAlertAction) -> Void)) {
-		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-		let okAction = UIAlertAction(title: okText, style: .default, handler: okAction)
-		alert.addAction(okAction)
-		
 		DispatchQueue.main.async {
+			let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+			let okAction = UIAlertAction(title: okText, style: .default, handler: okAction)
+			alert.addAction(okAction)
+			
 			self.present(alert, animated: Thread.current.isRunningXCTest ? false : true, completion: nil)
 		}
 	}
 	
 	func alert(withTitle title: String, andMessage message: String, okText: String = "ok", okAction: @escaping ((UIAlertAction) -> Void), cancelText: String = "cancel", cancelAction: @escaping ((UIAlertAction) -> Void)) {
-		let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-		let okAction = UIAlertAction(title: okText, style: .default, handler: okAction)
-		let cancelAction = UIAlertAction(title: cancelText, style: .default, handler: cancelAction)
-		alert.addAction(okAction)
-		alert.addAction(cancelAction)
-		
 		DispatchQueue.main.async {
+			let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+			let okAction = UIAlertAction(title: okText, style: .default, handler: okAction)
+			let cancelAction = UIAlertAction(title: cancelText, style: .default, handler: cancelAction)
+			alert.addAction(okAction)
+			alert.addAction(cancelAction)
+			
 			self.present(alert, animated: Thread.current.isRunningXCTest ? false : true, completion: nil)
 		}
 	}

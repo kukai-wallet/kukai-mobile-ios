@@ -7,6 +7,9 @@
 
 import UIKit
 import Combine
+import KukaiCoreSwift
+import BeaconCore
+import BeaconBlockchainTezos
 
 class HomeTabBarController: UITabBarController {
 	
@@ -41,6 +44,18 @@ class HomeTabBarController: UITabBarController {
 		
 		TransactionService.shared.resetState()
 		updateAccountButton()
+		
+		
+		BeaconService.shared.operationDelegate = self
+		BeaconService.shared.startBeacon { started in
+			print("Beacon successfully started: \(started)")
+			
+			BeaconService.shared.removeAllPeers { result in
+				BeaconService.shared.removerAllPermissions { result2 in
+					print("Beacon: everything gone")
+				}
+			}
+		}
 	}
 	
 	public func updateAccountButton() {
@@ -55,48 +70,38 @@ class HomeTabBarController: UITabBarController {
 	@IBAction func sendButtonTapped(_ sender: Any) {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
+}
+
+extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	/*
-	 // Prevent nav button from consuming the entire nav bar
-	 //accountNavButton.addConstraint(NSLayoutConstraint(item: accountNavButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 140))
-	 
-	 
-	 
-	 
-	 
-	private let middleButton = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-	 
-	 
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		self.navigationController?.setNavigationBarHidden(true, animated: false)
-		self.navigationItem.hidesBackButton = true
-		
-		guard let tabItems = tabBar.items else { return }
-		tabItems[0].titlePositionAdjustment = UIOffset(horizontal: -25, vertical: 0)
-		tabItems[1].titlePositionAdjustment = UIOffset(horizontal: 25, vertical: 0)
-		
-		middleButton.setBackgroundImage(UIImage(named: "middle-tab-button"), for: .normal)
-		middleButton.setBackgroundImage(UIImage(named: "middle-tab-button")?.maskWithColor(color: .lightGray), for: .highlighted)
-		middleButton.tintColor = UIColor.black
-		middleButton.center = CGPoint(x: tabBar.frame.width/2, y: 25)
-		self.tabBar.addSubview(middleButton)
-		
-		self.view.backgroundColor = UIColor(named: "background")
+	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
+		self.alert(withTitle: "Approve Operation?", andMessage: "Operation requested by: \(requestingAppName)", okText: "Ok", okAction: { action in
+			
+			if let wallet = WalletCacheService().fetchPrimaryWallet() {
+				let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
+				print("\n\n\n Converted OPs: \(convertedOps) \n\n\n")
+				
+				DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { result in
+					guard let estiamtedOps = try? result.get() else {
+						print("Error: \(result)")
+						return
+					}
+					
+					DependencyManager.shared.tezosNodeClient.send(operations: estiamtedOps, withWallet: wallet) { sendResult in
+						guard let opHash = try? sendResult.get() else {
+							print("Error: \(sendResult)")
+							return
+						}
+						
+						BeaconService.shared.approveOperationRequest(operation: operationRequest, opHash: opHash) { beaconResult in
+							print("\n\n\n BeaconResult: \(beaconResult) \n\n\n")
+						}
+					}
+				}
+			}
+			
+		}, cancelText: "cancel") { action in
+			
+		}
 	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		self.tabBar.roundCorners(corners: [.topLeft, .topRight], radius: 28)
-	}
-	*/
 }

@@ -7,6 +7,8 @@
 
 import Foundation
 import KukaiCoreSwift
+import BeaconCore
+import BeaconBlockchainTezos
 import UIKit
 
 public class TransactionService {
@@ -16,6 +18,9 @@ public class TransactionService {
 		case exchange
 		case addLiquidity
 		case removeLiquidity
+		case beaconApprove
+		case beaconSign
+		case beaconOperation
 		case none
 	}
 	
@@ -42,6 +47,19 @@ public class TransactionService {
 		var position: DipDupPositionData?
 	}
 	
+	public struct BeaconApproveData {
+		var request: PermissionTezosRequest?
+	}
+	
+	public struct BeaconSignData {
+		var request: SignPayloadTezosRequest?
+		var humanReadableString: String?
+	}
+	
+	public struct BeaconOperationData {
+		
+	}
+	
 	
 	
 	public static let shared = TransactionService()
@@ -51,6 +69,9 @@ public class TransactionService {
 	public var exchangeData: ExchangeData
 	public var addLiquidityData: AddLiquidityData
 	public var removeLiquidityData: RemoveLiquidityData
+	public var beaconApproveData: BeaconApproveData
+	public var beaconSignData: BeaconSignData
+	public var beaconOperationData: BeaconOperationData
 	
 	
 	
@@ -60,6 +81,9 @@ public class TransactionService {
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
+		self.beaconApproveData = BeaconApproveData(request: nil)
+		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
+		self.beaconOperationData = BeaconOperationData()
 	}
 	
 	
@@ -70,6 +94,9 @@ public class TransactionService {
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
+		self.beaconApproveData = BeaconApproveData(request: nil)
+		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
+		self.beaconOperationData = BeaconOperationData()
 	}
 	
 	public func record(exchange: DipDupExchange) {
