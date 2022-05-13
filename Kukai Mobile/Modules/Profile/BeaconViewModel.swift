@@ -18,6 +18,9 @@ class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var peersSelected = true
 	
+	private var peers: [PeerDisplay] = []
+	private var permissions: [PermissionDisplay] = []
+	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
@@ -28,12 +31,16 @@ class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.nameLabel.text = obj.name
 				cell.fieldNameLabel.text = "Server Relay:"
 				cell.fieldValueLabel.text = obj.server
+				cell.row = indexPath.row
+				cell.delegate = self
 				return cell
 				
 			} else if !self.peersSelected, let obj = item as? PermissionDisplay, let cell = tableView.dequeueReusableCell(withIdentifier: "BeaconConfigCell", for: indexPath) as? BeaconConfigCell {
 				cell.nameLabel.text = obj.name
 				cell.fieldNameLabel.text = "Address:"
 				cell.fieldValueLabel.text = obj.address
+				cell.row = indexPath.row
+				cell.delegate = self
 				return cell
 				
 			} else {
@@ -56,21 +63,23 @@ class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendSections([0])
 		
 		if peersSelected {
-			BeaconService.shared.getPeers { result in
+			BeaconService.shared.getPeers { [weak self] result in
 				guard let res = try? result.get() else {
-					self.state = .failure(result.getFailure(), "Error fetching peers")
+					self?.state = .failure(result.getFailure(), "Error fetching peers")
 					return
 				}
 				
+				self?.peers = res
 				snapshot.appendItems(res, toSection: 0)
 			}
 		} else {
-			BeaconService.shared.getPermissions { result in
+			BeaconService.shared.getPermissions { [weak self] result in
 				guard let res = try? result.get() else {
-					self.state = .failure(result.getFailure(), "Error fetching peers")
+					self?.state = .failure(result.getFailure(), "Error fetching peers")
 					return
 				}
 				
+				self?.permissions = res
 				snapshot.appendItems(res, toSection: 0)
 			}
 		}
@@ -84,5 +93,37 @@ class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func changePeersSelected(_ selected: Bool) {
 		self.peersSelected = selected
 		self.refresh(animate: true)
+	}
+}
+
+extension BeaconViewModel: BeaconConfigCellProtocol {
+	
+	func deleteTapped(forRow: Int) {
+		print("Delete tapped for row: \(forRow)")
+		
+		if peersSelected, forRow < self.peers.count {
+			print("inside peers")
+			
+			self.state = .loading
+			BeaconService.shared.removePeer(self.peers[forRow]) { [weak self] result in
+				print("peer - result: \(result)")
+				
+				DispatchQueue.main.async {
+					self?.refresh(animate: true)
+				}
+			}
+			
+		} else if !peersSelected, forRow < self.permissions.count {
+			print("inside permissions")
+			
+			self.state = .loading
+			BeaconService.shared.removePermission(permissions[forRow]) { [weak self] result in
+				print("permission - result: \(result)")
+				
+				DispatchQueue.main.async {
+					self?.refresh(animate: true)
+				}
+			}
+		}
 	}
 }

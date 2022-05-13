@@ -47,6 +47,10 @@ class HomeTabBarController: UITabBarController {
 		
 		
 		BeaconService.shared.operationDelegate = self
+		BeaconService.shared.startBeacon(completion: ({ _ in}))
+		
+		// TODO: remove all permissions doesn't seem to do anything
+		/*
 		BeaconService.shared.startBeacon { started in
 			print("Beacon successfully started: \(started)")
 			
@@ -56,6 +60,7 @@ class HomeTabBarController: UITabBarController {
 				}
 			}
 		}
+		*/
 	}
 	
 	public func updateAccountButton() {

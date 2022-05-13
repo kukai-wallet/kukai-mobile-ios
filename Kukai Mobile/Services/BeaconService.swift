@@ -25,12 +25,14 @@ public protocol BeaconServiceOperationDelegate: AnyObject {
 }
 
 public struct PeerDisplay: Hashable {
+	let id: String
 	let name: String
 	let server: String
 	let publicKey: String
 }
 
 public struct PermissionDisplay: Hashable {
+	let id: String
 	let name: String
 	let address: String
 	let accountIdentifier: String
@@ -164,9 +166,9 @@ public class BeaconService {
 			}
 			
 			var array: [PeerDisplay] = []
-			for obj in res {
+			for (index, obj) in res.enumerated() {
 				if case let .p2p(p2p) = obj {
-					array.append(PeerDisplay(name: p2p.name, server: p2p.relayServer, publicKey: p2p.publicKey))
+					array.append(PeerDisplay(id: p2p.id ?? "\(index):\(p2p.name)", name: p2p.name, server: p2p.relayServer, publicKey: p2p.publicKey))
 				}
 			}
 			
@@ -182,8 +184,8 @@ public class BeaconService {
 			}
 			
 			var array: [PermissionDisplay] = []
-			for obj in res {
-				array.append(PermissionDisplay(name: obj.appMetadata.name, address: obj.address, accountIdentifier: obj.accountID))
+			for (index, obj) in res.enumerated() {
+				array.append(PermissionDisplay(id: "\(index):\(obj.appMetadata.name)", name: obj.appMetadata.name, address: obj.address, accountIdentifier: obj.accountID))
 			}
 			
 			completion(Result.success(array))
