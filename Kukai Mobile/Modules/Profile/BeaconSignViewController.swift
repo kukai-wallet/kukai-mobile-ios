@@ -36,7 +36,7 @@ class BeaconSignViewController: UIViewController {
 			// Connect to the ledger wallet, and request a signature from the device
 			LedgerService.shared.connectTo(uuid: ledgerWallet.ledgerUUID)
 				.flatMap { _ -> AnyPublisher<String, ErrorResponse> in
-					return LedgerService.shared.sign(hex: request.payload, parse: false)
+					return LedgerService.shared.sign(hex: request.payload, parse: true)
 				}
 				.sink(onError: { [weak self] error in
 					self?.alert(errorWithMessage: "Error: \(error)")

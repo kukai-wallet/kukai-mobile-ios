@@ -47,6 +47,7 @@ class ProfileViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
+		self.tableView.deselectRow(at: indexPath, animated: true)
 		self.performSegue(withIdentifier: id, sender: self)
 	}
 }

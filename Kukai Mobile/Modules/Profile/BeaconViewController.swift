@@ -63,6 +63,21 @@ class BeaconViewController: UIViewController {
 	}
 	
 	@IBAction func deleteAllTapped(_ sender: Any) {
+		BeaconService.shared.removeAllPeers { result in
+			guard let _ = try? result.get() else {
+				self.alert(errorWithMessage: "Unable to delete peers")
+				return
+			}
+			
+			BeaconService.shared.removerAllPermissions { [weak self] result2 in
+				guard let _ = try? result.get() else {
+					self?.alert(errorWithMessage: "Unable to delete permissions")
+					return
+				}
+				
+				self?.viewModel.refresh(animate: true)
+			}
+		}
 	}
 }
 
