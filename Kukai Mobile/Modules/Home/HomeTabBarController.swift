@@ -48,19 +48,6 @@ class HomeTabBarController: UITabBarController {
 		
 		BeaconService.shared.operationDelegate = self
 		BeaconService.shared.startBeacon(completion: ({ _ in}))
-		
-		// TODO: remove all permissions doesn't seem to do anything
-		/*
-		BeaconService.shared.startBeacon { started in
-			print("Beacon successfully started: \(started)")
-			
-			BeaconService.shared.removeAllPeers { result in
-				BeaconService.shared.removerAllPermissions { result2 in
-					print("Beacon: everything gone")
-				}
-			}
-		}
-		*/
 	}
 	
 	public func updateAccountButton() {
@@ -80,33 +67,58 @@ class HomeTabBarController: UITabBarController {
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
-		self.alert(withTitle: "Approve Operation?", andMessage: "Operation requested by: \(requestingAppName)", okText: "Ok", okAction: { action in
-			
-			if let wallet = WalletCacheService().fetchPrimaryWallet() {
-				let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
-				print("\n\n\n Converted OPs: \(convertedOps) \n\n\n")
-				
-				DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { result in
-					guard let estiamtedOps = try? result.get() else {
-						print("Error: \(result)")
-						return
-					}
-					
-					DependencyManager.shared.tezosNodeClient.send(operations: estiamtedOps, withWallet: wallet) { sendResult in
-						guard let opHash = try? sendResult.get() else {
-							print("Error: \(sendResult)")
-							return
-						}
-						
-						BeaconService.shared.approveOperationRequest(operation: operationRequest, opHash: opHash) { beaconResult in
-							print("\n\n\n BeaconResult: \(beaconResult) \n\n\n")
-						}
-					}
-				}
+		guard let wallet = DependencyManager.shared.selectedWallet else {
+			self.alert(errorWithMessage: "Processing Beacon request, unable to locate wallet")
+			return
+		}
+		
+		self.showLoadingView()
+		
+		
+		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { result in
+			guard let estimatedOps = try? result.get() else {
+				self.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
+				return
 			}
 			
-		}, cancelText: "cancel") { action in
+			TransactionService.shared.currentTransactionType = .beaconOperation
+			TransactionService.shared.beaconOperationData.estimatedOperations = estimatedOps
+			TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
 			
+			if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
+				
+				if transactionOperation.parameters == nil {
+					TransactionService.shared.beaconOperationData.operationType = .sendXTZ
+					
+					let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+					TransactionService.shared.beaconOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
+					
+				} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
+					if token.isNFT {
+						TransactionService.shared.beaconOperationData.operationType = .sendNFT
+						TransactionService.shared.beaconOperationData.tokenToSend = token.token
+						
+					} else {
+						TransactionService.shared.beaconOperationData.operationType = .sendToken
+						TransactionService.shared.beaconOperationData.tokenToSend = token.token
+					}
+					
+				} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
+					TransactionService.shared.beaconOperationData.operationType = .callSmartContract
+					TransactionService.shared.beaconOperationData.entrypointToCall = entrypoint
+					
+				} else {
+					TransactionService.shared.beaconOperationData.operationType = .unknown
+				}
+				
+			} else {
+				TransactionService.shared.beaconOperationData.operationType = .unknown
+			}
+			
+			
+			self.hideLoadingView()
+			self.performSegue(withIdentifier: "beacon-approve", sender: nil)
 		}
 	}
 }

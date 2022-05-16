@@ -188,7 +188,9 @@ class SendApproveViewController: UIViewController {
 				return LedgerService.shared.sign(hex: ledgerPrep.blake2bHash, parse: false)
 			}
 			.sink(onError: { [weak self] error in
-				self?.alert(errorWithMessage: "Error from ledger: \( error )")
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: "Error from ledger: \( error )")
+				})
 				
 			}, onSuccess: { [weak self] signature in
 				self?.handle(signature: signature)

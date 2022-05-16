@@ -23,6 +23,10 @@ class ImportMnemonicViewController: UIViewController {
 		if isHDWallet {
 			derivationPathTextField?.text = HDWallet.defaultDerivationPath
 		}
+		
+		seedPhraseTextView.addDoneToolbar(onDone: nil)
+		passwordTextField.addDoneToolbar(onDone: nil)
+		derivationPathTextField?.addDoneToolbar(onDone: nil)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

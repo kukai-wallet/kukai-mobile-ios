@@ -210,4 +210,20 @@ public class BalanceService {
 		tokenValueAndRate = [:]
 		estimatedTotalXtz = XTZAmount.zero()
 	}
+	
+	func token(forAddress address: String) -> (token: Token, isNFT: Bool)? {
+		for token in account.tokens {
+			if token.tokenContractAddress == address {
+				return (token: token, isNFT: false)
+			}
+		}
+		
+		for nftGroup in account.nfts {
+			if nftGroup.tokenContractAddress == address {
+				return (token: nftGroup, isNFT: true)
+			}
+		}
+		
+		return nil
+	}
 }

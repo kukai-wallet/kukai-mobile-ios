@@ -281,9 +281,8 @@ public class BeaconService {
 		})
 	}
 	
-	public func signPayloadRequest(request: SignPayloadTezosRequest, withWallet wallet: KukaiCoreSwift.Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
-		let signature = wallet.sign(request.payload)
-		let obj = SignPayloadTezosResponse(from: request, signature: signature?.toHexString() ?? "")
+	public func signPayloadRequest(request: SignPayloadTezosRequest, signature: String, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+		let obj = SignPayloadTezosResponse(from: request, signature: signature)
 		let response = BeaconResponse<Tezos>.blockchain(.signPayload(obj))
 		
 		beaconClient?.respond(with: response, completion: { result in

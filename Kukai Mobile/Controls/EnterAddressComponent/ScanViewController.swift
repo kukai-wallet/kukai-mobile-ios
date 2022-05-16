@@ -223,8 +223,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 
 	func found(code: String) {
 		os_log(.debug, log: .default, "Scanned QR code: %@", code)
-		delegate?.scannedQRCode(code: code)
-		
 		
 		if self.isModal {
 			self.dismiss(animated: true) { [weak self] in

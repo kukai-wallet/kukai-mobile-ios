@@ -99,27 +99,18 @@ class BeaconViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 extension BeaconViewModel: BeaconConfigCellProtocol {
 	
 	func deleteTapped(forRow: Int) {
-		print("Delete tapped for row: \(forRow)")
 		
 		if peersSelected, forRow < self.peers.count {
-			print("inside peers")
-			
 			self.state = .loading
 			BeaconService.shared.removePeer(self.peers[forRow]) { [weak self] result in
-				print("peer - result: \(result)")
-				
 				DispatchQueue.main.async {
 					self?.refresh(animate: true)
 				}
 			}
 			
 		} else if !peersSelected, forRow < self.permissions.count {
-			print("inside permissions")
-			
 			self.state = .loading
 			BeaconService.shared.removePermission(permissions[forRow]) { [weak self] result in
-				print("permission - result: \(result)")
-				
 				DispatchQueue.main.async {
 					self?.refresh(animate: true)
 				}

@@ -8,10 +8,14 @@
 import UIKit
 import BeaconCore
 import BeaconBlockchainTezos
+import KukaiCoreSwift
+import Combine
 
 class BeaconSignViewController: UIViewController {
 	
 	@IBOutlet weak var payloadLabel: UILabel!
+	
+	private var bag = Set<AnyCancellable>()
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
@@ -27,7 +31,40 @@ class BeaconSignViewController: UIViewController {
 			return
 		}
 		
-		BeaconService.shared.signPayloadRequest(request: request, withWallet: wallet) { [weak self] result in
+		if wallet.type == .ledger, let ledgerWallet = wallet as? LedgerWallet {
+			
+			// Connect to the ledger wallet, and request a signature from the device
+			LedgerService.shared.connectTo(uuid: ledgerWallet.ledgerUUID)
+				.flatMap { _ -> AnyPublisher<String, ErrorResponse> in
+					return LedgerService.shared.sign(hex: request.payload, parse: false)
+				}
+				.sink(onError: { [weak self] error in
+					self?.alert(errorWithMessage: "Error: \(error)")
+					
+				}, onSuccess: { [weak self] signature in
+					self?.continueWith(request: request, signature: signature)
+				})
+				.store(in: &bag)
+			
+			// Listen for partial success messages
+			LedgerService.shared
+				.$partialSuccessMessageReceived
+				.dropFirst()
+				.sink { [weak self] _ in
+					self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
+				}
+				.store(in: &bag)
+			
+		} else {
+			let sig = wallet.sign(request.payload)
+			let signature = sig?.toHexString() ?? ""
+			
+			continueWith(request: request, signature: signature)
+		}
+	}
+	
+	private func continueWith(request: SignPayloadTezosRequest, signature: String) {
+		BeaconService.shared.signPayloadRequest(request: request, signature: signature) { [weak self] result in
 			switch result {
 				case .success(()):
 					self?.presentingViewController?.dismiss(animated: true)
