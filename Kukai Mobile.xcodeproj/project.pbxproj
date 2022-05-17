@@ -70,6 +70,7 @@
 		C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DC5272056D400DEF1CB /* Localizable.strings */; };
 		C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DDD27205FE300DEF1CB /* InfoPlist.strings */; };
 		C06997F12832946B00F6929D /* UITextView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06997F02832946B00F6929D /* UITextView+extensions.swift */; };
+		C06997F32833D93700F6929D /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06997F22833D93700F6929D /* DebugViewController.swift */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
 		C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A02798364400726C01 /* Option1MainViewController.swift */; };
 		C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A2279836F000726C01 /* Option1TokenCell.swift */; };
@@ -266,6 +267,7 @@
 		C0678DDC27205FE300DEF1CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C0678DDE27205FE800DEF1CB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C06997F02832946B00F6929D /* UITextView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+extensions.swift"; sourceTree = "<group>"; };
+		C06997F22833D93700F6929D /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		C07374A02798364400726C01 /* Option1MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1MainViewController.swift; sourceTree = "<group>"; };
 		C07374A2279836F000726C01 /* Option1TokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1TokenCell.swift; sourceTree = "<group>"; };
@@ -404,6 +406,7 @@
 				C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */,
 				C053690F282BCCBC0006A1C4 /* BeaconApproveViewController.swift */,
 				C0536911282BCCC80006A1C4 /* BeaconSignViewController.swift */,
+				C06997F22833D93700F6929D /* DebugViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -952,6 +955,7 @@
 				C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */,
 				C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */,
 				C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */,
+				C06997F32833D93700F6929D /* DebugViewController.swift in Sources */,
 				C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */,
 				C0FA565A27BFFBF600AFC9A7 /* CollectiblesViewController.swift in Sources */,
 				C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */,
@@ -1317,6 +1321,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Debug Prov Dev";
+				SWIFT_SUPPRESS_WARNINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1348,6 +1353,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Prov Dist App Store";
+				SWIFT_SUPPRESS_WARNINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1521,6 +1527,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dist App Store";
+				SWIFT_SUPPRESS_WARNINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

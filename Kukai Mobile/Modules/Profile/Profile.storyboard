@@ -77,11 +77,50 @@
                         <segue destination="sHl-d8-n9n" kind="show" identifier="theme" id="tsc-ay-12U"/>
                         <segue destination="GML-tM-Zzr" kind="show" identifier="network" id="67V-0s-G5m"/>
                         <segue destination="RhU-dj-80U" kind="show" identifier="beacon" id="f8C-Io-774"/>
+                        <segue destination="7qS-7S-Ecn" kind="show" identifier="debug" id="xhi-Py-VCI"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KM6-sp-NCG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1115.9420289855072" y="-1420.3125"/>
+        </scene>
+        <!--Debug-->
+        <scene sceneID="ZOj-ay-feZ">
+            <objects>
+                <tableViewController id="7qS-7S-Ecn" customClass="DebugViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="ci5-xE-923">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="basicCell" textLabel="W9S-cF-8nB" style="IBUITableViewCellStyleDefault" id="lFp-y6-pZr">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lFp-y6-pZr" id="lJ3-uP-0Rv">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="W9S-cF-8nB">
+                                            <rect key="frame" x="20" y="0.0" width="374" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="0.0"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="7qS-7S-Ecn" id="yrn-zU-nJA"/>
+                            <outlet property="delegate" destination="7qS-7S-Ecn" id="1aP-RJ-A6t"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Debug" id="bM6-fQ-gfi"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9b9-Pu-Ltg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2871" y="-1420"/>
         </scene>
         <!--Select Currency-->
         <scene sceneID="TZf-LZ-v0D">

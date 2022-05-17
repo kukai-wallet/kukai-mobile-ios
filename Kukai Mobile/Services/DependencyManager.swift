@@ -166,7 +166,7 @@ class DependencyManager {
 		updateKukaiCoreClients()
 	}
 	
-	func setDefaultMainnetURLs() {
+	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
 		currentNodeURL = DependencyManager.defaultNodeURL_mainnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
@@ -174,10 +174,10 @@ class DependencyManager {
 		tezosChainName = .mainnet
 		currentNetworkType = .mainnet
 		
-		updateKukaiCoreClients()
+		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func setDefaultTestnetURLs() {
+	func setDefaultTestnetURLs(supressUpdateNotification: Bool = false) {
 		currentNodeURL = DependencyManager.defaultNodeURL_testnet
 		currentTzktURL = DependencyManager.defaultTzktURL_testnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
@@ -185,10 +185,10 @@ class DependencyManager {
 		tezosChainName = .hangzhounet
 		currentNetworkType = .testnet
 		
-		updateKukaiCoreClients()
+		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func updateKukaiCoreClients() {
+	func updateKukaiCoreClients(supressUpdateNotification: Bool = false) {
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
 			primaryNodeURL: currentNodeURL,
 			tezosChainName: tezosChainName,
@@ -207,6 +207,8 @@ class DependencyManager {
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
-		networkDidChange = true
+		if !supressUpdateNotification {
+			networkDidChange = true
+		}
 	}
 }

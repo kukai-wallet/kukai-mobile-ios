@@ -88,6 +88,7 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendItems([TitleSubtitleObj(title: "Theme", subtitle: selectedTheme)], toSection: 0)
 		snapshot.appendItems([TitleSubtitleObj(title: "Network", subtitle: selectedNetwork)], toSection: 0)
 		snapshot.appendItems([TitleSubtitleObj(title: "Beacon", subtitle: "")], toSection: 0)
+		snapshot.appendItems([TitleSubtitleObj(title: "Debugging", subtitle: "")], toSection: 0)
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
@@ -107,6 +108,9 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 		} else if forIndexPath.row == 3 {
 			return "beacon"
+			
+		} else if forIndexPath.row == 4 {
+			return "debug"
 		}
 		
 		return nil
