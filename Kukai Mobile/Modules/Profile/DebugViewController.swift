@@ -108,7 +108,9 @@ class DebugViewController: UITableViewController {
 	}
 	
 	private func clearDocumentsDirectory() {
-		let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+		guard let documentsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else {
+			return
+		}
 		
 		do {
 			let fileURLs = try FileManager.default.contentsOfDirectory(at: documentsUrl, includingPropertiesForKeys: nil, options: .skipsHiddenFiles)

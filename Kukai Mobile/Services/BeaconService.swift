@@ -135,8 +135,8 @@ public class BeaconService {
 							self?.connectionDelegate?.signPayload(requestingAppName: signPayload.appMetadata?.name ?? "", humanReadableString: readableString, payloadRequest: signPayload)
 						}
 						
-					case .broadcast(let broadcast):
-						print("broadcast: \(broadcast)")
+					case .broadcast(_):
+						break // Braodcast is not used
 				}
 		}
 	}
