@@ -81,7 +81,7 @@ public class BeaconService {
 		let config = Beacon.WalletClient.Configuration(name: "Kukai iOS", blockchains: [Tezos.factory], connections: [matrix])
 		Beacon.WalletClient.create(with: config) { [weak self] result in
 			guard let client = try? result.get() else {
-				print("Could not create Beacon client, got error: \( String(describing: try? result.getError()) )")
+				os_log("Could not create Beacon client, got error: %@", log: .default, type: .error, "\( String(describing: try? result.getError()))")
 				return
 			}
 			
@@ -111,7 +111,7 @@ public class BeaconService {
 	
 	private func onBeaconRequest(result: Result<BeaconRequest<Tezos>, Beacon.Error>) {
 		guard let request = try? result.get() else {
-			print("Error while processing incoming messages: \( String(describing: try? result.getError()) )")
+			os_log("Error while processing incoming messages: %@", log: .default, type: .error, "\( String(describing: try? result.getError()))")
 			return
 		}
 		

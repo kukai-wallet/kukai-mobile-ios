@@ -75,7 +75,9 @@ class BeaconViewController: UIViewController {
 					return
 				}
 				
-				self?.viewModel.refresh(animate: true)
+				DispatchQueue.main.async {
+					self?.viewModel.refresh(animate: true)
+				}
 			}
 		}
 	}
@@ -86,7 +88,9 @@ extension BeaconViewController: ScanViewControllerDelegate {
 	func scannedQRCode(code: String) {
 		let peer = BeaconService.shared.createPeerObjectFromQrCode(code)
 		BeaconService.shared.addPeer(peer) { result in
-			print("BeaconViewController Peer added: \(result)")
+			if !result {
+				self.alert(errorWithMessage: "Unable to add peer")
+			}
 		}
 	}
 }
