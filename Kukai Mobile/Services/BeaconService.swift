@@ -53,23 +53,26 @@ public class BeaconService {
 		}
 		
 		if params[0].components(separatedBy: "=").last == "tzip10", let dataString = params[1].components(separatedBy: "=").last {
-			
-			let dataBytes = Base58.base58CheckDecode(dataString)
-			let dataData = Data(bytes: dataBytes ?? [], count: dataBytes?.count ?? 0)
-			
-			do {
-				return try JSONDecoder().decode(Beacon.P2PPeer.self, from: dataData)
-				
-			} catch (let error) {
-				os_log("Beacon parse error: %@", log: .default, type: .error, "\(error)")
-			}
-			
-			return nil
+			return createPeerObjectFromBase58EncodedString(dataString)
 			
 		} else {
 			os_log("Unsupported tzip standard: %@", log: .default, type: .error, params[0])
 			return nil
 		}
+	}
+	
+	public func createPeerObjectFromBase58EncodedString(_ string: String) -> Beacon.P2PPeer? {
+		let dataBytes = Base58.base58CheckDecode(string)
+		let dataData = Data(bytes: dataBytes ?? [], count: dataBytes?.count ?? 0)
+		
+		do {
+			return try JSONDecoder().decode(Beacon.P2PPeer.self, from: dataData)
+			
+		} catch (let error) {
+			os_log("Beacon parse error: %@", log: .default, type: .error, "\(error)")
+		}
+		
+		return nil
 	}
 	
 	public func startBeacon(completion: @escaping ((Bool) -> Void)) {

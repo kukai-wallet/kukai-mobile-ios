@@ -24,8 +24,12 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	let transparentView = UIView()
 	let modalBackButton = UIButton()
 	
+	public var withTextField: Bool = false
+	let textfield = UITextField()
+	let pasteButton = UIButton()
+	
 	weak var delegate: ScanViewControllerDelegate?
-
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -54,7 +58,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				}
 			}
 		}
-		
 	}
 	
 	@objc func back() {
@@ -106,15 +109,19 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	func setupOutlineView() {
 		transparentView.backgroundColor = .clear
 		transparentView.translatesAutoresizingMaskIntoConstraints = false
-		transparentView.layer.cornerRadius = 10
+		transparentView.customCornerRadius = 10
 		self.view.addSubview(transparentView)
 		
 		NSLayoutConstraint.activate([
 			transparentView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 24),
 			transparentView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24),
-			transparentView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: 0.4),
-			transparentView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
+			transparentView.heightAnchor.constraint(equalTo: self.view.heightAnchor, multiplier: !withTextField ? 0.4 : 0.3),
+			transparentView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor, constant: !withTextField ? 0 : ((self.view.frame.height * 0.3) * 0.75) * -1 )
 		])
+	}
+	
+	@objc func textFieldDone() {
+		found(code: textfield.text ?? "")
 	}
 	
 	func setupBlurView() {
@@ -152,6 +159,44 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			titleLabel.widthAnchor.constraint(equalToConstant: 214),
 			titleLabel.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
 		])
+		
+		if withTextField {
+			textfield.backgroundColor = .white
+			textfield.translatesAutoresizingMaskIntoConstraints = false
+			textfield.customCornerRadius = 10
+			textfield.placeholder = "or enter data ..."
+			textfield.addDoneToolbar(onDone: (target: self, action: #selector(textFieldDone)))
+			textfield.autocorrectionType = .no
+			textfield.textContentType = .none
+			textfield.autocapitalizationType = .none
+			textfield.spellCheckingType = .no
+			self.blurEffectView.contentView.addSubview(textfield)
+			
+			pasteButton.setTitle("Paste", for: .normal)
+			pasteButton.translatesAutoresizingMaskIntoConstraints = false
+			pasteButton.backgroundColor = .white
+			pasteButton.setTitleColor(.black, for: .normal)
+			pasteButton.customCornerRadius = 10
+			pasteButton.addTarget(self, action: #selector(pasteButtonTapped), for: .touchUpInside)
+			pasteButton.setContentHuggingPriority(.required, for: .horizontal)
+			self.blurEffectView.contentView.addSubview(pasteButton)
+			
+			NSLayoutConstraint.activate([
+				textfield.leadingAnchor.constraint(equalTo: self.transparentView.leadingAnchor, constant: 0),
+				textfield.trailingAnchor.constraint(equalTo: self.pasteButton.leadingAnchor, constant: -16),
+				textfield.topAnchor.constraint(equalTo: self.transparentView.bottomAnchor, constant: 16),
+				textfield.heightAnchor.constraint(equalToConstant: 40),
+				
+				pasteButton.trailingAnchor.constraint(equalTo: self.transparentView.trailingAnchor, constant: 0),
+				pasteButton.topAnchor.constraint(equalTo: self.transparentView.bottomAnchor, constant: 16),
+				pasteButton.heightAnchor.constraint(equalToConstant: 40),
+			])
+		}
+	}
+	
+	@objc func pasteButtonTapped() {
+		self.textfield.text = UIPasteboard.general.string
+		self.textFieldDone()
 	}
 	
 	override func viewDidLayoutSubviews() {

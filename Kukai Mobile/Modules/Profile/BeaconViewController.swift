@@ -24,6 +24,8 @@ class BeaconViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		scanner.withTextField = true
+		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		
@@ -86,10 +88,23 @@ class BeaconViewController: UIViewController {
 extension BeaconViewController: ScanViewControllerDelegate {
 	
 	func scannedQRCode(code: String) {
-		let peer = BeaconService.shared.createPeerObjectFromQrCode(code)
-		BeaconService.shared.addPeer(peer) { result in
-			if !result {
-				self.alert(errorWithMessage: "Unable to add peer")
+		if code == "" { return }
+		
+		var peer: Beacon.P2PPeer? = nil
+		if String(code.prefix(5)) == "tezos" {
+			peer = BeaconService.shared.createPeerObjectFromQrCode(code)
+			
+		} else {
+			peer = BeaconService.shared.createPeerObjectFromBase58EncodedString(code)
+		}
+		
+		self.showLoadingModal {
+			BeaconService.shared.addPeer(peer) { [weak self] result in
+				if !result {
+					self?.hideLoadingModal {
+						self?.alert(errorWithMessage: "Unable to add peer")
+					}
+				}
 			}
 		}
 	}
@@ -101,7 +116,9 @@ extension BeaconViewController: BeaconServiceConnectionDelegate {
 		TransactionService.shared.currentTransactionType = .beaconApprove
 		TransactionService.shared.beaconApproveData.request = permissionRequest
 		
-		self.performSegue(withIdentifier: "beaconApprove", sender: self)
+		self.hideLoadingModal {
+			self.performSegue(withIdentifier: "beaconApprove", sender: self)
+		}
 	}
 	
 	func signPayload(requestingAppName: String, humanReadableString: String, payloadRequest: SignPayloadTezosRequest) {
