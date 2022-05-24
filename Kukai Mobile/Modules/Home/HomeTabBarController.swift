@@ -72,53 +72,92 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 			return
 		}
 		
-		self.showLoadingView()
+		self.showLoadingModal { [weak self] in
+			self?.processAndShow(withWallet: wallet, operationRequest: operationRequest)
+		}
+	}
+	
+	private func processAndShow(withWallet wallet: Wallet, operationRequest: OperationTezosRequest) {
 		
 		
+		print("\n\n\n")
+		print("Account ID: \(operationRequest.accountID)")
+		print("Source address: \(operationRequest.sourceAddress)")
+		print("Network Type: \(operationRequest.network.type.rawValue)")
+		print("Operations: \(operationRequest.operationDetails)")
+		print("\n\n\n")
+		
+		
+		// Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
 		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { result in
+		let totalSuggestedGas = convertedOps.map({ $0.operationFees?.gasLimit ?? 0 }).reduce(0, +)
+		let totalDefaultGas = OperationFees.defaultFees(operationKind: .transaction).gasLimit + operationRequest.operationDetails.count
+		
+		
+		print("totalSuggestedGas: \(totalSuggestedGas)")
+		print("totalDefaultGas: \(totalDefaultGas)")
+		print("\n\n\n")
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet, receivedSuggestedGas: totalSuggestedGas > totalDefaultGas) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
-				self.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
+				})
 				return
 			}
 			
-			TransactionService.shared.currentTransactionType = .beaconOperation
-			TransactionService.shared.beaconOperationData.estimatedOperations = estimatedOps
-			TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
+			self?.processTransactions(estimatedOperations: estimatedOps, operationRequest: operationRequest)
+		}
+	}
+	
+	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], operationRequest: OperationTezosRequest) {
+		TransactionService.shared.currentTransactionType = .beaconOperation
+		TransactionService.shared.beaconOperationData.estimatedOperations = estimatedOps
+		TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
+		
+		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
 			
-			if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
+			if transactionOperation.parameters == nil {
+				TransactionService.shared.beaconOperationData.operationType = .sendXTZ
 				
-				if transactionOperation.parameters == nil {
-					TransactionService.shared.beaconOperationData.operationType = .sendXTZ
-					
-					let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
-					TransactionService.shared.beaconOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
-					
-				} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
-					if token.isNFT {
-						TransactionService.shared.beaconOperationData.operationType = .sendNFT
-						TransactionService.shared.beaconOperationData.tokenToSend = token.token
-						
-					} else {
-						TransactionService.shared.beaconOperationData.operationType = .sendToken
-						TransactionService.shared.beaconOperationData.tokenToSend = token.token
-					}
-					
-				} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
-					TransactionService.shared.beaconOperationData.operationType = .callSmartContract
-					TransactionService.shared.beaconOperationData.entrypointToCall = entrypoint
+				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+				TransactionService.shared.beaconOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
+				
+			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
+				if token.isNFT {
+					TransactionService.shared.beaconOperationData.operationType = .sendNFT
+					TransactionService.shared.beaconOperationData.tokenToSend = token.token
 					
 				} else {
-					TransactionService.shared.beaconOperationData.operationType = .unknown
+					TransactionService.shared.beaconOperationData.operationType = .sendToken
+					TransactionService.shared.beaconOperationData.tokenToSend = token.token
 				}
+				
+			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
+				TransactionService.shared.beaconOperationData.operationType = .callSmartContract
+				TransactionService.shared.beaconOperationData.entrypointToCall = entrypoint
 				
 			} else {
 				TransactionService.shared.beaconOperationData.operationType = .unknown
 			}
 			
-			
-			self.hideLoadingView()
-			self.performSegue(withIdentifier: "beacon-approve", sender: nil)
+		} else {
+			TransactionService.shared.beaconOperationData.operationType = .unknown
 		}
+		
+		
+		
+		print("\n\n\n")
+		print("Totals:")
+		print("Gas: \( estimatedOps.map({ $0.operationFees?.gasLimit ?? 0 }).reduce(0, +) )")
+		print("Storage: \( estimatedOps.map({ $0.operationFees?.storageLimit ?? 0 }).reduce(0, +) )")
+		print("Fee: \( estimatedOps.map({ $0.operationFees?.transactionFee ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation )")
+		print("Max Fee: \( estimatedOps.map({ $0.operationFees?.allNetworkFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation )")
+		print("\n\n\n")
+		
+		
+		self.hideLoadingModal(completion: { [weak self] in
+			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
+		})
 	}
 }

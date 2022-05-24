@@ -19,7 +19,7 @@ class DependencyManager {
 	
 	static let shared = DependencyManager()
 	
-	static let defaultNodeURL_mainnet = URL(string: "https://api.tez.ie/rpc/mainnet")!
+	static let defaultNodeURL_mainnet = URL(string: "https://mainnet.kukai.network")!
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
