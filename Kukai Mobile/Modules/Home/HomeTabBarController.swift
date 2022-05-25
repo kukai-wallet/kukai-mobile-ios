@@ -67,10 +67,17 @@ class HomeTabBarController: UITabBarController {
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
-			self.alert(errorWithMessage: "Processing Beacon request, unable to locate wallet")
+		guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
+			self.alert(errorWithMessage: "Processing Beacon request, request is for a different network than the one currently selected on device. Please check the dApp and apps settings to match sure they match")
 			return
 		}
+		
+		guard let wallet = WalletCacheService().fetchWallet(address: operationRequest.sourceAddress) else {
+			self.alert(errorWithMessage: "Processing Beacon request, unable to locate wallet: \(operationRequest.sourceAddress)")
+			return
+		}
+		
+		
 		
 		self.showLoadingModal { [weak self] in
 			self?.processAndShow(withWallet: wallet, operationRequest: operationRequest)
@@ -79,24 +86,10 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	private func processAndShow(withWallet wallet: Wallet, operationRequest: OperationTezosRequest) {
 		
-		
-		print("\n\n\n")
-		print("Account ID: \(operationRequest.accountID)")
-		print("Source address: \(operationRequest.sourceAddress)")
-		print("Network Type: \(operationRequest.network.type.rawValue)")
-		print("Operations: \(operationRequest.operationDetails)")
-		print("\n\n\n")
-		
-		
 		// Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
 		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
 		let totalSuggestedGas = convertedOps.map({ $0.operationFees?.gasLimit ?? 0 }).reduce(0, +)
-		let totalDefaultGas = OperationFees.defaultFees(operationKind: .transaction).gasLimit + operationRequest.operationDetails.count
-		
-		
-		print("totalSuggestedGas: \(totalSuggestedGas)")
-		print("totalDefaultGas: \(totalDefaultGas)")
-		print("\n\n\n")
+		let totalDefaultGas = OperationFees.defaultFees(operationKind: .transaction).gasLimit * operationRequest.operationDetails.count
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet, receivedSuggestedGas: totalSuggestedGas > totalDefaultGas) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
@@ -144,17 +137,6 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		} else {
 			TransactionService.shared.beaconOperationData.operationType = .unknown
 		}
-		
-		
-		
-		print("\n\n\n")
-		print("Totals:")
-		print("Gas: \( estimatedOps.map({ $0.operationFees?.gasLimit ?? 0 }).reduce(0, +) )")
-		print("Storage: \( estimatedOps.map({ $0.operationFees?.storageLimit ?? 0 }).reduce(0, +) )")
-		print("Fee: \( estimatedOps.map({ $0.operationFees?.transactionFee ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation )")
-		print("Max Fee: \( estimatedOps.map({ $0.operationFees?.allNetworkFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation )")
-		print("\n\n\n")
-		
 		
 		self.hideLoadingModal(completion: { [weak self] in
 			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)

@@ -19,7 +19,7 @@ class BeaconApproveViewController: UIViewController {
 		
 		if let request = TransactionService.shared.beaconApproveData.request {
 			nameLabel.text = request.appMetadata.name
-			networkLabel.text = request.network.identifier
+			networkLabel.text = request.network.type.rawValue
 		}
 	}
 	

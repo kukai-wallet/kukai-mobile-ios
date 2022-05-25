@@ -16,8 +16,10 @@ class BeaconOperationApproveViewController: UIViewController {
 	
 	@IBOutlet weak var nameLabel: UILabel!
 	@IBOutlet weak var networkLabel: UILabel!
+	@IBOutlet weak var addressLabel: UILabel!
 	@IBOutlet weak var entrypoint: UILabel!
-	@IBOutlet weak var networkCostLabel: UILabel!
+	@IBOutlet weak var transactionCost: UILabel!
+	@IBOutlet weak var maxStorageCost: UILabel!
 	
 	private var bag = Set<AnyCancellable>()
 	
@@ -27,14 +29,16 @@ class BeaconOperationApproveViewController: UIViewController {
 		let data = TransactionService.shared.beaconOperationData
 		
 		nameLabel.text = data.beaconRequest?.appMetadata?.name ?? "..."
-		networkLabel.text = data.beaconRequest?.network.identifier
+		networkLabel.text = data.beaconRequest?.network.type.rawValue
+		addressLabel.text = data.beaconRequest?.sourceAddress
 		entrypoint.text = data.entrypointToCall ?? "..."
-		networkCostLabel.text = (data.estimatedOperations ?? []).map({ $0.operationFees?.allFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees?.transactionFee ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
+		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees?.allNetworkFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
 		guard let ops = TransactionService.shared.beaconOperationData.estimatedOperations,
-			  let wallet = DependencyManager.shared.selectedWallet,
+			  let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.beaconOperationData.beaconRequest?.sourceAddress ?? ""),
 			  let beaconRequest = TransactionService.shared.beaconOperationData.beaconRequest else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
@@ -72,22 +76,24 @@ class BeaconOperationApproveViewController: UIViewController {
 	
 	
 	private func approveRegular(operations: [KukaiCoreSwift.Operation], wallet: Wallet, beaconRequest: OperationTezosRequest) {
-		self.showLoadingView()
-		DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] sendResult in
-			switch sendResult {
-				case .success(let opHash):
-					
-					// Let beacon know the request succeeded
-					BeaconService.shared.approveOperationRequest(operation: beaconRequest, opHash: opHash) { beaconResult in
-						self?.hideLoadingView()
+		self.showLoadingModal { [weak self] in
+			DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] sendResult in
+				switch sendResult {
+					case .success(let opHash):
 						
-						print("Sent: \(opHash)")
-						self?.presentingViewController?.dismiss(animated: true)
-					}
-					
-				case .failure(let sendError):
-					self?.hideLoadingView()
-					self?.alert(errorWithMessage: sendError.description)
+						// Let beacon know the request succeeded
+						BeaconService.shared.approveOperationRequest(operation: beaconRequest, opHash: opHash) { beaconResult in
+							self?.hideLoadingModal(completion: {
+								print("Sent: \(opHash)")
+								self?.presentingViewController?.dismiss(animated: true)
+							})
+						}
+						
+					case .failure(let sendError):
+						self?.hideLoadingModal(completion: {
+							self?.alert(errorWithMessage: sendError.description)
+						})
+				}
 			}
 		}
 	}
