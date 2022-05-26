@@ -32,8 +32,8 @@ class BeaconOperationApproveViewController: UIViewController {
 		networkLabel.text = data.beaconRequest?.network.type.rawValue
 		addressLabel.text = data.beaconRequest?.sourceAddress
 		entrypoint.text = data.entrypointToCall ?? "..."
-		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees?.transactionFee ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
-		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees?.allNetworkFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
+		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
+		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {

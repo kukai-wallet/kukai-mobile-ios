@@ -109,8 +109,8 @@ class SendReviewViewController: UIViewController {
 			return
 		}
 		
-		feeLabel.text = ops.map({ $0.operationFees?.allFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
-		storageCostLabel.text = ops.map({ $0.operationFees?.allNetworkFees() ?? .zero() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		feeLabel.text = ops.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		storageCostLabel.text = ops.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
 	}
 	
 	func updateQuantityLabel() {

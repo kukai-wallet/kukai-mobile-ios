@@ -88,7 +88,7 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		
 		// Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
 		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
-		let totalSuggestedGas = convertedOps.map({ $0.operationFees?.gasLimit ?? 0 }).reduce(0, +)
+		let totalSuggestedGas = convertedOps.map({ $0.operationFees.gasLimit }).reduce(0, +)
 		let totalDefaultGas = OperationFees.defaultFees(operationKind: .transaction).gasLimit * operationRequest.operationDetails.count
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet, receivedSuggestedGas: totalSuggestedGas > totalDefaultGas) { [weak self] result in
