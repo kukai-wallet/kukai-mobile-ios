@@ -112,6 +112,35 @@ public class BeaconService {
 		})
 	}
 	
+	public func pauseBeacon(completion: ((Bool) -> Void)?) {
+		beaconClient?.pause(completion: { result in
+			guard let _ = try? result.get(), let comp = completion else {
+				if let comp = completion {
+					comp(false)
+				}
+				return
+			}
+			
+			comp(true)
+		})
+	}
+	
+	public func resumeBeacon(completion: @escaping ((Bool?) -> Void)) {
+		guard let bc = beaconClient else {
+			completion(nil) // If there is no beacon client ignore, as likely an excess call from first start up
+			return
+		}
+		
+		bc.resume(completion: { result in
+			guard let _ = try? result.get() else {
+				completion(false)
+				return
+			}
+			
+			completion(true)
+		})
+	}
+	
 	private func onBeaconRequest(result: Result<BeaconRequest<Tezos>, Beacon.Error>) {
 		guard let request = try? result.get() else {
 			os_log("Error while processing incoming messages: %@", log: .default, type: .error, "\( String(describing: try? result.getError()))")
