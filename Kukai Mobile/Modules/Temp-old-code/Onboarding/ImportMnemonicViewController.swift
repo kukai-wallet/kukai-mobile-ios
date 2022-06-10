@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCryptoSwift
 import KukaiCoreSwift
 
 class ImportMnemonicViewController: UIViewController {
@@ -21,7 +22,7 @@ class ImportMnemonicViewController: UIViewController {
 		
 		isHDWallet = (derivationPathTextField != nil)
 		if isHDWallet {
-			derivationPathTextField?.text = HDWallet.defaultDerivationPath
+			derivationPathTextField?.text = HD.defaultDerivationPath
 		}
 		
 		seedPhraseTextView.addDoneToolbar(onDone: nil)
@@ -40,21 +41,21 @@ class ImportMnemonicViewController: UIViewController {
 	}
 	
 	@IBAction func importTapped(_ sender: Any) {
-		guard let seedPhrase = seedPhraseTextView.text, seedPhrase != "" else {
+		guard let seedPhrase = seedPhraseTextView.text, seedPhrase != "", let mnemonic = try? Mnemonic(seedPhrase: seedPhrase) else {
 			self.alert(withTitle: "Error", andMessage: "No seed")
 			return
 		}
 		
 		let walletCache = WalletCacheService()
 		
-		if isHDWallet, let hdWallet = HDWallet(withMnemonic: seedPhraseTextView.text, passphrase: passwordTextField.text ?? "", derivationPath: derivationPathTextField?.text ?? HDWallet.defaultDerivationPath) {
+		if isHDWallet, let hdWallet = HDWallet(withMnemonic: mnemonic, passphrase: passwordTextField.text ?? "", derivationPath: derivationPathTextField?.text ?? HD.defaultDerivationPath) {
 			if walletCache.cache(wallet: hdWallet) {
 				self.performSegue(withIdentifier: "complete", sender: self)
 			} else {
 				alert(withTitle: "Error", andMessage: "unable to cache")
 			}
 			
-		} else if let linearWallet = LinearWallet(withMnemonic: seedPhraseTextView.text, passphrase: passwordTextField.text ?? "") {
+		} else if let linearWallet = RegularWallet(withMnemonic: mnemonic, passphrase: passwordTextField.text ?? "") {
 			if walletCache.cache(wallet: linearWallet) {
 				handleSuccessNavigation()
 			} else {

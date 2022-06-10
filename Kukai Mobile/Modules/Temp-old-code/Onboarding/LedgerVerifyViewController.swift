@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCryptoSwift
 import KukaiCoreSwift
 import Combine
 
@@ -56,7 +57,7 @@ class LedgerVerifyViewController: UIViewController {
 			return
 		}
 		
-		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HDWallet.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet) {
+		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet) {
 			LedgerService.shared.disconnectFromDevice()
 			
 			if self.isPartOfSideMenuImportFlow() {

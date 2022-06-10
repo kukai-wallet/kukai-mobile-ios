@@ -55,7 +55,7 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		accountButton.setImage((wallet.type == .torus) ? UIImage(systemName: "xmark.octagon") : UIImage(), for: .normal)
+		accountButton.setImage((wallet.type == .social) ? UIImage(systemName: "xmark.octagon") : UIImage(), for: .normal)
 		accountButton.setTitle("Wallet Type: \(wallet.type.rawValue)\n\(wallet.address)", for: .normal)
 	}
 	

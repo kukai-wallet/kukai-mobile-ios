@@ -12,7 +12,6 @@ import BeaconBlockchainTezos
 import BeaconClientWallet
 import BeaconTransportP2PMatrix
 import Base58Swift
-import WalletCore
 import os.log
 
 public protocol BeaconServiceConnectionDelegate: AnyObject {
@@ -436,13 +435,13 @@ public class BeaconService {
 			let index = hexString.index(hexString.startIndex, offsetBy: 10)
 			let subString = String(hexString.suffix(from: index))
 			
-			let d = Data(hexString: subString) ?? Data()
+			let d = (try? Data(hexString: subString)) ?? Data()
 			let readable = String(data: d, encoding: .isoLatin1)
 			
 			return readable ?? ""
 		}
 		
-		let d = Data(hexString: hexString) ?? Data()
+		let d = (try? Data(hexString: hexString)) ?? Data()
 		let readable = String(data: d, encoding: .isoLatin1)
 		
 		return readable ?? ""

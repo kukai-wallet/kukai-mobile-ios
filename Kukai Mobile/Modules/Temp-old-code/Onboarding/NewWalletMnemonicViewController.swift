@@ -23,7 +23,7 @@ class NewWalletMnemonicViewController: UIViewController {
 		
 		if let mnemonic = (WalletCacheService().fetchWallets()?.last as? HDWallet)?.mnemonic {
 			
-			let words = mnemonic.components(separatedBy: " ")
+			let words = mnemonic.words
 			var colCount = 0
 			var rowCount = 0
 			

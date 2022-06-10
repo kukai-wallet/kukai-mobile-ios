@@ -35,7 +35,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setBorder(item.selected)
 				return cell
 				
-			} else if item.type == .torus, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
+			} else if item.type == .social, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
 				cell.setup(image: self?.imageForAuthProvider(item.authProvider), username: item.username ?? "", address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
 				cell.setBorder(item.selected)
 				return cell
@@ -67,7 +67,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		for (index, wallet) in wallets.enumerated() {
 			
-			if wallet.type == .torus {
+			if wallet.type == .social {
 				let username = (wallet as? TorusWallet)?.socialUserId
 				let authProvider = (wallet as? TorusWallet)?.authProvider
 				let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)

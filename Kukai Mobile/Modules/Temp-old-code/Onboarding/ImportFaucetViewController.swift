@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCryptoSwift
 import KukaiCoreSwift
 
 class ImportFaucetViewController: UIViewController {
@@ -31,6 +32,7 @@ class ImportFaucetViewController: UIViewController {
 	
 	@IBAction func importTapped(_ sender: Any) {
 		guard let seed = seedPhraseTextView.text, seed != "",
+			  let mnemonic = try? Mnemonic(seedPhrase: seed),
 			  let email = emailTextField.text,
 			  let pass = passwordTextField.text,
 			  let secret = secretTextField.text else {
@@ -38,7 +40,7 @@ class ImportFaucetViewController: UIViewController {
 			return
 		}
 		
-		if let wallet = LinearWallet(withMnemonic: seed, passphrase: "\(email)\(pass)") {
+		if let wallet = RegularWallet(withMnemonic: mnemonic, passphrase: "\(email)\(pass)") {
 			checkForMangerAndActivate(wallet: wallet, andSecret: secret)
 			
 		} else {
@@ -46,7 +48,7 @@ class ImportFaucetViewController: UIViewController {
 		}
 	}
 	
-	func checkForMangerAndActivate(wallet: LinearWallet, andSecret: String) {
+	func checkForMangerAndActivate(wallet: RegularWallet, andSecret: String) {
 		self.showLoadingModal(completion: nil)
 		
 		let networkService = DependencyManager.shared.tezosNodeClient.networkService
@@ -69,7 +71,7 @@ class ImportFaucetViewController: UIViewController {
 		}
 	}
 	
-	func activateWallet(wallet: LinearWallet, withSecret: String) {
+	func activateWallet(wallet: RegularWallet, withSecret: String) {
 		let operations = [OperationActivateAccount(wallet: wallet, andSecret: withSecret)]
 		DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] (result) in
 			switch result {
@@ -91,7 +93,7 @@ class ImportFaucetViewController: UIViewController {
 		}
 	}
 	
-	func cahceWalletAndSegue(wallet: LinearWallet) {
+	func cahceWalletAndSegue(wallet: RegularWallet) {
 		let walletCache = WalletCacheService()
 		
 		if walletCache.cache(wallet: wallet) {
