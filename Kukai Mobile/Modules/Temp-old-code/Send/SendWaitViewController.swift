@@ -29,7 +29,7 @@ class SendWaitViewController: UIViewController {
 		self.showLoadingModal(completion: nil)
 		
 		let operations = OperationFactory.sendOperation(amount, of: token, from: wallet.address, to: destination)
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet, receivedSuggestedGas: false) { [weak self] estiamteResult in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estiamteResult in
 			guard let estimatedOps = try? estiamteResult.get() else {
 				self?.hideLoadingModal(completion: nil)
 				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")

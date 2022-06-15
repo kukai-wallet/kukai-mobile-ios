@@ -114,7 +114,7 @@ class SwapViewController: UIViewController {
 			self.showLoadingModal(completion: nil)
 			
 			let operations = OperationFactory.swapXtzToToken(withdex: exchange.name, xtzAmount: xtz, minTokenAmount: calc.minimum, dexContract: exchange.address, wallet: wallet, timeout: 60 * 5)
-			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet, receivedSuggestedGas: false) { result in
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 				switch result {
 					case .success(let ops):
 						
@@ -145,7 +145,7 @@ class SwapViewController: UIViewController {
 															 tokenContract: exchange.token.address,
 															 wallet: wallet,
 															 timeout: 60 * 5)
-			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet, receivedSuggestedGas: false) { result in
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 				switch result {
 					case .success(let ops):
 						

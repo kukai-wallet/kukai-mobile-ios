@@ -86,7 +86,7 @@ class SendReviewViewController: UIViewController {
 		self.showLoadingView(completion: nil)
 		
 		// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet, receivedSuggestedGas: false) { [weak self] estimationResult in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estimationResult in
 			self?.hideLoadingView()
 			
 			switch estimationResult {

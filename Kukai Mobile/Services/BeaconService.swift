@@ -381,6 +381,8 @@ public class BeaconService {
 				continue
 			}
 			
+			os_log("Incoming Beacon operations: %@", log: .default, type: .debug, String(data: opJson, encoding: .utf8) ?? "")
+			
 			// Convert Beacon Type into Kukai type, so that we can run our own estimation and injection logic
 			var convertedOp: KukaiCoreSwift.Operation? = nil
 			switch op {
