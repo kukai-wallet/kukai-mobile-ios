@@ -18,6 +18,8 @@ class BeaconOperationApproveViewController: UIViewController {
 	@IBOutlet weak var networkLabel: UILabel!
 	@IBOutlet weak var addressLabel: UILabel!
 	@IBOutlet weak var entrypoint: UILabel!
+	@IBOutlet weak var gasLimitLabel: UILabel!
+	@IBOutlet weak var storageLimitLabel: UILabel!
 	@IBOutlet weak var transactionCost: UILabel!
 	@IBOutlet weak var maxStorageCost: UILabel!
 	
@@ -32,6 +34,8 @@ class BeaconOperationApproveViewController: UIViewController {
 		networkLabel.text = data.beaconRequest?.network.type.rawValue
 		addressLabel.text = data.beaconRequest?.sourceAddress
 		entrypoint.text = data.entrypointToCall ?? "..."
+		gasLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.gasLimit }).reduce(0, +) ?? 0)"
+		storageLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.storageLimit }).reduce(0, +) ?? 0)"
 		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
 		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
 	}
