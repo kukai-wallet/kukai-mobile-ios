@@ -16,7 +16,7 @@ public class CloudKitService {
 	private let database = CKContainer.default().publicCloudDatabase
 	private var configItemRecords: [CKRecord] = []
 	
-	public func fetchConfigItems(completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func fetchConfigItems(completion: @escaping ((KukaiError?) -> Void)) {
 		let query = CKQuery(recordType: "ConfigItem", predicate: NSPredicate(value: true))
 		
 		database.fetch(withQuery: query) { [weak self] result in
@@ -34,7 +34,7 @@ public class CloudKitService {
 					completion(nil)
 					
 				case .failure(let e):
-					completion(ErrorResponse.internalApplicationError(error: e))
+					completion(KukaiError.internalApplicationError(error: e))
 			}
 		}
 	}

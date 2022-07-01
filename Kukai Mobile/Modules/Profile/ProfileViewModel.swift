@@ -71,7 +71,7 @@ class ProfileViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			self.state = .failure(ErrorResponse.unknownError(), "Unable to find datasource")
+			self.state = .failure(KukaiError.unknown(), "Unable to find datasource")
 			return
 		}
 		

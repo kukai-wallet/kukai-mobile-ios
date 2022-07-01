@@ -113,14 +113,14 @@ class BeaconOperationApproveViewController: UIViewController {
 		DependencyManager.shared.tezosNodeClient.getOperationMetadata(forWallet: wallet) { [weak self] metadataResult in
 			guard let metadata = try? metadataResult.get() else {
 				self?.hideLoadingView()
-				self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
+				self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
 				return
 			}
 			
 			DependencyManager.shared.tezosNodeClient.operationService.ledgerOperationPrepWithLocalForge(metadata: metadata, operations: operations, wallet: wallet) { ledgerPrepResult in
 				guard let ledgerPrep = try? ledgerPrepResult.get() else {
 					self?.hideLoadingView()
-					self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
+					self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
 					return
 				}
 				
@@ -134,7 +134,7 @@ class BeaconOperationApproveViewController: UIViewController {
 		
 		// Connect to the ledger wallet, and request a signature from the device using the ledger prep
 		LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
-			.flatMap { _ -> AnyPublisher<String, ErrorResponse> in
+			.flatMap { _ -> AnyPublisher<String, KukaiError> in
 				if ledgerPrep.canLedgerParse {
 					return LedgerService.shared.sign(hex: ledgerPrep.watermarkedOp, parse: true)
 				}
@@ -179,7 +179,7 @@ class BeaconOperationApproveViewController: UIViewController {
 			
 			guard let opHash = try? injectionResult.get() else {
 				self?.hideLoadingView()
-				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? ErrorResponse.unknownError() )")
+				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? KukaiError.unknown() )")
 				return
 			}
 			

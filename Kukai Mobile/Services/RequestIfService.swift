@@ -33,7 +33,7 @@ public class RequestIfService {
 	Send a request to a URL, only if a given time has passed since last request, else return cached version.
 	Useful for situations where you don't want to overload a server, enforcing that its only called once per day (for example), while avoiding constantly wrapping functions in date checks
 	 */
-	public func request<T: Codable>(url: URL, withBody body: Data?, ifElapsedGreaterThan: TimeInterval, forKey key: String, responseType: T.Type, completion: @escaping ((Result<T, ErrorResponse>) -> Void)) {
+	public func request<T: Codable>(url: URL, withBody body: Data?, ifElapsedGreaterThan: TimeInterval, forKey key: String, responseType: T.Type, completion: @escaping ((Result<T, KukaiError>) -> Void)) {
 		
 		let currentTimestmap = Date().timeIntervalSince1970
 		let lastObj = DiskService.read(type: StorageObject<T>.self, fromFileName: key)
@@ -54,7 +54,7 @@ public class RequestIfService {
 			completion(Result.success(obj.storedData))
 			
 		} else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 		}
 	}
 	

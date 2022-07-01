@@ -148,7 +148,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find wallet")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find wallet")
 			return
 		}
 		
@@ -178,7 +178,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func loadGroups() {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		
@@ -198,7 +198,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		

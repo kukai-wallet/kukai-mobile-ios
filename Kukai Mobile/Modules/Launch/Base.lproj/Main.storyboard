@@ -103,7 +103,7 @@
         <!--Navigation Controller-->
         <scene sceneID="wRg-Fy-VWU">
             <objects>
-                <navigationController id="xYK-fq-aY8" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="prototype" id="xYK-fq-aY8" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vbu-tR-U0L">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -368,9 +368,6 @@
                                                 </textField>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E68-TX-K2J">
                                                     <rect key="frame" x="158" y="4" width="120" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="120" id="TA3-mY-ge3"/>
-                                                    </constraints>
                                                     <color key="tintColor" name="text-primary"/>
                                                     <inset key="imageEdgeInsets" minX="-12" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" title="For Sale" image="dollarsign.circle" catalog="system">
@@ -391,9 +388,6 @@
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Co8-9h-Yqs">
                                                     <rect key="frame" x="286" y="4" width="120" height="26"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="120" id="WgD-LL-QOo"/>
-                                                    </constraints>
                                                     <color key="tintColor" name="text-primary"/>
                                                     <inset key="imageEdgeInsets" minX="-12" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" title="Sort" image="arrow.up.arrow.down" catalog="system">
@@ -422,7 +416,9 @@
                                                 <constraint firstAttribute="bottom" secondItem="Jv3-Ot-8af" secondAttribute="bottom" constant="4" id="QZg-RA-Xsm"/>
                                                 <constraint firstItem="E68-TX-K2J" firstAttribute="leading" secondItem="Jv3-Ot-8af" secondAttribute="trailing" constant="8" id="Sb6-uD-1jE"/>
                                                 <constraint firstAttribute="bottom" secondItem="Co8-9h-Yqs" secondAttribute="bottom" constant="4" id="Ycv-OF-CYW"/>
+                                                <constraint firstItem="E68-TX-K2J" firstAttribute="width" secondItem="Co8-9h-Yqs" secondAttribute="width" id="dl7-OY-WSk"/>
                                                 <constraint firstItem="Jv3-Ot-8af" firstAttribute="top" secondItem="a4I-Kr-na8" secondAttribute="top" constant="4" id="o5c-eK-QyM"/>
+                                                <constraint firstItem="Jv3-Ot-8af" firstAttribute="width" secondItem="E68-TX-K2J" secondAttribute="width" multiplier="1.18333" id="o5x-n0-HLy"/>
                                                 <constraint firstAttribute="trailing" secondItem="Co8-9h-Yqs" secondAttribute="trailing" constant="8" id="wo5-0J-SpP"/>
                                             </constraints>
                                         </tableViewCellContentView>

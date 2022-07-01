@@ -21,7 +21,7 @@ public class CollectiblesDetailsViewModel {
 		description = nft.description
 	}
 	
-	public func getMediaType(nft: NFT, completion: @escaping ((Result<MediaProxyService.MediaType, ErrorResponse>) -> Void)) {
+	public func getMediaType(nft: NFT, completion: @escaping ((Result<MediaProxyService.MediaType, KukaiError>) -> Void)) {
 		mediaService.getMediaType(fromFormats: nft.metadata?.formats ?? [], orURL: nft.artifactURL, completion: completion)
 	}
 }

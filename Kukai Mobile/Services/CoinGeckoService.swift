@@ -42,9 +42,9 @@ public class CoinGeckoService {
 	
 	// MARK: - Network functions
 	
-	public func fetchTezosPrice(completion: @escaping ((Result<Decimal, ErrorResponse>) -> Void)) {
+	public func fetchTezosPrice(completion: @escaping ((Result<Decimal, KukaiError>) -> Void)) {
 		guard let url = URL(string: coinGeckoPriceURL + selectedCurrency) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
@@ -60,9 +60,9 @@ public class CoinGeckoService {
 		}
 	}
 	
-	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, ErrorResponse>) -> Void)) {
+	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, KukaiError>) -> Void)) {
 		guard let url = URL(string: coinGeckoExchangeRatesURL) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
@@ -78,9 +78,9 @@ public class CoinGeckoService {
 		}
 	}
 	
-	public func fetchChartData(forURL: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, ErrorResponse>) -> Void)) {
+	public func fetchChartData(forURL: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
 		guard let url = URL(string: forURL) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
@@ -95,8 +95,8 @@ public class CoinGeckoService {
 		}
 	}
 	
-	public func fetchAllChartData(completion: @escaping ((Result<[CoinGeckoMarketDataResponse], ErrorResponse>) -> Void)) {
-		var error: ErrorResponse? = nil
+	public func fetchAllChartData(completion: @escaping ((Result<[CoinGeckoMarketDataResponse], KukaiError>) -> Void)) {
+		var error: KukaiError? = nil
 		dispatchGroupMarketData.enter()
 		dispatchGroupMarketData.enter()
 		dispatchGroupMarketData.enter()
@@ -162,12 +162,12 @@ public class CoinGeckoService {
 				completion(Result.success([day, week, month, year]))
 				
 			} else {
-				completion(Result.failure(ErrorResponse.unknownError()))
+				completion(Result.failure(KukaiError.unknown()))
 			}
 		}
 	}
 	
-	public func setSelectedCurrency(currency: String, completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func setSelectedCurrency(currency: String, completion: @escaping ((KukaiError?) -> Void)) {
 		UserDefaults.standard.setValue(currency, forKey: "com.currency.selected")
 		let _ = self.requestIfService.delete(key: fetchTezosPriceKey)
 		

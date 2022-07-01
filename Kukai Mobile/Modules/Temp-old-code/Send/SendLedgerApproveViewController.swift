@@ -40,7 +40,7 @@ class SendLedgerApproveViewController: UIViewController {
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estiamteResult in
 			guard let estimatedOps = try? estiamteResult.get() else {
 				self?.hideLoadingModal(completion: nil)
-				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
+				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? KukaiError.unknown() )")
 				return
 			}
 			
@@ -49,7 +49,7 @@ class SendLedgerApproveViewController: UIViewController {
 				self?.statusLabel.text = "Fetching metadata"
 				guard let metadata = try? metadataResult.get() else {
 					self?.hideLoadingModal(completion: nil)
-					self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
+					self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
 					return
 				}
 				
@@ -58,7 +58,7 @@ class SendLedgerApproveViewController: UIViewController {
 					self?.statusLabel.text = "Setting up Ledger connection"
 					guard let ledgerPrep = try? ledgerPrepResult.get() else {
 						self?.hideLoadingModal(completion: nil)
-						self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? ErrorResponse.unknownError() )")
+						self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
 						return
 					}
 					
@@ -73,7 +73,7 @@ class SendLedgerApproveViewController: UIViewController {
 		
 		// Connect to the ledger wallet, and request a signature from the device using the ledger prep
 		LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
-			.flatMap { _ -> AnyPublisher<String, ErrorResponse> in
+			.flatMap { _ -> AnyPublisher<String, KukaiError> in
 				if ledgerPrep.canLedgerParse {
 					return LedgerService.shared.sign(hex: ledgerPrep.watermarkedOp, parse: true)
 				}
@@ -115,7 +115,7 @@ class SendLedgerApproveViewController: UIViewController {
 			
 			guard let opHash = try? injectionResult.get() else {
 				self?.hideLoadingModal(completion: nil)
-				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? ErrorResponse.unknownError() )")
+				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? KukaiError.unknown() )")
 				return
 			}
 			

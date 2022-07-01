@@ -71,7 +71,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		
@@ -93,7 +93,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		

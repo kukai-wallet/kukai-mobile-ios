@@ -49,7 +49,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		guard let address = DependencyManager.shared.selectedWallet?.address, let ds = dataSource else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
 			return
 		}
 		
@@ -107,7 +107,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return walletObjs[indexPath.row].address
 	}
 	
-	func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, ErrorResponse>) -> Void)) {
+	func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
 		switch type {
 			case .tezosAddress:
 				completion(Result.success(string))
@@ -121,7 +121,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						completion(Result.success(add))
 						
 					} else {
-						completion(Result.failure(ErrorResponse.unknownError()))
+						completion(Result.failure(KukaiError.unknown()))
 					}
 					
 				}.store(in: &bag)
@@ -137,9 +137,9 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, ErrorResponse>) -> Void)) {
+	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
 		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
-			let error = ErrorResponse.error(string: "No \(verifier.rawValue) verifier details found", errorType: .unknownError)
+			let error = KukaiError.unknown(withString: "No \(verifier.rawValue) verifier details found")
 			completion(Result.failure(error))
 			return
 		}

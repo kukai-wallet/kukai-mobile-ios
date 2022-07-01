@@ -85,7 +85,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			guard let ds = self?.dataSource else {
-				self?.state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
+				self?.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 				return
 			}
 			

@@ -32,11 +32,11 @@ public class BalanceService {
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	
 	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: RefreshType, completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
 		
 		isFetchingData = true
 		
-		var error: ErrorResponse? = nil
+		var error: KukaiError? = nil
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
@@ -126,7 +126,7 @@ public class BalanceService {
 				
 			} else {
 				guard let self = self else {
-					completion(ErrorResponse.unknownError())
+					completion(KukaiError.unknown())
 					return
 				}
 				

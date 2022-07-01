@@ -30,7 +30,7 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 			.convertToResult()
 			.sink { [weak self] result in
 				guard let devices = try? result.get() else {
-					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
+					let error = (try? result.getError()) ?? KukaiError.unknown()
 					self?.alert(errorWithMessage: "Error from ledger: \( error )")
 					return
 				}

@@ -55,7 +55,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
+			state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		
@@ -115,7 +115,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			options.append(
 				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { [weak self] action in
 					guard let hdWallet = WalletCacheService().fetchWallets()?[indexPath.section] as? HDWallet else {
-						self?.state = .failure(ErrorResponse.unknownError(), "Unable to add new wallet")
+						self?.state = .failure(KukaiError.unknown(), "Unable to add new wallet")
 						return
 					}
 					
@@ -123,7 +123,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						self?.refresh(animate: true)
 						
 					} else {
-						self?.state = .failure(ErrorResponse.unknownError(), "Unable to add new wallet")
+						self?.state = .failure(KukaiError.unknown(), "Unable to add new wallet")
 					}
 				})
 			)
@@ -147,7 +147,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.refresh(animate: true)
 					
 				} else {
-					self?.state = .failure(ErrorResponse.unknownError(), "Unable to delete wallet from cache")
+					self?.state = .failure(KukaiError.unknown(), "Unable to delete wallet from cache")
 				}
 			}
 		)

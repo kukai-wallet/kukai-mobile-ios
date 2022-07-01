@@ -88,7 +88,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		guard let address = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(ErrorResponse.error(string: "", errorType: .unknownWallet), "Unable to locate wallet")
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
 			return
 		}
 		
@@ -109,7 +109,7 @@ class HomeWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func updateTableView(animate: Bool) {
 		guard let ds = dataSource, let acc = account else {
-			state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
+			state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		

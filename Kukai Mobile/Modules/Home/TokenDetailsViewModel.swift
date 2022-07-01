@@ -50,13 +50,13 @@ public class TokenDetailsViewModel {
 		}
 	}
 	
-	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, ErrorResponse>) -> Void)) {
+	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {
 		
 		// If XTZ we fetch data from coingecko
 		if token.isXTZ() {
 			DependencyManager.shared.coinGeckoService.fetchAllChartData { [weak self] result in
 				guard let self = self else {
-					completion(Result.failure(ErrorResponse.unknownError()))
+					completion(Result.failure(KukaiError.unknown()))
 					return
 				}
 				
@@ -72,13 +72,13 @@ public class TokenDetailsViewModel {
 		} else {
 			// Else we fetch from dipdup
 			guard let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) else {
-				completion(Result.failure(ErrorResponse.error(string: "Chart data unavailable for this token", errorType: .unknownError)))
+				completion(Result.failure(KukaiError.unknown(withString: "Chart data unavailable for this token")))
 				return
 			}
 			
 			DependencyManager.shared.dipDupClient.getChartDataFor(exchangeContract: exchangeData.address) { [weak self] result in
 				guard let self = self else {
-					completion(Result.failure(ErrorResponse.unknownError()))
+					completion(Result.failure(KukaiError.unknown()))
 					return
 				}
 				
@@ -87,7 +87,7 @@ public class TokenDetailsViewModel {
 						completion(Result.success(self.formatData(data: graphData)))
 						
 					case .failure(let error):
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 				}
 			}
 		}

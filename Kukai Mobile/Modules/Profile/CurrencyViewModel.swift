@@ -49,7 +49,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let rates = self.coinGeckoService.exchangeRates?.rates, let ds = dataSource else {
-			self.state = .failure(ErrorResponse.unknownError(), "Unable to find currency")
+			self.state = .failure(KukaiError.unknown(), "Unable to find currency")
 			return
 		}
 		
@@ -96,18 +96,18 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { error in
 			if let e = error {
-				self.state = .failure(ErrorResponse.unknownError(), "Unable to change currency: \(e)")
+				self.state = .failure(KukaiError.unknown(), "Unable to change currency: \(e)")
 				return
 			}
 			
 			guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-				self.state = .failure(ErrorResponse.unknownError(), "Can't find wallet details")
+				self.state = .failure(KukaiError.unknown(), "Can't find wallet details")
 				return
 			}
 			
 			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { error in
 				if let e = error {
-					self.state = .failure(ErrorResponse.unknownError(), "Unable to update balances: \(e)")
+					self.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
 					return
 				}
 				

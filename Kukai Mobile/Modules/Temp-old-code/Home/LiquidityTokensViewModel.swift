@@ -58,7 +58,7 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 		}
 		
 		guard let address = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find wallet")
+			state = .failure(KukaiError.unknown(), "Can't find wallet")
 			return
 		}
 		
@@ -69,7 +69,7 @@ class LiquidityTokensViewModel: ViewModel, UITableViewDiffableDataSourceHandler 
 			}
 			
 			guard let ds = self?.dataSource else {
-				self?.state = .failure(ErrorResponse.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
+				self?.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 				return
 			}
 			

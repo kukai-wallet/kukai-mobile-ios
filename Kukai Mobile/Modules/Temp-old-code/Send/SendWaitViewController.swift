@@ -32,14 +32,14 @@ class SendWaitViewController: UIViewController {
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] estiamteResult in
 			guard let estimatedOps = try? estiamteResult.get() else {
 				self?.hideLoadingModal(completion: nil)
-				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
+				self?.alert(errorWithMessage: "Couldn't estimate transaction: \( (try? estiamteResult.getError()) ?? KukaiError.unknown() )")
 				return
 			}
 			
 			DependencyManager.shared.tezosNodeClient.send(operations: estimatedOps, withWallet: wallet) { sendResult in
 				guard let opHash = try? sendResult.get() else {
 					self?.hideLoadingModal(completion: nil)
-					self?.alert(errorWithMessage: "Couldn't send transaction: \( (try? estiamteResult.getError()) ?? ErrorResponse.unknownError() )")
+					self?.alert(errorWithMessage: "Couldn't send transaction: \( (try? estiamteResult.getError()) ?? KukaiError.unknown() )")
 					return
 				}
 				

@@ -31,7 +31,7 @@ class LiquidityDetailsViewModel: ViewModel {
 		}
 		
 		guard let selectedPosition = TransactionService.shared.removeLiquidityData.position, let address = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find selected data")
+			state = .failure(KukaiError.unknown(), "Can't find selected data")
 			return
 		}
 		
@@ -59,7 +59,7 @@ class LiquidityDetailsViewModel: ViewModel {
 		}
 		
 		guard let selectedPosition = TransactionService.shared.removeLiquidityData.position, let liquidity = TokenAmount(fromNormalisedAmount: forEnteredLiquidity, decimalPlaces: selectedPosition.exchange.liquidityTokenDecimalPlaces()) else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find selected data")
+			state = .failure(KukaiError.unknown(), "Can't find selected data")
 			return
 		}
 		
@@ -96,12 +96,12 @@ class LiquidityDetailsViewModel: ViewModel {
 		state = .loading
 		
 		guard let wallet = DependencyManager.shared.selectedWallet else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find wallet")
+			state = .failure(KukaiError.unknown(), "Can't find wallet")
 			return
 		}
 		
 		guard let selectedPosition = TransactionService.shared.removeLiquidityData.position, let calc = calculation else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find selected data, or price hasn't been checked")
+			state = .failure(KukaiError.unknown(), "Can't find selected data, or price hasn't been checked")
 			return
 		}
 		
@@ -136,12 +136,12 @@ class LiquidityDetailsViewModel: ViewModel {
 		state = .loading
 		
 		guard let wallet = DependencyManager.shared.selectedWallet else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find wallet")
+			state = .failure(KukaiError.unknown(), "Can't find wallet")
 			return
 		}
 		
 		guard let selectedPosition = TransactionService.shared.removeLiquidityData.position else {
-			state = .failure(ErrorResponse.unknownError(), "Can't find selected data")
+			state = .failure(KukaiError.unknown(), "Can't find selected data")
 			return
 		}
 		

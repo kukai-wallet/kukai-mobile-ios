@@ -49,7 +49,7 @@ class DirectAuthViewController: UIViewController {
 		}
 	}
 	
-	func handleResult(result: Result<TorusWallet, ErrorResponse>) {
+	func handleResult(result: Result<TorusWallet, KukaiError>) {
 		switch result {
 			case .success(let wallet):
 				

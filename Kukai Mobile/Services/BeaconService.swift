@@ -189,10 +189,10 @@ public class BeaconService {
 		})
 	}
 	
-	public func getPeers(completion: @escaping ((Result<[PeerDisplay], ErrorResponse>) -> Void)) {
+	public func getPeers(completion: @escaping ((Result<[PeerDisplay], KukaiError>) -> Void)) {
 		beaconClient?.getPeers(completion: { result in
 			guard let res = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -207,10 +207,10 @@ public class BeaconService {
 		})
 	}
 	
-	public func getPermissions(completion: @escaping ((Result<[PermissionDisplay], ErrorResponse>) -> Void)) {
+	public func getPermissions(completion: @escaping ((Result<[PermissionDisplay], KukaiError>) -> Void)) {
 		beaconClient?.getPermissions { (result: Result<[Tezos.Permission], Beacon.Error>) in
 			guard let res = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -223,10 +223,10 @@ public class BeaconService {
 		}
 	}
 	
-	public func removePeer(_ peer: PeerDisplay, completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+	public func removePeer(_ peer: PeerDisplay, completion: @escaping ((Result<(), KukaiError>) -> Void)) {
 		beaconClient?.removePeer(withPublicKey: peer.publicKey, completion: { result in
 			guard let _ = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -234,10 +234,10 @@ public class BeaconService {
 		})
 	}
 	
-	public func removePermission(_ permission: PermissionDisplay, completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+	public func removePermission(_ permission: PermissionDisplay, completion: @escaping ((Result<(), KukaiError>) -> Void)) {
 		beaconClient?.removePermissions(forAccountIdentifier: permission.accountIdentifier, completion: { result in
 			guard let _ = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -245,10 +245,10 @@ public class BeaconService {
 		})
 	}
 	
-	public func removeAllPeers(completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+	public func removeAllPeers(completion: @escaping ((Result<(), KukaiError>) -> Void)) {
 		beaconClient?.removeAllPeers(completion: { result in
 			guard let _ = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -256,10 +256,10 @@ public class BeaconService {
 		})
 	}
 	
-	public func removerAllPermissions(completion: @escaping ((Result<(), ErrorResponse>) -> Void)) {
+	public func removerAllPermissions(completion: @escaping ((Result<(), KukaiError>) -> Void)) {
 		beaconClient?.removeAllPermissions(completion: { result in
 			guard let _ = try? result.get() else {
-				completion(Result.failure(ErrorResponse.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
+				completion(Result.failure(KukaiError.internalApplicationError(error: (try? result.getError()) ?? .unknown)))
 				return
 			}
 			
@@ -273,9 +273,9 @@ public class BeaconService {
 	
 	// MARK: - Completion actions
 	
-	public func acceptPermissionRequest(permission: PermissionTezosRequest, wallet: KukaiCoreSwift.Wallet, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func acceptPermissionRequest(permission: PermissionTezosRequest, wallet: KukaiCoreSwift.Wallet, completion: @escaping ((Result<(), KukaiError>) -> ())) {
 		guard let account = try? Tezos.Account(publicKey: wallet.publicKeyBase58encoded(), address: wallet.address, network: permission.network)  else {
-			completion(Result.failure(ErrorResponse.error(string: "Can't create Beacon.Tezos.Account", errorType: .unknownError)))
+			completion(Result.failure(KukaiError.unknown(withString: "Can't create Beacon.Tezos.Account")))
 			return
 		}
 		
@@ -289,13 +289,13 @@ public class BeaconService {
 				
 				case .failure(let error):
 					DispatchQueue.main.async {
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 					}
 			}
 		})
 	}
 	
-	public func rejectPermissionRequest(permission: PermissionTezosRequest, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func rejectPermissionRequest(permission: PermissionTezosRequest, completion: @escaping ((Result<(), KukaiError>) -> ())) {
 		let response = BeaconResponse<Tezos>.error(ErrorBeaconResponse(from: permission, errorType: .aborted))
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
@@ -306,13 +306,13 @@ public class BeaconService {
 					
 				case .failure(let error):
 					DispatchQueue.main.async {
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 					}
 			}
 		})
 	}
 	
-	public func signPayloadRequest(request: SignPayloadTezosRequest, signature: String, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func signPayloadRequest(request: SignPayloadTezosRequest, signature: String, completion: @escaping ((Result<(), KukaiError>) -> ())) {
 		let obj = SignPayloadTezosResponse(from: request, signature: signature)
 		let response = BeaconResponse<Tezos>.blockchain(.signPayload(obj))
 		
@@ -325,13 +325,13 @@ public class BeaconService {
 					
 				case .failure(let error):
 					DispatchQueue.main.async {
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 					}
 			}
 		})
 	}
 	
-	public func approveOperationRequest(operation: OperationTezosRequest, opHash: String, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func approveOperationRequest(operation: OperationTezosRequest, opHash: String, completion: @escaping ((Result<(), KukaiError>) -> ())) {
 		let response = BeaconResponse<Tezos>.blockchain(.operation(OperationTezosResponse(from: operation, transactionHash: opHash)))
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
@@ -342,13 +342,13 @@ public class BeaconService {
 					
 				case .failure(let error):
 					DispatchQueue.main.async {
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 					}
 			}
 		})
 	}
 	
-	public func rejectRequest(request: Tezos.Request.Blockchain, completion: @escaping ((Result<(), ErrorResponse>) -> ())) {
+	public func rejectRequest(request: Tezos.Request.Blockchain, completion: @escaping ((Result<(), KukaiError>) -> ())) {
 		let response = BeaconResponse<Tezos>.error(ErrorBeaconResponse(from: request, errorType: .aborted))
 		beaconClient?.respond(with: response, completion: { result in
 			switch result {
@@ -359,7 +359,7 @@ public class BeaconService {
 					
 				case .failure(let error):
 					DispatchQueue.main.async {
-						completion(Result.failure(ErrorResponse.internalApplicationError(error: error)))
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
 					}
 			}
 		})

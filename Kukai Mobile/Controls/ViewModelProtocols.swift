@@ -17,7 +17,7 @@ public enum ViewModelError: Error {
 public class ViewModel: ObservableObject {
 	enum State {
 		case loading
-		case failure(ErrorResponse, String)
+		case failure(KukaiError, String)
 		case success(String?)
 		
 		/**
