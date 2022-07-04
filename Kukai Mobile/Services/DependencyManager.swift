@@ -24,10 +24,10 @@ class DependencyManager {
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://hangzhounet.api.tez.ie")!
-	static let defaultTzktURL_testnet = URL(string: "https://api.hangzhounet.tzkt.io")!
+	static let defaultNodeURL_testnet = URL(string: "https://ghostnet.api.tez.ie")!
+	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
-	static let defaultTezosDomainsURL_testnet = URL(string: "https://hangzhounet-api.tezos.domains/graphql")!
+	static let defaultTezosDomainsURL_testnet = URL(string: "https://ithacanet-api.tezos.domains/graphql")!
 	
 	
 	// Kukai Core clients and properties
@@ -74,11 +74,6 @@ class DependencyManager {
 	var currentNetworkType: TezosNodeClientConfig.NetworkType {
 		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.type") }
 		get { return TezosNodeClientConfig.NetworkType(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.type") ?? "") ?? .mainnet }
-	}
-	
-	var tezosChainName: TezosChainName {
-		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.chainname") }
-		get { return TezosChainName(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.chainname") ?? "") ?? .mainnet }
 	}
 	
 	
@@ -171,7 +166,6 @@ class DependencyManager {
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
-		tezosChainName = .mainnet
 		currentNetworkType = .mainnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
@@ -182,7 +176,6 @@ class DependencyManager {
 		currentTzktURL = DependencyManager.defaultTzktURL_testnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
-		tezosChainName = .hangzhounet
 		currentNetworkType = .testnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
@@ -191,7 +184,6 @@ class DependencyManager {
 	func updateKukaiCoreClients(supressUpdateNotification: Bool = false) {
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
 			primaryNodeURL: currentNodeURL,
-			tezosChainName: tezosChainName,
 			tzktURL: currentTzktURL,
 			betterCallDevURL: currentBcdURL,
 			tezosDomainsURL: currentTezosDomainsURL,

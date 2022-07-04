@@ -1424,7 +1424,7 @@ Address:</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GPc-C3-A4c">
-                                <rect key="frame" x="0.0" y="462.5" width="414" height="433.5"/>
+                                <rect key="frame" x="0.0" y="482.5" width="414" height="413.5"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F7t-0W-jSr">
                                         <rect key="frame" x="362" y="8" width="44" height="44"/>
@@ -1444,19 +1444,19 @@ Address:</string>
                                         <rect key="frame" x="20" y="85" width="374" height="32"/>
                                         <segments>
                                             <segment title="Mainnet"/>
-                                            <segment title="Testnet (Florence)"/>
+                                            <segment title="Ghostnet"/>
                                         </segments>
                                         <connections>
                                             <action selector="networkConfigChanged:" destination="q9W-sK-Twb" eventType="valueChanged" id="ysj-XB-dx7"/>
                                         </connections>
                                     </segmentedControl>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eMd-YQ-3wd">
-                                        <rect key="frame" x="20" y="140" width="374" height="243.5"/>
+                                        <rect key="frame" x="20" y="140" width="374" height="223.5"/>
                                         <string key="text">Mainnet:
 Live network with real XTZ and Tokens with real value
 
-Testnet:
-An experimental network running the latest Tezos protocol (likely different to mainnet), with fake XTZ and fake tokens with no monetary value.
+Ghostnet:
+A Beta network running the latest Tezos mainnet protocol, with fake XTZ and fake tokens with no monetary value.
 Mainly used by developers to experiment / test. Or members of the public when testing a dApp in Beta.</string>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>

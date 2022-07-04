@@ -51,7 +51,6 @@ class DebugViewController: UITableViewController {
 		report += "Network: \n"
 		report += "Current Network type: \n" + DependencyManager.shared.currentNetworkType.rawValue + " \n\n"
 		report += "Current Node URL: \n" + DependencyManager.shared.currentNodeURL.absoluteString + " \n\n"
-		report += "Current Chain name: \n" + DependencyManager.shared.tezosChainName.rawValue + " \n\n"
 		report += "Current TzKT URL: \n" + DependencyManager.shared.currentTzktURL.absoluteString + " \n\n"
 		report += "Current BCD URL: \n" + DependencyManager.shared.currentBcdURL.absoluteString + " \n\n"
 		report += "Current Tezos Domains URL: \n" + DependencyManager.shared.currentTezosDomainsURL.absoluteString + " \n\n"

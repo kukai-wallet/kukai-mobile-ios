@@ -14,8 +14,6 @@ class NetworkChooserViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		
-		networkChoiceControl.setTitle("Testnet (\(TezosChainName.hangzhounet))", forSegmentAt: 1)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
