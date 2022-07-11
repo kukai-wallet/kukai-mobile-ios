@@ -24,7 +24,7 @@ class DependencyManager {
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://ghostnet.api.tez.ie")!
+	static let defaultNodeURL_testnet = URL(string: "https://rpc.ghostnet.teztnets.xyz ")!
 	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_testnet = URL(string: "https://ithacanet-api.tezos.domains/graphql")!

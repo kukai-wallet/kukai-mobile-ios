@@ -31,6 +31,8 @@ class ImportFaucetViewController: UIViewController {
 	}
 	
 	@IBAction func importTapped(_ sender: Any) {
+		DependencyManager.shared.setDefaultTestnetURLs(supressUpdateNotification: true)
+		
 		guard let seed = seedPhraseTextView.text, seed != "",
 			  let mnemonic = try? Mnemonic(seedPhrase: seed),
 			  let email = emailTextField.text,
