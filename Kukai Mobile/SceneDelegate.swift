@@ -7,7 +7,20 @@
 
 import UIKit
 import CustomAuth
+import WalletConnectSign
+import WalletConnectRelay
 import OSLog
+import Starscream
+
+
+extension WebSocket: WebSocketConnecting {}
+
+struct SocketFactory: WebSocketFactory {
+	func create(with url: URL) -> WebSocketConnecting {
+		return WebSocket(request: URLRequest(url: url))
+	}
+}
+
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -21,6 +34,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
+		
+		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
+		Sign.configure(metadata: metadata, projectId: "8ba9ee138960775e5231b70cc5ef1c3a", socketFactory: SocketFactory())
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -30,13 +46,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
-		BeaconService.shared.resumeBeacon { success in
+		/*BeaconService.shared.resumeBeacon { success in
 			
 			// Ignore nil response on initial app startup, until beacon has actully been started by the hometabcontroller
 			if success == true || success == false {
 				os_log("Beacon resumed: %@", log: .default, type: .info, "\(success ?? false)")
 			}
-		}
+		}*/
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
@@ -52,7 +68,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		showPrivacyProtectionWindow()
 		
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-		BeaconService.shared.pauseBeacon(completion: nil)
+		//BeaconService.shared.pauseBeacon(completion: nil)
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

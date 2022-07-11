@@ -46,8 +46,8 @@ class HomeTabBarController: UITabBarController {
 		updateAccountButton()
 		
 		
-		BeaconService.shared.operationDelegate = self
-		BeaconService.shared.startBeacon(completion: ({ _ in}))
+		//BeaconService.shared.operationDelegate = self
+		//BeaconService.shared.startBeacon(completion: ({ _ in}))
 	}
 	
 	public func updateAccountButton() {

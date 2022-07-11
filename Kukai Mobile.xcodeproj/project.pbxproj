@@ -72,6 +72,13 @@
 		C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0678DDD27205FE300DEF1CB /* InfoPlist.strings */; };
 		C06997F12832946B00F6929D /* UITextView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06997F02832946B00F6929D /* UITextView+extensions.swift */; };
 		C06997F32833D93700F6929D /* DebugViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06997F22833D93700F6929D /* DebugViewController.swift */; };
+		C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = C06E0D5C287C365F007A580B /* WalletConnect */; };
+		C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */; };
+		C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */; };
+		C06E0D63287C3E50007A580B /* WalletConnectApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */; };
+		C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */; };
+		C06E0D68287C43B9007A580B /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = C06E0D67287C43B9007A580B /* Starscream */; };
+		C06E0D6A287C71EA007A580B /* WalletConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D69287C71EA007A580B /* WalletConnectCell.swift */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
 		C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A02798364400726C01 /* Option1MainViewController.swift */; };
 		C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A2279836F000726C01 /* Option1TokenCell.swift */; };
@@ -270,6 +277,11 @@
 		C0678DDE27205FE800DEF1CB /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		C06997F02832946B00F6929D /* UITextView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+extensions.swift"; sourceTree = "<group>"; };
 		C06997F22833D93700F6929D /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
+		C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewController.swift; sourceTree = "<group>"; };
+		C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewModel.swift; sourceTree = "<group>"; };
+		C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectApproveViewController.swift; sourceTree = "<group>"; };
+		C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSignViewController.swift; sourceTree = "<group>"; };
+		C06E0D69287C71EA007A580B /* WalletConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectCell.swift; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		C07374A02798364400726C01 /* Option1MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1MainViewController.swift; sourceTree = "<group>"; };
 		C07374A2279836F000726C01 /* Option1TokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option1TokenCell.swift; sourceTree = "<group>"; };
@@ -368,8 +380,10 @@
 				C0A315082836354D00D1CCB4 /* BeaconClientWallet in Frameworks */,
 				C0A3150A2836354D00D1CCB4 /* BeaconCore in Frameworks */,
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
+				C06E0D68287C43B9007A580B /* Starscream in Frameworks */,
 				C0A315062836354D00D1CCB4 /* BeaconBlockchainTezos in Frameworks */,
 				C0A3150C2836354D00D1CCB4 /* BeaconTransportP2PMatrix in Frameworks */,
+				C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
 				C07AC26727D22FA500D320D4 /* Charts in Frameworks */,
@@ -408,6 +422,10 @@
 				C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */,
 				C053690F282BCCBC0006A1C4 /* BeaconApproveViewController.swift */,
 				C0536911282BCCC80006A1C4 /* BeaconSignViewController.swift */,
+				C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */,
+				C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */,
+				C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */,
+				C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */,
 				C06997F22833D93700F6929D /* DebugViewController.swift */,
 			);
 			path = Profile;
@@ -455,6 +473,7 @@
 			isa = PBXGroup;
 			children = (
 				C02C20EC282A9E7C001089DF /* BeaconConfigCell.swift */,
+				C06E0D69287C71EA007A580B /* WalletConnectCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -800,6 +819,8 @@
 				C0A315072836354D00D1CCB4 /* BeaconClientWallet */,
 				C0A315092836354D00D1CCB4 /* BeaconCore */,
 				C0A3150B2836354D00D1CCB4 /* BeaconTransportP2PMatrix */,
+				C06E0D5C287C365F007A580B /* WalletConnect */,
+				C06E0D67287C43B9007A580B /* Starscream */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -878,6 +899,8 @@
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */,
 				C0A315042836354D00D1CCB4 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
+				C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
+				C06E0D66287C43B9007A580B /* XCRemoteSwiftPackageReference "Starscream" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -934,6 +957,7 @@
 			files = (
 				C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */,
 				C0FA565827BFFBDE00AFC9A7 /* NFTItemCell.swift in Sources */,
+				C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */,
 				C08694DC27BD1B66000A4909 /* HeadingMediumButtonCell.swift in Sources */,
 				C0081FD627D8FE2300F7FEFF /* ActivityViewController.swift in Sources */,
 				C06997F12832946B00F6929D /* UITextView+extensions.swift in Sources */,
@@ -956,6 +980,7 @@
 				C09860B027C3C27D00F888AF /* SendReviewViewController.swift in Sources */,
 				C0B08A35270DC26700075618 /* SendWaitViewController.swift in Sources */,
 				C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */,
+				C06E0D6A287C71EA007A580B /* WalletConnectCell.swift in Sources */,
 				C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */,
 				C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */,
 				C06997F32833D93700F6929D /* DebugViewController.swift in Sources */,
@@ -1026,6 +1051,7 @@
 				C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */,
 				C0DB48172785C6DD00D3B4F9 /* FadeSegue.swift in Sources */,
 				C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */,
+				C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
 				C0081FD227D8FA6A00F7FEFF /* ActivityExchangeCell.swift in Sources */,
 				C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */,
@@ -1050,12 +1076,14 @@
 				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
 				C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */,
 				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
+				C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */,
 				C049B5B126A07A1000F1C5E0 /* NetworkChooserViewController.swift in Sources */,
 				C02D7CAA27BEB0B7006A8E39 /* TitleSubtitleCell.swift in Sources */,
 				C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */,
 				C085EAB526B192A600B37A15 /* SideMenuViewModel.swift in Sources */,
 				C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */,
 				C0B08A33270DC25900075618 /* SendLedgerApproveViewController.swift in Sources */,
+				C06E0D63287C3E50007A580B /* WalletConnectApproveViewController.swift in Sources */,
 				C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */,
 				C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */,
 				C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */,
@@ -1642,6 +1670,22 @@
 				kind = branch;
 			};
 		};
+		C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		C06E0D66287C43B9007A580B /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		C0A315042836354D00D1CCB4 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airgap-it/beacon-ios-sdk";
@@ -1665,6 +1709,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
+		};
+		C06E0D5C287C365F007A580B /* WalletConnect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			productName = WalletConnect;
+		};
+		C06E0D67287C43B9007A580B /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C06E0D66287C43B9007A580B /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
 		};
 		C07AC26627D22FA500D320D4 /* Charts */ = {
 			isa = XCSwiftPackageProductDependency;

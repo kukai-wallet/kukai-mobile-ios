@@ -9,6 +9,7 @@ import Foundation
 import KukaiCoreSwift
 import BeaconCore
 import BeaconBlockchainTezos
+import WalletConnectSign
 import UIKit
 
 public class TransactionService {
@@ -72,6 +73,10 @@ public class TransactionService {
 		var beaconRequest: OperationTezosRequest?
 	}
 	
+	public struct WalletConnectOperationData {
+		var proposal: Session.Proposal?
+	}
+	
 	
 	
 	public static let shared = TransactionService()
@@ -84,6 +89,7 @@ public class TransactionService {
 	public var beaconApproveData: BeaconApproveData
 	public var beaconSignData: BeaconSignData
 	public var beaconOperationData: BeaconOperationData
+	public var walletConnectOperationData: WalletConnectOperationData
 	
 	
 	
@@ -96,6 +102,7 @@ public class TransactionService {
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
+		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil)
 	}
 	
 	
@@ -109,6 +116,7 @@ public class TransactionService {
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
+		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil)
 	}
 	
 	public func record(exchange: DipDupExchange) {
