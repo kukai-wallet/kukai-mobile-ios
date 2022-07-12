@@ -22,10 +22,11 @@ public class TransactionService {
 		case beaconApprove
 		case beaconSign
 		case beaconOperation
+		case walletConnectOperation
 		case none
 	}
 	
-	public enum BeaconOperationType {
+	public enum WalletConnectOperationType {
 		case sendXTZ
 		case sendToken
 		case sendNFT
@@ -67,7 +68,7 @@ public class TransactionService {
 	
 	public struct BeaconOperationData {
 		var estimatedOperations: [KukaiCoreSwift.Operation]?
-		var operationType: BeaconOperationType?
+		var operationType: WalletConnectOperationType?
 		var tokenToSend: Token?
 		var entrypointToCall: String?
 		var beaconRequest: OperationTezosRequest?
@@ -75,6 +76,12 @@ public class TransactionService {
 	
 	public struct WalletConnectOperationData {
 		var proposal: Session.Proposal?
+		var request: WalletConnectSign.Request?
+		var requestParams: WalletConnectRequestParams?
+		var operationType: WalletConnectOperationType?
+		var estimatedOperations: [KukaiCoreSwift.Operation]?
+		var tokenToSend: Token?
+		var entrypointToCall: String?
 	}
 	
 	
@@ -102,7 +109,7 @@ public class TransactionService {
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
-		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil)
+		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil, estimatedOperations: nil, tokenToSend: nil, entrypointToCall: nil)
 	}
 	
 	
@@ -116,7 +123,7 @@ public class TransactionService {
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
-		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil)
+		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil, estimatedOperations: nil, tokenToSend: nil, entrypointToCall: nil)
 	}
 	
 	public func record(exchange: DipDupExchange) {

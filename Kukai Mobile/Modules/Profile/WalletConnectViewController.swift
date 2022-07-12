@@ -8,6 +8,7 @@
 import UIKit
 import WalletConnectSign
 import Combine
+import OSLog
 
 class WalletConnectViewController: UIViewController {
 	
@@ -71,12 +72,12 @@ class WalletConnectViewController: UIViewController {
 	
 	@MainActor
 	private func pairClient(uri: String) {
-		print("[WALLET] Pairing to: \(uri)")
+		os_log("WC pairing to %@", log: .default, type: .info, uri)
 		Task {
 			do {
 				try await Sign.instance.pair(uri: uri)
 			} catch {
-				print("[DAPP] Pairing connect error: \(error)")
+				os_log("WC Pairing connect error: %@", log: .default, type: .error, "\(error)")
 			}
 		}
 	}
@@ -96,7 +97,7 @@ class WalletConnectViewController: UIViewController {
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
-				print("[RESPONDER] WC: Did receive session proposal")
+				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
 				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal
 				self?.performSegue(withIdentifier: "approve", sender: nil)
 			}.store(in: &bag)
@@ -104,23 +105,15 @@ class WalletConnectViewController: UIViewController {
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] _ in
-				print("[RESPONDER] WC: sessionSettlePublisher")
-				//self?.reloadActiveSessions()
-			}.store(in: &bag)
-		
-		Sign.instance.sessionRequestPublisher
-			.receive(on: DispatchQueue.main)
-			.sink { [weak self] sessionRequest in
-				print("[RESPONDER] WC: Did receive session request")
-				//self?.showSessionRequest(sessionRequest)
+				os_log("WC sessionSettlePublisher %@", log: .default, type: .info)
+				self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] _ in
-				print("[RESPONDER] WC: sessionDeletePublisher")
-				//self?.reloadActiveSessions()
-				//self?.navigationController?.popToRootViewController(animated: true)
+				os_log("WC sessionDeletePublisher %@", log: .default, type: .info)
+				self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
 	}
 }

@@ -10,17 +10,6 @@ import CustomAuth
 import WalletConnectSign
 import WalletConnectRelay
 import OSLog
-import Starscream
-
-
-extension WebSocket: WebSocketConnecting {}
-
-struct SocketFactory: WebSocketFactory {
-	func create(with url: URL) -> WebSocketConnecting {
-		return WebSocket(request: URLRequest(url: url))
-	}
-}
-
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -35,8 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
 		
-		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
-		Sign.configure(metadata: metadata, projectId: "8ba9ee138960775e5231b70cc5ef1c3a", socketFactory: SocketFactory())
+		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
+		Sign.configure(metadata: metadata, projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {

@@ -41,6 +41,7 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
+		dispatchGroupBalances.enter()
 		
 		if refreshType == .useCache,
 		   let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
@@ -115,6 +116,19 @@ public class BalanceService {
 			}
 			
 			self?.dispatchGroupBalances.leave()
+		}
+		
+		// Check current chain information
+		if DependencyManager.shared.tezosNodeClient.networkVersion == nil {
+			DependencyManager.shared.tezosNodeClient.getNetworkInformation { success, e in
+				if let err = error {
+					error = err
+				}
+				
+				self.dispatchGroupBalances.leave()
+			}
+		} else {
+			self.dispatchGroupBalances.leave()
 		}
 		
 		

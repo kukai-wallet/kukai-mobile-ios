@@ -8,8 +8,8 @@
 import UIKit
 import Combine
 import KukaiCoreSwift
-import BeaconCore
-import BeaconBlockchainTezos
+import WalletConnectSign
+import OSLog
 
 class HomeTabBarController: UITabBarController {
 	
@@ -18,6 +18,7 @@ class HomeTabBarController: UITabBarController {
 	@IBOutlet weak var sendButton: UIButton!
 	
 	private var walletChangeCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +35,30 @@ class HomeTabBarController: UITabBarController {
 		
 		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 34))
 		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
+		
+		
+		// Start listening for Wallet connect operation requests
+		Sign.instance.sessionRequestPublisher
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] sessionRequest in
+				os_log("WC sessionRequestPublisher", log: .default, type: .info)
+				
+				TransactionService.shared.walletConnectOperationData.request = sessionRequest
+				
+				if sessionRequest.method == "tezos_sendOperations" {
+					self?.processWalletConnectRequest()
+					
+				} else if sessionRequest.method == "tezos_signExpression" {
+					self?.alert(errorWithMessage: "Unsupported WC method: \(sessionRequest.method)")
+					
+				} else if sessionRequest.method == "tezos_getAccounts" {
+					self?.alert(errorWithMessage: "Unsupported WC method: \(sessionRequest.method)")
+					
+				} else {
+					self?.alert(errorWithMessage: "Recieved unkwnown WalletConnect method request: \(sessionRequest.method)")
+				}
+				
+			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -62,8 +87,86 @@ class HomeTabBarController: UITabBarController {
 	@IBAction func sendButtonTapped(_ sender: Any) {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
+	
+	private func processWalletConnectRequest() {
+		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
+			  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+			  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+		else {
+			let onDevice = "tezos:\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "")"
+			self.alert(errorWithMessage: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match")
+			return
+		}
+		
+		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(address: params.account) else {
+			self.alert(errorWithMessage: "Processing WalletConnect request, unable to parse response or locate wallet")
+			return
+		}
+		
+		TransactionService.shared.walletConnectOperationData.requestParams = params
+		self.showLoadingModal { [weak self] in
+			self?.processAndShow(withWallet: wallet, requestParams: params)
+		}
+	}
+	
+	private func processAndShow(withWallet wallet: Wallet, requestParams: WalletConnectRequestParams) {
+		
+		// Map all beacon objects to kuaki objects
+		let convertedOps = requestParams.kukaiOperations()
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { [weak self] result in
+			guard let estimatedOps = try? result.get() else {
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: "Processing WalletConnect request, unable to estimate fees")
+				})
+				return
+			}
+			
+			self?.processTransactions(estimatedOperations: estimatedOps)
+		}
+	}
+	
+	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
+		TransactionService.shared.currentTransactionType = .walletConnectOperation
+		TransactionService.shared.walletConnectOperationData.estimatedOperations = estimatedOps
+		
+		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
+			
+			if transactionOperation.parameters == nil {
+				TransactionService.shared.walletConnectOperationData.operationType = .sendXTZ
+				
+				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+				TransactionService.shared.walletConnectOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
+				
+			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
+				if token.isNFT {
+					TransactionService.shared.walletConnectOperationData.operationType = .sendNFT
+					TransactionService.shared.walletConnectOperationData.tokenToSend = token.token
+					
+				} else {
+					TransactionService.shared.walletConnectOperationData.operationType = .sendToken
+					TransactionService.shared.walletConnectOperationData.tokenToSend = token.token
+				}
+				
+			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
+				TransactionService.shared.walletConnectOperationData.operationType = .callSmartContract
+				TransactionService.shared.walletConnectOperationData.entrypointToCall = entrypoint
+				
+			} else {
+				TransactionService.shared.walletConnectOperationData.operationType = .unknown
+			}
+			
+		} else {
+			TransactionService.shared.walletConnectOperationData.operationType = .unknown
+		}
+		
+		self.hideLoadingModal(completion: { [weak self] in
+			self?.performSegue(withIdentifier: "wallet-connect-approve", sender: nil)
+		})
+	}
 }
 
+/*
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
@@ -135,7 +238,8 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		}
 		
 		self.hideLoadingModal(completion: { [weak self] in
-			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
+			self?.performSegue(withIdentifier: "wallet-connect-approve", sender: nil)
 		})
 	}
 }
+*/

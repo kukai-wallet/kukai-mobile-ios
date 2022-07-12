@@ -7,6 +7,7 @@
 
 import UIKit
 import WalletConnectSign
+import OSLog
 
 class WalletConnectApproveViewController: UIViewController {
 	
@@ -62,7 +63,7 @@ class WalletConnectApproveViewController: UIViewController {
 	
 	@MainActor
 	private func approve(proposalId: String, namespaces: [String: SessionNamespace]) {
-		print("[WALLET] Approve Session: \(proposalId)")
+		os_log("WC Approve Session %@", log: .default, type: .info, proposalId)
 		Task {
 			do {
 				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces)
@@ -72,7 +73,7 @@ class WalletConnectApproveViewController: UIViewController {
 				})
 				
 			} catch {
-				print("[DAPP] Approve Session error: \(error)")
+				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.alert(errorWithMessage: "Error: \(error)")
 				})
@@ -91,7 +92,7 @@ class WalletConnectApproveViewController: UIViewController {
 	
 	@MainActor
 	private func reject(proposalId: String, reason: RejectionReason) {
-		print("[WALLET] Reject Session: \(proposalId)")
+		os_log("WC Reject Session %@", log: .default, type: .info, proposalId)
 		Task {
 			do {
 				try await Sign.instance.reject(proposalId: proposalId, reason: reason)
@@ -100,7 +101,7 @@ class WalletConnectApproveViewController: UIViewController {
 				})
 				
 			} catch {
-				print("[DAPP] Reject Session error: \(error)")
+				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.alert(errorWithMessage: "Error: \(error)")
 				})
