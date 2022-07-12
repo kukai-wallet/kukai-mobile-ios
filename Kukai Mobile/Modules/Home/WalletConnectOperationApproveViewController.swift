@@ -117,7 +117,6 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		respondOnReject()
 	}
 	
-	
 	private func approveRegular(operations: [KukaiCoreSwift.Operation], wallet: Wallet) {
 		self.showLoadingModal { [weak self] in
 			DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] sendResult in

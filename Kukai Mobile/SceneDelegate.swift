@@ -42,6 +42,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 				os_log("Beacon resumed: %@", log: .default, type: .info, "\(success ?? false)")
 			}
 		}*/
+		
+		try? Sign.instance.connect()
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
@@ -58,6 +60,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 		//BeaconService.shared.pauseBeacon(completion: nil)
+		
+		
+		try? Sign.instance.disconnect(closeCode: .normalClosure)
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
