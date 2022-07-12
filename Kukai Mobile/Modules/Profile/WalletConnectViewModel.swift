@@ -67,6 +67,17 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Return success
 		self.state = .success(nil)
 	}
+	
+	@MainActor
+	public func deleteAll() {
+		self.state = .loading
+		
+		for (index, _) in sessions.enumerated() {
+			deleteTapped(forRow: index)
+		}
+		
+		self.refresh(animate: true)
+	}
 }
 
 extension WalletConnectViewModel: WalletConnectCellProtocol {

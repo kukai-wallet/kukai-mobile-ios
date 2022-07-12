@@ -62,8 +62,7 @@ class WalletConnectViewController: UIViewController {
 	}
 	
 	@IBAction func deleteAllTapped(_ sender: Any) {
-		try? Sign.instance.cleanup()
-		self.viewModel.refresh(animate: true)
+		self.viewModel.deleteAll()
 	}
 	
 	
@@ -83,17 +82,6 @@ class WalletConnectViewController: UIViewController {
 	}
 	
 	public func setupWCCallbacks() {
-		/*
-		 Sign.instance.socketConnectionStatusPublisher
-			.receive(on: DispatchQueue.main)
-			.sink { [weak self] status in
-				if status == .connected {
-					print("Client connected")
-				}
-			}.store(in: &bag)
-		*/
-		
-		
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
