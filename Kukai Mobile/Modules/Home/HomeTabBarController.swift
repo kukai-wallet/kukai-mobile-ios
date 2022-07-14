@@ -9,6 +9,8 @@ import UIKit
 import Combine
 import KukaiCoreSwift
 import WalletConnectSign
+import BeaconCore
+import BeaconBlockchainTezos
 import OSLog
 
 class HomeTabBarController: UITabBarController {
@@ -71,8 +73,8 @@ class HomeTabBarController: UITabBarController {
 		updateAccountButton()
 		
 		
-		//BeaconService.shared.operationDelegate = self
-		//BeaconService.shared.startBeacon(completion: ({ _ in}))
+		BeaconService.shared.operationDelegate = self
+		BeaconService.shared.startBeacon(completion: ({ _ in}))
 	}
 	
 	public func updateAccountButton() {
@@ -166,7 +168,6 @@ class HomeTabBarController: UITabBarController {
 	}
 }
 
-/*
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
@@ -238,8 +239,7 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		}
 		
 		self.hideLoadingModal(completion: { [weak self] in
-			self?.performSegue(withIdentifier: "wallet-connect-approve", sender: nil)
+			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
 		})
 	}
 }
-*/

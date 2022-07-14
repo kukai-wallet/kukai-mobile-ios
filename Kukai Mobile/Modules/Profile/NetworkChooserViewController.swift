@@ -32,6 +32,8 @@ class NetworkChooserViewController: UIViewController {
 	}
 	
 	@IBAction func networkConfigChanged(_ sender: Any) {
+		DependencyManager.shared.tezosNodeClient.networkVersion = nil
+		
 		if networkChoiceControl.selectedSegmentIndex == 0 {
 			DependencyManager.shared.setDefaultMainnetURLs()
 		} else {

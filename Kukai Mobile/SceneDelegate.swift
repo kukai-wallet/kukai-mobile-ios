@@ -35,13 +35,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
-		/*BeaconService.shared.resumeBeacon { success in
+		BeaconService.shared.resumeBeacon { success in
 			
 			// Ignore nil response on initial app startup, until beacon has actully been started by the hometabcontroller
 			if success == true || success == false {
 				os_log("Beacon resumed: %@", log: .default, type: .info, "\(success ?? false)")
 			}
-		}*/
+		}
 		
 		try? Sign.instance.connect()
 	}
@@ -59,8 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		showPrivacyProtectionWindow()
 		
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-		//BeaconService.shared.pauseBeacon(completion: nil)
-		
+		BeaconService.shared.pauseBeacon(completion: nil)
 		
 		try? Sign.instance.disconnect(closeCode: .normalClosure)
 	}
