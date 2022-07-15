@@ -15,7 +15,7 @@ import OSLog
 
 class HomeTabBarController: UITabBarController {
 	
-	@IBOutlet weak var accountButtonParent: UIBarButtonItem!
+	@IBOutlet weak var profileButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var sendButton: UIButton!
 	
@@ -33,9 +33,12 @@ class HomeTabBarController: UITabBarController {
 		
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: (self.view.frame.width * 0.75)))
+		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: (self.view.frame.width * 0.60)))
 		
-		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 34))
+		profileButton.addConstraint(NSLayoutConstraint(item: profileButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 40))
+		profileButton.addConstraint(NSLayoutConstraint(item: profileButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
+		
+		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 40))
 		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
 		
 		

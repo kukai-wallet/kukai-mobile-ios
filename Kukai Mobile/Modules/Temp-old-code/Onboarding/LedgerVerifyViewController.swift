@@ -60,8 +60,8 @@ class LedgerVerifyViewController: UIViewController {
 		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet) {
 			LedgerService.shared.disconnectFromDevice()
 			
-			if self.isPartOfSideMenuImportFlow() {
-				self.completeAndCloseSideMenuImport()
+			if self.isAddingAdditionalWallet() {
+				self.returnToAccountsFromAddWallet()
 				
 			} else {
 				self.performSegue(withIdentifier: "verified", sender: nil)

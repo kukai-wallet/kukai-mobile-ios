@@ -68,8 +68,8 @@ class ImportMnemonicViewController: UIViewController {
 	}
 	
 	func handleSuccessNavigation() {
-		if self.isPartOfSideMenuImportFlow() {
-			self.completeAndCloseSideMenuImport()
+		if self.isAddingAdditionalWallet() {
+			self.returnToAccountsFromAddWallet()
 			
 		} else {
 			self.performSegue(withIdentifier: "complete", sender: self)

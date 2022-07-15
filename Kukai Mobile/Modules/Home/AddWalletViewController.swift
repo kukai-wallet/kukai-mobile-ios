@@ -1,5 +1,5 @@
 //
-//  SideMenuImportViewController.swift
+//  AddWalletViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 04/05/2022.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SideMenuImportViewController: UIViewController {
+class AddWalletViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,6 +16,6 @@ class SideMenuImportViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		(self.presentingViewController as? SideMenuViewController)?.refeshWallets()
+		(self.presentingViewController as? AccountsViewController)?.refeshWallets()
 	}
 }

@@ -11,12 +11,13 @@ extension UIViewController {
 	
 	// MARK: - Flow
 	
-	func isPartOfSideMenuImportFlow() -> Bool {
-		return (self.navigationController?.presentingViewController is SideMenuViewController) || (self.navigationController?.presentingViewController is SideMenuImportViewController)
+	func isAddingAdditionalWallet() -> Bool {
+		return (self.navigationController?.presentingViewController is AccountsViewController) || (self.navigationController?.presentingViewController is AddWalletViewController)
 	}
 	
-	func completeAndCloseSideMenuImport() {
-		self.navigationController?.dismiss(animated: true)
+	func returnToAccountsFromAddWallet() {
+		self.navigationController?.presentingViewController?.dismiss(animated: true)
+		self.navigationController?.presentingViewController?.presentingViewController?.dismiss(animated: true)
 	}
 	
 	

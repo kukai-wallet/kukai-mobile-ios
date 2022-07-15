@@ -15,12 +15,6 @@ struct TotalEstiamtedValue: Hashable {
 	let value: String
 }
 
-struct DiscoverItem: Hashable {
-	let heading: String
-	let imageName: String
-	let url: String
-}
-
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -126,11 +120,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.valueLabel.text = total.value
 				return cell
 				
-			} else if let discoverItem = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
-				cell.headingLabel.text = discoverItem.heading
-				cell.iconView.image = UIImage(named: discoverItem.imageName)
-				return cell
-				
 			} else {
 				return UITableViewCell()
 			}
@@ -166,12 +155,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<Int, AnyHashable>) {
-		self.discoverItems = [
-			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
-			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
-		]
-		
-		
+
 		// Build arrays of data
 		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
 		let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -192,9 +176,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
 			section1Data.append(total)
 			
-			snapshot.appendSections([0, 1])
+			snapshot.appendSections([0])
 			snapshot.appendItems(section1Data, toSection: 0)
-			snapshot.appendItems(self.discoverItems, toSection: 1)
 		}
 		
 		datasource.apply(snapshot, animatingDifferences: animate)
@@ -233,24 +216,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingLargeButtonCell") as? HeadingLargeButtonCell {
-			cell.setup(heading: "Balances", buttonTitle: "DISCOVER")
-			return cell.contentView
-			
-		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingMediumButtonCell") as? HeadingMediumButtonCell {
-			cell.setup(heading: "Featured Discoveries", buttonTitle: "ALL")
+			cell.setup(heading: "Balances", buttonTitle: "...")
 			return cell.contentView
 			
 		} else {
 			return UIView()
 		}
-	}
-	
-	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
-		if atIndexPath.section == 1, atIndexPath.row < discoverItems.count  {
-			return URL(string: discoverItems[atIndexPath.row].url)
-		}
-		
-		return nil
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token {

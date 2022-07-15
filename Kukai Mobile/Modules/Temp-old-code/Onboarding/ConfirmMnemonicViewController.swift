@@ -14,8 +14,8 @@ class ConfirmMnemonicViewController: UIViewController {
     }
 	
 	@IBAction func continueTapped(_ sender: Any) {
-		if self.isPartOfSideMenuImportFlow() {
-			self.completeAndCloseSideMenuImport()
+		if self.isAddingAdditionalWallet() {
+			self.returnToAccountsFromAddWallet()
 			
 		} else {
 			self.performSegue(withIdentifier: "next", sender: self)

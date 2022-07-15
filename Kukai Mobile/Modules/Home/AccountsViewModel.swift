@@ -1,8 +1,8 @@
 //
-//  SideMenuViewModel.swift
+//  AccountsViewModel.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 28/07/2021.
+//  Created by Simon Mcloughlin on 15/07/2022.
 //
 
 import UIKit
@@ -19,8 +19,7 @@ struct WalletData: Hashable {
 	let parentAddress: String?
 }
 
-
-class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = WalletData
 	
