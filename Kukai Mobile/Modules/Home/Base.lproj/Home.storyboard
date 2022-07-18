@@ -1904,6 +1904,7 @@
                         <segue destination="H4x-zw-yCm" kind="custom" identifier="beacon-approve" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="tGw-se-HMo"/>
                         <segue destination="4vI-Tk-Qm6" kind="custom" identifier="wallet-connect-approve" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="pIv-06-ed9"/>
                         <segue destination="T8s-a1-hfd" kind="relationship" relationship="viewControllers" id="nnL-5U-OWA"/>
+                        <segue destination="U7p-Ud-smc" kind="custom" identifier="wallet-connect-sign" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="GNc-gv-aPD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -3550,6 +3551,102 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="R1c-kM-B0f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="913" y="-1420"/>
+        </scene>
+        <!--Wallet Connect Sign View Controller-->
+        <scene sceneID="3yj-ZG-BET">
+            <objects>
+                <viewController id="U7p-Ud-smc" customClass="WalletConnectSignViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mf2-NG-bXZ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Beacon" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PXd-pb-lNe">
+                                <rect key="frame" x="20" y="68" width="374" height="29"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="TA0-2W-BxG">
+                                <rect key="frame" x="20" y="194" width="374" height="44"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sbz-BQ-z5S">
+                                        <rect key="frame" x="0.0" y="0.0" width="183" height="44"/>
+                                        <color key="backgroundColor" name="primary-button-background"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="rDD-Bp-L1S"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Sign">
+                                            <color key="titleColor" name="primary-button-text"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="signTapped:" destination="U7p-Ud-smc" eventType="touchUpInside" id="F9R-0j-gpn"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="osW-eh-y0o">
+                                        <rect key="frame" x="191" y="0.0" width="183" height="44"/>
+                                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Reject">
+                                            <color key="titleColor" name="primary-button-text"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="rejectTapped:" destination="U7p-Ud-smc" eventType="touchUpInside" id="vJ0-8o-dhM"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="GYt-mS-e4a">
+                                <rect key="frame" x="20" y="121" width="374" height="49"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign payload?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="htj-OF-BaK">
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="text-primary"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;payload&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sQj-92-s3e">
+                                        <rect key="frame" x="0.0" y="28.5" width="374" height="20.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" name="text-secondary"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ohe-jd-fD5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="TA0-2W-BxG" firstAttribute="leading" secondItem="ohe-jd-fD5" secondAttribute="leading" constant="20" id="2YU-oB-c13"/>
+                            <constraint firstItem="GYt-mS-e4a" firstAttribute="top" secondItem="PXd-pb-lNe" secondAttribute="bottom" constant="24" id="7QZ-cr-WuN"/>
+                            <constraint firstItem="GYt-mS-e4a" firstAttribute="leading" secondItem="ohe-jd-fD5" secondAttribute="leading" constant="20" id="DUW-2C-DE8"/>
+                            <constraint firstItem="PXd-pb-lNe" firstAttribute="top" secondItem="ohe-jd-fD5" secondAttribute="top" constant="24" id="FhD-hZ-VJI"/>
+                            <constraint firstItem="ohe-jd-fD5" firstAttribute="trailing" secondItem="TA0-2W-BxG" secondAttribute="trailing" constant="20" id="PjG-XF-AGa"/>
+                            <constraint firstItem="ohe-jd-fD5" firstAttribute="trailing" secondItem="GYt-mS-e4a" secondAttribute="trailing" constant="20" id="WAJ-UL-10j"/>
+                            <constraint firstItem="TA0-2W-BxG" firstAttribute="top" secondItem="GYt-mS-e4a" secondAttribute="bottom" constant="24" id="h0e-7r-Jko"/>
+                            <constraint firstItem="ohe-jd-fD5" firstAttribute="trailing" secondItem="PXd-pb-lNe" secondAttribute="trailing" constant="20" id="hYn-CH-d7v"/>
+                            <constraint firstItem="PXd-pb-lNe" firstAttribute="leading" secondItem="ohe-jd-fD5" secondAttribute="leading" constant="20" id="oDG-9t-7Zh"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="payloadLabel" destination="sQj-92-s3e" id="qZp-dV-BNf"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cte-Bo-cvz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3494" y="-1422"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -54,7 +54,7 @@ class HomeTabBarController: UITabBarController {
 					self?.processWalletConnectRequest()
 					
 				} else if sessionRequest.method == "tezos_signExpression" {
-					self?.alert(errorWithMessage: "Unsupported WC method: \(sessionRequest.method)")
+					self?.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
 					
 				} else if sessionRequest.method == "tezos_getAccounts" {
 					self?.alert(errorWithMessage: "Unsupported WC method: \(sessionRequest.method)")
