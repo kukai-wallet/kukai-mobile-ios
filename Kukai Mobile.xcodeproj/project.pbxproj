@@ -35,6 +35,8 @@
 		C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C01D227127F5E2DD00D3AF4B /* CloudKit.framework */; };
 		C0239B9A2886B92500E0C973 /* Defi.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0239B992886B92500E0C973 /* Defi.storyboard */; };
 		C0239B9C2886BAC500E0C973 /* DefiViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0239B9B2886BAC500E0C973 /* DefiViewController.swift */; };
+		C0239B9F2886C02F00E0C973 /* LiquidityTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0239B9E2886C02F00E0C973 /* LiquidityTokenCell.swift */; };
+		C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0239BA02886C5C600E0C973 /* DefiViewModel.swift */; };
 		C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038826D925FB00E1CB80 /* BeaconService.swift */; };
 		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
 		C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02A4FD927DA421100F42DE4 /* Date+extensions.swift */; };
@@ -234,6 +236,8 @@
 		C01D227127F5E2DD00D3AF4B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		C0239B992886B92500E0C973 /* Defi.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Defi.storyboard; sourceTree = "<group>"; };
 		C0239B9B2886BAC500E0C973 /* DefiViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefiViewController.swift; sourceTree = "<group>"; };
+		C0239B9E2886C02F00E0C973 /* LiquidityTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenCell.swift; sourceTree = "<group>"; };
+		C0239BA02886C5C600E0C973 /* DefiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefiViewModel.swift; sourceTree = "<group>"; };
 		C024038826D925FB00E1CB80 /* BeaconService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconService.swift; sourceTree = "<group>"; };
 		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
 		C02A4FD927DA421100F42DE4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
@@ -489,10 +493,20 @@
 		C0239B982886B90900E0C973 /* Defi */ = {
 			isa = PBXGroup;
 			children = (
+				C0239B9D2886C01100E0C973 /* Cells */,
 				C0239B992886B92500E0C973 /* Defi.storyboard */,
 				C0239B9B2886BAC500E0C973 /* DefiViewController.swift */,
+				C0239BA02886C5C600E0C973 /* DefiViewModel.swift */,
 			);
 			path = Defi;
+			sourceTree = "<group>";
+		};
+		C0239B9D2886C01100E0C973 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C0239B9E2886C02F00E0C973 /* LiquidityTokenCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		C02C20EB282A9E65001089DF /* Cells */ = {
@@ -985,6 +999,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */,
+				C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */,
 				C0FA565827BFFBDE00AFC9A7 /* NFTItemCell.swift in Sources */,
 				C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */,
 				C08694DC27BD1B66000A4909 /* HeadingMediumButtonCell.swift in Sources */,
@@ -1050,6 +1065,7 @@
 				C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */,
 				C05CBBA828228D4D00568DC9 /* AccountSocialCell.swift in Sources */,
 				C0A19B4828857301000291A0 /* String+extensions.swift in Sources */,
+				C0239B9F2886C02F00E0C973 /* LiquidityTokenCell.swift in Sources */,
 				C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */,
 				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
 				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
