@@ -36,6 +36,7 @@ class SwapViewController: UIViewController {
 	private var calculationResult: DexSwapCalculationResult? = nil
 	
 	
+	
 	// MARK: - Setup
 	
     override func viewDidLoad() {
@@ -66,30 +67,7 @@ class SwapViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken {
-			invertTokensButton.isEnabled = true
-			tokenFromTextField.isEnabled = true
-			
-			if xtzToToken {
-				tokenToButton.setTitle(exchange.token.symbol, for: .normal)
-				tokenFromTextField.validator = TokenAmountValidator(balanceLimit: DependencyManager.shared.balanceService.account.xtzBalance)
-				balanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
-				
-			} else {
-				tokenFromButton.setTitle(exchange.token.symbol, for: .normal)
-				
-				if let tokenData = DependencyManager.shared.balanceService.token(forAddress: exchange.token.address) {
-					tokenFromTextField.validator = TokenAmountValidator(balanceLimit: tokenData.token.balance)
-					balanceLabel.text = "Balance: \(tokenData.token.balance.normalisedRepresentation) \(tokenData.token.symbol)"
-					
-				} else {
-					tokenFromTextField.validator = TokenAmountValidator(balanceLimit: TokenAmount.zero())
-					balanceLabel.text = "Balance: 0 \(exchange.token.symbol)"
-				}
-				
-				tokenToButton.setTitle("XTZ", for: .normal)
-			}
-		}
+		updateTokenDisplayDetails()
 	}
 	
 	
@@ -113,6 +91,44 @@ class SwapViewController: UIViewController {
 			UIView.animate(withDuration: 0.3) {
 				self.view.layoutIfNeeded()
 			}
+		}
+	}
+	
+	func updateTokenDisplayDetails() {
+		guard let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken else {
+			return
+		}
+		
+		invertTokensButton.isEnabled = true
+		tokenFromTextField.isEnabled = true
+		
+		if xtzToToken {
+			tokenFromIcon.image = UIImage(named: "tezos-xtz-logo")
+			tokenFromButton.setTitle("XTZ", for: .normal)
+			
+			let balance = DependencyManager.shared.balanceService.account.xtzBalance
+			tokenFromTextField.validator = TokenAmountValidator(balanceLimit: balance)
+			balanceLabel.text = "Balance: \(balance.normalisedRepresentation) tez"
+			
+			
+			let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: exchange.token.address)
+			MediaProxyService.load(url: tokenIconURL, to: tokenToIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenToIcon.frame.size)
+			tokenToButton.setTitle(exchange.token.symbol, for: .normal)
+			
+		} else {
+			
+			let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: exchange.token.address)
+			MediaProxyService.load(url: tokenIconURL, to: tokenFromIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenFromIcon.frame.size)
+			tokenFromButton.setTitle(exchange.token.symbol, for: .normal)
+			
+			let tokenData = DependencyManager.shared.balanceService.token(forAddress: exchange.token.address)
+			let balance = tokenData?.token.balance ?? TokenAmount.zero()
+			tokenFromTextField.validator = TokenAmountValidator(balanceLimit: tokenData?.token.balance ?? TokenAmount.zero(), decimalPlaces: exchange.token.decimals)
+			balanceLabel.text = "Balance: \(balance.normalisedRepresentation) \(exchange.token.symbol)"
+			
+			
+			tokenToIcon.image = UIImage(named: "tezos-xtz-logo")
+			tokenToButton.setTitle("XTZ", for: .normal)
 		}
 	}
 	
@@ -172,10 +188,7 @@ class SwapViewController: UIViewController {
 	
 	@IBAction func invertTokensTapped(_ sender: Any) {
 		xtzToToken = !xtzToToken
-		
-		let temp = tokenToButton.title(for: .normal)
-		tokenToButton.setTitle(tokenFromButton.title(for: .normal), for: .normal)
-		tokenFromButton.setTitle(temp, for: .normal)
+		updateTokenDisplayDetails()
 	}
 	
 	@IBAction func viewDetailsTapped(_ sender: Any) {

@@ -15,6 +15,8 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashable
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	private var tokens: [DipDupExchangesAndTokens] = []
+	
 	
 	override init() {
 		super.init()
@@ -23,7 +25,9 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	deinit {
 	}
 	
+	/*
 	private class DiffableTableViewWithSectionHeaders: UITableViewDiffableDataSource<Int, AnyHashable> {
+		
 		override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
 			guard let exchange = self.itemIdentifier(for: IndexPath(item: 0, section: section)) as? DipDupExchange else {
 				return ""
@@ -32,9 +36,10 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return exchange.token.symbol
 		}
 	}
+	*/
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = DiffableTableViewWithSectionHeaders(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			guard let exchange = item as? DipDupExchange else {
 				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
@@ -78,24 +83,25 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .failure(KukaiError.internalApplicationError(error: err), "Unable to process data at this time 2")
 				}
 				
+				self?.tokens = DependencyManager.shared.balanceService.exchangeData
 				self?.processTokens(animate: animate, successMessage: successMessage)
 			}
 			
 		} else {
+			
+			tokens = DependencyManager.shared.balanceService.exchangeData
 			processTokens(animate: animate, successMessage: successMessage)
 		}
 	}
 	
 	private func processTokens(animate: Bool, successMessage: String? = nil) {
-		guard let ds = self.dataSource else {
+		guard let ds = self.dataSource, tokens.count > 0 else {
 			self.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		
-		let tokens = DependencyManager.shared.balanceService.exchangeData
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		
-		snapshot.appendSections(Array(0...tokens.count))
+		snapshot.appendSections(Array(0...tokens.count-1))
 		
 		for (index, tokenObj) in tokens.enumerated() {
 			snapshot.appendItems(tokenObj.exchanges, toSection: index)
@@ -107,6 +113,40 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func exchange(forIndexPath indexPath: IndexPath) -> DipDupExchange {
-		return DependencyManager.shared.balanceService.exchangeData[indexPath.section].exchanges[indexPath.row]
+		return tokens[indexPath.section].exchanges[indexPath.row]
+	}
+	
+	func titleForSection(_ section: Int) -> String? {
+		guard section < tokens.count else {
+			return nil
+		}
+		
+		return self.tokens[section].symbol
+	}
+	
+	
+	
+	// MARK: - Search bar
+	
+	func filterFor(_ text: String?) {
+		guard let text = text else {
+			tokens = DependencyManager.shared.balanceService.exchangeData
+			processTokens(animate: true)
+			return
+		}
+		
+		// Cleared the text, reset to full list
+		if text == "" {
+			tokens = DependencyManager.shared.balanceService.exchangeData
+			processTokens(animate: true)
+			return
+		}
+		
+		// Else filter content
+		tokens = DependencyManager.shared.balanceService.exchangeData.filter({ data in
+			return data.symbol.range(of: text, options: .caseInsensitive) != nil
+		})
+		
+		processTokens(animate: true)
 	}
 }
