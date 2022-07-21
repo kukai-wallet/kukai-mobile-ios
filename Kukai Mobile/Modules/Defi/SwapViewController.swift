@@ -34,6 +34,7 @@ class SwapViewController: UIViewController {
 	private var isDetailsOpen = true
 	private var xtzToToken = true
 	private var calculationResult: DexSwapCalculationResult? = nil
+	private var previousExchange: DipDupExchange? = nil
 	
 	
 	
@@ -49,13 +50,14 @@ class SwapViewController: UIViewController {
 		tokenFromButton.setTitle("XTZ", for: .normal)
 		tokenFromTextField.addDoneToolbar(onDone: (target: self, action: #selector(estimate)))
 		tokenFromTextField.isEnabled = false
+		tokenFromTextField.validatorTextFieldDelegate = self
 		
 		balanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
 		invertTokensButton.isEnabled = false
 		
 		tokenToButton.setTitle("...", for: .normal)
 		tokenToTextField.isEnabled = false
-		exchangeRateLabel.text = "1 XTZ = ..."
+		exchangeRateLabel.text = ""
 		
 		viewDetailsButton.isHidden = true
 		feeLabel.text = "0 tez"
@@ -99,6 +101,12 @@ class SwapViewController: UIViewController {
 			return
 		}
 		
+		if previousExchange != exchange {
+			resetInputs()
+			disableDetailsAndPreview()
+		}
+		
+		previousExchange = exchange
 		invertTokensButton.isEnabled = true
 		tokenFromTextField.isEnabled = true
 		
@@ -132,27 +140,35 @@ class SwapViewController: UIViewController {
 		}
 	}
 	
-	func updateRates() {
+	func updateRates(withInput: String) {
 		guard let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken else {
 			self.alert(withTitle: "Error", andMessage: "Can't get pair data")
 			return
 		}
 		
+		if withInput == "" {
+			tokenToTextField.text = "0"
+			exchangeRateLabel.text = ""
+			return
+		}
+		
 		if xtzToToken {
-			guard let input = tokenFromTextField.text, let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6) else {
+			guard let xtz = XTZAmount(fromNormalisedAmount: withInput, decimalPlaces: 6) else {
 				self.alert(withTitle: "Error", andMessage: "Invalid amount of XTZ")
 				return
 			}
 			
 			self.calculationResult = DexCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.5, dex: exchange.name)
+			exchangeRateLabel.text = "1 XTZ = \(self.calculationResult?.displayExchangeRate ?? 0) \(exchange.token.symbol)"
 			
 		} else {
-			guard let input = tokenFromTextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: 8) else {
+			guard let token = TokenAmount(fromNormalisedAmount: withInput, decimalPlaces: 8) else {
 				self.alert(withTitle: "Error", andMessage: "Invalid amount of XTZ")
 				return
 			}
 			
 			self.calculationResult = DexCalculationService.shared.calculateTokenToXTZ(tokenToSell: token, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.5, dex: exchange.name)
+			exchangeRateLabel.text = "1 \(exchange.token.symbol) = \(self.calculationResult?.displayExchangeRate ?? 0) XTZ"
 		}
 		
 		
@@ -165,21 +181,84 @@ class SwapViewController: UIViewController {
 	}
 	
 	@objc func estimate() {
+		guard let calc = calculationResult, calc.minimum > TokenAmount.zero(), let wallet = DependencyManager.shared.selectedWallet, let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken else {
+			self.alert(withTitle: "Error", andMessage: "Invalid calculation or wallet")
+			return
+		}
 		
+		self.showLoadingModal(completion: nil)
+		var operations: [KukaiCoreSwift.Operation] = []
+		
+		if xtzToToken, let input = tokenFromTextField.text, let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6) {
+			operations = OperationFactory.swapXtzToToken(withdex: exchange.name, xtzAmount: xtz, minTokenAmount: calc.minimum, dexContract: exchange.address, wallet: wallet, timeout: 60 * 5)
+			
+		} else if let input = tokenFromTextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: exchange.token.decimals) {
+			operations = OperationFactory.swapTokenToXTZ(withDex: exchange.name,
+															 tokenAmount: token,
+															 minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(),
+															 dexContract: exchange.address,
+															 tokenContract: exchange.token.address,
+															 wallet: wallet,
+															 timeout: 60 * 5)
+		}
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
+			self?.hideLoadingModal(completion: nil)
+			
+			switch result {
+				case .success(let ops):
+					TransactionService.shared.exchangeData.operations = ops
+					self?.enableDetailsAndPreview()
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
+		}
+	}
+	
+	func enableDetailsAndPreview() {
+		guard let ops = TransactionService.shared.exchangeData.operations else {
+			return
+		}
+		
+		let totalFee = ops.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
+		let totalStorage = ops.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
+		
+		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
+		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
+		
+		viewDetailsButton.isHidden = false
+		previewButton.isHidden = false
+		
+		tokenFromTextField.resignFirstResponder()
+		tokenToTextField.resignFirstResponder()
+	}
+	
+	func disableDetailsAndPreview() {
+		TransactionService.shared.exchangeData.operations = nil
+		
+		viewDetailsButton.isHidden = true
+		previewButton.isHidden = true
+	}
+	
+	func resetInputs() {
+		tokenFromTextField.text = ""
+		let _ = tokenFromTextField.revalidateTextfield()
 	}
 	
 	
 	
 	// MARK: - Actions
 	
-	@IBAction func settingsTapped(_ sender: Any) {
-	}
-	
 	@IBAction func tokenFromTapped(_ sender: Any) {
 		xtzToToken = false
 	}
 	
 	@IBAction func maxTapped(_ sender: Any) {
+		let balLimit = (tokenFromTextField.validator as? TokenAmountValidator)?.balanceLimit
+		tokenFromTextField.text = balLimit?.normalisedRepresentation
+		
+		let _ = tokenFromTextField.revalidateTextfield()
 	}
 	
 	@IBAction func tokenToTapped(_ sender: Any) {
@@ -189,18 +268,32 @@ class SwapViewController: UIViewController {
 	@IBAction func invertTokensTapped(_ sender: Any) {
 		xtzToToken = !xtzToToken
 		updateTokenDisplayDetails()
+		resetInputs()
+		disableDetailsAndPreview()
 	}
 	
 	@IBAction func viewDetailsTapped(_ sender: Any) {
 		showDetails(!isDetailsOpen, animated: true)
 	}
+}
+
+extension SwapViewController: ValidatorTextFieldDelegate {
 	
-	@IBAction func infoTapped(_ sender: Any) {
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		
 	}
 	
-	@IBAction func gasCostTapped(_ sender: Any) {
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		
 	}
 	
-	@IBAction func previewTapped(_ sender: Any) {
+	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		return true
+	}
+	
+	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		if validated {
+			updateRates(withInput: text)
+		}
 	}
 }

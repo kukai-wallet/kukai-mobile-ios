@@ -47,6 +47,7 @@ public class TransactionService {
 	
 	public struct ExchangeData {
 		var selectedExchangeAndToken: DipDupExchange?
+		var operations: [KukaiCoreSwift.Operation]?
 	}
 	
 	public struct AddLiquidityData {
