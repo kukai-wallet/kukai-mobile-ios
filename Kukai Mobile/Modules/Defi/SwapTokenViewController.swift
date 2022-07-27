@@ -12,8 +12,7 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 	
 	private let viewModel = SwapTokenViewModel()
 	private var cancellable: AnyCancellable?
-	//private var searchBar = UISearchBar()
-	fileprivate let searchController = UISearchController(searchResultsController: nil)
+	private let searchController = UISearchController(searchResultsController: nil)
 	
     override func viewDidLoad() {
         super.viewDidLoad()

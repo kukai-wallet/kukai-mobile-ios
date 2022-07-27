@@ -92,6 +92,13 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 				case .failure(let error):
 					os_log("NativeSocket Error receiving: %@", log: .default, type: .error, "\(error)")
 					
+					// If its failing because the conneciton closed by itself, try to reconnect
+					let nsErr = error as NSError
+					if nsErr.code == 57 && nsErr.domain == "NSPOSIXErrorDomain" {
+						self?.disconnect()
+						self?.connect()
+					}
+					
 				case .success(let message):
 					switch message {
 						case .string(let messageString):

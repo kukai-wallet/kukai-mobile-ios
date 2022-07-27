@@ -113,7 +113,7 @@ class OldSwapViewController: UIViewController {
 		if isXtzToToken, let input = fromTokentextField.text, let xtz = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6) {
 			self.showLoadingModal(completion: nil)
 			
-			let operations = OperationFactory.swapXtzToToken(withdex: exchange.name, xtzAmount: xtz, minTokenAmount: calc.minimum, dexContract: exchange.address, wallet: wallet, timeout: 60 * 5)
+			let operations = OperationFactory.swapXtzToToken(withDex: exchange, xtzAmount: xtz, minTokenAmount: calc.minimum, wallet: wallet, timeout: 60 * 5)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 				switch result {
 					case .success(let ops):
@@ -138,13 +138,7 @@ class OldSwapViewController: UIViewController {
 		} else if let input = fromTokentextField.text, let token = TokenAmount(fromNormalisedAmount: input, decimalPlaces: exchange.token.decimals) {
 			self.showLoadingModal(completion: nil)
 			
-			let operations = OperationFactory.swapTokenToXTZ(withDex: exchange.name,
-															 tokenAmount: token,
-															 minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(),
-															 dexContract: exchange.address,
-															 tokenContract: exchange.token.address,
-															 wallet: wallet,
-															 timeout: 60 * 5)
+			let operations = OperationFactory.swapTokenToXTZ(withDex: exchange, tokenAmount: token, minXTZAmount: calc.minimum as? XTZAmount ?? XTZAmount.zero(), wallet: wallet, timeout: 60 * 5)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { result in
 				switch result {
 					case .success(let ops):

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C001841F288AF88B00887536 /* SwapConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C001841E288AF88B00887536 /* SwapConfirmViewController.swift */; };
 		C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECA27FDE9C900F64B4C /* CloudKitService.swift */; };
 		C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */; };
 		C005BA302822C46A00D8369D /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C005BA2F2822C46A00D8369D /* Profile.storyboard */; };
@@ -211,6 +212,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		C001841E288AF88B00887536 /* SwapConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapConfirmViewController.swift; sourceTree = "<group>"; };
 		C003CECA27FDE9C900F64B4C /* CloudKitService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudKitService.swift; sourceTree = "<group>"; };
 		C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CKRecord+extensions.swift"; sourceTree = "<group>"; };
 		C005BA2F2822C46A00D8369D /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 				C00AE0022886F66A00184DF7 /* SwapViewController.swift */,
 				C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */,
 				C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */,
+				C001841E288AF88B00887536 /* SwapConfirmViewController.swift */,
 				C00AE0042886F67800184DF7 /* LiquidityViewController.swift */,
 			);
 			path = Defi;
@@ -1133,6 +1136,7 @@
 				C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */,
 				C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
+				C001841F288AF88B00887536 /* SwapConfirmViewController.swift in Sources */,
 				C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
@@ -1730,7 +1734,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = develop;
+				branch = feature/remove_michelson_classes;
 				kind = branch;
 			};
 		};

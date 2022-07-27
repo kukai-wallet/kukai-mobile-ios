@@ -48,6 +48,11 @@ public class TransactionService {
 	public struct ExchangeData {
 		var selectedExchangeAndToken: DipDupExchange?
 		var operations: [KukaiCoreSwift.Operation]?
+		var calculationResult: DexSwapCalculationResult?
+		var isXtzToToken: Bool?
+		var fromAmount: TokenAmount?
+		var toAmount: TokenAmount?
+		var exchangeRateString: String?
 	}
 	
 	public struct AddLiquidityData {
@@ -104,7 +109,7 @@ public class TransactionService {
 	private init() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
+		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)
@@ -118,7 +123,7 @@ public class TransactionService {
 	public func resetState() {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
-		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil)
+		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)

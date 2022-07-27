@@ -24,6 +24,7 @@ class LiquidtyBalanceViewController: UIViewController {
 	
 	@IBAction func refreshTapped(_ sender: Any) {
 		
+		/*
 		self.showLoadingModal(completion: nil)
 		DependencyManager.shared.tezosNodeClient.getLiquidityBakingData(forContract: (address: "KT1TxqZ8QtKvLu3V3JH7Gx58n7Co8pgtpQU5", decimalPlaces: 8)) { [weak self] result in
 			self?.hideLoadingModal(completion: nil)
@@ -34,7 +35,6 @@ class LiquidtyBalanceViewController: UIViewController {
 					self?.xtzPoolLabel.text = poolData.xtzPool.normalisedRepresentation
 					self?.tokenPoolLabel.text = poolData.tokenPool.normalisedRepresentation
 					
-					/*
 					if let cachedAccount = DependencyManager.shared.betterCallDevClient.cachedAccountInfo() {
 						
 						for token in cachedAccount.tokens {
@@ -58,11 +58,11 @@ class LiquidtyBalanceViewController: UIViewController {
 					} else {
 						self?.alert(withTitle: "Error", andMessage: "No cached BCD data, try again later")
 					}
-					*/
 					
 				case .failure(let error):
 					self?.alert(withTitle: "Error", andMessage: error.description)
 			}
 		}
+		*/
 	}
 }
