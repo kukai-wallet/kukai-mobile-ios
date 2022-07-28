@@ -27,9 +27,8 @@ class SendApproveViewController: UIViewController {
 	@IBOutlet weak var toAliasLabel: UILabel!
 	@IBOutlet weak var toAddressLabel: UILabel!
 	
-	@IBOutlet weak var slideView: UIView?
-	@IBOutlet weak var slideImage: UIImageView?
-	@IBOutlet weak var slideText: UILabel?
+	@IBOutlet weak var slideButton: SlideButton?
+	
 	
 	@IBOutlet weak var autoBroadcastbutton: UIButton?
 	
@@ -63,67 +62,13 @@ class SendApproveViewController: UIViewController {
 		toAddressLabel.text = TransactionService.shared.sendData.destination
 		
 		autoBroadcastbutton?.isSelected = true
-		
-		setupSlideView()
+		slideButton?.delegate = self
     }
-	
-	func setupSlideView() {
-		let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(touched(_:)))
-		slideImage?.addGestureRecognizer(gestureRecognizer)
-		slideImage?.isUserInteractionEnabled = true
-	}
-	
-	@objc private func touched(_ gestureRecognizer: UIGestureRecognizer) {
-		guard let slideView = slideView, let slideImage = slideImage else {
-			return
-		}
-		
-		let padding: CGFloat = 4
-		let startingCenterX: CGFloat = (slideImage.frame.width / 2) + padding
-		let locationInView = gestureRecognizer.location(in: slideView)
-		
-		if let touchedView = gestureRecognizer.view {
-			
-			if gestureRecognizer.state == .changed {
-				if locationInView.x >= startingCenterX && locationInView.x <= slideView.frame.width - startingCenterX {
-					touchedView.center.x = locationInView.x
-				}
-				
-				let diff = 100.0 - touchedView.frame.origin.x
-				slideText?.alpha = diff / 100
-				
-			} else if gestureRecognizer.state == .ended {
-				if locationInView.x >= ((slideView.frame.width - startingCenterX) - padding) {
-					slideImage.alpha = 0
-					slideText?.text = "Sending.."
-					slideText?.textColor = UIColor.black
-					slideText?.alpha = 1
-					sendOperations()
-					
-				} else {
-					slideText?.alpha = 1
-					touchedView.center.x = startingCenterX
-				}
-			}
-			
-			UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: {
-				self.view.layoutIfNeeded()
-			}, completion: nil)
-		}
-	}
-	
-	func resetSlider() {
-		slideText?.text = ">> Slide to Send >>"
-		slideText?.textColor = UIColor.lightGray
-		
-		slideImage?.center.x = ((slideImage?.frame.width ?? 2) / 2) + 4
-		slideImage?.alpha = 1
-	}
 	
 	func sendOperations() {
 		guard let ops = TransactionService.shared.sendData.operations, let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find ops")
-			resetSlider()
+			self.slideButton?.resetSlider()
 			return
 		}
 		
@@ -234,5 +179,12 @@ class SendApproveViewController: UIViewController {
 			self?.dismiss(animated: true, completion: nil)
 			(self?.presentingViewController as? UINavigationController)?.popToHome()
 		}
+	}
+}
+
+extension SendApproveViewController: SlideButtonDelegate {
+	
+	func didCompleteSlide() {
+		sendOperations()
 	}
 }

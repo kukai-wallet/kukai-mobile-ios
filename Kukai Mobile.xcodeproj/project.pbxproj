@@ -174,6 +174,8 @@
 		C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */; };
 		C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */; };
 		C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */; };
+		C0EF1BC3289296CE00AA5DD4 /* SlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */; };
+		C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */; };
 		C0FA565427BFB77900AFC9A7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */; };
 		C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */; };
 		C0FA565827BFFBDE00AFC9A7 /* NFTItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */; };
@@ -392,6 +394,8 @@
 		C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerScanningViewController.swift; sourceTree = "<group>"; };
 		C0E921EC270C8C7B00F3B0B9 /* LedgerDeviceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerDeviceCell.swift; sourceTree = "<group>"; };
 		C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerVerifyViewController.swift; sourceTree = "<group>"; };
+		C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideButton.swift; sourceTree = "<group>"; };
+		C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideButton.xib; sourceTree = "<group>"; };
 		C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTGroupCell.swift; sourceTree = "<group>"; };
 		C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTItemCell.swift; sourceTree = "<group>"; };
@@ -609,6 +613,7 @@
 		C06EA1A426A56C3F006029CF /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				C0EF1BBF2892968000AA5DD4 /* SlideButton */,
 				C0A321D427C68BA300D7788B /* Validators */,
 				C09860B527C3DE3700F888AF /* EnterAddressComponent */,
 				C0A321D227C68B9E00D7788B /* ValidatorTextField.swift */,
@@ -850,6 +855,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C0EF1BBF2892968000AA5DD4 /* SlideButton */ = {
+			isa = PBXGroup;
+			children = (
+				C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */,
+				C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */,
+			);
+			path = SlideButton;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -979,6 +993,7 @@
 				C0503657271ED88700E7A664 /* Main.storyboard in Resources */,
 				C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */,
 				C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */,
+				C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
 				C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */,
 				C050365D271ED8E600E7A664 /* Onboarding.storyboard in Resources */,
@@ -1155,6 +1170,7 @@
 				C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */,
 				C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */,
 				C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */,
+				C0EF1BC3289296CE00AA5DD4 /* SlideButton.swift in Sources */,
 				C0AC1D4427722EF3002F66C0 /* UIImage+extensions.swift in Sources */,
 				C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */,
 			);

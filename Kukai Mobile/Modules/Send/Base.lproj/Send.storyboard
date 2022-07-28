@@ -722,46 +722,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Das-Fu-p2b">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Das-Fu-p2b" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="20" y="810" width="374" height="52"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;&gt; Slide to send &gt;&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fp8-Yy-fZW">
-                                        <rect key="frame" x="4" y="4" width="366" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="LZi-te-JXH">
-                                        <rect key="frame" x="4" y="4.5" width="44" height="43"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="FZn-qr-dkP"/>
-                                            <constraint firstAttribute="width" constant="44" id="rWX-pB-7op"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
                                 <color key="backgroundColor" name="background"/>
                                 <constraints>
-                                    <constraint firstItem="fp8-Yy-fZW" firstAttribute="centerY" secondItem="Das-Fu-p2b" secondAttribute="centerY" id="FCG-hF-9rb"/>
-                                    <constraint firstAttribute="trailing" secondItem="fp8-Yy-fZW" secondAttribute="trailing" constant="4" id="HpL-1N-Hma"/>
-                                    <constraint firstItem="fp8-Yy-fZW" firstAttribute="top" secondItem="Das-Fu-p2b" secondAttribute="top" constant="4" id="Kyf-9A-M3P"/>
-                                    <constraint firstAttribute="bottom" secondItem="fp8-Yy-fZW" secondAttribute="bottom" constant="4" id="PA7-4G-Aat"/>
-                                    <constraint firstItem="LZi-te-JXH" firstAttribute="centerY" secondItem="Das-Fu-p2b" secondAttribute="centerY" id="Qrc-Gv-tXb"/>
                                     <constraint firstAttribute="height" constant="52" id="d5p-ie-ZqZ"/>
-                                    <constraint firstItem="fp8-Yy-fZW" firstAttribute="centerX" secondItem="Das-Fu-p2b" secondAttribute="centerX" id="kcB-aV-gup"/>
-                                    <constraint firstItem="LZi-te-JXH" firstAttribute="leading" secondItem="Das-Fu-p2b" secondAttribute="leading" constant="4" id="wPz-aR-bBf"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" name="text-tertiary"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="26"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sending..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G04-7Z-lRa">
                                 <rect key="frame" x="20" y="104" width="374" height="20.5"/>
@@ -921,9 +887,7 @@
                         <outlet property="fromAddressLabel" destination="dsg-Yy-xSo" id="Vpj-VP-Dp0"/>
                         <outlet property="fromAliasLabel" destination="jWM-ri-uxe" id="lOe-DP-jSo"/>
                         <outlet property="fromIcon" destination="Lz3-td-gxB" id="4hW-n9-wyi"/>
-                        <outlet property="slideImage" destination="LZi-te-JXH" id="efJ-OK-dXr"/>
-                        <outlet property="slideText" destination="fp8-Yy-fZW" id="tOd-1i-5ty"/>
-                        <outlet property="slideView" destination="Das-Fu-p2b" id="qpp-WG-WKo"/>
+                        <outlet property="slideButton" destination="Das-Fu-p2b" id="uVh-I7-XRq"/>
                         <outlet property="toAddressLabel" destination="WaG-o4-Eiu" id="MBW-WJ-9SO"/>
                         <outlet property="toAliasLabel" destination="9Em-Fq-m72" id="7hr-h0-zwk"/>
                         <outlet property="toIcon" destination="8Vx-E7-DVi" id="lEl-Od-DNe"/>
@@ -1502,46 +1466,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lUO-s0-g1Y">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lUO-s0-g1Y" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="20" y="810" width="374" height="52"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&gt;&gt; Slide to send &gt;&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yub-aT-Jve">
-                                        <rect key="frame" x="4" y="4" width="366" height="44"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right.circle.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vMJ-eo-0YS">
-                                        <rect key="frame" x="4" y="4.5" width="44" height="43"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="F56-of-UYa"/>
-                                            <constraint firstAttribute="width" constant="44" id="Fbe-fm-uCW"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
                                 <color key="backgroundColor" name="background"/>
                                 <constraints>
-                                    <constraint firstItem="vMJ-eo-0YS" firstAttribute="leading" secondItem="lUO-s0-g1Y" secondAttribute="leading" constant="4" id="0Pr-Fi-hnH"/>
-                                    <constraint firstAttribute="trailing" secondItem="yub-aT-Jve" secondAttribute="trailing" constant="4" id="7Yq-O2-5jx"/>
-                                    <constraint firstItem="yub-aT-Jve" firstAttribute="top" secondItem="lUO-s0-g1Y" secondAttribute="top" constant="4" id="9AS-B9-Z6p"/>
                                     <constraint firstAttribute="height" constant="52" id="Jfg-C4-I42"/>
-                                    <constraint firstAttribute="bottom" secondItem="yub-aT-Jve" secondAttribute="bottom" constant="4" id="Qqr-la-oOy"/>
-                                    <constraint firstItem="yub-aT-Jve" firstAttribute="centerY" secondItem="lUO-s0-g1Y" secondAttribute="centerY" id="V91-mW-uCF"/>
-                                    <constraint firstItem="yub-aT-Jve" firstAttribute="centerX" secondItem="lUO-s0-g1Y" secondAttribute="centerX" id="ccF-bg-s9b"/>
-                                    <constraint firstItem="vMJ-eo-0YS" firstAttribute="centerY" secondItem="lUO-s0-g1Y" secondAttribute="centerY" id="uhQ-2l-Adi"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                        <real key="value" value="1"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                        <color key="value" name="text-tertiary"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="26"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sending..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MrN-5X-hLA">
                                 <rect key="frame" x="20" y="104" width="374" height="20.5"/>
@@ -1697,9 +1627,7 @@
                         <outlet property="fromIcon" destination="Yav-rt-Czk" id="Szh-nt-R05"/>
                         <outlet property="nftIcon" destination="0tg-T9-c8I" id="6gx-7K-nM6"/>
                         <outlet property="nftName" destination="Adr-V4-qW2" id="Hee-EJ-tIY"/>
-                        <outlet property="slideImage" destination="vMJ-eo-0YS" id="kT0-D0-FT0"/>
-                        <outlet property="slideText" destination="yub-aT-Jve" id="IVq-pQ-yV7"/>
-                        <outlet property="slideView" destination="lUO-s0-g1Y" id="w1Y-vU-sZf"/>
+                        <outlet property="slideButton" destination="lUO-s0-g1Y" id="byy-Tv-PpR"/>
                         <outlet property="toAddressLabel" destination="Y9o-IK-4Zc" id="Dga-Y4-JNy"/>
                         <outlet property="toAliasLabel" destination="kHu-Gz-hbN" id="kmg-bZ-tul"/>
                         <outlet property="toIcon" destination="pmI-3k-LuE" id="k0c-wD-rjA"/>
@@ -1913,7 +1841,6 @@
         <segue reference="Cvs-vj-7ep"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="chevron.right.circle.fill" catalog="system" width="128" height="121"/>
         <image name="circle" catalog="system" width="128" height="121"/>
         <image name="info.circle.fill" catalog="system" width="128" height="121"/>
         <image name="minus.circle.fill" catalog="system" width="128" height="121"/>

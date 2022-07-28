@@ -685,7 +685,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iQ2-dd-JHW">
-                                <rect key="frame" x="20" y="345.5" width="374" height="238"/>
+                                <rect key="frame" x="20" y="353.5" width="374" height="238"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OKt-fd-fpJ">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="32"/>
@@ -716,6 +716,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
+                                                    <action selector="viewDetailsTapped:" destination="KCS-hZ-Xow" eventType="touchUpInside" id="hN6-0N-qb3"/>
                                                     <action selector="viewDetailsTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="jbi-Qv-ZEn"/>
                                                 </connections>
                                             </button>
@@ -742,22 +743,25 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="183" height="62"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price Impact:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8Q-So-7t6">
-                                                        <rect key="frame" x="0.0" y="8" width="85" height="17"/>
+                                                        <rect key="frame" x="0.0" y="8" width="85" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" name="text-tertiary"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ZK-CL-T2e">
-                                                        <rect key="frame" x="93" y="5.5" width="45" height="22"/>
+                                                        <rect key="frame" x="93" y="7.5" width="45" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="58f-mh-Vup"/>
                                                             <constraint firstAttribute="width" constant="45" id="80i-ZW-hof"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="info.circle.fill" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="rim-yp-rei" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="FrP-67-emq"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;priceImpact&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbm-uX-EJh">
-                                                        <rect key="frame" x="0.0" y="33" width="175" height="21"/>
+                                                        <rect key="frame" x="0.0" y="37" width="175" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -779,22 +783,25 @@
                                                 <rect key="frame" x="191" y="0.0" width="183" height="62"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0H-Yp-Nrx">
-                                                        <rect key="frame" x="98.5" y="5.5" width="45" height="22"/>
+                                                        <rect key="frame" x="98.5" y="7.5" width="45" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="Tkd-2F-SXj"/>
                                                             <constraint firstAttribute="width" constant="45" id="wvV-Sq-RfP"/>
                                                         </constraints>
                                                         <state key="normal" title="Button"/>
                                                         <buttonConfiguration key="configuration" style="plain" image="info.circle.fill" catalog="system"/>
+                                                        <connections>
+                                                            <segue destination="rim-yp-rei" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="6l2-wD-sNx"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;minReceived&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WnG-84-7lR">
-                                                        <rect key="frame" x="0.0" y="33" width="100" height="21"/>
+                                                        <rect key="frame" x="0.0" y="37" width="100" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min Received:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wc4-bT-gt8">
-                                                        <rect key="frame" x="0.0" y="8" width="90.5" height="17"/>
+                                                        <rect key="frame" x="0.0" y="8" width="90.5" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" name="text-tertiary"/>
                                                         <nil key="highlightedColor"/>
@@ -829,6 +836,9 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="info.circle.fill" catalog="system"/>
+                                                <connections>
+                                                    <segue destination="rim-yp-rei" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="mA7-5j-zbo"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;swapFee&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="419-nB-HPI">
                                                 <rect key="frame" x="128" y="0.0" width="246" height="22"/>
@@ -867,6 +877,9 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="info.circle.fill" catalog="system"/>
+                                                <connections>
+                                                    <segue destination="rim-yp-rei" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="xvA-zc-wCJ"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oc3-tb-gAq">
                                                 <rect key="frame" x="135" y="0.0" width="239" height="22"/>
@@ -908,6 +921,9 @@
                                                         <real key="value" value="16"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="bJf-qI-QMW" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="gpq-Vn-vK2"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -920,11 +936,11 @@
                                     </view>
                                 </subviews>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XjV-Bn-TAX">
-                                <rect key="frame" x="20" y="599.5" width="374" height="44"/>
-                                <color key="backgroundColor" systemColor="systemYellowColor"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XjV-Bn-TAX" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="20" y="607.5" width="374" height="52"/>
+                                <color key="backgroundColor" name="background"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="PEV-uP-l4j"/>
+                                    <constraint firstAttribute="height" constant="52" id="zfU-re-rx9"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;exchangeRate&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GxC-xw-xia">
@@ -942,7 +958,7 @@
                             <constraint firstItem="Rxb-hB-BCQ" firstAttribute="leading" secondItem="c2L-3W-kJo" secondAttribute="leading" id="4p1-Ua-GyW"/>
                             <constraint firstItem="NhF-KA-Xek" firstAttribute="top" secondItem="BeX-hW-Ey1" secondAttribute="bottom" constant="16" id="76e-GJ-QVy"/>
                             <constraint firstItem="BeX-hW-Ey1" firstAttribute="top" secondItem="Rxb-hB-BCQ" secondAttribute="bottom" constant="16" id="7lX-20-lxq"/>
-                            <constraint firstItem="iQ2-dd-JHW" firstAttribute="top" secondItem="GxC-xw-xia" secondAttribute="bottom" constant="16" id="8gz-x8-16B"/>
+                            <constraint firstItem="iQ2-dd-JHW" firstAttribute="top" secondItem="GxC-xw-xia" secondAttribute="bottom" constant="24" id="8gz-x8-16B"/>
                             <constraint firstItem="sd8-Qv-kt9" firstAttribute="trailing" secondItem="iQ2-dd-JHW" secondAttribute="trailing" constant="20" id="8oc-Ck-UEa"/>
                             <constraint firstItem="XjV-Bn-TAX" firstAttribute="leading" secondItem="sd8-Qv-kt9" secondAttribute="leading" constant="20" id="9Jg-4y-dp7"/>
                             <constraint firstItem="Rxb-hB-BCQ" firstAttribute="top" secondItem="c2L-3W-kJo" secondAttribute="bottom" constant="8" symbolic="YES" id="GYp-WT-WAa"/>
@@ -976,6 +992,7 @@
                         <outlet property="feeLabel" destination="a97-t3-XYe" id="ymZ-Tg-5fP"/>
                         <outlet property="minReceivedLabel" destination="WnG-84-7lR" id="UdW-9H-9sI"/>
                         <outlet property="priceImpactLabel" destination="Wbm-uX-EJh" id="b17-TK-AZg"/>
+                        <outlet property="slideButton" destination="XjV-Bn-TAX" id="k26-ID-I1a"/>
                         <outlet property="storageCostLabel" destination="GrE-4V-UQk" id="UgW-bw-nZD"/>
                         <outlet property="swapFeeLabel" destination="419-nB-HPI" id="TQj-vQ-NrU"/>
                         <outlet property="tokenFromAmountLabel" destination="TOk-1y-5vz" id="o3n-ig-B7o"/>
@@ -986,6 +1003,7 @@
                         <outlet property="tokenToBalanceLabel" destination="gTZ-bR-sHq" id="bdk-gm-cWY"/>
                         <outlet property="tokenToIcon" destination="NhF-KA-Xek" id="RX6-6e-wpI"/>
                         <outlet property="tokenToLabel" destination="pY5-zl-dcv" id="u6p-aL-Edr"/>
+                        <outlet property="viewDetailsButton" destination="70z-2i-wtz" id="OSO-VW-aBg"/>
                         <outlet property="viewDetailsSapcingView" destination="JXW-1V-NPa" id="vCT-oT-czW"/>
                         <outlet property="viewDetailsSection1" destination="1PK-a2-Uki" id="651-YO-itl"/>
                         <outlet property="viewDetailsSection2" destination="Xol-UQ-jJH" id="3GQ-U0-jQE"/>
@@ -2501,9 +2519,44 @@ Blah Blah Blah Blah Blah</string>
             </objects>
             <point key="canvasLocation" x="3516" y="-1234"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="mv2-87-hBk">
+            <objects>
+                <viewController id="rim-yp-rei" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IHd-68-XbI">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bLx-IY-FCJ">
+                                <rect key="frame" x="20" y="80" width="374" height="101.5"/>
+                                <string key="text">Info
+
+Blah Blah Blah Blah Blah
+Blah Blah Blah Blah Blah
+Blah Blah Blah Blah Blah</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Aqc-fO-TPf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="bLx-IY-FCJ" firstAttribute="top" secondItem="Aqc-fO-TPf" secondAttribute="top" constant="36" id="3PA-de-HS6"/>
+                            <constraint firstItem="bLx-IY-FCJ" firstAttribute="leading" secondItem="Aqc-fO-TPf" secondAttribute="leading" constant="20" id="adh-BL-U0b"/>
+                            <constraint firstItem="Aqc-fO-TPf" firstAttribute="trailing" secondItem="bLx-IY-FCJ" secondAttribute="trailing" constant="20" id="d8l-7q-8AW"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pN8-oJ-yVT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4754" y="139"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="FrP-67-emq"/>
         <segue reference="3aM-PT-gdR"/>
+        <segue reference="gpq-Vn-vK2"/>
         <segue reference="H1m-r4-xAb"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -2525,6 +2578,9 @@ Blah Blah Blah Blah Blah</string>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="questionmark.circle.fill" catalog="system" width="128" height="121"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
+        <namedColor name="background">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="primary-button-background">
             <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -2560,9 +2616,6 @@ Blah Blah Blah Blah Blah</string>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemYellowColor">
-            <color red="1" green="0.80000000000000004" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
