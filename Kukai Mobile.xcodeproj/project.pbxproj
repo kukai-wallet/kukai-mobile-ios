@@ -176,6 +176,8 @@
 		C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */; };
 		C0EF1BC3289296CE00AA5DD4 /* SlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */; };
 		C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */; };
+		C0EF1BC72892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */; };
+		C0EF1BC92892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */; };
 		C0FA565427BFB77900AFC9A7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */; };
 		C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */; };
 		C0FA565827BFFBDE00AFC9A7 /* NFTItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */; };
@@ -396,6 +398,8 @@
 		C0E921EE270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerVerifyViewController.swift; sourceTree = "<group>"; };
 		C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideButton.swift; sourceTree = "<group>"; };
 		C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideButton.xib; sourceTree = "<group>"; };
+		C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewController.swift; sourceTree = "<group>"; };
+		C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTGroupCell.swift; sourceTree = "<group>"; };
 		C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTItemCell.swift; sourceTree = "<group>"; };
@@ -509,6 +513,8 @@
 				C0239B992886B92500E0C973 /* Defi.storyboard */,
 				C0239B9B2886BAC500E0C973 /* DefiViewController.swift */,
 				C0239BA02886C5C600E0C973 /* DefiViewModel.swift */,
+				C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */,
+				C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */,
 				C00AE0022886F66A00184DF7 /* SwapViewController.swift */,
 				C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */,
 				C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */,
@@ -1026,6 +1032,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */,
+				C0EF1BC72892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift in Sources */,
 				C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */,
 				C0FA565827BFFBDE00AFC9A7 /* NFTItemCell.swift in Sources */,
 				C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */,
@@ -1060,6 +1067,7 @@
 				C0FA565A27BFFBF600AFC9A7 /* CollectiblesViewController.swift in Sources */,
 				C031D3EF27D114E300EABBE6 /* CollectiblesDetailsViewController.swift in Sources */,
 				C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */,
+				C0EF1BC92892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift in Sources */,
 				C0082BFD26A70D3C00DB160B /* ImportFaucetViewController.swift in Sources */,
 				C015F8D5285B407200FF4C71 /* PrototypeChooseTokenMain.swift in Sources */,
 				C085EAB926B1ADC700B37A15 /* ConfirmMnemonicViewController.swift in Sources */,
@@ -1750,7 +1758,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = feature/remove_michelson_classes;
+				branch = develop;
 				kind = branch;
 			};
 		};

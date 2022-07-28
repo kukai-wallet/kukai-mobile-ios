@@ -64,7 +64,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return "Quipuswap"
 				
 			case .lb:
-				return "Liquidity Baking"
+				return "Sirius Dex"
 				
 			case .unknown:
 				return "Unknown"

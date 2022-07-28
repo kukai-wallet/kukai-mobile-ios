@@ -48,7 +48,15 @@ class DefiViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		//TransactionService.shared.removeLiquidityData.position = self.viewModel.position(forIndexPath: indexPath)
-		//self.performSegue(withIdentifier: "liquidityDetails", sender: self)
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		let selectedPosition = self.viewModel.position(forIndexPath: indexPath)
+		if selectedPosition.exchange.name == .quipuswap {
+			TransactionService.shared.liquidityDetails.selectedPosition = selectedPosition
+			self.performSegue(withIdentifier: "liquidityDetails", sender: self)
+			
+		} else {
+			self.alert(errorWithMessage: "Token details are only available for Quipuswap tokens")
+		}
 	}
 }

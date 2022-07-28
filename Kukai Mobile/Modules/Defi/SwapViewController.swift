@@ -66,6 +66,12 @@ class SwapViewController: UIViewController {
 		storageCostLabel.text = "0 tez"
 		
 		previewButton.isHidden = true
+		
+		
+		// Default to first token available
+		if TransactionService.shared.exchangeData.selectedExchangeAndToken == nil {
+			TransactionService.shared.exchangeData.selectedExchangeAndToken = DependencyManager.shared.balanceService.exchangeData[0].exchanges.last
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

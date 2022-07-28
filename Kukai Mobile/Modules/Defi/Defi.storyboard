@@ -195,11 +195,76 @@
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="tableView" destination="ynn-QQ-M7h" id="y9x-rX-AOt"/>
+                        <segue destination="9yS-Np-khf" kind="custom" identifier="liquidityDetails" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Hax-s1-GP1"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-310" y="139"/>
+        </scene>
+        <!--Liquidity Token Details View Controller-->
+        <scene sceneID="Zd2-ZR-884">
+            <objects>
+                <viewController id="9yS-Np-khf" customClass="LiquidityTokenDetailsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Zg-ho-V21">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending Rewards" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tPF-7V-caS">
+                                <rect key="frame" x="20" y="68" width="374" height="24"/>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;amount&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kVM-UV-bc1">
+                                <rect key="frame" x="20" y="116" width="374" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MWo-KV-OcW">
+                                <rect key="frame" x="20" y="161" width="374" height="44"/>
+                                <color key="backgroundColor" name="primary-button-background"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="LOH-fc-Dh9"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Withdraw">
+                                    <color key="titleColor" name="primary-button-text"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="withdrawButtonTapped:" destination="9yS-Np-khf" eventType="touchUpInside" id="hcA-Ju-y9x"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="nGs-th-tCX"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="nGs-th-tCX" firstAttribute="trailing" secondItem="tPF-7V-caS" secondAttribute="trailing" constant="20" id="42A-xT-BFh"/>
+                            <constraint firstItem="MWo-KV-OcW" firstAttribute="top" secondItem="kVM-UV-bc1" secondAttribute="bottom" constant="24" id="Clh-eD-Plf"/>
+                            <constraint firstItem="MWo-KV-OcW" firstAttribute="leading" secondItem="nGs-th-tCX" secondAttribute="leading" constant="20" id="Imd-pW-a0h"/>
+                            <constraint firstItem="nGs-th-tCX" firstAttribute="trailing" secondItem="kVM-UV-bc1" secondAttribute="trailing" constant="20" id="a2e-76-SrT"/>
+                            <constraint firstItem="tPF-7V-caS" firstAttribute="leading" secondItem="nGs-th-tCX" secondAttribute="leading" constant="20" id="eEo-ZW-eaY"/>
+                            <constraint firstItem="nGs-th-tCX" firstAttribute="trailing" secondItem="MWo-KV-OcW" secondAttribute="trailing" constant="20" id="pOm-uP-jBr"/>
+                            <constraint firstItem="kVM-UV-bc1" firstAttribute="leading" secondItem="nGs-th-tCX" secondAttribute="leading" constant="20" id="snv-kV-KoR"/>
+                            <constraint firstItem="kVM-UV-bc1" firstAttribute="top" secondItem="tPF-7V-caS" secondAttribute="bottom" constant="24" id="t28-Zg-gkJ"/>
+                            <constraint firstItem="tPF-7V-caS" firstAttribute="top" secondItem="nGs-th-tCX" secondAttribute="top" constant="24" id="t4D-Iz-UqA"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="amountLabel" destination="kVM-UV-bc1" id="O7c-l4-fHM"/>
+                        <outlet property="withdrawButton" destination="MWo-KV-OcW" id="Wpn-hD-ziG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HSg-nY-5E7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-310" y="956"/>
         </scene>
         <!--Swap-->
         <scene sceneID="vlN-0k-cRj">

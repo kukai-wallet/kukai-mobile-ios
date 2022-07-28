@@ -55,6 +55,10 @@ public class TransactionService {
 		var exchangeRateString: String?
 	}
 	
+	public struct LiquidityDetails {
+		var selectedPosition: DipDupPositionData?
+	}
+	
 	public struct AddLiquidityData {
 		var selectedExchangeAndToken: DipDupExchange?
 	}
@@ -97,6 +101,7 @@ public class TransactionService {
 	public var currentTransactionType: TransactionType
 	public var sendData: SendData
 	public var exchangeData: ExchangeData
+	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
 	public var removeLiquidityData: RemoveLiquidityData
 	public var beaconApproveData: BeaconApproveData
@@ -110,6 +115,7 @@ public class TransactionService {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
+		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)
@@ -124,6 +130,7 @@ public class TransactionService {
 		self.currentTransactionType = .none
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
+		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)

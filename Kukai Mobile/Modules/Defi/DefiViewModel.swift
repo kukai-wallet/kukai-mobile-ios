@@ -47,7 +47,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			MediaProxyService.load(url: tokenIconURL, to: cell.tokenIconRight, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconRight.frame.size)
 			
 			cell.pairLabel.text = "tez/\(position.exchange.token.symbol)"
-			cell.sourceLabel.text = position.exchange.name == .lb ? "Liquidity Baking" : "Quipuswap"
+			cell.sourceLabel.text = position.exchange.name == .lb ? "Sirius Dex" : "Quipuswap"
 			
 			cell.amountLabel.text = position.tokenAmount().normalisedRepresentation
 			cell.value1Label.text = "\(calc.expectedXTZ.normalisedRepresentation) tez"
