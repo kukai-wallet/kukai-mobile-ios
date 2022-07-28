@@ -25,7 +25,7 @@ class DefiViewController: UIViewController, UITableViewDelegate {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingModal(completion: nil)
+					print("")
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingModal(completion: nil)

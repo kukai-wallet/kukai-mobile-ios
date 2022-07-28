@@ -117,7 +117,10 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 							os_log("NativeSocket received unknown data", log: .default, type: .info)
 					}
 			}
-			self?.receiveMessage()
+			
+			if self?.isConnected == true {
+				self?.receiveMessage()
+			}
 		})
 	}
 }

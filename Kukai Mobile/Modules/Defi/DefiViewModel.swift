@@ -60,56 +60,40 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		if !state.isLoading() {
-			//state = .loading
-		}
-		
-		guard let address = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(KukaiError.unknown(), "Can't find wallet")
+		guard let ds = self.dataSource else {
+			self.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		
-		DependencyManager.shared.dipDupClient.getLiquidityFor(address: address) { [weak self] result in
-			guard let res = try? result.get() else {
-				self?.state = .failure(result.getFailure(), "DipDup query return failure")
-				return
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		snapshot.appendSections([0])
+		
+		self.positions = DependencyManager.shared.balanceService.account.liquidityTokens
+		
+		for position in self.positions {
+			let liquidity = position.tokenAmount()
+			let totalLiquidity = position.exchange.totalLiquidity()
+			let xtzPool = position.exchange.xtzPoolAmount()
+			let tokenPool = position.exchange.tokenPoolAmount()
+			let dex = position.exchange.name
+			
+			var calculation = DexRemoveCalculationResult(expectedXTZ: XTZAmount.zero(), minimumXTZ: XTZAmount.zero(), expectedToken: TokenAmount.zero(), minimumToken: TokenAmount.zero(), exchangeRate: 0)
+			if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex) {
+				calculation = calc
 			}
 			
-			guard let ds = self?.dataSource else {
-				self?.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
-				return
-			}
-			
-			var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-			snapshot.appendSections([0])
-			
-			self?.positions = res.data?.position ?? []
-			
-			for position in self?.positions ?? [] {
-				let liquidity = position.tokenAmount()
-				let totalLiquidity = position.exchange.totalLiquidity()
-				let xtzPool = position.exchange.xtzPoolAmount()
-				let tokenPool = position.exchange.tokenPoolAmount()
-				let dex = position.exchange.name
-				
-				var calculation = DexRemoveCalculationResult(expectedXTZ: XTZAmount.zero(), minimumXTZ: XTZAmount.zero(), expectedToken: TokenAmount.zero(), minimumToken: TokenAmount.zero(), exchangeRate: 0)
-				if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex) {
-					calculation = calc
-				}
-				
-				self?.calculations.append(calculation)
-			}
-			
-			if self?.positions.count == 0 {
-				snapshot.appendItems(["No tokens"], toSection: 0)
-				
-			} else {
-				snapshot.appendItems(self?.positions ?? [], toSection: 0)
-			}
-			ds.apply(snapshot, animatingDifferences: animate)
-			
-			self?.state = .success(successMessage)
+			self.calculations.append(calculation)
 		}
+		
+		if self.positions.count == 0 {
+			snapshot.appendItems(["No tokens"], toSection: 0)
+			
+		} else {
+			snapshot.appendItems(self.positions, toSection: 0)
+		}
+		ds.apply(snapshot, animatingDifferences: animate)
+		
+		self.state = .success(successMessage)
 	}
 	
 	func position(forIndexPath indexPath: IndexPath) -> DipDupPositionData {
