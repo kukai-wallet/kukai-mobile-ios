@@ -46,13 +46,16 @@ class SwapConfirmViewController: UIViewController {
 		showDetails(false, animated: false)
 		
 		guard let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken,
-			  let tokenData = DependencyManager.shared.balanceService.token(forAddress: exchange.token.address),
 			  let calcResult = TransactionService.shared.exchangeData.calculationResult,
 			  let ops = TransactionService.shared.exchangeData.operations
 		else {
 			return
 		}
 		
+		var tokenBalanceString = "0"
+		if let tokenData = DependencyManager.shared.balanceService.token(forAddress: exchange.token.address) {
+			tokenBalanceString =  tokenData.token.balance.normalisedRepresentation
+		}
 		let settings = DexCalculationService.settings(forDex: exchange.name)
 		
 		if TransactionService.shared.exchangeData.isXtzToToken == true {
@@ -66,7 +69,7 @@ class SwapConfirmViewController: UIViewController {
 			
 			tokenToLabel.text = exchange.token.symbol
 			tokenToAmountLabel.text = TransactionService.shared.exchangeData.toAmount?.normalisedRepresentation ?? ""
-			tokenToBalanceLabel.text = "Balance: \(tokenData.token.balance.normalisedRepresentation) \(exchange.token.symbol)"
+			tokenToBalanceLabel.text = "Balance: \(tokenBalanceString) \(exchange.token.symbol)"
 			
 			let fee = (TransactionService.shared.exchangeData.fromAmount ?? .zero()) * Decimal( (settings.fee)/100 )
 			swapFeeLabel.text = "\(fee.rounded(scale: 6, roundingMode: .bankers)) tez"
@@ -80,7 +83,7 @@ class SwapConfirmViewController: UIViewController {
 			
 			tokenFromLabel.text = exchange.token.symbol
 			tokenFromAmountLabel.text = TransactionService.shared.exchangeData.fromAmount?.normalisedRepresentation ?? ""
-			tokenFromBalanceLabel.text = "Balance: \(tokenData.token.balance.normalisedRepresentation) \(exchange.token.symbol)"
+			tokenFromBalanceLabel.text = "Balance: \(tokenBalanceString) \(exchange.token.symbol)"
 			
 			tokenToIcon.image = UIImage(named: "tezos-xtz-logo")
 			tokenToLabel.text = "XTZ"
@@ -134,6 +137,23 @@ class SwapConfirmViewController: UIViewController {
 extension SwapConfirmViewController: SlideButtonDelegate {
 	
 	func didCompleteSlide() {
-		self.alert(withTitle: "Boom!", andMessage: "Diddy")
+		guard let ops = TransactionService.shared.exchangeData.operations, let wallet = DependencyManager.shared.selectedWallet else {
+			self.alert(errorWithMessage: "Unable to find operations, try again")
+			return
+		}
+		
+		self.showLoadingView()
+		DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] innerResult in
+			self?.hideLoadingView()
+			
+			switch innerResult {
+				case .success(let opHash):
+					self?.alert(withTitle: "Success", andMessage: "Op hash: \(opHash)")
+					self?.navigationController?.popViewController(animated: true)
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
+		}
 	}
 }

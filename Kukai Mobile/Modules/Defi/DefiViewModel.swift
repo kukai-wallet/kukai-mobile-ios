@@ -61,7 +61,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		if !state.isLoading() {
-			state = .loading
+			//state = .loading
 		}
 		
 		guard let address = DependencyManager.shared.selectedWallet?.address else {

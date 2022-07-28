@@ -71,6 +71,8 @@ class SwapViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		tokenFromTextField.text = ""
+		tokenToTextField.text = ""
 		updateTokenDisplayDetails()
 	}
 	
