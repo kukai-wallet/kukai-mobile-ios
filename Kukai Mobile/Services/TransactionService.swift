@@ -61,10 +61,16 @@ public class TransactionService {
 	
 	public struct AddLiquidityData {
 		var selectedExchangeAndToken: DipDupExchange?
+		var operations: [KukaiCoreSwift.Operation]?
+		var calculationResult: DexAddCalculationResult?
+		var token1: TokenAmount?
+		var token2: TokenAmount?
 	}
 	
 	public struct RemoveLiquidityData {
 		var position: DipDupPositionData?
+		var operations: [KukaiCoreSwift.Operation]?
+		var calculationResult: DexRemoveCalculationResult?
 	}
 	
 	public struct BeaconApproveData {
@@ -116,8 +122,8 @@ public class TransactionService {
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
-		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
-		self.removeLiquidityData = RemoveLiquidityData(position: nil)
+		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, token1: nil, token2: nil)
+		self.removeLiquidityData = RemoveLiquidityData(position: nil, operations: nil, calculationResult: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
@@ -131,8 +137,8 @@ public class TransactionService {
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil, operations: nil, ledgerPrep: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
-		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil)
-		self.removeLiquidityData = RemoveLiquidityData(position: nil)
+		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, operations: nil, calculationResult: nil, token1: nil, token2: nil)
+		self.removeLiquidityData = RemoveLiquidityData(position: nil, operations: nil, calculationResult: nil)
 		self.beaconApproveData = BeaconApproveData(request: nil)
 		self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
 		self.beaconOperationData = BeaconOperationData(estimatedOperations: nil, operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)

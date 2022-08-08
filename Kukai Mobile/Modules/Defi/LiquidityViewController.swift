@@ -31,12 +31,14 @@ class LiquidityViewController: UIViewController {
 	func showAdd() {
 		addContainer.isHidden = false
 		removeContainer.isHidden = true
-		settingsButton.isHidden = false
+		
+		TransactionService.shared.currentTransactionType = .addLiquidity
 	}
 	
 	func showRemove() {
 		addContainer.isHidden = true
 		removeContainer.isHidden = false
-		settingsButton.isHidden = true
+		
+		TransactionService.shared.currentTransactionType = .removeLiquidity
 	}
 }

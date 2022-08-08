@@ -1687,10 +1687,10 @@ Blah Blah Blah Blah Blah</string>
             </objects>
             <point key="canvasLocation" x="4754" y="139"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Liquidity View Controller-->
         <scene sceneID="Hhw-Gz-Uo1">
             <objects>
-                <viewController id="YrR-i8-p2i" sceneMemberID="viewController">
+                <viewController id="YrR-i8-p2i" customClass="AddLiquidityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uLF-SX-uG2">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1764,6 +1764,7 @@ Blah Blah Blah Blah Blah</string>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="maxTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="l35-z1-nJu"/>
+                                    <action selector="token1MaxTapped:" destination="YrR-i8-p2i" eventType="touchUpInside" id="5LZ-mH-UGH"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;xtzBalance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1m2-k1-Igh">
@@ -1799,7 +1800,9 @@ Blah Blah Blah Blah Blah</string>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system" imagePlacement="trailing" title="&lt;token&gt;" imagePadding="6"/>
                                         <connections>
+                                            <action selector="token2ButtonTapped:" destination="YrR-i8-p2i" eventType="touchUpInside" id="MFn-Qf-zom"/>
                                             <action selector="tokenFromTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="xcm-1U-3pQ"/>
+                                            <segue destination="NBQ-CB-gnJ" kind="show" id="Ukn-i2-1bt"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1847,6 +1850,7 @@ Blah Blah Blah Blah Blah</string>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="maxTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="DKc-pC-qrT"/>
+                                    <action selector="token2MaxTapped:" destination="YrR-i8-p2i" eventType="touchUpInside" id="p4p-sZ-Lgg"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;tokenbalance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EP-5Z-NdO">
@@ -1884,8 +1888,12 @@ Blah Blah Blah Blah Blah</string>
                                         <real key="value" value="22"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="addTapped:" destination="YrR-i8-p2i" eventType="touchUpInside" id="Vta-6Q-awr"/>
+                                </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Ojs-B8-JKh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ehI-ZG-dy6" firstAttribute="leading" secondItem="qqZ-HQ-52R" secondAttribute="leading" id="14n-bv-VfS"/>
@@ -1915,15 +1923,28 @@ Blah Blah Blah Blah Blah</string>
                             <constraint firstItem="L0e-nT-2Iq" firstAttribute="top" secondItem="qqZ-HQ-52R" secondAttribute="bottom" constant="8" id="yHr-2l-sKW"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addButton" destination="my9-yJ-K41" id="lwR-iP-fKB"/>
+                        <outlet property="token1BalanceLabel" destination="1m2-k1-Igh" id="lBL-JJ-59p"/>
+                        <outlet property="token1Button" destination="CnK-Er-K6q" id="QQc-JT-CXP"/>
+                        <outlet property="token1Icon" destination="opV-3X-hxQ" id="etG-YL-IlW"/>
+                        <outlet property="token1MaxButton" destination="nIE-e5-x7L" id="fdg-JY-HHD"/>
+                        <outlet property="token1Textfield" destination="4nF-B0-MAn" id="gY2-0t-f5b"/>
+                        <outlet property="token2BalanceLabel" destination="1EP-5Z-NdO" id="yWS-RA-3XV"/>
+                        <outlet property="token2Button" destination="bPH-ZU-oPq" id="yvW-lH-Dxr"/>
+                        <outlet property="token2MaxButton" destination="L0e-nT-2Iq" id="d7A-et-xQt"/>
+                        <outlet property="token2Textfield" destination="OAy-cC-FcM" id="hd7-GX-eME"/>
+                        <outlet property="token2icon" destination="2iY-GO-rAY" id="mOW-ZI-OV3"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y32-9f-NxU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1805.7971014492755" y="1966.40625"/>
         </scene>
-        <!--View Controller-->
+        <!--Remove Liquidity View Controller-->
         <scene sceneID="Crp-rq-OAf">
             <objects>
-                <viewController id="sr6-0x-98A" sceneMemberID="viewController">
+                <viewController id="sr6-0x-98A" customClass="RemoveLiquidityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DgF-OB-YWg">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2072,29 +2093,40 @@ Blah Blah Blah Blah Blah</string>
                                         </constraints>
                                     </imageView>
                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="0" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TdD-6T-hf3" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="172" y="2" width="194" height="46"/>
+                                        <rect key="frame" x="194" y="2" width="172" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                         <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3y0-sp-CTn">
-                                        <rect key="frame" x="46" y="10" width="110" height="30"/>
+                                        <rect key="frame" x="68" y="10" width="110" height="30"/>
                                         <color key="tintColor" name="text-primary"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system" imagePlacement="trailing" title="&lt;lpToken&gt;" imagePadding="6"/>
                                         <connections>
+                                            <action selector="lpTokenTapped:" destination="sr6-0x-98A" eventType="touchUpInside" id="VCD-J4-Zjg"/>
                                             <action selector="tokenFromTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="H56-WN-63Z"/>
                                         </connections>
                                     </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" image="tezos-xtz-logo" translatesAutoresizingMaskIntoConstraints="NO" id="CG8-g8-vQA">
+                                        <rect key="frame" x="30" y="10" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="GjM-l6-OFa"/>
+                                            <constraint firstAttribute="height" constant="30" id="pft-86-BGu"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstItem="gZU-X2-dWv" firstAttribute="leading" secondItem="OSy-ht-Pgn" secondAttribute="leading" constant="8" id="4oE-gx-Bj6"/>
+                                    <constraint firstItem="CG8-g8-vQA" firstAttribute="leading" secondItem="gZU-X2-dWv" secondAttribute="trailing" constant="-8" id="BCh-Ap-OtA"/>
                                     <constraint firstItem="TdD-6T-hf3" firstAttribute="top" secondItem="OSy-ht-Pgn" secondAttribute="top" constant="2" id="CWT-TU-sF0"/>
+                                    <constraint firstItem="3y0-sp-CTn" firstAttribute="leading" secondItem="CG8-g8-vQA" secondAttribute="trailing" constant="8" id="HdW-ET-GhT"/>
+                                    <constraint firstItem="CG8-g8-vQA" firstAttribute="top" secondItem="gZU-X2-dWv" secondAttribute="top" id="Hui-wy-r9r"/>
                                     <constraint firstItem="3y0-sp-CTn" firstAttribute="top" secondItem="gZU-X2-dWv" secondAttribute="top" id="LIi-qr-xPE"/>
-                                    <constraint firstItem="3y0-sp-CTn" firstAttribute="leading" secondItem="gZU-X2-dWv" secondAttribute="trailing" constant="8" symbolic="YES" id="OJ4-7G-qzW"/>
                                     <constraint firstItem="TdD-6T-hf3" firstAttribute="leading" secondItem="3y0-sp-CTn" secondAttribute="trailing" constant="16" id="R5U-6Z-vpW"/>
                                     <constraint firstAttribute="bottom" secondItem="TdD-6T-hf3" secondAttribute="bottom" constant="2" id="YuR-Rt-vEC"/>
                                     <constraint firstAttribute="height" constant="50" id="o17-lX-FCD"/>
+                                    <constraint firstItem="CG8-g8-vQA" firstAttribute="bottom" secondItem="gZU-X2-dWv" secondAttribute="bottom" id="pHB-yr-Zx6"/>
                                     <constraint firstAttribute="trailing" secondItem="TdD-6T-hf3" secondAttribute="trailing" constant="8" id="q3d-Eb-Doy"/>
                                     <constraint firstItem="3y0-sp-CTn" firstAttribute="bottom" secondItem="gZU-X2-dWv" secondAttribute="bottom" id="qpv-Ni-sVc"/>
                                     <constraint firstItem="gZU-X2-dWv" firstAttribute="centerY" secondItem="OSy-ht-Pgn" secondAttribute="centerY" id="xYF-eJ-EWX"/>
@@ -2129,6 +2161,7 @@ Blah Blah Blah Blah Blah</string>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
+                                    <action selector="lpTokenMaxTapped:" destination="sr6-0x-98A" eventType="touchUpInside" id="4U9-S1-7Cp"/>
                                     <action selector="maxTapped:" destination="MlV-t9-Ck9" eventType="touchUpInside" id="ncw-Vd-tR0"/>
                                 </connections>
                             </button>
@@ -2160,8 +2193,12 @@ Blah Blah Blah Blah Blah</string>
                                         <real key="value" value="22"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="removeTapped:" destination="sr6-0x-98A" eventType="touchUpInside" id="6qa-2X-DJb"/>
+                                </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="6pv-wP-Y6y"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="9Jo-tp-Xqt" firstAttribute="top" secondItem="OSy-ht-Pgn" secondAttribute="bottom" constant="8" id="5Uz-eI-kfF"/>
@@ -2195,15 +2232,122 @@ Blah Blah Blah Blah Blah</string>
                             <constraint firstItem="C5o-ir-HKf" firstAttribute="top" secondItem="MW0-6C-VD7" secondAttribute="bottom" constant="24" id="zyD-ud-tEc"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="lpToken1Icon" destination="gZU-X2-dWv" id="GGo-d8-eus"/>
+                        <outlet property="lpToken2Icon" destination="CG8-g8-vQA" id="0l6-XB-N3R"/>
+                        <outlet property="lpTokenBalance" destination="9Jo-tp-Xqt" id="5Wh-P5-YkR"/>
+                        <outlet property="lpTokenButton" destination="3y0-sp-CTn" id="72p-kL-3cq"/>
+                        <outlet property="lpTokenTextfield" destination="TdD-6T-hf3" id="bQL-MV-5ci"/>
+                        <outlet property="outputToken1Balance" destination="58D-XU-21W" id="eCu-pG-Xuk"/>
+                        <outlet property="outputToken1Button" destination="C7z-xo-Yti" id="QsK-IW-l0v"/>
+                        <outlet property="outputToken1Icon" destination="MYm-NB-6F4" id="Ntd-qN-is6"/>
+                        <outlet property="outputToken1Textfield" destination="NhO-n3-hOl" id="U2l-RB-iPC"/>
+                        <outlet property="outputToken2Balance" destination="MW0-6C-VD7" id="DJK-Mq-Q2W"/>
+                        <outlet property="outputToken2Button" destination="ngJ-hV-zpp" id="6nA-C9-pis"/>
+                        <outlet property="outputToken2Icon" destination="kt3-oc-qSN" id="Z0E-PM-Yno"/>
+                        <outlet property="outputToken2Textfield" destination="q2Z-ce-gth" id="sbb-hu-Lm1"/>
+                        <outlet property="removeButton" destination="C5o-ir-HKf" id="rju-Wm-c46"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RXd-bG-v1r" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2632" y="1966"/>
         </scene>
+        <!--Available tokens-->
+        <scene sceneID="crm-Pq-0u9">
+            <objects>
+                <tableViewController modalPresentationStyle="fullScreen" id="NBQ-CB-gnJ" customClass="SwapTokenViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="insetGrouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="tPL-Qp-8dU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="719"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SwapTokenCell" rowHeight="103" id="5LE-8X-NIX" customClass="SwapTokenCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="20" y="49.5" width="374" height="103"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5LE-8X-NIX" id="Rxo-nK-3V0">
+                                    <rect key="frame" x="0.0" y="0.0" width="374" height="103"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;dex&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o8G-P5-6Ul">
+                                            <rect key="frame" x="20" y="16" width="41" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;price&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SJl-j3-aOP">
+                                            <rect key="frame" x="77" y="16" width="277" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XTZ Pool:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YT6-Kh-864">
+                                            <rect key="frame" x="20" y="49" width="78" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Token Pool:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gvn-SP-WXU">
+                                            <rect key="frame" x="20" y="70" width="78" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;xtzPool&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MMD-3t-ITo">
+                                            <rect key="frame" x="106" y="50" width="248" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;tokenPool&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JDI-oD-QAs">
+                                            <rect key="frame" x="106" y="71" width="248" height="16"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="MMD-3t-ITo" firstAttribute="leading" secondItem="JDI-oD-QAs" secondAttribute="leading" id="4cv-Pj-FrQ"/>
+                                        <constraint firstItem="YT6-Kh-864" firstAttribute="trailing" secondItem="gvn-SP-WXU" secondAttribute="trailing" id="5xl-gw-cLM"/>
+                                        <constraint firstAttribute="bottom" secondItem="gvn-SP-WXU" secondAttribute="bottom" constant="12" id="AIA-pd-CH0"/>
+                                        <constraint firstItem="JDI-oD-QAs" firstAttribute="firstBaseline" secondItem="gvn-SP-WXU" secondAttribute="firstBaseline" id="AWp-Wh-ZM6"/>
+                                        <constraint firstItem="YT6-Kh-864" firstAttribute="leading" secondItem="o8G-P5-6Ul" secondAttribute="leading" id="Au1-hc-a2V"/>
+                                        <constraint firstAttribute="trailing" secondItem="SJl-j3-aOP" secondAttribute="trailing" constant="20" id="Bz8-5Q-AuI"/>
+                                        <constraint firstItem="SJl-j3-aOP" firstAttribute="leading" secondItem="o8G-P5-6Ul" secondAttribute="trailing" constant="16" id="ETC-eU-jPn"/>
+                                        <constraint firstItem="JDI-oD-QAs" firstAttribute="leading" secondItem="gvn-SP-WXU" secondAttribute="trailing" constant="8" id="HZJ-o3-cyJ"/>
+                                        <constraint firstItem="o8G-P5-6Ul" firstAttribute="top" secondItem="Rxo-nK-3V0" secondAttribute="top" constant="16" id="HdL-4m-Fgs"/>
+                                        <constraint firstItem="SJl-j3-aOP" firstAttribute="top" secondItem="Rxo-nK-3V0" secondAttribute="top" constant="16" id="OPf-9u-zhH"/>
+                                        <constraint firstItem="o8G-P5-6Ul" firstAttribute="leading" secondItem="Rxo-nK-3V0" secondAttribute="leading" constant="20" id="QMj-Bt-EC6"/>
+                                        <constraint firstItem="MMD-3t-ITo" firstAttribute="trailing" secondItem="JDI-oD-QAs" secondAttribute="trailing" id="SiR-sg-Jv7"/>
+                                        <constraint firstItem="gvn-SP-WXU" firstAttribute="leading" secondItem="o8G-P5-6Ul" secondAttribute="leading" id="WKC-RB-juv"/>
+                                        <constraint firstItem="JDI-oD-QAs" firstAttribute="trailing" secondItem="SJl-j3-aOP" secondAttribute="trailing" id="g2E-S9-CPG"/>
+                                        <constraint firstItem="MMD-3t-ITo" firstAttribute="firstBaseline" secondItem="YT6-Kh-864" secondAttribute="firstBaseline" id="jmj-IQ-TLz"/>
+                                        <constraint firstItem="gvn-SP-WXU" firstAttribute="top" secondItem="YT6-Kh-864" secondAttribute="bottom" constant="4" id="nKk-K3-Rpr"/>
+                                        <constraint firstItem="YT6-Kh-864" firstAttribute="top" secondItem="o8G-P5-6Ul" secondAttribute="bottom" constant="16" id="py9-QM-tGL"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="dexLabel" destination="o8G-P5-6Ul" id="hed-Lz-RSS"/>
+                                    <outlet property="priceLabel" destination="SJl-j3-aOP" id="u6E-fb-sVS"/>
+                                    <outlet property="tokenPoolLabel" destination="JDI-oD-QAs" id="XAI-Bf-3TD"/>
+                                    <outlet property="xtzPoolLabel" destination="MMD-3t-ITo" id="70Q-3F-zsU"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="NBQ-CB-gnJ" id="la5-t0-CIo"/>
+                            <outlet property="delegate" destination="NBQ-CB-gnJ" id="Ozc-P8-fdM"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Available tokens" id="av2-ex-hc1"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SBy-MU-mHn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1806" y="2663"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="FrP-67-emq"/>
-        <segue reference="3aM-PT-gdR"/>
+        <segue reference="Ubh-lT-8QK"/>
         <segue reference="Ef7-Kv-Wdi"/>
         <segue reference="KIi-8x-8B3"/>
     </inferredMetricsTieBreakers>

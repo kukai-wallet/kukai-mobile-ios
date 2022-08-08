@@ -174,7 +174,7 @@ class SwapViewController: UIViewController {
 			
 			TransactionService.shared.exchangeData.fromAmount = xtz
 			
-			self.calculationResult = DexCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.5, dex: exchange.name)
+			self.calculationResult = DexCalculationService.shared.calculateXtzToToken(xtzToSell: xtz, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.005, dex: exchange.name)
 			exchangeRateLabel.text = "1 XTZ = \(self.calculationResult?.displayExchangeRate ?? 0) \(exchange.token.symbol)"
 			
 		} else {
@@ -185,7 +185,7 @@ class SwapViewController: UIViewController {
 			
 			TransactionService.shared.exchangeData.fromAmount = token
 			
-			self.calculationResult = DexCalculationService.shared.calculateTokenToXTZ(tokenToSell: token, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.5, dex: exchange.name)
+			self.calculationResult = DexCalculationService.shared.calculateTokenToXTZ(tokenToSell: token, xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount(), maxSlippage: 0.005, dex: exchange.name)
 			exchangeRateLabel.text = "1 \(exchange.token.symbol) = \(self.calculationResult?.displayExchangeRate ?? 0) XTZ"
 		}
 		

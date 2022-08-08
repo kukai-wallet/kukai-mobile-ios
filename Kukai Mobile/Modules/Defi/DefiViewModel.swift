@@ -78,7 +78,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			let dex = position.exchange.name
 			
 			var calculation = DexRemoveCalculationResult(expectedXTZ: XTZAmount.zero(), minimumXTZ: XTZAmount.zero(), expectedToken: TokenAmount.zero(), minimumToken: TokenAmount.zero(), exchangeRate: 0)
-			if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.5, dex: dex) {
+			if let calc = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: liquidity, totalLiquidity: totalLiquidity, xtzPool: xtzPool, tokenPool: tokenPool, maxSlippage: 0.005, dex: dex) {
 				calculation = calc
 			}
 			

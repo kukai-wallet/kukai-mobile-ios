@@ -26,7 +26,7 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 		searchController.obscuresBackgroundDuringPresentation = false
 		searchController.searchBar.placeholder = "Search"
 		searchController.searchBar.showsCancelButton = false
-		definesPresentationContext = true
+		
 		navigationItem.searchController = searchController
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
