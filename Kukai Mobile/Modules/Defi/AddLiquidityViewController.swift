@@ -41,6 +41,9 @@ class AddLiquidityViewController: UIViewController {
 		
 		token1Textfield.validatorTextFieldDelegate = self
 		token2Textfield.validatorTextFieldDelegate = self
+		
+		token1BalanceLabel.text = ""
+		token2BalanceLabel.text = ""
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
