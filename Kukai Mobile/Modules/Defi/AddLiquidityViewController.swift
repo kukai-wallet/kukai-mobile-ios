@@ -39,7 +39,9 @@ class AddLiquidityViewController: UIViewController {
 		token1MaxButton.isHidden = true
 		token2MaxButton.isHidden = true
 		
+		token1Textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimate)))
 		token1Textfield.validatorTextFieldDelegate = self
+		token2Textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimate)))
 		token2Textfield.validatorTextFieldDelegate = self
 		
 		token1BalanceLabel.text = ""
@@ -121,6 +123,37 @@ class AddLiquidityViewController: UIViewController {
 		TransactionService.shared.addLiquidityData.calculationResult = self.calculationResult
 	}
 	
+	@objc func estimate() {
+		guard let calc = calculationResult,
+			  let wallet = DependencyManager.shared.selectedWallet,
+			  let exchange = TransactionService.shared.addLiquidityData.selectedExchangeAndToken,
+			  let token1Input = token1Textfield.text, let xtz = XTZAmount(fromNormalisedAmount: token1Input, decimalPlaces: 6),
+			  let token2Input = token2Textfield.text, let token = TokenAmount(fromNormalisedAmount: token2Input, decimalPlaces: exchange.token.decimals)
+		else {
+			self.alert(withTitle: "Error", andMessage: "Invalid calculation or wallet")
+			return
+		}
+		
+		token1Textfield.resignFirstResponder()
+		token2Textfield.resignFirstResponder()
+		
+		self.showLoadingModal(completion: nil)
+		let operations = OperationFactory.addLiquidity(withDex: exchange, xtz: xtz, token: token, minLiquidty: calc.minimumLiquidity, isInitialLiquidity: exchange.arePoolsEmpty(), wallet: wallet, timeout: 60 * 5)
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
+			self?.hideLoadingModal(completion: nil)
+			
+			switch result {
+				case .success(let ops):
+					TransactionService.shared.addLiquidityData.operations = ops
+					self?.addButton.isHidden = false
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
+		}
+	}
+	
 	
 	
 	// MARK: - Actions
@@ -131,14 +164,13 @@ class AddLiquidityViewController: UIViewController {
 	@IBAction func token1MaxTapped(_ sender: Any) {
 		token1Textfield.text = self.xtzBalance.normalisedRepresentation
 		let _ = token1Textfield.revalidateTextfield()
+		estimate()
 	}
 	
 	@IBAction func token2MaxTapped(_ sender: Any) {
 		token2Textfield.text = self.tokenBalance.normalisedRepresentation
 		let _ = token2Textfield.revalidateTextfield()
-	}
-	
-	@IBAction func addTapped(_ sender: Any) {
+		estimate()
 	}
 }
 

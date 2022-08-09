@@ -41,6 +41,7 @@ class RemoveLiquidityViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		lpTokenTextfield.addDoneToolbar(onDone: (target: self, action: #selector(estimate)))
 		lpTokenTextfield.validatorTextFieldDelegate = self
 		
 		removeButton.isHidden = true
@@ -118,11 +119,40 @@ class RemoveLiquidityViewController: UIViewController {
 		let lqtTokenAmount = TokenAmount(fromNormalisedAmount: withInput, decimalPlaces: position.exchange.liquidityTokenDecimalPlaces()) ?? TokenAmount.zero()
 		self.calculationResult = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: lqtTokenAmount, totalLiquidity: position.exchange.totalLiquidity(), xtzPool: position.exchange.xtzPoolAmount(), tokenPool: position.exchange.tokenPoolAmount(), maxSlippage: 0.005, dex: position.exchange.name)
 		
-		outputToken1Textfield.text = self.calculationResult?.expectedXTZ.normalisedRepresentation
-		outputToken2Textfield.text = self.calculationResult?.expectedToken.normalisedRepresentation
+		outputToken1Textfield.text = self.calculationResult?.expectedXTZ.normalisedRepresentation ?? ""
+		outputToken2Textfield.text = self.calculationResult?.expectedToken.normalisedRepresentation ?? ""
 		
 		TransactionService.shared.removeLiquidityData.tokenAmount = lqtTokenAmount
 		TransactionService.shared.removeLiquidityData.calculationResult = self.calculationResult
+	}
+	
+	@objc func estimate() {
+		guard let calc = calculationResult, calc.expectedToken > TokenAmount.zero(),
+			  let wallet = DependencyManager.shared.selectedWallet,
+			  let position = TransactionService.shared.removeLiquidityData.position,
+			  let lpTokenInput = lpTokenTextfield.text, let lpTokenAmount = TokenAmount(fromNormalisedAmount: lpTokenInput, decimalPlaces: position.exchange.liquidityTokenDecimalPlaces())
+		else {
+			self.alert(withTitle: "Error", andMessage: "Invalid calculation or wallet")
+			return
+		}
+		
+		lpTokenTextfield.resignFirstResponder()
+		
+		self.showLoadingModal(completion: nil)
+		let operations = OperationFactory.removeLiquidity(withDex: position.exchange, minXTZ: calc.minimumXTZ, minToken: calc.minimumToken, liquidityToBurn: lpTokenAmount, wallet: wallet, timeout: 60 * 5)
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
+			self?.hideLoadingModal(completion: nil)
+			
+			switch result {
+				case .success(let ops):
+					TransactionService.shared.removeLiquidityData.operations = ops
+					self?.removeButton.isHidden = false
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
+		}
 	}
 	
 	
@@ -135,9 +165,6 @@ class RemoveLiquidityViewController: UIViewController {
 	@IBAction func lpTokenMaxTapped(_ sender: Any) {
 		lpTokenTextfield.text = lqtTokenBalance.normalisedRepresentation
 		let _ = lpTokenTextfield.revalidateTextfield()
-	}
-	
-	@IBAction func removeTapped(_ sender: Any) {
 	}
 }
 

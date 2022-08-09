@@ -275,6 +275,7 @@ class SwapViewController: UIViewController {
 		tokenFromTextField.text = balLimit?.normalisedRepresentation
 		
 		let _ = tokenFromTextField.revalidateTextfield()
+		estimate()
 	}
 	
 	@IBAction func tokenToTapped(_ sender: Any) {
