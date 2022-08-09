@@ -46,6 +46,11 @@ class AddLiquidityViewController: UIViewController {
 		
 		token1BalanceLabel.text = ""
 		token2BalanceLabel.text = ""
+		
+		// Default to first token available
+		if TransactionService.shared.addLiquidityData.selectedExchangeAndToken == nil {
+			TransactionService.shared.addLiquidityData.selectedExchangeAndToken = DependencyManager.shared.balanceService.exchangeData[0].exchanges.last
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -295,6 +295,36 @@ class SwapViewController: UIViewController {
 	@IBAction func viewDetailsTapped(_ sender: Any) {
 		showDetails(!isDetailsOpen, animated: true)
 	}
+	
+	@IBAction func refreshRates(_ sender: Any) {
+		self.showLoadingModal(completion: nil)
+		
+		let walletAddress = DependencyManager.shared.selectedWallet?.address ?? ""
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { [weak self] error in
+			
+			self?.hideLoadingModal()
+			if let err = error {
+				self?.alert(errorWithMessage: err.description)
+				return
+			}
+			
+			if let selectedExchange = TransactionService.shared.exchangeData.selectedExchangeAndToken {
+				
+				// Grab the updated exchange data
+				DependencyManager.shared.balanceService.exchangeData.forEach { obj in
+					obj.exchanges.forEach { exchange in
+						if exchange.address == selectedExchange.address {
+							TransactionService.shared.exchangeData.selectedExchangeAndToken = exchange
+							return
+						}
+					}
+				}
+				
+				// Update the UI
+				self?.updateRates(withInput: self?.tokenFromTextField.text ?? "")
+			}
+		}
+	}
 }
 
 extension SwapViewController: ValidatorTextFieldDelegate {

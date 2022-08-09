@@ -52,6 +52,11 @@ class RemoveLiquidityViewController: UIViewController {
 		outputToken1Balance.text = ""
 		outputToken2Textfield.isEnabled = false
 		outputToken2Balance.text = ""
+		
+		// Default to first token available
+		if TransactionService.shared.removeLiquidityData.position == nil {
+			TransactionService.shared.removeLiquidityData.position = DependencyManager.shared.balanceService.account.liquidityTokens.first
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
