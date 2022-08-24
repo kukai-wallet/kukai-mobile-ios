@@ -104,22 +104,18 @@ class WalletConnectOperationApproveViewController: UIViewController {
 			return
 		}
 		
-		if wallet.type == .ledger {
-			approveLedger(operations: ops, wallet: wallet)
-			
-		} else {
-			approveRegular(operations: ops, wallet: wallet)
-		}
-	}
-	
-	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingView()
-		respondOnReject()
-	}
-	
-	private func approveRegular(operations: [KukaiCoreSwift.Operation], wallet: Wallet) {
+		// Listen for partial success messages from ledger devices (if applicable)
+		LedgerService.shared
+			.$partialSuccessMessageReceived
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.updateLoadingModalStatusLabel(message: "Please approve the signing request on your ledger device")
+			}
+			.store(in: &bag)
+		
+		// Send operations
 		self.showLoadingModal { [weak self] in
-			DependencyManager.shared.tezosNodeClient.send(operations: operations, withWallet: wallet) { [weak self] sendResult in
+			DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] sendResult in
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent opHash: %@", log: .default, type: .info, opHash)
@@ -134,88 +130,8 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		}
 	}
 	
-	private func approveLedger(operations: [KukaiCoreSwift.Operation], wallet: Wallet) {
-		guard let ledgerWallet = wallet as? LedgerWallet else {
-			self.alert(errorWithMessage: "Not a ledger wallet")
-			return
-		}
-		
+	@IBAction func rejectTapped(_ sender: Any) {
 		self.showLoadingView()
-		
-		DependencyManager.shared.tezosNodeClient.getOperationMetadata(forWallet: wallet) { [weak self] metadataResult in
-			guard let metadata = try? metadataResult.get() else {
-				self?.hideLoadingView()
-				self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
-				return
-			}
-			
-			DependencyManager.shared.tezosNodeClient.operationService.ledgerOperationPrepWithLocalForge(metadata: metadata, operations: operations, wallet: wallet) { ledgerPrepResult in
-				guard let ledgerPrep = try? ledgerPrepResult.get() else {
-					self?.hideLoadingView()
-					self?.alert(errorWithMessage: "Couldn't get ledger prep data \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
-					return
-				}
-				
-				TransactionService.shared.sendData.ledgerPrep = ledgerPrep
-				self?.handleLedgerSend(ledgerPrep: ledgerPrep, wallet: ledgerWallet)
-			}
-		}
-	}
-	
-	func handleLedgerSend(ledgerPrep: OperationService.LedgerPayloadPrepResponse, wallet: LedgerWallet) {
-		
-		// Connect to the ledger wallet, and request a signature from the device using the ledger prep
-		LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
-			.flatMap { _ -> AnyPublisher<String, KukaiError> in
-				if ledgerPrep.canLedgerParse {
-					return LedgerService.shared.sign(hex: ledgerPrep.watermarkedOp, parse: true)
-				}
-				
-				return LedgerService.shared.sign(hex: ledgerPrep.blake2bHash, parse: false)
-			}
-			.sink(onError: { [weak self] error in
-				self?.hideLoadingView()
-				self?.alert(errorWithMessage: "Error from ledger: \( error )")
-				
-			}, onSuccess: { [weak self] signature in
-				self?.handle(signature: signature)
-			})
-			.store(in: &bag)
-		
-		
-		// Listen for partial success messages
-		LedgerService.shared
-			.$partialSuccessMessageReceived
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please click ok on this message, and then approve the request on your ledger device")
-			}
-			.store(in: &bag)
-	}
-	
-	func handle(signature: String) {
-		guard let ledgerPrep = TransactionService.shared.sendData.ledgerPrep,
-			  let binarySignature = Sodium.shared.utils.hex2bin(signature)
-		else {
-			self.hideLoadingView()
-			self.alert(errorWithMessage: "Unable to inject, as can't find prep data")
-			return
-		}
-		
-		DependencyManager.shared.tezosNodeClient.operationService.preapplyAndInject(forgedOperation: ledgerPrep.forgedOp,
-																					signature: binarySignature,
-																					signatureCurve: .ed25519,
-																					operationPayload: ledgerPrep.payload,
-																					operationMetadata: ledgerPrep.metadata) { [weak self] injectionResult in
-			
-			guard let opHash = try? injectionResult.get() else {
-				self?.hideLoadingView()
-				self?.alert(errorWithMessage: "Preapply / Injection error: \( (try? injectionResult.getError()) ?? KukaiError.unknown() )")
-				return
-			}
-			
-			os_log("Sent opHash: %@", log: .default, type: .info, opHash)
-			self?.respondOnSign(opHash: opHash)
-		}
+		respondOnReject()
 	}
 }

@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 class AccountViewController: UIViewController, UITableViewDelegate {
-
+	
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = AccountViewModel()

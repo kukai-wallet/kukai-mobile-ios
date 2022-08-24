@@ -22,6 +22,7 @@ class SendLedgerApproveViewController: UIViewController {
 		statusLabel.text = "Estimating Operation"
     }
 	
+	/*
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -52,7 +53,6 @@ class SendLedgerApproveViewController: UIViewController {
 					self?.alert(errorWithMessage: "Couldn't fetch metadata \( (try? metadataResult.getError()) ?? KukaiError.unknown() )")
 					return
 				}
-				
 				
 				DependencyManager.shared.tezosNodeClient.operationService.ledgerOperationPrepWithLocalForge(metadata: metadata, operations: estimatedOps, wallet: wallet) { ledgerPrepResult in
 					self?.statusLabel.text = "Setting up Ledger connection"
@@ -125,4 +125,5 @@ class SendLedgerApproveViewController: UIViewController {
 			})
 		}
 	}
+	*/
 }

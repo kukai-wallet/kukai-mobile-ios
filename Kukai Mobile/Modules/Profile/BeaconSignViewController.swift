@@ -31,35 +31,24 @@ class BeaconSignViewController: UIViewController {
 			return
 		}
 		
-		if wallet.type == .ledger, let ledgerWallet = wallet as? LedgerWallet {
+		// Listen for partial success messages from ledger devices (if applicable)
+		LedgerService.shared
+			.$partialSuccessMessageReceived
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
+			}
+			.store(in: &bag)
+		
+		
+		// Sign and continue
+		wallet.sign(request.payload) { [weak self] result in
+			guard let signature = try? result.get() else {
+				self?.alert(errorWithMessage: "Unable to sign with wallet: \(result.getFailure())")
+				return
+			}
 			
-			// Connect to the ledger wallet, and request a signature from the device
-			LedgerService.shared.connectTo(uuid: ledgerWallet.ledgerUUID)
-				.flatMap { _ -> AnyPublisher<String, KukaiError> in
-					return LedgerService.shared.sign(hex: request.payload, parse: true)
-				}
-				.sink(onError: { [weak self] error in
-					self?.alert(errorWithMessage: "Error: \(error)")
-					
-				}, onSuccess: { [weak self] signature in
-					self?.continueWith(request: request, signature: signature)
-				})
-				.store(in: &bag)
-			
-			// Listen for partial success messages
-			LedgerService.shared
-				.$partialSuccessMessageReceived
-				.dropFirst()
-				.sink { [weak self] _ in
-					self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
-				}
-				.store(in: &bag)
-			
-		} else {
-			let sig = wallet.sign(request.payload)
-			let signature = sig?.toHexString() ?? ""
-			
-			continueWith(request: request, signature: signature)
+			self?.continueWith(request: request, signature: signature.toHexString())
 		}
 	}
 	

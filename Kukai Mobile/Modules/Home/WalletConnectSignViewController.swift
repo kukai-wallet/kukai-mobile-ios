@@ -95,51 +95,7 @@ class WalletConnectSignViewController: UIViewController {
 			return
 		}
 		
-		if wallet.type == .ledger {
-			signLedger(string: stringToSign, wallet: wallet)
-			
-		} else {
-			signRegular(string: stringToSign, wallet: wallet)
-		}
-	}
-	
-	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingView()
-		respondOnReject()
-	}
-	
-	private func signRegular(string: String, wallet: Wallet) {
-		self.showLoadingModal { [weak self] in
-			
-			let sig = wallet.sign(string)
-			let signature = sig?.toHexString() ?? ""
-			
-			self?.respondOnSign(signature: signature)
-		}
-	}
-	
-	private func signLedger(string: String, wallet: Wallet) {
-		guard let ledgerWallet = wallet as? LedgerWallet else {
-			self.alert(errorWithMessage: "Not a ledger wallet")
-			return
-		}
-		
-		self.showLoadingView()
-		
-		// Connect to the ledger wallet, and request a signature from the device
-		LedgerService.shared.connectTo(uuid: ledgerWallet.ledgerUUID)
-			.flatMap { _ -> AnyPublisher<String, KukaiError> in
-				return LedgerService.shared.sign(hex: string, parse: true)
-			}
-			.sink(onError: { [weak self] error in
-				self?.alert(errorWithMessage: "Error: \(error)")
-				
-			}, onSuccess: { [weak self] signature in
-				self?.respondOnSign(signature: signature)
-			})
-			.store(in: &bag)
-		
-		// Listen for partial success messages
+		// Listen for partial success messages from ledger devices (if applicable)
 		LedgerService.shared
 			.$partialSuccessMessageReceived
 			.dropFirst()
@@ -147,5 +103,22 @@ class WalletConnectSignViewController: UIViewController {
 				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
 			}
 			.store(in: &bag)
+		
+		
+		// Sign and continue
+		self.showLoadingModal()
+		wallet.sign(stringToSign) { [weak self] result in
+			guard let signature = try? result.get() else {
+				self?.alert(errorWithMessage: "Unable to sign with wallet: \(result.getFailure())")
+				return
+			}
+			
+			self?.respondOnSign(signature: signature.toHexString())
+		}
+	}
+	
+	@IBAction func rejectTapped(_ sender: Any) {
+		self.showLoadingView()
+		respondOnReject()
 	}
 }
