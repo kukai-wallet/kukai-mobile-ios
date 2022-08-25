@@ -91,7 +91,7 @@ class SendReviewViewController: UIViewController {
 			
 			switch estimationResult {
 				case .success(let estimatedOperations):
-					TransactionService.shared.sendData.operations = estimatedOperations
+					TransactionService.shared.currentOperations = estimatedOperations
 					self?.sendButton.isEnabled = true
 					self?.updateFees()
 					
@@ -103,14 +103,8 @@ class SendReviewViewController: UIViewController {
 	}
 	
 	func updateFees() {
-		guard let ops = TransactionService.shared.sendData.operations else {
-			feeLabel.text = ""
-			storageCostLabel.text = ""
-			return
-		}
-		
-		feeLabel.text = ops.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
-		storageCostLabel.text = ops.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		feeLabel.text = TransactionService.shared.currentOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		storageCostLabel.text = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
 	}
 	
 	func updateQuantityLabel() {

@@ -35,9 +35,7 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		
 		slideButton.delegate = self
 		
-		guard let position = TransactionService.shared.removeLiquidityData.position,
-			  let ops = TransactionService.shared.removeLiquidityData.operations
-		else {
+		guard let position = TransactionService.shared.removeLiquidityData.position else {
 			return
 		}
 		
@@ -67,8 +65,8 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		token2AmountLabel.text = TransactionService.shared.removeLiquidityData.calculationResult?.expectedToken.normalisedRepresentation ?? ""
 		token2BalanceLabel.text = "Balance: \(tokenBalanceString) \(position.exchange.token.symbol)"
 		
-		let totalFee = ops.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
-		let totalStorage = ops.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
+		let totalFee = TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
+		let totalStorage = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
 		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
 		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
 	}
@@ -77,13 +75,13 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 extension RemoveLiquidityConfirmViewController: SlideButtonDelegate {
 	
 	func didCompleteSlide() {
-		guard let ops = TransactionService.shared.removeLiquidityData.operations, let wallet = DependencyManager.shared.selectedWallet else {
+		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find operations, try again")
 			return
 		}
 		
 		self.showLoadingView()
-		DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] innerResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] innerResult in
 			self?.hideLoadingView()
 			
 			switch innerResult {

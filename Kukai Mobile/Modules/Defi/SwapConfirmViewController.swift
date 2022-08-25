@@ -46,8 +46,7 @@ class SwapConfirmViewController: UIViewController {
 		showDetails(false, animated: false)
 		
 		guard let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken,
-			  let calcResult = TransactionService.shared.exchangeData.calculationResult,
-			  let ops = TransactionService.shared.exchangeData.operations
+			  let calcResult = TransactionService.shared.exchangeData.calculationResult
 		else {
 			return
 		}
@@ -99,8 +98,8 @@ class SwapConfirmViewController: UIViewController {
 		exchangeRateLabel.text = TransactionService.shared.exchangeData.exchangeRateString
 		priceImpactLabel.text = "\(calcResult.displayPriceImpact)%"
 		
-		let totalFee = ops.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
-		let totalStorage = ops.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
+		let totalFee = TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
+		let totalStorage = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
 		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
 		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
     }
@@ -137,13 +136,13 @@ class SwapConfirmViewController: UIViewController {
 extension SwapConfirmViewController: SlideButtonDelegate {
 	
 	func didCompleteSlide() {
-		guard let ops = TransactionService.shared.exchangeData.operations, let wallet = DependencyManager.shared.selectedWallet else {
+		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find operations, try again")
 			return
 		}
 		
 		self.showLoadingView()
-		DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] innerResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] innerResult in
 			self?.hideLoadingView()
 			
 			switch innerResult {

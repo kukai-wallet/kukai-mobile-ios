@@ -150,7 +150,7 @@ class AddLiquidityViewController: UIViewController {
 			
 			switch result {
 				case .success(let ops):
-					TransactionService.shared.addLiquidityData.operations = ops
+					TransactionService.shared.currentOperations = ops
 					self?.addButton.isHidden = false
 					
 				case .failure(let error):

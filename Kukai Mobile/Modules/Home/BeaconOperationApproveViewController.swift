@@ -34,15 +34,14 @@ class BeaconOperationApproveViewController: UIViewController {
 		networkLabel.text = data.beaconRequest?.network.type.rawValue
 		addressLabel.text = data.beaconRequest?.sourceAddress
 		entrypoint.text = data.entrypointToCall ?? "..."
-		gasLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.gasLimit }).reduce(0, +) ?? 0)"
-		storageLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.storageLimit }).reduce(0, +) ?? 0)"
-		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
-		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
+		gasLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.gasLimit }).reduce(0, +))"
+		storageLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.storageLimit }).reduce(0, +))"
+		transactionCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
+		maxStorageCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let ops = TransactionService.shared.beaconOperationData.estimatedOperations,
-			  let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.beaconOperationData.beaconRequest?.sourceAddress ?? ""),
+		guard let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.beaconOperationData.beaconRequest?.sourceAddress ?? ""),
 			  let beaconRequest = TransactionService.shared.beaconOperationData.beaconRequest else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
@@ -60,7 +59,7 @@ class BeaconOperationApproveViewController: UIViewController {
 		
 		// Sign and continue
 		self.showLoadingModal { [weak self] in
-			DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] sendResult in
+			DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] sendResult in
 				switch sendResult {
 					case .success(let opHash):
 						

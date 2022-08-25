@@ -55,7 +55,7 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		TransactionService.shared.record(exchange: self.viewModel.exchange(forIndexPath: indexPath))
+		TransactionService.shared.recordChosen(exchange: self.viewModel.exchange(forIndexPath: indexPath))
 		self.navigationController?.popViewController(animated: true)
 	}
 	

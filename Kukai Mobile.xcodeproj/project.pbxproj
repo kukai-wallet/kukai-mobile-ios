@@ -165,6 +165,8 @@
 		C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */; };
 		C0BAFEB328A165110045832E /* ChooseLiquidityTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BAFEB228A165110045832E /* ChooseLiquidityTokenViewController.swift */; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
+		C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0D6D50328B66572001B8130 /* Fees.storyboard */; };
+		C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */; };
 		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
 		C0DB48172785C6DD00D3B4F9 /* FadeSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DB48162785C6DD00D3B4F9 /* FadeSegue.swift */; };
 		C0E921EA270C8C5500F3B0B9 /* LedgerScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */; };
@@ -383,6 +385,8 @@
 		C0B743A626AAC44A00377A9B /* ViewModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelProtocols.swift; sourceTree = "<group>"; };
 		C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extensions.swift"; sourceTree = "<group>"; };
 		C0BAFEB228A165110045832E /* ChooseLiquidityTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLiquidityTokenViewController.swift; sourceTree = "<group>"; };
+		C0D6D50328B66572001B8130 /* Fees.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Fees.storyboard; sourceTree = "<group>"; };
+		C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeesViewController.swift; sourceTree = "<group>"; };
 		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C0DB48162785C6DD00D3B4F9 /* FadeSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FadeSegue.swift; sourceTree = "<group>"; };
 		C0E921E9270C8C5500F3B0B9 /* LedgerScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LedgerScanningViewController.swift; sourceTree = "<group>"; };
@@ -550,6 +554,7 @@
 				C005BA2E2822C44600D8369D /* Profile */,
 				C0B08A29270DBF6500075618 /* Send */,
 				C0239B982886B90900E0C973 /* Defi */,
+				C0D6D50228B66550001B8130 /* Fees */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -823,6 +828,15 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C0D6D50228B66550001B8130 /* Fees */ = {
+			isa = PBXGroup;
+			children = (
+				C0D6D50328B66572001B8130 /* Fees.storyboard */,
+				C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */,
+			);
+			path = Fees;
+			sourceTree = "<group>";
+		};
 		C0DAD65226B00AA6001DF430 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -981,6 +995,7 @@
 				C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */,
 				C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
+				C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */,
 				C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */,
 				C050365D271ED8E600E7A664 /* Onboarding.storyboard in Resources */,
 				C0239B9A2886B92500E0C973 /* Defi.storyboard in Resources */,
@@ -1095,6 +1110,7 @@
 				C0A321D327C68B9E00D7788B /* ValidatorTextField.swift in Sources */,
 				C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */,
 				C049E73A2881837F00887B64 /* AccountsViewController.swift in Sources */,
+				C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */,
 				C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */,
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
 				C08694DE27BD1B84000A4909 /* TokenBalanceCell.swift in Sources */,

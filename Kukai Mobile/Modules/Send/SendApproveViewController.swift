@@ -66,7 +66,7 @@ class SendApproveViewController: UIViewController {
     }
 	
 	func sendOperations() {
-		guard let ops = TransactionService.shared.sendData.operations, let wallet = DependencyManager.shared.selectedWallet else {
+		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find ops")
 			self.slideButton?.resetSlider()
 			return
@@ -74,7 +74,7 @@ class SendApproveViewController: UIViewController {
 		
 		self.showLoadingModal(completion: nil)
 		
-		DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] sendResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] sendResult in
 			self?.hideLoadingModal(completion: nil)
 			
 			switch sendResult {

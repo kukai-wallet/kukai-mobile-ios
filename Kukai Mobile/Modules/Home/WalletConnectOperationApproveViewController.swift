@@ -35,10 +35,10 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		networkLabel.text = data.request?.chainId.absoluteString ?? "..."
 		addressLabel.text = data.requestParams?.account
 		entrypoint.text = data.entrypointToCall ?? "..."
-		gasLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.gasLimit }).reduce(0, +) ?? 0)"
-		storageLimitLabel.text = "\(data.estimatedOperations?.map({ $0.operationFees.storageLimit }).reduce(0, +) ?? 0)"
-		transactionCost.text = (data.estimatedOperations?.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
-		maxStorageCost.text = (data.estimatedOperations?.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation ?? "0.0") + " tez"
+		gasLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.gasLimit }).reduce(0, +))"
+		storageLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.storageLimit }).reduce(0, +))"
+		transactionCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
+		maxStorageCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
 	}
 	
 	@MainActor
@@ -98,8 +98,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let ops = TransactionService.shared.walletConnectOperationData.estimatedOperations,
-			  let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.walletConnectOperationData.requestParams?.account ?? "") else {
+		guard let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.walletConnectOperationData.requestParams?.account ?? "") else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
 		}
@@ -115,7 +114,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		
 		// Send operations
 		self.showLoadingModal { [weak self] in
-			DependencyManager.shared.tezosNodeClient.send(operations: ops, withWallet: wallet) { [weak self] sendResult in
+			DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] sendResult in
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent opHash: %@", log: .default, type: .info, opHash)
