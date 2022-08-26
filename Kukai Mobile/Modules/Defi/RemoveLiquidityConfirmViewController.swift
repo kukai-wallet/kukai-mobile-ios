@@ -28,6 +28,7 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 	
 	@IBOutlet weak var feeLabel: UILabel!
 	@IBOutlet weak var storageCostLabel: UILabel!
+	@IBOutlet weak var feeSettingsButton: UIButton!
 	@IBOutlet weak var slideButton: SlideButton!
 	
 	override func viewDidLoad() {
@@ -64,11 +65,18 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		token2Label.text = position.exchange.token.symbol
 		token2AmountLabel.text = TransactionService.shared.removeLiquidityData.calculationResult?.expectedToken.normalisedRepresentation ?? ""
 		token2BalanceLabel.text = "Balance: \(tokenBalanceString) \(position.exchange.token.symbol)"
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
-		let totalFee = TransactionService.shared.currentOperationsAndFeesData.fee
-		let totalStorage = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost
-		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
-		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
+		updateFees()
+	}
+	
+	func updateFees() {
+		feeLabel.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation + " xtz"
+		storageCostLabel.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation + " xtz"
+		feeSettingsButton.setTitle(TransactionService.shared.currentOperationsAndFeesData.type.displayName(), for: .normal)
 	}
 }
 

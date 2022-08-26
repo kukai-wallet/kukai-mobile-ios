@@ -431,7 +431,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Hlw-Cg-F92">
-                                <rect key="frame" x="20" y="385" width="374" height="174"/>
+                                <rect key="frame" x="20" y="385" width="374" height="159"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dE8-GQ-h4I">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="32"/>
@@ -515,52 +515,31 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="LiN-zo-EUI">
-                                        <rect key="frame" x="0.0" y="74" width="374" height="32"/>
+                                        <rect key="frame" x="0.0" y="74" width="374" height="17"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxn-Fg-89u">
-                                                <rect key="frame" x="0.0" y="0.0" width="119.5" height="32"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="119.5" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" name="text-tertiary"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;storageCost&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NIx-aw-4YG">
-                                                <rect key="frame" x="127.5" y="0.0" width="140.5" height="32"/>
+                                                <rect key="frame" x="127.5" y="0.0" width="246.5" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <color key="textColor" name="text-primary"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gw1-PC-DTZ">
-                                                <rect key="frame" x="276" y="0.0" width="98" height="32"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="32" id="jlu-TR-baZ"/>
-                                                </constraints>
-                                                <color key="tintColor" name="primary-button-background"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="plain" image="clock.fill" catalog="system" imagePlacement="trailing" title="Normal" imagePadding="6"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                        <color key="value" name="text-tertiary"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                        <real key="value" value="16"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                            </button>
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fq3-hO-Jzl">
-                                        <rect key="frame" x="0.0" y="110" width="374" height="16"/>
+                                        <rect key="frame" x="0.0" y="95" width="374" height="16"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="16" id="bx5-Ix-JuX"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Euh-Gg-wFe">
-                                        <rect key="frame" x="0.0" y="130" width="374" height="44"/>
+                                        <rect key="frame" x="0.0" y="115" width="374" height="44"/>
                                         <color key="backgroundColor" name="primary-button-background"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="44" id="rhC-eO-tuA"/>
@@ -655,7 +634,6 @@
                     <connections>
                         <outlet property="exchangeRateLabel" destination="Ail-TV-XcE" id="jQI-xz-5Tu"/>
                         <outlet property="feeLabel" destination="7ad-Al-Fzp" id="VTG-pW-4VF"/>
-                        <outlet property="gasCostButton" destination="Gw1-PC-DTZ" id="waf-ol-zMa"/>
                         <outlet property="invertTokensButton" destination="cLs-2l-3f2" id="T6f-KM-6JN"/>
                         <outlet property="previewButton" destination="Euh-Gg-wFe" id="MHA-lC-OQn"/>
                         <outlet property="storageCostLabel" destination="NIx-aw-4YG" id="7dJ-HG-U49"/>
@@ -1070,7 +1048,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bbn-67-qH3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2933" y="1880"/>
+            <point key="canvasLocation" x="-2097" y="1880"/>
         </scene>
         <!--Fees-->
         <scene sceneID="8AK-eb-L3t">
@@ -1078,7 +1056,7 @@
                 <viewControllerPlaceholder storyboardName="Fees" id="ALC-xd-fw9" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7gd-4c-eWP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2376" y="2298"/>
+            <point key="canvasLocation" x="-1540" y="2298"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="o85-8k-OIw">
@@ -1209,7 +1187,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4C1-Pb-If0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5451" y="1881"/>
+            <point key="canvasLocation" x="-4616" y="1880"/>
         </scene>
         <!--Liquidity-->
         <scene sceneID="QTH-u1-jf2">
@@ -1311,7 +1289,7 @@ Blah Blah Blah Blah Blah</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Sny-8r-vhX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4688" y="1880"/>
+            <point key="canvasLocation" x="-3852" y="1880"/>
         </scene>
         <!--Available tokens-->
         <scene sceneID="Qmo-wp-Jdl">
@@ -1402,7 +1380,7 @@ Blah Blah Blah Blah Blah</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ace-6p-O16" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3804" y="1880"/>
+            <point key="canvasLocation" x="-2968" y="1880"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mv2-87-hBk">
@@ -1435,7 +1413,7 @@ Blah Blah Blah Blah Blah</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pN8-oJ-yVT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2968" y="2727"/>
+            <point key="canvasLocation" x="-2132" y="2727"/>
         </scene>
         <!--Add Liquidity View Controller-->
         <scene sceneID="Hhw-Gz-Uo1">
@@ -2353,6 +2331,9 @@ Blah Blah Blah Blah Blah</string>
                                                         <real key="value" value="16"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="bcr-Vh-NFP" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="9fF-Uc-cSU"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -2403,6 +2384,7 @@ Blah Blah Blah Blah Blah</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="feeLabel" destination="fI3-mU-I5N" id="plr-v8-GFb"/>
+                        <outlet property="feeSettingsButton" destination="VKU-hb-eUV" id="jyY-Kq-OlY"/>
                         <outlet property="slideButton" destination="CDa-G2-dR8" id="ziH-62-1yZ"/>
                         <outlet property="storageCostLabel" destination="a9A-nu-7TC" id="sl1-ts-OwH"/>
                         <outlet property="token1AmountLabel" destination="uI2-4N-ogh" id="g7X-DR-SSY"/>
@@ -2543,6 +2525,9 @@ Blah Blah Blah Blah Blah</string>
                                                         <real key="value" value="16"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="FnG-3S-w3B" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="qy3-KY-uln"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
@@ -2645,6 +2630,7 @@ Blah Blah Blah Blah Blah</string>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="feeLabel" destination="3fU-gg-fTy" id="src-qn-H3O"/>
+                        <outlet property="feeSettingsButton" destination="TJ5-kb-BPG" id="3k5-b6-oPO"/>
                         <outlet property="lpToken1Icon" destination="3td-fK-XPz" id="yLE-J8-vXM"/>
                         <outlet property="lpToken2Icon" destination="yQa-6d-Fgc" id="szX-Lg-bbI"/>
                         <outlet property="lpTokenAmountLabel" destination="kKY-no-wgF" id="tBr-u7-Npk"/>
@@ -2666,10 +2652,26 @@ Blah Blah Blah Blah Blah</string>
             </objects>
             <point key="canvasLocation" x="2558" y="3147"/>
         </scene>
+        <!--Fees-->
+        <scene sceneID="Sla-DM-lJm">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Fees" id="bcr-Vh-NFP" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ei2-FZ-Vx7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1730" y="3556"/>
+        </scene>
+        <!--Fees-->
+        <scene sceneID="Ttb-DU-gTD">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Fees" id="FnG-3S-w3B" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mvh-74-RaA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2559" y="3556"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="mA7-5j-zbo"/>
-        <segue reference="3aM-PT-gdR"/>
+        <segue reference="xvA-zc-wCJ"/>
+        <segue reference="Ubh-lT-8QK"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="arrow.clockwise" catalog="system" width="115" height="128"/>
