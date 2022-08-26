@@ -65,8 +65,8 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		token2AmountLabel.text = TransactionService.shared.removeLiquidityData.calculationResult?.expectedToken.normalisedRepresentation ?? ""
 		token2BalanceLabel.text = "Balance: \(tokenBalanceString) \(position.exchange.token.symbol)"
 		
-		let totalFee = TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
-		let totalStorage = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
+		let totalFee = TransactionService.shared.currentOperationsAndFeesData.fee
+		let totalStorage = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost
 		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
 		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
 	}
@@ -81,7 +81,7 @@ extension RemoveLiquidityConfirmViewController: SlideButtonDelegate {
 		}
 		
 		self.showLoadingView()
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] innerResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] innerResult in
 			self?.hideLoadingView()
 			
 			switch innerResult {

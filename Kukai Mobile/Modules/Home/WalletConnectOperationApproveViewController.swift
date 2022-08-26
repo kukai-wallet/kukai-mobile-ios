@@ -35,10 +35,10 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		networkLabel.text = data.request?.chainId.absoluteString ?? "..."
 		addressLabel.text = data.requestParams?.account
 		entrypoint.text = data.entrypointToCall ?? "..."
-		gasLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.gasLimit }).reduce(0, +))"
-		storageLimitLabel.text = "\(TransactionService.shared.currentOperations.map({ $0.operationFees.storageLimit }).reduce(0, +))"
-		transactionCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
-		maxStorageCost.text = (TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation) + " tez"
+		gasLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.gasLimit)"
+		storageLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.storageLimit)"
+		transactionCost.text = (TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation) + " tez"
+		maxStorageCost.text = (TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation) + " tez"
 	}
 	
 	@MainActor
@@ -114,7 +114,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		
 		// Send operations
 		self.showLoadingModal { [weak self] in
-			DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] sendResult in
+			DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent opHash: %@", log: .default, type: .info, opHash)

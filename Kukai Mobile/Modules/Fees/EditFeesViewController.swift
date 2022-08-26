@@ -6,13 +6,14 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class EditFeesViewController: UIViewController {
 	
 	@IBOutlet weak var segmentedButton: UISegmentedControl!
-	@IBOutlet weak var gasLimitTextField: UITextField!
-	@IBOutlet weak var feeTextField: UITextField!
-	@IBOutlet weak var storageLimitTextField: UITextField!
+	@IBOutlet weak var gasLimitTextField: ValidatorTextField!
+	@IBOutlet weak var feeTextField: ValidatorTextField!
+	@IBOutlet weak var storageLimitTextField: ValidatorTextField!
 	@IBOutlet weak var maxStorageCostTextField: UITextField!
 	@IBOutlet weak var saveButton: UIButton!
 	
@@ -23,10 +24,25 @@ class EditFeesViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		disableAllFields()
+		segmentedButton.selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
+		segmentedButtonTapped(self.segmentedButton as Any)
+		
+		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
+		
+		gasLimitTextField.validator = NumberValidator(min: 0, max: 1_040_000, decimalPlaces: 0)
+		gasLimitTextField.validatorTextFieldDelegate = self
+		
+		storageLimitTextField.validator = NumberValidator(min: 0, max: 60_000, decimalPlaces: 0)
+		storageLimitTextField.validatorTextFieldDelegate = self
+		
+		feeTextField.validator = TokenAmountValidator(balanceLimit: xtzBalance, decimalPlaces: 6)
+		feeTextField.validatorTextFieldDelegate = self
 	}
 	
 	@IBAction func segmentedButtonTapped(_ sender: Any) {
+		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
+		updateFeeDisplay()
+		
 		if segmentedButton.selectedSegmentIndex != 2 {
 			disableAllFields()
 		} else {
@@ -35,6 +51,23 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	@IBAction func saveTapped(_ sender: Any) {
+		if segmentedButton.selectedSegmentIndex == 2 {
+			let xtzAmount = XTZAmount(fromNormalisedAmount: feeTextField.text ?? "0", decimalPlaces: 6)
+			let gasLimit = Int(gasLimitTextField.text ?? "0")
+			let storageLimit = Int(storageLimitTextField.text ?? "0")
+			
+			TransactionService.shared.currentOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+		}
+		
+		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
+		self.dismissBottomSheet()
+	}
+	
+	func updateFeeDisplay() {
+		gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
+		storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
+		feeTextField.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation
+		maxStorageCostTextField.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation
 	}
 	
 	func disableAllFields() {
@@ -47,5 +80,24 @@ class EditFeesViewController: UIViewController {
 		gasLimitTextField.isEnabled = true
 		feeTextField.isEnabled = true
 		storageLimitTextField.isEnabled = true
+	}
+}
+
+extension EditFeesViewController: ValidatorTextFieldDelegate {
+	
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		
+	}
+	
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		
+	}
+	
+	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		return true
+	}
+	
+	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		
 	}
 }

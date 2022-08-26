@@ -74,7 +74,7 @@ class SendApproveViewController: UIViewController {
 		
 		self.showLoadingModal(completion: nil)
 		
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] sendResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.hideLoadingModal(completion: nil)
 			
 			switch sendResult {

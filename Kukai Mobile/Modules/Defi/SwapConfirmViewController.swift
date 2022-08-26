@@ -32,6 +32,7 @@ class SwapConfirmViewController: UIViewController {
 	
 	@IBOutlet weak var feeLabel: UILabel!
 	@IBOutlet weak var storageCostLabel: UILabel!
+	@IBOutlet weak var feeSettingsButton: UIButton!
 	
 	@IBOutlet weak var slideButton: SlideButton!
 	
@@ -97,17 +98,23 @@ class SwapConfirmViewController: UIViewController {
 		
 		exchangeRateLabel.text = TransactionService.shared.exchangeData.exchangeRateString
 		priceImpactLabel.text = "\(calcResult.displayPriceImpact)%"
-		
-		let totalFee = TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
-		let totalStorage = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
-		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
-		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		updateFees()
+	}
 	
 	@IBAction func viewDetailsTapped(_ sender: Any) {
 		showDetails(!isDetailsOpen, animated: true)
 	}
 	
+	func updateFees() {
+		feeLabel.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation + " xtz"
+		storageCostLabel.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation + " xtz"
+		feeSettingsButton.setTitle(TransactionService.shared.currentOperationsAndFeesData.type.displayName(), for: .normal)
+	}
 	
 	
 	// MARK: - Helpers
@@ -142,7 +149,7 @@ extension SwapConfirmViewController: SlideButtonDelegate {
 		}
 		
 		self.showLoadingView()
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperations, withWallet: wallet) { [weak self] innerResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] innerResult in
 			self?.hideLoadingView()
 			
 			switch innerResult {

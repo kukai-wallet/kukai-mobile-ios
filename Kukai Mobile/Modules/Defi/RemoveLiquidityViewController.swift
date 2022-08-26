@@ -151,7 +151,7 @@ class RemoveLiquidityViewController: UIViewController {
 			
 			switch result {
 				case .success(let ops):
-					TransactionService.shared.currentOperations = ops
+					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: ops)
 					self?.removeButton.isHidden = false
 					
 				case .failure(let error):

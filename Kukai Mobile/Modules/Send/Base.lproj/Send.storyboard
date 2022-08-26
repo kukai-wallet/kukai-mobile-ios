@@ -586,14 +586,14 @@
                                     <action selector="sendTapped:" destination="GkR-Ml-nCF" eventType="touchUpInside" id="YA5-WA-Vww"/>
                                 </connections>
                             </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yLp-8d-4Y1">
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="yLp-8d-4Y1">
                                 <rect key="frame" x="20" y="218" width="374" height="76"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="xco-5Y-KT5">
-                                        <rect key="frame" x="0.0" y="0.0" width="319" height="76"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="272" height="76"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="khL-hq-qO2">
-                                                <rect key="frame" x="0.0" y="0.0" width="319" height="22"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="272" height="22"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Fee:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="svi-03-TmG">
                                                         <rect key="frame" x="0.0" y="0.0" width="28" height="22"/>
@@ -621,13 +621,13 @@
                                                         </connections>
                                                     </button>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KGX-6r-Onb">
-                                                        <rect key="frame" x="112" y="0.0" width="207" height="22"/>
+                                                        <rect key="frame" x="112" y="0.0" width="160" height="22"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h4f-up-hXg">
-                                                <rect key="frame" x="0.0" y="26" width="319" height="50"/>
+                                                <rect key="frame" x="0.0" y="26" width="272" height="50"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Max Storage Cost:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uVY-gn-5tk">
                                                         <rect key="frame" x="0.0" y="0.0" width="119.5" height="50"/>
@@ -642,38 +642,35 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FP6-CC-OBd">
-                                                        <rect key="frame" x="220.5" y="0.0" width="98.5" height="50"/>
+                                                        <rect key="frame" x="220.5" y="0.0" width="51.5" height="50"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                 </subviews>
                                             </stackView>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ynC-Bu-iFB">
-                                        <rect key="frame" x="319" y="24" width="55" height="28"/>
-                                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2p-HH-2XR">
+                                        <rect key="frame" x="276" y="22" width="98" height="32"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="28" id="oGB-lI-bzd"/>
+                                            <constraint firstAttribute="height" constant="32" id="PTA-zx-xXT"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title=" Normal ">
-                                            <color key="titleColor" name="text-secondary"/>
-                                        </state>
+                                        <color key="tintColor" name="primary-button-background"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="clock.fill" catalog="system" imagePlacement="trailing" title="Normal" imagePadding="6"/>
                                         <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" name="text-secondary"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                <real key="value" value="14"/>
-                                            </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                 <real key="value" value="1"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                <color key="value" name="text-tertiary"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="16"/>
+                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="feeSettingsTapped:" destination="GkR-Ml-nCF" eventType="touchUpInside" id="c93-KR-Mrt"/>
+                                            <segue destination="d2R-GK-ZBJ" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="6bY-yT-oaz"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -704,6 +701,7 @@
                         <outlet property="aliasLabel" destination="Mjf-ic-w5o" id="OHr-Lx-KeH"/>
                         <outlet property="amountToSendLabel" destination="EMd-bl-KVp" id="6iz-7u-OT5"/>
                         <outlet property="feeLabel" destination="ESL-Z3-PEw" id="EY6-mW-MMd"/>
+                        <outlet property="feeSettingsButton" destination="Q2p-HH-2XR" id="VnT-XH-cMW"/>
                         <outlet property="fiatLabel" destination="Z7W-aO-L8c" id="aRY-JH-YYa"/>
                         <outlet property="storageCostLabel" destination="I0c-s1-hqc" id="yqm-aW-LDb"/>
                         <segue destination="erK-uk-IwA" kind="custom" identifier="approve-slide" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="c5d-Bo-mGF"/>
@@ -712,7 +710,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2LB-EM-eA6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4096" y="-2667"/>
+            <point key="canvasLocation" x="4095.652173913044" y="-2667.1875"/>
         </scene>
         <!--Approve-->
         <scene sceneID="E1q-HX-3F3">
@@ -896,6 +894,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MPJ-NK-bha" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="5158" y="-2983"/>
+        </scene>
+        <!--Fees-->
+        <scene sceneID="mtW-gM-Ko1">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Fees" id="d2R-GK-ZBJ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Niu-gi-GH1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4096" y="-2182"/>
         </scene>
         <!--Approve-->
         <scene sceneID="F49-BM-VZy">
@@ -1842,6 +1848,7 @@
     </inferredMetricsTieBreakers>
     <resources>
         <image name="circle" catalog="system" width="128" height="121"/>
+        <image name="clock.fill" catalog="system" width="128" height="121"/>
         <image name="info.circle.fill" catalog="system" width="128" height="121"/>
         <image name="minus.circle.fill" catalog="system" width="128" height="121"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="121"/>
@@ -1849,6 +1856,9 @@
         <image name="tezos-xtz-logo" width="193" height="237"/>
         <namedColor name="background">
             <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="primary-button-background">
+            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="text-primary">
             <color red="0.10980392156862745" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

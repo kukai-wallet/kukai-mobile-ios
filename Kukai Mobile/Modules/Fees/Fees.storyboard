@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jps-w9-yw5">
-                                <rect key="frame" x="40" y="125.5" width="334" height="32"/>
+                                <rect key="frame" x="20" y="125.5" width="374" height="32"/>
                                 <segments>
                                     <segment title="Normal"/>
                                     <segment title="Fast"/>
@@ -29,46 +29,46 @@
                                 </connections>
                             </segmentedControl>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas Limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxY-NP-Bvy">
-                                <rect key="frame" x="40" y="192.5" width="155" height="17"/>
+                                <rect key="frame" x="20" y="192.5" width="179" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="text-secondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN">
-                                <rect key="frame" x="40" y="213.5" width="155" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="20" y="213.5" width="179" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fee (tez)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Thn-Rz-aNQ">
-                                <rect key="frame" x="219" y="192.5" width="155" height="17"/>
+                                <rect key="frame" x="215" y="192.5" width="179" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="text-secondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;fee&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="67P-1Z-wq0">
-                                <rect key="frame" x="219" y="213.5" width="155" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;fee&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="67P-1Z-wq0" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="215" y="213.5" width="179" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storage Limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-Zy-hor">
-                                <rect key="frame" x="40" y="271.5" width="155" height="17"/>
+                                <rect key="frame" x="20" y="271.5" width="179" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="text-secondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;storageLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xbO-bZ-r3K">
-                                <rect key="frame" x="40" y="292.5" width="155" height="34"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;storageLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xbO-bZ-r3K" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="20" y="292.5" width="179" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost (tez)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BW4-zJ-Xod">
-                                <rect key="frame" x="219" y="271.5" width="155" height="17"/>
+                                <rect key="frame" x="215" y="271.5" width="179" height="17"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" name="text-secondary"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;storageCost&gt;" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="apl-sR-g28">
-                                <rect key="frame" x="219" y="292.5" width="155" height="34"/>
+                                <rect key="frame" x="215" y="292.5" width="179" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
@@ -117,11 +117,11 @@
                             <constraint firstItem="apl-sR-g28" firstAttribute="top" secondItem="BW4-zJ-Xod" secondAttribute="bottom" constant="4" id="0FO-zK-mcG"/>
                             <constraint firstItem="BW4-zJ-Xod" firstAttribute="top" secondItem="67P-1Z-wq0" secondAttribute="bottom" constant="24" id="2dN-vo-ybY"/>
                             <constraint firstItem="apl-sR-g28" firstAttribute="width" secondItem="67P-1Z-wq0" secondAttribute="width" id="36F-rq-vR5"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="pfX-zJ-QUN" secondAttribute="trailing" constant="24" id="3NS-nN-lAA"/>
-                            <constraint firstItem="jps-w9-yw5" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="40" id="7eN-yK-zSU"/>
+                            <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="pfX-zJ-QUN" secondAttribute="trailing" constant="16" id="3NS-nN-lAA"/>
+                            <constraint firstItem="jps-w9-yw5" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="7eN-yK-zSU"/>
                             <constraint firstItem="zEf-Zy-hor" firstAttribute="trailing" secondItem="xbO-bZ-r3K" secondAttribute="trailing" id="B5f-L5-9qD"/>
                             <constraint firstItem="jPf-89-ylO" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Cl7-Jm-UcP"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" constant="40" id="G8G-ER-bpD"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" constant="20" id="G8G-ER-bpD"/>
                             <constraint firstItem="xbO-bZ-r3K" firstAttribute="top" secondItem="zEf-Zy-hor" secondAttribute="bottom" constant="4" id="KRO-hg-UdB"/>
                             <constraint firstItem="apl-sR-g28" firstAttribute="height" secondItem="xbO-bZ-r3K" secondAttribute="height" id="Lb8-w6-Vqo"/>
                             <constraint firstItem="pfX-zJ-QUN" firstAttribute="top" secondItem="dxY-NP-Bvy" secondAttribute="bottom" constant="4" id="PqP-Ls-t9O"/>

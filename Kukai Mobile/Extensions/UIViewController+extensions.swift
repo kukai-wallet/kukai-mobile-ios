@@ -200,4 +200,34 @@ extension UIViewController {
 			self.view.frame = UIScreen.main.bounds
 		}
 	}
+	
+	
+	
+	// MARK: - Bottom Sheets
+	
+	/// Calling parent.dismiss doesn't trigger delegate methods. Create workaround to allow parent to automatically call
+	public func dismissBottomSheet() {
+		guard let presentingController = self.presentingViewController, let sheet = self.presentationController as? UISheetPresentationController else {
+			return
+		}
+		
+		sheet.delegate?.presentationControllerWillDismiss?(sheet)
+		presentingController.dismiss(animated: true, completion: {
+			sheet.delegate?.presentationControllerDidDismiss?(sheet)
+		})
+	}
+}
+
+
+
+/// Make bottom sheets automatically call viewWill / viewDidAppear on the main screen while dismissing (if delegate is set)
+extension UIViewController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		self.viewWillAppear(true)
+	}
+	
+	public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+		self.viewDidAppear(true)
+	}
 }

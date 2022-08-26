@@ -148,7 +148,7 @@ class SendEnterAmountViewController: UIViewController {
 				
 				switch estimationResult {
 					case .success(let estimatedOperations):
-						TransactionService.shared.currentOperations = estimatedOperations
+						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
 						self?.feeValue.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
 						self?.reviewButton.isEnabled = true
 						

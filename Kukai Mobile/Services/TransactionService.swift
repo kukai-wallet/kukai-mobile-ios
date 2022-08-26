@@ -64,7 +64,7 @@ public class TransactionService {
 	 The instance of this object is automatically set every time `currentOperations` is set.
 	 The `type` attribute of this object should be set with the users choice, and then `selectedOperationsAndFees` should be used to inject after the user approves
 	 */
-	public struct FeeData {
+	public struct OperationsAndFeesData {
 		var type: FeeType
 		
 		private var normalOperationsAndFees: [KukaiCoreSwift.Operation] = []
@@ -100,16 +100,16 @@ public class TransactionService {
 			get { selectedOperationsAndFees().map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +) }
 		}
 		
-		init(estimatedOperations: [KukaiCoreSwift.Operation]) {
+		public init(estimatedOperations: [KukaiCoreSwift.Operation]) {
 			self.type = .normal
-			self.normalOperationsAndFees = FeeData.makeCopyOf(operations: estimatedOperations) ?? []
-			self.customOperationsAndFees = FeeData.makeCopyOf(operations: estimatedOperations) ?? []
+			self.normalOperationsAndFees = OperationsAndFeesData.makeCopyOf(operations: estimatedOperations) ?? []
+			self.customOperationsAndFees = OperationsAndFeesData.makeCopyOf(operations: estimatedOperations) ?? []
 			
-			let operationCopy = FeeData.makeCopyOf(operations: estimatedOperations) ?? []
+			let operationCopy = OperationsAndFeesData.makeCopyOf(operations: estimatedOperations) ?? []
 			let normalTotalFee = operationCopy.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
 			let normalTotalGas = operationCopy.map({ $0.operationFees.gasLimit }).reduce(0, +)
 			let increasedFee = XTZAmount(fromNormalisedAmount: normalTotalFee * Decimal(2))
-			let increasedGas = Int(Double(normalTotalGas) * 1.5)
+			let increasedGas = (Decimal(normalTotalGas) * 1.5).intValue()
 			
 			self.fastOperationsAndFees = increase(operations: operationCopy, feesTo: increasedFee, gasLimitTo: increasedGas, storageLimitTo: nil)
 		}
@@ -125,16 +125,27 @@ public class TransactionService {
 			return opsCopy
 		}
 		
+		public mutating func setCustomFeesTo(feesTo: XTZAmount?, gasLimitTo: Int?, storageLimitTo: Int?) {
+			customOperationsAndFees = increase(operations: self.customOperationsAndFees, feesTo: feesTo, gasLimitTo: gasLimitTo, storageLimitTo: storageLimitTo)
+		}
+		
 		func increase(operations: [KukaiCoreSwift.Operation], feesTo: XTZAmount?, gasLimitTo: Int?, storageLimitTo: Int?) -> [KukaiCoreSwift.Operation] {
-			var gasPerOp: Decimal? = nil
+			var gasPerOp: Int? = nil
 			if let gasLimitTo = gasLimitTo {
-				gasPerOp = (Decimal(gasLimitTo) / Decimal(operations.count)).rounded(scale: 0, roundingMode: .bankers)
+				let totalCurrentGas = operations.map({ $0.operationFees.gasLimit }).reduce(0, +)
+				let difference = gasLimitTo - totalCurrentGas
+				
+				gasPerOp = (Decimal(difference) / Decimal(operations.count)).intValue()
 			}
 			
-			var storagePerOp: Decimal? = nil
+			var storagePerOp: Int? = nil
 			if let storageLimitTo = storageLimitTo {
-				storagePerOp = (Decimal(storageLimitTo) / Decimal(operations.count)).rounded(scale: 0, roundingMode: .bankers)
+				let totalCurrentStorage = operations.map({ $0.operationFees.storageLimit }).reduce(0, +)
+				let difference = storageLimitTo - totalCurrentStorage
+				
+				storagePerOp = (Decimal(difference) / Decimal(operations.count)).intValue()
 			}
+			
 			
 			for (index, op) in operations.enumerated() {
 				
@@ -145,11 +156,11 @@ public class TransactionService {
 				
 				// Add gas and storage if present
 				if let gasPerOp = gasPerOp {
-					op.operationFees.gasLimit += NSDecimalNumber(decimal: gasPerOp).intValue
+					op.operationFees.gasLimit += gasPerOp
 				}
 				
 				if let storagePerOp = storagePerOp {
-					op.operationFees.storageLimit += NSDecimalNumber(decimal: storagePerOp).intValue
+					op.operationFees.storageLimit += storagePerOp
 				}
 			}
 			
@@ -224,12 +235,7 @@ public class TransactionService {
 	public static let shared = TransactionService()
 	
 	public var currentTransactionType: TransactionType = .none
-	public var currentFeeData: FeeData = FeeData(estimatedOperations: [])
-	public var currentOperations: [KukaiCoreSwift.Operation] = [] {
-		didSet {
-			currentFeeData = FeeData(estimatedOperations: currentOperations)
-		}
-	}
+	public var currentOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 	
 	public var sendData: SendData
 	public var exchangeData: ExchangeData
@@ -244,6 +250,8 @@ public class TransactionService {
 	
 	private init() {
 		self.currentTransactionType = .none
+		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
@@ -261,7 +269,7 @@ public class TransactionService {
 	
 	public func resetState() {
 		self.currentTransactionType = .none
-		self.currentOperations = []
+		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)

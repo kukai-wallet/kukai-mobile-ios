@@ -223,7 +223,7 @@ class SwapViewController: UIViewController {
 			
 			switch result {
 				case .success(let ops):
-					TransactionService.shared.currentOperations = ops
+					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: ops)
 					self?.enableDetailsAndPreview()
 					
 				case .failure(let error):
@@ -233,8 +233,8 @@ class SwapViewController: UIViewController {
 	}
 	
 	func enableDetailsAndPreview() {
-		let totalFee = TransactionService.shared.currentOperations.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
-		let totalStorage = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +)
+		let totalFee = TransactionService.shared.currentOperationsAndFeesData.fee
+		let totalStorage = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost
 		
 		feeLabel.text = totalFee.normalisedRepresentation + " xtz"
 		storageCostLabel.text = totalStorage.normalisedRepresentation + " xtz"
@@ -247,7 +247,7 @@ class SwapViewController: UIViewController {
 	}
 	
 	func disableDetailsAndPreview() {
-		TransactionService.shared.currentOperations = []
+		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: [])
 		
 		viewDetailsButton.isHidden = true
 		previewButton.isHidden = true

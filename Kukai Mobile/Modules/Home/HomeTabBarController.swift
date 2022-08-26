@@ -133,7 +133,7 @@ class HomeTabBarController: UITabBarController {
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
 		TransactionService.shared.currentTransactionType = .walletConnectOperation
-		TransactionService.shared.currentOperations = estimatedOps
+		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		
 		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
 			
@@ -208,7 +208,7 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], operationRequest: OperationTezosRequest) {
 		TransactionService.shared.currentTransactionType = .beaconOperation
-		TransactionService.shared.currentOperations = estimatedOps
+		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
 		
 		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {

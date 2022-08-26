@@ -25,6 +25,8 @@ class SendReviewViewController: UIViewController {
 	
 	@IBOutlet weak var feeLabel: UILabel!
 	@IBOutlet weak var storageCostLabel: UILabel!
+	@IBOutlet weak var feeSettingsButton: UIButton!
+	
 	@IBOutlet weak var sendButton: UIButton!
 	
 	override func viewDidLoad() {
@@ -91,7 +93,7 @@ class SendReviewViewController: UIViewController {
 			
 			switch estimationResult {
 				case .success(let estimatedOperations):
-					TransactionService.shared.currentOperations = estimatedOperations
+					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
 					self?.sendButton.isEnabled = true
 					self?.updateFees()
 					
@@ -103,8 +105,9 @@ class SendReviewViewController: UIViewController {
 	}
 	
 	func updateFees() {
-		feeLabel.text = TransactionService.shared.currentOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
-		storageCostLabel.text = TransactionService.shared.currentOperations.map({ $0.operationFees.allNetworkFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " tez"
+		feeLabel.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation + " tez"
+		storageCostLabel.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation + " tez"
+		feeSettingsButton.setTitle(TransactionService.shared.currentOperationsAndFeesData.type.displayName(), for: .normal)
 	}
 	
 	func updateQuantityLabel() {
