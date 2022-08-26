@@ -29,14 +29,17 @@ class EditFeesViewController: UIViewController {
 		
 		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
 		
-		gasLimitTextField.validator = NumberValidator(min: 0, max: 1_040_000, decimalPlaces: 0)
+		gasLimitTextField.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: 1_040_000, decimalPlaces: 1), decimalPlaces: 1)
 		gasLimitTextField.validatorTextFieldDelegate = self
+		gasLimitTextField.addDoneToolbar()
 		
-		storageLimitTextField.validator = NumberValidator(min: 0, max: 60_000, decimalPlaces: 0)
+		storageLimitTextField.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: 60_000, decimalPlaces: 0), decimalPlaces: 0)
 		storageLimitTextField.validatorTextFieldDelegate = self
+		storageLimitTextField.addDoneToolbar()
 		
 		feeTextField.validator = TokenAmountValidator(balanceLimit: xtzBalance, decimalPlaces: 6)
 		feeTextField.validatorTextFieldDelegate = self
+		feeTextField.addDoneToolbar()
 	}
 	
 	@IBAction func segmentedButtonTapped(_ sender: Any) {
@@ -98,6 +101,10 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		
+		if !validated {
+			textfield.backgroundColor = .red
+		} else {
+			textfield.backgroundColor = .white
+		}
 	}
 }
