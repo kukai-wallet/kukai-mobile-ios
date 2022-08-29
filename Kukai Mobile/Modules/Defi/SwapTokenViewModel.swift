@@ -25,19 +25,6 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	deinit {
 	}
 	
-	/*
-	private class DiffableTableViewWithSectionHeaders: UITableViewDiffableDataSource<Int, AnyHashable> {
-		
-		override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-			guard let exchange = self.itemIdentifier(for: IndexPath(item: 0, section: section)) as? DipDupExchange else {
-				return ""
-			}
-			
-			return exchange.token.symbol
-		}
-	}
-	*/
-	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
