@@ -58,14 +58,21 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletObjs = []
 		
 		for wallet in wallets where wallet.address != address {
-			
-			if let tw = wallet as? TorusWallet {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-xtz-logo"), title: tw.socialUsername ?? tw.address, address: tw.address))
+			if wallet.type == .social {
+				let username = (wallet as? TorusWallet)?.socialUserId
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-xtz-logo"), title: username ?? wallet.address, address: wallet.address))
+				
+			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-xtz-logo"), title: wallet.address, address: wallet.address))
+				for child in hdWallet.childWallets {
+					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: child.address, address: child.address))
+				}
 				
 			} else {
 				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-xtz-logo"), title: wallet.address, address: wallet.address))
 			}
 		}
+		
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
