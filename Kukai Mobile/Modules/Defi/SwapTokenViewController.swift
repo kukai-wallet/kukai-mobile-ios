@@ -51,7 +51,6 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		searchController.isActive = true
 	}
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

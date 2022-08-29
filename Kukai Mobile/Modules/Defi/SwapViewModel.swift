@@ -22,9 +22,9 @@ class SwapViewModel: ViewModel {
 	var tokenFromTextfieldInput = ""
 	
 	var tokenToTitle = "..."
+	var tokenToBalanceText = "Balance: 0"
 	var tokenToIconImage: UIImage? = UIImage()
 	var tokenToIconURL: URL? = nil
-	var tokenToBalanceText = "Balance: 0"
 	var tokenToTextfieldInput = ""
 	var exchangeRateText = ""
 	
@@ -34,7 +34,6 @@ class SwapViewModel: ViewModel {
 	
 	func defaultToFirstAvilableTokenIfNoneSelected() {
 		if TransactionService.shared.exchangeData.selectedExchangeAndToken == nil {
-			print("setting to first token")
 			TransactionService.shared.exchangeData.selectedExchangeAndToken = DependencyManager.shared.balanceService.exchangeData[0].exchanges.last
 		}
 	}
