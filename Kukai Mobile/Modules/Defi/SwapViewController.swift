@@ -65,7 +65,7 @@ class SwapViewController: UIViewController {
 		viewModel.updateTokenInfo()
 		updateUI()
 		
-		viewModel.refreshExchangeRatesIfNeeded { [weak self] in
+		viewModel.refreshExchangeRates { [weak self] in
 			self?.viewModel.calculateReturn(fromInput: self?.tokenFromTextField.text)
 		}
 	}

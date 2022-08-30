@@ -30,7 +30,6 @@ class AddLiquidityViewModel: ViewModel {
 	var token2IconURL: URL? = nil
 	var token2TextfieldInput = ""
 	
-	var lastRefreshDate: Date? = nil
 	var isAddButtonHidden = true
 	
 	
@@ -67,7 +66,7 @@ class AddLiquidityViewModel: ViewModel {
 		}
 		
 		let walletAddress = DependencyManager.shared.selectedWallet?.address ?? ""
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverythingIfStale) { [weak self] error in
 			if let err = error {
 				self?.state = .failure(err, err.description)
 				return
@@ -85,18 +84,10 @@ class AddLiquidityViewModel: ViewModel {
 					}
 				}
 				
-				self?.lastRefreshDate = Date()
 				self?.state = .success(nil)
 			}
 			
 			completion()
-		}
-	}
-	
-	/// Only refresh data if it hasn't updated in the past, or at least 60 seconds has passed since previous refresh
-	func refreshExchangeRatesIfNeeded(completion: @escaping (() -> Void)) {
-		if lastRefreshDate == nil || (lastRefreshDate?.timeIntervalSince(Date()) ?? 120) > 60 {
-			refreshExchangeRates(completion: completion)
 		}
 	}
 	

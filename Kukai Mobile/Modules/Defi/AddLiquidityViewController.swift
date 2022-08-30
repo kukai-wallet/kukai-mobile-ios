@@ -65,7 +65,7 @@ class AddLiquidityViewController: UIViewController {
 		viewModel.updateTokenInfo()
 		updateUI()
 		
-		viewModel.refreshExchangeRatesIfNeeded { [weak self] in
+		viewModel.refreshExchangeRates { [weak self] in
 			if self?.token1Textfield.text != "" {
 				self?.viewModel.calculateReturn(input1: self?.token1Textfield.text, input2: nil)
 			} else {

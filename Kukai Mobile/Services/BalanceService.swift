@@ -14,6 +14,7 @@ public class BalanceService {
 		case useCache
 		case refreshAccountOnly
 		case refreshEverything
+		case refreshEverythingIfStale
 	}
 	
 	public var hasFetchedInitialData = false
@@ -24,6 +25,7 @@ public class BalanceService {
 	
 	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
+	public var lastFullRefreshDate: Date? = nil
 	
 	@Published var isFetchingData: Bool = false
 	
@@ -70,7 +72,7 @@ public class BalanceService {
 			self.exchangeData = exchangeData
 			self.dispatchGroupBalances.leave()
 			
-		} else {
+		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -94,6 +96,8 @@ public class BalanceService {
 				self?.exchangeData = res
 				self?.dispatchGroupBalances.leave()
 			}
+			
+			lastFullRefreshDate = Date()
 		}
 		
 		// Get latest Tezos USD price
@@ -164,6 +168,10 @@ public class BalanceService {
 				completion(nil)
 			}
 		}
+	}
+	
+	func isEverythingStale() -> Bool {
+		return (lastFullRefreshDate == nil || (lastFullRefreshDate ?? Date()).timeIntervalSince(Date()) > 120)
 	}
 	
 	func dexRate(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {

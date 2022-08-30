@@ -68,7 +68,7 @@ class RemoveLiquidityViewController: UIViewController {
 		viewModel.updateTokenInfo()
 		updateUI()
 		
-		viewModel.refreshExchangeRatesIfNeeded { [weak self] in
+		viewModel.refreshExchangeRates { [weak self] in
 			self?.viewModel.calculateReturn(fromInput: self?.lpTokenTextfield.text)
 		}
 	}
