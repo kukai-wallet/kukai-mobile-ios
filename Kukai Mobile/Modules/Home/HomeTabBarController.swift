@@ -153,6 +153,7 @@ class HomeTabBarController: UITabBarController {
 			}
 			
 			self.hideLoadingModal()
+			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
 	}

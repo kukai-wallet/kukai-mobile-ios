@@ -75,17 +75,18 @@ class SendApproveViewController: UIViewController {
 		self.showLoadingModal(completion: nil)
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
-			self?.hideLoadingModal(completion: nil)
-			
-			switch sendResult {
-				case .success(let opHash):
-					print("Sent: \(opHash)")
-					self?.dismiss(animated: true, completion: nil)
-					(self?.presentingViewController as? UINavigationController)?.popToHome()
-					
-				case .failure(let sendError):
-					self?.alert(errorWithMessage: sendError.description)
-			}
+			self?.hideLoadingModal(completion: { [weak self] in
+				switch sendResult {
+					case .success(let opHash):
+						print("Sent: \(opHash)")
+						self?.dismiss(animated: true, completion: nil)
+						(self?.presentingViewController as? UINavigationController)?.popToHome()
+						
+					case .failure(let sendError):
+						self?.alert(errorWithMessage: sendError.description)
+						self?.slideButton?.resetSlider()
+				}
+			})
 		}
 	}
 	
