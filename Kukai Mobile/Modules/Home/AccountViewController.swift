@@ -26,8 +26,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		tableView.delegate = self
 		
 		refreshControl.addAction(UIAction(handler: { [weak self] action in
-			self?.viewModel.refreshType = .refreshEverything
-			self?.viewModel.refresh(animate: true)
+			self?.viewModel.pullToRefresh(animate: true)
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
 		
@@ -48,8 +47,15 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
-		viewModel.refreshIfNeeded()
+		viewModel.isVisible = true
+		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

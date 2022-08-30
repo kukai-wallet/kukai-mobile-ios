@@ -11,6 +11,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import BeaconCore
 import BeaconBlockchainTezos
+import Combine
 import OSLog
 
 class HomeTabBarController: UITabBarController {
@@ -19,18 +20,52 @@ class HomeTabBarController: UITabBarController {
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var sendButton: UIButton!
 	
+	private var networkChangeCancellable: AnyCancellable?
 	private var walletChangeCancellable: AnyCancellable?
+	private var activityDetectedCancellable: AnyCancellable?
+	private var refreshType: BalanceService.RefreshType = .useCache
+	
 	private var bag = [AnyCancellable]()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
+		// Load any initial data so we can draw UI immediately without lag
+		DependencyManager.shared.balanceService.loadCache()
+		
+		
+		// Setup state listeners that need to be active once the tabview is present. Individual screens will respond as needed
+		networkChangeCancellable = DependencyManager.shared.$networkDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				ActivityViewModel.deleteCache()
+				
+				AccountViewModel.setupAccountActivityListener()
+				self?.refreshType = .refreshEverything
+				self?.refresh()
+			}
+		
 		walletChangeCancellable = DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				DependencyManager.shared.balanceService.deleteAccountCachcedData()
+				ActivityViewModel.deleteCache()
+				AccountViewModel.setupAccountActivityListener()
+				
 				self?.updateAccountButton()
+				self?.refreshType = .refreshAccountOnly
+				self?.refresh()
 			}
 		
+		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.refreshType = .refreshEverything
+				self?.refresh()
+			}
+		
+		
+		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: (self.view.frame.width * 0.60)))
@@ -75,9 +110,20 @@ class HomeTabBarController: UITabBarController {
 		TransactionService.shared.resetState()
 		updateAccountButton()
 		
-		
 		BeaconService.shared.operationDelegate = self
 		BeaconService.shared.startBeacon(completion: ({ _ in}))
+		
+		
+		// Loading screen for first time, or when cache has been blitzed, refresh everything
+		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
+			self.refreshType = .refreshEverything
+			refresh()
+			
+		} else if DependencyManager.shared.balanceService.currencyChanged {
+			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway
+			self.refreshType = .useCache
+			refresh()
+		}
 	}
 	
 	public func updateAccountButton() {
@@ -89,9 +135,35 @@ class HomeTabBarController: UITabBarController {
 		accountButton.setTitle("Wallet Type: \(wallet.type.rawValue)\n\(wallet.address)", for: .normal)
 	}
 	
+	func refresh() {
+		guard let address = DependencyManager.shared.selectedWallet?.address else {
+			self.alert(errorWithMessage: "Can't refresh data, unable to locate selected wallet")
+			return
+		}
+		
+		self.showLoadingModal()
+		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
+		
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
+			guard let self = self else { return }
+			
+			self.refreshType = .useCache
+			if let e = error {
+				self.alert(errorWithMessage: e.description)
+			}
+			
+			self.hideLoadingModal()
+			DependencyManager.shared.balanceService.currencyChanged = false
+		}
+	}
+	
 	@IBAction func sendButtonTapped(_ sender: Any) {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
+	
+	
+	
+	// MARK: - External Wallet Connection
 	
 	private func processWalletConnectRequest() {
 		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,

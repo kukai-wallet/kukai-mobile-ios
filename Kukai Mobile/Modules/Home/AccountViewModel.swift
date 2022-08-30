@@ -20,17 +20,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private var networkChangeCancellable: AnyCancellable?
-	private var walletChangeCancellable: AnyCancellable?
-	private var activityDetectedCancellable: AnyCancellable?
-	
-	private var hasLoadedOnce = false
-	var refreshType: BalanceService.RefreshType = .useCache
-	
+	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	var discoverItems: [DiscoverItem] = []
-	public var isPresentedForSelectingToken = false
+	var isPresentedForSelectingToken = false
+	var isVisible = false
 	
 	
 	// MARK: - Init
@@ -38,41 +32,19 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		networkChangeCancellable = DependencyManager.shared.$networkDidChange
+		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
 			.dropFirst()
 			.sink { [weak self] _ in
-				ActivityViewModel.deleteCache()
-				
-				AccountViewModel.setupAccountActivityListener()
-				self?.refreshType = .refreshEverything
-				self?.refresh(animate: true)
-			}
-		
-		walletChangeCancellable = DependencyManager.shared.$walletDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				DependencyManager.shared.balanceService.deleteAccountCachcedData()
-				ActivityViewModel.deleteCache()
-				
-				AccountViewModel.setupAccountActivityListener()
-				self?.refreshType = .refreshAccountOnly
-				self?.refresh(animate: true)
-			}
-		
-		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.refreshType = .refreshEverything
-				self?.refresh(animate: true)
+				if self?.dataSource != nil && self?.isVisible == true {
+					self?.refresh(animate: true)
+				}
 			}
 		
 		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
-		networkChangeCancellable?.cancel()
-		walletChangeCancellable?.cancel()
-		activityDetectedCancellable?.cancel()
+		accountDataRefreshedCancellable?.cancel()
 	}
 	
 	
@@ -129,33 +101,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		if !state.isLoading() {
-			state = .loading
-		}
-		
-		guard let address = DependencyManager.shared.selectedWallet?.address, let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
+		guard let ds = dataSource else {
 			return
 		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
-			guard let self = self else { return }
-			
-			self.refreshType = .useCache
-			
-			if let e = error {
-				self.state = .failure(e, "Unable to fetch data")
-			}
-			
-			self.reloadData(animate: animate, datasource: ds)
-			
-			// Return success
-			self.state = .success(nil)
-		}
-	}
-	
-	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<Int, AnyHashable>) {
-
 		// Build arrays of data
 		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
 		let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -180,26 +129,31 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(section1Data, toSection: 0)
 		}
 		
-		datasource.apply(snapshot, animatingDifferences: animate)
-		
-		DependencyManager.shared.balanceService.currencyChanged = false
+		ds.apply(snapshot, animatingDifferences: animate)
+		self.state = .success(nil)
 	}
 	
-	func refreshIfNeeded() {
-		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
-			self.refresh(animate: true, successMessage: nil)
+	func pullToRefresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		guard let address = DependencyManager.shared.selectedWallet?.address else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
+			return
+		}
+		
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
+			guard let self = self else { return }
 			
-		} else if DependencyManager.shared.balanceService.currencyChanged || (!self.hasLoadedOnce && self.isPresentedForSelectingToken) || state.isLoading() {
-			guard let ds = dataSource else {
-				state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
-				return
+			if let e = error {
+				self.state = .failure(e, "Unable to fetch data")
 			}
 			
-			self.reloadData(animate: false, datasource: ds)
+			self.refresh(animate: animate)
 			
-			if state.isLoading() {
-				state = .success(nil)
-			}
+			// Return success
+			self.state = .success(nil)
 		}
 	}
 	

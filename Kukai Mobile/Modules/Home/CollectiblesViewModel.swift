@@ -15,13 +15,13 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
+	private var expandedIndex: IndexPath? = nil
+	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	
-	private var expandedIndex: IndexPath? = nil
-	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-	public var isPresentedForSelectingToken = false
+	var isPresentedForSelectingToken = false
+	var isVisible = false
 	
 	
 	
@@ -33,7 +33,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
 			.dropFirst()
 			.sink { [weak self] _ in
-				if self?.dataSource != nil {
+				if self?.dataSource != nil && self?.isVisible == true {
 					self?.refresh(animate: true)
 				}
 			}

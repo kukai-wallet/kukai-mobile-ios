@@ -14,11 +14,12 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	private var positions: [DipDupPositionData] = []
 	private var calculations: [DexRemoveCalculationResult] = []
+	
+	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var isVisible = false
 	
 	override init() {
 		super.init()
@@ -26,7 +27,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
 			.dropFirst()
 			.sink { [weak self] _ in
-				if self?.dataSource != nil {
+				if self?.dataSource != nil && self?.isVisible == true {
 					self?.refresh(animate: true)
 				}
 			}

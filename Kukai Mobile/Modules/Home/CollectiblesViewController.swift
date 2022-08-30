@@ -38,8 +38,15 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
-		viewModel.refresh(animate: true)
+		viewModel.isVisible = true
+		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

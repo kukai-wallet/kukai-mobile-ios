@@ -25,14 +25,14 @@ class DefiViewController: UIViewController, UITableViewDelegate {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					print("")
+					break
 					
 				case .failure(_, let errorString):
-					self?.hideLoadingModal(completion: nil)
+					//self?.hideLoadingModal(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success(let message):
-					self?.hideLoadingModal(completion: nil)
+					//self?.hideLoadingModal(completion: nil)
 					
 					if let m = message {
 						self?.alert(withTitle: "Success", andMessage: m)
@@ -43,9 +43,15 @@ class DefiViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		viewModel.refresh(animate: true)
+		viewModel.isVisible = true
+		viewModel.refresh(animate: false)
 	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
+	}
+	
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)

@@ -33,6 +33,14 @@ public class BalanceService {
 	private static let cacheFilenameAccount = "balance-service-account"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	
+	public func loadCache() {
+		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
+		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+			self.account = account
+			self.exchangeData = exchangeData
+			self.updateEstimatedTotal()
+		}
+	}
 	
 	public func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
 		
@@ -148,16 +156,7 @@ public class BalanceService {
 					return
 				}
 				
-				var estiamtedTotal: XTZAmount = .zero()
-				
-				for token in self.account.tokens {
-					let dexRate = self.dexRate(forToken: token)
-					estiamtedTotal += dexRate.xtzValue
-					
-					self.tokenValueAndRate[token.id] = dexRate
-				}
-				
-				self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
+				self.updateEstimatedTotal()
 				self.hasFetchedInitialData = true
 				self.isFetchingData = false
 				DependencyManager.shared.accountBalancesDidUpdate = true
@@ -168,6 +167,19 @@ public class BalanceService {
 				completion(nil)
 			}
 		}
+	}
+	
+	private func updateEstimatedTotal() {
+		var estiamtedTotal: XTZAmount = .zero()
+		
+		for token in self.account.tokens {
+			let dexRate = self.dexRate(forToken: token)
+			estiamtedTotal += dexRate.xtzValue
+			
+			self.tokenValueAndRate[token.id] = dexRate
+		}
+		
+		self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
 	}
 	
 	func isEverythingStale() -> Bool {
