@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 class RemoveLiquidityViewController: UIViewController {
 
@@ -29,135 +30,78 @@ class RemoveLiquidityViewController: UIViewController {
 	
 	@IBOutlet weak var removeButton: UIButton!
 	
-	
-	private var xtzBalance: XTZAmount = .zero()
-	private var lqtTokenBalance: TokenAmount = TokenAmount.zero()
-	private var tokenData: (token: Token, isNFT: Bool)? = nil
-	private var tokenBalance: TokenAmount = TokenAmount.zero()
-	private var calculationResult: DexRemoveCalculationResult? = nil
-	private var previousPosition: DipDupPositionData? = nil
+	private let viewModel = RemoveLiquidityViewModel()
+	private var cancellable: AnyCancellable?
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					self?.showLoadingModal()
+					
+				case .failure(_, let errorString):
+					self?.hideLoadingModal()
+					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.updateUI()
+					
+				case .success:
+					self?.hideLoadingModal()
+					self?.updateUI()
+			}
+		}
+		
 		lpTokenTextfield.addDoneToolbar(onDone: (target: self, action: #selector(estimate)))
 		lpTokenTextfield.validatorTextFieldDelegate = self
 		
-		removeButton.isHidden = true
-		lpTokenMaxButton.isHidden = true
-		lpTokenBalance.text = ""
-		
-		outputToken1Textfield.isEnabled = false
-		outputToken1Balance.text = ""
-		outputToken2Textfield.isEnabled = false
-		outputToken2Balance.text = ""
-		
-		// Default to first token available
-		if TransactionService.shared.removeLiquidityData.position == nil {
-			TransactionService.shared.removeLiquidityData.position = DependencyManager.shared.balanceService.account.liquidityTokens.first
-		}
+		removeButton.isHidden = viewModel.isRemoveButtonHidden
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		outputToken1Textfield.text = ""
-		outputToken1Textfield.text = ""
-		updateTokenDisplayDetails()
+		TransactionService.shared.currentTransactionType = .removeLiquidity
+		
+		viewModel.defaultToFirstAvilableTokenIfNoneSelected()
+		viewModel.updateTokenInfo()
+		updateUI()
+		
+		viewModel.refreshExchangeRatesIfNeeded { [weak self] in
+			self?.viewModel.calculateReturn(fromInput: self?.lpTokenTextfield.text)
+		}
 	}
 	
-	
-	
-	// MARK: - Helpers
-	
-	func updateTokenDisplayDetails() {
-		guard let position = TransactionService.shared.removeLiquidityData.position else {
-			return
+	func updateUI() {
+		lpTokenButton.setTitle(viewModel.lpTokenTitle, for: .normal)
+		lpTokenTextfield.validator = viewModel.lpTokenValidator
+		lpTokenBalance.text = viewModel.lpTokenBalanceText
+		
+		if let img = viewModel.lpToken1IconImage {
+			lpToken1Icon.image = img
+			outputToken1Icon.image = img
 		}
 		
-		if previousPosition != position {
-			resetInputs()
+		if let url = viewModel.lpToken2IconURL {
+			MediaProxyService.load(url: url, to: lpToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: lpToken2Icon.frame.size)
+			MediaProxyService.load(url: url, to: outputToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: outputToken2Icon.frame.size)
 		}
 		
-		previousPosition = position
-		lpTokenMaxButton.isHidden = false
+		outputToken1Button.setTitle(viewModel.outputToken1Title, for: .normal)
+		outputToken1Balance.text = viewModel.outputToken1BalanceText
+		outputToken1Textfield.text = viewModel.outputToken1TextfieldInput
 		
+		outputToken2Button.setTitle(viewModel.outputToken2Title, for: .normal)
+		outputToken2Balance.text = viewModel.outputToken2BalanceText
+		outputToken2Textfield.text = viewModel.outputToken2TextfieldInput
 		
-		lqtTokenBalance = position.tokenAmount()
-		xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-		tokenData = DependencyManager.shared.balanceService.token(forAddress: position.exchange.token.address)
-		tokenBalance = tokenData?.token.balance ?? TokenAmount.zero()
-		
-		let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: position.exchange.token.address)
-		
-		MediaProxyService.load(url: tokenIconURL, to: lpToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: lpToken2Icon.frame.size)
-		lpTokenButton.setTitle("XTZ/\(position.exchange.token.symbol)", for: .normal)
-		lpTokenTextfield.validator = TokenAmountValidator(balanceLimit: lqtTokenBalance, decimalPlaces: lqtTokenBalance.decimalPlaces)
-		lpTokenBalance.text = "Balance: \(lqtTokenBalance.normalisedRepresentation)"
-		
-		outputToken1Balance.text = "Balance: \(xtzBalance.normalisedRepresentation)"
-		
-		MediaProxyService.load(url: tokenIconURL, to: outputToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: outputToken2Icon.frame.size)
-		outputToken2Button.setTitle(position.exchange.token.symbol, for: .normal)
-		outputToken2Balance.text = "Balance: \(tokenBalance.normalisedRepresentation)"
-	}
-	
-	func resetInputs() {
-		lpTokenTextfield.text = ""
-		let _ = lpTokenTextfield.revalidateTextfield()
-	}
-	
-	func updateRates(withInput: String) {
-		guard let position = TransactionService.shared.removeLiquidityData.position else {
-			self.alert(withTitle: "Error", andMessage: "Can't get pair data")
-			return
-		}
-		
-		if withInput == "" {
-			lpTokenTextfield.text = ""
-			outputToken1Textfield.text = ""
-			outputToken2Textfield.text = ""
-			return
-		}
-		
-		let lqtTokenAmount = TokenAmount(fromNormalisedAmount: withInput, decimalPlaces: position.exchange.liquidityTokenDecimalPlaces()) ?? TokenAmount.zero()
-		self.calculationResult = DexCalculationService.shared.calculateRemoveLiquidity(liquidityBurned: lqtTokenAmount, totalLiquidity: position.exchange.totalLiquidity(), xtzPool: position.exchange.xtzPoolAmount(), tokenPool: position.exchange.tokenPoolAmount(), maxSlippage: 0.005, dex: position.exchange.name)
-		
-		outputToken1Textfield.text = self.calculationResult?.expectedXTZ.normalisedRepresentation ?? ""
-		outputToken2Textfield.text = self.calculationResult?.expectedToken.normalisedRepresentation ?? ""
-		
-		TransactionService.shared.removeLiquidityData.tokenAmount = lqtTokenAmount
-		TransactionService.shared.removeLiquidityData.calculationResult = self.calculationResult
+		removeButton.isHidden = viewModel.isRemoveButtonHidden
 	}
 	
 	@objc func estimate() {
-		guard let calc = calculationResult, calc.expectedToken > TokenAmount.zero(),
-			  let wallet = DependencyManager.shared.selectedWallet,
-			  let position = TransactionService.shared.removeLiquidityData.position,
-			  let lpTokenInput = lpTokenTextfield.text, let lpTokenAmount = TokenAmount(fromNormalisedAmount: lpTokenInput, decimalPlaces: position.exchange.liquidityTokenDecimalPlaces())
-		else {
-			self.alert(withTitle: "Error", andMessage: "Invalid calculation or wallet")
-			return
-		}
-		
 		lpTokenTextfield.resignFirstResponder()
-		
-		self.showLoadingModal(completion: nil)
-		let operations = OperationFactory.removeLiquidity(withDex: position.exchange, minXTZ: calc.minimumXTZ, minToken: calc.minimumToken, liquidityToBurn: lpTokenAmount, wallet: wallet, timeout: 60 * 5)
-		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: wallet) { [weak self] result in
-			self?.hideLoadingModal(completion: nil)
-			
-			switch result {
-				case .success(let ops):
-					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: ops)
-					self?.removeButton.isHidden = false
-					
-				case .failure(let error):
-					self?.alert(withTitle: "Error", andMessage: error.description)
-			}
-		}
+		viewModel.estimate()
 	}
 	
 	
@@ -168,8 +112,11 @@ class RemoveLiquidityViewController: UIViewController {
 	}
 	
 	@IBAction func lpTokenMaxTapped(_ sender: Any) {
-		lpTokenTextfield.text = lqtTokenBalance.normalisedRepresentation
+		let balLimit = (lpTokenTextfield.validator as? TokenAmountValidator)?.balanceLimit
+		lpTokenTextfield.text = balLimit?.normalisedRepresentation
+		
 		let _ = lpTokenTextfield.revalidateTextfield()
+		viewModel.estimate()
 	}
 }
 
@@ -189,7 +136,8 @@ extension RemoveLiquidityViewController: ValidatorTextFieldDelegate {
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if validated {
-			updateRates(withInput: text)
+			viewModel.calculateReturn(fromInput: text)
+			updateUI()
 		}
 	}
 }
