@@ -96,7 +96,6 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 					let nsErr = error as NSError
 					if nsErr.code == 57 && nsErr.domain == "NSPOSIXErrorDomain" {
 						self?.disconnect()
-						self?.connect()
 					}
 					
 				case .success(let message):
