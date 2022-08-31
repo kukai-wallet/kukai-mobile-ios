@@ -38,9 +38,10 @@ class HomeTabBarController: UITabBarController {
 		networkChangeCancellable = DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				self?.setupTzKTAccountListener()
 				ActivityViewModel.deleteCache()
-				
 				AccountViewModel.setupAccountActivityListener()
+				
 				self?.refreshType = .refreshEverything
 				self?.refresh()
 			}
@@ -57,12 +58,7 @@ class HomeTabBarController: UITabBarController {
 				self?.refresh()
 			}
 		
-		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.refreshType = .refreshEverything
-				self?.refresh()
-			}
+		setupTzKTAccountListener()
 		
 		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
@@ -124,6 +120,15 @@ class HomeTabBarController: UITabBarController {
 			self.refreshType = .useCache
 			refresh()
 		}
+	}
+	
+	func setupTzKTAccountListener() {
+		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.refreshType = .refreshEverything
+				self?.refresh()
+			}
 	}
 	
 	public func updateAccountButton() {
