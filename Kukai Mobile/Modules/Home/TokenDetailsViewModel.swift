@@ -42,14 +42,13 @@ public class TokenDetailsViewModel: ViewModel {
 	var previousBakerIconURL: URL? = nil
 	var previousBakerAmountTitle = ""
 	var previousBakerAmount = ""
-	var previousBakerFee = ""
 	var previousBakerTimeTitle = ""
 	var previousBakerTime = ""
+	var previousBakerCycleTitle = ""
 	var previousBakerCycle = ""
 	
 	var nextBakerIconURL: URL? = nil
 	var nextBakerAmount = ""
-	var nextBakerFee = ""
 	var nextBakerTime = ""
 	var nextBakerCycle = ""
 	
@@ -113,37 +112,38 @@ public class TokenDetailsViewModel: ViewModel {
 		
 		if let previousReward = rewardObj.previousReward {
 			previousBakerIconURL = previousReward.bakerLogo
-			previousBakerAmountTitle = "Amount"
-			previousBakerAmount = previousReward.amount.normalisedRepresentation
-			previousBakerFee = "Fee: \((previousReward.fee * 100).description)%"
+			previousBakerAmountTitle = "Amount (fee)"
+			previousBakerAmount = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
 			previousBakerTimeTitle = "Time"
 			previousBakerTime = previousReward.timeString
-			previousBakerCycle = "Cycle: \(previousReward.cycle)"
+			previousBakerCycleTitle = "Cycle"
+			previousBakerCycle = previousReward.cycle.description
 			
 		} else if let previousReward = rewardObj.estimatedPreviousReward {
 			previousBakerIconURL = previousReward.bakerLogo
-			previousBakerAmountTitle = "Est Amount"
-			previousBakerAmount = previousReward.amount.normalisedRepresentation
-			previousBakerFee = "Fee: \((previousReward.fee * 100).description)%"
+			previousBakerAmountTitle = "Est Amount (fee)"
+			previousBakerAmount = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
 			previousBakerTimeTitle = "Est Time"
 			previousBakerTime = previousReward.timeString
-			previousBakerCycle = "Cycle: \(previousReward.cycle)"
+			previousBakerCycleTitle = "Est Cycle"
+			previousBakerCycle = previousReward.cycle.description
 		} else {
 			previousBakerIconURL = nil
 			previousBakerAmount = "N/A"
 			previousBakerTime = "N/A"
+			previousBakerCycle = "N/A"
 		}
 		
 		if let nextReward = rewardObj.estimatedNextReward {
 			nextBakerIconURL = nextReward.bakerLogo
-			nextBakerAmount = nextReward.amount.normalisedRepresentation
-			nextBakerFee = "Fee: \((nextReward.fee * 100).description)%"
+			nextBakerAmount = nextReward.amount.normalisedRepresentation + " (\(nextReward.fee * 100)%)"
 			nextBakerTime = nextReward.timeString
-			nextBakerCycle = "Cycle: \(nextReward.cycle)"
+			nextBakerCycle = nextReward.cycle.description
 		} else {
 			nextBakerIconURL = nil
 			nextBakerAmount = "N/A"
 			nextBakerTime = "N/A"
+			nextBakerCycle = "N/A"
 		}
 		
 		stakeButtonTitle = "Change Baker"

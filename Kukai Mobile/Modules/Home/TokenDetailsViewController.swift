@@ -27,13 +27,12 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var previousBakerIcon: UIImageView!
 	@IBOutlet weak var previousBakerAmountTitleLabel: UILabel!
 	@IBOutlet weak var previousBakerAmountLabel: UILabel!
-	@IBOutlet weak var previousBakerFeeLabel: UILabel!
 	@IBOutlet weak var previousBakerTimeTitleLabel: UILabel!
 	@IBOutlet weak var previousBakerTimeLabel: UILabel!
+	@IBOutlet weak var previousBakerCycleTitleLabel: UILabel!
 	@IBOutlet weak var previousBakerCycleLabel: UILabel!
 	@IBOutlet weak var nextBakerIcon: UIImageView!
 	@IBOutlet weak var nextBakerAmountLabel: UILabel!
-	@IBOutlet weak var nextBakerFeeLabel: UILabel!
 	@IBOutlet weak var nextBakerTimeLabel: UILabel!
 	@IBOutlet weak var nextBakerCycleLabel: UILabel!
 	
@@ -119,11 +118,9 @@ class TokenDetailsViewController: UIViewController {
 		tokenValueLabel.text = ""
 		
 		previousBakerAmountLabel.text = "N/A"
-		previousBakerFeeLabel.text = "N/A"
 		previousBakerTimeLabel.text = "N/A"
 		previousBakerCycleLabel.text = "N/A"
 		nextBakerAmountLabel.text = "N/A"
-		nextBakerFeeLabel.text = "N/A"
 		nextBakerTimeLabel.text = "N/A"
 		nextBakerCycleLabel.text = "N/A"
 	}
@@ -156,14 +153,13 @@ class TokenDetailsViewController: UIViewController {
 		MediaProxyService.load(url: viewModel.previousBakerIconURL, to: previousBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: previousBakerIcon.frame.size)
 		previousBakerAmountTitleLabel.text = viewModel.previousBakerAmountTitle
 		previousBakerAmountLabel.text = viewModel.previousBakerAmount
-		previousBakerFeeLabel.text = viewModel.previousBakerFee
 		previousBakerTimeTitleLabel.text = viewModel.previousBakerTimeTitle
 		previousBakerTimeLabel.text = viewModel.previousBakerTime
+		previousBakerCycleTitleLabel.text = viewModel.previousBakerCycleTitle
 		previousBakerCycleLabel.text = viewModel.previousBakerCycle
 		
 		MediaProxyService.load(url: viewModel.nextBakerIconURL, to: nextBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: nextBakerIcon.frame.size)
 		nextBakerAmountLabel.text = viewModel.nextBakerAmount
-		nextBakerFeeLabel.text = viewModel.nextBakerFee
 		nextBakerTimeLabel.text = viewModel.nextBakerTime
 		nextBakerCycleLabel.text = viewModel.nextBakerCycle
 	}
