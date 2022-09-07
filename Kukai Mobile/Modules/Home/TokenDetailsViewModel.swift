@@ -22,32 +22,150 @@ struct AllChartData {
 	let year: DataSet
 }
 
-public class TokenDetailsViewModel {
+public class TokenDetailsViewModel: ViewModel {
 	
-	public var symbol = ""
-	public var balance = ""
-	public var fiat = ""
-	public var rate = ""
+	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	
-	func loadOfflineData(token: Token) {
-		
-		symbol = token.symbol
-		balance = token.balance.normalisedRepresentation + " \(token.symbol)"
+	var tokenIcon: UIImage? = nil
+	var tokenIconURL: URL? = nil
+	var tokenSymbol = ""
+	
+	var tokenBalance = ""
+	var tokenValue = ""
+	
+	var showBakerRewardsSection = false
+	var showStakeButton = false
+	var showBuyButton = false
+	var isBakerSet = false
+	var bakerText = ""
+	
+	var previousBakerIconURL: URL? = nil
+	var previousBakerAmountTitle = ""
+	var previousBakerAmount = ""
+	var previousBakerFee = ""
+	var previousBakerTimeTitle = ""
+	var previousBakerTime = ""
+	var previousBakerCycle = ""
+	
+	var nextBakerIconURL: URL? = nil
+	var nextBakerAmount = ""
+	var nextBakerFee = ""
+	var nextBakerTime = ""
+	var nextBakerCycle = ""
+	
+	var stakeButtonTitle = ""
+	
+	
+	func loadTokenAndBakerData(token: Token) {
+		tokenSymbol = token.symbol
+		tokenBalance = token.balance.normalisedRepresentation + " \(token.symbol)"
 		
 		if token.isXTZ() {
-			let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
-			rate = "1 = \(singleXTZCurrencyString)"
+			tokenIcon = UIImage(named: "tezos-xtz-logo")
 			
-			let totalXtzValue = (token.balance as? XTZAmount ?? .zero()) * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			fiat = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			let account = DependencyManager.shared.balanceService.account
+			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
+			showBakerRewardsSection = true
+			showStakeButton = true
+			showBuyButton = true
+			
+			guard let delegate = account.delegate else {
+				updateBakerNone()
+				return
+			}
+			
+			if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+				updateBakerInfo(from: bakerRewardCache, andDelegate: delegate)
+				self.state = .success(nil)
+				
+			} else {
+				self.state = .loading
+				DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
+					if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
+						self?.updateBakerInfo(from: res, andDelegate: delegate)
+						let _ = DiskService.write(encodable: res, toFileName: filename)
+						
+					} else {
+						self?.updateBakerError(withDelegate: delegate)
+					}
+					
+					self?.state = .success(nil)
+				}
+			}
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
-			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			let currencyString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+			tokenIconURL = token.thumbnailURL
 			
-			rate = "1 == \(tokenValueAndRate.marketRate.rounded(scale: 6, roundingMode: .down)) XTZ"
-			fiat = currencyString
+			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			showBakerRewardsSection = false
+			showStakeButton = false
+			showBuyButton = false
+			self.state = .success(nil)
 		}
+	}
+	
+	private func updateBakerInfo(from rewardObj: AggregateRewardInformation, andDelegate delegate: TzKTAccountDelegate) {
+		bakerText = "Baker: \(delegate.alias ?? delegate.address)"
+		isBakerSet = true
+		
+		if let previousReward = rewardObj.previousReward {
+			previousBakerIconURL = previousReward.bakerLogo
+			previousBakerAmountTitle = "Amount"
+			previousBakerAmount = previousReward.amount.normalisedRepresentation
+			previousBakerFee = "Fee: \((previousReward.fee * 100).description)%"
+			previousBakerTimeTitle = "Time"
+			previousBakerTime = previousReward.timeString
+			previousBakerCycle = "Cycle: \(previousReward.cycle)"
+			
+		} else if let previousReward = rewardObj.estimatedPreviousReward {
+			previousBakerIconURL = previousReward.bakerLogo
+			previousBakerAmountTitle = "Est Amount"
+			previousBakerAmount = previousReward.amount.normalisedRepresentation
+			previousBakerFee = "Fee: \((previousReward.fee * 100).description)%"
+			previousBakerTimeTitle = "Est Time"
+			previousBakerTime = previousReward.timeString
+			previousBakerCycle = "Cycle: \(previousReward.cycle)"
+		} else {
+			previousBakerIconURL = nil
+			previousBakerAmount = "N/A"
+			previousBakerTime = "N/A"
+		}
+		
+		if let nextReward = rewardObj.estimatedNextReward {
+			nextBakerIconURL = nextReward.bakerLogo
+			nextBakerAmount = nextReward.amount.normalisedRepresentation
+			nextBakerFee = "Fee: \((nextReward.fee * 100).description)%"
+			nextBakerTime = nextReward.timeString
+			nextBakerCycle = "Cycle: \(nextReward.cycle)"
+		} else {
+			nextBakerIconURL = nil
+			nextBakerAmount = "N/A"
+			nextBakerTime = "N/A"
+		}
+		
+		stakeButtonTitle = "Change Baker"
+	}
+	
+	private func updateBakerNone() {
+		isBakerSet = false
+	}
+	
+	private func updateBakerError(withDelegate delegate: TzKTAccountDelegate?) {
+		if let del = delegate {
+			isBakerSet = true
+			bakerText = "Baker: \(del.alias ?? del.address)"
+			stakeButtonTitle = "Change Baker"
+			
+		} else {
+			isBakerSet = false
+			bakerText = ""
+			stakeButtonTitle = "Stake XTZ"
+		}
+		
+		showBakerRewardsSection = false
 	}
 	
 	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {

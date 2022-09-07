@@ -66,7 +66,7 @@ class DebugViewController: UITableViewController {
 		report += "Has currency changed: \n" + "\(DependencyManager.shared.balanceService.currencyChanged)" + " \n\n"
 		report += "Wallet address to fetch: \n" + "\(DependencyManager.shared.balanceService.account.walletAddress)" + " \n\n"
 		report += "XTZ Balance: \n" + "\(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation)" + " \n\n"
-		report += "Baker address: \n" + "\(DependencyManager.shared.balanceService.account.bakerAddress ?? "-None-")" + " \n\n"
+		report += "Delegate address: \n" + "\(DependencyManager.shared.balanceService.account.delegate?.address ?? "-None-")" + " \n\n"
 		report += "Number of unique tokens: \n" + "\(DependencyManager.shared.balanceService.account.tokens.count)" + " \n\n"
 		report += "Number of unique NFT groups: \n" + "\(DependencyManager.shared.balanceService.account.nfts.count)" + " \n\n"
 		report += "Number of Dex token pairs: \n" + "\(DependencyManager.shared.balanceService.exchangeData.count)" + " \n\n"
