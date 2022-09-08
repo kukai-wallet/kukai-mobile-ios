@@ -168,6 +168,11 @@
 		C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */; };
 		C0BAFEB328A165110045832E /* ChooseLiquidityTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BAFEB228A165110045832E /* ChooseLiquidityTokenViewController.swift */; };
 		C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */ = {isa = PBXBuildFile; productRef = C0BBD2A426A9A7980097B63A /* Sentry */; };
+		C0C6B5C928CA259900368AEA /* CurrentBakerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5C828CA259900368AEA /* CurrentBakerCell.swift */; };
+		C0C6B5CB28CA25B000368AEA /* EnterAddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5CA28CA25B000368AEA /* EnterAddressCell.swift */; };
+		C0C6B5CD28CA25BD00368AEA /* PublicBakerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5CC28CA25BD00368AEA /* PublicBakerCell.swift */; };
+		C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */; };
+		C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */; };
 		C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0D6D50328B66572001B8130 /* Fees.storyboard */; };
 		C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */; };
 		C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DAD65726B00D64001DF430 /* LoginViewController.swift */; };
@@ -392,6 +397,11 @@
 		C0B743A626AAC44A00377A9B /* ViewModelProtocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelProtocols.swift; sourceTree = "<group>"; };
 		C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+extensions.swift"; sourceTree = "<group>"; };
 		C0BAFEB228A165110045832E /* ChooseLiquidityTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseLiquidityTokenViewController.swift; sourceTree = "<group>"; };
+		C0C6B5C828CA259900368AEA /* CurrentBakerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentBakerCell.swift; sourceTree = "<group>"; };
+		C0C6B5CA28CA25B000368AEA /* EnterAddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressCell.swift; sourceTree = "<group>"; };
+		C0C6B5CC28CA25BD00368AEA /* PublicBakerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublicBakerCell.swift; sourceTree = "<group>"; };
+		C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewController.swift; sourceTree = "<group>"; };
+		C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewModel.swift; sourceTree = "<group>"; };
 		C0D6D50328B66572001B8130 /* Fees.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Fees.storyboard; sourceTree = "<group>"; };
 		C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeesViewController.swift; sourceTree = "<group>"; };
 		C0DAD65726B00D64001DF430 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -840,6 +850,16 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C0C6B5C728CA257500368AEA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C0C6B5C828CA259900368AEA /* CurrentBakerCell.swift */,
+				C0C6B5CA28CA25B000368AEA /* EnterAddressCell.swift */,
+				C0C6B5CC28CA25BD00368AEA /* PublicBakerCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C0D6D50228B66550001B8130 /* Fees */ = {
 			isa = PBXGroup;
 			children = (
@@ -879,7 +899,10 @@
 		C0F91C6828BFB3010081E8E8 /* Stake */ = {
 			isa = PBXGroup;
 			children = (
+				C0C6B5C728CA257500368AEA /* Cells */,
 				C0F91C6928BFB3200081E8E8 /* Stake.storyboard */,
+				C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */,
+				C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */,
 			);
 			path = Stake;
 			sourceTree = "<group>";
@@ -1047,6 +1070,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0C6B5CD28CA25BD00368AEA /* PublicBakerCell.swift in Sources */,
 				C0AC1D3C2771E263002F66C0 /* BottomSheetMediumSegue.swift in Sources */,
 				C0EF1BC72892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift in Sources */,
 				C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */,
@@ -1066,6 +1090,7 @@
 				C082BBC728941F2B002B1E42 /* RemoveLiquidityViewController.swift in Sources */,
 				C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */,
 				C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */,
+				C0C6B5C928CA259900368AEA /* CurrentBakerCell.swift in Sources */,
 				C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */,
 				C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */,
 				C0A321D627C68C0100D7788B /* Validator.swift in Sources */,
@@ -1139,6 +1164,7 @@
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
 				C08694DE27BD1B84000A4909 /* TokenBalanceCell.swift in Sources */,
 				C05CBBAC28228D8100568DC9 /* AccountSubCell.swift in Sources */,
+				C0C6B5CB28CA25B000368AEA /* EnterAddressCell.swift in Sources */,
 				C0B743B026AAC44A00377A9B /* ViewModelProtocols.swift in Sources */,
 				C00AE0052886F67900184DF7 /* LiquidityViewController.swift in Sources */,
 				C0536912282BCCC80006A1C4 /* BeaconSignViewController.swift in Sources */,
@@ -1163,12 +1189,14 @@
 				C08694E827BD5D01000A4909 /* BalanceService.swift in Sources */,
 				C0536910282BCCBC0006A1C4 /* BeaconApproveViewController.swift in Sources */,
 				C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */,
+				C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
 				C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */,
 				C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */,
 				C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */,
 				C00AE0072887017400184DF7 /* SwapTokenCell.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
+				C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */,
 				C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */,
 				C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */,
 				C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */,
