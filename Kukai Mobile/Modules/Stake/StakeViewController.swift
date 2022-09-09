@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import Combine
 
 class StakeViewController: UIViewController {
@@ -19,7 +20,9 @@ class StakeViewController: UIViewController {
         super.viewDidLoad()
 		
 		viewModel.makeDataSource(withTableView: tableView)
+		viewModel.infoDelegate = self
 		tableView.dataSource = viewModel.dataSource
+		tableView.delegate = self
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -30,8 +33,13 @@ class StakeViewController: UIViewController {
 					self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
-				case .success:
+				case .success(let successMessage):
 					self?.hideLoadingView(completion: nil)
+					
+					if let message = successMessage {
+						self?.alert(withTitle: "Success", andMessage: message)
+						self?.navigationController?.popViewController(animated: true)
+					}
 			}
 		}
     }
@@ -39,5 +47,27 @@ class StakeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.refresh(animate: false)
+	}
+}
+
+extension StakeViewController: UITableViewDelegate {
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 0.1
+	}
+}
+
+extension StakeViewController: PublicBakerCellInfoDelegate {
+	
+	func infoButtonTapped(forBaker: TzKTBaker?) {
+		self.performSegue(withIdentifier: "info", sender: forBaker)
 	}
 }

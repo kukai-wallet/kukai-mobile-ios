@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class CurrentBakerCell: UITableViewCell {
 
@@ -15,6 +16,10 @@ class CurrentBakerCell: UITableViewCell {
 	@IBOutlet weak var spaceLabel: UILabel!
 	@IBOutlet weak var estRewardsLabel: UILabel!
 	
+	public var baker: TzKTBaker? = nil
+	public weak var infoDelegate: PublicBakerCellInfoDelegate? = nil
+	
 	@IBAction func infoButtonTapped(_ sender: Any) {
+		self.infoDelegate?.infoButtonTapped(forBaker: baker)
 	}
 }

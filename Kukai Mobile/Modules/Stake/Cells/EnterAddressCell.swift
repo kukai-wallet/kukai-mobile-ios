@@ -10,5 +10,4 @@ import UIKit
 class EnterAddressCell: UITableViewCell {
 	
 	@IBOutlet weak var enterAddressComponent: EnterAddressComponent!
-	
 }

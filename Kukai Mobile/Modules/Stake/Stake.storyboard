@@ -177,7 +177,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;bakerName&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n9b-rn-2YA">
-                                                    <rect key="frame" x="68" y="26.5" width="257.5" height="21.5"/>
+                                                    <rect key="frame" x="68" y="26.5" width="279" height="21.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -256,10 +256,11 @@
                                                     </constraints>
                                                 </stackView>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qti-36-k3l">
-                                                    <rect key="frame" x="333.5" y="8" width="60.5" height="40"/>
-                                                    <color key="tintColor" name="text-secondary"/>
-                                                    <state key="normal" title="Button"/>
-                                                    <buttonConfiguration key="configuration" style="plain" title="Stake"/>
+                                                    <rect key="frame" x="355" y="8" width="39" height="40"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" title="Stake">
+                                                        <color key="titleColor" name="text-secondary"/>
+                                                    </state>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
                                                             <real key="value" value="1"/>
@@ -298,6 +299,31 @@
                                             <outlet property="estRewardsLabel" destination="Cth-Y8-xei" id="3eI-AK-FlQ"/>
                                             <outlet property="spaceLabel" destination="1nO-SC-zUg" id="q68-Nu-adv"/>
                                             <outlet property="splitLabel" destination="y3M-5h-1RL" id="dbt-fQ-O0N"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="StakeHeadingCell" id="5yv-f6-Oll" customClass="StakeHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="409.5" width="414" height="32"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5yv-f6-Oll" id="04q-Sx-PdH">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="32"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7b3-AR-06W">
+                                                    <rect key="frame" x="20" y="8" width="374" height="20"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" name="text-secondary"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="7b3-AR-06W" secondAttribute="bottom" constant="4" id="LDh-50-Eas"/>
+                                                <constraint firstAttribute="trailing" secondItem="7b3-AR-06W" secondAttribute="trailing" constant="20" id="bBe-KN-1ug"/>
+                                                <constraint firstItem="7b3-AR-06W" firstAttribute="top" secondItem="04q-Sx-PdH" secondAttribute="top" constant="8" id="hYO-02-q6G"/>
+                                                <constraint firstItem="7b3-AR-06W" firstAttribute="leading" secondItem="04q-Sx-PdH" secondAttribute="leading" constant="20" id="tP0-Mg-exa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="headingLabel" destination="7b3-AR-06W" id="HZg-ex-x3A"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
