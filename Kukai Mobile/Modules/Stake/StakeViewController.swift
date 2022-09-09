@@ -59,10 +59,6 @@ extension StakeViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
 		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
 	}
-	
-	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return 0.1
-	}
 }
 
 extension StakeViewController: PublicBakerCellInfoDelegate {
