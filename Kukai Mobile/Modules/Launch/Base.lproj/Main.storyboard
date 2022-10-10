@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -105,7 +106,7 @@
             <objects>
                 <navigationController storyboardIdentifier="prototype" id="xYK-fq-aY8" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vbu-tR-U0L">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -125,19 +126,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sm-B4-LHS">
-                                <rect key="frame" x="0.0" y="118" width="414" height="744"/>
+                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
                                 <connections>
                                     <segue destination="mhz-rX-HXM" kind="embed" id="rGL-yf-Dte"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Whl-HA-dRR">
-                                <rect key="frame" x="0.0" y="118" width="414" height="744"/>
+                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
                                 <connections>
                                     <segue destination="0NX-Ex-3Sa" kind="embed" id="Z3h-Jh-n3w"/>
                                 </connections>
                             </containerView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqe-Sn-4od">
-                                <rect key="frame" x="0.0" y="88" width="414" height="30"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="30"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mu5-51-piQ">
                                         <rect key="frame" x="4" y="4" width="199" height="22"/>
@@ -221,44 +222,44 @@
             <objects>
                 <tableViewController id="mhz-rX-HXM" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="XeW-62-zH5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="744"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
                             <tableViewSection id="pP3-kB-CXz">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="laF-tg-mQ2">
-                                        <rect key="frame" x="0.0" y="18" width="414" height="30.5"/>
+                                        <rect key="frame" x="0.0" y="18" width="414" height="39"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="laF-tg-mQ2" id="M8n-bh-mAc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="30.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="groupedHeader" text="Most Recent" secondaryText=""/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="Yij-bE-TtE">
-                                        <rect key="frame" x="0.0" y="48.5" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="57" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yij-bE-TtE" id="cPe-Ph-wO1">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="amQ-kW-L6V">
-                                        <rect key="frame" x="0.0" y="112.5" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="121" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="amQ-kW-L6V" id="iuC-fd-Mx3">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="471 kUSD" secondaryText="$3.14" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="XIL-QP-K6i">
-                                        <rect key="frame" x="0.0" y="176.5" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="185" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XIL-QP-K6i" id="sSV-Yr-eRf">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="812 USDtz" secondaryText="$793.42" image="tezos-xtz-logo" imageToTextPadding="12"/>
@@ -268,64 +269,64 @@
                             <tableViewSection id="v2R-1U-WkU">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="w7y-4I-7vj">
-                                        <rect key="frame" x="0.0" y="276.5" width="414" height="30.5"/>
+                                        <rect key="frame" x="0.0" y="285" width="414" height="39"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w7y-4I-7vj" id="XMO-j5-gtb">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="30.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="groupedHeader" text="All" secondaryText=""/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="NkK-ja-YJW">
-                                        <rect key="frame" x="0.0" y="307" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="324" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NkK-ja-YJW" id="v5n-mV-2lT">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="HDM-ok-oK8">
-                                        <rect key="frame" x="0.0" y="371" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="388" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HDM-ok-oK8" id="NSr-rW-Eff">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="S6w-1j-Xog">
-                                        <rect key="frame" x="0.0" y="435" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="452" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="S6w-1j-Xog" id="FWI-Y6-IgC">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="gKU-9D-nba">
-                                        <rect key="frame" x="0.0" y="499" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="516" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gKU-9D-nba" id="OZ1-im-b4z">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="kRN-nK-FfY">
-                                        <rect key="frame" x="0.0" y="563" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="580" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kRN-nK-FfY" id="geW-og-doU">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="QE8-14-oZZ">
-                                        <rect key="frame" x="0.0" y="627" width="414" height="64"/>
+                                        <rect key="frame" x="0.0" y="644" width="414" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QE8-14-oZZ" id="fZN-VZ-kqD">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
@@ -348,7 +349,7 @@
             <objects>
                 <tableViewController id="0NX-Ex-3Sa" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Pfc-3o-fXP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="744"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <sections>
@@ -427,76 +428,76 @@
                                         <rect key="frame" x="0.0" y="52" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="liQ-1Y-Tdr" id="9ZN-rc-EGP">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="text-primary"/>
                                         <listContentConfiguration key="contentConfiguration" text="Mooncakes" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="KP2-w3-9t1">
-                                        <rect key="frame" x="0.0" y="122" width="414" height="56"/>
+                                        <rect key="frame" x="0.0" y="122" width="414" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KP2-w3-9t1" id="mXj-Pn-rOO">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="text-tertiary"/>
                                         <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 1" secondaryText="Common" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Cap-eh-A9z">
-                                        <rect key="frame" x="0.0" y="178" width="414" height="56"/>
+                                        <rect key="frame" x="0.0" y="185" width="414" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cap-eh-A9z" id="Blk-Bk-JZL">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" systemColor="systemGreenColor"/>
                                         <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 2" secondaryText="Uncommon" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jPe-yi-ca9">
-                                        <rect key="frame" x="0.0" y="234" width="414" height="56"/>
+                                        <rect key="frame" x="0.0" y="248" width="414" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jPe-yi-ca9" id="Sql-vk-Z68">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 3" secondaryText="Rare" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zTa-ai-tHo">
-                                        <rect key="frame" x="0.0" y="290" width="414" height="56"/>
+                                        <rect key="frame" x="0.0" y="311" width="414" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zTa-ai-tHo" id="Yk6-rY-OB8">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" systemColor="systemPurpleColor"/>
                                         <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 4" secondaryText="Epic" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="pyU-Sy-Y1W">
-                                        <rect key="frame" x="0.0" y="346" width="414" height="70"/>
+                                        <rect key="frame" x="0.0" y="374" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pyU-Sy-Y1W" id="DS3-cx-HXk">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="text-primary"/>
                                         <listContentConfiguration key="contentConfiguration" text="Interpop" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="ddu-Jj-czq">
-                                        <rect key="frame" x="0.0" y="416" width="414" height="70"/>
+                                        <rect key="frame" x="0.0" y="444" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ddu-Jj-czq" id="btd-nk-Ax6">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="text-primary"/>
                                         <listContentConfiguration key="contentConfiguration" text="Dogami" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="BYg-C5-RJ9">
-                                        <rect key="frame" x="0.0" y="486" width="414" height="70"/>
+                                        <rect key="frame" x="0.0" y="514" width="414" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BYg-C5-RJ9" id="shv-nX-7zq">
-                                            <rect key="frame" x="0.0" y="0.0" width="385.5" height="70"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                         <color key="tintColor" name="text-primary"/>
@@ -517,9 +518,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.arrow.down" catalog="system" width="128" height="98"/>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="121"/>
-        <image name="dollarsign.circle" catalog="system" width="128" height="121"/>
+        <image name="arrow.up.arrow.down" catalog="system" width="128" height="97"/>
+        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="dollarsign.circle" catalog="system" width="128" height="123"/>
         <image name="kukai-logo-medium" width="100" height="100"/>
         <image name="kukai-text-medium" width="247" height="100"/>
         <image name="safe-full" width="100" height="100"/>

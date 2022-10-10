@@ -106,6 +106,10 @@ public class BalanceService {
 			}
 			
 			lastFullRefreshDate = Date()
+			
+		} else {
+			self.dispatchGroupBalances.leave()
+			self.dispatchGroupBalances.leave()
 		}
 		
 		// Get latest Tezos USD price

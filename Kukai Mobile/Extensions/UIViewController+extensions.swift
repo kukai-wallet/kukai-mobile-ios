@@ -98,8 +98,10 @@ extension UIViewController {
 	}
 	
 	func hideLoadingModal(completion: (() -> Void)? = nil) {
-		UIViewController.activityIndicator.stopAnimating()
-		UIViewController.loadingModal.dismiss(animated: true, completion: completion)
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+			UIViewController.activityIndicator.stopAnimating()
+			UIViewController.loadingModal.dismiss(animated: true, completion: completion)
+		}
 	}
 	
 	var isModal: Bool {
@@ -185,7 +187,7 @@ extension UIViewController {
 	}
 
 	@objc func keyboardWillShow(notification: NSNotification) {
-		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? String), duration != "0" {
 			var newRect = self.view.bounds
 			newRect.size = CGSize(width: newRect.width, height: (newRect.height - keyboardSize.height))
 			
@@ -194,7 +196,8 @@ extension UIViewController {
 	}
 
 	@objc func keyboardWillHide(notification: NSNotification) {
-		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+		
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? String), duration != "0" {
 			var newRect = self.view.bounds
 			newRect.size = CGSize(width: newRect.width, height: (newRect.height + keyboardSize.height))
 			
