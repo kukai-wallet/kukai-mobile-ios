@@ -131,6 +131,7 @@
 		C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */; };
 		C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */; };
 		C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */; };
+		C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */; };
 		C09860AA27C3C24E00F888AF /* SendToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860A927C3C24E00F888AF /* SendToViewController.swift */; };
 		C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */; };
 		C09860AE27C3C26B00F888AF /* SendEnterAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AD27C3C26B00F888AF /* SendEnterAmountViewController.swift */; };
@@ -360,6 +361,7 @@
 		C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewController.swift; sourceTree = "<group>"; };
 		C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewModel.swift; sourceTree = "<group>"; };
 		C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+extensions.swift"; sourceTree = "<group>"; };
+		C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collectibles.storyboard; sourceTree = "<group>"; };
 		C09860A927C3C24E00F888AF /* SendToViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToViewController.swift; sourceTree = "<group>"; };
 		C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendChooseTokenViewController.swift; sourceTree = "<group>"; };
 		C09860AD27C3C26B00F888AF /* SendEnterAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendEnterAmountViewController.swift; sourceTree = "<group>"; };
@@ -507,10 +509,6 @@
 				C005BA312822D3DC00D8369D /* AddWalletViewController.swift */,
 				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
 				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
-				C0FA565927BFFBF600AFC9A7 /* CollectiblesViewController.swift */,
-				C0FA565B27BFFC0900AFC9A7 /* CollectiblesViewModel.swift */,
-				C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */,
-				C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */,
 				C0081FD527D8FE2300F7FEFF /* ActivityViewController.swift */,
 				C0081FD727D8FE3700F7FEFF /* ActivityViewModel.swift */,
 				C049E73D28819E2800887B64 /* DiscoverViewController.swift */,
@@ -574,6 +572,7 @@
 				C0DAD65226B00AA6001DF430 /* Login */,
 				C049B5A126A0494300F1C5E0 /* Onboarding */,
 				C0082C0226A7217000DB160B /* Home */,
+				C097C02428F84CBA00FB2FC8 /* Collectibles */,
 				C0F91C6828BFB3010081E8E8 /* Stake */,
 				C005BA2E2822C44600D8369D /* Profile */,
 				C0B08A29270DBF6500075618 /* Send */,
@@ -723,6 +722,28 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		C097C02428F84CBA00FB2FC8 /* Collectibles */ = {
+			isa = PBXGroup;
+			children = (
+				C097C02728F84EB500FB2FC8 /* Cells */,
+				C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */,
+				C0FA565927BFFBF600AFC9A7 /* CollectiblesViewController.swift */,
+				C0FA565B27BFFC0900AFC9A7 /* CollectiblesViewModel.swift */,
+				C031D3EE27D114E300EABBE6 /* CollectiblesDetailsViewController.swift */,
+				C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */,
+			);
+			path = Collectibles;
+			sourceTree = "<group>";
+		};
+		C097C02728F84EB500FB2FC8 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */,
+				C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C09860A827C3BC5D00F888AF /* Send */ = {
 			isa = PBXGroup;
 			children = (
@@ -840,8 +861,6 @@
 				C08694DF27BD1B9B000A4909 /* EstimatedTotalCell.swift */,
 				C08694E127BD1BB1000A4909 /* DiscoverCell.swift */,
 				C02D7CA927BEB0B7006A8E39 /* TitleSubtitleCell.swift */,
-				C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */,
-				C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */,
 				C0081FCF27D8FA5B00F7FEFF /* ActivityGenericCell.swift */,
 				C0081FD127D8FA6A00F7FEFF /* ActivityExchangeCell.swift */,
 				C0081FD327D8FA7B00F7FEFF /* ActivitySubItemCell.swift */,
@@ -1039,6 +1058,7 @@
 				C0503657271ED88700E7A664 /* Main.storyboard in Resources */,
 				C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */,
 				C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */,
+				C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */,
 				C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
 				C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */,
@@ -1357,6 +1377,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_MODULES_DISABLE_PRIVATE_WARNING = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1421,6 +1442,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_MODULES_DISABLE_PRIVATE_WARNING = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -1628,6 +1650,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_MODULES_DISABLE_PRIVATE_WARNING = NO;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
