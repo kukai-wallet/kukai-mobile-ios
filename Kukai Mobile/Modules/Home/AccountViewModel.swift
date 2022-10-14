@@ -187,7 +187,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	static func setupAccountActivityListener() {
-		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
+		/*guard let wallet = DependencyManager.shared.selectedWallet?.address else {
 			return
 		}
 		
@@ -196,6 +196,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
-		}
+		}*/
 	}
 }
