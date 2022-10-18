@@ -194,6 +194,7 @@
 		C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */; };
 		C0EF1BC72892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */; };
 		C0EF1BC92892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */; };
+		C0F7476828FEBC9800F4C348 /* CollectibleDetailMediaPlaceholderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F7476728FEBC9800F4C348 /* CollectibleDetailMediaPlaceholderCell.swift */; };
 		C0F91C6A28BFB3200081E8E8 /* Stake.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0F91C6928BFB3200081E8E8 /* Stake.storyboard */; };
 		C0FA565427BFB77900AFC9A7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */; };
 		C0FA565627BFFBCD00AFC9A7 /* NFTGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */; };
@@ -433,6 +434,7 @@
 		C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideButton.xib; sourceTree = "<group>"; };
 		C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewController.swift; sourceTree = "<group>"; };
 		C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewModel.swift; sourceTree = "<group>"; };
+		C0F7476728FEBC9800F4C348 /* CollectibleDetailMediaPlaceholderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailMediaPlaceholderCell.swift; sourceTree = "<group>"; };
 		C0F91C6928BFB3200081E8E8 /* Stake.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Stake.storyboard; sourceTree = "<group>"; };
 		C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTGroupCell.swift; sourceTree = "<group>"; };
@@ -756,6 +758,7 @@
 			children = (
 				C0FA565527BFFBCD00AFC9A7 /* NFTGroupCell.swift */,
 				C0FA565727BFFBDE00AFC9A7 /* NFTItemCell.swift */,
+				C0F7476728FEBC9800F4C348 /* CollectibleDetailMediaPlaceholderCell.swift */,
 				C06F5DC728F85130000BA0AB /* CollectibleDetailImageCell.swift */,
 				C06F5DC928F85140000BA0AB /* CollectibleDetailVideoCell.swift */,
 				C06F5DCB28F8519A000BA0AB /* CollectibleDetailNameCell.swift */,
@@ -1211,6 +1214,7 @@
 				C08694EF27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift in Sources */,
 				C0A321D327C68B9E00D7788B /* ValidatorTextField.swift in Sources */,
 				C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */,
+				C0F7476828FEBC9800F4C348 /* CollectibleDetailMediaPlaceholderCell.swift in Sources */,
 				C049E73A2881837F00887B64 /* AccountsViewController.swift in Sources */,
 				C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */,
 				C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */,
@@ -1861,7 +1865,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = develop;
+				branch = feature/mediaproxy_updates;
 				kind = branch;
 			};
 		};

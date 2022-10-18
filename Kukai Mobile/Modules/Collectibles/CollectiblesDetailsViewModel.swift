@@ -11,9 +11,14 @@ import KukaiCoreSwift
 
 // MARK: Content objects
 
+struct MediaPlaceholder: Hashable {
+	let animate: Bool
+}
+
 struct MediaContent: Hashable {
 	let isImage: Bool
-	let mediaURL: URL
+	let mediaURL: URL?
+	let height: Double?
 }
 
 struct NameContent: Hashable {
@@ -48,6 +53,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private let mediaService = MediaProxyService()
 	
 	var nft: NFT? = nil
+	var placeholderContent = MediaPlaceholder(animate: true)
+	var nameContent = NameContent(name: "")
 	var attributesContent = AttributesContent(expanded: false)
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
@@ -60,8 +67,19 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				
 				return cell
 				
-			} else if let obj = itemIdentifier as? MediaContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath) as? CollectibleDetailImageCell {
+			} else if let _ = itemIdentifier as? MediaPlaceholder, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath) as? CollectibleDetailMediaPlaceholderCell {
 				cell.activityView.startAnimating()
+				return cell
+				
+			} else if let obj = itemIdentifier as? MediaContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath) as? CollectibleDetailImageCell {
+				//cell.activityView.startAnimating()
+				
+				if let height = obj.height {
+					cell.imageViewHeightConstraint.constant = height
+				}
+				
+				print("obj.mediaURL: \(String(describing: obj.mediaURL))")
+				MediaProxyService.load(url: obj.mediaURL, to: cell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 				
 				return cell
 				
@@ -104,31 +122,89 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		currentSnapshot.appendSections([0, 1])
 		
-		// TODO: Load a placeholder for media content first, then call `getMediaType`, then load the real thing
+		var section1Content: [CellDataType] = []
+		var section2Content: [CellDataType] = [attributesContent]
+		nameContent = NameContent(name: nft?.name ?? "")
 		
-		let mediaContent = MediaContent(isImage: true, mediaURL: URL(string: "hppts://google.com")!)
-		let nameContent = NameContent(name: nft?.name ?? "")
-		let showcaseContent = ShowcaseContent(count: 1)
-		let sendContent = SendContent(enabled: true)
-		let descriptionContent = DescriptionContent(description: nft?.description ?? "")
-		currentSnapshot.appendItems([mediaContent, nameContent, showcaseContent, sendContent, descriptionContent], toSection: 0)
+		// Process section 1
+		section1Content.append(placeholderContent)
+		section1Content.append(nameContent)
+		section1Content.append(ShowcaseContent(count: 1))
+		section1Content.append(SendContent(enabled: true))
+		section1Content.append(DescriptionContent(description: nft?.description ?? ""))
+		currentSnapshot.appendItems(section1Content, toSection: 0)
 		
-		var attributeContentArray: [CellDataType] = [attributesContent]
+		
+		// Process section 2
 		if attributesContent.expanded {
-			attributeContentArray.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
+			section2Content.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
 		}
-		currentSnapshot.appendItems(attributeContentArray, toSection: 1)
+		currentSnapshot.appendItems(section2Content, toSection: 1)
 		
+		
+		// Apply update so placeholder loads
 		ds.apply(currentSnapshot, animatingDifferences: animate)
 		
 		
 		// Return success
 		self.state = .success(nil)
+		
+		
+		// Then load the media either form cache, or from internet
+		// Sometimes the type of content can be figured out from already cached metadata, in those cases avoid jarring visuals by reloading too quickly, by adding an artifical delay
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+			self?.loadDataFromCacheOrDownload(nft: self?.nft)
+		}
 	}
 	
-	public func getMediaType(nft: NFT, completion: @escaping ((Result<MediaProxyService.MediaType, KukaiError>) -> Void)) {
-		mediaService.getMediaType(fromFormats: nft.metadata?.formats ?? [], orURL: nft.artifactURL, completion: completion)
+	func loadDataFromCacheOrDownload(nft: NFT?) {
+		guard let nft = nft else {
+			return
+		}
+		
+		MediaProxyService.sizeForImageIfCached(url: nft.displayURL, fromCache: MediaProxyService.temporaryImageCache()) { [weak self] size in
+			guard let self = self else {
+				return
+			}
+			
+			if let size = size {
+				self.replacePlaceholderWithMedia(isImage: true, height: size.height)
+				return
+			}
+			
+			self.mediaService.getMediaType(fromFormats: nft.metadata?.formats ?? [], orURL: nft.displayURL) { result in
+				guard let res = try? result.get() else {
+					self.state = .failure(result.getFailure(), "Unable to fetch media, due to unknown content type")
+					return
+				}
+				
+				if res == .image {
+					MediaProxyService.cacheImage(url: nft.displayURL, cache: MediaProxyService.temporaryImageCache()) { size in
+						self.replacePlaceholderWithMedia(isImage: true, height: Double(size?.height ?? 300))
+					}
+				}
+			}
+		}
 	}
+	
+	func replacePlaceholderWithMedia(isImage: Bool, height: Double) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: nft?.displayURL, height: height)], beforeItem: nameContent)
+		currentSnapshot.deleteItems([placeholderContent])
+		
+		DispatchQueue.main.async { [weak self] in
+			guard let snapshot = self?.currentSnapshot else {
+				return
+			}
+			
+			ds.apply(snapshot, animatingDifferences: true)
+		}
+	}
+	
 	
 	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {

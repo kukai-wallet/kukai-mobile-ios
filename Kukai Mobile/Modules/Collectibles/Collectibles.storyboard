@@ -214,44 +214,56 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailMediaPlaceholderCell" id="eg8-va-whz" customClass="CollectibleDetailMediaPlaceholderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="47" y="0.0" width="296" height="177"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="SIv-LO-qm0">
+                                            <rect key="frame" x="0.0" y="0.0" width="296" height="177"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="WdR-5Q-7Kh">
+                                                    <rect key="frame" x="138" y="78.666666666666671" width="20" height="20"/>
+                                                </activityIndicatorView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="WdR-5Q-7Kh" firstAttribute="centerY" secondItem="SIv-LO-qm0" secondAttribute="centerY" id="8vp-Qk-4Ta"/>
+                                                <constraint firstItem="WdR-5Q-7Kh" firstAttribute="centerX" secondItem="SIv-LO-qm0" secondAttribute="centerX" id="tA3-nf-jbo"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="296" height="177"/>
+                                        <connections>
+                                            <outlet property="activityView" destination="WdR-5Q-7Kh" id="ND9-cs-hjU"/>
+                                        </connections>
+                                    </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailImageCell" id="c7h-Lo-Rsl" customClass="CollectibleDetailImageCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="0.0" width="358" height="150"/>
+                                        <rect key="frame" x="16" y="187" width="358" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="aGQ-NL-xxG">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="150"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BFx-pL-4yk">
-                                                    <rect key="frame" x="29" y="8" width="300" height="134"/>
+                                                    <rect key="frame" x="0.0" y="8" width="358" height="134"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="300" id="AKa-mC-MD5"/>
                                                         <constraint firstAttribute="height" constant="300" id="bHA-xy-z3Q"/>
                                                     </constraints>
                                                 </imageView>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="2M0-IJ-7fA">
-                                                    <rect key="frame" x="169" y="65" width="20" height="20"/>
-                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="2M0-IJ-7fA" firstAttribute="centerY" secondItem="BFx-pL-4yk" secondAttribute="centerY" id="4gY-sX-WDR"/>
-                                                <constraint firstItem="2M0-IJ-7fA" firstAttribute="centerX" secondItem="BFx-pL-4yk" secondAttribute="centerX" id="5w5-XA-XCg"/>
-                                                <constraint firstItem="BFx-pL-4yk" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aGQ-NL-xxG" secondAttribute="leading" id="INJ-mi-9gD"/>
+                                                <constraint firstItem="BFx-pL-4yk" firstAttribute="leading" secondItem="aGQ-NL-xxG" secondAttribute="leading" id="INJ-mi-9gD"/>
                                                 <constraint firstAttribute="bottom" secondItem="BFx-pL-4yk" secondAttribute="bottom" constant="8" id="fll-LW-ySm"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="BFx-pL-4yk" secondAttribute="trailing" id="fmu-fw-uwL"/>
-                                                <constraint firstItem="BFx-pL-4yk" firstAttribute="centerX" secondItem="aGQ-NL-xxG" secondAttribute="centerX" id="kIS-8n-Yk4"/>
+                                                <constraint firstAttribute="trailing" secondItem="BFx-pL-4yk" secondAttribute="trailing" id="fmu-fw-uwL"/>
                                                 <constraint firstItem="BFx-pL-4yk" firstAttribute="top" secondItem="aGQ-NL-xxG" secondAttribute="top" constant="8" id="syX-Jg-DQs"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="358" height="150"/>
                                         <connections>
-                                            <outlet property="activityView" destination="2M0-IJ-7fA" id="484-n1-gTB"/>
                                             <outlet property="imageView" destination="BFx-pL-4yk" id="E7P-SQ-cb0"/>
                                             <outlet property="imageViewHeightConstraint" destination="bHA-xy-z3Q" id="mdy-l9-Zh4"/>
-                                            <outlet property="imageViewWidthConstraint" destination="AKa-mC-MD5" id="6vi-OH-8Xh"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailVideoCell" id="fef-Wr-QXq" customClass="CollectibleDetailVideoCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="160" width="358" height="150"/>
+                                        <rect key="frame" x="16" y="347" width="358" height="150"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="kcb-ZA-Vx5">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="150"/>
@@ -288,7 +300,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailNameCell" id="4Ya-7Z-DHc" customClass="CollectibleDetailNameCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="320" width="358" height="120"/>
+                                        <rect key="frame" x="16" y="507" width="358" height="120"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="HsL-NI-shW">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="120"/>
@@ -379,7 +391,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailShowcaseCell" id="e0W-sT-Hoa" customClass="CollectibleDetailShowcaseCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="450" width="358" height="34"/>
+                                        <rect key="frame" x="16" y="637" width="358" height="34"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="OXh-NP-UBo">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="34"/>
@@ -414,7 +426,7 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailSendCell" id="wXt-nF-wOf" customClass="CollectibleDetailSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="494" width="358" height="82"/>
+                                        <rect key="frame" x="16" y="681" width="358" height="82"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="gij-bg-o9P">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="82"/>
@@ -444,19 +456,19 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailDescriptionCell" id="DrZ-MT-uGe" customClass="CollectibleDetailDescriptionCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="586" width="358" height="60"/>
+                                        <rect key="frame" x="16" y="773" width="358" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r6a-fv-wcQ">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="r6a-fv-wcQ">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="60"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-t5-wFX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-t5-wFX">
                                                     <rect key="frame" x="0.0" y="8" width="358" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sR8-qm-qc1">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sR8-qm-qc1">
                                                     <rect key="frame" x="0.0" y="36" width="358" height="16"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="&lt;desc&gt;">
@@ -487,19 +499,19 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailAttributeHeaderCell" id="Bxb-Is-Ofn" customClass="CollectibleDetailAttributeHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="16" y="656" width="358" height="36"/>
+                                        <rect key="frame" x="16" y="843" width="358" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="2R5-bD-TLx">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="2R5-bD-TLx">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Attributes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emd-fQ-x4y">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Attributes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emd-fQ-x4y">
                                                     <rect key="frame" x="0.0" y="8" width="318" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="V0I-KN-6fk">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="chevron.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="V0I-KN-6fk">
                                                     <rect key="frame" x="334" y="13.666666666666664" width="24" height="9.3333333333333464"/>
                                                     <color key="tintColor" name="text-primary"/>
                                                     <constraints>
@@ -524,23 +536,23 @@
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailAttributeItemCell" id="JMh-QU-obd" customClass="CollectibleDetailAttributeItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="143" y="702" width="104" height="60"/>
+                                        <rect key="frame" x="143" y="889" width="104" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LsQ-Ef-eIj">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="LsQ-Ef-eIj">
                                             <rect key="frame" x="0.0" y="0.0" width="104" height="60"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-t3-x9i">
+                                                <view contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-t3-x9i">
                                                     <rect key="frame" x="0.0" y="0.0" width="104" height="60"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="&lt;key&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJK-jE-bNl">
-                                                            <rect key="frame" x="8" y="4" width="41.666666666666664" height="17"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="&lt;key&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJK-jE-bNl">
+                                                            <rect key="frame" x="8" y="4" width="88" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="&lt;value&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umx-8a-f4S">
-                                                            <rect key="frame" x="8" y="25" width="51" height="31"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" ambiguous="YES" text="&lt;value&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umx-8a-f4S">
+                                                            <rect key="frame" x="8" y="25" width="88" height="31"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -548,9 +560,9 @@
                                                     </subviews>
                                                     <color key="backgroundColor" name="secondary-button-background"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Umx-8a-f4S" secondAttribute="trailing" constant="8" id="A7u-cI-id4"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Umx-8a-f4S" secondAttribute="trailing" constant="8" id="A7u-cI-id4"/>
                                                         <constraint firstItem="Umx-8a-f4S" firstAttribute="leading" secondItem="nbq-t3-x9i" secondAttribute="leading" constant="8" id="Khc-xH-tSK"/>
-                                                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="RJK-jE-bNl" secondAttribute="trailing" constant="8" id="cTY-7M-P9S"/>
+                                                        <constraint firstAttribute="trailing" secondItem="RJK-jE-bNl" secondAttribute="trailing" constant="8" id="cTY-7M-P9S"/>
                                                         <constraint firstItem="RJK-jE-bNl" firstAttribute="top" secondItem="nbq-t3-x9i" secondAttribute="top" constant="4" id="ehA-fc-Vm9"/>
                                                         <constraint firstItem="RJK-jE-bNl" firstAttribute="leading" secondItem="nbq-t3-x9i" secondAttribute="leading" constant="8" id="haL-Qk-OOb"/>
                                                         <constraint firstItem="Umx-8a-f4S" firstAttribute="top" secondItem="RJK-jE-bNl" secondAttribute="bottom" constant="4" id="ipM-Lw-L6f"/>
