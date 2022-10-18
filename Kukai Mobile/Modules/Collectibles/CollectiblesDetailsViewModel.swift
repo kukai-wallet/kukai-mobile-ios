@@ -33,7 +33,7 @@ struct DescriptionContent: Hashable {
 }
 
 struct AttributesContent: Hashable {
-	let expanded: Bool
+	var expanded: Bool
 }
 
 
@@ -48,21 +48,15 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private let mediaService = MediaProxyService()
 	
 	var nft: NFT? = nil
-	var attributeItemCount = 0
+	var attributesContent = AttributesContent(expanded: false)
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
 			
 			if let obj = itemIdentifier as? TzKTBalanceMetadataAttributeKeyValue, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath) as? CollectibleDetailAttributeItemCell {
 				cell.keyLabel.text = obj.key
 				cell.valueLabel.text = obj.value
-				
-				if indexPath.row == (self?.attributeItemCount ?? 0) {
-					cell.isLast = true
-				} else {
-					cell.isLast = false
-				}
 				
 				return cell
 				
@@ -91,8 +85,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				
 				return cell
 				
-			} else if let obj = itemIdentifier as? AttributesContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath) as? CollectibleDetailAttributeHeaderCell {
-				
+			} else if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath) as? CollectibleDetailAttributeHeaderCell {
 				return cell
 			}
 			
@@ -120,12 +113,12 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		let descriptionContent = DescriptionContent(description: nft?.description ?? "")
 		currentSnapshot.appendItems([mediaContent, nameContent, showcaseContent, sendContent, descriptionContent], toSection: 0)
 		
-		let attributesContent = AttributesContent(expanded: true)
 		var attributeContentArray: [CellDataType] = [attributesContent]
-		attributeContentArray.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
+		if attributesContent.expanded {
+			attributeContentArray.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
+		}
 		currentSnapshot.appendItems(attributeContentArray, toSection: 1)
 		
-		self.attributeItemCount = attributeContentArray.count - 1
 		ds.apply(currentSnapshot, animatingDifferences: animate)
 		
 		
@@ -135,5 +128,47 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	public func getMediaType(nft: NFT, completion: @escaping ((Result<MediaProxyService.MediaType, KukaiError>) -> Void)) {
 		mediaService.getMediaType(fromFormats: nft.metadata?.formats ?? [], orURL: nft.artifactURL, completion: completion)
+	}
+	
+	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		if attributesContent.expanded == false {
+			self.openGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if attributesContent.expanded == true {
+			self.closeGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+		}
+		
+		ds.apply(currentSnapshot, animatingDifferences: true) { [weak self] in
+			if self?.attributesContent.expanded == true {
+				collectionView.scrollToItem(at: IndexPath(row: 1, section: 1), at: .bottom, animated: true)
+			}
+		}
+	}
+	
+	private func openGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
+			cell.setOpen()
+		}
+		
+		let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
+		
+		currentSnapshot.insertItems(attributes, afterItem: attributesContent)
+		attributesContent.expanded = true
+	}
+	
+	private func closeGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
+			cell.setClosed()
+		}
+		
+		let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
+		
+		currentSnapshot.deleteItems(attributes)
+		attributesContent.expanded = false
 	}
 }

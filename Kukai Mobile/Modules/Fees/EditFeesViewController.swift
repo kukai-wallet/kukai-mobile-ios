@@ -24,6 +24,10 @@ class EditFeesViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		refreshUI()
+	}
+	
+	func refreshUI() {
 		segmentedButton.selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
 		segmentedButtonTapped(self.segmentedButton as Any)
 		

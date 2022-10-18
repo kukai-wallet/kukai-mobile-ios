@@ -221,17 +221,3 @@ extension UIViewController {
 		})
 	}
 }
-
-
-
-/// Make bottom sheets automatically call viewWill / viewDidAppear on the main screen while dismissing (if delegate is set)
-extension UIViewController: UISheetPresentationControllerDelegate {
-	
-	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-		self.viewWillAppear(true)
-	}
-	
-	public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
-		self.viewDidAppear(true)
-	}
-}

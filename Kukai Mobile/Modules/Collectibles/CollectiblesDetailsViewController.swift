@@ -62,6 +62,12 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.refresh(animate: false)
 	}
 	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if indexPath.section == 1 && indexPath.row == 0 {
+			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+		}
+	}
+	
 	
 	/*
 	@IBOutlet weak var imageDisplayView: UIImageView!

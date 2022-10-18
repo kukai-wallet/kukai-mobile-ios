@@ -17,7 +17,6 @@ public class BottomSheetLargeSegue: UIStoryboardSegue {
 		dest.detents = [.large()]
 		dest.prefersGrabberVisible = true
 		dest.preferredCornerRadius = 28
-		dest.delegate = source
 		
 		source.present(destination, animated: true)
 	}

@@ -109,7 +109,8 @@ class HomeTabBarController: UITabBarController {
 		BeaconService.shared.operationDelegate = self
 		BeaconService.shared.startBeacon(completion: ({ _ in}))
 		
-		
+		// TODO: reset
+		/*
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
 			self.refreshType = .refreshEverything
@@ -120,6 +121,7 @@ class HomeTabBarController: UITabBarController {
 			self.refreshType = .useCache
 			refresh()
 		}
+		*/
 	}
 	
 	func setupTzKTAccountListener() {

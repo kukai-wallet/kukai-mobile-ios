@@ -116,6 +116,14 @@ class SwapConfirmViewController: UIViewController {
 		feeSettingsButton.setTitle(TransactionService.shared.currentOperationsAndFeesData.type.displayName(), for: .normal)
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		guard let dest = segue.destination.presentationController as? UISheetPresentationController else {
+			return
+		}
+		
+		dest.delegate = self
+	}
+	
 	
 	// MARK: - Helpers
 	
@@ -137,6 +145,13 @@ class SwapConfirmViewController: UIViewController {
 				self.view.layoutIfNeeded()
 			}
 		}
+	}
+}
+
+extension SwapConfirmViewController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		self.updateFees()
 	}
 }
 

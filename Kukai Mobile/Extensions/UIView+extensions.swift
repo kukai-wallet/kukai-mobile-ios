@@ -65,4 +65,16 @@ extension UIView {
 		}
 		return (responder as? UIViewController)
 	}
+	
+	func rotate(degrees: CGFloat, duration: CGFloat) {
+		UIView.animate(withDuration: duration, animations: { [weak self] in
+			self?.transform = CGAffineTransform(rotationAngle: (degrees * .pi) / degrees)
+		})
+	}
+	
+	func rotateBack(duration: CGFloat) {
+		UIView.animate(withDuration: duration, animations: { [weak self] in
+			self?.transform = CGAffineTransform.identity
+		})
+	}
 }

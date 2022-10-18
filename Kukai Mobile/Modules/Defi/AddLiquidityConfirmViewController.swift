@@ -63,6 +63,21 @@ class AddLiquidityConfirmViewController: UIViewController {
 		storageCostLabel.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation + " xtz"
 		feeSettingsButton.setTitle(TransactionService.shared.currentOperationsAndFeesData.type.displayName(), for: .normal)
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		guard let dest = segue.destination.presentationController as? UISheetPresentationController else {
+			return
+		}
+		
+		dest.delegate = self
+	}
+}
+
+extension AddLiquidityConfirmViewController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		self.updateFees()
+	}
 }
 
 extension AddLiquidityConfirmViewController: SlideButtonDelegate {

@@ -18,4 +18,12 @@ class CollectibleDetailAttributeHeaderCell: UICollectionViewCell {
 		
 		return layoutAttributes
 	}
+	
+	public func setOpen() {
+		attributesChevronImage.rotate(degrees: 180, duration: 0.3)
+	}
+	
+	public func setClosed() {
+		attributesChevronImage.rotateBack(duration: 0.3)
+	}
 }
