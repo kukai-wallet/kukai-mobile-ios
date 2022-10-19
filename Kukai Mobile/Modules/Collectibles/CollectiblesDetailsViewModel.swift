@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import AVKit
 
 
 // MARK: Content objects
@@ -51,6 +52,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
+	private var playerController: AVPlayerViewController? = nil
+	private var playerLooper: AVPlayerLooper? = nil
 	
 	var nft: NFT? = nil
 	var placeholderContent = MediaPlaceholder(animate: true)
@@ -59,7 +62,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
 			
 			if let obj = itemIdentifier as? TzKTBalanceMetadataAttributeKeyValue, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath) as? CollectibleDetailAttributeItemCell {
 				cell.keyLabel.text = obj.key
@@ -71,15 +74,35 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				cell.activityView.startAnimating()
 				return cell
 				
-			} else if let obj = itemIdentifier as? MediaContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath) as? CollectibleDetailImageCell {
-				//cell.activityView.startAnimating()
-				
+			} else if let obj = itemIdentifier as? MediaContent, obj.isImage, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath) as? CollectibleDetailImageCell {
 				if let height = obj.height {
 					cell.imageViewHeightConstraint.constant = height
 				}
 				
-				print("obj.mediaURL: \(String(describing: obj.mediaURL))")
 				MediaProxyService.load(url: obj.mediaURL, to: cell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+				
+				return cell
+				
+			} else if let obj = itemIdentifier as? MediaContent, !obj.isImage, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailVideoCell", for: indexPath) as? CollectibleDetailVideoCell {
+				guard let self = self else {
+					return cell
+				}
+				
+				// Make sure we only register the player controller once
+				if self.playerController == nil, let url = obj.mediaURL {
+					self.playerController = AVPlayerViewController()
+					
+					let playerItem = AVPlayerItem(url: url)
+					let player = AVQueuePlayer(playerItem: playerItem)
+					self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+					
+					self.playerController?.player = player
+					self.playerController?.player?.play()
+				}
+				
+				if let pvc = self.playerController {
+					cell.setup(avplayerController: pvc)
+				}
 				
 				return cell
 				
@@ -182,6 +205,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 					MediaProxyService.cacheImage(url: nft.displayURL, cache: MediaProxyService.temporaryImageCache()) { size in
 						self.replacePlaceholderWithMedia(isImage: true, height: Double(size?.height ?? 300))
 					}
+				} else {
+					self.replacePlaceholderWithMedia(isImage: false, height: 0)
 				}
 			}
 		}
@@ -193,7 +218,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return
 		}
 		
-		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: nft?.displayURL, height: height)], beforeItem: nameContent)
+		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, height: height)], beforeItem: nameContent)
 		currentSnapshot.deleteItems([placeholderContent])
 		
 		DispatchQueue.main.async { [weak self] in

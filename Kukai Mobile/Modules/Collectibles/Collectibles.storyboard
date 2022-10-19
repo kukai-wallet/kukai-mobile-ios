@@ -270,33 +270,23 @@
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4iG-5N-0wb">
-                                                    <rect key="frame" x="29" y="8" width="300" height="134"/>
+                                                    <rect key="frame" x="0.0" y="8" width="358" height="134"/>
                                                     <color key="backgroundColor" name="text-tertiary"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="300" id="Myl-RR-tAN"/>
-                                                        <constraint firstAttribute="height" constant="300" id="V7D-ph-Ok5"/>
+                                                        <constraint firstAttribute="height" secondItem="4iG-5N-0wb" secondAttribute="width" multiplier="1:1.78" id="nsE-m7-gid"/>
                                                     </constraints>
                                                 </view>
-                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="b2a-O8-5hD">
-                                                    <rect key="frame" x="169" y="65" width="20" height="20"/>
-                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="b2a-O8-5hD" firstAttribute="centerX" secondItem="4iG-5N-0wb" secondAttribute="centerX" id="0kn-Pg-OYz"/>
-                                                <constraint firstItem="b2a-O8-5hD" firstAttribute="centerY" secondItem="4iG-5N-0wb" secondAttribute="centerY" id="Gk8-fF-pjt"/>
-                                                <constraint firstAttribute="bottom" secondItem="4iG-5N-0wb" secondAttribute="bottom" constant="8" id="H3Y-7U-eai"/>
-                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4iG-5N-0wb" secondAttribute="trailing" id="M4u-oA-Cpz"/>
+                                                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="4iG-5N-0wb" secondAttribute="bottom" constant="8" id="H3Y-7U-eai"/>
+                                                <constraint firstAttribute="trailing" secondItem="4iG-5N-0wb" secondAttribute="trailing" id="M4u-oA-Cpz"/>
                                                 <constraint firstItem="4iG-5N-0wb" firstAttribute="top" secondItem="kcb-ZA-Vx5" secondAttribute="top" constant="8" id="cwz-bu-MTK"/>
-                                                <constraint firstItem="4iG-5N-0wb" firstAttribute="centerX" secondItem="kcb-ZA-Vx5" secondAttribute="centerX" id="lLN-0d-Z5l"/>
-                                                <constraint firstItem="4iG-5N-0wb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="kcb-ZA-Vx5" secondAttribute="leading" id="rcy-AF-LiG"/>
+                                                <constraint firstItem="4iG-5N-0wb" firstAttribute="leading" secondItem="kcb-ZA-Vx5" secondAttribute="leading" id="rcy-AF-LiG"/>
                                             </constraints>
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="358" height="150"/>
                                         <connections>
-                                            <outlet property="activityView" destination="b2a-O8-5hD" id="IwY-Mv-pmf"/>
-                                            <outlet property="palceholderViewWidthConstraint" destination="Myl-RR-tAN" id="l4h-eb-LZs"/>
                                             <outlet property="placeholderView" destination="4iG-5N-0wb" id="en5-DI-6ni"/>
-                                            <outlet property="placeholderViewHeightConstraint" destination="V7D-ph-Ok5" id="XsT-o1-cVg"/>
                                         </connections>
                                     </collectionViewCell>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailNameCell" id="4Ya-7Z-DHc" customClass="CollectibleDetailNameCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -458,17 +448,17 @@
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailDescriptionCell" id="DrZ-MT-uGe" customClass="CollectibleDetailDescriptionCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="16" y="773" width="358" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="r6a-fv-wcQ">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="r6a-fv-wcQ">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="60"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-t5-wFX">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RdX-t5-wFX">
                                                     <rect key="frame" x="0.0" y="8" width="358" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sR8-qm-qc1">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sR8-qm-qc1">
                                                     <rect key="frame" x="0.0" y="36" width="358" height="16"/>
                                                     <attributedString key="attributedText">
                                                         <fragment content="&lt;desc&gt;">
@@ -501,17 +491,17 @@
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailAttributeHeaderCell" id="Bxb-Is-Ofn" customClass="CollectibleDetailAttributeHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="16" y="843" width="358" height="36"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="2R5-bD-TLx">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="2R5-bD-TLx">
                                             <rect key="frame" x="0.0" y="0.0" width="358" height="36"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="Attributes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emd-fQ-x4y">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Attributes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emd-fQ-x4y">
                                                     <rect key="frame" x="0.0" y="8" width="318" height="20"/>
                                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="chevron.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="V0I-KN-6fk">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.down" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="V0I-KN-6fk">
                                                     <rect key="frame" x="334" y="13.666666666666664" width="24" height="9.3333333333333464"/>
                                                     <color key="tintColor" name="text-primary"/>
                                                     <constraints>
@@ -538,20 +528,20 @@
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailAttributeItemCell" id="JMh-QU-obd" customClass="CollectibleDetailAttributeItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="143" y="889" width="104" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" id="LsQ-Ef-eIj">
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="LsQ-Ef-eIj">
                                             <rect key="frame" x="0.0" y="0.0" width="104" height="60"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-t3-x9i">
+                                                <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nbq-t3-x9i">
                                                     <rect key="frame" x="0.0" y="0.0" width="104" height="60"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" ambiguous="YES" text="&lt;key&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJK-jE-bNl">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="&lt;key&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RJK-jE-bNl">
                                                             <rect key="frame" x="8" y="4" width="88" height="17"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" ambiguous="YES" text="&lt;value&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umx-8a-f4S">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="&lt;value&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Umx-8a-f4S">
                                                             <rect key="frame" x="8" y="25" width="88" height="31"/>
                                                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="14"/>
                                                             <nil key="textColor"/>
