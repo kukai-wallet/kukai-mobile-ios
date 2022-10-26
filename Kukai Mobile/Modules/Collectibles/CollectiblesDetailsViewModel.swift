@@ -66,6 +66,14 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
+		collectionView.register(UINib(nibName: "CollectibleDetailMediaPlaceholderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailMediaPlaceholderCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailImageCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailImageCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailVideoCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailVideoCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailNameCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailNameCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailShowcaseCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailShowcaseCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailSendCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailSendCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailDescriptionCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailDescriptionCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailAttributeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeHeaderCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeItemCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
@@ -73,7 +81,32 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath)
 			}
 			
-			return self.configuredCellFor(indexPath: indexPath, collectionView: collectionView, optionalData: itemIdentifier)
+			switch indexPath.section {
+				case 0:
+					switch indexPath.row {
+						case 0:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath), withItem: itemIdentifier)
+						case 1:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: itemIdentifier)
+						case 2:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailShowcaseCell", for: indexPath), withItem: itemIdentifier)
+						case 3:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: itemIdentifier)
+						case 4:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath), withItem: itemIdentifier)
+						case 5:
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: itemIdentifier)
+							
+						default:
+							return self.configure(cell: nil, withItem: itemIdentifier)
+					}
+					
+				case 1:
+					return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath), withItem: itemIdentifier)
+					
+				default:
+					return self.configure(cell: nil, withItem: itemIdentifier)
+			}
 		})
 	}
 	
@@ -86,8 +119,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-		// currentSnapshot.appendSections([0, 1])
-		currentSnapshot.appendSections([0])
+		currentSnapshot.appendSections([0, 1])
 		
 		var section1Content: [CellDataType] = []
 		var section2Content: [CellDataType] = []
@@ -95,7 +127,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		let nameIcon = DependencyManager.shared.tzktClient.avatarURL(forToken: nft?.parentContract ?? "")
 		nameContent = NameContent(name: nft?.name ?? "", collectionIcon: nameIcon, collectionName: nft?.parentAlias ?? nft?.parentContract, collectionLink: nil)
 		
-		/*
 		// Process section 1
 		section1Content.append(placeholderContent)
 		section1Content.append(nameContent)
@@ -104,7 +135,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		section1Content.append(DescriptionContent(description: nft?.description ?? ""))
 		section1Content.append(attributesContent)
 		currentSnapshot.appendItems(section1Content, toSection: 0)
-		*/
 		
 		// Process section 2
 		/*let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
@@ -137,7 +167,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			TzKTBalanceMetadataAttributeKeyValue(key: "For 2", value: "Mooncakes"),
 			TzKTBalanceMetadataAttributeKeyValue(key: "Moondust 2", value: "No more than 5 seconds of accumulation"),
 		]
-		currentSnapshot.appendItems(attributes, toSection: 0)
+		currentSnapshot.appendItems(attributes, toSection: 1)
 		
 		// Apply update so placeholder loads
 		ds.apply(currentSnapshot, animatingDifferences: animate)
@@ -156,34 +186,31 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		*/
 	}
 	
-	func configuredCellFor(indexPath: IndexPath, collectionView: UICollectionView, optionalData: CellDataType?) -> UICollectionViewCell {
-		var item = optionalData
-		
-		if item == nil {
-			let identifiers = currentSnapshot.itemIdentifiers(inSection: indexPath.section)
-			item = identifiers[indexPath.row]
+	func configure(cell: UICollectionViewCell?, withItem item: CellDataType) -> UICollectionViewCell {
+		guard let cell = cell else {
+			return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		}
 		
-		if let obj = item as? TzKTBalanceMetadataAttributeKeyValue, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath) as? CollectibleDetailAttributeItemCell {
-			cell.keyLabel.text = obj.key
-			cell.valueLabel.text = obj.value
+		if let obj = item as? TzKTBalanceMetadataAttributeKeyValue, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
+			parsedCell.keyLabel.text = obj.key
+			parsedCell.valueLabel.text = obj.value
 			
-			return cell
+			return parsedCell
 			
-		} else if let _ = item as? MediaPlaceholder, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath) as? CollectibleDetailMediaPlaceholderCell {
-			cell.activityView.startAnimating()
-			return cell
+		} else if let _ = item as? MediaPlaceholder, let parsedCell = cell as? CollectibleDetailMediaPlaceholderCell {
+			parsedCell.activityView.startAnimating()
+			return parsedCell
 			
-		} else if let obj = item as? MediaContent, obj.isImage, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath) as? CollectibleDetailImageCell {
+		} else if let obj = item as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
 			if let height = obj.height {
-				cell.imageViewHeightConstraint.constant = height
+				parsedCell.heightConstriant.constant = height
 			}
 			
-			MediaProxyService.load(url: obj.mediaURL, to: cell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			//MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 			
-			return cell
+			return parsedCell
 			
-		} else if let obj = item as? MediaContent, !obj.isImage, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailVideoCell", for: indexPath) as? CollectibleDetailVideoCell {
+		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailVideoCell {
 			
 			// Make sure we only register the player controller once
 			if self.playerController == nil, let url = obj.mediaURL {
@@ -198,30 +225,30 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			}
 			
 			if let pvc = self.playerController {
-				cell.setup(avplayerController: pvc)
+				parsedCell.setup(avplayerController: pvc)
 			}
 			
-			return cell
+			return parsedCell
 			
-		} else if let obj = item as? NameContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath) as? CollectibleDetailNameCell {
-			cell.nameLabel.text = obj.name
-			cell.websiteLink.setTitle(obj.collectionName, for: .normal)
+		} else if let obj = item as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
+			parsedCell.nameLabel.text = obj.name
+			parsedCell.websiteButton.setTitle(obj.collectionName, for: .normal)
 			
-			MediaProxyService.load(url: obj.collectionIcon, to: cell.websiteIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			//MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 			
-			return cell
+			return parsedCell
 			
-		} else if let obj = item as? ShowcaseContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailShowcaseCell", for: indexPath) as? CollectibleDetailShowcaseCell {
-			cell.showcaseLabel.text = "In Showcase (\(obj.count))"
+		} else if let obj = item as? ShowcaseContent, let parsedCell = cell as? CollectibleDetailShowcaseCell {
+			parsedCell.showcaseLabel.text = "In Showcase (\(obj.count))"
 			
-			return cell
+			return parsedCell
 			
-		} else if let obj = item as? SendContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath) as? CollectibleDetailSendCell {
-			cell.sendButton.isEnabled = obj.enabled
+		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
+			parsedCell.sendButton.isEnabled = obj.enabled
 			
-			return cell
+			return parsedCell
 			
-		} else if let obj = item as? DescriptionContent, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath) as? CollectibleDetailDescriptionCell {
+		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
 			let paragraphStyle = NSMutableParagraphStyle()
 			paragraphStyle.lineSpacing = 6
 			paragraphStyle.paragraphSpacing = 6
@@ -232,17 +259,17 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				NSAttributedString.Key.paragraphStyle: paragraphStyle
 			])
 			
-			cell.textView.attributedText = attributedtext
-			cell.textView.textContainerInset = UIEdgeInsets.zero
-			cell.textView.textContainer.lineFragmentPadding = 0
+			parsedCell.textView.attributedText = attributedtext
+			parsedCell.textView.textContainerInset = UIEdgeInsets.zero
+			parsedCell.textView.textContainer.lineFragmentPadding = 0
 			
-			return cell
+			return parsedCell
 			
-		} else if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath) as? CollectibleDetailAttributeHeaderCell {
-			return cell
+		} else if let parsedCell = cell as? CollectibleDetailAttributeHeaderCell {
+			return parsedCell
 		}
 		
-		return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath)
+		return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 	}
 	
 	func loadDataFromCacheOrDownload(nft: NFT?) {
@@ -339,56 +366,41 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	}
 }
 
-/*
-extension CollectiblesDetailsViewModel: UICollectionViewFlexibleGridLayoutDelegate {
-	
-	func heightForContent(atIndex: IndexPath, withContentWidth: CGFloat) -> CGFloat {
-		let attribute = attributes[atIndex.row]
-		let size = CGSize(width: withContentWidth, height: 44)
-		let dummyCell = CollectibleDetailAttributeItemCell(frame: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-		dummyCell.keyLabel.text = attribute.key
-		dummyCell.valueLabel.text = attribute.value
-		
-		let tempEstimatedSize = dummyCell.contentView.systemLayoutSizeFitting(size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-		
-		print("Supplied contentWidth: \(withContentWidth)")
-		print("returning calculated size of: \(tempEstimatedSize)")
-		return tempEstimatedSize.height
-	}
-}
-*/
-
-extension CollectiblesDetailsViewModel: UICollectionViewFlexibleGridLayoutDelegate {
-	
-	func heightForContent(atIndex: IndexPath, withContentWidth: CGFloat, forCollectionView: UICollectionView) -> CGFloat {
-		
-		guard let sampleCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self) else {
-			print("returning 44, cause can't get cell")
-			return 44
-		}
-		
-		let attribute = attributes[atIndex.row]
-		sampleCell.keyLabel.text = attribute.key
-		sampleCell.valueLabel.text = attribute.value
-		
-		let defaultSize = CGSize(width: withContentWidth, height: 44)
-		let tempEstimatedSize = sampleCell.contentView.systemLayoutSizeFitting(defaultSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-		
-		return tempEstimatedSize.height
-		
-		
-		/*let defaultSize = CGSize(width: withContentWidth, height: 44)
-		let cell = configuredCellFor(indexPath: atIndex, collectionView: forCollectionView, optionalData: nil)
-		let tempEstimatedSize = cell.contentView.systemLayoutSizeFitting(defaultSize, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-		
-		return tempEstimatedSize.height*/
-	}
-}
-
-
 extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 	
 	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue {
 		return attributes[indexPath.row]
+	}
+	
+	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
+		let identifiers = currentSnapshot.itemIdentifiers(inSection: indexPath.section)
+		let item = identifiers[indexPath.row]
+		
+		switch indexPath.section {
+			case 0:
+				switch indexPath.row {
+					case 0:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item)
+					case 1:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item)
+					case 2:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailShowcaseCell", ofType: CollectibleDetailShowcaseCell.self), withItem: item)
+					case 3:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item)
+					case 4:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailDescriptionCell", ofType: CollectibleDetailDescriptionCell.self), withItem: item)
+					case 5:
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeHeaderCell", ofType: CollectibleDetailAttributeHeaderCell.self), withItem: item)
+					
+					default:
+						return configure(cell: nil, withItem: item)
+				}
+				
+			case 1:
+				return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self), withItem: item)
+			
+			default:
+				return configure(cell: nil, withItem: item)
+		}
 	}
 }

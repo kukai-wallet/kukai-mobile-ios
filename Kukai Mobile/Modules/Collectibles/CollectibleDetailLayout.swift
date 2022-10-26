@@ -10,6 +10,7 @@ import KukaiCoreSwift
 
 protocol CollectibleDetailLayoutDataDelegate: AnyObject {
 	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue
+	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
 
 class CollectibleDetailLayout: UICollectionViewLayout {
@@ -46,31 +47,55 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 		return CGSize(width: contentWidth, height: contentHeight)
 	}
 	
-	// TODO: check for colelctionView content insets
-	// TODO: firgure out inset frame logic without hurting required width
-	// TODO: Add in other sections
-	
 	override func prepare() {
 		guard cache.isEmpty == true, let collectionView = collectionView else {
 			return
 		}
 		
+		var sectionOffset: CGFloat = 0
+		sectionOffset = prepareSection0(forCollectionView: collectionView, withOffset: sectionOffset) // All full width
+		sectionOffset = prepareSection1(forCollectionView: collectionView, withOffset: sectionOffset) // Custom grid pattern
+		
+		contentHeight = sectionOffset + cellPadding
+	}
+	
+	private func prepareSection0(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {
+		var yOffset = sectionOffset
+		
+		for cellIndex in 0 ..< collectionView.numberOfItems(inSection: 0) {
+			let indexPath = IndexPath(row: cellIndex, section: 0)
+			guard let contentView = delegate?.configuredCell(forIndexPath: indexPath).contentView else {
+				continue
+			}
+			
+			let requiredSize = contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
+			
+			let frame = CGRect(x: 0, y: yOffset, width: requiredSize.width, height: requiredSize.height)
+			let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+			attributes.frame = frame
+			cache.append(attributes)
+			
+			yOffset += requiredSize.height + cellPadding
+		}
+		
+		return yOffset
+	}
+	
+	private func prepareSection1(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {
 		reusableAttributeCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
 		reusableAttributeCell?.keyLabel.text = "a"
 		reusableAttributeCell?.valueLabel.text = "b"
 		
 		guard let reusableAttributeCell = reusableAttributeCell else {
-			return
+			return sectionOffset
 		}
 		
 		defaultAttributeCellHeight = reusableAttributeCell.contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-		print("\n\ndefaultAttributeCellHeight: \(defaultAttributeCellHeight)")
-		
 		
 		var cellSizes: [CGSize] = []
-		
-		for cellIndex in 0 ..< collectionView.numberOfItems(inSection: 0) {
-			guard let attribute = delegate?.attributeFor(indexPath: IndexPath(row: cellIndex, section: 0)) else {
+		for cellIndex in 0 ..< collectionView.numberOfItems(inSection: 1) {
+			let indexPath = IndexPath(row: cellIndex, section: 1)
+			guard let attribute = delegate?.attributeFor(indexPath: indexPath) else {
 				continue
 			}
 			
@@ -81,41 +106,31 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			let requiredWidth = reusableAttributeCell.contentView.systemLayoutSizeFitting(minimumSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required).width
 			var cellSize: CGSize = minimumSize
 			
-			print("requiredWidth for index \(cellIndex): \(requiredWidth)")
 			
 			// if fits into smallest box (taking into account padding for horizontal gap between next cell), record attributes
 			if (requiredWidth + cellPadding) <= minimumCellWidth {
 				cellSize = CGSize(width: minimumSize.width, height: minimumSize.height)
-				print("cellSize is minimum: \(minimumSize)")
 			}
 			
 			// if fits into in more than 1 column, but less than max, record as min multiple
 			else if (requiredWidth + cellPadding) <= (contentWidth - minimumCellWidth) {
 				let multiple = (requiredWidth / minimumCellWidth).rounded(.up)
 				cellSize = CGSize(width: minimumCellWidth * multiple, height: minimumSize.height)
-				
-				print("cellSize is more than 1, less than all: \(cellSize)")
 			}
 			
 			// if wider than content width, limit to content width and resize height
 			else {
 				let newHeight = reusableAttributeCell.contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: defaultAttributeCellHeight), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
 				cellSize = CGSize(width: contentWidth, height: newHeight)
-				
-				print("cellSize is more than width, readjusting: \(cellSize)")
 			}
 			
-			print("\n")
 			cellSizes.append(cellSize)
 		}
-		
-		print("cellSizes: \(cellSizes)")
-		print("\n ===== \n")
 		
 		
 		// Now that we have calcualted all the sizes, lets group them into rows (as many per row as possible)
 		// If we have blank space, expand the items width wise to consume the full space
-		var yOffset: CGFloat = 0
+		var yOffset = sectionOffset
 		var startIndex = 0
 		var cellIndex = 0
 		let maxWidth = minimumCellWidth * CGFloat(numberOfColumns)
@@ -124,39 +139,28 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			var numberOfItems = 0
 			var runningTotalWidth: CGFloat = 0
 			
-			print("\nStarting with: \(startIndex)")
-			
 			// loop through all cells, until we reach content width
 			repeat {
 				runningTotalWidth += cellSizes[startIndex+numberOfItems].width
-				print("adding: \(cellSizes[startIndex+numberOfItems].width), fromIndex: \(startIndex+numberOfItems), startIndex: \(startIndex), numberofItems: \(numberOfItems)")
-				
 				numberOfItems += 1
 				if (startIndex + numberOfItems) > cellSizes.count-1 {
 					break
 				}
-				
-				print("about to check if \(runningTotalWidth) + \(cellSizes[safe: startIndex+numberOfItems]?.width ?? maxWidth), is less than \(maxWidth)")
 			}
 			while (runningTotalWidth + (cellSizes[safe: startIndex+numberOfItems]?.width ?? maxWidth)) <= maxWidth
 					
-			print("reached limit \n")
-			
 			// take all the current sizes, make sure they fit the width
 			let nextRow = Array(cellSizes[startIndex..<(numberOfItems + startIndex)])
 			let updatedSizes = increase(sizes: nextRow, toConsumeWidth: contentWidth)
-			
-			print("updatedSizes: \(updatedSizes) \n")
 					
 			// make cache items for them
 			var xOffset: CGFloat = 0
 			for item in updatedSizes {
+				let indexPath = IndexPath(row: cellIndex, section: 1)
 				let frame = CGRect(x: xOffset, y: yOffset, width: item.width, height: item.height)
-				let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: cellIndex, section: 0))
+				let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
 				attributes.frame = frame
 				cache.append(attributes)
-				
-				print("adding frame: \(frame)")
 				
 				xOffset = xOffset + item.width + cellPadding
 				cellIndex += 1
@@ -167,7 +171,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			
 		} while startIndex < cellSizes.count
 		
-		print("\n ===== \n")
+		return yOffset
 	}
 	
 	private func increase(sizes: [CGSize], toConsumeWidth: CGFloat) -> [CGSize] {
@@ -180,19 +184,6 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 		}
 		
 		return tempSizes
-	}
-	
-	private func adjustRectForPadding(rect: CGRect) -> CGRect {
-		var tempRect = rect
-		var updatedX = tempRect.origin.x
-		
-		if tempRect.origin.x != 0 {
-			updatedX += cellPadding
-		}
-		
-		tempRect = CGRect(x: updatedX, y: tempRect.origin.y + cellPadding, width: tempRect.width, height: tempRect.height)
-		
-		return tempRect
 	}
 	
 	override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
