@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectibleDetailAttributeItemCell: UICollectionViewCell {
+class CollectibleDetailAttributeItemCellOld: UICollectionViewCell {
     
 	@IBOutlet weak var keyLabel: UILabel!
 	@IBOutlet weak var valueLabel: UILabel!
@@ -15,6 +15,7 @@ class CollectibleDetailAttributeItemCell: UICollectionViewCell {
 	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 		let contentWidth = UIScreen.main.bounds.size.width - (CollectiblesDetailsViewController.screenMargin * 2)
 		let size = CGSize(width: (contentWidth - (CollectiblesDetailsViewController.horizontalCellSpacing * 2)) / 2, height: 0)
+		
 		layoutAttributes.frame.size = contentView.systemLayoutSizeFitting(size, withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
 		
 		return layoutAttributes

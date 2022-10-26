@@ -10,7 +10,7 @@ import UIKit
 class CollectibleDetailDescriptionCell: UICollectionViewCell {
     
 	@IBOutlet weak var descriptionTitleLabel: UILabel!
-	@IBOutlet weak var descriptionLabel: UILabel!
+	@IBOutlet weak var textView: UITextView!
 	
 	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 		let targetSize = CGSize(width: UIScreen.main.bounds.size.width - (CollectiblesDetailsViewController.screenMargin * 2), height: 0)

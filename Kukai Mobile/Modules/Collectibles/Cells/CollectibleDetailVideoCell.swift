@@ -12,6 +12,7 @@ class CollectibleDetailVideoCell: UICollectionViewCell {
 	
 	@IBOutlet weak var placeholderView: UIView!
 	
+	/*
 	override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
 		let width = UIScreen.main.bounds.size.width - (CollectiblesDetailsViewController.screenMargin * 2)
 		let targetSize = CGSize(width: width, height: 0)
@@ -21,6 +22,7 @@ class CollectibleDetailVideoCell: UICollectionViewCell {
 		
 		return layoutAttributes
 	}
+	*/
 	
 	func setup(avplayerController: AVPlayerViewController) {
 		placeholderView.backgroundColor = .clear
