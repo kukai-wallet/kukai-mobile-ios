@@ -67,7 +67,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			
 			let requiredSize = contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
 			
-			let frame = CGRect(x: 0, y: yOffset, width: requiredSize.width, height: requiredSize.height)
+			let frame = CGRect(x: 0, y: yOffset, width: requiredSize.width, height: requiredSize.height.rounded(.up))
 			let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
 			attributes.frame = frame
 			cache[0].append(attributes)

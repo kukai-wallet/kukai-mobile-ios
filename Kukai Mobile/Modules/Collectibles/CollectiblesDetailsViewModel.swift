@@ -166,8 +166,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		currentSnapshot.appendItems(section2Content, toSection: 1)
 		
 		
-		
-		
 		// Apply update so placeholder loads
 		ds.apply(currentSnapshot, animatingDifferences: animate)
 		
@@ -183,7 +181,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		}
 	}
 	
-	func configure(cell: UICollectionViewCell?, withItem item: CellDataType) -> UICollectionViewCell {
+	func configure(cell: UICollectionViewCell?, withItem item: CellDataType, layoutOnly: Bool = false) -> UICollectionViewCell {
 		guard let cell = cell else {
 			return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		}
@@ -203,11 +201,16 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				parsedCell.heightConstriant.constant = height
 			}
 			
-			MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			if !layoutOnly {
+				MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			}
 			
 			return parsedCell
 			
 		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailVideoCell {
+			if layoutOnly {
+				return parsedCell
+			}
 			
 			// Make sure we only register the player controller once
 			if self.playerController == nil, let url = obj.mediaURL {
@@ -231,7 +234,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			parsedCell.nameLabel.text = obj.name
 			parsedCell.websiteButton.setTitle(obj.collectionName, for: .normal)
 			
-			//MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			if !layoutOnly {
+				MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			}
 			
 			return parsedCell
 			
@@ -378,35 +383,35 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 				switch indexPath.row {
 					case 0:
 						if let item = item as? MediaPlaceholder {
-							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item)
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item, layoutOnly: true)
 							
 						} else if let item = item as? MediaContent, item.isImage {
-							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item)
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item, layoutOnly: true)
 							
 						} else {
-							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailVideoCell", ofType: CollectibleDetailVideoCell.self), withItem: item)
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailVideoCell", ofType: CollectibleDetailVideoCell.self), withItem: item, layoutOnly: true)
 						}
 						
 					case 1:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item)
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item, layoutOnly: true)
 					case 2:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailShowcaseCell", ofType: CollectibleDetailShowcaseCell.self), withItem: item)
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailShowcaseCell", ofType: CollectibleDetailShowcaseCell.self), withItem: item, layoutOnly: true)
 					case 3:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item)
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item, layoutOnly: true)
 					case 4:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailDescriptionCell", ofType: CollectibleDetailDescriptionCell.self), withItem: item)
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailDescriptionCell", ofType: CollectibleDetailDescriptionCell.self), withItem: item, layoutOnly: true)
 					case 5:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeHeaderCell", ofType: CollectibleDetailAttributeHeaderCell.self), withItem: item)
+						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeHeaderCell", ofType: CollectibleDetailAttributeHeaderCell.self), withItem: item, layoutOnly: true)
 					
 					default:
-						return configure(cell: nil, withItem: item)
+						return configure(cell: nil, withItem: item, layoutOnly: true)
 				}
 				
 			case 1:
-				return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self), withItem: item)
+				return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self), withItem: item, layoutOnly: true)
 			
 			default:
-				return configure(cell: nil, withItem: item)
+				return configure(cell: nil, withItem: item, layoutOnly: true)
 		}
 	}
 }
