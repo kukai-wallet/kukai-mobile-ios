@@ -9,6 +9,7 @@ import UIKit
 import KukaiCoreSwift
 
 protocol CollectibleDetailLayoutDataDelegate: AnyObject {
+	func reusableAttributeCell() -> CollectibleDetailAttributeItemCell?
 	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue
 	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
@@ -16,7 +17,7 @@ protocol CollectibleDetailLayoutDataDelegate: AnyObject {
 class CollectibleDetailLayout: UICollectionViewLayout {
 	
 	fileprivate var cellPadding: CGFloat = 4
-	fileprivate var cache = [UICollectionViewLayoutAttributes]()
+	fileprivate var cache: [[UICollectionViewLayoutAttributes]] = [[], []]
 	fileprivate var contentHeight: CGFloat = 0
 	
 	fileprivate var contentWidth: CGFloat {
@@ -37,7 +38,6 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 	
 	private let minimumCellWidth: CGFloat = 120
 	private var defaultAttributeCellHeight: CGFloat = 0
-	private var reusableAttributeCell: CollectibleDetailAttributeItemCell? = nil
 	
 	public weak var delegate: CollectibleDetailLayoutDataDelegate?
 	
@@ -48,15 +48,12 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 	}
 	
 	override func prepare() {
-		guard cache.isEmpty == true, let collectionView = collectionView else {
+		guard cache[0].count == 0, let collectionView = collectionView else {
 			return
 		}
 		
-		var sectionOffset: CGFloat = 0
-		sectionOffset = prepareSection0(forCollectionView: collectionView, withOffset: sectionOffset) // All full width
-		sectionOffset = prepareSection1(forCollectionView: collectionView, withOffset: sectionOffset) // Custom grid pattern
-		
-		contentHeight = sectionOffset + cellPadding
+		contentHeight = prepareSection0(forCollectionView: collectionView, withOffset: contentHeight)// All full width
+		contentHeight = prepareSection1(forCollectionView: collectionView, withOffset: contentHeight) // Custom grid pattern
 	}
 	
 	private func prepareSection0(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {
@@ -73,7 +70,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			let frame = CGRect(x: 0, y: yOffset, width: requiredSize.width, height: requiredSize.height)
 			let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
 			attributes.frame = frame
-			cache.append(attributes)
+			cache[0].append(attributes)
 			
 			yOffset += requiredSize.height + cellPadding
 		}
@@ -82,18 +79,19 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 	}
 	
 	private func prepareSection1(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {
-		reusableAttributeCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
-		reusableAttributeCell?.keyLabel.text = "a"
-		reusableAttributeCell?.valueLabel.text = "b"
+		let numberOfCellsInSection = collectionView.numberOfItems(inSection: 1)
+		if numberOfCellsInSection == 0 {
+			return sectionOffset
+		}
 		
-		guard let reusableAttributeCell = reusableAttributeCell else {
+		guard let reusableAttributeCell = delegate?.reusableAttributeCell() else {
 			return sectionOffset
 		}
 		
 		defaultAttributeCellHeight = reusableAttributeCell.contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
 		
 		var cellSizes: [CGSize] = []
-		for cellIndex in 0 ..< collectionView.numberOfItems(inSection: 1) {
+		for cellIndex in 0 ..< (numberOfCellsInSection) {
 			let indexPath = IndexPath(row: cellIndex, section: 1)
 			guard let attribute = delegate?.attributeFor(indexPath: indexPath) else {
 				continue
@@ -160,7 +158,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 				let frame = CGRect(x: xOffset, y: yOffset, width: item.width, height: item.height)
 				let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
 				attributes.frame = frame
-				cache.append(attributes)
+				cache[1].append(attributes)
 				
 				xOffset = xOffset + item.width + cellPadding
 				cellIndex += 1
@@ -187,23 +185,31 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 	}
 	
 	override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-		
 		var visibleLayoutAttributes = [UICollectionViewLayoutAttributes]()
 		
 		// Loop through the cache and look for items in the rect
-		for attributes in cache {
-			if attributes.frame.intersects(rect) {
-				visibleLayoutAttributes.append(attributes)
+		for sectionArray in cache {
+			for attributes in sectionArray {
+				if attributes.frame.intersects(rect) {
+					visibleLayoutAttributes.append(attributes)
+				}
 			}
 		}
+		
 		return visibleLayoutAttributes
 	}
 	
 	override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-		if indexPath.item < cache.count {
-			return cache[indexPath.item]
+		if indexPath.section < cache.count && indexPath.row < cache[indexPath.section].count {
+			return cache[indexPath.section][indexPath.row]
 		} else {
 			return nil
 		}
+	}
+	
+	override func prepare(forCollectionViewUpdates updateItems: [UICollectionViewUpdateItem]) {
+		self.contentHeight = 0
+		self.cache = [[], []]
+		self.prepare()
 	}
 }

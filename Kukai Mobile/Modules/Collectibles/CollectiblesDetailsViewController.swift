@@ -62,7 +62,8 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		if indexPath.section == 1 && indexPath.row == 0 {
+		let numberOfRowsInSection0 = collectionView.numberOfItems(inSection: 0)
+		if indexPath.section == 0 && indexPath.row == numberOfRowsInSection0-1 {
 			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
 		}
 	}

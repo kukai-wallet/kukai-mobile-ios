@@ -45,6 +45,10 @@ struct AttributesContent: Hashable {
 	var expanded: Bool
 }
 
+struct BlankFooter: Hashable {
+	let id: Int
+}
+
 
 // MARK: ViewModel
 
@@ -57,6 +61,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private let mediaService = MediaProxyService()
 	private var playerController: AVPlayerViewController? = nil
 	private var playerLooper: AVPlayerLooper? = nil
+	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	
 	var nft: NFT? = nil
 	var placeholderContent = MediaPlaceholder(animate: true)
@@ -76,7 +81,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeHeaderCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeItemCell")
 		
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			guard let self = self else {
 				return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath)
 			}
@@ -85,27 +90,36 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				case 0:
 					switch indexPath.row {
 						case 0:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath), withItem: itemIdentifier)
+							if let item = item as? MediaPlaceholder {
+								return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath), withItem: item)
+								
+							} else if let item = item as? MediaContent, item.isImage {
+								return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath), withItem: item)
+								
+							} else {
+								return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailVideoCell", for: indexPath), withItem: item)
+							}
+							
 						case 1:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: itemIdentifier)
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: item)
 						case 2:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailShowcaseCell", for: indexPath), withItem: itemIdentifier)
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailShowcaseCell", for: indexPath), withItem: item)
 						case 3:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: itemIdentifier)
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: item)
 						case 4:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath), withItem: itemIdentifier)
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath), withItem: item)
 						case 5:
-							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: itemIdentifier)
+							return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: item)
 							
 						default:
-							return self.configure(cell: nil, withItem: itemIdentifier)
+							return self.configure(cell: nil, withItem: item)
 					}
 					
 				case 1:
-					return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath), withItem: itemIdentifier)
+					return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath), withItem: item)
 					
 				default:
-					return self.configure(cell: nil, withItem: itemIdentifier)
+					return self.configure(cell: nil, withItem: item)
 			}
 		})
 	}
@@ -137,37 +151,22 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		currentSnapshot.appendItems(section1Content, toSection: 0)
 		
 		// Process section 2
-		/*let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
+		reusableAttributeSizingCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
+		reusableAttributeSizingCell?.keyLabel.text = "a"
+		reusableAttributeSizingCell?.valueLabel.text = "b"
+		
+		attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
 		if attributes.count > 0 {
 			if attributesContent.expanded {
-				section2Content.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
+				section2Content.append(contentsOf: attributes)
 			}
 			currentSnapshot.appendItems(section2Content, toSection: 1)
-		}*/
+		}
+		
+		currentSnapshot.appendItems(section2Content, toSection: 1)
 		
 		
-		//section2Content.append(contentsOf: nft?.metadata?.getKeyValuesFromAttributes() ?? [])
 		
-		attributes = [
-			TzKTBalanceMetadataAttributeKeyValue(key: "Mood", value: "Taco Tuesday"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Artist", value: "Taco"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Thought", value: "This is my kind of dessert"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "For", value: "Mooncakes"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Moondust", value: "No more than 5 seconds of accumulation"),
-			
-			TzKTBalanceMetadataAttributeKeyValue(key: "Moondust 1", value: "No more than 5 seconds of accumulation"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Mood 1", value: "Taco Tuesday"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "For 1", value: "Mooncakes"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Artist 1", value: "Taco"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Thought 1", value: "This is my kind of dessert"),
-			
-			TzKTBalanceMetadataAttributeKeyValue(key: "Mood 2", value: "Taco Tuesday"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Artist 2", value: "Taco"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Thought 2", value: "This is my kind of dessert"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "For 2", value: "Mooncakes"),
-			TzKTBalanceMetadataAttributeKeyValue(key: "Moondust 2", value: "No more than 5 seconds of accumulation"),
-		]
-		currentSnapshot.appendItems(attributes, toSection: 1)
 		
 		// Apply update so placeholder loads
 		ds.apply(currentSnapshot, animatingDifferences: animate)
@@ -177,13 +176,11 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		self.state = .success(nil)
 		
 		
-		/*
 		// Then load the media either form cache, or from internet
 		// Sometimes the type of content can be figured out from already cached metadata, in those cases avoid jarring visuals by reloading too quickly, by adding an artifical delay
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+		DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
 			self?.loadDataFromCacheOrDownload(nft: self?.nft)
 		}
-		*/
 	}
 	
 	func configure(cell: UICollectionViewCell?, withItem item: CellDataType) -> UICollectionViewCell {
@@ -206,7 +203,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				parsedCell.heightConstriant.constant = height
 			}
 			
-			//MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 			
 			return parsedCell
 			
@@ -267,9 +264,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 		} else if let parsedCell = cell as? CollectibleDetailAttributeHeaderCell {
 			return parsedCell
+			
 		}
 		
-		return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
+		return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 	}
 	
 	func loadDataFromCacheOrDownload(nft: NFT?) {
@@ -322,7 +320,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		}
 	}
 	
-	
 	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
@@ -336,9 +333,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			self.closeGroup(forCollectionView: collectionView, atIndexPath: indexPath)
 		}
 		
-		ds.apply(currentSnapshot, animatingDifferences: true) { [weak self] in
-			if self?.attributesContent.expanded == true {
-				collectionView.scrollToItem(at: IndexPath(row: 1, section: 1), at: .bottom, animated: true)
+		ds.apply(self.currentSnapshot, animatingDifferences: true) {
+			if self.attributesContent.expanded == true {
+				collectionView.scrollToItem(at: IndexPath(row: 0, section: 1), at: .bottom, animated: true)
 			}
 		}
 	}
@@ -348,9 +345,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			cell.setOpen()
 		}
 		
-		let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
-		
-		currentSnapshot.insertItems(attributes, afterItem: attributesContent)
+		currentSnapshot.appendItems(attributes, toSection: 1)
 		attributesContent.expanded = true
 	}
 	
@@ -359,14 +354,16 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			cell.setClosed()
 		}
 		
-		let attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
-		
 		currentSnapshot.deleteItems(attributes)
 		attributesContent.expanded = false
 	}
 }
 
 extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
+	
+	func reusableAttributeCell() -> CollectibleDetailAttributeItemCell? {
+		return reusableAttributeSizingCell
+	}
 	
 	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue {
 		return attributes[indexPath.row]
@@ -380,7 +377,16 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 			case 0:
 				switch indexPath.row {
 					case 0:
-						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item)
+						if let item = item as? MediaPlaceholder {
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item)
+							
+						} else if let item = item as? MediaContent, item.isImage {
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item)
+							
+						} else {
+							return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailVideoCell", ofType: CollectibleDetailVideoCell.self), withItem: item)
+						}
+						
 					case 1:
 						return configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item)
 					case 2:
