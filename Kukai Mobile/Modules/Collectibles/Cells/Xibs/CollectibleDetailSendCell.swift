@@ -15,4 +15,8 @@ class CollectibleDetailSendCell: UICollectionViewCell {
         super.awakeFromNib()
         // Initialization code
     }
+	
+	func setup(target: Any?, action: Selector) {
+		sendButton.addTarget(target, action: action, for: .touchUpInside)
+	}
 }

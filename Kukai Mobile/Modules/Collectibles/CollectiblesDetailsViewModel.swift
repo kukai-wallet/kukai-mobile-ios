@@ -68,6 +68,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	
 	var nft: NFT? = nil
+	var sendTarget: Any? = nil
+	var sendAction: Selector? = nil
 	var placeholderContent = MediaPlaceholder(animate: true)
 	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil)
 	var attributesContent = AttributesContent(expanded: false)
@@ -254,6 +256,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
 			parsedCell.sendButton.isEnabled = obj.enabled
+			if let target = sendTarget, let action = sendAction {
+				parsedCell.setup(target: target, action: action)
+			}
+			
 			return parsedCell
 			
 		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {

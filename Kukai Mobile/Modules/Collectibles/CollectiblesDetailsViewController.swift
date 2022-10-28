@@ -26,6 +26,8 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		}
 		
 		viewModel.nft = nft
+		viewModel.sendTarget = self
+		viewModel.sendAction = #selector(self.sendTapped)
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
@@ -63,6 +65,20 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		let numberOfRowsFirstSection = collectionView.numberOfItems(inSection: 0)
 		if indexPath.section == 0 && indexPath.row == numberOfRowsFirstSection-1 {
 			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+		}
+	}
+	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.dismiss(animated: true)
+	}
+	
+	@objc func sendTapped() {
+		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
+		TransactionService.shared.sendData.chosenNFT = viewModel.nft
+		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
+		
+		self.dismiss(animated: true) {
+			homeTabController?.sendButtonTapped(self)
 		}
 	}
 }
