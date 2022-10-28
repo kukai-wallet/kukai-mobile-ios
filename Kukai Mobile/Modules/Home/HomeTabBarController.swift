@@ -148,7 +148,7 @@ class HomeTabBarController: UITabBarController {
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: "tz1arY7HNDq17nrZJ7f3sikxuHZgeopsU9xq", refreshType: refreshType) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
 			guard let self = self else { return }
 			
 			self.refreshType = .useCache
