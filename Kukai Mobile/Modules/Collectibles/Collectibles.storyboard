@@ -173,34 +173,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbI-6z-BtC">
-                                <rect key="frame" x="344" y="63" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="0Fo-BH-zFx"/>
-                                    <constraint firstAttribute="width" constant="44" id="9lJ-EN-oNb"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="xmark" catalog="system" symbolScale="large"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="09G-6s-FgX">
-                                <rect key="frame" x="16" y="68" width="79" height="34"/>
-                                <color key="backgroundColor" name="primary-button-background"/>
-                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="ON SALE">
-                                    <color key="titleColor" name="background"/>
-                                </state>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0.015 tez" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xmo-8Q-1Cj">
-                                <rect key="frame" x="103" y="74.333333333333329" width="225" height="21.666666666666671"/>
-                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-yg-0QC">
-                                <rect key="frame" x="0.0" y="110" width="390" height="700"/>
+                                <rect key="frame" x="0.0" y="55" width="390" height="755"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1xL-Fe-DP7">
                                     <size key="itemSize" width="390" height="210"/>
@@ -210,28 +184,38 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbI-6z-BtC">
+                                <rect key="frame" x="338" y="63" width="44" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="0Fo-BH-zFx"/>
+                                    <constraint firstAttribute="width" constant="44" id="9lJ-EN-oNb"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="xmark" catalog="system" symbolScale="large"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BmB-t3-AoJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="D8m-yg-0QC" firstAttribute="top" secondItem="BmB-t3-AoJ" secondAttribute="top" constant="8" id="NCQ-55-6nU"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="leading" secondItem="BmB-t3-AoJ" secondAttribute="leading" id="Nxv-eg-hhF"/>
-                            <constraint firstItem="09G-6s-FgX" firstAttribute="centerY" secondItem="YbI-6z-BtC" secondAttribute="centerY" id="OC1-KG-grt"/>
-                            <constraint firstItem="09G-6s-FgX" firstAttribute="leading" secondItem="BmB-t3-AoJ" secondAttribute="leading" constant="16" id="OuY-mg-1aI"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="trailing" secondItem="BmB-t3-AoJ" secondAttribute="trailing" id="Qf7-jd-HeQ"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="bottom" secondItem="BmB-t3-AoJ" secondAttribute="bottom" id="RKW-Lk-Vtk"/>
                             <constraint firstItem="YbI-6z-BtC" firstAttribute="top" secondItem="BmB-t3-AoJ" secondAttribute="top" constant="16" id="bjm-ME-d87"/>
-                            <constraint firstItem="BmB-t3-AoJ" firstAttribute="trailing" secondItem="YbI-6z-BtC" secondAttribute="trailing" constant="2" id="dru-ae-4VB"/>
-                            <constraint firstItem="YbI-6z-BtC" firstAttribute="leading" secondItem="xmo-8Q-1Cj" secondAttribute="trailing" constant="16" id="gnU-tJ-AAn"/>
-                            <constraint firstItem="D8m-yg-0QC" firstAttribute="top" secondItem="09G-6s-FgX" secondAttribute="bottom" constant="8" id="kGk-Rd-Oot"/>
-                            <constraint firstItem="xmo-8Q-1Cj" firstAttribute="centerY" secondItem="09G-6s-FgX" secondAttribute="centerY" id="tIc-0K-yry"/>
-                            <constraint firstItem="xmo-8Q-1Cj" firstAttribute="leading" secondItem="09G-6s-FgX" secondAttribute="trailing" constant="8" id="uxQ-FI-Eun"/>
+                            <constraint firstItem="BmB-t3-AoJ" firstAttribute="trailing" secondItem="YbI-6z-BtC" secondAttribute="trailing" constant="8" id="dru-ae-4VB"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="closeButton" destination="YbI-6z-BtC" id="of4-lX-QSb"/>
                         <outlet property="collectionView" destination="D8m-yg-0QC" id="NwR-md-06n"/>
-                        <outlet property="onSaleButton" destination="09G-6s-FgX" id="wIs-Hi-4lJ"/>
-                        <outlet property="onSaleLabel" destination="xmo-8Q-1Cj" id="iIF-HA-Mb5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWj-Sf-i5j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -243,12 +227,6 @@
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="square.stack.3d.up.fill" catalog="system" width="128" height="125"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
-        <namedColor name="background">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="primary-button-background">
-            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="text-secondary">
             <color red="0.32941176470588235" green="0.32941176470588235" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

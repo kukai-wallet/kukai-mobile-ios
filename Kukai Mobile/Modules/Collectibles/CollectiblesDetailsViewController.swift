@@ -10,14 +10,8 @@ import KukaiCoreSwift
 import AVKit
 import Combine
 
-class CollectiblesDetailsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout/*, UICollectionViewGridLayoutDelegate*/ {
+class CollectiblesDetailsViewController: UIViewController, UICollectionViewDelegate {
 	
-	public static let screenMargin: CGFloat = 16
-	public static let verticalLineSpacing: CGFloat = 4
-	public static let horizontalCellSpacing: CGFloat = 4
-	
-	@IBOutlet weak var onSaleButton: UIButton!
-	@IBOutlet weak var onSaleLabel: UILabel!
 	@IBOutlet weak var closeButton: UIButton!
 	@IBOutlet weak var collectionView: UICollectionView!
 	
@@ -62,8 +56,12 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		let numberOfRowsInSection0 = collectionView.numberOfItems(inSection: 0)
-		if indexPath.section == 0 && indexPath.row == numberOfRowsInSection0-1 {
+		if viewModel.attributes.count == 0 {
+			return
+		}
+		
+		let numberOfRowsFirstSection = collectionView.numberOfItems(inSection: 0)
+		if indexPath.section == 0 && indexPath.row == numberOfRowsFirstSection-1 {
 			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
 		}
 	}
