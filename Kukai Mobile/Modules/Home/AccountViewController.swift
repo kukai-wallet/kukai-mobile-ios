@@ -26,6 +26,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		
 		self.view.addRadialGradient(withFrame: self.view.frame)
 		self.view.addBackgroundGradient()
+		//self.view.addBlur()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource

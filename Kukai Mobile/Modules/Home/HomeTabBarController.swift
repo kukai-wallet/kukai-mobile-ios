@@ -164,6 +164,8 @@ class HomeTabBarController: UITabBarController {
 		layer.position = self.tabBar.center
 		layer.frame = CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
 		self.tabBar.layer.insertSublayer(layer, at: 0)
+		
+		print("homepage layer width: \(layer.frame.width)")
 	}
 	
 	public func updateAccountButton() {

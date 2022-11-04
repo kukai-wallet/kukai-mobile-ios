@@ -184,6 +184,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		let navigationBarAppearance = UINavigationBarAppearance()
 		navigationBarAppearance.configureWithOpaqueBackground()
 		navigationBarAppearance.backgroundColor = UIColor.clear
+		navigationBarAppearance.shadowColor = .clear
+		
 		UINavigationBar.appearance().standardAppearance = navigationBarAppearance
 		UINavigationBar.appearance().compactAppearance = navigationBarAppearance
 		UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance

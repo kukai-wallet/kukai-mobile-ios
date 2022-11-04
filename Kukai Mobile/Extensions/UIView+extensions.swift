@@ -83,8 +83,8 @@ extension UIView {
 		radialGradientLayer.type = .radial
 		radialGradientLayer.frame = CGRect(x: -125, y: -264, width: 550, height: 550)
 		
-		radialGradientLayer.colors = [ UIColor.colorNamed("Brand-900", withAlpha: 0.1625).cgColor, UIColor.colorNamed("Brand-900", withAlpha: 0.075).cgColor ]
-		radialGradientLayer.locations = [ 0.01, 0.99 ]
+		radialGradientLayer.colors = [ UIColor.colorNamed("Brand-900", withAlpha: 0.1625).cgColor, UIColor.colorNamed("Brand-900", withAlpha: 0.075).cgColor, UIColor.colorNamed("Brand-900", withAlpha: 0).cgColor ]
+		radialGradientLayer.locations = [ 0.01, 0.8, 1 ]
 		radialGradientLayer.startPoint = CGPoint(x: 0.5, y: 0.5)
 		radialGradientLayer.endPoint = CGPoint(x: 1, y: 1)
 		radialGradientLayer.cornerRadius = 275
@@ -114,5 +114,13 @@ extension UIView {
 		 gradientLayer.bounds = self.bounds.insetBy(dx: -0.5*self.bounds.size.width, dy: -0.5*self.bounds.size.height)
 		 */
 		layer.insertSublayer(gradientLayer, at: 0)
+	}
+	
+	func addBlur() {
+		let effect = UIBlurEffect(style: .dark)
+		let blur = UIVisualEffectView(effect: effect)
+		blur.frame = self.frame
+		
+		self.insertSubview(blur, at: 0)
 	}
 }
