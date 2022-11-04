@@ -29,6 +29,7 @@ class HomeTabBarController: UITabBarController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		self.setupAppearence()
 		
 		// Load any initial data so we can draw UI immediately without lag
 		DependencyManager.shared.balanceService.loadCache()
@@ -128,6 +129,12 @@ class HomeTabBarController: UITabBarController {
 				self?.refreshType = .refreshEverything
 				self?.refresh()
 			}
+	}
+	
+	func setupAppearence() {
+		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
+		appearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-800") ?? .purple], for: .normal)
+		appearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Brand-800") ?? .purple], for: .selected)
 	}
 	
 	public func updateAccountButton() {
