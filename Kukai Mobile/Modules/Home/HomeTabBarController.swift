@@ -16,7 +16,7 @@ import OSLog
 
 class HomeTabBarController: UITabBarController {
 	
-	@IBOutlet weak var profileButton: UIButton!
+	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var sendButton: UIButton!
 	
@@ -62,16 +62,27 @@ class HomeTabBarController: UITabBarController {
 		setupTzKTAccountListener()
 		
 		
+		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: (self.view.frame.width * 0.60)))
+		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: self.view.frame.width - (32 + 88 + 20)))
+		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		accountButton.borderColor = .lightGray
+		accountButton.borderWidth = 1
+		accountButton.customCornerRadius = 10
 		
-		profileButton.addConstraint(NSLayoutConstraint(item: profileButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 40))
-		profileButton.addConstraint(NSLayoutConstraint(item: profileButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
+		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
+		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		sideMenuButton.borderColor = .lightGray
+		sideMenuButton.borderWidth = 1
+		sideMenuButton.customCornerRadius = 10
 		
-		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 40))
-		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 34))
+		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
+		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		sendButton.borderColor = .lightGray
+		sendButton.borderWidth = 1
+		sendButton.customCornerRadius = 10
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -133,8 +144,26 @@ class HomeTabBarController: UITabBarController {
 	
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
-		appearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-800") ?? .purple], for: .normal)
-		appearance.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(named: "Brand-800") ?? .purple], for: .selected)
+		appearance.setTitleTextAttributes([
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-800") ?? .purple,
+			NSAttributedString.Key.font: UIFont.roboto(ofType: .medium, andSize: 10)
+		], for: .normal)
+		appearance.setTitleTextAttributes([
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand-800") ?? .purple,
+			NSAttributedString.Key.font: UIFont.roboto(ofType: .medium, andSize: 10)
+		], for: .selected)
+		
+		self.tabBar.barTintColor = UIColor.colorNamed("Grey-1700")
+		
+		let layer = CAGradientLayer()
+		layer.colors = [ UIColor.colorNamed("Grey-2000", withAlpha: 0).cgColor, UIColor.colorNamed("Grey-2000", withAlpha: 0.55).cgColor]
+		layer.locations = [0.13, 1]
+		layer.startPoint = CGPoint(x: 0.25, y: 0.5)
+		layer.endPoint = CGPoint(x: 0.75, y: 0.5)
+		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
+		layer.position = self.tabBar.center
+		layer.frame = CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		self.tabBar.layer.insertSublayer(layer, at: 0)
 	}
 	
 	public func updateAccountButton() {
@@ -152,6 +181,8 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
+		// TODO: revert
+		/*
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
@@ -167,6 +198,7 @@ class HomeTabBarController: UITabBarController {
 			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
+		*/
 	}
 	
 	@IBAction func sendButtonTapped(_ sender: Any) {

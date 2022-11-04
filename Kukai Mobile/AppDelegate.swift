@@ -181,10 +181,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 	}
 	
 	func setAppearenceProxies() {
+		let navigationBarAppearance = UINavigationBarAppearance()
+		navigationBarAppearance.configureWithOpaqueBackground()
+		navigationBarAppearance.backgroundColor = UIColor.clear
+		UINavigationBar.appearance().standardAppearance = navigationBarAppearance
+		UINavigationBar.appearance().compactAppearance = navigationBarAppearance
+		UINavigationBar.appearance().scrollEdgeAppearance = navigationBarAppearance
+		
 		
 		// Change back button tint
-		let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
-		barButtonAppearence.tintColor = UIColor(named: "text-primary")
+		//let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
+		//barButtonAppearence.tintColor = UIColor(named: "text-primary")
 	}
 }
 

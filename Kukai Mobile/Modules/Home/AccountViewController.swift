@@ -21,6 +21,12 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		//self.view.backgroundColor = .white
+		self.view.backgroundColor = UIColor.colorNamed("Grey-1900")
+		
+		self.view.addRadialGradient(withFrame: self.view.frame)
+		self.view.addBackgroundGradient()
+		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self

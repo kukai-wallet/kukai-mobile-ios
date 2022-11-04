@@ -123,10 +123,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 		} else {
 			let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
-			section1Data.append(total)
+			var data: [AnyHashable] = [total]
+			data.append(contentsOf: section1Data)
 			
 			snapshot.appendSections([0])
-			snapshot.appendItems(section1Data, toSection: 0)
+			snapshot.appendItems(data, toSection: 0)
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
@@ -170,7 +171,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingLargeButtonCell") as? HeadingLargeButtonCell {
-			cell.setup(heading: "Balances", buttonTitle: "...")
+			cell.setup(heading: "Balances", buttonTitle: "")
 			return cell.contentView
 			
 		} else {
@@ -191,11 +192,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		// TODO: revert
+		/*
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
+		*/
 	}
 }
