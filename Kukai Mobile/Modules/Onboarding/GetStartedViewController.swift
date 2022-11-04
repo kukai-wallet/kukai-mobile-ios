@@ -88,25 +88,26 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	// MARK: - Shared
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		switch result {
-			case .success(let wallet):
-				
-				// Clear out any other wallets
-				let walletCache = WalletCacheService()
-				
-				// try to cache new one, and move on if successful
-				if walletCache.cache(wallet: wallet) {
-					handleSuccessNavigation()
+		self.hideLoadingModal { [weak self] in
+			switch result {
+				case .success(let wallet):
+					// Clear out any other wallets
+					let walletCache = WalletCacheService()
 					
-				} else {
-					self.alert(withTitle: "Error", andMessage: "Unable to cache")
-				}
-				
-			case .failure(let error):
-				self.alert(withTitle: "Error", andMessage: error.description)
+					// try to cache new one, and move on if successful
+					if walletCache.cache(wallet: wallet) {
+						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+							self?.handleSuccessNavigation()
+						}
+						
+					} else {
+						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+					}
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
 		}
-		
-		self.hideLoadingModal()
 	}
 	
 	func handleSuccessNavigation() {

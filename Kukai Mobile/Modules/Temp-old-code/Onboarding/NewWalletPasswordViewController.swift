@@ -34,7 +34,9 @@ class NewWalletPasswordViewController: UIViewController {
 			let walletCache = WalletCacheService()
 			
 			if walletCache.cache(wallet: wallet) {
-				self.performSegue(withIdentifier: "next", sender: self)
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+					self?.performSegue(withIdentifier: "next", sender: self)
+				}
 			} else {
 				self.alert(withTitle: "Error", andMessage: "Unable to cache")
 			}
