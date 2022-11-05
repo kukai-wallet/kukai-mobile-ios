@@ -60,7 +60,7 @@ public class TokenDetailsViewModel: ViewModel {
 		tokenBalance = token.balance.normalisedRepresentation + " \(token.symbol)"
 		
 		if token.isXTZ() {
-			tokenIcon = UIImage(named: "tezos-xtz-logo")
+			tokenIcon = UIImage(named: "tezos-logo")
 			
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ

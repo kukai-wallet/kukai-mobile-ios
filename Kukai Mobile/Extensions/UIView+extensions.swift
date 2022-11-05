@@ -123,4 +123,37 @@ extension UIView {
 		
 		self.insertSubview(blur, at: 0)
 	}
+	
+	func addGradientBorder(withColors colors: [CGColor], locations: [NSNumber], startPoint: CGPoint, endPoint: CGPoint, lineWidth: CGFloat, cornerRadius: CGFloat) {
+		let gradient = CAGradientLayer()
+		gradient.frame =  CGRect(origin: CGPoint.zero, size: self.frame.size)
+		gradient.colors = colors
+		gradient.locations = locations
+		gradient.startPoint = startPoint
+		gradient.endPoint = endPoint
+		
+		let shape = CAShapeLayer()
+		shape.lineWidth = lineWidth
+		shape.path = UIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).cgPath
+		shape.strokeColor = UIColor.black.cgColor
+		shape.fillColor = UIColor.clear.cgColor
+		gradient.mask = shape
+		
+		self.layer.cornerRadius = cornerRadius
+		self.layer.insertSublayer(gradient, at: 0)
+		self.clipsToBounds = true
+	}
+	
+	func addTitleButtonBorderGradient() {
+		self.addGradientBorder(
+			withColors: [
+				UIColor("#3A3D63", alpha: 1).cgColor,
+				UIColor("#5861DE", alpha: 0.51).cgColor
+			],
+			locations: [0, 0.65],
+			startPoint: CGPoint(x: 0.5, y: 0.1),
+			endPoint: CGPoint(x: 0.5, y: 0.9),
+			lineWidth: 2,
+			cornerRadius: 10)
+	}
 }

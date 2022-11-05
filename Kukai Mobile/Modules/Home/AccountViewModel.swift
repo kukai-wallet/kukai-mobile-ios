@@ -55,7 +55,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage(named: "tezos-xtz-logo")
+				cell.iconView.image = UIImage(named: "tezos-logo")
 				cell.symbolLabel.text = "Tezos"
 				cell.balanceLabel.text = amount.normalisedRepresentation
 				
@@ -68,8 +68,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
 				
+				cell.iconView.image = UIImage(named: "unknown-token")
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
 				
@@ -155,27 +156,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			// Return success
 			self.state = .success(nil)
-		}
-	}
-	
-	func heightForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> CGFloat {
-		let view = viewForHeaderInSection(section, forTableView: tableView)
-		view.sizeToFit()
-		
-		return view.frame.size.height
-	}
-	
-	func viewForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> UIView {
-		if isPresentedForSelectingToken {
-			return UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1)) // If return zero, it defaults to standard transparent headers of size ~20px
-		}
-		
-		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "HeadingLargeButtonCell") as? HeadingLargeButtonCell {
-			cell.setup(heading: "Balances", buttonTitle: "")
-			return cell.contentView
-			
-		} else {
-			return UIView()
 		}
 	}
 	

@@ -65,14 +65,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		viewModel.isVisible = false
 	}
 	
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
-	}
-	
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		

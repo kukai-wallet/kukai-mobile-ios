@@ -77,7 +77,7 @@ public class EnterAddressComponent: UIView {
 		innerView.borderWidth = 1
 		innerView.borderColor = .lightGray
 		
-		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-xtz-logo"))
+		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-logo"))
 		textFieldLeftViewImageTypeLogo.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
 		
 		let textFieldLeftViewImageChevron = UIImageView(image: UIImage(systemName: "chevron.down"))
@@ -234,7 +234,7 @@ extension EnterAddressComponent: AddressTypeDelegate {
 		
 		switch type {
 			case .tezosAddress:
-				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-xtz-logo")
+				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-logo")
 				textField.placeholder = "e.g. tz1abc123..."
 				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 				

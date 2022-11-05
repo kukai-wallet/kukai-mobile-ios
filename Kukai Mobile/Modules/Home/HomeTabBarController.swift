@@ -68,21 +68,12 @@ class HomeTabBarController: UITabBarController {
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: self.view.frame.width - (32 + 88 + 20)))
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
-		accountButton.borderColor = .lightGray
-		accountButton.borderWidth = 1
-		accountButton.customCornerRadius = 10
 		
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
-		sideMenuButton.borderColor = .lightGray
-		sideMenuButton.borderWidth = 1
-		sideMenuButton.customCornerRadius = 10
 		
 		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
 		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
-		sendButton.borderColor = .lightGray
-		sendButton.borderWidth = 1
-		sendButton.customCornerRadius = 10
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -131,6 +122,11 @@ class HomeTabBarController: UITabBarController {
 			self.refreshType = .useCache
 			refresh()
 		}
+		
+		
+		sideMenuButton.addTitleButtonBorderGradient()
+		accountButton.addTitleButtonBorderGradient()
+		sendButton.addTitleButtonBorderGradient()
 	}
 	
 	func setupTzKTAccountListener() {
