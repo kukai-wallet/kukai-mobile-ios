@@ -92,4 +92,27 @@ extension UIView {
 			locations: [0.36, 0.93],
 			degress: cssDegreesToIOS(92.91))
 	}
+	
+	func addGradientTabBar(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor.colorNamed("Grey-2000", withAlpha: 0).cgColor,
+				UIColor.colorNamed("Grey-2000", withAlpha: 0.55).cgColor,
+			],
+			locations: [0.13, 1],
+			degress: cssDegreesToIOS(180))
+		
+		/*
+		let layer = CAGradientLayer()
+		layer.colors = [ UIColor.colorNamed("Grey-2000", withAlpha: 0).cgColor, UIColor.colorNamed("Grey-2000", withAlpha: 0.55).cgColor]
+		layer.locations = [0.13, 1]
+		layer.startPoint = CGPoint(x: 0.25, y: 0.5)
+		layer.endPoint = CGPoint(x: 0.75, y: 0.5)
+		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
+		layer.position = self.tabBar.center
+		layer.frame = CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		self.tabBar.layer.insertSublayer(layer, at: 0)
+		*/
+	}
 }
