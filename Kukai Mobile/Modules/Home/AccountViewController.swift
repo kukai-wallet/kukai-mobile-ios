@@ -23,10 +23,8 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		
 		//self.view.backgroundColor = .white
 		self.view.backgroundColor = UIColor.colorNamed("Grey-1900")
+		let _ = self.view.addGradientBackgroundFull()
 		
-		self.view.addRadialGradient(withFrame: self.view.frame)
-		self.view.addBackgroundGradient()
-		//self.view.addBlur()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource

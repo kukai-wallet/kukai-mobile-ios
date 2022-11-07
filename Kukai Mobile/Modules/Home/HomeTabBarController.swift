@@ -26,6 +26,7 @@ class HomeTabBarController: UITabBarController {
 	private var refreshType: BalanceService.RefreshType = .useCache
 	
 	private var bag = [AnyCancellable]()
+	private var gradientLayers: [CAGradientLayer] = []
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,12 +123,25 @@ class HomeTabBarController: UITabBarController {
 			self.refreshType = .useCache
 			refresh()
 		}
-		
-		
-		sideMenuButton.addTitleButtonBorderGradient()
-		accountButton.addTitleButtonBorderGradient()
-		sendButton.addTitleButtonBorderGradient()
 	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		for x in gradientLayers {
+			x.removeFromSuperlayer()
+		}
+		
+		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
+	}
+	
+	
+	
+	
+	
+	
 	
 	func setupTzKTAccountListener() {
 		activityDetectedCancellable = DependencyManager.shared.tzktClient.$accountDidChange
