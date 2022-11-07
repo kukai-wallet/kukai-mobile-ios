@@ -92,6 +92,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"Grey-1800": UIColor("#1C1C27"),
 				"Grey-1900": UIColor("#14141D"),
 				"Grey-2000": UIColor("#000000"),
+				
+				"Positive-500": UIColor("#09AE4B"),
+				"Caution-900": UIColor("#CC6483"),
 			],
 			darkColors: [
 				"Brand-100": UIColor("#F8F8FF"),
@@ -132,6 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"Grey-1800": UIColor("#1C1C27"),
 				"Grey-1900": UIColor("#14141D"),
 				"Grey-2000": UIColor("#000000"),
+				
+				"Positive-500": UIColor("#09AE4B"),
+				"Caution-900": UIColor("#CC6483"),
 			],
 			others: [
 				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [

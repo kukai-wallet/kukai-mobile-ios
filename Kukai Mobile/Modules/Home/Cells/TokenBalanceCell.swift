@@ -13,8 +13,9 @@ class TokenBalanceCell: UITableViewCell {
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
-	@IBOutlet weak var rateLabel: UILabel!
 	@IBOutlet weak var valuelabel: UILabel!
+	@IBOutlet weak var priceChangeIcon: UIImageView!
+	@IBOutlet weak var priceChangeLabel: UILabel!
 	
 	private var gradient = CAGradientLayer()
 	
