@@ -166,8 +166,46 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		accountButton.setImage((wallet.type == .social) ? UIImage(systemName: "xmark.octagon") : UIImage(), for: .normal)
-		accountButton.setTitle("Wallet Type: \(wallet.type.rawValue)\n\(wallet.address)", for: .normal)
+		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
+		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
+		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+	}
+	
+	func imageForWallet(wallet: Wallet) -> UIImage? {
+		if wallet.type == .social, let sWallet = wallet as? TorusWallet {
+			switch sWallet.authProvider {
+				case .apple:
+					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					
+				case .google:
+					return UIImage(named: "social-google")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					
+				case .twitter:
+					return UIImage(named: "social-twitter")?.resizedImage(Size: CGSize(width: 20, height: 20))
+				
+				default:
+					return UIImage(systemName: "xmark.octagon")
+			}
+		}
+		
+		return nil
+	}
+	
+	func textForWallet(wallet: Wallet) -> NSAttributedString {
+		let attrs1 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 14), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-200")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-1000")]
+		
+		if let sWallet = wallet as? TorusWallet {
+			let attributedString1 = NSMutableAttributedString(string: "\(sWallet.socialUserId ?? "")\n", attributes: attrs1)
+			let attributedString2 = NSMutableAttributedString(string: sWallet.address, attributes: attrs2)
+			attributedString1.append(attributedString2)
+			
+			return attributedString1
+			
+		} else {
+			let attributedString1 = NSMutableAttributedString(string: wallet.address, attributes: attrs1)
+			return attributedString1
+		}
 	}
 	
 	func refresh() {

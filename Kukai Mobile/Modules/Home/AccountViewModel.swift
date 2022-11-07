@@ -161,8 +161,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func token(atIndexPath: IndexPath) -> Token {
+	func token(atIndexPath: IndexPath) -> Token? {
 		if atIndexPath.row == 0 {
+			return nil
+		}
+		
+		if atIndexPath.row == 1 {
 			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
 		} else {
 			return DependencyManager.shared.balanceService.account.tokens[atIndexPath.row - 1]
