@@ -68,9 +68,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
+				if cell.iconView.image == nil {
+					cell.iconView.image = UIImage(named: "unknown-token")
+				}
 				
-				cell.iconView.image = UIImage(named: "unknown-token")
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
 				
@@ -159,8 +161,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func token(atIndexPath: IndexPath) -> Token {
+	func token(atIndexPath: IndexPath) -> Token? {
 		if atIndexPath.row == 0 {
+			return nil
+		}
+		
+		if atIndexPath.row == 1 {
 			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
 		} else {
 			return DependencyManager.shared.balanceService.account.tokens[atIndexPath.row - 1]

@@ -93,12 +93,12 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ahW-zD-IoS">
-                                                    <rect key="frame" x="140" y="13.666666666666664" width="44" height="15"/>
+                                                    <rect key="frame" x="167.66666666666666" y="12" width="44" height="15"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="dDT-Lq-E5C"/>
                                                         <constraint firstAttribute="height" constant="15" id="uPh-kc-Dpu"/>
                                                     </constraints>
-                                                    <color key="tintColor" systemColor="systemGray4Color"/>
+                                                    <color key="tintColor" name="Grey-400"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain">
                                                         <imageReference key="image" image="info.circle.fill" catalog="system" symbolScale="medium"/>
@@ -108,8 +108,8 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Est. Value" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z3m-CC-pJC">
-                                                    <rect key="frame" x="16" y="10" width="124" height="22"/>
-                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                                    <rect key="frame" x="16" y="6.3333333333333321" width="151.66666666666666" height="25.999999999999996"/>
+                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="22"/>
                                                     <color key="textColor" name="Grey-900"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -203,19 +203,19 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;rate&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EDm-LF-YbI">
-                                                            <rect key="frame" x="54" y="42.333333333333336" width="44.666666666666657" height="19"/>
+                                                            <rect key="frame" x="54" y="37.666666666666664" width="44.666666666666657" height="19"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                                             <color key="textColor" name="Grey-1100"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nb9-dh-LFP">
-                                                            <rect key="frame" x="156.33333333333337" y="7.9999999999999982" width="193.66666666666663" height="28.333333333333329"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="24"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="nb9-dh-LFP">
+                                                            <rect key="frame" x="156.33333333333337" y="8.0000000000000018" width="193.66666666666663" height="23.666666666666671"/>
+                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="20"/>
                                                             <color key="textColor" name="Grey-200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HZV-OB-3F3">
-                                                            <rect key="frame" x="114.66666666666664" y="42.333333333333343" width="235.33333333333337" height="45.666666666666657"/>
+                                                            <rect key="frame" x="114.66666666666664" y="37.666666666666657" width="235.33333333333337" height="50.333333333333343"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                                             <color key="textColor" name="Grey-1100"/>
                                                             <nil key="highlightedColor"/>
@@ -297,6 +297,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Account" image="account-tab-off" selectedImage="account-tab-on" id="FIX-Za-EHJ"/>
                     <connections>
+                        <outlet property="balancesMoreButton" destination="Bro-mW-dPc" id="AI1-H0-HmB"/>
                         <outlet property="tableView" destination="VM9-7e-3V2" id="bgX-RR-3et"/>
                         <segue destination="1mA-o0-Kqr" kind="custom" identifier="details" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="aCY-Ak-9Fo"/>
                     </connections>
@@ -322,15 +323,18 @@
                                 </connections>
                             </button>
                         </barButtonItem>
-                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="d7D-y1-ezY">
-                            <rect key="frame" x="116.33333333333333" y="0.0" width="157.33333333333337" height="44"/>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="d7D-y1-ezY" customClass="AccountButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                            <rect key="frame" x="103.66666666666667" y="0.0" width="182.66666666666663" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
-                            <state key="normal" image="xmark.octagon" catalog="system">
+                            <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="8" maxY="0.0"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
+                            <state key="normal" image="social-apple">
                                 <string key="title">&lt;Account Name&gt;
 &lt;Account Address&gt;</string>
-                                <color key="titleColor" name="Grey-200"/>
+                                <color key="titleColor" name="Grey-2000"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </state>
                             <state key="selected">
                                 <color key="titleColor" name="text-secondary"/>
@@ -356,7 +360,7 @@
                                 <rect key="frame" x="330" y="0.0" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="send-icon"/>
+                                <state key="normal" image="nav-more"/>
                                 <connections>
                                     <action selector="sendButtonTapped:" destination="B7V-6A-7eN" eventType="touchUpInside" id="0Pi-ft-5be"/>
                                 </connections>
@@ -2118,11 +2122,11 @@
         <image name="discover-tab-on" width="24" height="24"/>
         <image name="ellipses" width="28" height="8"/>
         <image name="info.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="nav-more" width="26" height="26"/>
         <image name="plus.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="send-icon" width="26" height="25"/>
         <image name="side-menu-icon" width="26" height="20"/>
+        <image name="social-apple" width="30" height="30"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
-        <image name="xmark.octagon" catalog="system" width="128" height="112"/>
         <namedColor name="Grey-1100">
             <color red="0.47058823529411764" green="0.47843137254901963" blue="0.56470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -2132,8 +2136,14 @@
         <namedColor name="Grey-200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="Grey-2000">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Grey-300">
             <color red="0.93725490196078431" green="0.94117647058823528" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey-400">
+            <color red="0.9137254901960784" green="0.91764705882352937" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey-900">
             <color red="0.63529411764705879" green="0.64313725490196083" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

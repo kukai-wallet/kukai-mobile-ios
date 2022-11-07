@@ -26,6 +26,7 @@ class HomeTabBarController: UITabBarController {
 	private var refreshType: BalanceService.RefreshType = .useCache
 	
 	private var bag = [AnyCancellable]()
+	private var gradientLayers: [CAGradientLayer] = []
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -122,11 +123,18 @@ class HomeTabBarController: UITabBarController {
 			self.refreshType = .useCache
 			refresh()
 		}
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
 		
+		for x in gradientLayers {
+			x.removeFromSuperlayer()
+		}
 		
-		sideMenuButton.addTitleButtonBorderGradient()
-		accountButton.addTitleButtonBorderGradient()
-		sendButton.addTitleButtonBorderGradient()
+		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
 	}
 	
 	func setupTzKTAccountListener() {
@@ -150,18 +158,7 @@ class HomeTabBarController: UITabBarController {
 		], for: .selected)
 		
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey-1700")
-		
-		let layer = CAGradientLayer()
-		layer.colors = [ UIColor.colorNamed("Grey-2000", withAlpha: 0).cgColor, UIColor.colorNamed("Grey-2000", withAlpha: 0.55).cgColor]
-		layer.locations = [0.13, 1]
-		layer.startPoint = CGPoint(x: 0.25, y: 0.5)
-		layer.endPoint = CGPoint(x: 0.75, y: 0.5)
-		layer.transform = CATransform3DMakeAffineTransform(CGAffineTransform(a: 0, b: 1, c: -1, d: 0, tx: 1, ty: 0))
-		layer.position = self.tabBar.center
-		layer.frame = CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
-		self.tabBar.layer.insertSublayer(layer, at: 0)
-		
-		print("homepage layer width: \(layer.frame.width)")
+		let _ = self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0)))
 	}
 	
 	public func updateAccountButton() {
@@ -169,8 +166,46 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		accountButton.setImage((wallet.type == .social) ? UIImage(systemName: "xmark.octagon") : UIImage(), for: .normal)
-		accountButton.setTitle("Wallet Type: \(wallet.type.rawValue)\n\(wallet.address)", for: .normal)
+		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
+		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
+		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+	}
+	
+	func imageForWallet(wallet: Wallet) -> UIImage? {
+		if wallet.type == .social, let sWallet = wallet as? TorusWallet {
+			switch sWallet.authProvider {
+				case .apple:
+					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					
+				case .google:
+					return UIImage(named: "social-google")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					
+				case .twitter:
+					return UIImage(named: "social-twitter")?.resizedImage(Size: CGSize(width: 20, height: 20))
+				
+				default:
+					return UIImage(systemName: "xmark.octagon")
+			}
+		}
+		
+		return nil
+	}
+	
+	func textForWallet(wallet: Wallet) -> NSAttributedString {
+		let attrs1 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 14), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-200")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-1000")]
+		
+		if let sWallet = wallet as? TorusWallet {
+			let attributedString1 = NSMutableAttributedString(string: "\(sWallet.socialUserId ?? "")\n", attributes: attrs1)
+			let attributedString2 = NSMutableAttributedString(string: sWallet.address, attributes: attrs2)
+			attributedString1.append(attributedString2)
+			
+			return attributedString1
+			
+		} else {
+			let attributedString1 = NSMutableAttributedString(string: wallet.address, attributes: attrs1)
+			return attributedString1
+		}
 	}
 	
 	func refresh() {
