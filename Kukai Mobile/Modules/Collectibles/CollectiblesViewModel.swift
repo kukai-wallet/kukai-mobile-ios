@@ -55,7 +55,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let obj = item as? SpecialGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
 				cell.iconView.image = UIImage(named: obj.imageName)
@@ -74,6 +74,12 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTItemCell", for: indexPath) as? NFTItemCell {
 				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, balance: obj.balance)
+				
+				if indexPath.section < (self?.specialGroups.count ?? 0) {
+					cell.subtitleLabel.text = obj.parentAlias ?? obj.parentContract
+				} else {
+					cell.subtitleLabel.text = ""
+				}
 				
 				return cell
 				
@@ -156,7 +162,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.insertItems(specialGroup.nfts, afterItem: specialGroup)
 			
 		} else {
-			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
+			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section-specialGroups.count]
 			currentSnapshot.insertItems(nftGroup.nfts ?? [], afterItem: nftGroup)
 		}
 	}
@@ -171,7 +177,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.deleteItems(specialGroup.nfts)
 			
 		} else {
-			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
+			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section-specialGroups.count]
 			currentSnapshot.deleteItems(nftGroup.nfts ?? [])
 		}
 	}
