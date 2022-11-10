@@ -22,10 +22,8 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//self.view.backgroundColor = .white
 		self.view.backgroundColor = UIColor.colorNamed("Grey-1900")
 		let _ = self.view.addGradientBackgroundFull()
-		
 		
 		balancesMoreButton.menu = menuForBalancesMore()
 		balancesMoreButton.showsMenuAsPrimaryAction = true

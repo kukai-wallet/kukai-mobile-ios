@@ -196,7 +196,16 @@ class HomeTabBarController: UITabBarController {
 		let attrs2 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-1000")]
 		
 		if let sWallet = wallet as? TorusWallet {
-			let attributedString1 = NSMutableAttributedString(string: "\(sWallet.socialUserId ?? "")\n", attributes: attrs1)
+			var topText = sWallet.socialUserId ?? ""
+			if sWallet.authProvider == .apple {
+				if let username = sWallet.socialUsername, username != "" {
+					topText = username
+				} else {
+					topText = "Apple account"
+				}
+			}
+			
+			let attributedString1 = NSMutableAttributedString(string: "\(topText)\n", attributes: attrs1)
 			let attributedString2 = NSMutableAttributedString(string: sWallet.address, attributes: attrs2)
 			attributedString1.append(attributedString2)
 			

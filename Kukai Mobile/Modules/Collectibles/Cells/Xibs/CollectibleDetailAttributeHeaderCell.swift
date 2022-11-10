@@ -13,7 +13,6 @@ class CollectibleDetailAttributeHeaderCell: UICollectionViewCell {
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
     }
 	
 	public func setOpen() {

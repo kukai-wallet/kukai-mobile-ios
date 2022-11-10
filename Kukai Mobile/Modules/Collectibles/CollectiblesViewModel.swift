@@ -10,6 +10,13 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
+struct SpecialGroup: Hashable {
+	let imageName: String
+	let title: String
+	let count: Int
+	let nfts: [NFT]
+}
+
 class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -18,6 +25,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var specialGroups: [SpecialGroup] = []
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
@@ -49,9 +57,17 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
+			if let obj = item as? SpecialGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
+				cell.iconView.image = UIImage(named: obj.imageName)
+				cell.titleLabel.text = obj.title
+				cell.countLabel.text = "\(obj.count)"
+				
+				return cell
+				
+			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
 				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
 				cell.titleLabel.text = obj.name
+				cell.countLabel.text = "\(obj.nfts?.count ?? 0)"
 				
 				return cell
 				
@@ -75,13 +91,29 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		if let firstNFT = DependencyManager.shared.balanceService.account.nfts.first?.nfts?.first {
+			var duplicateCopy = firstNFT
+			
+			duplicateCopy.duplicateID = 1
+			specialGroups.append( SpecialGroup(imageName: "collectible-group-favs", title: "Favorites", count: 1, nfts: [duplicateCopy]) )
+			
+			duplicateCopy.duplicateID = 2
+			specialGroups.append( SpecialGroup(imageName: "collectible-group-recents", title: "Recents", count: 1, nfts: [duplicateCopy]) )
+			
+			duplicateCopy.duplicateID = 3
+			specialGroups.append( SpecialGroup(imageName: "collectible-group-showcase", title: "Showcase", count: 1, nfts: [duplicateCopy]) )
+		}
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		currentSnapshot.appendSections(Array(0..<DependencyManager.shared.balanceService.account.nfts.count))
+		currentSnapshot.appendSections(Array(0..<(DependencyManager.shared.balanceService.account.nfts.count + specialGroups.count) ))
+		
+		for (index, special) in specialGroups.enumerated() {
+			currentSnapshot.appendItems([special], toSection: index)
+		}
 		
 		for (index, nftGroup) in DependencyManager.shared.balanceService.account.nfts.enumerated() {
-			currentSnapshot.appendItems([nftGroup], toSection: index)
+			currentSnapshot.appendItems([nftGroup], toSection: index+specialGroups.count)
 		}
 		
 		ds.apply(currentSnapshot, animatingDifferences: animate)
@@ -119,9 +151,14 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setOpen()
 		}
 		
-		let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
-		
-		currentSnapshot.insertItems(nftGroup.nfts ?? [], afterItem: nftGroup)
+		if indexPath.section < specialGroups.count {
+			let specialGroup = specialGroups[indexPath.section]
+			currentSnapshot.insertItems(specialGroup.nfts, afterItem: specialGroup)
+			
+		} else {
+			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
+			currentSnapshot.insertItems(nftGroup.nfts ?? [], afterItem: nftGroup)
+		}
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
@@ -129,12 +166,25 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}
 		
-		let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
-		
-		currentSnapshot.deleteItems(nftGroup.nfts ?? [])
+		if indexPath.section < specialGroups.count {
+			let specialGroup = specialGroups[indexPath.section]
+			currentSnapshot.deleteItems(specialGroup.nfts)
+			
+		} else {
+			let nftGroup = DependencyManager.shared.balanceService.account.nfts[indexPath.section]
+			currentSnapshot.deleteItems(nftGroup.nfts ?? [])
+		}
 	}
 	
 	func nft(atIndexPath: IndexPath) -> NFT? {
 		return DependencyManager.shared.balanceService.account.nfts[atIndexPath.section].nfts?[atIndexPath.row-1]
+	}
+	
+	func isSectionExpanded(_ section: Int) -> Bool {
+		return expandedIndex?.section == section
+	}
+	
+	func isLastSpecialGroupSection(_ section: Int) -> Bool {
+		return section == specialGroups.count-1
 	}
 }

@@ -14,10 +14,28 @@ public protocol ValidatorTextFieldDelegate: AnyObject {
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String)
 }
 
+@IBDesignable
 public class ValidatorTextField: UITextField {
 
 	public var validator: Validator?
 	public weak var validatorTextFieldDelegate: ValidatorTextFieldDelegate?
+	
+	@IBInspectable var leftPadding: CGFloat = 0
+	@IBInspectable var leftImage: UIImage? {
+		didSet {
+			updateView()
+		}
+	}
+	
+	@IBInspectable var placeholderColor: UIColor = .lightGray {
+		didSet {
+			updateView()
+		}
+	}
+	@IBInspectable var placeholderFont: UIFont = .systemFont(ofSize: 14)
+	
+	@IBInspectable var clearButtonTint: UIColor = .lightGray
+	
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -29,6 +47,12 @@ public class ValidatorTextField: UITextField {
 		super.init(coder: coder)
 		
 		setup()
+	}
+	
+	public override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+		var textRect = super.leftViewRect(forBounds: bounds)
+		textRect.origin.x += leftPadding
+		return textRect
 	}
 	
 	func setup() {
@@ -47,6 +71,35 @@ public class ValidatorTextField: UITextField {
 		validatorTextFieldDelegate?.validated(result, textfield: self, forText: text)
 		
 		return result
+	}
+	
+	func updateView() {
+		if let image = leftImage {
+			leftViewMode = UITextField.ViewMode.always
+			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
+			imageView.contentMode = .scaleAspectFit
+			imageView.image = image
+			leftView = imageView
+		} else {
+			leftViewMode = UITextField.ViewMode.never
+			leftView = nil
+		}
+		
+		attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [
+			NSAttributedString.Key.foregroundColor: placeholderColor,
+			NSAttributedString.Key.font: placeholderFont,
+		])
+	}
+	
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		for view in subviews {
+			if let button = view as? UIButton {
+				button.setImage(button.image(for: .normal)?.withRenderingMode(.alwaysTemplate), for: .normal)
+				button.tintColor = clearButtonTint
+			}
+		}
 	}
 }
 

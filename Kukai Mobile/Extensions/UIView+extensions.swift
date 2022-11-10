@@ -68,7 +68,7 @@ extension UIView {
 	
 	func rotate(degrees: CGFloat, duration: CGFloat) {
 		UIView.animate(withDuration: duration, animations: { [weak self] in
-			self?.transform = CGAffineTransform(rotationAngle: (degrees * .pi) / degrees)
+			self?.transform = CGAffineTransform(rotationAngle: (degrees * .pi) / 180)
 		})
 	}
 	

@@ -59,7 +59,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.symbolLabel.text = "Tezos"
 				cell.balanceLabel.text = amount.normalisedRepresentation
 				
-				let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
+				//let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
 				//cell.rateLabel.text = "1 = \(singleXTZCurrencyString)"
 				
 				if indexPath.row % 2 == 0 {
