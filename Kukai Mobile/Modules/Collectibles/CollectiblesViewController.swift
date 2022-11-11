@@ -59,7 +59,7 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		
-		if indexPath.row == 0 {
+		if viewModel.shouldOpenCloseForIndexPathTap(indexPath) {
 			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
 			
 		} else if viewModel.isPresentedForSelectingToken, let nft = viewModel.nft(atIndexPath: indexPath), let parent = self.parent as? SendChooseTokenViewController {
@@ -85,6 +85,9 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 			} else {
 				c.addGradientBackground(withFrame: c.containerView.bounds)
 			}
+			
+		} else if let c = cell as? NFTGroupSingleCell {
+			c.addGradientBackground(withFrame: c.containerView.bounds)
 			
 		} else if let c = cell as? NFTItemCell {
 			let numberOfCellsInSection = tableView.numberOfRows(inSection: indexPath.section)
