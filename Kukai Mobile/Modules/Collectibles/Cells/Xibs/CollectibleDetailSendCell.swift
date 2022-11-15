@@ -17,6 +17,7 @@ class CollectibleDetailSendCell: UICollectionViewCell {
     }
 	
 	func setup(target: Any?, action: Selector) {
+		let _ = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
 		sendButton.addTarget(target, action: action, for: .touchUpInside)
 	}
 }

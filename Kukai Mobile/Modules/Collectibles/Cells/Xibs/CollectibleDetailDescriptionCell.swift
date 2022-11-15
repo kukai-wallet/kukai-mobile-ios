@@ -13,6 +13,7 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+		
+		textView.backgroundColor = .clear
     }
 }

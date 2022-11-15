@@ -105,8 +105,6 @@ extension UIView {
 			degress: cssDegreesToIOS(180))
 	}
 	
-	
-	
 	func addGradientNFTSection_top(withFrame frame: CGRect) -> CAGradientLayer {
 		return addGradientBorder(
 			withFrame: frame,
@@ -147,5 +145,27 @@ extension UIView {
 			lineWidth: 2,
 			corners: [.bottomLeft, .bottomRight],
 			cornerRadius: 8)
+	}
+	
+	func addGradientButtonPrimary(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor("#626AED", alpha: 1).cgColor,
+				UIColor("#862AFC", alpha: 1).cgColor,
+			],
+			locations: [0.22, 0.81],
+			degress: cssDegreesToIOS(117.79))
+	}
+	
+	func addGradientPanelAttributes(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor("#181826", alpha: 0.5).cgColor,
+				UIColor("#181826", alpha: 0.2).cgColor,
+			],
+			locations: [0, 1],
+			degress: cssDegreesToIOS(180))
 	}
 }

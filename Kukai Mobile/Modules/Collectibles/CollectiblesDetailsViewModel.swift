@@ -24,6 +24,7 @@ struct MediaContent: Hashable {
 	let isImage: Bool
 	let mediaURL: URL?
 	let height: Double?
+	let quantity: String?
 }
 
 struct NameContent: Hashable {
@@ -213,6 +214,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			if !layoutOnly {
 				MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+				
+				if let quantity = obj.quantity {
+					parsedCell.quantityLabel.text = quantity
+					
+				} else {
+					parsedCell.quantityView.isHidden = true
+				}
 			}
 			
 			return parsedCell
@@ -264,12 +272,12 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
 			let paragraphStyle = NSMutableParagraphStyle()
-			paragraphStyle.lineSpacing = 6
+			paragraphStyle.lineHeightMultiple = 1.15
 			paragraphStyle.paragraphSpacing = 6
 			
 			let attributedtext = NSAttributedString(string: obj.description, attributes: [
-				NSAttributedString.Key.foregroundColor: UIColor(named: "text-secondary") ?? UIColor.black,
-				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .light),
+				NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-600") ?? UIColor.black,
+				NSAttributedString.Key.font: UIFont.roboto(ofType: .regular, andSize: 16),
 				NSAttributedString.Key.paragraphStyle: paragraphStyle
 			])
 			
@@ -327,7 +335,12 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return
 		}
 		
-		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, height: height)], beforeItem: nameContent)
+		var quantity: String? = nil
+		if (nft?.balance ?? 0) > 1 {
+			quantity = "x\(nft?.balance.description ?? "0")"
+		}
+		
+		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, height: height, quantity: quantity)], beforeItem: nameContent)
 		currentSnapshot.deleteItems([placeholderContent])
 		
 		DispatchQueue.main.async { [weak self] in

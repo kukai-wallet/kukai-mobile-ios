@@ -12,7 +12,6 @@ import Combine
 
 class CollectiblesDetailsViewController: UIViewController, UICollectionViewDelegate {
 	
-	@IBOutlet weak var closeButton: UIButton!
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesDetailsViewModel()
@@ -20,6 +19,9 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		self.view.backgroundColor = UIColor.colorNamed("Grey-1900")
+		let _ = self.view.addGradientBackgroundFull()
 		
 		guard let nft = TransactionService.shared.sendData.chosenNFT else {
 			return

@@ -1,51 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Roboto-Bold.ttf">
+            <string>Roboto-Bold</string>
+        </array>
+        <array key="Roboto-Medium.ttf">
+            <string>Roboto-Medium</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CollectibleDetailOnSaleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="382" height="42"/>
+            <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="382" height="42"/>
+                <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mzf-RH-gq3">
-                        <rect key="frame" x="0.0" y="4" width="79" height="34"/>
-                        <color key="backgroundColor" name="primary-button-background"/>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mzf-RH-gq3">
+                        <rect key="frame" x="0.0" y="8" width="79" height="24"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="34" id="nlh-yO-aCn"/>
+                            <constraint firstAttribute="width" constant="79" id="THE-u0-MqS"/>
+                            <constraint firstAttribute="height" constant="24" id="nlh-yO-aCn"/>
                         </constraints>
+                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
                         <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                        <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                        <state key="normal" title="ON SALE">
+                        <state key="normal" title="ON SALE" backgroundImage="on-sale-background">
                             <color key="titleColor" name="background"/>
                         </state>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="0.015 tez" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQk-YG-TzF">
-                        <rect key="frame" x="87" y="10.333333333333334" width="255" height="21.666666666666664"/>
-                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
-                        <nil key="textColor"/>
+                        <rect key="frame" x="87" y="9.6666666666666643" width="255" height="21"/>
+                        <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="18"/>
+                        <color key="textColor" name="Grey-900"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="Mzf-RH-gq3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="IzR-w8-HET"/>
+                <constraint firstItem="Mzf-RH-gq3" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="IzR-w8-HET"/>
                 <constraint firstAttribute="trailing" secondItem="PQk-YG-TzF" secondAttribute="trailing" constant="40" id="JE9-f4-za9"/>
                 <constraint firstItem="Mzf-RH-gq3" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="MPj-hJ-AHh"/>
                 <constraint firstItem="PQk-YG-TzF" firstAttribute="leading" secondItem="Mzf-RH-gq3" secondAttribute="trailing" constant="8" id="PlE-uC-NSZ"/>
                 <constraint firstItem="PQk-YG-TzF" firstAttribute="centerY" secondItem="Mzf-RH-gq3" secondAttribute="centerY" id="a4D-zm-RoT"/>
-                <constraint firstAttribute="bottom" secondItem="Mzf-RH-gq3" secondAttribute="bottom" constant="4" id="h5s-2l-7ic"/>
+                <constraint firstAttribute="bottom" secondItem="Mzf-RH-gq3" secondAttribute="bottom" constant="8" id="h5s-2l-7ic"/>
             </constraints>
             <size key="customSize" width="382" height="50"/>
             <connections>
@@ -56,11 +67,12 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <namedColor name="background">
-            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.89803921568627454" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="on-sale-background" width="80" height="24"/>
+        <namedColor name="Grey-900">
+            <color red="0.63529411764705879" green="0.64313725490196083" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="primary-button-background">
-            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="background">
+            <color red="0.89800000190734863" green="0.89800000190734863" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

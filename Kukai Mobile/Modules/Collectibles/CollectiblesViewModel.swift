@@ -119,7 +119,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			var duplicateCopy = firstNFT
 			
 			duplicateCopy.duplicateID = 1
-			topLevelItems.append( SpecialGroup(imageName: "collectible-group-favs", title: "Favorites", count: 1, nfts: [duplicateCopy]) )
+			topLevelItems.append( SpecialGroup(imageName: "star-fill", title: "Favorites", count: 1, nfts: [duplicateCopy]) )
 			
 			duplicateCopy.duplicateID = 2
 			topLevelItems.append( SpecialGroup(imageName: "collectible-group-recents", title: "Recents", count: 1, nfts: [duplicateCopy]) )
@@ -159,7 +159,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: ViewController Helpers
 	
 	func shouldOpenCloseForIndexPathTap(_ indexPath: IndexPath) -> Bool {
-		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
+		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
 		
 		if item is SpecialGroup {
 			return true
