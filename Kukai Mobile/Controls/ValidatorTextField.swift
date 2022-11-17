@@ -32,7 +32,7 @@ public class ValidatorTextField: UITextField {
 			updateView()
 		}
 	}
-	@IBInspectable var placeholderFont: UIFont = .systemFont(ofSize: 14)
+	var placeholderFont: UIFont = .systemFont(ofSize: 14)
 	
 	@IBInspectable var clearButtonTint: UIColor = .lightGray
 	

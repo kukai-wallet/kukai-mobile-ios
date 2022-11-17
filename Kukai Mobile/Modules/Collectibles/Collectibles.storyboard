@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -144,7 +143,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFe-au-MQX">
-                                                            <rect key="frame" x="45.999999999999986" y="16.333333333333336" width="205.66666666666663" height="21.333333333333336"/>
+                                                            <rect key="frame" x="45.999999999999986" y="16.333333333333329" width="205.66666666666663" height="21.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
                                                             <color key="textColor" name="Grey-200"/>
                                                             <nil key="highlightedColor"/>
@@ -156,10 +155,17 @@
                                                                 <constraint firstAttribute="height" constant="20" id="xNA-92-SDn"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeT-qD-gmV">
-                                                            <rect key="frame" x="259.66666666666669" y="16.333333333333336" width="64" height="21.333333333333336"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
-                                                            <color key="textColor" name="Grey-200"/>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeT-qD-gmV">
+                                                            <rect key="frame" x="259.66666666666669" y="17" width="64" height="20.333333333333329"/>
+                                                            <attributedString key="attributedText">
+                                                                <fragment content="&lt;count&gt;">
+                                                                    <attributes>
+                                                                        <color key="NSColor" name="Grey-200"/>
+                                                                        <font key="NSFont" metaFont="system" size="17"/>
+                                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                                                    </attributes>
+                                                                </fragment>
+                                                            </attributedString>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -207,7 +213,7 @@
                                                     <rect key="frame" x="16" y="0.0" width="358" height="66"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg0-hO-qbv">
-                                                            <rect key="frame" x="67.999999999999986" y="12" width="183.66666666666663" height="19"/>
+                                                            <rect key="frame" x="68.000000000000014" y="12.000000000000002" width="180.33333333333337" height="18.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                                             <color key="textColor" name="Grey-200"/>
                                                             <nil key="highlightedColor"/>
@@ -226,13 +232,13 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVp-1f-UnI">
-                                                            <rect key="frame" x="67.999999999999986" y="35" width="183.66666666666663" height="15"/>
+                                                            <rect key="frame" x="68.000000000000014" y="34.666666666666664" width="180.33333333333337" height="15.333333333333336"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
                                                             <color key="textColor" name="Grey-1000"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32e-GF-dbJ">
-                                                            <rect key="frame" x="259.66666666666669" y="22.333333333333336" width="64" height="21.333333333333336"/>
+                                                            <rect key="frame" x="256.33333333333331" y="22.666666666666671" width="67.333333333333314" height="21"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
                                                             <color key="textColor" name="Grey-200"/>
                                                             <nil key="highlightedColor"/>
@@ -291,16 +297,16 @@
                                                     <rect key="frame" x="16" y="0.0" width="358" height="89"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VeV-Ko-eDm">
-                                                            <rect key="frame" x="96" y="18" width="254" height="19"/>
+                                                            <rect key="frame" x="96" y="18" width="254" height="18.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
                                                             <color key="textColor" name="Grey-200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXB-FI-XZA">
-                                                            <rect key="frame" x="7.9999999999999964" y="57" width="59.666666666666657" height="24"/>
+                                                            <rect key="frame" x="7.9999999999999964" y="57" width="61.666666666666657" height="24"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDL-PP-myc">
-                                                                    <rect key="frame" x="2" y="2" width="55.666666666666664" height="20"/>
+                                                                    <rect key="frame" x="2" y="2" width="57.666666666666664" height="20"/>
                                                                     <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
                                                                     <color key="textColor" name="Grey-1800"/>
                                                                     <nil key="highlightedColor"/>
@@ -339,7 +345,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uEE-yp-Uws">
-                                                            <rect key="frame" x="96" y="41" width="254" height="14.333333333333336"/>
+                                                            <rect key="frame" x="96" y="40.666666666666664" width="254" height="14"/>
                                                             <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
                                                             <color key="textColor" name="Grey-1000"/>
                                                             <nil key="highlightedColor"/>
@@ -421,8 +427,8 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-yg-0QC">
-                                <rect key="frame" x="0.0" y="55" width="390" height="755"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <rect key="frame" x="0.0" y="55" width="390" height="789"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1xL-Fe-DP7">
                                     <size key="itemSize" width="390" height="210"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -431,40 +437,17 @@
                                 </collectionViewFlowLayout>
                                 <cells/>
                             </collectionView>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YbI-6z-BtC">
-                                <rect key="frame" x="338" y="63" width="44" height="44"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="0Fo-BH-zFx"/>
-                                    <constraint firstAttribute="width" constant="44" id="9lJ-EN-oNb"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal">
-                                    <imageReference key="image" image="xmark" catalog="system" symbolScale="large"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="22"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="closeButtonTapped:" destination="xby-4c-wEc" eventType="touchUpInside" id="8RA-ai-g2O"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BmB-t3-AoJ"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstAttribute="bottom" secondItem="D8m-yg-0QC" secondAttribute="bottom" id="5KU-DU-WOQ"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="top" secondItem="BmB-t3-AoJ" secondAttribute="top" constant="8" id="NCQ-55-6nU"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="leading" secondItem="BmB-t3-AoJ" secondAttribute="leading" id="Nxv-eg-hhF"/>
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="trailing" secondItem="BmB-t3-AoJ" secondAttribute="trailing" id="Qf7-jd-HeQ"/>
-                            <constraint firstItem="D8m-yg-0QC" firstAttribute="bottom" secondItem="BmB-t3-AoJ" secondAttribute="bottom" id="RKW-Lk-Vtk"/>
-                            <constraint firstItem="YbI-6z-BtC" firstAttribute="top" secondItem="BmB-t3-AoJ" secondAttribute="top" constant="16" id="bjm-ME-d87"/>
-                            <constraint firstItem="BmB-t3-AoJ" firstAttribute="trailing" secondItem="YbI-6z-BtC" secondAttribute="trailing" constant="8" id="dru-ae-4VB"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="closeButton" destination="YbI-6z-BtC" id="of4-lX-QSb"/>
                         <outlet property="collectionView" destination="D8m-yg-0QC" id="NwR-md-06n"/>
                     </connections>
                 </viewController>
@@ -486,7 +469,6 @@
         <image name="filter" width="20" height="20"/>
         <image name="search" width="24" height="24"/>
         <image name="sort" width="25" height="19"/>
-        <image name="xmark" catalog="system" width="128" height="113"/>
         <namedColor name="Grey-1000">
             <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

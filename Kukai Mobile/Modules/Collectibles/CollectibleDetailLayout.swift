@@ -141,6 +141,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			repeat {
 				runningTotalWidth += cellSizes[startIndex+numberOfItems].width
 				numberOfItems += 1
+				
 				if (startIndex + numberOfItems) > cellSizes.count-1 {
 					break
 				}
@@ -173,12 +174,35 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 	}
 	
 	private func increase(sizes: [CGSize], toConsumeWidth: CGFloat) -> [CGSize] {
-		let toConsumeWidthMinusGaps = (toConsumeWidth - (cellPadding * CGFloat(sizes.count-1)))
-		let widthPerSize = toConsumeWidthMinusGaps / CGFloat(sizes.count)
-		var tempSizes = sizes
 		
-		for (index, _) in tempSizes.enumerated() {
-			tempSizes[index].width = widthPerSize
+		// If only 1, apply full width
+		if sizes.count == 1 {
+			var temp = sizes[0]
+			temp.width = toConsumeWidth
+			
+			return [temp]
+		}
+		
+		
+		// Check to see if everything is a match already
+		let total = sizes.map({ $0.width }).reduce(0, +)
+		if total == toConsumeWidth {
+			return sizes
+		}
+		
+		
+		// If not an exact match, split the remaining space between the elements proportionally
+		var tempSizes = sizes
+		let toConsumeWidthMinusGaps = (toConsumeWidth - (cellPadding * CGFloat(sizes.count-1)))
+		let remainingSpace = (toConsumeWidthMinusGaps - total)
+		// If inputs correspond to the correct number of columns, then we divide by columns. Its theres one or more missing columns, we divide by number of inputs so theres no missing piece
+		let demoninator = Int(total / minimumCellWidth) == numberOfColumns ? numberOfColumns : sizes.count
+		
+		for (index, size) in tempSizes.enumerated() {
+			let columnsToOccupy = CGFloat(Int(size.width / minimumCellWidth))
+			let portion = (remainingSpace * (columnsToOccupy / CGFloat(demoninator)))
+			
+			tempSizes[index].width += portion
 		}
 		
 		return tempSizes

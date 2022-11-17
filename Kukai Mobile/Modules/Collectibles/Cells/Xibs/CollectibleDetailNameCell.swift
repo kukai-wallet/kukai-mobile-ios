@@ -18,6 +18,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+		
+		// Can't shrink image in IB
+		websiteButton.setImage(websiteButton.image(for: .normal)?.resizedImage(Size: CGSize(width: 13, height: 13)), for: .normal)
     }
 }

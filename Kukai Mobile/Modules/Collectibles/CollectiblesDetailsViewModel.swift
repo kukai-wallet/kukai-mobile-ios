@@ -23,7 +23,9 @@ struct MediaPlaceholder: Hashable {
 struct MediaContent: Hashable {
 	let isImage: Bool
 	let mediaURL: URL?
-	let height: Double?
+	let width: Double
+	let height: Double
+	let quantity: String?
 }
 
 struct NameContent: Hashable {
@@ -207,14 +209,42 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return parsedCell
 			
 		} else if let obj = item as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
-			if let height = obj.height {
-				parsedCell.heightConstriant.constant = height
+			
+			if parsedCell.setup {
+				return parsedCell
 			}
 			
+			// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
+			if obj.width > obj.height {
+				parsedCell.aspectRatioConstraint.isActive = false
+				parsedCell.imageView.widthAnchor.constraint(equalTo: parsedCell.imageView.heightAnchor, multiplier: obj.width/obj.height).isActive = true
+				
+			}
+			
+			// If not a landscape image, keep square shape, but adjust the quantity view so that it always appears in bototm left of image, not of the container (as image may be smaller width)
+			else {
+				parsedCell.layoutIfNeeded()
+				
+				let newImageWidth = parsedCell.imageView.frame.size.height * (obj.width/obj.height)
+				let difference = parsedCell.imageView.frame.size.width - newImageWidth
+				
+				parsedCell.quantityViewLeadingConstraint.constant += (difference / 2)
+			}
+			
+			
+			// Load image if not only perfroming collectionview layout logic
 			if !layoutOnly {
 				MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+				
+				if let quantity = obj.quantity {
+					parsedCell.quantityLabel.text = quantity
+					
+				} else {
+					parsedCell.quantityView.isHidden = true
+				}
 			}
 			
+			parsedCell.setup = true
 			return parsedCell
 			
 		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailVideoCell {
@@ -263,19 +293,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return parsedCell
 			
 		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
-			let paragraphStyle = NSMutableParagraphStyle()
-			paragraphStyle.lineSpacing = 6
-			paragraphStyle.paragraphSpacing = 6
-			
-			let attributedtext = NSAttributedString(string: obj.description, attributes: [
-				NSAttributedString.Key.foregroundColor: UIColor(named: "text-secondary") ?? UIColor.black,
-				NSAttributedString.Key.font: UIFont.systemFont(ofSize: 15, weight: .light),
-				NSAttributedString.Key.paragraphStyle: paragraphStyle
-			])
-			
-			parsedCell.textView.attributedText = attributedtext
-			parsedCell.textView.textContainerInset = UIEdgeInsets.zero
-			parsedCell.textView.textContainer.lineFragmentPadding = 0
+			parsedCell.setup(withString: obj.description)
 			return parsedCell
 			
 		} else if let parsedCell = cell as? CollectibleDetailAttributeHeaderCell {
@@ -300,7 +318,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			}
 			
 			if let size = size {
-				self.replacePlaceholderWithMedia(isImage: true, height: size.height)
+				self.replacePlaceholderWithMedia(isImage: true, width: size.width, height: size.height)
 				return
 			}
 			
@@ -312,22 +330,27 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				
 				if res == .image {
 					MediaProxyService.cacheImage(url: nft.displayURL, cache: MediaProxyService.temporaryImageCache()) { size in
-						self.replacePlaceholderWithMedia(isImage: true, height: Double(size?.height ?? 300))
+						self.replacePlaceholderWithMedia(isImage: true, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300))
 					}
 				} else {
-					self.replacePlaceholderWithMedia(isImage: false, height: 0)
+					self.replacePlaceholderWithMedia(isImage: false, width: 0, height: 0)
 				}
 			}
 		}
 	}
 	
-	func replacePlaceholderWithMedia(isImage: Bool, height: Double) {
+	func replacePlaceholderWithMedia(isImage: Bool, width: Double, height: Double) {
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		
-		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, height: height)], beforeItem: nameContent)
+		var quantity: String? = nil
+		if (nft?.balance ?? 0) > 1 {
+			quantity = "x\(nft?.balance.description ?? "0")"
+		}
+		
+		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, width: width, height: height, quantity: quantity)], beforeItem: nameContent)
 		currentSnapshot.deleteItems([placeholderContent])
 		
 		DispatchQueue.main.async { [weak self] in
