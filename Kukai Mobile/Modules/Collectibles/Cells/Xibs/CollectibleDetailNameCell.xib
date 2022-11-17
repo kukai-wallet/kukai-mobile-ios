@@ -72,11 +72,16 @@
                             <constraint firstAttribute="height" constant="24" id="qbA-Kh-ho1"/>
                             <constraint firstAttribute="width" constant="24" id="tjb-QP-Hnx"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="4"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VH8-VN-qf9">
                         <rect key="frame" x="32" y="91" width="310" height="20"/>
                         <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="14"/>
-                        <color key="tintColor" name="text-primary"/>
                         <inset key="imageEdgeInsets" minX="8" minY="0.0" maxX="5" maxY="0.0"/>
                         <state key="normal" title="&lt;website&gt;">
                             <color key="titleColor" name="Grey-600"/>
@@ -126,9 +131,6 @@
         </namedColor>
         <namedColor name="Grey-600">
             <color red="0.83529411764705885" green="0.83921568627450982" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="text-primary">
-            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.10999999940395355" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

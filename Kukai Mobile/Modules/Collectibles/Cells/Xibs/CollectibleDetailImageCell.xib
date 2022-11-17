@@ -23,10 +23,10 @@
                 <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-nG-GHj">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-nG-GHj">
                         <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="300" id="NcU-4h-oHY"/>
+                            <constraint firstAttribute="width" secondItem="0xD-nG-GHj" secondAttribute="height" multiplier="1:1" id="FDD-eS-Mh1"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hEN-is-13O">
@@ -58,20 +58,22 @@
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="0xD-nG-GHj" firstAttribute="bottom" secondItem="hEN-is-13O" secondAttribute="bottom" constant="8" id="0fL-0L-uA5"/>
+                <constraint firstItem="hEN-is-13O" firstAttribute="leading" secondItem="0xD-nG-GHj" secondAttribute="leading" constant="8" id="0rB-o8-Zn3"/>
                 <constraint firstItem="0xD-nG-GHj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1sN-Qh-6Gd"/>
-                <constraint firstItem="hEN-is-13O" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="I3e-p2-8E0"/>
                 <constraint firstAttribute="bottom" secondItem="0xD-nG-GHj" secondAttribute="bottom" priority="999" id="KSo-Wd-ppc"/>
-                <constraint firstAttribute="bottom" secondItem="hEN-is-13O" secondAttribute="bottom" constant="8" id="cOj-DN-n3S"/>
                 <constraint firstItem="0xD-nG-GHj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qvp-4n-Glh"/>
                 <constraint firstAttribute="trailing" secondItem="0xD-nG-GHj" secondAttribute="trailing" id="vuS-JS-33U"/>
             </constraints>
             <size key="customSize" width="273" height="213"/>
             <connections>
-                <outlet property="heightConstriant" destination="NcU-4h-oHY" id="W8C-uo-Tfh"/>
+                <outlet property="aspectRatioConstraint" destination="FDD-eS-Mh1" id="BQv-tB-X6o"/>
                 <outlet property="imageView" destination="0xD-nG-GHj" id="rEK-DI-K1A"/>
                 <outlet property="quantityLabel" destination="Y8o-kE-pFi" id="79E-vk-YlY"/>
                 <outlet property="quantityView" destination="hEN-is-13O" id="ynH-3M-zht"/>
+                <outlet property="quantityViewLeadingConstraint" destination="0rB-o8-Zn3" id="NPc-iH-QAU"/>
             </connections>
             <point key="canvasLocation" x="164.61538461538461" y="78.199052132701425"/>
         </collectionViewCell>

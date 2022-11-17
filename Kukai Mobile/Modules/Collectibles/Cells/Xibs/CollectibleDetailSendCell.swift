@@ -18,6 +18,10 @@ class CollectibleDetailSendCell: UICollectionViewCell {
 	
 	func setup(target: Any?, action: Selector) {
 		let _ = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
+		
+		if let image = sendButton.imageView {
+			sendButton.bringSubviewToFront(image)
+		}
 		sendButton.addTarget(target, action: action, for: .touchUpInside)
 	}
 }

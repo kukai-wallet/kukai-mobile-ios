@@ -10,9 +10,12 @@ import UIKit
 class CollectibleDetailImageCell: UICollectionViewCell {
 
 	@IBOutlet weak var imageView: UIImageView!
-	@IBOutlet weak var heightConstriant: NSLayoutConstraint!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
+	@IBOutlet weak var aspectRatioConstraint: NSLayoutConstraint!
+	@IBOutlet weak var quantityViewLeadingConstraint: NSLayoutConstraint!
+	
+	public var setup = false
 	
 	override func awakeFromNib() {
         super.awakeFromNib()

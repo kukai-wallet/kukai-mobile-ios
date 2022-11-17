@@ -13,7 +13,21 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
+    }
+	
+	func setup(withString string: String) {
+		let paragraphStyle = NSMutableParagraphStyle()
+		paragraphStyle.lineHeightMultiple = 1.15
+		
+		let attributedtext = NSAttributedString(string: string, attributes: [
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-600") ?? UIColor.black,
+			NSAttributedString.Key.font: UIFont.roboto(ofType: .regular, andSize: 16),
+			NSAttributedString.Key.paragraphStyle: paragraphStyle
+		])
 		
 		textView.backgroundColor = .clear
-    }
+		textView.attributedText = attributedtext
+		textView.textContainerInset = UIEdgeInsets.zero
+		textView.textContainer.lineFragmentPadding = 0
+	}
 }
