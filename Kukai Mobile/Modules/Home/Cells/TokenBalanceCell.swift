@@ -18,14 +18,17 @@ class TokenBalanceCell: UITableViewCell {
 	@IBOutlet weak var priceChangeLabel: UILabel!
 	
 	private var gradient = CAGradientLayer()
+	private var correctFrame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
 	}
 	
-	override func layoutSubviews() {
-		super.layoutSubviews()
+	public func addGradientBackground(withFrame: CGRect) {
+		correctFrame = withFrame
 		
+		containerView.customCornerRadius = 8
+		containerView.maskToBounds = true
 		gradient.removeFromSuperlayer()
 		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}

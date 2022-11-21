@@ -192,8 +192,8 @@ class HomeTabBarController: UITabBarController {
 	}
 	
 	func textForWallet(wallet: Wallet) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
+		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 10), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
 		
 		if let sWallet = wallet as? TorusWallet {
 			var topText = sWallet.socialUserId ?? ""

@@ -85,6 +85,14 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? TokenBalanceCell {
+			c.addGradientBackground(withFrame: c.containerView.bounds)
+		}
+	}
+	
 	func menuForBalancesMore() -> UIMenu {
 		let options: [UIAction] = [
 			UIAction(title: "Favourites", image: UIImage(named: "context-menu-favourite"), identifier: nil, handler: { [weak self] action in
