@@ -222,6 +222,7 @@
 		C0FBC883292BCEEF00B29921 /* Figtree-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC880292BCEEF00B29921 /* Figtree-Bold.ttf */; };
 		C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */; };
 		C0FBC885292BCEEF00B29921 /* Figtree-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */; };
+		C0FBC88A292BE11100B29921 /* Account.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC889292BE11100B29921 /* Account.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -483,6 +484,7 @@
 		C0FBC880292BCEEF00B29921 /* Figtree-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Bold.ttf"; sourceTree = "<group>"; };
 		C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Medium.ttf"; sourceTree = "<group>"; };
 		C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Regular.ttf"; sourceTree = "<group>"; };
+		C0FBC889292BE11100B29921 /* Account.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Account.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -562,13 +564,9 @@
 				C0B743B826AB220300377A9B /* Cells */,
 				C0503662271ED8F300E7A664 /* Home.storyboard */,
 				C0082C0726A7278000DB160B /* HomeTabBarController.swift */,
-				C08694E327BD1D86000A4909 /* AccountViewController.swift */,
-				C08694E527BD1D93000A4909 /* AccountViewModel.swift */,
 				C049E7392881837F00887B64 /* AccountsViewController.swift */,
 				C049E73B2881838E00887B64 /* AccountsViewModel.swift */,
 				C005BA312822D3DC00D8369D /* AddWalletViewController.swift */,
-				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
-				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
 				C0081FD527D8FE2300F7FEFF /* ActivityViewController.swift */,
 				C0081FD727D8FE3700F7FEFF /* ActivityViewModel.swift */,
 				C049E73D28819E2800887B64 /* DiscoverViewController.swift */,
@@ -632,6 +630,7 @@
 				C0DAD65226B00AA6001DF430 /* Login */,
 				C049B5A126A0494300F1C5E0 /* Onboarding */,
 				C0082C0226A7217000DB160B /* Home */,
+				C0FBC886292BE0ED00B29921 /* Account */,
 				C097C02428F84CBA00FB2FC8 /* Collectibles */,
 				C0F91C6828BFB3010081E8E8 /* Stake */,
 				C005BA2E2822C44600D8369D /* Profile */,
@@ -953,8 +952,6 @@
 		C0B743B826AB220300377A9B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C08694DD27BD1B84000A4909 /* TokenBalanceCell.swift */,
-				C08694DF27BD1B9B000A4909 /* EstimatedTotalCell.swift */,
 				C08694E127BD1BB1000A4909 /* DiscoverCell.swift */,
 				C02D7CA927BEB0B7006A8E39 /* TitleSubtitleCell.swift */,
 				C0081FCF27D8FA5B00F7FEFF /* ActivityGenericCell.swift */,
@@ -1033,6 +1030,28 @@
 				C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */,
 			);
 			path = Stake;
+			sourceTree = "<group>";
+		};
+		C0FBC886292BE0ED00B29921 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				C0FBC88B292BE13100B29921 /* Cells */,
+				C0FBC889292BE11100B29921 /* Account.storyboard */,
+				C08694E327BD1D86000A4909 /* AccountViewController.swift */,
+				C08694E527BD1D93000A4909 /* AccountViewModel.swift */,
+				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
+				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
+		C0FBC88B292BE13100B29921 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C08694DD27BD1B84000A4909 /* TokenBalanceCell.swift */,
+				C08694DF27BD1B9B000A4909 /* EstimatedTotalCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1179,6 +1198,7 @@
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
 				C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */,
 				C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */,
+				C0FBC88A292BE11100B29921 /* Account.storyboard in Resources */,
 				C0C3A7AC290BD1200030E39A /* CollectibleDetailOnSaleCell.xib in Resources */,
 				C050365D271ED8E600E7A664 /* Onboarding.storyboard in Resources */,
 				C0239B9A2886B92500E0C973 /* Defi.storyboard in Resources */,
