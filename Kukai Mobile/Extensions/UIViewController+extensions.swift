@@ -220,4 +220,15 @@ extension UIViewController {
 			sheet.delegate?.presentationControllerDidDismiss?(sheet)
 		})
 	}
+	
+	
+	
+	// MARK: Global styling
+	
+	open override func awakeAfter(using coder: NSCoder) -> Any? {
+		navigationItem.backButtonDisplayMode = .minimal
+		self.navigationController?.navigationBar.tintColor = UIColor.colorNamed("Brand1100")
+		
+		return super.awakeAfter(using: coder)
+	}
 }

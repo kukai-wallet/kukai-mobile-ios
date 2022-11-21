@@ -223,6 +223,12 @@
 		C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */; };
 		C0FBC885292BCEEF00B29921 /* Figtree-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */; };
 		C0FBC88A292BE11100B29921 /* Account.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC889292BE11100B29921 /* Account.storyboard */; };
+		C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC88C292C12BF00B29921 /* HiddenTokensMainViewController.swift */; };
+		C0FBC88F292C12CE00B29921 /* HiddenTokensBalancesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC88E292C12CE00B29921 /* HiddenTokensBalancesViewController.swift */; };
+		C0FBC891292C12E200B29921 /* FavouriteBalancesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC890292C12E200B29921 /* FavouriteBalancesViewController.swift */; };
+		C0FBC893292C162000B29921 /* HiddenBalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC892292C162000B29921 /* HiddenBalancesViewModel.swift */; };
+		C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC894292C163600B29921 /* FavouriteBalancesViewModel.swift */; };
+		C0FBC897292C16FF00B29921 /* UISegmentedControl+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FBC896292C16FF00B29921 /* UISegmentedControl+extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -485,6 +491,12 @@
 		C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Medium.ttf"; sourceTree = "<group>"; };
 		C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Regular.ttf"; sourceTree = "<group>"; };
 		C0FBC889292BE11100B29921 /* Account.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Account.storyboard; sourceTree = "<group>"; };
+		C0FBC88C292C12BF00B29921 /* HiddenTokensMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenTokensMainViewController.swift; sourceTree = "<group>"; };
+		C0FBC88E292C12CE00B29921 /* HiddenTokensBalancesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenTokensBalancesViewController.swift; sourceTree = "<group>"; };
+		C0FBC890292C12E200B29921 /* FavouriteBalancesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteBalancesViewController.swift; sourceTree = "<group>"; };
+		C0FBC892292C162000B29921 /* HiddenBalancesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenBalancesViewModel.swift; sourceTree = "<group>"; };
+		C0FBC894292C163600B29921 /* FavouriteBalancesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteBalancesViewModel.swift; sourceTree = "<group>"; };
+		C0FBC896292C16FF00B29921 /* UISegmentedControl+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UISegmentedControl+extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -685,6 +697,7 @@
 				C08C97422908344300249959 /* Collection+extensions.swift */,
 				C0BADFFC29153CCD00E78C26 /* UIColor+extensions.swift */,
 				C0BAE0032915566300E78C26 /* UIFont+extensions.swift */,
+				C0FBC896292C16FF00B29921 /* UISegmentedControl+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1041,6 +1054,11 @@
 				C08694E527BD1D93000A4909 /* AccountViewModel.swift */,
 				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
 				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
+				C0FBC88C292C12BF00B29921 /* HiddenTokensMainViewController.swift */,
+				C0FBC88E292C12CE00B29921 /* HiddenTokensBalancesViewController.swift */,
+				C0FBC892292C162000B29921 /* HiddenBalancesViewModel.swift */,
+				C0FBC890292C12E200B29921 /* FavouriteBalancesViewController.swift */,
+				C0FBC894292C163600B29921 /* FavouriteBalancesViewModel.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1293,10 +1311,12 @@
 				C0BADFFD29153CCD00E78C26 /* UIColor+extensions.swift in Sources */,
 				C08694E027BD1B9B000A4909 /* EstimatedTotalCell.swift in Sources */,
 				C080CC0F2773568200780F7E /* MyAuthorizationAppleIDButton.swift in Sources */,
+				C0FBC891292C12E200B29921 /* FavouriteBalancesViewController.swift in Sources */,
 				C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */,
 				C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */,
 				C01AE5DC28A26C44008F93E8 /* AddLiquidityConfirmViewController.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
+				C0FBC88F292C12CE00B29921 /* HiddenTokensBalancesViewController.swift in Sources */,
 				C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */,
 				C0081FD427D8FA7B00F7FEFF /* ActivitySubItemCell.swift in Sources */,
 				C0082BF926A7076500DB160B /* ImportMnemonicViewController.swift in Sources */,
@@ -1312,6 +1332,7 @@
 				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
 				C024038926D925FB00E1CB80 /* BeaconService.swift in Sources */,
 				C0082BFB26A70B5900DB160B /* ImportSuccessViewController.swift in Sources */,
+				C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */,
 				C05D4E0A287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift in Sources */,
 				C0EA19CA29096DD200E6B40D /* CollectibleDetailNameCell.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
@@ -1319,6 +1340,7 @@
 				C0AC1D402771F585002F66C0 /* LedgerInfoViewController.swift in Sources */,
 				C05361BD277490FA002B51A4 /* UIApplication+extensions.swift in Sources */,
 				C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */,
+				C0FBC897292C16FF00B29921 /* UISegmentedControl+extensions.swift in Sources */,
 				C07374A7279839B800726C01 /* Option1DetailViewController.swift in Sources */,
 				C046DF3E28328F200000FBA0 /* BeaconOperationApproveViewController.swift in Sources */,
 				C08694EF27BD69D2000A4909 /* CoinGeckoExchangeRateResponse.swift in Sources */,
@@ -1350,11 +1372,13 @@
 				C005BA322822D3DC00D8369D /* AddWalletViewController.swift in Sources */,
 				C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */,
 				C0DB48172785C6DD00D3B4F9 /* FadeSegue.swift in Sources */,
+				C0FBC893292C162000B29921 /* HiddenBalancesViewModel.swift in Sources */,
 				C0EA19C629096DC400E6B40D /* CollectibleDetailVideoCell.swift in Sources */,
 				C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */,
 				C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
 				C0081FD227D8FA6A00F7FEFF /* ActivityExchangeCell.swift in Sources */,
+				C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */,
 				C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */,
 				C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */,
 				C08C973C2908165D00249959 /* CollectibleDetailAttributeItemCell.swift in Sources */,
