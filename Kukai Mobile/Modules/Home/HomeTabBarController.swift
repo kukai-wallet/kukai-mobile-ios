@@ -63,6 +63,10 @@ class HomeTabBarController: UITabBarController {
 		setupTzKTAccountListener()
 		
 		
+		// Setup buttons
+		sendButton.menu = menuForTopRight()
+		sendButton.showsMenuAsPrimaryAction = true
+		
 		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
 		accountButton.titleLabel?.numberOfLines = 2
@@ -146,15 +150,19 @@ class HomeTabBarController: UITabBarController {
 			}
 	}
 	
+	
+	
+	// MARK: UI functions
+	
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 8)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 8)
 		], for: .selected)
 		
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
@@ -169,6 +177,42 @@ class HomeTabBarController: UITabBarController {
 		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
 		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+	}
+	
+	func menuForTopRight() -> UIMenu {
+		let firstGroup: [UIAction] = [
+			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "Favourites", andMessage: "hold your horses, not done yet")
+			}),
+			UIAction(title: "Show QR Code", image: UIImage(named: "qr-code"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+			}),
+		]
+		let menu1 = UIMenu(title: "", options: .displayInline, children: firstGroup)
+		
+		let secondGroup: [UIAction] = [
+			UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+			}),
+			UIAction(title: "Swap", image: UIImage(named: "swap"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+			}),
+		]
+		let menu2 = UIMenu(title: "", options: .displayInline, children: secondGroup)
+		
+		let thirdGroup: [UIMenuElement] = [
+			UIAction(title: "Get Tez", image: UIImage(named: "get-tez"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+			}),
+			UIAction(title: "Scan", image: UIImage(named: "scan"), identifier: nil, handler: { [weak self] action in
+				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+			}),
+		]
+		
+		var items: [UIMenuElement] = [menu1, menu2]
+		items.append(contentsOf: thirdGroup)
+		
+		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: items)
 	}
 	
 	func imageForWallet(wallet: Wallet) -> UIImage? {
@@ -241,10 +285,6 @@ class HomeTabBarController: UITabBarController {
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
 		*/
-	}
-	
-	@IBAction func sendButtonTapped(_ sender: Any) {
-		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
 	
