@@ -21,7 +21,7 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 		
 		let attributedtext = NSAttributedString(string: string, attributes: [
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey600") ?? UIColor.black,
-			NSAttributedString.Key.font: UIFont.roboto(ofType: .regular, andSize: 16),
+			NSAttributedString.Key.font: UIFont.custom(ofType: .regular, andSize: 16),
 			NSAttributedString.Key.paragraphStyle: paragraphStyle
 		])
 		

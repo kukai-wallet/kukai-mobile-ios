@@ -128,7 +128,7 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
-		searchTextField.placeholderFont = UIFont.roboto(ofType: .bold, andSize: 16)
+		searchTextField.placeholderFont = UIFont.custom(ofType: .bold, andSize: 16)
 		searchTextField.validatorTextFieldDelegate = self
 		searchTextField.clearButtonTint = UIColor.colorNamed("Grey200")
 	}
