@@ -149,15 +149,15 @@ class HomeTabBarController: UITabBarController {
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
 			NSAttributedString.Key.font: UIFont.roboto(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand-800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
 			NSAttributedString.Key.font: UIFont.roboto(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
-		self.tabBar.barTintColor = UIColor.colorNamed("Grey-1700")
+		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
 		let _ = self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0)))
 	}
 	
@@ -192,8 +192,8 @@ class HomeTabBarController: UITabBarController {
 	}
 	
 	func textForWallet(wallet: Wallet) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 14), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey-1000")]
+		let attrs1 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 14), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.roboto(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
 		
 		if let sWallet = wallet as? TorusWallet {
 			var topText = sWallet.socialUserId ?? ""

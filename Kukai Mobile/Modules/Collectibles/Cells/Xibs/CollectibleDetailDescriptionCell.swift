@@ -20,7 +20,7 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 		paragraphStyle.lineHeightMultiple = 1.15
 		
 		let attributedtext = NSAttributedString(string: string, attributes: [
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey-600") ?? UIColor.black,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey600") ?? UIColor.black,
 			NSAttributedString.Key.font: UIFont.roboto(ofType: .regular, andSize: 16),
 			NSAttributedString.Key.paragraphStyle: paragraphStyle
 		])

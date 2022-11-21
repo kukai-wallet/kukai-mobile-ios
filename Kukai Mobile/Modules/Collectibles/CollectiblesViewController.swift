@@ -125,12 +125,12 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 	// MARK: - UI functions
 	
 	func setupUI() {
-		self.view.backgroundColor = UIColor.colorNamed("Grey-1900")
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
 		searchTextField.placeholderFont = UIFont.roboto(ofType: .bold, andSize: 16)
 		searchTextField.validatorTextFieldDelegate = self
-		searchTextField.clearButtonTint = UIColor.colorNamed("Grey-200")
+		searchTextField.clearButtonTint = UIColor.colorNamed("Grey200")
 	}
 	
 	private func animateButtonsOut() {

@@ -65,12 +65,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if indexPath.row % 2 == 0 {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive-500")
+					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive500")
 					
 				} else {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-down-red")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution-900")
+					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
 				}
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -90,12 +90,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if indexPath.row % 2 == 0 {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive-500")
+					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive500")
 					
 				} else {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-down-red")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution-900")
+					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
 				}
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
