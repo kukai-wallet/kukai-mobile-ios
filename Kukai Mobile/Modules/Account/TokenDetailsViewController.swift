@@ -16,6 +16,10 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var tokenHeaderLabel: UILabel!
 	@IBOutlet weak var tokenHeaderPlusButton: UIButton!
 	
+	@IBOutlet weak var favouriteButton: UIButton!
+	@IBOutlet weak var buyButton: UIButton!
+	@IBOutlet weak var moreButton: UIButton!
+	
 	@IBOutlet weak var lineChartView: LineChartView!
 	@IBOutlet weak var chartRangeSegmented: UISegmentedControl!
 	
@@ -226,6 +230,15 @@ class TokenDetailsViewController: UIViewController {
 		self.dismiss(animated: true) {
 			//homeTabController?.sendButtonTapped(self)
 		}
+	}
+	
+	@IBAction func favouriteTapped(_ sender: Any) {
+	}
+	
+	@IBAction func buyTapped(_ sender: Any) {
+	}
+	
+	@IBAction func moreTapped(_ sender: Any) {
 	}
 }
 

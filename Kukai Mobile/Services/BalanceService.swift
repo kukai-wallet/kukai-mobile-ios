@@ -174,16 +174,16 @@ public class BalanceService {
 	}
 	
 	private func updateEstimatedTotal() {
-		var estiamtedTotal: XTZAmount = .zero()
+		var estimatedTotal: XTZAmount = .zero()
 		
 		for token in self.account.tokens {
 			let dexRate = self.dexRate(forToken: token)
-			estiamtedTotal += dexRate.xtzValue
+			estimatedTotal += dexRate.xtzValue
 			
 			self.tokenValueAndRate[token.id] = dexRate
 		}
 		
-		self.estimatedTotalXtz = self.account.xtzBalance + estiamtedTotal
+		self.estimatedTotalXtz = self.account.xtzBalance + estimatedTotal
 	}
 	
 	func isEverythingStale() -> Bool {
