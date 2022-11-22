@@ -30,4 +30,13 @@ class FavouriteTokenCell: UITableViewCell {
 		gradient.removeFromSuperlayer()
 		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}
+	
+	func setFav(_ isFav: Bool) {
+		if isFav {
+			favIcon.image = UIImage(named: "star-fill")
+			
+		} else {
+			favIcon.image = UIImage(named: "star-no-fill")
+		}
+	}
 }

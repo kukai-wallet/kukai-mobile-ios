@@ -66,7 +66,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if indexPath.row % 2 == 0 {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive500")
+					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive900")
 					
 				} else {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-down-red")
@@ -144,15 +144,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var nonFavourites: [Token] = []
 		
 		for token in DependencyManager.shared.balanceService.account.tokens {
-			
-			/*
-			if token.symbol == "CRUNCH" {
-				print("token.isHidden: \(token.isHidden)")
-				print("token.isFavourite: \(token.isFavourite)")
-				print("token.favouriteSortIndex: \(token.favouriteSortIndex)")
-			}
-			*/
-			
 			guard !token.isHidden else {
 				continue
 			}

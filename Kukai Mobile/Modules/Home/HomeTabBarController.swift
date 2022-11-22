@@ -158,11 +158,11 @@ class HomeTabBarController: UITabBarController {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 8)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 8)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
