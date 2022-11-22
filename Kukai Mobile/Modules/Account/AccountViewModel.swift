@@ -25,6 +25,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
+	var tokensToDisplay: [Token] = []
 	
 	
 	// MARK: - Init
@@ -136,7 +137,37 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 		
 		var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
-		section1Data.append(contentsOf: DependencyManager.shared.balanceService.account.tokens)
+		
+		
+		// Group and srot favourites (and remove hidden)
+		tokensToDisplay = []
+		var nonFavourites: [Token] = []
+		
+		for token in DependencyManager.shared.balanceService.account.tokens {
+			
+			/*
+			if token.symbol == "CRUNCH" {
+				print("token.isHidden: \(token.isHidden)")
+				print("token.isFavourite: \(token.isFavourite)")
+				print("token.favouriteSortIndex: \(token.favouriteSortIndex)")
+			}
+			*/
+			
+			guard !token.isHidden else {
+				continue
+			}
+			
+			if token.isFavourite {
+				tokensToDisplay.append(token)
+			} else {
+				nonFavourites.append(token)
+			}
+		}
+		
+		tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
+		tokensToDisplay.append(contentsOf: nonFavourites)
+		
+		section1Data.append(contentsOf: tokensToDisplay)
 		
 		
 		// Build snapshot
@@ -191,7 +222,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if atIndexPath.row == 1 {
 			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
 		} else {
-			return DependencyManager.shared.balanceService.account.tokens[atIndexPath.row - 1]
+			return tokensToDisplay[atIndexPath.row - 2]
 		}
 	}
 	

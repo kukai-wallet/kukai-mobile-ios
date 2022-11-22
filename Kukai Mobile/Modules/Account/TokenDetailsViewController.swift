@@ -233,12 +233,52 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	@IBAction func favouriteTapped(_ sender: Any) {
+		guard let token = TransactionService.shared.sendData.chosenToken else {
+			alert(errorWithMessage: "Unable to find token reference")
+			return
+		}
+		
+		if TokenStateService.shared.addFavourite(token: token) {
+			DependencyManager.shared.balanceService.updateTokenStates()
+			DependencyManager.shared.accountBalancesDidUpdate = true
+			
+		} else {
+			alert(errorWithMessage: "Unable to favorute token")
+		}
 	}
 	
 	@IBAction func buyTapped(_ sender: Any) {
 	}
 	
 	@IBAction func moreTapped(_ sender: Any) {
+		guard let token = TransactionService.shared.sendData.chosenToken else {
+			alert(errorWithMessage: "Unable to find token reference")
+			return
+		}
+		
+		
+		if TokenStateService.shared.isHidden(token: token) {
+			print("is hidden, removing")
+			
+			if TokenStateService.shared.removeHidden(token: token) {
+				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.accountBalancesDidUpdate = true
+				
+			} else {
+				alert(errorWithMessage: "Unable to favorute token")
+			}
+			
+		} else {
+			print("is not hidden, adding")
+			
+			if TokenStateService.shared.addHidden(token: token) {
+				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.accountBalancesDidUpdate = true
+				
+			} else {
+				alert(errorWithMessage: "Unable to favorute token")
+			}
+		}
 	}
 }
 

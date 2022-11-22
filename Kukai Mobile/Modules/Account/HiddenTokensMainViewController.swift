@@ -16,6 +16,9 @@ class HiddenTokensMainViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
 		segmetnedButton.addUnderlineForSelectedSegment()
 		if segmetnedButton.selectedSegmentIndex == 0 {
 			self.collectiblesContainer.isHidden = true
@@ -33,5 +36,9 @@ class HiddenTokensMainViewController: UIViewController {
 			self.balancesContainer.isHidden = true
 			self.collectiblesContainer.isHidden = false
 		}
+	}
+	
+	public func openTokenDetails() {
+		self.performSegue(withIdentifier: "tokenDetails", sender: nil)
 	}
 }

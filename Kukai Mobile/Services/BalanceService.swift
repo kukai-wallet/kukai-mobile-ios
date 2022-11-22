@@ -161,11 +161,11 @@ public class BalanceService {
 				}
 				
 				self.updateEstimatedTotal()
+				self.updateTokenStates() // Will write account to disak as well, no need to call again
 				self.hasFetchedInitialData = true
 				self.isFetchingData = false
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				
-				let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.cacheFilenameAccount)
 				let _ = DiskService.write(encodable: self.exchangeData, toFileName: BalanceService.cacheFilenameExchangeData)
 				
 				completion(nil)
@@ -184,6 +184,37 @@ public class BalanceService {
 		}
 		
 		self.estimatedTotalXtz = self.account.xtzBalance + estimatedTotal
+	}
+	
+	func updateTokenStates() {
+		
+		for token in self.account.tokens {
+			let favObj = TokenStateService.shared.isFavourite(token: token)
+			token.isHidden = TokenStateService.shared.isHidden(token: token)
+			token.isFavourite = favObj.isFavourite
+			token.favouriteSortIndex = favObj.sortIndex
+			
+			/*
+			if token.symbol == "CRUNCH" {
+				print("token.isHidden: \(token.isHidden)")
+				print("token.isFavourite: \(token.isFavourite)")
+				print("token.favouriteSortIndex: \(token.favouriteSortIndex)")
+			}
+			*/
+		}
+		
+		for nftGroup in self.account.nfts {
+			for nftIndex in 0..<(nftGroup.nfts ?? []).count {
+				
+				if let nft = nftGroup.nfts?[nftIndex] {
+					nftGroup.nfts?[nftIndex].isHidden = TokenStateService.shared.isHidden(nft: nft)
+					nftGroup.nfts?[nftIndex].isFavourite = TokenStateService.shared.isFavourite(nft: nft)
+				}
+				
+			}
+		}
+		
+		let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.cacheFilenameAccount)
 	}
 	
 	func isEverythingStale() -> Bool {

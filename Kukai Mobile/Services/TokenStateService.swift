@@ -29,6 +29,7 @@ public class TokenStateService {
 	public var favouriteCollectibles: [TokenStateItem] = []
 	
 	private init() {
+		//DiskService.delete(fileName: TokenStateService.hiddenBalancesFilename)
 		readAllCaches()
 	}
 	
@@ -37,23 +38,39 @@ public class TokenStateService {
 	// MARK: Add
 	
 	public func addHidden(token: Token) -> Bool {
-		hiddenBalances.append(stateItem(fromToken: token))
-		return writeHiddenBalances()
+		if !isHidden(token: token) {
+			hiddenBalances.append(stateItem(fromToken: token))
+			return writeHiddenBalances()
+		}
+		
+		return false
 	}
 	
 	public func addHidden(nft: NFT) -> Bool {
-		hiddenCollectibles.append(stateItem(fromCollectible: nft))
-		return writeHiddenCollectibles()
+		if !isHidden(nft: nft) {
+			hiddenCollectibles.append(stateItem(fromCollectible: nft))
+			return writeHiddenCollectibles()
+		}
+		
+		return false
 	}
 	
 	public func addFavourite(token: Token) -> Bool {
-		favouriteBalances.append(stateItem(fromToken: token))
-		return writeFavouriteBalances()
+		if !isFavourite(token: token).isFavourite {
+			favouriteBalances.append(stateItem(fromToken: token))
+			return writeFavouriteBalances()
+		}
+		
+		return false
 	}
 	
 	public func addFavourite(nft: NFT) -> Bool {
-		favouriteCollectibles.append(stateItem(fromCollectible: nft))
-		return writeFavouriteCollectibles()
+		if !isFavourite(nft: nft) {
+			favouriteCollectibles.append(stateItem(fromCollectible: nft))
+			return writeFavouriteCollectibles()
+		}
+		
+		return false
 	}
 	
 	
@@ -62,7 +79,7 @@ public class TokenStateService {
 	
 	public func isHidden(token: Token) -> Bool {
 		return hiddenBalances.contains { item in
-			item.address == token.tokenContractAddress && item.id == token.tokenId
+			return item.address == token.tokenContractAddress && item.id == token.tokenId
 		}
 	}
 	
@@ -72,10 +89,13 @@ public class TokenStateService {
 		}
 	}
 	
-	public func isFavourite(token: Token) -> Bool {
-		return favouriteBalances.contains { item in
-			item.address == token.tokenContractAddress && item.id == token.tokenId
+	public func isFavourite(token: Token) -> (isFavourite: Bool, sortIndex: Int) {
+		let stateItem = stateItem(fromToken: token)
+		if let index = favouriteBalances.firstIndex(of: stateItem) {
+			return (isFavourite: true, sortIndex: index)
 		}
+		
+		return (isFavourite: false, sortIndex: 0)
 	}
 	
 	public func isFavourite(nft: NFT) -> Bool {
