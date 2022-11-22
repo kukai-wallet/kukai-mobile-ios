@@ -321,12 +321,36 @@
                                 <color key="textColor" name="Grey800"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oRe-e5-5oV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oRe-e5-5oV">
                                 <rect key="frame" x="0.0" y="136" width="393" height="716"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmptyTableViewCell" rowHeight="118" id="1IL-hd-ZkF" customClass="EmptyTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="118"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1IL-hd-ZkF" id="uC2-g8-NAK">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="118"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No favourite tokens yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Nf-oA-Xwz">
+                                                    <rect key="frame" x="16" y="40" width="361" height="38"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                    <color key="textColor" name="Grey800"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="2Nf-oA-Xwz" secondAttribute="bottom" constant="40" id="8WW-ER-tKJ"/>
+                                                <constraint firstItem="2Nf-oA-Xwz" firstAttribute="leading" secondItem="uC2-g8-NAK" secondAttribute="leading" constant="16" id="OyW-6G-upc"/>
+                                                <constraint firstAttribute="trailing" secondItem="2Nf-oA-Xwz" secondAttribute="trailing" constant="16" id="Y9L-bD-JuU"/>
+                                                <constraint firstItem="2Nf-oA-Xwz" firstAttribute="top" secondItem="uC2-g8-NAK" secondAttribute="top" constant="40" id="iw1-pO-c0e"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenBalanceCell" rowHeight="76" id="bjk-R1-R4v" customClass="TokenBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="76"/>
+                                        <rect key="frame" x="0.0" y="168" width="393" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bjk-R1-R4v" id="MeN-6Z-L7r">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="76"/>
@@ -425,7 +449,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavouriteTokenCell" rowHeight="60" id="iHG-AG-OQU" customClass="FavouriteTokenCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="126" width="393" height="60"/>
+                                        <rect key="frame" x="0.0" y="244" width="393" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iHG-AG-OQU" id="Uku-7K-aYc">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="60"/>
@@ -461,7 +485,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="O6C-Hs-HXG" firstAttribute="leading" secondItem="WRL-ae-7Wv" secondAttribute="leading" constant="8" id="1hS-PB-yHk"/>
                                                         <constraint firstItem="uJw-9c-grv" firstAttribute="top" secondItem="Mon-rz-0aB" secondAttribute="bottom" constant="2" id="KLA-vG-FAm"/>
@@ -483,6 +507,7 @@
                                                 <constraint firstItem="WRL-ae-7Wv" firstAttribute="bottom" secondItem="Uku-7K-aYc" secondAttribute="bottom" id="cX1-Nz-f1S"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="balanceLabel" destination="uJw-9c-grv" id="AvK-zN-oMP"/>
                                             <outlet property="containerView" destination="WRL-ae-7Wv" id="k8Y-Lk-LfQ"/>
@@ -495,7 +520,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jsv-DB-BSC"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="top" secondItem="FVM-2i-QiT" secondAttribute="bottom" constant="8" id="2aY-AF-s2g"/>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="leading" secondItem="jsv-DB-BSC" secondAttribute="leading" id="2cj-6M-ymd"/>
@@ -975,8 +1000,32 @@
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="693"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EmptyTableViewCell" rowHeight="118" id="phX-5e-XvQ" customClass="EmptyTableViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="118"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="phX-5e-XvQ" id="Jry-Vh-BdH">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="118"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No hidden tokens yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcG-IT-tfT">
+                                                    <rect key="frame" x="16" y="40" width="361" height="38"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                    <color key="textColor" name="Grey800"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="hcG-IT-tfT" secondAttribute="trailing" constant="16" id="KK3-l8-tVk"/>
+                                                <constraint firstItem="hcG-IT-tfT" firstAttribute="top" secondItem="Jry-Vh-BdH" secondAttribute="top" constant="40" id="afE-un-dGS"/>
+                                                <constraint firstItem="hcG-IT-tfT" firstAttribute="leading" secondItem="Jry-Vh-BdH" secondAttribute="leading" constant="16" id="seO-Eh-FGP"/>
+                                                <constraint firstAttribute="bottom" secondItem="hcG-IT-tfT" secondAttribute="bottom" constant="40" id="vOd-2Y-5X5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="HiddenTokenCell" rowHeight="64" id="09E-Mk-9kv" customClass="HiddenTokenCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="64"/>
+                                        <rect key="frame" x="0.0" y="168" width="393" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="09E-Mk-9kv" id="H2z-hO-xmb">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="64"/>
@@ -1067,7 +1116,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DkQ-gx-otG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6250" y="202"/>
+            <point key="canvasLocation" x="-6251.1450381679388" y="201.7605633802817"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="Mzc-b8-53J">
@@ -1076,20 +1125,8 @@
                     <view key="view" contentMode="scaleToFill" id="Vfd-jQ-2WM">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="693"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Collectibles" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pm3-n1-4Vw">
-                                <rect key="frame" x="152" y="336" width="89" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="1el-kw-aQG"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstItem="pm3-n1-4Vw" firstAttribute="centerY" secondItem="Vfd-jQ-2WM" secondAttribute="centerY" id="3Pc-ql-yvS"/>
-                            <constraint firstItem="pm3-n1-4Vw" firstAttribute="centerX" secondItem="Vfd-jQ-2WM" secondAttribute="centerX" id="eHe-25-fcg"/>
-                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DRs-gy-I4y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

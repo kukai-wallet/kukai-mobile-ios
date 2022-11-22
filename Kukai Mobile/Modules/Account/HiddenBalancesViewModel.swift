@@ -53,6 +53,9 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
+			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
+				return cell
+				
 			} else {
 				return UITableViewCell()
 			}
@@ -68,6 +71,10 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		tokensToDisplay = DependencyManager.shared.balanceService.account.tokens.filter({ $0.isHidden })
 		var section1Data: [AnyHashable] = tokensToDisplay
+		
+		if section1Data.count == 0 {
+			section1Data = [""]
+		}
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
