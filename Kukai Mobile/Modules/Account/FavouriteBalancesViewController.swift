@@ -9,7 +9,7 @@ import UIKit
 import Combine
 
 class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
-
+	
 	@IBOutlet weak var reOrderButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var subHeadingLabel: UILabel!
@@ -40,7 +40,8 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					let _ = ""
+					print("calling success")
+					self?.reOrderButton.isHidden = !(self?.viewModel.showReorderButton() ?? false)
 			}
 		}
 	}
@@ -57,13 +58,31 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 			reOrderButton.setTitle("Done", for: .normal)
 			subHeadingLabel.isHidden = true
 			subHeadingBottomConstraint.isActive = false
-			self.view.layoutIfNeeded()
+			tableViewTopConstraint.isActive = true
+			
+			UIView.animate(withDuration: 0.3, delay: 0) {
+				self.view.layoutIfNeeded()
+			}
+			
+			viewModel.isEditing = true
+			viewModel.reload(animating: true)
+			viewModel.refresh(animate: true)
+			tableView.isEditing = true // set tableView editing after so it doesn't edit existing cells
 			
 		} else {
 			reOrderButton.setTitle("Re-Order", for: .normal)
 			subHeadingLabel.isHidden = false
 			subHeadingBottomConstraint.isActive = true
-			self.view.layoutIfNeeded()
+			tableViewTopConstraint.isActive = false
+			
+			UIView.animate(withDuration: 0.3, delay: 0) {
+				self.view.layoutIfNeeded()
+			}
+			
+			tableView.isEditing = false // set tableview editing before so it does edit exising cells
+			viewModel.isEditing = false
+			viewModel.reload(animating: false)
+			viewModel.refresh(animate: true)
 		}
 	}
 	
@@ -74,10 +93,14 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
+		// TODO: make a protocol for generic support
 		if let c = cell as? FavouriteTokenCell {
 			c.addGradientBackground(withFrame: c.containerView.bounds)
 			
 		} else if let c = cell as? TokenBalanceCell {
+			c.addGradientBackground(withFrame: c.containerView.bounds)
+			
+		} else if let c = cell as? FavouriteTokenEditCell {
 			c.addGradientBackground(withFrame: c.containerView.bounds)
 		}
 	}
@@ -86,11 +109,13 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		viewModel.handleTap(onTableView: tableView, atIndexPath: indexPath)
-		
-		/*
-		TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
-		TransactionService.shared.sendData.chosenNFT = nil
-		(self.parent as? HiddenTokensMainViewController)?.openTokenDetails()
-		*/
+	}
+	
+	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+		return .none
+	}
+	
+	func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+		return false
 	}
 }

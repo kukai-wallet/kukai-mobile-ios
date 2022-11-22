@@ -1,5 +1,5 @@
 //
-//  FavouriteTokenCell.swift
+//  FavouriteTokenEditCell.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 22/11/2022.
@@ -7,9 +7,8 @@
 
 import UIKit
 
-class FavouriteTokenCell: UITableViewCell {
+class FavouriteTokenEditCell: UITableViewCell {
 	
-	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
@@ -32,12 +31,25 @@ class FavouriteTokenCell: UITableViewCell {
 		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}
 	
-	func setFav(_ isFav: Bool) {
-		if isFav {
-			favIcon.image = UIImage(named: "star-fill")
-			
-		} else {
-			favIcon.image = UIImage(named: "star-no-fill")
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		
+		for subViewA in self.subviews {
+			if (subViewA.classForCoder.description() == "UITableViewCellReorderControl") {
+				for subViewB in subViewA.subviews {
+					if (subViewB.isKind(of: UIImageView.classForCoder())) {
+						let imageView = subViewB as! UIImageView
+						if (self.myReorderImage == nil) {
+							let myImage = imageView.image
+							myReorderImage = myImage?.withRenderingMode(.alwaysTemplate)
+						}
+						imageView.image = self.myReorderImage
+						imageView.tintColor = UIColor.colorNamed("Grey1200")
+						break
+					}
+				}
+				break
+			}
 		}
 	}
 }

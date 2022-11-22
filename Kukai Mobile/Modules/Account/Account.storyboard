@@ -321,7 +321,7 @@
                                 <color key="textColor" name="Grey800"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oRe-e5-5oV">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oRe-e5-5oV">
                                 <rect key="frame" x="0.0" y="136" width="393" height="716"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -424,7 +424,7 @@
                                             <outlet property="valuelabel" destination="Klp-hA-52H" id="7Vn-jZ-a0x"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FavouriteTokenCell" rowHeight="64" id="iHG-AG-OQU" customClass="FavouriteTokenCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="FavouriteTokenCell" rowHeight="64" id="iHG-AG-OQU" customClass="FavouriteTokenCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="126" width="393" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="iHG-AG-OQU" id="Uku-7K-aYc">
@@ -435,14 +435,14 @@
                                                     <rect key="frame" x="16" y="2" width="361" height="64"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="star-no-fill" translatesAutoresizingMaskIntoConstraints="NO" id="O6C-Hs-HXG">
-                                                            <rect key="frame" x="8" y="17" width="24" height="24"/>
+                                                            <rect key="frame" x="8" y="15" width="24" height="24"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="POn-aH-GOG"/>
                                                                 <constraint firstAttribute="width" constant="24" id="vjb-Lh-IsU"/>
                                                             </constraints>
                                                         </imageView>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RoD-ot-63p">
-                                                            <rect key="frame" x="40" y="8" width="38" height="42"/>
+                                                            <rect key="frame" x="40" y="8" width="38" height="38"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="38" id="7hd-oK-Z14"/>
                                                                 <constraint firstAttribute="height" constant="38" id="vPs-xk-UlR"/>
@@ -477,14 +477,8 @@
                                                         <constraint firstItem="RoD-ot-63p" firstAttribute="top" secondItem="WRL-ae-7Wv" secondAttribute="top" constant="8" id="bnz-uG-6UJ"/>
                                                         <constraint firstItem="RoD-ot-63p" firstAttribute="leading" secondItem="O6C-Hs-HXG" secondAttribute="trailing" constant="8" id="jTu-CD-rPm"/>
                                                         <constraint firstItem="uJw-9c-grv" firstAttribute="leading" secondItem="Mon-rz-0aB" secondAttribute="leading" id="s2C-eX-WP5"/>
-                                                        <constraint firstAttribute="bottom" secondItem="RoD-ot-63p" secondAttribute="bottom" constant="14" id="tjw-tI-bWm"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="RoD-ot-63p" secondAttribute="bottom" constant="14" id="tjw-tI-bWm"/>
                                                     </constraints>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                            <real key="value" value="8"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
                                                 </view>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -494,6 +488,12 @@
                                                 <constraint firstItem="WRL-ae-7Wv" firstAttribute="top" secondItem="Uku-7K-aYc" secondAttribute="top" constant="2" id="L4o-2z-2n6"/>
                                                 <constraint firstItem="WRL-ae-7Wv" firstAttribute="bottom" secondItem="Uku-7K-aYc" secondAttribute="bottom" constant="2" id="cX1-Nz-f1S"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
@@ -504,21 +504,96 @@
                                             <outlet property="tokenIcon" destination="RoD-ot-63p" id="lJK-Te-6R5"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="FavouriteTokenEditCell" rowHeight="64" id="XNT-V3-APi" customClass="FavouriteTokenEditCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="190" width="393" height="64"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XNT-V3-APi" id="BTy-PU-sNG">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="64"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Z74-1s-GoM">
+                                                    <rect key="frame" x="16" y="2" width="361" height="64"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QOb-TD-2Mw">
+                                                            <rect key="frame" x="8" y="8" width="38" height="38"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="38" id="Sqp-ZY-q1W"/>
+                                                                <constraint firstAttribute="width" constant="38" id="t13-5e-Bcr"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="8"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UGP-Rv-FrP">
+                                                            <rect key="frame" x="54.000000000000007" y="8" width="81.666666666666686" height="21"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="18"/>
+                                                            <color key="textColor" name="Grey200"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWE-we-pBy">
+                                                            <rect key="frame" x="53.999999999999993" y="31" width="66.333333333333314" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Grey1100"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="dWE-we-pBy" firstAttribute="top" secondItem="UGP-Rv-FrP" secondAttribute="bottom" constant="2" id="7qp-1k-WEW"/>
+                                                        <constraint firstItem="QOb-TD-2Mw" firstAttribute="top" secondItem="Z74-1s-GoM" secondAttribute="top" constant="8" id="Cnn-cI-qbm"/>
+                                                        <constraint firstItem="dWE-we-pBy" firstAttribute="leading" secondItem="UGP-Rv-FrP" secondAttribute="leading" id="HFW-qG-IcB"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="QOb-TD-2Mw" secondAttribute="bottom" constant="14" id="b8X-ia-uX6"/>
+                                                        <constraint firstItem="UGP-Rv-FrP" firstAttribute="top" secondItem="QOb-TD-2Mw" secondAttribute="top" id="dOP-x2-qdK"/>
+                                                        <constraint firstItem="UGP-Rv-FrP" firstAttribute="leading" secondItem="QOb-TD-2Mw" secondAttribute="trailing" constant="8" id="eB7-91-MWl"/>
+                                                        <constraint firstItem="QOb-TD-2Mw" firstAttribute="leading" secondItem="Z74-1s-GoM" secondAttribute="leading" constant="8" id="qLf-HK-syG"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="Z74-1s-GoM" firstAttribute="leading" secondItem="BTy-PU-sNG" secondAttribute="leading" constant="16" id="9oq-Wn-KJd"/>
+                                                <constraint firstAttribute="trailing" secondItem="Z74-1s-GoM" secondAttribute="trailing" constant="16" id="ABQ-7B-91p"/>
+                                                <constraint firstItem="Z74-1s-GoM" firstAttribute="top" secondItem="BTy-PU-sNG" secondAttribute="top" constant="2" id="cM8-UI-TfT"/>
+                                                <constraint firstItem="Z74-1s-GoM" firstAttribute="bottom" secondItem="BTy-PU-sNG" secondAttribute="bottom" constant="2" id="tQn-cz-iLZ"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                    <real key="value" value="8"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="balanceLabel" destination="dWE-we-pBy" id="iP7-Wr-d8X"/>
+                                            <outlet property="containerView" destination="Z74-1s-GoM" id="IpH-dj-4Pj"/>
+                                            <outlet property="symbolLabel" destination="UGP-Rv-FrP" id="g7O-Lx-v33"/>
+                                            <outlet property="tokenIcon" destination="QOb-TD-2Mw" id="xVC-xC-sOC"/>
+                                        </connections>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jsv-DB-BSC"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="oRe-e5-5oV" firstAttribute="top" secondItem="FVM-2i-QiT" secondAttribute="bottom" constant="8" id="2aY-AF-s2g"/>
+                            <constraint firstItem="oRe-e5-5oV" firstAttribute="top" secondItem="FVM-2i-QiT" secondAttribute="bottom" priority="999" constant="8" id="2aY-AF-s2g"/>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="leading" secondItem="jsv-DB-BSC" secondAttribute="leading" id="2cj-6M-ymd"/>
                             <constraint firstItem="FVM-2i-QiT" firstAttribute="leading" secondItem="jsv-DB-BSC" secondAttribute="leading" constant="16" id="5Wx-Uy-SQe"/>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="trailing" secondItem="jsv-DB-BSC" secondAttribute="trailing" id="KcU-sP-ubU"/>
                             <constraint firstAttribute="bottom" secondItem="oRe-e5-5oV" secondAttribute="bottom" id="WXa-Ak-Mae"/>
-                            <constraint firstItem="oRe-e5-5oV" firstAttribute="top" relation="greaterThanOrEqual" secondItem="jsv-DB-BSC" secondAttribute="top" constant="8" id="Wue-g5-9dX"/>
+                            <constraint firstItem="oRe-e5-5oV" firstAttribute="top" secondItem="jsv-DB-BSC" secondAttribute="top" constant="8" id="Wue-g5-9dX"/>
                             <constraint firstItem="jsv-DB-BSC" firstAttribute="trailing" secondItem="FVM-2i-QiT" secondAttribute="trailing" constant="16" id="hKF-ui-Cfg"/>
                             <constraint firstItem="FVM-2i-QiT" firstAttribute="top" secondItem="jsv-DB-BSC" secondAttribute="top" constant="8" id="lyT-Ho-ALj"/>
                         </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Wue-g5-9dX"/>
+                            </mask>
+                        </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Favourites" id="OCO-3e-PEt">
                         <barButtonItem key="rightBarButtonItem" id="hB1-3G-mYk">
