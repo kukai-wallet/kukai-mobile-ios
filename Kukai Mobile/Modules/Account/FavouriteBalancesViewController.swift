@@ -40,7 +40,6 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					print("calling success")
 					self?.reOrderButton.isHidden = !(self?.viewModel.showReorderButton() ?? false)
 			}
 		}

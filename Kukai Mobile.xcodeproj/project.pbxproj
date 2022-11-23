@@ -106,7 +106,6 @@
 		C07374A927983FB800726C01 /* PrototypeMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374A827983FB800726C01 /* PrototypeMain.swift */; };
 		C07374AB279854C000726C01 /* PrototypeData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374AA279854C000726C01 /* PrototypeData.swift */; };
 		C07374AD27985D6E00726C01 /* SegmentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07374AC27985D6E00726C01 /* SegmentedViewController.swift */; };
-		C07AC26727D22FA500D320D4 /* Charts in Frameworks */ = {isa = PBXBuildFile; productRef = C07AC26627D22FA500D320D4 /* Charts */; };
 		C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */; };
 		C07DE53828BCD80D00C32D42 /* SwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53728BCD80D00C32D42 /* SwapViewModel.swift */; };
 		C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53928BCFD2800C32D42 /* AddLiquidityViewModel.swift */; };
@@ -214,6 +213,7 @@
 		C0EA19DB29096E4600E6B40D /* CollectibleDetailDescriptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EA19D929096E4600E6B40D /* CollectibleDetailDescriptionCell.xib */; };
 		C0EA19DE29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EA19DC29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift */; };
 		C0EA19DF29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EA19DD29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.xib */; };
+		C0EB2C70292E342700711DAC /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EB2C6F292E342700711DAC /* ChartView.swift */; };
 		C0EF1BC3289296CE00AA5DD4 /* SlideButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */; };
 		C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */; };
 		C0EF1BC72892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */; };
@@ -487,6 +487,9 @@
 		C0EA19D929096E4600E6B40D /* CollectibleDetailDescriptionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectibleDetailDescriptionCell.xib; sourceTree = "<group>"; };
 		C0EA19DC29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAttributeHeaderCell.swift; sourceTree = "<group>"; };
 		C0EA19DD29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectibleDetailAttributeHeaderCell.xib; sourceTree = "<group>"; };
+		C0EB2C6F292E342700711DAC /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
+		C0EB2C71292E356B00711DAC /* Charts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Charts.framework; path = System/Library/Frameworks/Charts.framework; sourceTree = SDKROOT; };
+		C0EB2C73292E3A8100711DAC /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		C0EF1BC2289296CE00AA5DD4 /* SlideButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideButton.swift; sourceTree = "<group>"; };
 		C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideButton.xib; sourceTree = "<group>"; };
 		C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewController.swift; sourceTree = "<group>"; };
@@ -522,7 +525,6 @@
 				C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
-				C07AC26727D22FA500D320D4 /* Charts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -725,6 +727,8 @@
 		C06E665E26A8669300770A83 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0EB2C73292E3A8100711DAC /* SwiftUI.framework */,
+				C0EB2C71292E356B00711DAC /* Charts.framework */,
 				C01D227127F5E2DD00D3AF4B /* CloudKit.framework */,
 			);
 			name = Frameworks;
@@ -1065,6 +1069,7 @@
 				C08694E527BD1D93000A4909 /* AccountViewModel.swift */,
 				C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */,
 				C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */,
+				C0EB2C6F292E342700711DAC /* ChartView.swift */,
 				C0FBC88C292C12BF00B29921 /* HiddenTokensMainViewController.swift */,
 				C0FBC88E292C12CE00B29921 /* HiddenTokensBalancesViewController.swift */,
 				C0FBC892292C162000B29921 /* HiddenBalancesViewModel.swift */,
@@ -1107,7 +1112,6 @@
 			packageProductDependencies = (
 				C0BBD2A426A9A7980097B63A /* Sentry */,
 				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
-				C07AC26627D22FA500D320D4 /* Charts */,
 				C0A315052836354D00D1CCB4 /* BeaconBlockchainTezos */,
 				C0A315072836354D00D1CCB4 /* BeaconClientWallet */,
 				C0A315092836354D00D1CCB4 /* BeaconCore */,
@@ -1189,7 +1193,6 @@
 			packageReferences = (
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
-				C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */,
 				C0A315042836354D00D1CCB4 /* XCRemoteSwiftPackageReference "beacon-ios-sdk" */,
 				C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
 			);
@@ -1422,6 +1425,7 @@
 				C001841F288AF88B00887536 /* SwapConfirmViewController.swift in Sources */,
 				C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,
+				C0EB2C70292E342700711DAC /* ChartView.swift in Sources */,
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
 				C009F88B28195B9C007EA8A8 /* AddressTypeViewController.swift in Sources */,
 				C07374AB279854C000726C01 /* PrototypeData.swift in Sources */,
@@ -1703,10 +1707,12 @@
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Kukai;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSMainNibFile = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1737,10 +1743,12 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Kukai;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSMainNibFile = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1915,10 +1923,12 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = "Kukai Mobile/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = Kukai;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
 				INFOPLIST_KEY_NSMainNibFile = "";
 				INFOPLIST_KEY_NSMainStoryboardFile = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2023,14 +2033,6 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/danielgindi/Charts";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.1.0;
-			};
-		};
 		C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
@@ -2075,11 +2077,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
 			productName = WalletConnect;
-		};
-		C07AC26627D22FA500D320D4 /* Charts */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C008C8B427D22C6C00A62CB1 /* XCRemoteSwiftPackageReference "Charts" */;
-			productName = Charts;
 		};
 		C0A315052836354D00D1CCB4 /* BeaconBlockchainTezos */ = {
 			isa = XCSwiftPackageProductDependency;

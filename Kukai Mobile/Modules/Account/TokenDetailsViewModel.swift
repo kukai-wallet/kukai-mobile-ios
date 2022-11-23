@@ -7,20 +7,24 @@
 
 import UIKit
 import KukaiCoreSwift
-import Charts
+//import Charts
 
+/*
 struct DataSet {
 	let data: LineChartDataSet
 	let upperLimit: ChartLimitLine
 	let lowerLimit: ChartLimitLine
 }
+*/
 
+/*
 struct AllChartData {
 	let day: DataSet
 	let week: DataSet
 	let month: DataSet
 	let year: DataSet
 }
+*/
 
 public class TokenDetailsViewModel: ViewModel {
 	
@@ -168,6 +172,7 @@ public class TokenDetailsViewModel: ViewModel {
 		showBakerRewardsSection = false
 	}
 	
+	/*
 	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {
 		
 		// If XTZ we fetch data from coingecko
@@ -210,7 +215,9 @@ public class TokenDetailsViewModel: ViewModel {
 			}
 		}
 	}
+	*/
 	
+	/*
 	func formatData(data: [CoinGeckoMarketDataResponse]) -> AllChartData {
 		let daySet = createDataSet(for: data[0])
 		let weekSet = createDataSet(for: data[1])
@@ -328,4 +335,5 @@ public class TokenDetailsViewModel: ViewModel {
 		
 		return DataSet(data: chartSet, upperLimit: upperLimitLine, lowerLimit: lowerLimitLine)
 	}
+	*/
 }
