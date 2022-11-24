@@ -198,36 +198,27 @@ class TokenDetailsViewController: UIViewController {
 		favouriteButton.setImage( viewModel.tokenIsFavourited ? UIImage(named: "star-fill") : UIImage(named: "star-no-fill") , for: .normal)
 		buyButton.isHidden = !viewModel.tokenCanBePurchased
 		
-		if viewModel.isDelegated {
+		if viewModel.isStakingPossible && viewModel.isStaked {
+			stakeLabel.isHidden = false
 			stakedActivityIndicator.isHidden = false
 			stakedActivityIndicator.startAnimating()
 			
 			viewModel.loadBakerData { [weak self] result in
-				// TODO: Update data
+				self?.stakedActivityIndicator.stopAnimating()
+				self?.stakedActivityIndicator.isHidden = true
 				
+				self?.updateBakerRewardsSection()
 				self?.bakerSectionView1.isHidden = false
 				self?.bakerSectionView2.isHidden = false
 			}
-		} else {
+		} else if viewModel.isStakingPossible {
 			self.notStakeLabel.isHidden = false
 			self.stakeButtonStackview.isHidden = false
 		}
-		
-		
-		/*
-		//tokenHeaderPlusButton.isHidden = !viewModel.showBuyButton
-		
-		tokenHeaderLabel.text = viewModel.tokenSymbol
-		tokenBalanceLabel.text = viewModel.tokenBalance
-		tokenValueLabel.text = viewModel.tokenValue
-		
-		
-		// Baker and baker rewards
-		showBakerRewardsSection(viewModel.showBakerRewardsSection)
-		showStakeButton(viewModel.showStakeButton)
-		
-		bakerLabel.text = viewModel.bakerText
-		stakeButton.setTitle(viewModel.stakeButtonTitle, for: .normal)
+	}
+	
+	func updateBakerRewardsSection() {
+		bakerEditButton.setTitle(viewModel.bakerText, for: .normal)
 		
 		MediaProxyService.load(url: viewModel.previousBakerIconURL, to: previousBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: previousBakerIcon.frame.size)
 		previousBakerAmountTitleLabel.text = viewModel.previousBakerAmountTitle
@@ -238,19 +229,10 @@ class TokenDetailsViewController: UIViewController {
 		previousBakerCycleLabel.text = viewModel.previousBakerCycle
 		
 		MediaProxyService.load(url: viewModel.nextBakerIconURL, to: nextBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: nextBakerIcon.frame.size)
+		MediaProxyService.load(url: viewModel.nextBakerIconURL, to: currentBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: currentBakerIcon.frame.size)
 		nextBakerAmountLabel.text = viewModel.nextBakerAmount
 		nextBakerTimeLabel.text = viewModel.nextBakerTime
 		nextBakerCycleLabel.text = viewModel.nextBakerCycle
-		*/
-	}
-	
-	func showBakerRewardsSection(_ show: Bool) {
-		self.bakerSectionView1.isHidden = !show
-		self.bakerSectionView2.isHidden = !show
-	}
-	
-	func showStakeButton(_ show: Bool) {
-		self.stakeButton.isHidden = !show
 	}
 	
 	

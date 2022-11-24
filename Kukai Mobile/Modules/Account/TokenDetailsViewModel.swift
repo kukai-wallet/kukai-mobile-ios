@@ -36,17 +36,9 @@ public class TokenDetailsViewModel: ViewModel {
 	var tokenBalance = ""
 	var tokenValue = ""
 	
-	var isDelegated = false
+	var isStaked = false
+	var isStakingPossible = false
 	
-	
-	
-	
-	
-	
-	var showBakerRewardsSection = false
-	var showStakeButton = false
-	var showBuyButton = false
-	var isBakerSet = false
 	var bakerText = ""
 	
 	var previousBakerIconURL: URL? = nil
@@ -62,7 +54,6 @@ public class TokenDetailsViewModel: ViewModel {
 	var nextBakerTime = ""
 	var nextBakerCycle = ""
 	
-	var stakeButtonTitle = ""
 	
 	
 	func loadTokenData(token: Token) {
@@ -89,8 +80,9 @@ public class TokenDetailsViewModel: ViewModel {
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
 			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
+			isStakingPossible = true
 			if account.delegate != nil {
-				isDelegated = false
+				isStaked = true
 			}
 			
 			self.state = .success(nil)
@@ -101,51 +93,39 @@ public class TokenDetailsViewModel: ViewModel {
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			showBakerRewardsSection = false
-			showStakeButton = false
-			showBuyButton = false
+			isStakingPossible = false
 			self.state = .success(nil)
 		}
 	}
 	
 	func loadBakerData(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
-		/*
-		 showBakerRewardsSection = true
-		 showStakeButton = true
-		 showBuyButton = true
-		 */
+		let account = DependencyManager.shared.balanceService.account
+		guard let delegate = account.delegate else {
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find baker details")))
+			return
+		}
 		
-		
-		/*
-		 guard let delegate = account.delegate else {
-		 updateBakerNone()
-		 return
-		 }
-		 
-		 if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
-		 updateBakerInfo(from: bakerRewardCache, andDelegate: delegate)
-		 self.state = .success(nil)
-		 
-		 } else {
-		 self.state = .loading
-		 DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
-		 if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
-		 self?.updateBakerInfo(from: res, andDelegate: delegate)
-		 let _ = DiskService.write(encodable: res, toFileName: filename)
-		 
-		 } else {
-		 self?.updateBakerError(withDelegate: delegate)
-		 }
-		 
-		 self?.state = .success(nil)
-		 }
-		 }
-		 */
+		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+			updateBakerInfo(from: bakerRewardCache, andDelegate: delegate)
+			completion(Result.success(true))
+			
+		} else {
+			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
+				if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
+					self?.updateBakerInfo(from: res, andDelegate: delegate)
+					let _ = DiskService.write(encodable: res, toFileName: filename)
+					
+				} else {
+					self?.updateBakerError(withDelegate: delegate)
+				}
+				
+				completion(Result.success(true))
+			}
+		}
 	}
 	
 	private func updateBakerInfo(from rewardObj: AggregateRewardInformation, andDelegate delegate: TzKTAccountDelegate) {
-		bakerText = "Baker: \(delegate.alias ?? delegate.address)"
-		isBakerSet = true
+		bakerText = delegate.alias ?? delegate.address
 		
 		if let previousReward = rewardObj.previousReward {
 			previousBakerIconURL = previousReward.bakerLogo
@@ -182,27 +162,15 @@ public class TokenDetailsViewModel: ViewModel {
 			nextBakerTime = "N/A"
 			nextBakerCycle = "N/A"
 		}
-		
-		stakeButtonTitle = "Change Baker"
-	}
-	
-	private func updateBakerNone() {
-		isBakerSet = false
 	}
 	
 	private func updateBakerError(withDelegate delegate: TzKTAccountDelegate?) {
 		if let del = delegate {
-			isBakerSet = true
-			bakerText = "Baker: \(del.alias ?? del.address)"
-			stakeButtonTitle = "Change Baker"
+			bakerText = del.alias ?? del.address
 			
 		} else {
-			isBakerSet = false
 			bakerText = ""
-			stakeButtonTitle = "Stake XTZ"
 		}
-		
-		showBakerRewardsSection = false
 	}
 	
 	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {

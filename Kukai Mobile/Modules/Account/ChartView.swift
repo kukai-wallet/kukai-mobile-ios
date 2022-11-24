@@ -209,15 +209,7 @@ struct ChartView: View {
 	private func doubleFormatter(_ double: Double?) -> String {
 		guard let d = double else { return "" }
 		
-		if d > 1000 {
-			return Decimal(d).rounded(scale: 0, roundingMode: .bankers).description
-			
-		} else if d > 100 {
-			return Decimal(d).rounded(scale: 2, roundingMode: .bankers).description
-			
-		} else {
-			return Decimal(d).rounded(scale: 4, roundingMode: .bankers).description
-		}
+		return DependencyManager.shared.coinGeckoService.format(decimal: Decimal(d), numberStyle: .currency, maximumFractionDigits: 2)
 	}
 	
 	private func useProxy(_ proxy: ChartProxy) -> some View {
