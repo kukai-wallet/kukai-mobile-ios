@@ -666,37 +666,20 @@
                                     <constraint firstAttribute="width" constant="12" id="XU8-9B-CXj"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdN-jl-fLy">
-                                <rect key="frame" x="20" y="768" width="353" height="50"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="ch2-vU-9Ni"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Send"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="25"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="sendButtonTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="Yv8-ib-5Bd"/>
-                                </connections>
-                            </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dsR-cA-hTk">
-                                <rect key="frame" x="0.0" y="133" width="393" height="627"/>
+                                <rect key="frame" x="0.0" y="133" width="393" height="719"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UFG-hI-ilc">
-                                        <rect key="frame" x="16" y="0.0" width="361" height="654"/>
+                                        <rect key="frame" x="16" y="0.0" width="361" height="1005"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyq-W0-MFG">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyq-W0-MFG" userLabel="Spacer">
                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="8"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="8" id="ix0-oV-bBA"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="7YA-wj-Jky">
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="7YA-wj-Jky" userLabel="Stackview - top buttons">
                                                 <rect key="frame" x="0.0" y="16" width="361" height="30"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FID-KL-PvE">
@@ -741,15 +724,21 @@
                                                     </button>
                                                 </subviews>
                                             </stackView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eB6-MI-1g9">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eB6-MI-1g9" userLabel="Spacer">
                                                 <rect key="frame" x="0.0" y="54" width="361" height="8"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="8" id="UI3-3L-wXq"/>
                                                 </constraints>
                                             </view>
-                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Us-ml-uAC">
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Z1H-De-M7e">
                                                 <rect key="frame" x="0.0" y="70" width="361" height="130"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="130" id="Mwd-Jc-OZw"/>
+                                                </constraints>
+                                            </activityIndicatorView>
+                                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Us-ml-uAC" userLabel="Chart">
+                                                <rect key="frame" x="0.0" y="208" width="361" height="130"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="130" id="m2n-WJ-UMK"/>
@@ -758,54 +747,140 @@
                                                     <segue destination="6i5-Ty-KCn" kind="embed" id="Vc0-wT-A7a"/>
                                                 </connections>
                                             </containerView>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Rr-dP-mHP">
-                                                <rect key="frame" x="0.0" y="208" width="361" height="8"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7Rr-dP-mHP" userLabel="Spacer">
+                                                <rect key="frame" x="0.0" y="346" width="361" height="8"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="8" id="UsL-Iu-nmK"/>
                                                 </constraints>
                                             </view>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="so5-GV-Pcj">
-                                                <rect key="frame" x="0.0" y="224" width="361" height="31"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="pTS-Ce-5Eo" userLabel="Stackview - segmented buttons">
+                                                <rect key="frame" x="0.0" y="362" width="361" height="34"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OlM-G7-7j6">
+                                                        <rect key="frame" x="0.0" y="0.0" width="72.666666666666671" height="34"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZbR-Tb-U8U">
+                                                        <rect key="frame" x="88.666666666666671" y="0.0" width="34" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="Ve7-jG-khB"/>
+                                                            <constraint firstAttribute="width" constant="34" id="VeT-4T-UoO"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="24H">
+                                                            <color key="titleColor" name="Brand1300"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" name="Grey1400"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="chartRangeDayTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="T3R-7D-hi7"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ygn-7w-w1g">
+                                                        <rect key="frame" x="138.66666666666666" y="0.0" width="34" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="nI8-bC-qfy"/>
+                                                            <constraint firstAttribute="width" constant="34" id="nXh-JG-SXd"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="1W">
+                                                            <color key="titleColor" name="Brand1300"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" name="Grey1400"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="chartRangeWeekTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="YwJ-Dv-W8n"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ba6-oJ-6py">
+                                                        <rect key="frame" x="188.66666666666666" y="0.0" width="34" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="B8G-fe-D1d"/>
+                                                            <constraint firstAttribute="width" constant="34" id="dGN-9G-42V"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="1M">
+                                                            <color key="titleColor" name="Brand1300"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" name="Grey1400"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="chartRangeMonthTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="Bfo-8B-Zvz"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vK6-QO-LV1">
+                                                        <rect key="frame" x="238.66666666666666" y="0.0" width="33.999999999999972" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="8Jy-UH-WCy"/>
+                                                            <constraint firstAttribute="width" constant="34" id="ZFt-pO-7zc"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="1Y">
+                                                            <color key="titleColor" name="Brand1300"/>
+                                                        </state>
+                                                        <state key="selected">
+                                                            <color key="titleColor" name="Grey1400"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="6"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="chartRangeYearTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="FF2-Sk-D3g"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k1I-Wp-iay">
+                                                        <rect key="frame" x="288.66666666666669" y="0.0" width="72.333333333333314" height="34"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="H59-zw-hOd"/>
+                                                    <constraint firstItem="k1I-Wp-iay" firstAttribute="width" secondItem="OlM-G7-7j6" secondAttribute="width" id="VHs-7Z-yra"/>
                                                 </constraints>
-                                                <segments>
-                                                    <segment title="Day"/>
-                                                    <segment title="Week"/>
-                                                    <segment title="Month"/>
-                                                    <segment title="Year"/>
-                                                </segments>
-                                                <connections>
-                                                    <action selector="chartRangeChanged:" destination="CGQ-vo-OEA" eventType="valueChanged" id="MIO-06-ljK"/>
-                                                </connections>
-                                            </segmentedControl>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BjC-YF-CUT">
-                                                <rect key="frame" x="0.0" y="262" width="361" height="8"/>
+                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BjC-YF-CUT" userLabel="Spacer">
+                                                <rect key="frame" x="0.0" y="404" width="361" height="8"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="8" id="X0Y-xC-X5Q"/>
                                                 </constraints>
                                             </view>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dTG-Kd-XnL">
-                                                <rect key="frame" x="0.0" y="278" width="361" height="17"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sha-4e-KBJ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="51.333333333333336" height="17"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" name="Grey100"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sf3-39-dFI">
-                                                        <rect key="frame" x="59.333333333333343" y="0.0" width="301.66666666666663" height="17"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" name="Grey100"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dLG-bQ-EIf">
-                                                <rect key="frame" x="0.0" y="303" width="361" height="30"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sha-4e-KBJ">
+                                                <rect key="frame" x="0.0" y="420" width="361" height="14.666666666666686"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                <color key="textColor" name="Grey1100"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="dLG-bQ-EIf" userLabel="Stackview - Balance Details">
+                                                <rect key="frame" x="0.0" y="442.66666666666663" width="361" height="30"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gey-wS-huW">
                                                         <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
@@ -815,34 +890,152 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9U7-ex-y3K">
-                                                        <rect key="frame" x="37.999999999999993" y="0.0" width="80.333333333333314" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
+                                                        <rect key="frame" x="38" y="0.0" width="97" height="30"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <color key="textColor" name="Grey200"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCN-ZT-Z1Q">
-                                                        <rect key="frame" x="126.33333333333336" y="0.0" width="234.66666666666663" height="30"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                        <nil key="textColor"/>
+                                                        <rect key="frame" x="143" y="0.0" width="218" height="30"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
+                                                        <color key="textColor" name="Grey1100"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" translatesAutoresizingMaskIntoConstraints="NO" id="9Ss-5U-f20">
-                                                <rect key="frame" x="0.0" y="341" width="361" height="44"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eR7-BI-DVC" userLabel="Spacer">
+                                                <rect key="frame" x="0.0" y="480.66666666666663" width="361" height="16"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="7GU-pK-SzK"/>
+                                                </constraints>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pyj-v6-pw6" userLabel="Stackview - Send">
+                                                <rect key="frame" x="0.0" y="504.66666666666663" width="361" height="56"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;baker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vGq-jA-HFj">
-                                                        <rect key="frame" x="0.0" y="27" width="317" height="17"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47W-w1-PLA">
-                                                        <rect key="frame" x="317" y="0.0" width="44" height="44"/>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tDZ-Ms-V2N">
+                                                        <rect key="frame" x="0.0" y="0.0" width="70.666666666666671" height="56"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fdN-jl-fLy">
+                                                        <rect key="frame" x="70.666666666666686" y="0.0" width="220" height="56"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="cVA-bH-zmb"/>
-                                                            <constraint firstAttribute="width" constant="44" id="n5O-gG-7DF"/>
+                                                            <constraint firstAttribute="width" constant="220" id="43f-3h-7BS"/>
+                                                            <constraint firstAttribute="height" constant="56" id="Tp6-k8-bXT"/>
                                                         </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Send" image="arrow-up-right"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="sendButtonTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="Yv8-ib-5Bd"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="npx-Rf-Qmy">
+                                                        <rect key="frame" x="290.66666666666669" y="0.0" width="70.333333333333314" height="56"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="npx-Rf-Qmy" firstAttribute="width" secondItem="tDZ-Ms-V2N" secondAttribute="width" id="OVX-xA-Ezi"/>
+                                                </constraints>
+                                            </stackView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vDH-1x-UI4" userLabel="Spacer">
+                                                <rect key="frame" x="0.0" y="568.66666666666663" width="361" height="16"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="16" id="Uqv-pJ-AiT"/>
+                                                </constraints>
+                                            </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Not staking" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uqT-nz-DZG">
+                                                <rect key="frame" x="0.0" y="592.66666666666663" width="361" height="14.666666666666629"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                <color key="textColor" name="Grey1100"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W7E-vw-X9C">
+                                                <rect key="frame" x="0.0" y="615.33333333333337" width="361" height="56"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="flY-Ke-4Nk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="70.666666666666671" height="56"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HYO-eE-Ktw">
+                                                        <rect key="frame" x="70.666666666666686" y="0.0" width="220" height="56"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="420-Om-pVw"/>
+                                                            <constraint firstAttribute="width" constant="220" id="B2v-hc-hMz"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Stake"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" name="Brand1000"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="stakeButtonTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="LWG-fc-zHq"/>
+                                                        </connections>
+                                                    </button>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z2C-wE-hHn">
+                                                        <rect key="frame" x="290.66666666666669" y="0.0" width="70.333333333333314" height="56"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </view>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="z2C-wE-hHn" firstAttribute="width" secondItem="flY-Ke-4Nk" secondAttribute="width" id="sCL-5i-C1E"/>
+                                                </constraints>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Staked" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHf-Qd-kBi">
+                                                <rect key="frame" x="0.0" y="679.33333333333337" width="361" height="14.666666666666629"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                <color key="textColor" name="Grey1100"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="brd-gt-vsV">
+                                                <rect key="frame" x="0.0" y="702" width="361" height="20"/>
+                                            </activityIndicatorView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="bottom" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9Ss-5U-f20">
+                                                <rect key="frame" x="0.0" y="730" width="361" height="44"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aZK-O0-VU7">
+                                                        <rect key="frame" x="0.0" y="14" width="30" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="30" id="87R-Bq-cNT"/>
+                                                            <constraint firstAttribute="width" constant="30" id="rkf-Wl-H00"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3u3-5Q-AbI">
+                                                        <rect key="frame" x="38" y="14" width="281" height="30"/>
+                                                        <color key="tintColor" name="Grey200"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="plain" image="edit" title="&lt;baker&gt;" imagePadding="8">
+                                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                        </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="editBakerButotnTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="iWb-1o-3dA"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="47W-w1-PLA">
+                                                        <rect key="frame" x="327" y="10" width="34" height="34"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="cVA-bH-zmb"/>
+                                                            <constraint firstAttribute="width" constant="34" id="n5O-gG-7DF"/>
+                                                        </constraints>
+                                                        <color key="tintColor" name="Grey1100"/>
                                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                         <state key="normal">
                                                             <imageReference key="image" image="info.circle.fill" catalog="system" symbolScale="large"/>
@@ -851,10 +1044,11 @@
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="44" id="0VK-SH-Luc"/>
+                                                    <constraint firstItem="aZK-O0-VU7" firstAttribute="centerY" secondItem="3u3-5Q-AbI" secondAttribute="centerY" id="P5J-g1-yJ4"/>
                                                 </constraints>
                                             </stackView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2od-6H-Z9d">
-                                                <rect key="frame" x="0.0" y="393" width="361" height="223"/>
+                                                <rect key="frame" x="0.0" y="782" width="361" height="223"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="Pit-md-voB">
                                                         <rect key="frame" x="8" y="8" width="153.66666666666666" height="207"/>
@@ -896,7 +1090,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;time&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PEd-E2-hr2">
-                                                                <rect key="frame" x="0.0" y="119.33333333333339" width="153.66666666666666" height="35.666666666666671"/>
+                                                                <rect key="frame" x="0.0" y="119.33333333333327" width="153.66666666666666" height="35.666666666666671"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -955,7 +1149,7 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;estTime&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jvV-fo-vdi">
-                                                                <rect key="frame" x="0.0" y="119.33333333333339" width="153.33333333333334" height="35.666666666666671"/>
+                                                                <rect key="frame" x="0.0" y="119.33333333333327" width="153.33333333333334" height="35.666666666666671"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -1001,27 +1195,6 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HYO-eE-Ktw">
-                                                <rect key="frame" x="0.0" y="624" width="361" height="30"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="30" id="0bP-xs-Ah5"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Stake"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                        <real key="value" value="15"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                        <real key="value" value="1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="stakeButtonTapped:" destination="CGQ-vo-OEA" eventType="touchUpInside" id="LWG-fc-zHq"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -1042,19 +1215,16 @@
                             <constraint firstItem="qMb-7q-OsL" firstAttribute="leading" secondItem="QKn-NV-DRJ" secondAttribute="trailing" constant="16" id="2se-k4-Eln"/>
                             <constraint firstItem="qMb-7q-OsL" firstAttribute="top" secondItem="QKn-NV-DRJ" secondAttribute="top" id="6Go-4b-jt4"/>
                             <constraint firstItem="zxo-iS-ofc" firstAttribute="top" secondItem="g9c-sZ-JiE" secondAttribute="top" id="8F0-pe-xZH"/>
-                            <constraint firstItem="fdN-jl-fLy" firstAttribute="leading" secondItem="afh-eq-CYt" secondAttribute="leading" constant="20" id="8Uc-em-98o"/>
                             <constraint firstItem="zxo-iS-ofc" firstAttribute="leading" secondItem="VlK-P7-o8t" secondAttribute="trailing" constant="4" id="CdV-d4-pSa"/>
                             <constraint firstItem="g9c-sZ-JiE" firstAttribute="top" secondItem="afh-eq-CYt" secondAttribute="top" constant="16" id="Id5-Cg-Z5d"/>
-                            <constraint firstItem="fdN-jl-fLy" firstAttribute="top" secondItem="dsR-cA-hTk" secondAttribute="bottom" constant="8" id="JsD-kx-OeN"/>
                             <constraint firstItem="afh-eq-CYt" firstAttribute="trailing" secondItem="UFG-hI-ilc" secondAttribute="trailing" constant="16" id="LgS-lj-eti"/>
+                            <constraint firstAttribute="bottom" secondItem="dsR-cA-hTk" secondAttribute="bottom" id="Pfa-PD-pIh"/>
                             <constraint firstItem="VlK-P7-o8t" firstAttribute="centerY" secondItem="zxo-iS-ofc" secondAttribute="centerY" id="RlC-H0-5WT"/>
                             <constraint firstItem="UFG-hI-ilc" firstAttribute="leading" secondItem="afh-eq-CYt" secondAttribute="leading" constant="16" id="Tul-zM-Z3v"/>
                             <constraint firstItem="afh-eq-CYt" firstAttribute="trailing" secondItem="zxo-iS-ofc" secondAttribute="trailing" constant="16" id="Yqx-NY-utr"/>
                             <constraint firstItem="dsR-cA-hTk" firstAttribute="leading" secondItem="afh-eq-CYt" secondAttribute="leading" id="Z6j-Eg-d0G"/>
                             <constraint firstItem="g9c-sZ-JiE" firstAttribute="leading" secondItem="afh-eq-CYt" secondAttribute="leading" constant="16" id="dA0-fC-f4a"/>
                             <constraint firstItem="dsR-cA-hTk" firstAttribute="top" secondItem="QKn-NV-DRJ" secondAttribute="bottom" constant="8" id="fEa-A0-FXO"/>
-                            <constraint firstItem="afh-eq-CYt" firstAttribute="trailing" secondItem="fdN-jl-fLy" secondAttribute="trailing" constant="20" id="fEb-RB-bko"/>
-                            <constraint firstItem="fdN-jl-fLy" firstAttribute="bottom" secondItem="afh-eq-CYt" secondAttribute="bottom" id="fmP-Zc-mXl"/>
                             <constraint firstItem="dsR-cA-hTk" firstAttribute="trailing" secondItem="afh-eq-CYt" secondAttribute="trailing" id="hyL-Ri-YVb"/>
                             <constraint firstItem="qMb-7q-OsL" firstAttribute="trailing" secondItem="zxo-iS-ofc" secondAttribute="trailing" id="kex-k0-cea"/>
                             <constraint firstItem="QKn-NV-DRJ" firstAttribute="trailing" secondItem="eMP-UJ-eks" secondAttribute="trailing" id="s0l-nS-HGc"/>
@@ -1065,17 +1235,24 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="bakerLabel" destination="vGq-jA-HFj" id="sJ7-gv-jDy"/>
+                        <outlet property="bakerEditButton" destination="3u3-5Q-AbI" id="kfg-3v-Liq"/>
                         <outlet property="bakerSectionView1" destination="9Ss-5U-f20" id="a7k-Fq-zIf"/>
                         <outlet property="bakerSectionView2" destination="2od-6H-Z9d" id="qGj-nB-70t"/>
                         <outlet property="buyButton" destination="caC-Aq-zBn" id="JzG-vb-8os"/>
-                        <outlet property="chartRangeSegmented" destination="so5-GV-Pcj" id="Fmc-Pl-8J4"/>
+                        <outlet property="chartActivityIndicator" destination="Z1H-De-M7e" id="wDs-Fo-e8l"/>
+                        <outlet property="chartContainer" destination="0Us-ml-uAC" id="hdf-tS-1wc"/>
+                        <outlet property="chartRangeDayButton" destination="ZbR-Tb-U8U" id="hBb-xZ-TNZ"/>
+                        <outlet property="chartRangeMonthButton" destination="Ba6-oJ-6py" id="uxE-uX-bzd"/>
+                        <outlet property="chartRangeWeekButton" destination="Ygn-7w-w1g" id="8CP-KH-aNU"/>
+                        <outlet property="chartRangeYearButton" destination="vK6-QO-LV1" id="ay4-Li-rso"/>
+                        <outlet property="currentBakerIcon" destination="aZK-O0-VU7" id="0Jz-EY-I1i"/>
                         <outlet property="favouriteButton" destination="FID-KL-PvE" id="wUm-Ch-W1l"/>
                         <outlet property="moreButton" destination="RNc-3O-cpk" id="8VV-Vv-gvX"/>
                         <outlet property="nextBakerAmountLabel" destination="7FX-4b-Qcv" id="Myy-aQ-Ygv"/>
                         <outlet property="nextBakerCycleLabel" destination="ubY-rs-5Ol" id="4Bk-zb-pGL"/>
                         <outlet property="nextBakerIcon" destination="OwD-TE-KE1" id="U3N-KW-06r"/>
                         <outlet property="nextBakerTimeLabel" destination="jvV-fo-vdi" id="OLL-TZ-0o1"/>
+                        <outlet property="notStakeLabel" destination="uqT-nz-DZG" id="alm-DS-II6"/>
                         <outlet property="previousBakerAmountLabel" destination="aD5-RM-ODf" id="uZV-3z-jDx"/>
                         <outlet property="previousBakerAmountTitleLabel" destination="g8x-1a-Zfw" id="1YC-dA-lB0"/>
                         <outlet property="previousBakerCycleLabel" destination="LpS-30-M7d" id="h9F-M8-Vzh"/>
@@ -1083,7 +1260,11 @@
                         <outlet property="previousBakerIcon" destination="h2j-fI-HDZ" id="Qke-Ju-gBe"/>
                         <outlet property="previousBakerTimeLabel" destination="PEd-E2-hr2" id="U8X-XW-HJP"/>
                         <outlet property="previousBakerTimeTitleLabel" destination="dqM-eX-YSq" id="yZJ-Gv-ZrO"/>
+                        <outlet property="sendButton" destination="fdN-jl-fLy" id="Gyv-1P-Lqw"/>
                         <outlet property="stakeButton" destination="HYO-eE-Ktw" id="5Ft-0e-RYv"/>
+                        <outlet property="stakeButtonStackview" destination="W7E-vw-X9C" id="Zfi-O1-tez"/>
+                        <outlet property="stakeLabel" destination="lHf-Qd-kBi" id="Khy-S7-8Ch"/>
+                        <outlet property="stakedActivityIndicator" destination="brd-gt-vsV" id="r4k-Eh-b7k"/>
                         <outlet property="tokenBalanceIcon" destination="gey-wS-huW" id="Eu0-4O-cSE"/>
                         <outlet property="tokenBalanceLabel" destination="9U7-ex-y3K" id="sUw-9I-cID"/>
                         <outlet property="tokenHeaderFiatLabel" destination="QKn-NV-DRJ" id="O5X-n2-HHo"/>
@@ -1266,21 +1447,29 @@
         <image name="account-tab-off" width="24" height="23"/>
         <image name="account-tab-on" width="24" height="24"/>
         <image name="arrow-up-green" width="11" height="10"/>
+        <image name="arrow-up-right" width="18" height="18"/>
         <image name="arrow.right" catalog="system" width="128" height="95"/>
         <image name="context-menu-hidden" width="33" height="33"/>
+        <image name="edit" width="25" height="25"/>
         <image name="ellipse-circle" width="35" height="35"/>
         <image name="ellipses" width="28" height="8"/>
         <image name="info.circle.fill" catalog="system" width="128" height="123"/>
         <image name="plus-circle" width="34" height="34"/>
         <image name="star-no-fill" width="31" height="29"/>
-        <namedColor name="Grey100">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Brand1000">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Brand1300">
+            <color red="0.27799999713897705" green="0.30199998617172241" blue="0.68999999761581421" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey1100">
             <color red="0.47058823529411764" green="0.47843137254901963" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey1200">
             <color red="0.41176470588235292" green="0.41568627450980394" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey1400">
+            <color red="0.30588235294117649" green="0.31372549019607843" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
