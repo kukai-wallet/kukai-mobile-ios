@@ -18,7 +18,11 @@ public class CoinGeckoService {
 	private let coinGeckoChartURLYear = "https://api.coingecko.com/api/v3/coins/tezos/market_chart?days=365&interval=daily&vs_currency="
 	
 	private let fetchTezosPriceKey = "coingecko-tezos-price"
-	private let fetchEchangeRates = "coingecko-exchange-rates"
+	private let fetchEchangeRatesKey = "coingecko-exchange-rates"
+	private let chartDataDayKey = "coingecko-chart-day"
+	private let chartDataWeekKey = "coingecko-chart-week"
+	private let chartDataMonthKey = "coingecko-chart-month"
+	private let chartDataYearKey = "coingecko-chart-year"
 	
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService
@@ -28,7 +32,7 @@ public class CoinGeckoService {
 	private var dispatchGroupMarketData = DispatchGroup()
 	
 	var selectedCurrency: String {
-		get { return (UserDefaults.standard.string(forKey: "com.currency.selected") ?? Locale.current.currencyCode?.lowercased()) ?? "usd" } // Return stored, or based on phone local, or default to USD
+		get { return (UserDefaults.standard.string(forKey: "com.currency.selected") ?? Locale.current.currency?.identifier.lowercased()) ?? "usd" } // Return stored, or based on phone local, or default to USD
 	}
 	
 	
@@ -67,7 +71,7 @@ public class CoinGeckoService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRates, responseType: CoinGeckoExchangeRateResponse.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self) { result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
@@ -78,14 +82,14 @@ public class CoinGeckoService {
 		}
 	}
 	
-	public func fetchChartData(forURL: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
+	public func fetchChartData(forURL: String, withKey: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
 		guard let url = URL(string: forURL) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRates, responseType: CoinGeckoMarketDataResponse.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: withKey, responseType: CoinGeckoMarketDataResponse.self) { result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
@@ -108,7 +112,7 @@ public class CoinGeckoService {
 		var yearResponse: CoinGeckoMarketDataResponse? = nil
 		
 		
-		fetchChartData(forURL: coinGeckoChartURLDay + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLDay + selectedCurrency, withKey: chartDataDayKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -119,7 +123,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLWeek + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLWeek + selectedCurrency, withKey: chartDataWeekKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -130,7 +134,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLMonth + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLMonth + selectedCurrency, withKey: chartDataMonthKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -141,7 +145,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLYear + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLYear + selectedCurrency, withKey: chartDataYearKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()

@@ -13,16 +13,23 @@ import KukaiCoreSwift
 class TokenDetailsViewController: UIViewController {
 	
 	@IBOutlet weak var tokenHeaderIcon: UIImageView!
-	@IBOutlet weak var tokenHeaderLabel: UILabel!
-	@IBOutlet weak var tokenHeaderPlusButton: UIButton!
-	@IBOutlet weak var chartContainer: UIView!
+	@IBOutlet weak var tokenHeaderSymbolLabel: UILabel!
+	@IBOutlet weak var tokenHeaderFiatLabel: UILabel!
+	@IBOutlet weak var tokenHeaderPriceChangeLabel: UILabel!
+	@IBOutlet weak var tokenHeaderPriceChangeIcon: UIImageView!
+	@IBOutlet weak var tokenHeaderPriceDateLabel: UILabel!
 	
 	@IBOutlet weak var favouriteButton: UIButton!
 	@IBOutlet weak var buyButton: UIButton!
 	@IBOutlet weak var moreButton: UIButton!
 	
-	//@IBOutlet weak var lineChartView: LineChartView!
 	@IBOutlet weak var chartRangeSegmented: UISegmentedControl!
+	
+	
+	
+	
+	
+	
 	
 	@IBOutlet weak var tokenBalanceIcon: UIImageView!
 	@IBOutlet weak var tokenBalanceLabel: UILabel!
@@ -49,52 +56,29 @@ class TokenDetailsViewController: UIViewController {
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
 	private var chartController: ChartHostingController? = nil
-	//private var allChartData: AllChartData? = nil
+	private var allChartData: AllChartData? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		/*
-		lineChartView.delegate = self
-		lineChartView.chartDescription.enabled = false
-		lineChartView.dragEnabled = false
-		lineChartView.setScaleEnabled(false)
-		lineChartView.pinchZoomEnabled = false
-		lineChartView.drawMarkers = false
-		lineChartView.highlightPerTapEnabled = false
-		
-		lineChartView.rightAxis.enabled = false
-		lineChartView.rightAxis.drawGridLinesEnabled = false
-		
-		lineChartView.leftAxis.enabled = true
-		lineChartView.leftAxis.drawLabelsEnabled = false
-		lineChartView.leftAxis.drawZeroLineEnabled = false
-		lineChartView.leftAxis.drawAxisLineEnabled = false
-		lineChartView.leftAxis.drawGridLinesEnabled = false
-		lineChartView.leftAxis.drawLimitLinesBehindDataEnabled = true
-		
-		lineChartView.xAxis.drawGridLinesEnabled = false
-		lineChartView.xAxis.drawLabelsEnabled = false
-		lineChartView.xAxis.drawAxisLineEnabled = false
-		lineChartView.drawGridBackgroundEnabled = false
-		
-		lineChartView.legend.enabled = false
-		*/
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
 		
 		loadPlaceholderContent()
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingView(completion: nil)
+					//self?.showLoadingView(completion: nil)
+					let _ = ""
 					
 				case .failure(_, let errorString):
 					self?.updateAllSections()
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
 					self?.updateAllSections()
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
 			}
 		}
 	}
@@ -106,24 +90,8 @@ class TokenDetailsViewController: UIViewController {
 			return
 		}
 		
-		
-		let tempData: [ChartViewDataPoint] = [
-			.init(value: 400, date: Date()),
-			.init(value: 500, date: Date().addingTimeInterval(10000)),
-			.init(value: 80.7, date: Date().addingTimeInterval(20000)),
-			.init(value: 20, date: Date().addingTimeInterval(30000)),
-			.init(value: 890, date: Date().addingTimeInterval(40000)),
-			.init(value: 80, date: Date().addingTimeInterval(50000)),
-			.init(value: 900, date: Date().addingTimeInterval(60000))
-		]
-		
-		chartController?.setData(tempData)
-		print("setting data")
-		
-		
-		
-		//viewModel.loadTokenAndBakerData(token: token)
-		/*viewModel.loadChartData(token: token) { [weak self] result in
+		viewModel.loadTokenAndBakerData(token: token)
+		viewModel.loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
 			
 			switch result {
@@ -134,19 +102,26 @@ class TokenDetailsViewController: UIViewController {
 				case .failure(let error):
 					self.alert(errorWithMessage: "\(error)")
 			}
-		}*/
+		}
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let vc = segue.destination as? ChartHostingController {
+			vc.view.backgroundColor = .clear
 			chartController = vc
 		}
 	}
 	
 	func loadPlaceholderContent() {
-		tokenHeaderLabel.text = ""
-		tokenBalanceLabel.text = ""
-		tokenValueLabel.text = ""
+		tokenHeaderSymbolLabel.text = " "
+		tokenHeaderFiatLabel.text = " "
+		tokenHeaderPriceChangeLabel.text = " "
+		tokenHeaderPriceChangeIcon.image = nil
+		tokenHeaderPriceDateLabel.text = " "
+		
+		/*
+		tokenBalanceLabel.text = " "
+		tokenValueLabel.text = " "
 		
 		previousBakerAmountLabel.text = "N/A"
 		previousBakerTimeLabel.text = "N/A"
@@ -154,6 +129,7 @@ class TokenDetailsViewController: UIViewController {
 		nextBakerAmountLabel.text = "N/A"
 		nextBakerTimeLabel.text = "N/A"
 		nextBakerCycleLabel.text = "N/A"
+		*/
 	}
 	
 	func updateAllSections() {
@@ -167,6 +143,14 @@ class TokenDetailsViewController: UIViewController {
 			tokenBalanceIcon.image = viewModel.tokenIcon
 		}
 		
+		tokenHeaderSymbolLabel.text = viewModel.tokenSymbol
+		tokenHeaderFiatLabel.text = viewModel.tokenFiatPrice
+		tokenHeaderPriceChangeLabel.text = viewModel.tokenPriceChange
+		tokenHeaderPriceChangeIcon.image = viewModel.tokenPriceChangeIsUp ? UIImage(named: "arrow-up-green") : UIImage(named: "arrow-down-red")
+		tokenHeaderPriceDateLabel.text = viewModel.tokenPriceDateText
+		
+		
+		/*
 		//tokenHeaderPlusButton.isHidden = !viewModel.showBuyButton
 		
 		tokenHeaderLabel.text = viewModel.tokenSymbol
@@ -193,6 +177,7 @@ class TokenDetailsViewController: UIViewController {
 		nextBakerAmountLabel.text = viewModel.nextBakerAmount
 		nextBakerTimeLabel.text = viewModel.nextBakerTime
 		nextBakerCycleLabel.text = viewModel.nextBakerCycle
+		*/
 	}
 	
 	func showBakerRewardsSection(_ show: Bool) {
@@ -209,40 +194,22 @@ class TokenDetailsViewController: UIViewController {
 	// MARK: - Actions
 	
 	@IBAction func chartRangeChanged(_ sender: Any) {
-		/*
 		guard let allChartData = allChartData else {
 			return
 		}
 		
-		var dataSet: DataSet = DataSet(data: LineChartDataSet(entries: [], label: ""), upperLimit: ChartLimitLine(), lowerLimit: ChartLimitLine())
-		
 		if chartRangeSegmented.selectedSegmentIndex == 0 {
-			dataSet = allChartData.day
+			chartController?.setData(allChartData.day)
 			
 		} else if chartRangeSegmented.selectedSegmentIndex == 1 {
-			dataSet = allChartData.week
+			chartController?.setData(allChartData.week)
 			
 		} else if chartRangeSegmented.selectedSegmentIndex == 2 {
-			dataSet = allChartData.month
+			chartController?.setData(allChartData.month)
 			
 		} else if chartRangeSegmented.selectedSegmentIndex == 3 {
-			dataSet = allChartData.year
+			chartController?.setData(allChartData.year)
 		}
-		
-		let lineChartData = LineChartData(dataSet: dataSet.data)
-		lineChartData.setDrawValues(false)
-		
-		self.lineChartView.data = lineChartData
-		self.lineChartView.leftAxis.removeAllLimitLines()
-		self.lineChartView.leftAxis.addLimitLine(dataSet.upperLimit)
-		self.lineChartView.leftAxis.addLimitLine(dataSet.lowerLimit)
-		
-		let space = (lineChartData.yMax - lineChartData.yMin) * 0.15
-		self.lineChartView.leftAxis.axisMaximum = lineChartData.yMax + space
-		self.lineChartView.leftAxis.axisMinimum = lineChartData.yMin - space
-		
-		self.lineChartView.notifyDataSetChanged()
-		*/
 	}
 	
 	@IBAction func stakeButtonTapped(_ sender: Any) {
@@ -310,9 +277,3 @@ class TokenDetailsViewController: UIViewController {
 		}
 	}
 }
-
-/*
-extension TokenDetailsViewController: ChartViewDelegate {
-	
-}
-*/

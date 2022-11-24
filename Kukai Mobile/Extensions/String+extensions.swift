@@ -5,7 +5,7 @@
 //  Created by Simon Mcloughlin on 18/07/2022.
 //
 
-import Foundation
+import UIKit
 
 extension String {
 	
@@ -31,5 +31,11 @@ extension String {
 		let readable = String(data: d, encoding: .isoLatin1)
 		
 		return readable ?? ""
+	}
+	
+	func widthOfString(usingFont font: UIFont) -> CGFloat {
+		let fontAttributes = [NSAttributedString.Key.font: font]
+		let size = self.size(withAttributes: fontAttributes)
+		return size.width
 	}
 }

@@ -12,7 +12,7 @@ import Charts
 
 
 public struct ChartViewDataPoint: Identifiable {
-	public var value: Decimal
+	public var value: Double
 	public var date: Date
 	public var id = UUID()
 }
@@ -28,7 +28,7 @@ class ChartViewIntegrationService: ObservableObject {
 class ChartHostingController: UIHostingController<AnyView> {
 	
 	private let integration = ChartViewIntegrationService()
-	private let chartView = ChartView()
+	private let chartView: some View = ChartView().backgroundStyle(.clear)
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder, rootView: AnyView(chartView.environmentObject(integration)))
@@ -51,6 +51,10 @@ struct ChartView: View {
 	
 	@State private var selectedData: ChartViewDataPoint?
 	@State private var selectedDataPoint: CGPoint = CGPoint(x: 0, y: 0)
+	@State private var maxData: ChartViewDataPoint?
+	@State private var maxDataPoint: CGPoint = CGPoint(x: 0, y: 0)
+	@State private var minData: ChartViewDataPoint?
+	@State private var minDataPoint: CGPoint = CGPoint(x: 0, y: 0)
 	@State private var middleValue: Decimal = 0
 	@State private var isDragging: Bool = false
 	
@@ -58,36 +62,98 @@ struct ChartView: View {
 	
 	var body: some View {
 		VStack(spacing: 0) {
-			VStack {
-				ZStack(alignment: .topLeading) {
-					GeometryReader { geo in
-						if isDragging, let selectedData {
-							
-							let boxWidth: CGFloat = 50
-							let boxOffset = max(0, min(geo.size.width - boxWidth, selectedDataPoint.x - boxWidth / 2))
-							
-							VStack(alignment: .center) {
-								Text(selectedData.value.description)
-									.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
-									.foregroundStyle(Color("Grey900"))
-							}
-							.frame(width: boxWidth, alignment: .center)
-							.background {
-								ZStack {
-									RoundedRectangle(cornerRadius: 8)
-										.fill(Color("Grey1300").opacity(0.7))
-								}
-								.padding(.horizontal, -8)
-								.padding(.vertical, -4)
-							}
-							.offset(x: boxOffset)
+			topSelectedView
+			topAnnotationView
+			chart
+			bottomAnnotationView
+			
+		}.background(.clear)
+	}
+	
+	private var topSelectedView: some View {
+		VStack {
+			ZStack(alignment: .topLeading) {
+				GeometryReader { geo in
+					
+					if isDragging, let selectedData {
+						let widthOfString = doubleFormatter(selectedData.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
+						let boxOffset = max(0, min(geo.size.width - widthOfString, selectedDataPoint.x - widthOfString / 2))
+						
+						VStack(alignment: .center) {
+							Text(doubleFormatter(selectedData.value))
+								.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+								.foregroundStyle(Color("Grey2000"))
 						}
+						.frame(width: widthOfString, alignment: .center)
+						.background {
+							ZStack {
+								RoundedRectangle(cornerRadius: 8)
+									.fill(.white.opacity(0.7))
+							}
+							.padding(.horizontal, -8)
+							.padding(.vertical, -4)
+						}
+						.offset(x: boxOffset)
 					}
 				}
 			}
-			.frame(height: 18)
-			chart
 		}
+		.frame(height: 18)
+		.background(.clear)
+	}
+	
+	private var topAnnotationView: some View {
+		VStack {
+			ZStack(alignment: .topLeading) {
+				GeometryReader { geo in
+					
+					let widthOfString = doubleFormatter(maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
+					let boxOffset = max(0, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
+					
+					VStack(alignment: .trailing) {
+						Text(doubleFormatter(maxData?.value))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+							.foregroundStyle(Color("Grey900"))
+						
+					}
+					.offset(x: boxOffset)
+					
+					if isDragging {
+						let lineX = selectedDataPoint.x
+						let lineHeight = 18.0
+						
+						Rectangle()
+							.fill(.white.opacity(0.5))
+							.frame(width: 2, height: lineHeight)
+							.position(x: lineX, y: lineHeight / 2)
+					}
+				}
+			}
+		}
+		.frame(height: 18)
+		.background(.clear)
+	}
+	
+	private var bottomAnnotationView: some View {
+		VStack {
+			ZStack(alignment: .topLeading) {
+				GeometryReader { geo in
+						
+					let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
+					let boxOffset = max(0, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+					
+					VStack(alignment: .trailing) {
+						Text(doubleFormatter(minData?.value))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+							.foregroundStyle(Color("Grey900"))
+						
+					}
+					.offset(x: boxOffset)
+				}
+			}
+		}
+		.frame(height: 18)
+		.background(.clear)
 	}
 	
 	private var chart: some View {
@@ -96,27 +162,6 @@ struct ChartView: View {
 				.lineStyle(StrokeStyle(lineWidth: 3))
 				.foregroundStyle(Color("Brand1200"))
 				.interpolationMethod(.linear)
-			
-			
-			if let max = integration.data.max(by: { $0.value < $1.value }), let min = integration.data.max(by: { $0.value > $1.value }) {
-				PointMark(x: .value("Date", max.date), y: .value("Value", max.value))
-					.symbolSize(CGSize(width: 1, height: 1))
-					.foregroundStyle(.clear)
-					.annotation(position: .top, spacing: 4) {
-						Text(max.value.description)
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
-							.foregroundColor(isDragging ? .clear : Color("Grey900"))
-					}
-				
-				PointMark(x: .value("Date", min.date), y: .value("Value", min.value))
-					.symbolSize(CGSize(width: 1, height: 1))
-					.foregroundStyle(.clear)
-					.annotation(position: .bottom, spacing: 4) {
-						Text(min.value.description)
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
-							.foregroundColor(isDragging ? .clear : Color("Grey900"))
-					}
-			}
 		}
 		.chartXAxis(.hidden)
 		.chartYAxis(.hidden)
@@ -124,12 +169,14 @@ struct ChartView: View {
 		.chartBackground { proxy in
 			ZStack(alignment: .topLeading) {
 				GeometryReader { geo in
+					useProxy(proxy)
+					
 					if isDragging {
 						let lineX = selectedDataPoint.x + geo[proxy.plotAreaFrame].origin.x
 						let lineHeight = selectedDataPoint.y
 						
 						Rectangle()
-							.fill(Color("Grey1300").opacity(0.5))
+							.fill(.white.opacity(0.5))
 							.frame(width: 2, height: lineHeight)
 							.position(x: lineX, y: lineHeight / 2)
 					}
@@ -158,6 +205,35 @@ struct ChartView: View {
 			}
 		}
 	}
+	
+	private func doubleFormatter(_ double: Double?) -> String {
+		guard let d = double else { return "" }
+		
+		if d > 1000 {
+			return Decimal(d).rounded(scale: 0, roundingMode: .bankers).description
+			
+		} else if d > 100 {
+			return Decimal(d).rounded(scale: 2, roundingMode: .bankers).description
+			
+		} else {
+			return Decimal(d).rounded(scale: 4, roundingMode: .bankers).description
+		}
+	}
+	
+	private func useProxy(_ proxy: ChartProxy) -> some View {
+		
+		DispatchQueue.main.async {
+			if let max = integration.data.max(by: { $0.value < $1.value }), let min = integration.data.max(by: { $0.value > $1.value }) {
+				self.maxData = max
+				self.maxDataPoint = proxy.position(for: (x: max.date, y: max.value)) ?? CGPoint(x: 0, y: 0)
+				
+				self.minData = min
+				self.minDataPoint = proxy.position(for: (x: min.date, y: min.value)) ?? CGPoint(x: 0, y: 0)
+			}
+		}
+		
+		return EmptyView()
+	}
 }
 
 // MARK: - Preview
@@ -169,9 +245,9 @@ struct TokenDetailsChartView_Previews: PreviewProvider {
 			.init(value: 500, date: Date().addingTimeInterval(10000)),
 			.init(value: 80.7, date: Date().addingTimeInterval(20000)),
 			.init(value: 20, date: Date().addingTimeInterval(30000)),
-			.init(value: 890, date: Date().addingTimeInterval(40000)),
+			.init(value: 900, date: Date().addingTimeInterval(40000)),
 			.init(value: 80, date: Date().addingTimeInterval(50000)),
-			.init(value: 900, date: Date().addingTimeInterval(60000))
+			.init(value: 890, date: Date().addingTimeInterval(60000))
 		]
 		
 		let integration = ChartViewIntegrationService()

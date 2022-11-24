@@ -7,24 +7,13 @@
 
 import UIKit
 import KukaiCoreSwift
-//import Charts
 
-/*
-struct DataSet {
-	let data: LineChartDataSet
-	let upperLimit: ChartLimitLine
-	let lowerLimit: ChartLimitLine
-}
-*/
-
-/*
 struct AllChartData {
-	let day: DataSet
-	let week: DataSet
-	let month: DataSet
-	let year: DataSet
+	let day: [ChartViewDataPoint]
+	let week: [ChartViewDataPoint]
+	let month: [ChartViewDataPoint]
+	let year: [ChartViewDataPoint]
 }
-*/
 
 public class TokenDetailsViewModel: ViewModel {
 	
@@ -33,6 +22,18 @@ public class TokenDetailsViewModel: ViewModel {
 	var tokenIcon: UIImage? = nil
 	var tokenIconURL: URL? = nil
 	var tokenSymbol = ""
+	var tokenFiatPrice = ""
+	var tokenPriceChange = ""
+	var tokenPriceChangeIsUp = false
+	var tokenPriceDateText = ""
+	
+	var tokenIsFavourited = false
+	var tokenCanBeUnFavourited = false
+	var tokenIsHidden = false
+	var tokenCanBeHidden = false
+	var tokenCanBePurchased = false
+	
+	
 	
 	var tokenBalance = ""
 	var tokenValue = ""
@@ -65,7 +66,22 @@ public class TokenDetailsViewModel: ViewModel {
 		
 		if token.isXTZ() {
 			tokenIcon = UIImage(named: "tezos-logo")
+			tokenSymbol = "Tezos"
 			
+			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			tokenPriceChange = "0.79%"
+			tokenPriceChangeIsUp = true
+			tokenPriceDateText = "Today"
+			
+			tokenIsFavourited = true
+			tokenCanBeUnFavourited = false
+			tokenIsHidden = false
+			tokenCanBeHidden = false
+			tokenCanBePurchased = true
+			
+			
+			/*
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -97,6 +113,10 @@ public class TokenDetailsViewModel: ViewModel {
 					self?.state = .success(nil)
 				}
 			}
+			*/
+			self.state = .success(nil)
+			
+			
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 			tokenIconURL = token.thumbnailURL
 			
@@ -172,7 +192,6 @@ public class TokenDetailsViewModel: ViewModel {
 		showBakerRewardsSection = false
 	}
 	
-	/*
 	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {
 		
 		// If XTZ we fetch data from coingecko
@@ -215,9 +234,7 @@ public class TokenDetailsViewModel: ViewModel {
 			}
 		}
 	}
-	*/
 	
-	/*
 	func formatData(data: [CoinGeckoMarketDataResponse]) -> AllChartData {
 		let daySet = createDataSet(for: data[0])
 		let weekSet = createDataSet(for: data[1])
@@ -229,13 +246,7 @@ public class TokenDetailsViewModel: ViewModel {
 	
 	func formatData(data: GraphQLResponse<DipDupChartData>) -> AllChartData {
 		guard let data = data.data else {
-			let emptyData = LineChartDataSet(entries: [], label: "")
-			let emptyLimit = ChartLimitLine()
-			
-			return AllChartData(day: DataSet(data: emptyData, upperLimit: emptyLimit, lowerLimit: emptyLimit),
-								week: DataSet(data: emptyData, upperLimit: emptyLimit, lowerLimit: emptyLimit),
-								month: DataSet(data: emptyData, upperLimit: emptyLimit, lowerLimit: emptyLimit),
-								year: DataSet(data: emptyData, upperLimit: emptyLimit, lowerLimit: emptyLimit))
+			return AllChartData(day: [], week: [], month: [], year: [])
 		}
 		
 		let daySet = createDataSet(for: data.quotes15mNogaps)
@@ -246,94 +257,29 @@ public class TokenDetailsViewModel: ViewModel {
 		return AllChartData(day: daySet, week: weekSet, month: monthSet, year: yearSet)
 	}
 	
-	func createDataSet(for data: CoinGeckoMarketDataResponse) -> DataSet {
-		var setData: [ChartDataEntry] = []
-		var setUpper = 1.0
-		var setLower = 1.0
+	func createDataSet(for data: CoinGeckoMarketDataResponse) -> [ChartViewDataPoint] {
+		let updatedData = data.lessThan100Samples()
 		
-		for (index, item) in data.prices.enumerated() {
+		var setData: [ChartViewDataPoint] = []
+		for item in updatedData {
+			let timestamp = item[0] / 1000
 			let val = item[1]
 			
-			if setUpper == 1.0 || setUpper < val {
-				setUpper = val
-			}
-			
-			if setLower == 1.0 || setLower > val {
-				setLower = val
-			}
-			
-			setData.append(ChartDataEntry(x: Double(index), y: val))
+			setData.append( ChartViewDataPoint(value: val, date: Date(timeIntervalSince1970: timestamp)) )
 		}
 		
-		let chartSet = LineChartDataSet(entries: setData, label: "")
-		chartSet.drawIconsEnabled = false
-		chartSet.drawCirclesEnabled = false
-		chartSet.lineWidth = 3
-		//chartSet.circleRadius = 3
-		chartSet.drawCircleHoleEnabled = false
-		chartSet.setColor(UIColor(named: "primary-button-background") ?? .black)
-		chartSet.setCircleColor(UIColor(named: "primary-button-background") ?? .black)
-		
-		let upperLimitLine = ChartLimitLine(limit: setUpper, label: String(format: "%.2f", setUpper))
-		upperLimitLine.lineWidth = 1
-		upperLimitLine.lineDashLengths = [5, 5]
-		upperLimitLine.lineColor = .black
-		upperLimitLine.labelPosition = .rightTop
-		upperLimitLine.valueFont = .systemFont(ofSize: 10)
-		
-		let lowerLimitLine = ChartLimitLine(limit: setLower, label: String(format: "%.2f", setLower))
-		lowerLimitLine.lineWidth = 1
-		lowerLimitLine.lineDashLengths = [5, 5]
-		lowerLimitLine.lineColor = .black
-		lowerLimitLine.labelPosition = .leftBottom
-		lowerLimitLine.valueFont = .systemFont(ofSize: 10)
-		
-		return DataSet(data: chartSet, upperLimit: upperLimitLine, lowerLimit: lowerLimitLine)
+		return setData
 	}
 	
-	func createDataSet(for dataArray: [DipDupChartObject]) -> DataSet {
-		var setData: [ChartDataEntry] = []
-		var setUpper = 1.0
-		var setLower = 1.0
-		
-		for (index, item) in dataArray.enumerated() {
+	func createDataSet(for dataArray: [DipDupChartObject]) -> [ChartViewDataPoint] {
+		var setData: [ChartViewDataPoint] = []
+		for item in dataArray {
+			let date = item.date() ?? Date()
 			let val = item.averageDouble()
 			
-			if setUpper == 1.0 || setUpper < val {
-				setUpper = val
-			}
-			
-			if setLower == 1.0 || setLower > val {
-				setLower = val
-			}
-			
-			setData.append(ChartDataEntry(x: Double(index), y: val))
+			setData.append( ChartViewDataPoint(value: val, date: date) )
 		}
 		
-		let chartSet = LineChartDataSet(entries: setData, label: "")
-		chartSet.drawIconsEnabled = false
-		chartSet.drawCirclesEnabled = false
-		chartSet.lineWidth = 3
-		//chartSet.circleRadius = 3
-		chartSet.drawCircleHoleEnabled = false
-		chartSet.setColor(UIColor(named: "primary-button-background") ?? .black)
-		chartSet.setCircleColor(UIColor(named: "primary-button-background") ?? .black)
-		
-		let upperLimitLine = ChartLimitLine(limit: setUpper, label: String(format: "%.2f", setUpper))
-		upperLimitLine.lineWidth = 1
-		upperLimitLine.lineDashLengths = [5, 5]
-		upperLimitLine.lineColor = .black
-		upperLimitLine.labelPosition = .rightTop
-		upperLimitLine.valueFont = .systemFont(ofSize: 10)
-		
-		let lowerLimitLine = ChartLimitLine(limit: setLower, label: String(format: "%.2f", setLower))
-		lowerLimitLine.lineWidth = 1
-		lowerLimitLine.lineDashLengths = [5, 5]
-		lowerLimitLine.lineColor = .black
-		lowerLimitLine.labelPosition = .leftBottom
-		lowerLimitLine.valueFont = .systemFont(ofSize: 10)
-		
-		return DataSet(data: chartSet, upperLimit: upperLimitLine, lowerLimit: lowerLimitLine)
+		return setData
 	}
-	*/
 }
