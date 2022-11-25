@@ -604,7 +604,7 @@ class TokenDetailsViewController: UIViewController {
 		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
 		
 		self.dismiss(animated: true) {
-			//homeTabController?.sendButtonTapped(self)
+			homeTabController?.sendButtonTapped()
 		}
 	}
 	

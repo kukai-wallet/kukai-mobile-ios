@@ -181,8 +181,8 @@ class HomeTabBarController: UITabBarController {
 	
 	func menuForTopRight() -> UIMenu {
 		let firstGroup: [UIAction] = [
-			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { [weak self] action in
-				self?.alert(withTitle: "Favourites", andMessage: "hold your horses, not done yet")
+			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { action in
+				UIPasteboard.general.string = DependencyManager.shared.selectedWallet?.address ?? ""
 			}),
 			UIAction(title: "Show QR Code", image: UIImage(named: "qr-code"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
@@ -192,7 +192,7 @@ class HomeTabBarController: UITabBarController {
 		
 		let secondGroup: [UIAction] = [
 			UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
-				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
+				self?.sendButtonTapped()
 			}),
 			UIAction(title: "Swap", image: UIImage(named: "swap"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
@@ -267,8 +267,6 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		// TODO: revert
-		/*
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
@@ -284,7 +282,10 @@ class HomeTabBarController: UITabBarController {
 			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-		*/
+	}
+	
+	func sendButtonTapped() {
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
 	
