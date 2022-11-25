@@ -33,6 +33,8 @@ public class TokenDetailsViewModel: ViewModel {
 	var tokenIsHidden = false
 	var tokenCanBeHidden = false
 	var tokenCanBePurchased = false
+	var tokenCanBeViewedOnline = false
+	var tokenHasMoreButton = false
 	
 	var tokenBalance = ""
 	var tokenValue = ""
@@ -71,9 +73,6 @@ public class TokenDetailsViewModel: ViewModel {
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
-			tokenPriceChange = "0.79%"
-			tokenPriceChangeIsUp = true
-			tokenPriceDateText = "Today"
 			
 			tokenIsFavourited = true
 			tokenCanBeUnFavourited = false
@@ -94,6 +93,18 @@ public class TokenDetailsViewModel: ViewModel {
 			
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 			tokenIconURL = token.thumbnailURL
+			tokenSymbol = token.symbol
+			
+			let fiatPerToken = tokenValueAndRate.marketRate
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			tokenIsFavourited = TokenStateService.shared.isFavourite(token: token).isFavourite
+			tokenCanBeUnFavourited = true
+			tokenIsHidden = TokenStateService.shared.isHidden(token: token)
+			tokenCanBeHidden = true
+			tokenCanBePurchased = false
+			tokenCanBeViewedOnline = true
+			tokenHasMoreButton = true
 			
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
@@ -275,6 +286,22 @@ public class TokenDetailsViewModel: ViewModel {
 		}
 		
 		return setData
+	}
+	
+	func calculatePriceChange(data: AllChartData) {
+		if data.day.count > 1, let first = data.day.first, let last = data.day.last {
+			let difference = first.value - last.value
+			let percentage = Decimal(difference / first.value).rounded(scale: 2, roundingMode: .bankers)
+			
+			tokenPriceChange = "\(percentage)%"
+			tokenPriceChangeIsUp = last.value > first.value
+			tokenPriceDateText = "Today"
+			
+		} else {
+			tokenPriceChange = ""
+			tokenPriceChangeIsUp = false
+			tokenPriceDateText = ""
+		}
 	}
 	
 	

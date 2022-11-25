@@ -159,6 +159,8 @@ class TokenDetailsViewController: UIViewController {
 			switch result {
 				case .success(let data):
 					self.allChartData = data
+					self.viewModel.calculatePriceChange(data: data)
+					self.updatePriceChange()
 					self.chartRangeDayTapped(self)
 					self.chartActivityIndicator.stopAnimating()
 					self.chartActivityIndicator.isHidden = true
@@ -223,6 +225,9 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	func setupUI() {
+		moreButton.menu = menuForMoreButton()
+		moreButton.showsMenuAsPrimaryAction = true
+		
 		let normalColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1800").cgColor, andSize: chartRangeDayButton.bounds.size)
 		let selectedColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1900").cgColor, andSize: chartRangeDayButton.bounds.size)
 		
@@ -246,6 +251,8 @@ class TokenDetailsViewController: UIViewController {
 	func updateAllSections() {
 		
 		// Header and token balance
+		moreButton.isHidden = !viewModel.tokenHasMoreButton
+		
 		if let tokenURL = viewModel.tokenIconURL {
 			MediaProxyService.load(url: tokenURL, to: tokenHeaderIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenHeaderIcon.frame.size)
 			MediaProxyService.load(url: tokenURL, to: tokenBalanceIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenBalanceIcon.frame.size)
@@ -256,13 +263,8 @@ class TokenDetailsViewController: UIViewController {
 		
 		tokenHeaderSymbolLabel.text = viewModel.tokenSymbol
 		tokenHeaderFiatLabel.text = viewModel.tokenFiatPrice
-		tokenHeaderPriceChangeLabel.text = viewModel.tokenPriceChange
-		tokenHeaderPriceChangeIcon.image = viewModel.tokenPriceChangeIsUp ? UIImage(named: "arrow-up-green") : UIImage(named: "arrow-down-red")
-		tokenHeaderPriceDateLabel.text = viewModel.tokenPriceDateText
-		
 		tokenBalanceLabel.text = viewModel.tokenBalance
 		tokenValueLabel.text = viewModel.tokenValue
-		
 		favouriteButton.setImage( viewModel.tokenIsFavourited ? UIImage(named: "star-fill") : UIImage(named: "star-no-fill") , for: .normal)
 		buyButton.isHidden = !viewModel.tokenCanBePurchased
 		
@@ -284,6 +286,15 @@ class TokenDetailsViewController: UIViewController {
 		} else if viewModel.isStakingPossible {
 			self.notStakeLabel.isHidden = false
 			self.stakeButtonStackview.isHidden = false
+		}
+	}
+	
+	func updatePriceChange() {
+		if viewModel.tokenPriceChange != "" {
+			tokenHeaderPriceChangeLabel.text = viewModel.tokenPriceChange
+			tokenHeaderPriceChangeLabel.textColor = viewModel.tokenPriceChangeIsUp ? UIColor.colorNamed("Positive900") : UIColor.colorNamed("Caution900")
+			tokenHeaderPriceChangeIcon.image = viewModel.tokenPriceChangeIsUp ? UIImage(named: "arrow-up-green") : UIImage(named: "arrow-down-red")
+			tokenHeaderPriceDateLabel.text = viewModel.tokenPriceDateText
 		}
 	}
 	
@@ -428,9 +439,99 @@ class TokenDetailsViewController: UIViewController {
 		}
 	}
 	
+	private func menuForMoreButton() -> UIMenu {
+		var actions: [UIAction] = []
+		
+		if viewModel.tokenCanBeHidden {
+			if viewModel.tokenIsHidden {
+				actions.append(
+					UIAction(title: "Unhide Token", image: UIImage(named: "context-menu-unhide"), identifier: nil, handler: { [weak self] action in
+						guard let token = TransactionService.shared.sendData.chosenToken else {
+							self?.alert(errorWithMessage: "Unable to find token reference")
+							return
+						}
+						
+						if TokenStateService.shared.removeHidden(token: token) {
+							DependencyManager.shared.balanceService.updateTokenStates()
+							DependencyManager.shared.accountBalancesDidUpdate = true
+							self?.dismiss(animated: true)
+						} else {
+							self?.alert(errorWithMessage: "Unable to favorute token")
+						}
+					})
+				)
+			} else {
+				actions.append(
+					UIAction(title: "Hide Token", image: UIImage(named: "context-menu-hidden"), identifier: nil, handler: { [weak self] action in
+						guard let token = TransactionService.shared.sendData.chosenToken else {
+							self?.alert(errorWithMessage: "Unable to find token reference")
+							return
+						}
+						
+						if TokenStateService.shared.addHidden(token: token) {
+							DependencyManager.shared.balanceService.updateTokenStates()
+							DependencyManager.shared.accountBalancesDidUpdate = true
+							self?.dismiss(animated: true)
+							
+						} else {
+							self?.alert(errorWithMessage: "Unable to favorute token")
+						}
+					})
+				)
+			}
+		}
+		
+		if viewModel.tokenCanBeViewedOnline {
+			actions.append(
+				UIAction(title: "View on Blockchain", image: UIImage(named: "external-link"), identifier: nil, handler: { [weak self] action in
+					if let contract = self?.viewModel.token?.tokenContractAddress, let url = URL(string: "https://better-call.dev/mainnet/\(contract)") {
+						UIApplication.shared.open(url, completionHandler: nil)
+					}
+				})
+			)
+		}
+		
+		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
+	}
+	
 	
 	
 	// MARK: - Actions
+	
+	@IBAction func favouriteTapped(_ sender: Any) {
+		if !viewModel.tokenCanBeUnFavourited {
+			return
+		}
+		
+		guard let token = TransactionService.shared.sendData.chosenToken else {
+			alert(errorWithMessage: "Unable to find token reference")
+			return
+		}
+		
+		if viewModel.tokenIsFavourited {
+			if TokenStateService.shared.removeFavourite(token: token) {
+				favouriteButton.setImage(UIImage(named: "star-no-fill") , for: .normal)
+				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.accountBalancesDidUpdate = true
+				
+			} else {
+				alert(errorWithMessage: "Unable to favorute token")
+			}
+			
+		} else {
+			if TokenStateService.shared.addFavourite(token: token) {
+				favouriteButton.setImage(UIImage(named: "star-fill") , for: .normal)
+				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.accountBalancesDidUpdate = true
+				
+			} else {
+				alert(errorWithMessage: "Unable to favorute token")
+			}
+		}
+	}
+	
+	@IBAction func buyTapped(_ sender: Any) {
+	}
 	
 	@IBAction func chartRangeDayTapped(_ sender: Any) {
 		guard let allChartData = allChartData else { return }
@@ -517,91 +618,32 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	@IBAction func activityItem1More(_ sender: Any) {
+		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[0].transactions[0].hash)") {
+			UIApplication.shared.open(url, completionHandler: nil)
+		}
 	}
 	
 	@IBAction func activityItem2More(_ sender: Any) {
+		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[1].transactions[0].hash)") {
+			UIApplication.shared.open(url, completionHandler: nil)
+		}
 	}
 	
 	@IBAction func activityItem3More(_ sender: Any) {
+		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[2].transactions[0].hash)") {
+			UIApplication.shared.open(url, completionHandler: nil)
+		}
 	}
 	
 	@IBAction func activityItem4More(_ sender: Any) {
+		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[3].transactions[0].hash)") {
+			UIApplication.shared.open(url, completionHandler: nil)
+		}
 	}
 	
 	@IBAction func activityItem5More(_ sender: Any) {
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	@IBAction func favouriteTapped(_ sender: Any) {
-		if !viewModel.tokenCanBeUnFavourited {
-			return
+		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[4].transactions[0].hash)") {
+			UIApplication.shared.open(url, completionHandler: nil)
 		}
-		
-		guard let token = TransactionService.shared.sendData.chosenToken else {
-			alert(errorWithMessage: "Unable to find token reference")
-			return
-		}
-		
-		if viewModel.tokenIsFavourited {
-			if TokenStateService.shared.removeFavourite(token: token) {
-				favouriteButton.setImage(UIImage(named: "star-no-fill") , for: .normal)
-				DependencyManager.shared.balanceService.updateTokenStates()
-				DependencyManager.shared.accountBalancesDidUpdate = true
-				
-			} else {
-				alert(errorWithMessage: "Unable to favorute token")
-			}
-			
-		} else {
-			if TokenStateService.shared.addFavourite(token: token) {
-				favouriteButton.setImage(UIImage(named: "star-fill") , for: .normal)
-				DependencyManager.shared.balanceService.updateTokenStates()
-				DependencyManager.shared.accountBalancesDidUpdate = true
-				
-			} else {
-				alert(errorWithMessage: "Unable to favorute token")
-			}
-		}
-	}
-	
-	@IBAction func buyTapped(_ sender: Any) {
-	}
-	
-	@IBAction func moreTapped(_ sender: Any) {
-		/*guard let token = TransactionService.shared.sendData.chosenToken else {
-			alert(errorWithMessage: "Unable to find token reference")
-			return
-		}
-		
-		
-		if TokenStateService.shared.isHidden(token: token) {
-			print("is hidden, removing")
-			
-			if TokenStateService.shared.removeHidden(token: token) {
-				DependencyManager.shared.balanceService.updateTokenStates()
-				DependencyManager.shared.accountBalancesDidUpdate = true
-				
-			} else {
-				alert(errorWithMessage: "Unable to favorute token")
-			}
-			
-		} else {
-			print("is not hidden, adding")
-			
-			if TokenStateService.shared.addHidden(token: token) {
-				DependencyManager.shared.balanceService.updateTokenStates()
-				DependencyManager.shared.accountBalancesDidUpdate = true
-				
-			} else {
-				alert(errorWithMessage: "Unable to favorute token")
-			}
-		}*/
 	}
 }
