@@ -64,8 +64,10 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var recentActivityHeader: UIStackView!
 	@IBOutlet weak var recentActivityActivityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var noActivityLabel: UILabel!
+	var activityGradientsSet = false
 	
 	@IBOutlet weak var activityItem1: UIView!
+	var activityItem1Gradient: CAGradientLayer = CAGradientLayer()
 	@IBOutlet weak var activityItem1Icon: UIImageView!
 	@IBOutlet weak var activityItem1TypeIcon: UIImageView!
 	@IBOutlet weak var activityItem1TypeLabel: UILabel!
@@ -75,6 +77,7 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var activityItem1TimeLabel: UILabel!
 	
 	@IBOutlet weak var activityItem2: UIView!
+	var activityItem2Gradient: CAGradientLayer = CAGradientLayer()
 	@IBOutlet weak var activityItem2Icon: UIImageView!
 	@IBOutlet weak var activityItem2TypeIcon: UIImageView!
 	@IBOutlet weak var activityItem2TypeLabel: UILabel!
@@ -84,6 +87,7 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var activityItem2TimeLabel: UILabel!
 	
 	@IBOutlet weak var activityItem3: UIView!
+	var activityItem3Gradient: CAGradientLayer = CAGradientLayer()
 	@IBOutlet weak var activityItem3Icon: UIImageView!
 	@IBOutlet weak var activityItem3TypeIcon: UIImageView!
 	@IBOutlet weak var activityItem3TypeLabel: UILabel!
@@ -93,6 +97,7 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var activityItem3TimeLabel: UILabel!
 	
 	@IBOutlet weak var activityItem4: UIView!
+	var activityItem4Gradient: CAGradientLayer = CAGradientLayer()
 	@IBOutlet weak var activityItem4Icon: UIImageView!
 	@IBOutlet weak var activityItem4TypeIcon: UIImageView!
 	@IBOutlet weak var activityItem4TypeLabel: UILabel!
@@ -102,6 +107,7 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var activityItem4TimeLabel: UILabel!
 	
 	@IBOutlet weak var activityItem5: UIView!
+	var activityItem5Gradient: CAGradientLayer = CAGradientLayer()
 	@IBOutlet weak var activityItem5Icon: UIImageView!
 	@IBOutlet weak var activityItem5TypeIcon: UIImageView!
 	@IBOutlet weak var activityItem5TypeLabel: UILabel!
@@ -182,6 +188,38 @@ class TokenDetailsViewController: UIViewController {
 				
 			} else {
 				self?.activitySectionEmpty()
+			}
+		}
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		if activityGradientsSet {
+			activityItem1Gradient.removeFromSuperlayer()
+			activityItem2Gradient.removeFromSuperlayer()
+			activityItem3Gradient.removeFromSuperlayer()
+			activityItem4Gradient.removeFromSuperlayer()
+			activityItem5Gradient.removeFromSuperlayer()
+			
+			if viewModel.activityItems.count >= 1 {
+				activityItem1Gradient = activityItem1.addGradientPanelRows(withFrame: activityItem1.bounds)
+			}
+			
+			if viewModel.activityItems.count >= 2 {
+				activityItem2Gradient = activityItem2.addGradientPanelRows(withFrame: activityItem2.bounds)
+			}
+			
+			if viewModel.activityItems.count >= 3 {
+				activityItem3Gradient = activityItem3.addGradientPanelRows(withFrame: activityItem3.bounds)
+			}
+			
+			if viewModel.activityItems.count >= 4 {
+				activityItem4Gradient = activityItem4.addGradientPanelRows(withFrame: activityItem4.bounds)
+			}
+			
+			if viewModel.activityItems.count >= 5 {
+				activityItem5Gradient = activityItem5.addGradientPanelRows(withFrame: activityItem5.bounds)
 			}
 		}
 	}
@@ -348,7 +386,7 @@ class TokenDetailsViewController: UIViewController {
 				activityItem1Icon.image = viewModel.tokenIcon
 			}
 			
-			let _ = activityItem1.addGradientPanelRows(withFrame: activityItem1.bounds)
+			activityItem1Gradient = activityItem1.addGradientPanelRows(withFrame: activityItem1.bounds)
 			activityItem1TypeIcon.image = groups[0].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
 			activityItem1TypeLabel.text = groups[0].groupType == .send ? "Send" : "Receive"
 			activityItem1AmountLabel.text = (groups[0].primaryToken?.amount.description ?? "") + " \(groups[0].primaryToken?.token.symbol ?? "")"
@@ -366,7 +404,7 @@ class TokenDetailsViewController: UIViewController {
 				activityItem2Icon.image = viewModel.tokenIcon
 			}
 			
-			let _ = activityItem2.addGradientPanelRows(withFrame: activityItem2.bounds)
+			activityItem2Gradient = activityItem2.addGradientPanelRows(withFrame: activityItem2.bounds)
 			activityItem2TypeIcon.image = groups[1].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
 			activityItem2TypeLabel.text = groups[1].groupType == .send ? "Send" : "Receive"
 			activityItem2AmountLabel.text = (groups[1].primaryToken?.amount.description ?? "") + " \(groups[1].primaryToken?.token.symbol ?? "")"
@@ -384,7 +422,7 @@ class TokenDetailsViewController: UIViewController {
 				activityItem3Icon.image = viewModel.tokenIcon
 			}
 			
-			let _ = activityItem3.addGradientPanelRows(withFrame: activityItem3.bounds)
+			activityItem3Gradient = activityItem3.addGradientPanelRows(withFrame: activityItem3.bounds)
 			activityItem3TypeIcon.image = groups[2].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
 			activityItem3TypeLabel.text = groups[2].groupType == .send ? "Send" : "Receive"
 			activityItem3AmountLabel.text = (groups[2].primaryToken?.amount.description ?? "") + " \(groups[2].primaryToken?.token.symbol ?? "")"
@@ -402,7 +440,7 @@ class TokenDetailsViewController: UIViewController {
 				activityItem4Icon.image = viewModel.tokenIcon
 			}
 			
-			let _ = activityItem4.addGradientPanelRows(withFrame: activityItem4.bounds)
+			activityItem4Gradient = activityItem4.addGradientPanelRows(withFrame: activityItem4.bounds)
 			activityItem4TypeIcon.image = groups[3].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
 			activityItem4TypeLabel.text = groups[3].groupType == .send ? "Send" : "Receive"
 			activityItem4AmountLabel.text = (groups[3].primaryToken?.amount.description ?? "") + " \(groups[3].primaryToken?.token.symbol ?? "")"
@@ -420,7 +458,7 @@ class TokenDetailsViewController: UIViewController {
 				activityItem5Icon.image = viewModel.tokenIcon
 			}
 			
-			let _ = activityItem5.addGradientPanelRows(withFrame: activityItem5.bounds)
+			activityItem5Gradient = activityItem5.addGradientPanelRows(withFrame: activityItem5.bounds)
 			activityItem5TypeIcon.image = groups[4].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
 			activityItem5TypeLabel.text = groups[4].groupType == .send ? "Send" : "Receive"
 			activityItem5AmountLabel.text = (groups[4].primaryToken?.amount.description ?? "") + " \(groups[4].primaryToken?.token.symbol ?? "")"
@@ -428,6 +466,8 @@ class TokenDetailsViewController: UIViewController {
 			activityItem5DestinationLabel.text = destinationFrom(groups[4])
 			activityItem5TimeLabel.text = groups[4].transactions[0].date?.timeAgoDisplay() ?? ""
 		}
+		
+		activityGradientsSet = true
 	}
 	
 	private func destinationFrom(_ group: TzKTTransactionGroup) -> String {

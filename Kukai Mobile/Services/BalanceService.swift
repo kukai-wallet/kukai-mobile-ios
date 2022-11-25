@@ -77,6 +77,17 @@ public class BalanceService {
 				self?.dispatchGroupBalances.leave()
 			}
 			
+			dispatchGroupBalances.enter()
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+				if let e = err {
+					error = e
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
+				self?.dispatchGroupBalances.leave()
+			}
+			
 			self.exchangeData = exchangeData
 			self.dispatchGroupBalances.leave()
 			
@@ -102,6 +113,18 @@ public class BalanceService {
 				}
 				
 				self?.exchangeData = res
+				self?.dispatchGroupBalances.leave()
+			}
+			
+			// Get latest transactions
+			dispatchGroupBalances.enter()
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+				if let e = err {
+					error = e
+					self?.dispatchGroupBalances.leave()
+					return
+				}
+				
 				self?.dispatchGroupBalances.leave()
 			}
 			
