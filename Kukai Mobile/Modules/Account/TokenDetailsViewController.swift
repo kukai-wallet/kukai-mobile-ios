@@ -225,9 +225,6 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	func setupUI() {
-		moreButton.menu = menuForMoreButton()
-		moreButton.showsMenuAsPrimaryAction = true
-		
 		let normalColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1800").cgColor, andSize: chartRangeDayButton.bounds.size)
 		let selectedColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1900").cgColor, andSize: chartRangeDayButton.bounds.size)
 		
@@ -251,6 +248,8 @@ class TokenDetailsViewController: UIViewController {
 	func updateAllSections() {
 		
 		// Header and token balance
+		moreButton.menu = menuForMoreButton()
+		moreButton.showsMenuAsPrimaryAction = true
 		moreButton.isHidden = !viewModel.tokenHasMoreButton
 		
 		if let tokenURL = viewModel.tokenIconURL {
