@@ -193,14 +193,6 @@ public class BalanceService {
 			token.isHidden = TokenStateService.shared.isHidden(token: token)
 			token.isFavourite = favObj.isFavourite
 			token.favouriteSortIndex = favObj.sortIndex
-			
-			/*
-			if token.symbol == "CRUNCH" {
-				print("token.isHidden: \(token.isHidden)")
-				print("token.isFavourite: \(token.isFavourite)")
-				print("token.favouriteSortIndex: \(token.favouriteSortIndex)")
-			}
-			*/
 		}
 		
 		for nftGroup in self.account.nfts {

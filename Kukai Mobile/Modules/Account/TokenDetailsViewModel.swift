@@ -19,6 +19,7 @@ public class TokenDetailsViewModel: ViewModel {
 	
 	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	
+	var token: Token? = nil
 	var tokenIcon: UIImage? = nil
 	var tokenIconURL: URL? = nil
 	var tokenSymbol = ""
@@ -54,9 +55,13 @@ public class TokenDetailsViewModel: ViewModel {
 	var nextBakerTime = ""
 	var nextBakerCycle = ""
 	
+	var activityAvailable = false
+	var activityItems: [TzKTTransactionGroup] = []
+	
 	
 	
 	func loadTokenData(token: Token) {
+		self.token = token
 		tokenSymbol = token.symbol
 		tokenBalance = token.balance.normalisedRepresentation + " \(token.symbol)"
 		
@@ -97,6 +102,10 @@ public class TokenDetailsViewModel: ViewModel {
 			self.state = .success(nil)
 		}
 	}
+	
+	
+	
+	// MARK: - Baker / Rewards
 	
 	func loadBakerData(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
 		let account = DependencyManager.shared.balanceService.account
@@ -172,6 +181,10 @@ public class TokenDetailsViewModel: ViewModel {
 			bakerText = ""
 		}
 	}
+	
+	
+	
+	// MARK: - Chart
 	
 	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {
 		
@@ -262,5 +275,37 @@ public class TokenDetailsViewModel: ViewModel {
 		}
 		
 		return setData
+	}
+	
+	
+	
+	// MARK: - Activity
+	
+	func loadActivityData(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
+		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
+			return
+		}
+		
+		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
+			if let err = error {
+				self?.activityAvailable = false
+				completion(Result.failure(err))
+				return
+			}
+			
+			if let t = self?.token {
+				self?.activityItems = DependencyManager.shared.activityService.filterSendReceive(forToken: t)
+				
+				if (self?.activityItems.count ?? 0) > 0 {
+					self?.activityAvailable = true
+				}
+				
+				completion(Result.success(true))
+				return
+			}
+			
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find token for activity")))
+		}
 	}
 }

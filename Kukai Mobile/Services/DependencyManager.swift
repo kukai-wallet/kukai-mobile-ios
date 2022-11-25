@@ -38,6 +38,7 @@ class DependencyManager {
 	var torusAuthService: TorusAuthService
 	var dipDupClient: DipDupClient
 	var balanceService: BalanceService
+	var activityService: ActivityService
 	var coinGeckoService: CoinGeckoService
 	var tezosDomainsClient: TezosDomainsClient
 	
@@ -155,6 +156,7 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
 		balanceService = BalanceService()
+		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		
@@ -196,6 +198,7 @@ class DependencyManager {
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		balanceService = BalanceService()
+		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		

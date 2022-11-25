@@ -61,6 +61,57 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var bakerSectionView1: UIStackView!
 	@IBOutlet weak var bakerSectionView2: UIView!
 	
+	@IBOutlet weak var recentActivityHeader: UIStackView!
+	@IBOutlet weak var recentActivityActivityIndicator: UIActivityIndicatorView!
+	@IBOutlet weak var noActivityLabel: UILabel!
+	
+	@IBOutlet weak var activityItem1: UIView!
+	@IBOutlet weak var activityItem1Icon: UIImageView!
+	@IBOutlet weak var activityItem1TypeIcon: UIImageView!
+	@IBOutlet weak var activityItem1TypeLabel: UILabel!
+	@IBOutlet weak var activityItem1AmountLabel: UILabel!
+	@IBOutlet weak var activityItem1ToLabel: UILabel!
+	@IBOutlet weak var activityItem1DestinationLabel: UILabel!
+	@IBOutlet weak var activityItem1TimeLabel: UILabel!
+	
+	@IBOutlet weak var activityItem2: UIView!
+	@IBOutlet weak var activityItem2Icon: UIImageView!
+	@IBOutlet weak var activityItem2TypeIcon: UIImageView!
+	@IBOutlet weak var activityItem2TypeLabel: UILabel!
+	@IBOutlet weak var activityItem2AmountLabel: UILabel!
+	@IBOutlet weak var activityItem2ToLabel: UILabel!
+	@IBOutlet weak var activityItem2DestinationLabel: UILabel!
+	@IBOutlet weak var activityItem2TimeLabel: UILabel!
+	
+	@IBOutlet weak var activityItem3: UIView!
+	@IBOutlet weak var activityItem3Icon: UIImageView!
+	@IBOutlet weak var activityItem3TypeIcon: UIImageView!
+	@IBOutlet weak var activityItem3TypeLabel: UILabel!
+	@IBOutlet weak var activityItem3AmountLabel: UILabel!
+	@IBOutlet weak var activityItem3ToLabel: UILabel!
+	@IBOutlet weak var activityItem3DestinationLabel: UILabel!
+	@IBOutlet weak var activityItem3TimeLabel: UILabel!
+	
+	@IBOutlet weak var activityItem4: UIView!
+	@IBOutlet weak var activityItem4Icon: UIImageView!
+	@IBOutlet weak var activityItem4TypeIcon: UIImageView!
+	@IBOutlet weak var activityItem4TypeLabel: UILabel!
+	@IBOutlet weak var activityItem4AmountLabel: UILabel!
+	@IBOutlet weak var activityItem4ToLabel: UILabel!
+	@IBOutlet weak var activityItem4DestinationLabel: UILabel!
+	@IBOutlet weak var activityItem4TimeLabel: UILabel!
+	
+	@IBOutlet weak var activityItem5: UIView!
+	@IBOutlet weak var activityItem5Icon: UIImageView!
+	@IBOutlet weak var activityItem5TypeIcon: UIImageView!
+	@IBOutlet weak var activityItem5TypeLabel: UILabel!
+	@IBOutlet weak var activityItem5AmountLabel: UILabel!
+	@IBOutlet weak var activityItem5ToLabel: UILabel!
+	@IBOutlet weak var activityItem5DestinationLabel: UILabel!
+	@IBOutlet weak var activityItem5TimeLabel: UILabel!
+	@IBOutlet weak var recentActivityFooter: UIStackView!
+	
+	
 	
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
@@ -101,6 +152,7 @@ class TokenDetailsViewController: UIViewController {
 		}
 		
 		viewModel.loadTokenData(token: token)
+		
 		viewModel.loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
 			
@@ -114,6 +166,20 @@ class TokenDetailsViewController: UIViewController {
 					
 				case .failure(let error):
 					self.alert(errorWithMessage: "\(error)")
+			}
+		}
+		
+		viewModel.loadActivityData { [weak self] result in
+			guard let _ = try? result.get() else {
+				self?.activitySectionEmpty()
+				return
+			}
+			
+			if self?.viewModel.activityAvailable == true {
+				self?.activitySectionDisplay()
+				
+			} else {
+				self?.activitySectionEmpty()
 			}
 		}
 	}
@@ -152,6 +218,8 @@ class TokenDetailsViewController: UIViewController {
 		nextBakerAmountLabel.text = "N/A"
 		nextBakerTimeLabel.text = "N/A"
 		nextBakerCycleLabel.text = "N/A"
+		
+		activitySectionLoading()
 	}
 	
 	func setupUI() {
@@ -198,6 +266,8 @@ class TokenDetailsViewController: UIViewController {
 		favouriteButton.setImage( viewModel.tokenIsFavourited ? UIImage(named: "star-fill") : UIImage(named: "star-no-fill") , for: .normal)
 		buyButton.isHidden = !viewModel.tokenCanBePurchased
 		
+		
+		// Baker / rewards
 		if viewModel.isStakingPossible && viewModel.isStaked {
 			stakeLabel.isHidden = false
 			stakedActivityIndicator.isHidden = false
@@ -233,6 +303,129 @@ class TokenDetailsViewController: UIViewController {
 		nextBakerAmountLabel.text = viewModel.nextBakerAmount
 		nextBakerTimeLabel.text = viewModel.nextBakerTime
 		nextBakerCycleLabel.text = viewModel.nextBakerCycle
+	}
+	
+	func activitySectionLoading() {
+		recentActivityActivityIndicator.startAnimating()
+		noActivityLabel.isHidden = true
+		activityItem1.isHidden = true
+		activityItem2.isHidden = true
+		activityItem3.isHidden = true
+		activityItem4.isHidden = true
+		activityItem5.isHidden = true
+		recentActivityFooter.isHidden = true
+	}
+	
+	func activitySectionEmpty() {
+		recentActivityActivityIndicator.stopAnimating()
+		recentActivityActivityIndicator.isHidden = true
+		noActivityLabel.isHidden = false
+	}
+	
+	func activitySectionDisplay() {
+		recentActivityActivityIndicator.stopAnimating()
+		recentActivityActivityIndicator.isHidden = true
+		noActivityLabel.isHidden = true
+		recentActivityFooter.isHidden = false
+		
+		let groups = viewModel.activityItems
+		if groups.count >= 1 {
+			activityItem1.isHidden = false
+			
+			if let tokenURL = viewModel.tokenIconURL {
+				MediaProxyService.load(url: tokenURL, to: activityItem1Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: activityItem1Icon.frame.size)
+			} else {
+				activityItem1Icon.image = viewModel.tokenIcon
+			}
+			
+			let _ = activityItem1.addGradientPanelRows(withFrame: activityItem1.bounds)
+			activityItem1TypeIcon.image = groups[0].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
+			activityItem1TypeLabel.text = groups[0].groupType == .send ? "Send" : "Receive"
+			activityItem1AmountLabel.text = (groups[0].primaryToken?.amount.description ?? "") + " \(groups[0].primaryToken?.token.symbol ?? "")"
+			activityItem1ToLabel.text = groups[0].groupType == .send ? "To:" : "From:"
+			activityItem1DestinationLabel.text = destinationFrom(groups[0])
+			activityItem1TimeLabel.text = groups[0].transactions[0].date?.timeAgoDisplay() ?? ""
+		}
+		
+		if groups.count >= 2 {
+			activityItem2.isHidden = false
+			
+			if let tokenURL = viewModel.tokenIconURL {
+				MediaProxyService.load(url: tokenURL, to: activityItem2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: activityItem2Icon.frame.size)
+			} else {
+				activityItem2Icon.image = viewModel.tokenIcon
+			}
+			
+			let _ = activityItem2.addGradientPanelRows(withFrame: activityItem2.bounds)
+			activityItem2TypeIcon.image = groups[1].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
+			activityItem2TypeLabel.text = groups[1].groupType == .send ? "Send" : "Receive"
+			activityItem2AmountLabel.text = (groups[1].primaryToken?.amount.description ?? "") + " \(groups[1].primaryToken?.token.symbol ?? "")"
+			activityItem2ToLabel.text = groups[1].groupType == .send ? "To:" : "From:"
+			activityItem2DestinationLabel.text = destinationFrom(groups[1])
+			activityItem2TimeLabel.text = groups[1].transactions[0].date?.timeAgoDisplay() ?? ""
+		}
+		
+		if groups.count >= 3 {
+			activityItem3.isHidden = false
+			
+			if let tokenURL = viewModel.tokenIconURL {
+				MediaProxyService.load(url: tokenURL, to: activityItem3Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: activityItem3Icon.frame.size)
+			} else {
+				activityItem3Icon.image = viewModel.tokenIcon
+			}
+			
+			let _ = activityItem3.addGradientPanelRows(withFrame: activityItem3.bounds)
+			activityItem3TypeIcon.image = groups[2].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
+			activityItem3TypeLabel.text = groups[2].groupType == .send ? "Send" : "Receive"
+			activityItem3AmountLabel.text = (groups[2].primaryToken?.amount.description ?? "") + " \(groups[2].primaryToken?.token.symbol ?? "")"
+			activityItem3ToLabel.text = groups[2].groupType == .send ? "To:" : "From:"
+			activityItem3DestinationLabel.text = destinationFrom(groups[2])
+			activityItem3TimeLabel.text = groups[2].transactions[0].date?.timeAgoDisplay() ?? ""
+		}
+		
+		if groups.count >= 4 {
+			activityItem4.isHidden = false
+			
+			if let tokenURL = viewModel.tokenIconURL {
+				MediaProxyService.load(url: tokenURL, to: activityItem4Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: activityItem4Icon.frame.size)
+			} else {
+				activityItem4Icon.image = viewModel.tokenIcon
+			}
+			
+			let _ = activityItem4.addGradientPanelRows(withFrame: activityItem4.bounds)
+			activityItem4TypeIcon.image = groups[3].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
+			activityItem4TypeLabel.text = groups[3].groupType == .send ? "Send" : "Receive"
+			activityItem4AmountLabel.text = (groups[3].primaryToken?.amount.description ?? "") + " \(groups[3].primaryToken?.token.symbol ?? "")"
+			activityItem4ToLabel.text = groups[3].groupType == .send ? "To:" : "From:"
+			activityItem4DestinationLabel.text = destinationFrom(groups[3])
+			activityItem4TimeLabel.text = groups[3].transactions[0].date?.timeAgoDisplay() ?? ""
+		}
+		
+		if groups.count >= 5 {
+			activityItem5.isHidden = false
+			
+			if let tokenURL = viewModel.tokenIconURL {
+				MediaProxyService.load(url: tokenURL, to: activityItem5Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: activityItem5Icon.frame.size)
+			} else {
+				activityItem5Icon.image = viewModel.tokenIcon
+			}
+			
+			let _ = activityItem5.addGradientPanelRows(withFrame: activityItem5.bounds)
+			activityItem5TypeIcon.image = groups[4].groupType == .send ? UIImage(named: "arrow-up-right") : UIImage(named: "arrow-down-right")
+			activityItem5TypeLabel.text = groups[4].groupType == .send ? "Send" : "Receive"
+			activityItem5AmountLabel.text = (groups[4].primaryToken?.amount.description ?? "") + " \(groups[4].primaryToken?.token.symbol ?? "")"
+			activityItem5ToLabel.text = groups[4].groupType == .send ? "To:" : "From:"
+			activityItem5DestinationLabel.text = destinationFrom(groups[4])
+			activityItem5TimeLabel.text = groups[4].transactions[0].date?.timeAgoDisplay() ?? ""
+		}
+	}
+	
+	private func destinationFrom(_ group: TzKTTransactionGroup) -> String {
+		if group.groupType == .send {
+			return group.transactions[0].target?.alias ?? group.transactions[0].target?.address ?? ""
+		} else {
+			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address
+		}
 	}
 	
 	
@@ -315,11 +508,28 @@ class TokenDetailsViewController: UIViewController {
 		}
 	}
 	
+	@IBAction func viewAllActivity(_ sender: Any) {
+		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
+		
+		self.dismiss(animated: true) {
+			homeTabController?.selectedIndex = 3
+		}
+	}
 	
+	@IBAction func activityItem1More(_ sender: Any) {
+	}
 	
+	@IBAction func activityItem2More(_ sender: Any) {
+	}
 	
+	@IBAction func activityItem3More(_ sender: Any) {
+	}
 	
+	@IBAction func activityItem4More(_ sender: Any) {
+	}
 	
+	@IBAction func activityItem5More(_ sender: Any) {
+	}
 	
 	
 	
@@ -365,7 +575,7 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	@IBAction func moreTapped(_ sender: Any) {
-		guard let token = TransactionService.shared.sendData.chosenToken else {
+		/*guard let token = TransactionService.shared.sendData.chosenToken else {
 			alert(errorWithMessage: "Unable to find token reference")
 			return
 		}
@@ -392,6 +602,6 @@ class TokenDetailsViewController: UIViewController {
 			} else {
 				alert(errorWithMessage: "Unable to favorute token")
 			}
-		}
+		}*/
 	}
 }

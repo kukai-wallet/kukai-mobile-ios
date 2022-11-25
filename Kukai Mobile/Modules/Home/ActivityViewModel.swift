@@ -19,7 +19,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	public var forceRefresh = false
-	//public var visibleIndexPaths: [IndexPath] = []
 	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
