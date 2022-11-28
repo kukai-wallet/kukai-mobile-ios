@@ -16,12 +16,9 @@ struct OnSaleData: Hashable {
 	let amount: String
 }
 
-struct MediaPlaceholder: Hashable {
-	let animate: Bool
-}
-
 struct MediaContent: Hashable {
 	let isImage: Bool
+	let isThumbnail: Bool
 	let mediaURL: URL?
 	let width: Double
 	let height: Double
@@ -72,7 +69,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
 	var sendAction: Selector? = nil
-	var placeholderContent = MediaPlaceholder(animate: true)
 	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil)
 	var attributesContent = AttributesContent(expanded: false)
 	var attributes: [TzKTBalanceMetadataAttributeKeyValue] = []
@@ -84,7 +80,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
 		collectionView.register(UINib(nibName: "CollectibleDetailOnSaleCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailOnSaleCell")
-		collectionView.register(UINib(nibName: "CollectibleDetailMediaPlaceholderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailMediaPlaceholderCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailImageCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailImageCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailVideoCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailVideoCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailNameCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailNameCell")
@@ -104,9 +99,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				
 			} else if let item = item as? OnSaleData {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailOnSaleCell", for: indexPath), withItem: item)
-				
-			} else if let item = item as? MediaPlaceholder {
-				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailMediaPlaceholderCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? MediaContent, item.isImage {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath), withItem: item)
@@ -141,10 +133,14 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return
 		}
 		
+		reusableAttributeSizingCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
+		reusableAttributeSizingCell?.keyLabel.text = "a"
+		reusableAttributeSizingCell?.valueLabel.text = "b"
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		currentSnapshot.appendSections([0, 1])
+		
 		
 		var section1Content: [CellDataType] = []
 		
@@ -152,38 +148,203 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		nameContent = NameContent(name: nft?.name ?? "", collectionIcon: nameIcon, collectionName: nft?.parentAlias ?? nft?.parentContract, collectionLink: nil)
 		attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
 		
-		// Process section 1
-		section1Content.append(OnSaleData(amount: "15.473 tez"))
-		section1Content.append(placeholderContent)
-		section1Content.append(nameContent)
-		section1Content.append(ShowcaseContent(count: 1))
-		section1Content.append(SendContent(enabled: true))
-		section1Content.append(DescriptionContent(description: nft?.description ?? ""))
-		
-		if attributes.count > 0 {
-			section1Content.append(attributesContent)
+		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
+			guard let self = self else {
+				self?.state = .failure(KukaiError.unknown(withString: "Unable to return NFT data"), "Unable to return NFT data")
+				return
+			}
+			
+			// Process section 0
+			section1Content.append(response.mediaContent)
+			section1Content.append(self.nameContent)
+			section1Content.append(ShowcaseContent(count: 1))
+			section1Content.append(SendContent(enabled: true))
+			section1Content.append(DescriptionContent(description: self.nft?.description ?? ""))
+			
+			if self.attributes.count > 0 {
+				section1Content.append(self.attributesContent)
+			}
+			
+			self.currentSnapshot.appendItems(section1Content, toSection: 0)
+			
+			ds.apply(self.currentSnapshot, animatingDifferences: animate)
+			self.state = .success(nil)
+			
+			
+			// If unbale to determine contentn type, we need to do a network request to find it
+			if response.needsMediaTypeVerification {
+				self.mediaContentForFailedOfflineFetch(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] mediaContent in
+					
+					if let newMediaContent = mediaContent {
+						self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
+					} else {
+						self?.state = .failure(KukaiError.unknown(withString: "Unable to determine NFT media type"), "Unable to determine NFT media type")
+					}
+				}
+			}
+			
+			// If we don't have the full image cached, download it and replace the thumbnail with the real thing
+			else if response.needsToDownloadFullImage {
+				MediaProxyService.cacheImage(url: self.nft?.displayURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
+					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: self?.nft?.displayURL ?? self?.nft?.artifactURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
+					self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
+				}
+			}
 		}
-		currentSnapshot.appendItems(section1Content, toSection: 0)
 		
-		// Process section 2
-		reusableAttributeSizingCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
-		reusableAttributeSizingCell?.keyLabel.text = "a"
-		reusableAttributeSizingCell?.valueLabel.text = "b"
-		
-		
-		// Apply update so placeholder loads
-		ds.apply(currentSnapshot, animatingDifferences: animate)
-		
-		
-		// Return success
-		self.state = .success(nil)
-		
-		
-		// Then load the media either form cache, or from internet
-		// Sometimes the type of content can be figured out from already cached metadata, in those cases avoid jarring visuals by reloading too quickly, by adding an artifical delay
-		DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
-			self?.loadDataFromCacheOrDownload(nft: self?.nft)
+		ds.apply(self.currentSnapshot, animatingDifferences: animate)
+	}
+	
+	
+	// MARK: - Data processing
+	
+	func quantityString(forNFT nft: NFT?) -> String? {
+		var quantity: String? = nil
+		if (nft?.balance ?? 0) > 1 {
+			quantity = "x\(nft?.balance.description ?? "0")"
 		}
+		
+		return quantity
+	}
+	
+	func mediaContentForInitialLoad(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( (mediaContent: MediaContent, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
+		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nil) { result in
+			
+			let isCached = MediaProxyService.isCached(url: nft?.displayURL, cache: MediaProxyService.temporaryImageCache())
+			var mediaType: MediaProxyService.MediaType? = nil
+			
+			if case let .success(returnedMediaType) = result {
+				mediaType = returnedMediaType
+				
+			} else if case .failure(_) = result, isCached {
+				mediaType = .image
+			}
+			
+			
+			// Can't find data offline, and its not cached already
+			if mediaType == nil {
+				print("NFT-Test: Loading media type fallback")
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: 300, height: 300, quantity: quantityString)
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+				return
+			}
+			
+			// Display full image
+			else if mediaType == .image, isCached {
+				
+				MediaProxyService.sizeForImageIfCached(url: nft?.displayURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
+					print("NFT-Test: Loading full image straight away")
+					let finalSize = (size ?? CGSize(width: 300, height: 300))
+					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
+					completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+					return
+				}
+			}
+			
+			// Load thumbnail, then display image
+			else if mediaType == .image, !isCached {
+				
+				MediaProxyService.sizeForImageIfCached(url: self.nft?.thumbnailURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
+					print("NFT-Test: Loading thumbnail first, then full")
+					let finalSize = (size ?? CGSize(width: 300, height: 300))
+					let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
+					completion((mediaContent: mediaContent, needsToDownloadFullImage: true, needsMediaTypeVerification: false))
+					return
+				}
+			}
+			
+			// Load video cell straight away
+			else if mediaType == .video {
+				print("NFT-Test: Loading video straight away")
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: 0, height: 0, quantity: quantityString)
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				return
+			}
+			
+			// Fallback
+			else {
+				print("NFT-Test: Loading overall fallback")
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: 300, height: 300, quantity: quantityString)
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+			}
+		}
+	}
+	
+	func mediaContentForFailedOfflineFetch(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( MediaContent? ) -> Void)) {
+		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nft?.displayURL ?? nft?.artifactURL) { result in
+			guard let res = try? result.get() else {
+				completion(nil)
+				return
+			}
+			
+			if res == .image {
+				MediaProxyService.cacheImage(url: nft?.displayURL ?? nft?.artifactURL, cache: MediaProxyService.temporaryImageCache()) { size in
+					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
+					completion(mediaContent)
+					return
+				}
+			} else {
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: 0, height: 0, quantity: quantityString)
+				completion(mediaContent)
+				return
+			}
+		}
+	}
+	
+	func replace(existingMediaContent oldMediaContent: MediaContent, with newMediaContent: MediaContent) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		currentSnapshot.insertItems([newMediaContent], beforeItem: nameContent)
+		currentSnapshot.deleteItems([oldMediaContent])
+		
+		DispatchQueue.main.async { [weak self] in
+			guard let snapshot = self?.currentSnapshot else {
+				return
+			}
+			
+			ds.apply(snapshot, animatingDifferences: true)
+		}
+	}
+	
+	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		if attributesContent.expanded == false {
+			self.openGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if attributesContent.expanded == true {
+			self.closeGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+		}
+		
+		ds.apply(self.currentSnapshot, animatingDifferences: true) {
+			if self.attributesContent.expanded == true {
+				collectionView.scrollToItem(at: IndexPath(row: 0, section: 1), at: .bottom, animated: true)
+			}
+		}
+	}
+	
+	private func openGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
+			cell.setOpen()
+		}
+		
+		currentSnapshot.appendItems(attributes, toSection: 1)
+		attributesContent.expanded = true
+	}
+	
+	private func closeGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
+			cell.setClosed()
+		}
+		
+		currentSnapshot.deleteItems(attributes)
+		attributesContent.expanded = false
 	}
 	
 	
@@ -204,21 +365,22 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			parsedCell.onSaleAmountLabel.text = item.amount
 			return parsedCell
 			
-		} else if let _ = item as? MediaPlaceholder, let parsedCell = cell as? CollectibleDetailMediaPlaceholderCell {
-			parsedCell.activityView.startAnimating()
-			return parsedCell
-			
 		} else if let obj = item as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
 			
 			if parsedCell.setup {
 				return parsedCell
 			}
 			
+			if obj.isThumbnail {
+				parsedCell.activityIndicator.startAnimating()
+			} else {
+				parsedCell.activityIndicator.isHidden = true
+			}
+			
 			// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
 			if obj.width > obj.height {
 				parsedCell.aspectRatioConstraint.isActive = false
 				parsedCell.imageView.widthAnchor.constraint(equalTo: parsedCell.imageView.heightAnchor, multiplier: obj.width/obj.height).isActive = true
-				
 			}
 			
 			// If not a landscape image, keep square shape, but adjust the quantity view so that it always appears in bototm left of image, not of the container (as image may be smaller width)
@@ -302,103 +464,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
 	}
-	
-	
-	
-	// MARK: - Data processing
-	
-	func loadDataFromCacheOrDownload(nft: NFT?) {
-		guard let nft = nft else {
-			return
-		}
-		
-		MediaProxyService.sizeForImageIfCached(url: nft.displayURL, fromCache: MediaProxyService.temporaryImageCache()) { [weak self] size in
-			guard let self = self else {
-				return
-			}
-			
-			if let size = size {
-				self.replacePlaceholderWithMedia(isImage: true, width: size.width, height: size.height)
-				return
-			}
-			
-			self.mediaService.getMediaType(fromFormats: nft.metadata?.formats ?? [], orURL: nft.displayURL) { result in
-				guard let res = try? result.get() else {
-					self.state = .failure(result.getFailure(), "Unable to fetch media, due to unknown content type")
-					return
-				}
-				
-				if res == .image {
-					MediaProxyService.cacheImage(url: nft.displayURL, cache: MediaProxyService.temporaryImageCache()) { size in
-						self.replacePlaceholderWithMedia(isImage: true, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300))
-					}
-				} else {
-					self.replacePlaceholderWithMedia(isImage: false, width: 0, height: 0)
-				}
-			}
-		}
-	}
-	
-	func replacePlaceholderWithMedia(isImage: Bool, width: Double, height: Double) {
-		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
-			return
-		}
-		
-		var quantity: String? = nil
-		if (nft?.balance ?? 0) > 1 {
-			quantity = "x\(nft?.balance.description ?? "0")"
-		}
-		
-		currentSnapshot.insertItems([MediaContent(isImage: isImage, mediaURL: isImage ? nft?.displayURL : nft?.artifactURL, width: width, height: height, quantity: quantity)], beforeItem: nameContent)
-		currentSnapshot.deleteItems([placeholderContent])
-		
-		DispatchQueue.main.async { [weak self] in
-			guard let snapshot = self?.currentSnapshot else {
-				return
-			}
-			
-			ds.apply(snapshot, animatingDifferences: true)
-		}
-	}
-	
-	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
-		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
-			return
-		}
-		
-		if attributesContent.expanded == false {
-			self.openGroup(forCollectionView: collectionView, atIndexPath: indexPath)
-			
-		} else if attributesContent.expanded == true {
-			self.closeGroup(forCollectionView: collectionView, atIndexPath: indexPath)
-		}
-		
-		ds.apply(self.currentSnapshot, animatingDifferences: true) {
-			if self.attributesContent.expanded == true {
-				collectionView.scrollToItem(at: IndexPath(row: 0, section: 1), at: .bottom, animated: true)
-			}
-		}
-	}
-	
-	private func openGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
-		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
-			cell.setOpen()
-		}
-		
-		currentSnapshot.appendItems(attributes, toSection: 1)
-		attributesContent.expanded = true
-	}
-	
-	private func closeGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
-		if let cell = collectionView.cellForItem(at: indexPath) as? CollectibleDetailAttributeHeaderCell {
-			cell.setClosed()
-		}
-		
-		currentSnapshot.deleteItems(attributes)
-		attributesContent.expanded = false
-	}
 }
 
 
@@ -424,9 +489,6 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 			
 		} else if let item = item as? OnSaleData {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailOnSaleCell", ofType: CollectibleDetailOnSaleCell.self), withItem: item, layoutOnly: true)
-			
-		} else if let item = item as? MediaPlaceholder {
-			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailMediaPlaceholderCell", ofType: CollectibleDetailMediaPlaceholderCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? MediaContent, item.isImage {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item, layoutOnly: true)

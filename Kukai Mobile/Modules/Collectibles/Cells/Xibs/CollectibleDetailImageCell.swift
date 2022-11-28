@@ -9,6 +9,7 @@ import UIKit
 
 class CollectibleDetailImageCell: UICollectionViewCell {
 
+	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var imageView: UIImageView!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!

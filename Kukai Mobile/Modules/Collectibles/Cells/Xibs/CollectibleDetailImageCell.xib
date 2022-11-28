@@ -23,13 +23,13 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-nG-GHj">
-                        <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                        <rect key="frame" x="0.0" y="8" width="300" height="300"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="0xD-nG-GHj" secondAttribute="height" multiplier="1:1" id="FDD-eS-Mh1"/>
                         </constraints>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hEN-is-13O">
-                        <rect key="frame" x="8" y="268" width="80.666666666666671" height="24"/>
+                        <rect key="frame" x="8" y="276" width="80.666666666666671" height="24"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y8o-kE-pFi">
                                 <rect key="frame" x="4" y="4" width="72.666666666666671" height="16"/>
@@ -54,6 +54,9 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x4r-bL-1fI">
+                        <rect key="frame" x="140" y="140" width="20" height="20"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -62,12 +65,15 @@
                 <constraint firstItem="0xD-nG-GHj" firstAttribute="bottom" secondItem="hEN-is-13O" secondAttribute="bottom" constant="8" id="0fL-0L-uA5"/>
                 <constraint firstItem="hEN-is-13O" firstAttribute="leading" secondItem="0xD-nG-GHj" secondAttribute="leading" constant="8" id="0rB-o8-Zn3"/>
                 <constraint firstItem="0xD-nG-GHj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1sN-Qh-6Gd"/>
+                <constraint firstItem="x4r-bL-1fI" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="KCB-sc-lzL"/>
                 <constraint firstAttribute="bottom" secondItem="0xD-nG-GHj" secondAttribute="bottom" priority="999" id="KSo-Wd-ppc"/>
-                <constraint firstItem="0xD-nG-GHj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qvp-4n-Glh"/>
+                <constraint firstItem="0xD-nG-GHj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="qvp-4n-Glh"/>
+                <constraint firstItem="x4r-bL-1fI" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="uhu-iJ-Gnd"/>
                 <constraint firstAttribute="trailing" secondItem="0xD-nG-GHj" secondAttribute="trailing" id="vuS-JS-33U"/>
             </constraints>
             <size key="customSize" width="273" height="213"/>
             <connections>
+                <outlet property="activityIndicator" destination="x4r-bL-1fI" id="0ac-KM-sl4"/>
                 <outlet property="aspectRatioConstraint" destination="FDD-eS-Mh1" id="BQv-tB-X6o"/>
                 <outlet property="imageView" destination="0xD-nG-GHj" id="rEK-DI-K1A"/>
                 <outlet property="quantityLabel" destination="Y8o-kE-pFi" id="79E-vk-YlY"/>

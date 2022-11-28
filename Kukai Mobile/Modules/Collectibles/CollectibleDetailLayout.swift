@@ -52,7 +52,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			return
 		}
 		
-		contentHeight = prepareSection0(forCollectionView: collectionView, withOffset: contentHeight)// All full width
+		contentHeight = prepareSection0(forCollectionView: collectionView, withOffset: contentHeight) // All full width
 		contentHeight = prepareSection1(forCollectionView: collectionView, withOffset: contentHeight) // Custom grid pattern
 	}
 	
