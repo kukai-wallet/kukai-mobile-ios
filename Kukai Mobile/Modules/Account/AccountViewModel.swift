@@ -63,9 +63,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				//let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
 				//cell.rateLabel.text = "1 = \(singleXTZCurrencyString)"
 				
-				cell.priceChangeIcon.image = nil
-				cell.priceChangeLabel.text = ""
-				/*
+				//cell.priceChangeIcon.image = nil
+				//cell.priceChangeLabel.text = ""
+				
 				if indexPath.row % 2 == 0 {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
@@ -76,7 +76,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
 					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
 				}
-				*/
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -92,9 +91,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
 				
-				cell.priceChangeIcon.image = nil
-				cell.priceChangeLabel.text = ""
-				/*
+				//cell.priceChangeIcon.image = nil
+				//cell.priceChangeLabel.text = ""
+				
 				if indexPath.row % 2 == 0 {
 					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
@@ -105,7 +104,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
 					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
 				}
-				*/
+				
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 					let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
