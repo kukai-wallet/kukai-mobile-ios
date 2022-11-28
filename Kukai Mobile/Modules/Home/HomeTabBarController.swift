@@ -267,8 +267,6 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		// TODO: revert before release
-		/*
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
@@ -284,7 +282,6 @@ class HomeTabBarController: UITabBarController {
 			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-		*/
 	}
 	
 	func sendButtonTapped() {

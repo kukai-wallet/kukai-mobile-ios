@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailAudioScrubberCell" id="gTV-IL-0wX" customClass="CollectibleDetailAudioScrubberCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="445" height="65"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="445" height="65"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tEy-ae-bcc">
+                        <rect key="frame" x="8" y="24" width="33" height="33"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="33" id="7GB-bG-Bjg"/>
+                            <constraint firstAttribute="width" constant="33" id="yJa-Qa-nGy"/>
+                        </constraints>
+                        <color key="tintColor" name="Brand200"/>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
+                        <connections>
+                            <action selector="buttonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="BrT-lp-0rM"/>
+                        </connections>
+                    </button>
+                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Q0a-0B-fu3">
+                        <rect key="frame" x="55" y="25.666666666666671" width="384" height="31"/>
+                        <color key="minimumTrackTintColor" name="Brand300"/>
+                        <color key="maximumTrackTintColor" name="Grey1000"/>
+                        <color key="thumbTintColor" name="Grey200"/>
+                        <connections>
+                            <action selector="sliderDidChange:" destination="gTV-IL-0wX" eventType="valueChanged" id="iol-90-dwa"/>
+                        </connections>
+                    </slider>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="UOr-Pq-sJX">
+                        <rect key="frame" x="212.66666666666666" y="22.666666666666671" width="20" height="20"/>
+                        <color key="color" name="Brand200"/>
+                    </activityIndicatorView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Q0a-0B-fu3" firstAttribute="centerY" secondItem="tEy-ae-bcc" secondAttribute="centerY" id="3Rh-to-Jqu"/>
+                <constraint firstItem="UOr-Pq-sJX" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="470-YY-OMY"/>
+                <constraint firstItem="UOr-Pq-sJX" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="7oZ-DP-1hZ"/>
+                <constraint firstAttribute="bottom" secondItem="tEy-ae-bcc" secondAttribute="bottom" constant="8" id="8z8-sN-Mq1"/>
+                <constraint firstItem="Q0a-0B-fu3" firstAttribute="leading" secondItem="tEy-ae-bcc" secondAttribute="trailing" constant="16" id="Izm-DB-ZcA"/>
+                <constraint firstItem="tEy-ae-bcc" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="24" id="QhI-fr-irP"/>
+                <constraint firstAttribute="trailing" secondItem="Q0a-0B-fu3" secondAttribute="trailing" constant="8" id="ly6-Uv-ZgA"/>
+                <constraint firstItem="tEy-ae-bcc" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="zCl-E8-UbQ"/>
+            </constraints>
+            <size key="customSize" width="445" height="65"/>
+            <connections>
+                <outlet property="activityIndicator" destination="UOr-Pq-sJX" id="VkF-EK-IWv"/>
+                <outlet property="button" destination="tEy-ae-bcc" id="BPG-dV-kB9"/>
+                <outlet property="slider" destination="Q0a-0B-fu3" id="GbD-Fu-NrS"/>
+            </connections>
+            <point key="canvasLocation" x="-16.030534351145036" y="25.704225352112676"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
+        <namedColor name="Brand200">
+            <color red="0.94900000095367432" green="0.95300000905990601" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Brand300">
+            <color red="0.90600001811981201" green="0.9100000262260437" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey1000">
+            <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey200">
+            <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
