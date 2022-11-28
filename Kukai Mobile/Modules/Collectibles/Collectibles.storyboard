@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="JPy-3b-KKI">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -10,14 +9,14 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Roboto-Bold.ttf">
-            <string>Roboto-Bold</string>
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
         </array>
-        <array key="Roboto-Medium.ttf">
-            <string>Roboto-Medium</string>
+        <array key="Figtree-Medium.ttf">
+            <string>Figtree-Medium</string>
         </array>
-        <array key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
+        <array key="Figtree-Regular.ttf">
+            <string>Figtree-Regular</string>
         </array>
     </customFonts>
     <scenes>
@@ -36,7 +35,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="232" height="34"/>
                                         <color key="backgroundColor" name="Grey1600"/>
                                         <color key="textColor" name="Grey200"/>
-                                        <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="16"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="done"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
@@ -120,20 +119,20 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="NFTGroupCell" id="c92-hH-fzH" customClass="NFTGroupCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="390" height="54"/>
+                                        <rect key="frame" x="0.0" y="50" width="390" height="64"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c92-hH-fzH" id="2oK-Br-l2v">
-                                            <rect key="frame" x="0.0" y="0.0" width="390" height="54"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="64"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FxF-WC-hOR">
-                                                    <rect key="frame" x="16" y="0.0" width="358" height="54"/>
+                                                    <rect key="frame" x="16" y="0.0" width="358" height="64"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="D49-R7-Zom">
-                                                            <rect key="frame" x="8" y="12" width="30" height="30"/>
+                                                            <rect key="frame" x="8" y="12" width="40" height="40"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="30" id="AIy-oh-Dde"/>
-                                                                <constraint firstAttribute="height" constant="30" id="aXi-hY-QsV"/>
+                                                                <constraint firstAttribute="width" constant="40" id="AIy-oh-Dde"/>
+                                                                <constraint firstAttribute="height" constant="40" id="aXi-hY-QsV"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -143,29 +142,22 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DFe-au-MQX">
-                                                            <rect key="frame" x="45.999999999999986" y="16.333333333333329" width="205.66666666666663" height="21.666666666666671"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="18"/>
+                                                            <rect key="frame" x="55.999999999999986" y="22.333333333333336" width="197.66666666666663" height="19.333333333333336"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="X9a-am-SPr">
-                                                            <rect key="frame" x="331.66666666666669" y="17" width="18.333333333333314" height="20"/>
+                                                            <rect key="frame" x="331.66666666666669" y="22" width="18.333333333333314" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="18.5" id="259-J0-tdb"/>
                                                                 <constraint firstAttribute="height" constant="20" id="xNA-92-SDn"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeT-qD-gmV">
-                                                            <rect key="frame" x="259.66666666666669" y="17" width="64" height="20.333333333333329"/>
-                                                            <attributedString key="attributedText">
-                                                                <fragment content="&lt;count&gt;">
-                                                                    <attributes>
-                                                                        <color key="NSColor" name="Grey200"/>
-                                                                        <font key="NSFont" metaFont="system" size="17"/>
-                                                                        <paragraphStyle key="NSParagraphStyle" alignment="right" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                                                    </attributes>
-                                                                </fragment>
-                                                            </attributedString>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BeT-qD-gmV">
+                                                            <rect key="frame" x="261.66666666666669" y="22.333333333333336" width="62" height="19.333333333333336"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="16"/>
+                                                            <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -203,7 +195,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NFTGroupSingleCell" rowHeight="66" id="wSJ-Ix-tLU" customClass="NFTGroupSingleCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="104" width="390" height="66"/>
+                                        <rect key="frame" x="0.0" y="114" width="390" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wSJ-Ix-tLU" id="RUc-WV-ERq">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="66"/>
@@ -213,16 +205,16 @@
                                                     <rect key="frame" x="16" y="0.0" width="358" height="66"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qg0-hO-qbv">
-                                                            <rect key="frame" x="68.000000000000014" y="12.000000000000002" width="180.33333333333337" height="18.666666666666671"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
+                                                            <rect key="frame" x="55.999999999999986" y="11.999999999999998" width="197.66666666666663" height="19.333333333333329"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="j04-Wn-tH4">
-                                                            <rect key="frame" x="8" y="8" width="52" height="52"/>
+                                                            <rect key="frame" x="8" y="8" width="40" height="40"/>
                                                             <constraints>
-                                                                <constraint firstAttribute="height" constant="52" id="HQp-Ce-5o7"/>
-                                                                <constraint firstAttribute="width" constant="52" id="Sea-Rv-QRc"/>
+                                                                <constraint firstAttribute="height" constant="40" id="HQp-Ce-5o7"/>
+                                                                <constraint firstAttribute="width" constant="40" id="Sea-Rv-QRc"/>
                                                             </constraints>
                                                             <userDefinedRuntimeAttributes>
                                                                 <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
@@ -232,14 +224,14 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVp-1f-UnI">
-                                                            <rect key="frame" x="68.000000000000014" y="34.666666666666664" width="180.33333333333337" height="15.333333333333336"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                                                            <rect key="frame" x="55.999999999999986" y="35.333333333333336" width="197.66666666666663" height="14.666666666666664"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="10"/>
                                                             <color key="textColor" name="Grey1000"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="32e-GF-dbJ">
-                                                            <rect key="frame" x="256.33333333333331" y="22.666666666666671" width="67.333333333333314" height="21"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="18"/>
+                                                            <rect key="frame" x="261.66666666666669" y="23.333333333333336" width="62" height="19.333333333333336"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="16"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
@@ -287,7 +279,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NFTItemCell" rowHeight="89" id="X7i-42-4yf" customClass="NFTItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="170" width="390" height="89"/>
+                                        <rect key="frame" x="0.0" y="180" width="390" height="89"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="X7i-42-4yf" id="zXN-5y-wan">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="89"/>
@@ -297,17 +289,17 @@
                                                     <rect key="frame" x="16" y="0.0" width="358" height="89"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VeV-Ko-eDm">
-                                                            <rect key="frame" x="96" y="18" width="254" height="18.666666666666671"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="16"/>
+                                                            <rect key="frame" x="96" y="18" width="254" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qXB-FI-XZA">
-                                                            <rect key="frame" x="7.9999999999999964" y="57" width="61.666666666666657" height="24"/>
+                                                            <rect key="frame" x="8" y="57" width="56" height="24"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cDL-PP-myc">
-                                                                    <rect key="frame" x="2" y="2" width="57.666666666666664" height="20"/>
-                                                                    <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="12"/>
+                                                                    <rect key="frame" x="2" y="2" width="52" height="20"/>
+                                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
                                                                     <color key="textColor" name="Grey1800"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
@@ -345,8 +337,8 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uEE-yp-Uws">
-                                                            <rect key="frame" x="96" y="40.666666666666664" width="254" height="14"/>
-                                                            <fontDescription key="fontDescription" name="Roboto-Medium" family="Roboto" pointSize="12"/>
+                                                            <rect key="frame" x="96" y="39" width="254" height="12"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="10"/>
                                                             <color key="textColor" name="Grey1000"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
