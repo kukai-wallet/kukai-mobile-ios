@@ -65,7 +65,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
 				
 				if let alias = obj.name {
 					cell.titleLabel.text = alias
@@ -80,13 +80,15 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? NFT, indexPath.row == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupSingleCell", for: indexPath) as? NFTGroupSingleCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
+				let mediaURL = MediaProxyService.url(fromUri: obj.displayURI ?? obj.thumbnailURI, ofFormat: .icon)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, subtitle: obj.parentAlias ?? obj.parentContract, balance: obj.balance)
 				
 				return cell
 				
 			} else if let obj = item as? NFT, indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTItemCell", for: indexPath) as? NFTItemCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.iconView.frame.size)
+				let mediaURL = MediaProxyService.url(fromUri: obj.displayURI ?? obj.thumbnailURI, ofFormat: .icon)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, balance: obj.balance)
 				
 				if indexPath.section < (self?.specialGroups.count ?? 0) {

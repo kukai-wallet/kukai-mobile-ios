@@ -48,8 +48,8 @@ class SendReviewViewController: UIViewController {
 			sendButton.isEnabled = false
 			TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: nft.decimalPlaces)
 			
-			MediaProxyService.load(url: nft.thumbnailURL, to: iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nftIcon?.frame.size)
-			MediaProxyService.load(url: nft.displayURL, to: displayView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			MediaProxyService.load(url: MediaProxyService.url(fromUri: nft.thumbnailURI, ofFormat: .icon), to: iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nftIcon?.frame.size)
+			MediaProxyService.load(url: MediaProxyService.url(fromUri: nft.displayURI, ofFormat: .small), to: displayView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 			
 			nftName?.text = nft.name
 			nftMax?.setTitle("+Max (\(nft.balance.rounded(scale: nft.decimalPlaces, roundingMode: .down)))", for: .normal)

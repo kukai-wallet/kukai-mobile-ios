@@ -52,4 +52,8 @@ extension UIImage {
 		UIGraphicsEndImageContext()
 		return rectangleImage!
 	}
+	
+	class func unknownToken() -> UIImage {
+		return UIImage(named: "unknown-token") ?? UIImage()
+	}
 }

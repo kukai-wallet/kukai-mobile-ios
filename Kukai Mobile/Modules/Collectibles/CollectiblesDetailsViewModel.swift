@@ -198,8 +198,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// If we don't have the full image cached, download it and replace the thumbnail with the real thing
 			else if response.needsToDownloadFullImage {
-				MediaProxyService.cacheImage(url: self.nft?.displayURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
-					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: self?.nft?.displayURL ?? self?.nft?.artifactURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
+				let mediaURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: .small)
+				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
+					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
 					self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
 				}
 			}
@@ -221,9 +222,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	}
 	
 	func mediaContentForInitialLoad(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( (mediaContent: MediaContent, audioScrubber: AudioScrubber?, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
-		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nil) { result in
+		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nil) { [weak self] result in
 			
-			let isCached = MediaProxyService.isCached(url: nft?.displayURL, cache: MediaProxyService.temporaryImageCache())
+			let isCached = MediaProxyService.isCached(url: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), cache: MediaProxyService.temporaryImageCache())
 			var mediaType: MediaProxyService.AggregatedMediaType? = nil
 			
 			if case let .success(returnedMediaType) = result {
@@ -236,68 +237,41 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// Can't find data offline, and its not cached already
 			if mediaType == nil {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: 300, height: 300, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), width: 300, height: 300, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 				return
 			}
 			
 			// Display full image
-			else if (mediaType == .imageOnly || mediaType == .imageAndAudio), isCached {
-				
-				MediaProxyService.sizeForImageIfCached(url: nft?.displayURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
-					
-					let finalSize = (size ?? CGSize(width: 300, height: 300))
-					if mediaType == .imageOnly {
-						let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
-						completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
-						
-					} else {
-						let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
-						let audioScrubber = AudioScrubber(audioURL: nft?.artifactURL)
-						completion((mediaContent: mediaContent, audioScrubber: audioScrubber, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
-					}
-					
-					return
-				}
+			else if (mediaType == .imageOnly || mediaType == .gifOnly || mediaType == .imageAndAudio), isCached {
+				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: false, completion: completion)
+				return
 			}
 			
 			// Load thumbnail, then display image
-			else if (mediaType == .imageOnly || mediaType == .imageAndAudio), !isCached {
-				
-				MediaProxyService.sizeForImageIfCached(url: self.nft?.thumbnailURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
-					
-					let finalSize = (size ?? CGSize(width: 300, height: 300))
-					if mediaType == .imageOnly {
-						let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
-						completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: true, needsMediaTypeVerification: false))
-						
-					} else {
-						let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
-						let audioScrubber = AudioScrubber(audioURL: nft?.artifactURL)
-						completion((mediaContent: mediaContent, audioScrubber: audioScrubber, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
-					}
-					
-					return
-				}
+			else if (mediaType == .imageOnly || mediaType == .gifOnly  || mediaType == .imageAndAudio), !isCached {
+				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: true, completion: completion)
+				return
 			}
 			
 			// Load video cell straight away
 			else if mediaType == .videoOnly {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: nft?.artifactURL, width: 0, height: 0, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), width: 0, height: 0, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 				return
 			}
 			
 			// Fallback
 			else {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: nft?.thumbnailURL, width: 300, height: 300, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .icon), width: 300, height: 300, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 			}
 		}
 	}
 	
 	func mediaContentForFailedOfflineFetch(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( MediaContent? ) -> Void)) {
-		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nft?.displayURL ?? nft?.artifactURL) { result in
+		let mediaURL = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small) ?? MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw)
+		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: mediaURL) { result in
 			guard let res = try? result.get() else {
 				completion(nil)
 				return
@@ -305,16 +279,53 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			let mediaType = MediaProxyService.typesContents(res) ?? .imageOnly
 			if mediaType == .imageOnly {
-				MediaProxyService.cacheImage(url: nft?.displayURL ?? nft?.artifactURL, cache: MediaProxyService.temporaryImageCache()) { size in
-					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nft?.displayURL ?? nft?.artifactURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
+				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { size in
+					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
 					completion(mediaContent)
 					return
 				}
+			} else if mediaType == .gifOnly {
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
+				completion(mediaContent)
+				return
+				
 			} else {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: nft?.artifactURL, width: 0, height: 0, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), width: 0, height: 0, quantity: quantityString)
 				completion(mediaContent)
 				return
 			}
+		}
+	}
+	
+	func generateImageMediaContent(nft: NFT?,
+								   mediaType: MediaProxyService.AggregatedMediaType?,
+								   quantity: String?,
+								   loadingThumbnailFirst: Bool,
+								   completion: @escaping (( (mediaContent: MediaContent, audioScrubber: AudioScrubber?, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
+		
+		let cacheURL = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
+		MediaProxyService.sizeForImageIfCached(url: cacheURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
+			
+			let finalSize = (size ?? CGSize(width: 300, height: 300))
+			if mediaType == .imageOnly {
+				let url = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI ?? nft?.artifactURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: loadingThumbnailFirst, mediaURL: url, width: finalSize.width, height: finalSize.height, quantity: quantity)
+				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: loadingThumbnailFirst, needsMediaTypeVerification: false))
+				
+			} else if mediaType == .gifOnly {
+				let url = MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: url, width: 0, height: 0, quantity: quantity)
+				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				
+			} else {
+				let url1 = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
+				let url2 = MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: url1, width: finalSize.width, height: finalSize.height, quantity: quantity)
+				let audioScrubber = AudioScrubber(audioURL: url2)
+				completion((mediaContent: mediaContent, audioScrubber: audioScrubber, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+			}
+			
+			return
 		}
 	}
 	
