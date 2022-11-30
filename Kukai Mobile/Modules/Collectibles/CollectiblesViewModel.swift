@@ -80,14 +80,14 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? NFT, indexPath.row == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupSingleCell", for: indexPath) as? NFTGroupSingleCell {
-				let mediaURL = MediaProxyService.url(fromUri: obj.displayURI ?? obj.thumbnailURI, ofFormat: .icon)
+				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
 				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, subtitle: obj.parentAlias ?? obj.parentContract, balance: obj.balance)
 				
 				return cell
 				
 			} else if let obj = item as? NFT, indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTItemCell", for: indexPath) as? NFTItemCell {
-				let mediaURL = MediaProxyService.url(fromUri: obj.displayURI ?? obj.thumbnailURI, ofFormat: .icon)
+				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
 				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, balance: obj.balance)
 				
