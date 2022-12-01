@@ -117,8 +117,6 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var activityItem5TimeLabel: UILabel!
 	@IBOutlet weak var recentActivityFooter: UIStackView!
 	
-	
-	
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
 	private var chartController: ChartHostingController? = nil
@@ -228,6 +226,9 @@ class TokenDetailsViewController: UIViewController {
 		if let vc = segue.destination as? ChartHostingController {
 			vc.view.backgroundColor = .clear
 			chartController = vc
+			
+		} else if let vc = segue.destination as? TokenContractViewController {
+			vc.setup(tokenId: viewModel.token?.tokenId?.description ?? "0", contractAddress: viewModel.token?.tokenContractAddress ?? "")
 		}
 	}
 	
@@ -480,6 +481,14 @@ class TokenDetailsViewController: UIViewController {
 	
 	private func menuForMoreButton() -> UIMenu {
 		var actions: [UIAction] = []
+		
+		if viewModel.token?.isXTZ() == false {
+			actions.append(
+				UIAction(title: "Token Contract", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
+					self?.performSegue(withIdentifier: "tokenContract", sender: nil)
+				})
+			)
+		}
 		
 		if viewModel.tokenCanBeHidden {
 			if viewModel.tokenIsHidden {

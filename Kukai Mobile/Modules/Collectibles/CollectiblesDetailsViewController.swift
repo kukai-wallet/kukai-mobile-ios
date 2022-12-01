@@ -30,6 +30,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.nft = nft
 		viewModel.sendTarget = self
 		viewModel.sendAction = #selector(self.sendTapped)
+		viewModel.actionsDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
@@ -59,6 +60,12 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.refresh(animate: false)
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let vc = segue.destination as? TokenContractViewController {
+			vc.setup(tokenId: viewModel.nft?.tokenId.description ?? "0", contractAddress: viewModel.nft?.parentContract ?? "")
+		}
+	}
+	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if viewModel.attributes.count == 0 {
 			return
@@ -82,5 +89,20 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		self.dismiss(animated: true) {
 			homeTabController?.sendButtonTapped(self)
 		}*/
+	}
+}
+
+extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
+	
+	func errorMessage(message: String) {
+		self.alert(errorWithMessage: message)
+	}
+	
+	func tokenContractDisplayRequested() {
+		self.performSegue(withIdentifier: "tokenContract", sender: nil)
+	}
+	
+	func shouldDismiss() {
+		self.dismiss(animated: true)
 	}
 }

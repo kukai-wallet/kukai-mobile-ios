@@ -65,7 +65,7 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "NFTGroupCell", for: indexPath) as? NFTGroupCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				
 				if let alias = obj.name {
 					cell.titleLabel.text = alias

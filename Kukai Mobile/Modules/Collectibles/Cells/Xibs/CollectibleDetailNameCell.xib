@@ -36,6 +36,10 @@
                         <state key="normal">
                             <imageReference key="image" image="star-no-fill" symbolScale="large"/>
                         </state>
+                        <state key="selected" image="star-fill"/>
+                        <connections>
+                            <action selector="favouriteTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="zsW-Cg-SCK"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4X-6d-7yz">
                         <rect key="frame" x="266" y="8" width="34" height="34"/>
@@ -47,6 +51,9 @@
                         <state key="normal">
                             <imageReference key="image" image="share-sheet" symbolScale="large"/>
                         </state>
+                        <connections>
+                            <action selector="shareTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="p5d-EY-pf9"/>
+                        </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1YF-RG-4MB">
                         <rect key="frame" x="324" y="8" width="34" height="34"/>
@@ -124,6 +131,7 @@
         <image name="chevron-right" width="21" height="20"/>
         <image name="ellipse-circle" width="35" height="35"/>
         <image name="share-sheet" width="27" height="31"/>
+        <image name="star-fill" width="27" height="26"/>
         <image name="star-no-fill" width="31" height="29"/>
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

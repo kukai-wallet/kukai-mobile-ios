@@ -73,6 +73,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
 	var sendAction: Selector? = nil
+	var actionsDelegate: CollectibleDetailNameCellDelegate? = nil
+	var isImage = false
+	var isFavourited = false
+	var isHidden = false
 	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil)
 	var attributesContent = AttributesContent(expanded: false)
 	var attributes: [TzKTBalanceMetadataAttributeKeyValue] = []
@@ -136,7 +140,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let ds = dataSource else {
+		guard let ds = dataSource, let nft = nft else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
@@ -145,6 +149,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		reusableAttributeSizingCell?.keyLabel.text = "a"
 		reusableAttributeSizingCell?.valueLabel.text = "b"
 		
+		isFavourited = TokenStateService.shared.isFavourite(nft: nft)
+		isHidden = TokenStateService.shared.isHidden(nft: nft)
+		
+		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		currentSnapshot.appendSections([0, 1])
@@ -152,9 +160,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		var section1Content: [CellDataType] = []
 		
-		let nameIcon = DependencyManager.shared.tzktClient.avatarURL(forToken: nft?.parentContract ?? "")
-		nameContent = NameContent(name: nft?.name ?? "", collectionIcon: nameIcon, collectionName: nft?.parentAlias ?? nft?.parentContract, collectionLink: nil)
-		attributes = nft?.metadata?.getKeyValuesFromAttributes() ?? []
+		let nameIcon = DependencyManager.shared.tzktClient.avatarURL(forToken: nft.parentContract)
+		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil)
+		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
 			guard let self = self else {
@@ -163,6 +171,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			}
 			
 			// Process section 0
+			self.isImage = response.mediaContent.isImage
 			section1Content.append(response.mediaContent)
 			
 			if let audioScrubber = response.audioScrubber {
@@ -481,6 +490,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		} else if let obj = item as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
 			parsedCell.nameLabel.text = obj.name
 			parsedCell.websiteButton.setTitle(obj.collectionName, for: .normal)
+			parsedCell.setup(nft: nft, isImage: isImage, isFavourited: isFavourited, isHidden: isHidden)
+			parsedCell.delegate = self.actionsDelegate
 			
 			if !layoutOnly {
 				MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
