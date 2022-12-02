@@ -19,6 +19,9 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -61,6 +64,15 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		
 		self.navigate()
 	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? AddressChoiceCell {
+			c.addGradientBackground(withFrame: c.containerView.bounds)
+		}
+	}
+	
 	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
 		if !validAddress {

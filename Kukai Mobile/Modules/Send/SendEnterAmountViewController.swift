@@ -30,6 +30,9 @@ class SendEnterAmountViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
 		setupTextField()
     }
 	

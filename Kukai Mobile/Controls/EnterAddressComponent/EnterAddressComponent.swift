@@ -16,8 +16,7 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var containerStackView: UIStackView!
 	@IBOutlet weak var inputControlsStackView: UIStackView!
 	@IBOutlet weak var errorStackView: UIStackView!
-	@IBOutlet weak var qrCodeStackView: UIStackView!
-	@IBOutlet weak var pasteStackView: UIStackView!
+	@IBOutlet weak var buttonsStackview: UIStackView!
 	
 	@IBOutlet weak var headerLabel: UILabel!
 	@IBOutlet weak var textField: ValidatorTextField!
@@ -51,37 +50,28 @@ public class EnterAddressComponent: UIView {
 		return nib.instantiate(withOwner: self, options: nil).first as? UIView
 	}
 	
-	public override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		textField.customCornerRadius = textField.frame.height / 2
-	}
-	
 	private func setup() {
 		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 		textField.validatorTextFieldDelegate = self
-		textField.borderColor = .lightGray
-		textField.borderWidth = 1
-		textField.maskToBounds = true
 		textField.leftViewMode = .always
 		
 		
 		textFieldLeftViewOption.frame = CGRect(x: 0, y: 0, width: 64, height: textField.frame.height)
-		textFieldLeftViewOption.backgroundColor = .white
+		textFieldLeftViewOption.backgroundColor = .clear
 		textFieldLeftViewOption.isUserInteractionEnabled = true
 		textFieldLeftViewOption.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leftOptionTapped)))
 		
 		let innerView = HighlightView(frame: CGRect(x: 4, y: 4, width: textFieldLeftViewOption.frame.width - 8, height: textFieldLeftViewOption.frame.height - 8))
-		innerView.backgroundHighlightColor = .lightGray
-		innerView.customCornerRadius = innerView.frame.height / 2
+		innerView.backgroundHighlightColor = .colorNamed("Grey200")
+		innerView.customCornerRadius = 8
 		innerView.borderWidth = 1
-		innerView.borderColor = .lightGray
+		innerView.borderColor = .colorNamed("Grey1400")
 		
 		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-logo"))
 		textFieldLeftViewImageTypeLogo.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
 		
-		let textFieldLeftViewImageChevron = UIImageView(image: UIImage(systemName: "chevron.down"))
-		textFieldLeftViewImageChevron.frame = CGRect(x: textFieldLeftViewImageTypeLogo.frame.width + 4, y: (innerView.frame.height / 2) - 5, width: 20, height: 10)
+		let textFieldLeftViewImageChevron = UIImageView(image: UIImage(named: "chevron-down"))
+		textFieldLeftViewImageChevron.frame = CGRect(x: textFieldLeftViewImageTypeLogo.frame.width + 4, y: (innerView.frame.height / 2) - 10, width: 20, height: 20)
 		
 		innerView.addSubview(textFieldLeftViewImageTypeLogo)
 		innerView.addSubview(textFieldLeftViewImageChevron)
@@ -126,8 +116,7 @@ public class EnterAddressComponent: UIView {
 	// MARK: - UI functions
 	
 	private func animateButtonsOut() {
-		qrCodeStackView.isHidden = true
-		pasteStackView.isHidden = true
+		buttonsStackview.isHidden = true
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
@@ -135,8 +124,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func animatedButtonsIn() {
-		qrCodeStackView.isHidden = false
-		pasteStackView.isHidden = false
+		buttonsStackview.isHidden = false
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()

@@ -19,7 +19,15 @@ class SendChooseTokenViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
+		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
+		segmentedButton.addUnderlineForSelectedSegment()
+		if segmentedButton.selectedSegmentIndex == 0 {
+			self.collectiblesContainerView.isHidden = true
+		}
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

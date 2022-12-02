@@ -37,6 +37,9 @@ class SendApproveViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
 		guard let wallet = DependencyManager.shared.selectedWallet, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return
 		}

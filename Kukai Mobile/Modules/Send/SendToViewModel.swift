@@ -59,8 +59,8 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		for wallet in wallets where wallet.address != address {
 			if wallet.type == .social {
-				let username = (wallet as? TorusWallet)?.socialUserId
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-logo"), title: username ?? wallet.address, address: wallet.address))
+				let details = imageAndTitleForSocialWallet(wallet: wallet)
+				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
 				
 			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
 				walletObjs.append(WalletObj(icon: UIImage(named: "tezos-logo"), title: wallet.address, address: wallet.address))
@@ -86,6 +86,29 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		state = .success(nil)
 	}
 	
+	func imageAndTitleForSocialWallet(wallet: Wallet) -> (image: UIImage?, title: String) {
+		guard let socialWallet = wallet as? TorusWallet else {
+			return (image: UIImage(named: "tezos-logo"), title: wallet.address)
+		}
+		
+		switch socialWallet.authProvider {
+			case .apple:
+				return (image: UIImage(named: "social-apple"), title: "Apple account")
+				
+			case .twitter:
+				return (image: UIImage(named: "social-twitter"), title: socialWallet.socialUserId ?? socialWallet.address)
+				
+			case .google:
+				return (image: UIImage(named: "social-google"), title: socialWallet.socialUserId ?? socialWallet.address)
+				
+			case .reddit:
+				return (image: UIImage(named: "tezos-logo"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+				
+			case .facebook:
+				return (image: UIImage(named: "tezos-logo"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+		}
+	}
+	
 	func heightForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> CGFloat {
 		let view = viewForHeaderInSection(section, forTableView: tableView)
 		view.sizeToFit()
@@ -96,12 +119,14 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func viewForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> UIView {
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
-			cell.iconView.image = UIImage(systemName: "person.crop.circle")
+			cell.iconView.image = UIImage(named: "contacts")
+			cell.iconView.tintColor = .colorNamed("Grey1000")
 			cell.headingLabel.text = "Contacts"
 			return cell.contentView
 			
 		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
-			cell.iconView.image = UIImage(systemName: "folder.fill")
+			cell.iconView.image = UIImage(named: "wallet")
+			cell.iconView.tintColor = .colorNamed("Grey1000")
 			cell.headingLabel.text = "My Wallets"
 			return cell.contentView
 			
