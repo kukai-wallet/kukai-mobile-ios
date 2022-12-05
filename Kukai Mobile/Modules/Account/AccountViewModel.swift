@@ -56,26 +56,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage(named: "tezos-logo")
+				cell.iconView.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "Tezos"
 				cell.balanceLabel.text = amount.normalisedRepresentation
-				
-				//let singleXTZCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ, numberStyle: .currency, maximumFractionDigits: 2)
-				//cell.rateLabel.text = "1 = \(singleXTZCurrencyString)"
-				
-				//cell.priceChangeIcon.image = nil
-				//cell.priceChangeLabel.text = ""
-				
-				if indexPath.row % 2 == 0 {
-					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
-					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive900")
-					
-				} else {
-					cell.priceChangeIcon.image = UIImage(named: "arrow-down-red")
-					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
-				}
+				cell.setPriceChange(value: 100)
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -84,44 +68,27 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				if cell.iconView.image == nil {
-					cell.iconView.image = UIImage(named: "unknown-token")
+					cell.iconView.image = UIImage.unknownToken()
 				}
 				
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
-				
-				//cell.priceChangeIcon.image = nil
-				//cell.priceChangeLabel.text = ""
-				
-				if indexPath.row % 2 == 0 {
-					cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
-					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive500")
-					
-				} else {
-					cell.priceChangeIcon.image = UIImage(named: "arrow-down-red")
-					cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-					cell.priceChangeLabel.textColor = UIColor.colorNamed("Caution900")
-				}
-				
+				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 					let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 					let currencyString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
-					
-					//cell.rateLabel.text = "1 == \(tokenValueAndRate.marketRate.rounded(scale: 6, roundingMode: .down)) XTZ"
 					cell.valuelabel.text = currencyString
 					
 				} else {
-					//cell.rateLabel.text = ""
 					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.placeholderCurrencyString()
 				}
 				
 				return cell
 				
 			} else if let total = item as? TotalEstiamtedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
-				cell.balanceLabel.text = total.tez.normalisedRepresentation
+				cell.balanceLabel.text = total.tez.normalisedRepresentation + " tez"
 				cell.valueLabel.text = total.value
 				return cell
 				
@@ -176,8 +143,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(section1Data, toSection: 0)
 			
 		} else {
-			let total = TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)
-			var data: [AnyHashable] = [total]
+			var data: [AnyHashable] = []
+			if section1Data.count > 1 {
+				data = [TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)]
+			}
+			
 			data.append(contentsOf: section1Data)
 			
 			snapshot.appendSections([0])
@@ -229,13 +199,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		/*
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-		*/
 	}
 }

@@ -237,7 +237,7 @@ class HomeTabBarController: UITabBarController {
 	
 	func textForWallet(wallet: Wallet) -> NSAttributedString {
 		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 10), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
 		
 		if let sWallet = wallet as? TorusWallet {
 			var topText = sWallet.socialUserId ?? ""
@@ -267,7 +267,6 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		/*
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
@@ -283,7 +282,6 @@ class HomeTabBarController: UITabBarController {
 			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-		*/
 	}
 	
 	func sendButtonTapped() {

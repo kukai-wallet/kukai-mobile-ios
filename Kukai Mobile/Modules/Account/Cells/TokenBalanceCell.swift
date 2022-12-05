@@ -24,6 +24,23 @@ class TokenBalanceCell: UITableViewCell {
 		super.awakeFromNib()
 	}
 	
+	public func setPriceChange(value: Decimal) {
+		priceChangeLabel.text = "\(abs(value).rounded(scale: 2, roundingMode: .bankers))%"
+		
+		if value > 0 {
+			let color = UIColor.colorNamed("Positive900")
+			priceChangeIcon.image = UIImage(named: "arrow-up")
+			priceChangeIcon.tintColor = color
+			priceChangeLabel.textColor = color
+			
+		} else {
+			let color = UIColor.colorNamed("Grey1100")
+			priceChangeIcon.image = UIImage(named: "arrow-down")
+			priceChangeIcon.tintColor = color
+			priceChangeLabel.textColor = color
+		}
+	}
+	
 	public func addGradientBackground(withFrame: CGRect) {
 		correctFrame = withFrame
 		

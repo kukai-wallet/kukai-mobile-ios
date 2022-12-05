@@ -68,7 +68,7 @@ extension UIView {
 			degrees: cssDegreesToIOS(180),
 			lineWidth: 1,
 			corners: [.allCorners],
-			cornerRadius: 10)
+			cornerRadius: 8)
 	}
 	
 	func addGradientBackgroundFull() -> CAGradientLayer {
