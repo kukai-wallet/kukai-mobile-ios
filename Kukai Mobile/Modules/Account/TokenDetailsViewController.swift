@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import Charts
 import Combine
 import KukaiCoreSwift
 
@@ -226,6 +225,7 @@ class TokenDetailsViewController: UIViewController {
 		if let vc = segue.destination as? ChartHostingController {
 			vc.view.backgroundColor = .clear
 			chartController = vc
+			chartController?.setDelegate(self)
 			
 		} else if let vc = segue.destination as? TokenContractViewController {
 			vc.setup(tokenId: viewModel.token?.tokenId?.description ?? "0", contractAddress: viewModel.token?.tokenContractAddress ?? "")
@@ -693,5 +693,19 @@ class TokenDetailsViewController: UIViewController {
 		if let url = URL(string: "https://tzkt.io/\(viewModel.activityItems[4].transactions[0].hash)") {
 			UIApplication.shared.open(url, completionHandler: nil)
 		}
+	}
+}
+
+
+// MARK: - ChartHostingControllerDelegate
+
+extension TokenDetailsViewController: ChartHostingControllerDelegate {
+	
+	func didSelectPoint(_ point: ChartViewDataPoint?, ofIndex: Int) {
+		print("Date: \(point?.date), Value: \(point?.value), Index: \(ofIndex)")
+	}
+	
+	func didFinishSelectingPoint() {
+		
 	}
 }
