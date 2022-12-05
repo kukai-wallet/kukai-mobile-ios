@@ -30,11 +30,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Bx0-JG-6Gg">
-                                <rect key="frame" x="0.0" y="109" width="393" height="709"/>
+                                <rect key="frame" x="0.0" y="61" width="393" height="757"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="85" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="85"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c9F-pE-jDL" id="rMO-1e-A9t">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="85"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balances" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCV-5M-EmO">
+                                                    <rect key="frame" x="16" y="39" width="301" height="21"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                                    <color key="textColor" name="Grey300"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="405-zw-M1R">
+                                                    <rect key="frame" x="333" y="16" width="44" height="67"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="2rC-yS-jQf"/>
+                                                        <constraint firstAttribute="width" constant="44" id="QmZ-rA-6fo"/>
+                                                    </constraints>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" image="ellipses"/>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="405-zw-M1R" firstAttribute="top" secondItem="rMO-1e-A9t" secondAttribute="top" constant="16" id="HAe-GG-wxS"/>
+                                                <constraint firstItem="405-zw-M1R" firstAttribute="leading" secondItem="KCV-5M-EmO" secondAttribute="trailing" constant="16" id="Ogs-IN-PK9"/>
+                                                <constraint firstItem="405-zw-M1R" firstAttribute="centerY" secondItem="KCV-5M-EmO" secondAttribute="centerY" id="QSL-E2-YCC"/>
+                                                <constraint firstItem="KCV-5M-EmO" firstAttribute="leading" secondItem="rMO-1e-A9t" secondAttribute="leading" constant="16" id="SjB-rZ-saK"/>
+                                                <constraint firstAttribute="bottom" secondItem="405-zw-M1R" secondAttribute="bottom" constant="2" id="VGa-Eq-7hs"/>
+                                                <constraint firstAttribute="trailing" secondItem="405-zw-M1R" secondAttribute="trailing" constant="16" id="b5p-OV-ckd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="moreButton" destination="405-zw-M1R" id="jXO-17-ThR"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EstimatedTotalCell" rowHeight="52" id="fLd-MK-ZQo" customClass="EstimatedTotalCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="52"/>
+                                        <rect key="frame" x="0.0" y="135" width="393" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fLd-MK-ZQo" id="fZ4-yB-WXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="52"/>
@@ -81,7 +119,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenBalanceCell" rowHeight="76" id="Kcw-mz-qlU" customClass="TokenBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="102" width="393" height="76"/>
+                                        <rect key="frame" x="0.0" y="187" width="393" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kcw-mz-qlU" id="LLJ-Pv-DUc">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="76"/>
@@ -182,40 +220,19 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balances" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="guP-pH-XMA">
-                                <rect key="frame" x="16" y="81.666666666666671" width="301" height="21"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
-                                <color key="textColor" name="Grey300"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="csZ-Ri-TbN">
-                                <rect key="frame" x="333" y="77" width="44" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="2ag-as-Zzz"/>
-                                    <constraint firstAttribute="width" constant="44" id="fsz-Vz-kU1"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="ellipses"/>
-                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gVm-gI-ruh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Bx0-JG-6Gg" firstAttribute="bottom" secondItem="gVm-gI-ruh" secondAttribute="bottom" id="1Iu-Vm-ASw"/>
                             <constraint firstItem="Bx0-JG-6Gg" firstAttribute="trailing" secondItem="gVm-gI-ruh" secondAttribute="trailing" id="B2Z-Ga-vQ1"/>
-                            <constraint firstItem="guP-pH-XMA" firstAttribute="leading" secondItem="gVm-gI-ruh" secondAttribute="leading" constant="16" id="Dce-F6-ghr"/>
                             <constraint firstItem="Bx0-JG-6Gg" firstAttribute="leading" secondItem="gVm-gI-ruh" secondAttribute="leading" id="J8S-sa-gYy"/>
-                            <constraint firstItem="csZ-Ri-TbN" firstAttribute="centerY" secondItem="guP-pH-XMA" secondAttribute="centerY" id="RGU-RZ-QIK"/>
-                            <constraint firstItem="gVm-gI-ruh" firstAttribute="trailing" secondItem="csZ-Ri-TbN" secondAttribute="trailing" constant="16" id="Tfl-pW-GLh"/>
-                            <constraint firstItem="csZ-Ri-TbN" firstAttribute="leading" secondItem="guP-pH-XMA" secondAttribute="trailing" constant="16" id="Uax-mZ-goc"/>
-                            <constraint firstItem="Bx0-JG-6Gg" firstAttribute="top" secondItem="csZ-Ri-TbN" secondAttribute="bottom" constant="2" id="h3M-sX-Szd"/>
-                            <constraint firstItem="csZ-Ri-TbN" firstAttribute="top" secondItem="gVm-gI-ruh" secondAttribute="top" constant="18" id="uIy-u7-bzS"/>
+                            <constraint firstItem="Bx0-JG-6Gg" firstAttribute="top" secondItem="gVm-gI-ruh" secondAttribute="top" constant="2" id="fDj-NY-59b"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Account" image="account-tab-off" selectedImage="account-tab-on" id="C6v-aT-auG"/>
                     <connections>
-                        <outlet property="balancesMoreButton" destination="csZ-Ri-TbN" id="hha-UB-OgD"/>
                         <outlet property="tableView" destination="Bx0-JG-6Gg" id="3RY-12-3OS"/>
                         <segue destination="CGQ-vo-OEA" kind="custom" identifier="details" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" id="KUO-zM-P9y"/>
                         <segue destination="coy-OE-NPZ" kind="show" identifier="hidden" id="D3A-Jh-dg3"/>
@@ -224,7 +241,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3475.3846153846152" y="-1420.3791469194312"/>
+            <point key="canvasLocation" x="-3475.5725190839694" y="-1420.4225352112676"/>
         </scene>
         <!--Hidden Tokens-->
         <scene sceneID="Qrr-xS-5hQ">
@@ -1980,7 +1997,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8q-Fb-K5L">
-                                                            <rect key="frame" x="86" y="8" width="80" height="21"/>
+                                                            <rect key="frame" x="86" y="8" width="81.666666666666686" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>

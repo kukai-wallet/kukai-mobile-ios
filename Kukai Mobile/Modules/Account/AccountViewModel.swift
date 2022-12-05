@@ -26,6 +26,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var isPresentedForSelectingToken = false
 	var isVisible = false
 	var tokensToDisplay: [Token] = []
+	var balancesMenu: UIMenu? = nil
 	
 	
 	// MARK: - Init
@@ -55,7 +56,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+			if let obj = item as? UIMenu, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+				cell.setup(menu: obj)
+				return cell
+				
+			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.iconView.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "Tezos"
 				cell.balanceLabel.text = amount.normalisedRepresentation
@@ -143,9 +148,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(section1Data, toSection: 0)
 			
 		} else {
-			var data: [AnyHashable] = []
+			var data: [AnyHashable] = [balancesMenu]
 			if section1Data.count > 1 {
-				data = [TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString)]
+				data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
 			}
 			
 			data.append(contentsOf: section1Data)
