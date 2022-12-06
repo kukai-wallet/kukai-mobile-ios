@@ -11,7 +11,7 @@ import Charts
 
 
 
-public struct ChartViewDataPoint: Identifiable {
+public struct ChartViewDataPoint: Identifiable, Equatable {
 	public var value: Double
 	public var date: Date
 	public var id = UUID()
@@ -85,7 +85,6 @@ struct ChartView: View {
 		VStack(spacing: 0) {
 			topAnnotationView
 			chart
-			bottomAnnotationView
 			
 		}.background(.clear)
 	}
@@ -100,28 +99,6 @@ struct ChartView: View {
 					
 					VStack(alignment: .trailing) {
 						Text(doubleFormatter(maxData?.value))
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
-							.foregroundStyle(Color("Grey900"))
-						
-					}
-					.offset(x: boxOffset)
-				}
-			}
-		}
-		.frame(height: 18)
-		.background(.clear)
-	}
-	
-	private var bottomAnnotationView: some View {
-		VStack {
-			ZStack(alignment: .topLeading) {
-				GeometryReader { geo in
-						
-					let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
-					let boxOffset = max(0, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
-					
-					VStack(alignment: .trailing) {
-						Text(doubleFormatter(minData?.value))
 							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
 							.foregroundStyle(Color("Grey900"))
 						
@@ -162,15 +139,18 @@ struct ChartView: View {
 								
 								let origin = geometry[proxy.plotAreaFrame].origin
 								if let datePos = proxy.value(atX: value.location.x - origin.x, as: Date.self), let firstGreater = integration.data.lastIndex(where: { $0.date < datePos }) {
-									selectedData = integration.data[firstGreater]
+									let newPoint = integration.data[firstGreater]
 									
-									integration.delegate?.didSelectPoint(selectedData, ofIndex: firstGreater)
-									
-									if selectedDataPoint.x == 0 && selectedDataPoint.y == 0 {
-										selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
-									} else {
-										withAnimation(.linear(duration: 0.3)) {
+									if selectedData != newPoint {
+										selectedData = newPoint
+										integration.delegate?.didSelectPoint(selectedData, ofIndex: firstGreater)
+										
+										if selectedDataPoint.x == 0 && selectedDataPoint.y == 0 {
 											selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+										} else {
+											withAnimation(.linear(duration: 0.3)) {
+												selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+											}
 										}
 									}
 								}
@@ -185,6 +165,20 @@ struct ChartView: View {
 					)
 				
 				
+				// Add text annotation of lowest value as overlay to bottom of chart
+				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
+				let boxOffset = max(0, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+				
+				VStack(alignment: .trailing) {
+					Text(doubleFormatter(minData?.value))
+						.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
+						.foregroundStyle(Color("Grey900"))
+					
+				}
+				.offset(x: boxOffset, y: minDataPoint.y + 8)
+				
+				
+				// If the user is dragging their finger across the chart, compute and record the closest datapoint
 				if isDragging {
 					Circle()
 						.fill(Color("Brand500").opacity(0.1))

@@ -264,8 +264,8 @@ class TokenDetailsViewController: UIViewController {
 	}
 	
 	func setupUI() {
-		let normalColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1800").cgColor, andSize: chartRangeDayButton.bounds.size)
-		let selectedColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1900").cgColor, andSize: chartRangeDayButton.bounds.size)
+		let normalColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1900").cgColor, andSize: chartRangeDayButton.bounds.size)
+		let selectedColor = UIImage.getColoredRectImageWith(color: UIColor.colorNamed("Grey1800").cgColor, andSize: chartRangeDayButton.bounds.size)
 		
 		chartRangeDayButton.setBackgroundImage(normalColor, for: .normal)
 		chartRangeDayButton.setBackgroundImage(selectedColor, for: .selected)
