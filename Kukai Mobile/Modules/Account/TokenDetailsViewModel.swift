@@ -8,15 +8,342 @@
 import UIKit
 import KukaiCoreSwift
 
-struct AllChartData {
+struct AllChartData: Hashable {
+	let id = UUID()
 	let day: [ChartViewDataPoint]
 	let week: [ChartViewDataPoint]
 	let month: [ChartViewDataPoint]
 	let year: [ChartViewDataPoint]
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+}
+
+struct LoadingData: Hashable {
+	let id = UUID()
+}
+
+struct ButtonData: Hashable {
+	let isFavourited: Bool
+	let canBeUnFavourited: Bool
+	let isHidden: Bool
+	let canBeHidden: Bool
+	let canBePurchased: Bool
+	let canBeViewedOnline: Bool
+	let hasMoreButton: Bool
 }
 
 public class TokenDetailsViewModel: ViewModel {
 	
+	typealias SectionEnum = Int
+	typealias CellDataType = AnyHashable
+	
+	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
+	private weak var tableViewReference: UITableView? = nil
+	
+	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	
+	var token: Token? = nil
+	var tokenIcon: UIImage? = nil
+	var tokenIconURL: URL? = nil
+	var tokenSymbol = ""
+	var tokenFiatPrice = ""
+	var tokenPriceChange = ""
+	var tokenPriceChangeIsUp = false
+	var tokenPriceDateText = ""
+	
+	var chartController = ChartHostingController()
+	var chartData = AllChartData(day: [], week: [], month: [], year: [])
+	var buttonData: ButtonData? = nil
+	
+	var tokenBalance = ""
+	var tokenValue = ""
+	
+	
+	
+	
+	
+	
+	// MARK: - Functions
+	
+	func makeDataSource(withTableView tableView: UITableView) {
+		tableViewReference = tableView
+		
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			guard let self = self else { return UITableViewCell() }
+			
+			if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+				cell.setup()
+				return cell
+				
+			} else if let obj = item as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+				cell.setup(chartController: self.chartController, allChartData: obj)
+				return cell
+				
+			} else if let _ = item as? ButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsButtonsCell", for: indexPath) as? TokenDetailsButtonsCell {
+				cell.setup(withMoreMenu: nil)
+				return cell
+				
+			} else {
+				return UITableViewCell()
+			}
+		})
+		
+		dataSource?.defaultRowAnimation = .fade
+	}
+	
+	func refresh(animate: Bool, successMessage: String? = nil) {
+		guard let ds = dataSource, let token = self.token else {
+			return
+		}
+		
+		loadTokenData(token: token)
+		
+		var data: [AnyHashable] = [
+			chartData,
+			buttonData,
+		]
+		
+		
+		// Build snapshot
+		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot.appendSections([0])
+		currentSnapshot.appendItems(data, toSection: 0)
+		
+		ds.apply(currentSnapshot, animatingDifferences: animate)
+		ds.defaultRowAnimation = .fade
+		
+		self.state = .success(nil)
+		
+		
+		// Trigger remote data fetching
+		loadChartData(token: token) { [weak self] result in
+			guard let self = self else { return }
+			
+			switch result {
+				case .success(let data):
+					/*
+					self.allChartData = data
+					self.viewModel.calculatePriceChange(data: data)
+					self.updatePriceChange()
+					self.chartRangeDayTapped(self)
+					self.chartActivityIndicator.stopAnimating()
+					self.chartActivityIndicator.isHidden = true
+					self.chartContainer.isHidden = false
+					*/
+					self.currentSnapshot.deleteItems([self.chartData])
+					self.chartData = data
+					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					
+					
+				case .failure(let error):
+					self.state = .failure(error, "Unable to get chart data")
+			}
+		}
+	}
+	
+	func updateChartCell() {
+		guard let tv = tableViewReference, let cell = dataSource?.tableView(tv, cellForRowAt: IndexPath(row: 0, section: 0)) as? TokenDetailsChartCell else {
+			self.state = .failure(KukaiError.unknown(), "Unable to find chart cell")
+			return
+		}
+		
+		print("updating chart")
+		cell.setup(chartController: self.chartController, allChartData: self.chartData)
+		
+		//currentSnapshot.deleteItems([])
+		//currentSnapshot.insertItems(self.chartData, beforeItem: buttonData)
+	}
+	
+	
+	
+	// MARK: - Data
+	
+	func loadTokenData(token: Token) {
+		self.token = token
+		tokenSymbol = token.symbol
+		tokenBalance = token.balance.normalisedRepresentation + " \(token.symbol)"
+		
+		if token.isXTZ() {
+			tokenIcon = UIImage(named: "tezos-logo")
+			tokenSymbol = "Tezos"
+			
+			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			buttonData = ButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
+			
+			let account = DependencyManager.shared.balanceService.account
+			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
+			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			/*
+			isStakingPossible = true
+			if account.delegate != nil {
+				isStaked = true
+			}
+			*/
+			
+			self.state = .success(nil)
+			
+		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+			tokenIconURL = token.thumbnailURL
+			tokenSymbol = token.symbol
+			
+			let fiatPerToken = tokenValueAndRate.marketRate
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			let isFav = TokenStateService.shared.isFavourite(token: token).isFavourite
+			let isHidden = TokenStateService.shared.isHidden(token: token)
+			buttonData = ButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
+			
+			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			//isStakingPossible = false
+			self.state = .success(nil)
+		}
+	}
+	
+	/*
+	func loadBakerData(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
+		let account = DependencyManager.shared.balanceService.account
+		guard let delegate = account.delegate else {
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find baker details")))
+			return
+		}
+		
+		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+			updateBakerInfo(from: bakerRewardCache, andDelegate: delegate)
+			completion(Result.success(true))
+			
+		} else {
+			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
+				if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
+					self?.updateBakerInfo(from: res, andDelegate: delegate)
+					let _ = DiskService.write(encodable: res, toFileName: filename)
+					
+				} else {
+					self?.updateBakerError(withDelegate: delegate)
+				}
+				
+				completion(Result.success(true))
+			}
+		}
+	}
+	*/
+	
+	
+	// MARK: - Chart
+	
+	func loadChartData(token: Token, completion: @escaping ((Result<AllChartData, KukaiError>) -> Void)) {
+		
+		// If XTZ we fetch data from coingecko
+		if token.isXTZ() {
+			DependencyManager.shared.coinGeckoService.fetchAllChartData { [weak self] result in
+				guard let self = self else {
+					completion(Result.failure(KukaiError.unknown()))
+					return
+				}
+				
+				guard let res = try? result.get() else {
+					completion(Result.failure(result.getFailure()))
+					return
+				}
+				
+				completion(Result.success(self.formatData(data: res)))
+				return
+			}
+			
+		} else {
+			// Else we fetch from dipdup
+			guard let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) else {
+				completion(Result.failure(KukaiError.unknown(withString: "Chart data unavailable for this token")))
+				return
+			}
+			
+			DependencyManager.shared.dipDupClient.getChartDataFor(exchangeContract: exchangeData.address) { [weak self] result in
+				guard let self = self else {
+					completion(Result.failure(KukaiError.unknown()))
+					return
+				}
+				
+				switch result {
+					case .success(let graphData):
+						completion(Result.success(self.formatData(data: graphData)))
+						
+					case .failure(let error):
+						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
+				}
+			}
+		}
+	}
+	
+	func formatData(data: [CoinGeckoMarketDataResponse]) -> AllChartData {
+		let daySet = createDataSet(for: data[0])
+		let weekSet = createDataSet(for: data[1])
+		let monthSet = createDataSet(for: data[2])
+		let yearSet = createDataSet(for: data[3])
+		
+		return AllChartData(day: daySet, week: weekSet, month: monthSet, year: yearSet)
+	}
+	
+	func formatData(data: GraphQLResponse<DipDupChartData>) -> AllChartData {
+		guard let data = data.data else {
+			return AllChartData(day: [], week: [], month: [], year: [])
+		}
+		
+		let daySet = createDataSet(for: data.quotes15mNogaps)
+		let weekSet = createDataSet(for: data.quotes1hNogaps)
+		let monthSet = createDataSet(for: data.quotes1dNogaps)
+		let yearSet = createDataSet(for: data.quotes1wNogaps)
+		
+		return AllChartData(day: daySet, week: weekSet, month: monthSet, year: yearSet)
+	}
+	
+	func createDataSet(for data: CoinGeckoMarketDataResponse) -> [ChartViewDataPoint] {
+		let updatedData = data.lessThan100Samples()
+		
+		var setData: [ChartViewDataPoint] = []
+		for item in updatedData {
+			let timestamp = item[0] / 1000
+			let val = item[1]
+			
+			setData.append( ChartViewDataPoint(value: val, date: Date(timeIntervalSince1970: timestamp)) )
+		}
+		
+		return setData
+	}
+	
+	func createDataSet(for dataArray: [DipDupChartObject]) -> [ChartViewDataPoint] {
+		var setData: [ChartViewDataPoint] = []
+		for item in dataArray {
+			let date = item.date() ?? Date()
+			let val = item.averageDouble()
+			
+			setData.append( ChartViewDataPoint(value: val, date: date) )
+		}
+		
+		return setData
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	
 	var token: Token? = nil
@@ -335,4 +662,5 @@ public class TokenDetailsViewModel: ViewModel {
 			completion(Result.failure(KukaiError.unknown(withString: "Can't find token for activity")))
 		}
 	}
+	*/
 }

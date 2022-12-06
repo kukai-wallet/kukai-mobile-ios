@@ -11,6 +11,102 @@ import KukaiCoreSwift
 
 class TokenDetailsViewController: UIViewController {
 	
+	@IBOutlet weak var headerIcon: UIImageView!
+	@IBOutlet weak var headerSymbol: UILabel!
+	@IBOutlet weak var headerFiat: UILabel!
+	@IBOutlet weak var headerPriceChange: UILabel!
+	@IBOutlet weak var headerPriceChangeArrow: UIImageView!
+	@IBOutlet weak var headerPriceChangeDate: UILabel!
+	
+	@IBOutlet weak var tableView: UITableView!
+	
+	private let viewModel = TokenDetailsViewModel()
+	private var cancellable: AnyCancellable?
+	
+	
+	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
+		viewModel.token = TransactionService.shared.sendData.chosenToken
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
+		loadPlaceholderUI()
+		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					//self?.showLoadingView(completion: nil)
+					let _ = ""
+					
+				case .failure(_, let errorString):
+					//self?.hideLoadingView(completion: nil)
+					self?.alert(withTitle: "Error", andMessage: errorString)
+					
+				case .success:
+					//self?.hideLoadingView(completion: nil)
+					self?.loadRealData()
+			}
+		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		viewModel.refresh(animate: true)
+	}
+	
+	func loadPlaceholderUI() {
+		headerSymbol.text = ""
+		headerFiat.text = ""
+		headerPriceChange.text = ""
+		headerPriceChangeDate.text = ""
+		headerPriceChangeArrow.image = UIImage()
+	}
+	
+	func loadRealData() {
+		if let tokenURL = viewModel.tokenIconURL {
+			MediaProxyService.load(url: tokenURL, to: headerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: headerIcon.frame.size)
+			
+		} else {
+			headerIcon.image = viewModel.tokenIcon
+		}
+		
+		headerSymbol.text = viewModel.tokenSymbol
+		headerFiat.text = viewModel.tokenFiatPrice
+		headerPriceChange.text = viewModel.tokenPriceChange
+		headerPriceChangeDate.text = viewModel.tokenPriceDateText
+		
+		if viewModel.tokenPriceChangeIsUp {
+			let color = UIColor.colorNamed("Positive900")
+			var image = UIImage(named: "arrow-up")
+			image = image?.resizedImage(Size: CGSize(width: 11, height: 11))
+			image = image?.withTintColor(color)
+			
+			headerPriceChangeArrow.image = image
+			headerPriceChange.tintColor = color
+			
+		} else {
+			let color = UIColor.colorNamed("Grey1100")
+			var image = UIImage(named: "arrow-down")
+			image = image?.resizedImage(Size: CGSize(width: 11, height: 11))
+			image = image?.withTintColor(color)
+			
+			headerPriceChangeArrow.image = image
+			headerPriceChange.tintColor = color
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	@IBOutlet weak var tokenHeaderIcon: UIImageView!
 	@IBOutlet weak var tokenHeaderSymbolLabel: UILabel!
 	@IBOutlet weak var tokenHeaderFiatLabel: UILabel!
@@ -30,9 +126,20 @@ class TokenDetailsViewController: UIViewController {
 	@IBOutlet weak var chartRangeMonthButton: UIButton!
 	@IBOutlet weak var chartRangeYearButton: UIButton!
 	
+	@IBOutlet weak var balanceAndBakerStackView: UIStackView!
 	@IBOutlet weak var tokenBalanceIcon: UIImageView!
 	@IBOutlet weak var tokenBalanceLabel: UILabel!
 	@IBOutlet weak var tokenValueLabel: UILabel!
+	@IBOutlet weak var bakerButton: UIStackView!
+	
+	@IBOutlet weak var balanceAndStakeStackView: UIStackView!
+	
+	
+	
+	
+	
+	
+	
 	
 	@IBOutlet weak var sendButton: UIButton!
 	
@@ -633,6 +740,14 @@ class TokenDetailsViewController: UIViewController {
 		}
 	}
 	
+	@IBAction func selectedBakerTapped(_ sender: Any) {
+		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
+		
+		self.dismiss(animated: true) {
+			homeTabController?.performSegue(withIdentifier: "stake", sender: nil)
+		}
+	}
+	
 	@IBAction func stakeButtonTapped(_ sender: Any) {
 		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
 		
@@ -694,6 +809,7 @@ class TokenDetailsViewController: UIViewController {
 			UIApplication.shared.open(url, completionHandler: nil)
 		}
 	}
+	*/
 }
 
 

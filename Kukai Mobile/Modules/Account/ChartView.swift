@@ -11,7 +11,7 @@ import Charts
 
 
 
-public struct ChartViewDataPoint: Identifiable, Equatable {
+public struct ChartViewDataPoint: Hashable, Identifiable, Equatable {
 	public var value: Double
 	public var date: Date
 	public var id = UUID()
@@ -38,6 +38,10 @@ class ChartHostingController: UIHostingController<AnyView> {
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder, rootView: AnyView(chartView.environmentObject(integration)))
+	}
+	
+	init() {
+		super.init(rootView: AnyView(chartView.environmentObject(integration)))
 	}
 	
 	override func viewDidLoad() {
