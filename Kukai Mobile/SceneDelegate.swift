@@ -24,8 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
 		
-		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
-		Sign.configure(metadata: metadata, projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
+		//let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
+		//Sign.configure(metadata: metadata, projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -43,7 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			}
 		}
 		
-		try? Sign.instance.connect()
+		//try? Sign.instance.connect()
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
@@ -61,7 +61,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 		BeaconService.shared.pauseBeacon(completion: nil)
 		
-		try? Sign.instance.disconnect(closeCode: .normalClosure)
+		//try? Sign.instance.disconnect(closeCode: .normalClosure)
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

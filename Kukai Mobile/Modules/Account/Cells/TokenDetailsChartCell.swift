@@ -7,6 +7,17 @@
 
 import UIKit
 
+enum TokenDetailsChartCellRange: Int {
+	case day
+	case week
+	case month
+	case year
+}
+
+protocol TokenDetailsChartCellDelegate: AnyObject {
+	func chartRangeChanged(to: TokenDetailsChartCellRange)
+}
+
 class TokenDetailsChartCell: UITableViewCell {
 	
 	@IBOutlet weak var chartContainer: UIView!
@@ -17,10 +28,12 @@ class TokenDetailsChartCell: UITableViewCell {
 	@IBOutlet weak var monthButton: UIButton!
 	@IBOutlet weak var yearButton: UIButton!
 	
+	private weak var delegate: TokenDetailsChartCellDelegate? = nil
 	private weak var chartController: ChartHostingController? = nil
 	private var allChartData: AllChartData? = nil
 	private let chartButtonBackgroundColor = UIColor.colorNamed("Grey1900")
 	private let chartButtonSelectedBackgroundColor = UIColor.colorNamed("Grey1800")
+	
 	
 	func setup() {
 		activityView.startAnimating()
@@ -32,10 +45,11 @@ class TokenDetailsChartCell: UITableViewCell {
 		yearButton.backgroundColor = chartButtonBackgroundColor
 	}
 	
-	func setup(chartController: ChartHostingController, allChartData: AllChartData) {
+	func setup(delegate: TokenDetailsChartCellDelegate?, chartController: ChartHostingController, allChartData: AllChartData) {
 		activityView.stopAnimating()
 		activityView.isHidden = true
 		
+		self.delegate = delegate
 		self.chartController = chartController
 		self.chartController?.view.backgroundColor = .clear
 		
@@ -52,6 +66,7 @@ class TokenDetailsChartCell: UITableViewCell {
 		
 		if !dayButton.isSelected {
 			self.chartController?.setData(allChartData.day)
+			self.delegate?.chartRangeChanged(to: .day)
 			
 			dayButton.isSelected = true
 			dayButton.backgroundColor = chartButtonSelectedBackgroundColor
@@ -69,6 +84,7 @@ class TokenDetailsChartCell: UITableViewCell {
 		
 		if !weekButton.isSelected {
 			self.chartController?.setData(allChartData.week)
+			self.delegate?.chartRangeChanged(to: .week)
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor
@@ -86,6 +102,7 @@ class TokenDetailsChartCell: UITableViewCell {
 		
 		if !monthButton.isSelected {
 			self.chartController?.setData(allChartData.month)
+			self.delegate?.chartRangeChanged(to: .month)
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor
@@ -103,6 +120,7 @@ class TokenDetailsChartCell: UITableViewCell {
 		
 		if !yearButton.isSelected {
 			self.chartController?.setData(allChartData.year)
+			self.delegate?.chartRangeChanged(to: .year)
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor

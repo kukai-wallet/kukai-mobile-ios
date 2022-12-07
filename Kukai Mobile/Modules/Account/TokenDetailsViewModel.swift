@@ -24,8 +24,8 @@ struct LoadingData: Hashable {
 	let id = UUID()
 }
 
-struct ButtonData: Hashable {
-	let isFavourited: Bool
+struct TokenDetailsButtonData: Hashable {
+	var isFavourited: Bool
 	let canBeUnFavourited: Bool
 	let isHidden: Bool
 	let canBeHidden: Bool
@@ -34,18 +34,43 @@ struct ButtonData: Hashable {
 	let hasMoreButton: Bool
 }
 
-public class TokenDetailsViewModel: ViewModel {
+struct TokenDetailsBalanceAndBakerData: Hashable {
+	let balance: String
+	let value: String
+	let isStakingPossible: Bool
+	let isStaked: Bool
+	let bakerName: String
+}
+
+struct TokenDetailsSendData: Hashable {
+	let isBuyTez: Bool
+}
+
+
+
+protocol TokenDetailsViewModelDelegate: AnyObject {
+	func moreMenu() -> UIMenu
+}
+
+public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
 	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
-	private weak var tableViewReference: UITableView? = nil
+	private var currentChartRange: TokenDetailsChartCellRange = .day
+	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
 	
+	// Set by VC
+	weak var delegate: TokenDetailsViewModelDelegate? = nil
+	weak var chartDelegate: ChartHostingControllerDelegate? = nil
+	var token: Token? = nil
+	var buttonDelegate: TokenDetailsButtonsCellDelegate? = nil
+	
+	// Set by VM
 	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
-	var token: Token? = nil
 	var tokenIcon: UIImage? = nil
 	var tokenIconURL: URL? = nil
 	var tokenSymbol = ""
@@ -56,10 +81,8 @@ public class TokenDetailsViewModel: ViewModel {
 	
 	var chartController = ChartHostingController()
 	var chartData = AllChartData(day: [], week: [], month: [], year: [])
-	var buttonData: ButtonData? = nil
-	
-	var tokenBalance = ""
-	var tokenValue = ""
+	var buttonData: TokenDetailsButtonData? = nil
+	var balanceAndBakerData: TokenDetailsBalanceAndBakerData? = nil
 	
 	
 	
@@ -69,8 +92,6 @@ public class TokenDetailsViewModel: ViewModel {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		tableViewReference = tableView
-		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
 			
@@ -79,16 +100,36 @@ public class TokenDetailsViewModel: ViewModel {
 				return cell
 				
 			} else if let obj = item as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
-				cell.setup(chartController: self.chartController, allChartData: obj)
+				self.chartController.setDelegate(self.chartDelegate)
+				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
 				return cell
 				
-			} else if let _ = item as? ButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsButtonsCell", for: indexPath) as? TokenDetailsButtonsCell {
-				cell.setup(withMoreMenu: nil)
+			} else if let obj = item as? TokenDetailsButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsButtonsCell", for: indexPath) as? TokenDetailsButtonsCell {
+				cell.setup(buttonData: obj, moreMenu: self.delegate?.moreMenu(), delegate: self.buttonDelegate)
 				return cell
 				
-			} else {
-				return UITableViewCell()
+			} else if let obj = item as? TokenDetailsBalanceAndBakerData {
+				let reuse = obj.isStakingPossible ? (obj.isStaked ? "TokenDetailsBalanceAndBakerCell_baker" : "TokenDetailsBalanceAndBakerCell_nobaker") : "TokenDetailsBalanceAndBakerCell_nostaking"
+				
+				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
+					
+					if let tokenURL = self.tokenIconURL {
+						MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+						
+					} else {
+						cell.tokenIcon.image = self.tokenIcon
+					}
+					cell.setup(data: obj)
+					
+					return cell
+				}
+			} else if let obj = item as? TokenDetailsSendData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsSendCell", for: indexPath) as? TokenDetailsSendCell {
+				cell.setup(data: obj)
+				return cell
+				
 			}
+			
+			return UITableViewCell()
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -104,6 +145,8 @@ public class TokenDetailsViewModel: ViewModel {
 		var data: [AnyHashable] = [
 			chartData,
 			buttonData,
+			balanceAndBakerData,
+			TokenDetailsSendData(isBuyTez: false)
 		]
 		
 		
@@ -113,8 +156,6 @@ public class TokenDetailsViewModel: ViewModel {
 		currentSnapshot.appendItems(data, toSection: 0)
 		
 		ds.apply(currentSnapshot, animatingDifferences: animate)
-		ds.defaultRowAnimation = .fade
-		
 		self.state = .success(nil)
 		
 		
@@ -124,38 +165,19 @@ public class TokenDetailsViewModel: ViewModel {
 			
 			switch result {
 				case .success(let data):
-					/*
-					self.allChartData = data
-					self.viewModel.calculatePriceChange(data: data)
-					self.updatePriceChange()
-					self.chartRangeDayTapped(self)
-					self.chartActivityIndicator.stopAnimating()
-					self.chartActivityIndicator.isHidden = true
-					self.chartContainer.isHidden = false
-					*/
 					self.currentSnapshot.deleteItems([self.chartData])
 					self.chartData = data
 					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					
+					self.calculatePriceChange(point: nil)
+					
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					self.state = .success(nil)
 					
 				case .failure(let error):
 					self.state = .failure(error, "Unable to get chart data")
 			}
 		}
-	}
-	
-	func updateChartCell() {
-		guard let tv = tableViewReference, let cell = dataSource?.tableView(tv, cellForRowAt: IndexPath(row: 0, section: 0)) as? TokenDetailsChartCell else {
-			self.state = .failure(KukaiError.unknown(), "Unable to find chart cell")
-			return
-		}
-		
-		print("updating chart")
-		cell.setup(chartController: self.chartController, allChartData: self.chartData)
-		
-		//currentSnapshot.deleteItems([])
-		//currentSnapshot.insertItems(self.chartData, beforeItem: buttonData)
 	}
 	
 	
@@ -165,7 +187,8 @@ public class TokenDetailsViewModel: ViewModel {
 	func loadTokenData(token: Token) {
 		self.token = token
 		tokenSymbol = token.symbol
-		tokenBalance = token.balance.normalisedRepresentation + " \(token.symbol)"
+		
+		let tokenBalance = token.balance.normalisedRepresentation
 		
 		if token.isXTZ() {
 			tokenIcon = UIImage(named: "tezos-logo")
@@ -174,20 +197,12 @@ public class TokenDetailsViewModel: ViewModel {
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			buttonData = ButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
-			
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
-			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			/*
-			isStakingPossible = true
-			if account.delegate != nil {
-				isStaked = true
-			}
-			*/
-			
-			self.state = .success(nil)
+			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
+			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: /*(account.delegate != nil)*/ false, bakerName: account.delegate?.alias ?? account.delegate?.address ?? "")
 			
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 			tokenIconURL = token.thumbnailURL
@@ -198,13 +213,11 @@ public class TokenDetailsViewModel: ViewModel {
 			
 			let isFav = TokenStateService.shared.isFavourite(token: token).isFavourite
 			let isHidden = TokenStateService.shared.isHidden(token: token)
-			buttonData = ButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
-			
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			//isStakingPossible = false
-			self.state = .success(nil)
+			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
+			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
 		}
 	}
 	
@@ -328,6 +341,44 @@ public class TokenDetailsViewModel: ViewModel {
 		}
 		
 		return setData
+	}
+	
+	func calculatePriceChange(point: ChartViewDataPoint?) {
+		var dataSet: [ChartViewDataPoint] = []
+		var dataPoint = point
+		
+		switch currentChartRange {
+			case .day:
+				dataSet = chartData.day
+			case .week:
+				dataSet = chartData.week
+			case .month:
+				dataSet = chartData.month
+			case .year:
+				dataSet = chartData.year
+		}
+		
+		if dataPoint == nil {
+			dataPoint = dataSet.last
+		}
+		
+		if dataSet.count > 1, let first = dataSet.first, let dataPoint = dataPoint {
+			let difference = first.value - dataPoint.value
+			let percentage = Decimal(difference / first.value).rounded(scale: 2, roundingMode: .bankers)
+			
+			tokenPriceChange = "\(abs(percentage))%"
+			tokenPriceChangeIsUp = dataPoint.value > first.value
+			tokenPriceDateText = (point == nil) ? "Today" : chartDateFormatter.string(from: dataPoint.date)
+			
+		} else {
+			tokenPriceChange = ""
+			tokenPriceChangeIsUp = false
+			tokenPriceDateText = ""
+		}
+	}
+	
+	func chartRangeChanged(to: TokenDetailsChartCellRange) {
+		currentChartRange = to
 	}
 	
 	

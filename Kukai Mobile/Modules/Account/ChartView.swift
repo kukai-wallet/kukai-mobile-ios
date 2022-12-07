@@ -48,7 +48,7 @@ class ChartHostingController: UIHostingController<AnyView> {
 		super.viewDidLoad()
 	}
 	
-	public func setDelegate(_ delegate: ChartHostingControllerDelegate) {
+	public func setDelegate(_ delegate: ChartHostingControllerDelegate?) {
 		integration.delegate = delegate
 	}
 	

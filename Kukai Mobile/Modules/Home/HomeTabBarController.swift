@@ -82,6 +82,7 @@ class HomeTabBarController: UITabBarController {
 		
 		
 		// Start listening for Wallet connect operation requests
+		/*
 		Sign.instance.sessionRequestPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionRequest in
@@ -103,6 +104,7 @@ class HomeTabBarController: UITabBarController {
 				}
 				
 			}.store(in: &bag)
+		*/
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
