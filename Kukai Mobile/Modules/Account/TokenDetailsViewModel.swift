@@ -43,7 +43,7 @@ struct TokenDetailsBalanceAndBakerData: Hashable {
 }
 
 struct TokenDetailsSendData: Hashable {
-	let isBuyTez: Bool
+	var isBuyTez: Bool
 }
 
 
@@ -83,7 +83,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var chartData = AllChartData(day: [], week: [], month: [], year: [])
 	var buttonData: TokenDetailsButtonData? = nil
 	var balanceAndBakerData: TokenDetailsBalanceAndBakerData? = nil
-	
+	var sendData = TokenDetailsSendData(isBuyTez: false)
+	var stakingRewardLoadingData = LoadingData()
+	var stakingRewardData: AggregateRewardInformation? = nil
 	
 	
 	
@@ -127,6 +129,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				cell.setup(data: obj)
 				return cell
 				
+			} else if let _ = item as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
+				return cell
+				
+			} else if let obj = item as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
+				cell.setup(data: obj)
+				return cell
+				
 			}
 			
 			return UITableViewCell()
@@ -141,14 +150,18 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		loadTokenData(token: token)
+		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
 		
 		var data: [AnyHashable] = [
 			chartData,
 			buttonData,
 			balanceAndBakerData,
-			TokenDetailsSendData(isBuyTez: false)
+			sendData
 		]
 		
+		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true {
+			data.append(stakingRewardLoadingData)
+		}
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
@@ -178,6 +191,22 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.state = .failure(error, "Unable to get chart data")
 			}
 		}
+		
+		loadBakerData { [weak self] result in
+			guard let self = self else { return }
+			
+			switch result {
+				case .success(let data):
+					self.currentSnapshot.deleteItems([self.stakingRewardLoadingData])
+					self.stakingRewardData = data
+					self.currentSnapshot.insertItems([data], afterItem: self.sendData)
+					
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					
+				case .failure(let error):
+					self.state = .failure(error, "Unable to get chart data")
+			}
+		}
 	}
 	
 	
@@ -202,7 +231,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: /*(account.delegate != nil)*/ false, bakerName: account.delegate?.alias ?? account.delegate?.address ?? "")
+			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: account.delegate?.alias ?? account.delegate?.address ?? "")
 			
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 			tokenIconURL = token.thumbnailURL
@@ -221,8 +250,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 	}
 	
-	/*
-	func loadBakerData(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
+	func loadBakerData(completion: @escaping ((Result<AggregateRewardInformation, KukaiError>) -> Void)) {
 		let account = DependencyManager.shared.balanceService.account
 		guard let delegate = account.delegate else {
 			completion(Result.failure(KukaiError.unknown(withString: "Can't find baker details")))
@@ -230,24 +258,20 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
-			updateBakerInfo(from: bakerRewardCache, andDelegate: delegate)
-			completion(Result.success(true))
+			completion(Result.success(bakerRewardCache))
 			
 		} else {
 			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
 				if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
-					self?.updateBakerInfo(from: res, andDelegate: delegate)
 					let _ = DiskService.write(encodable: res, toFileName: filename)
+					completion(Result.success(res))
 					
 				} else {
-					self?.updateBakerError(withDelegate: delegate)
+					completion(Result.failure(result.getFailure()))
 				}
-				
-				completion(Result.success(true))
 			}
 		}
 	}
-	*/
 	
 	
 	// MARK: - Chart

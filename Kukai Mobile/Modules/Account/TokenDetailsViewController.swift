@@ -240,13 +240,13 @@ extension TokenDetailsViewController: ChartHostingControllerDelegate {
 	func didSelectPoint(_ point: ChartViewDataPoint?, ofIndex: Int) {
 		self.viewModel.calculatePriceChange(point: point)
 		self.updatePriceChange()
+		self.headerFiat.text = DependencyManager.shared.coinGeckoService.format(decimal: Decimal(point?.value ?? 0), numberStyle: .currency, maximumFractionDigits: 2)
 	}
 	
 	func didFinishSelectingPoint() {
-		print("Did end point")
-		
 		self.viewModel.calculatePriceChange(point: nil)
 		self.updatePriceChange()
+		self.headerFiat.text = viewModel.tokenFiatPrice
 	}
 }
 	
