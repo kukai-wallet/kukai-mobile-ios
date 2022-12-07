@@ -9,6 +9,4 @@ import UIKit
 
 class TokenDetailsActivityHeaderCell: UITableViewCell {
 	
-	@IBOutlet weak var viewMoreButton: CustomisableButton!
-	
 }

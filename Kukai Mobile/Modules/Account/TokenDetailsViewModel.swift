@@ -46,6 +46,14 @@ struct TokenDetailsSendData: Hashable {
 	var isBuyTez: Bool
 }
 
+struct TokenDetailsActivityHeader: Hashable {
+	let header: Bool
+}
+
+struct TokenDetailsMessageData: Hashable {
+	let message: String
+}
+
 
 
 protocol TokenDetailsViewModelDelegate: AnyObject {
@@ -86,6 +94,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var sendData = TokenDetailsSendData(isBuyTez: false)
 	var stakingRewardLoadingData = LoadingData()
 	var stakingRewardData: AggregateRewardInformation? = nil
+	var activityHeaderData = TokenDetailsActivityHeader(header: true)
+	var activityLoadingData = LoadingData()
+	var activityFooterData = TokenDetailsActivityHeader(header: false)
+	var activityItems: [TzKTTransactionGroup] = []
+	var noItemsData = TokenDetailsMessageData(message: "No items avaialble at this time, check again later")
 	
 	
 	
@@ -130,9 +143,24 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let _ = item as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
+				cell.setup()
 				return cell
 				
 			} else if let obj = item as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item as? TokenDetailsActivityHeader, obj.header == true, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell", for: indexPath) as? TokenDetailsActivityHeaderCell {
+				return cell
+				
+			} else if let _ = item as? TokenDetailsActivityHeader, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell_footer", for: indexPath) as? TokenDetailsActivityHeaderCell {
+				return cell
+				
+			} else if let obj = item as? TokenDetailsMessageData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsMessageCell", for: indexPath) as? TokenDetailsMessageCell {
+				cell.messageLabel.text = obj.message
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityItemCell", for: indexPath) as? TokenDetailsActivityItemCell {
 				cell.setup(data: obj)
 				return cell
 				
@@ -162,6 +190,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true {
 			data.append(stakingRewardLoadingData)
 		}
+		
+		let initialActivitySection: [AnyHashable] = [activityHeaderData, activityLoadingData, activityFooterData]
+		data.append(contentsOf: initialActivitySection)
+		
+		
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
@@ -200,6 +233,28 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.currentSnapshot.deleteItems([self.stakingRewardLoadingData])
 					self.stakingRewardData = data
 					self.currentSnapshot.insertItems([data], afterItem: self.sendData)
+					
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					
+				case .failure(let error):
+					self.state = .failure(error, "Unable to get chart data")
+			}
+		}
+		
+		loadActivityData { [weak self] result in
+			guard let self = self else { return }
+			
+			switch result {
+				case .success(let data):
+					self.currentSnapshot.deleteItems([self.activityLoadingData])
+					self.activityItems = data
+					
+					if data.count == 0 {
+						self.currentSnapshot.insertItems([self.noItemsData], afterItem: self.activityHeaderData)
+						
+					} else {
+						self.currentSnapshot.insertItems(data, afterItem: self.activityHeaderData)
+					}
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					
@@ -270,6 +325,28 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					completion(Result.failure(result.getFailure()))
 				}
 			}
+		}
+	}
+	
+	func loadActivityData(completion: @escaping ((Result<[TzKTTransactionGroup], KukaiError>) -> Void)) {
+		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
+			return
+		}
+		
+		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
+			if let err = error {
+				completion(Result.failure(err))
+				return
+			}
+			
+			if let t = self?.token {
+				let items = DependencyManager.shared.activityService.filterSendReceive(forToken: t, count: 5)
+				completion(Result.success(items))
+				return
+			}
+			
+			completion(Result.failure(KukaiError.unknown(withString: "Can't find token for activity")))
 		}
 	}
 	
