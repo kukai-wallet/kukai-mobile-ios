@@ -27,7 +27,4 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 			bakerButton?.customCornerRadius = 8
 		}
 	}
-	
-	@IBAction func changeBakerTapped(_ sender: Any) {
-	}
 }

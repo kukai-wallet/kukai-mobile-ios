@@ -11,6 +11,7 @@ import KukaiCoreSwift
 class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var infoButton: CustomisableButton!
 	
 	@IBOutlet weak var lastBakerIcon: UIImageView!
 	@IBOutlet weak var lastBaker: UILabel!
@@ -77,8 +78,5 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			nextTime.text = "N/A"
 			nextCycle.text = "N/A"
 		}
-	}
-	
-	@IBAction func infoTapped(_ sender: Any) {
 	}
 }

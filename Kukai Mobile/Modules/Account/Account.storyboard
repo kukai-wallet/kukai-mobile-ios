@@ -78,7 +78,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSc-km-vdB">
-                                                    <rect key="frame" x="111" y="2" width="266" height="24"/>
+                                                    <rect key="frame" x="98" y="2" width="279" height="24"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                     <color key="textColor" name="Grey200"/>
                                                     <nil key="highlightedColor"/>
@@ -90,7 +90,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="4" width="79" height="20"/>
+                                                    <rect key="frame" x="16" y="-2" width="66" height="32"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Grey1100"/>
                                                     <inset key="imageEdgeInsets" minX="8" minY="0.0" maxX="4" maxY="0.0"/>
@@ -678,11 +678,11 @@
                                     <constraint firstAttribute="height" constant="40" id="l4a-FS-D9D"/>
                                 </constraints>
                             </imageView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ITw-HP-Zep">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ITw-HP-Zep">
                                 <rect key="frame" x="0.0" y="119" width="393" height="733"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsChartCell" rowHeight="230" id="lEl-wU-gPM" customClass="TokenDetailsChartCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsChartCell" rowHeight="230" id="lEl-wU-gPM" customClass="TokenDetailsChartCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="393" height="230"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lEl-wU-gPM" id="8AG-qg-wgh">
@@ -839,7 +839,7 @@
                                             <outlet property="yearButton" destination="gEZ-7l-aD7" id="erw-Pd-G44"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsButtonsCell" rowHeight="36" id="vd0-6I-DVT" customClass="TokenDetailsButtonsCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsButtonsCell" rowHeight="36" id="vd0-6I-DVT" customClass="TokenDetailsButtonsCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="280" width="393" height="36"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vd0-6I-DVT" id="nhv-bB-PbD">
@@ -924,7 +924,7 @@
                                             <outlet property="moreButton" destination="Qsj-vp-rBE" id="5ug-Qo-Zu7"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_baker" rowHeight="83" id="4Bp-RP-TWt" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_baker" rowHeight="83" id="4Bp-RP-TWt" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="316" width="393" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Bp-RP-TWt" id="Y8v-J1-bkv">
@@ -932,31 +932,31 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fK0-R9-Qhz">
-                                                    <rect key="frame" x="16" y="24" width="278" height="14.666666666666664"/>
+                                                    <rect key="frame" x="16" y="24" width="292" height="14.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Grey1100"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Staked" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9JY-Df-Dtc">
-                                                    <rect key="frame" x="310" y="24" width="67" height="14.666666666666664"/>
+                                                    <rect key="frame" x="324" y="24" width="53" height="14.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Grey1100"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Xu-K6-hxc">
-                                                    <rect key="frame" x="48" y="42.666666666666664" width="246" height="21.666666666666664"/>
+                                                    <rect key="frame" x="48" y="42.666666666666664" width="260" height="21.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Grey200"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;value&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1h-A6-DWP">
-                                                    <rect key="frame" x="48" y="64.333333333333329" width="246" height="14.666666666666671"/>
+                                                    <rect key="frame" x="48" y="64.333333333333329" width="260" height="14.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Grey1100"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HWh-3N-OmY" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="310" y="42.666666666666664" width="67" height="17"/>
+                                                    <rect key="frame" x="324" y="42.666666666666664" width="53" height="28.999999999999993"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="tintColor" name="Brand900"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -972,9 +972,6 @@
                                                             <real key="value" value="14"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
-                                                    <connections>
-                                                        <action selector="changeBakerTapped:" destination="4Bp-RP-TWt" eventType="touchUpInside" id="30i-8J-DIE"/>
-                                                    </connections>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Qxl-Xd-21S">
                                                     <rect key="frame" x="16" y="42.666666666666664" width="26" height="25.999999999999993"/>
@@ -1013,7 +1010,7 @@
                                             <outlet property="value" destination="H1h-A6-DWP" id="WYo-lw-4Sn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_nobaker" rowHeight="83" id="1wS-VQ-aG6" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_nobaker" rowHeight="83" id="1wS-VQ-aG6" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="399" width="393" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="1wS-VQ-aG6" id="3F5-3h-PAr">
@@ -1052,9 +1049,6 @@
                                                     <state key="normal" title="Stake">
                                                         <color key="titleColor" name="Grey600"/>
                                                     </state>
-                                                    <connections>
-                                                        <action selector="changeBakerTapped:" destination="1wS-VQ-aG6" eventType="touchUpInside" id="6oZ-Ci-OR8"/>
-                                                    </connections>
                                                 </button>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jzC-PN-A5F">
                                                     <rect key="frame" x="16" y="42.666666666666664" width="26" height="25.999999999999993"/>
@@ -1094,7 +1088,7 @@
                                             <outlet property="value" destination="kIR-JN-xNd" id="cCh-jL-hJa"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_nostaking" rowHeight="83" id="zN8-1c-tCt" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceAndBakerCell_nostaking" rowHeight="83" id="zN8-1c-tCt" customClass="TokenDetailsBalanceAndBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="482" width="393" height="83"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zN8-1c-tCt" id="Odr-9q-iug">
@@ -1150,7 +1144,7 @@
                                             <outlet property="value" destination="cAe-79-fa5" id="z4e-oH-x3c"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsSendCell" rowHeight="86" id="78n-bQ-y4f" customClass="TokenDetailsSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsSendCell" rowHeight="86" id="78n-bQ-y4f" customClass="TokenDetailsSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="565" width="393" height="86"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="78n-bQ-y4f" id="CFa-Ni-kKn">
@@ -1190,7 +1184,7 @@
                                             <outlet property="sendButton" destination="23e-bK-5AC" id="gb5-f3-PSn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenDetailsLoadingCell" rowHeight="82" id="DRr-uB-mFA" customClass="TokenDetailsLoadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenDetailsLoadingCell" rowHeight="82" id="DRr-uB-mFA" customClass="TokenDetailsLoadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="651" width="393" height="82"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="DRr-uB-mFA" id="k7L-pp-uXj">
@@ -1213,7 +1207,7 @@
                                             <outlet property="activityView" destination="JZ2-Hx-yhV" id="tpW-hz-zAJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsStakingRewardsCell" rowHeight="223" id="69U-Ag-pRV" customClass="TokenDetailsStakingRewardsCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsStakingRewardsCell" rowHeight="223" id="69U-Ag-pRV" customClass="TokenDetailsStakingRewardsCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="733" width="393" height="223"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="69U-Ag-pRV" id="X1k-NA-LJ9">
@@ -1247,9 +1241,6 @@
                                                                     <real key="value" value="14"/>
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
-                                                            <connections>
-                                                                <action selector="infoTapped:" destination="69U-Ag-pRV" eventType="touchUpInside" id="sJz-mC-ddn"/>
-                                                            </connections>
                                                         </button>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="xcK-7H-uuJ">
                                                             <rect key="frame" x="8" y="38.666666666666671" width="153" height="176.33333333333331"/>
@@ -1434,6 +1425,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="containerView" destination="ftF-Gh-anU" id="V5h-Nh-Ab2"/>
+                                            <outlet property="infoButton" destination="KZY-Kx-eVb" id="CiP-E5-RIF"/>
                                             <outlet property="lastAmount" destination="xxa-PQ-Xkx" id="mez-J6-GOT"/>
                                             <outlet property="lastAmountTitle" destination="92C-3j-nAx" id="ZqX-F8-zc7"/>
                                             <outlet property="lastBaker" destination="yMU-ig-6DU" id="NrA-0E-KBC"/>
@@ -1449,7 +1441,7 @@
                                             <outlet property="nextTime" destination="5sz-cu-D3h" id="cmH-RN-CuO"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell" rowHeight="68" id="ILJ-AQ-sRz" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell" rowHeight="68" id="ILJ-AQ-sRz" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="956" width="393" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ILJ-AQ-sRz" id="bP4-oI-Fg4">
@@ -1491,7 +1483,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell_footer" rowHeight="69" id="h5D-3W-Sz0" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="default" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell_footer" rowHeight="69" id="h5D-3W-Sz0" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="1024" width="393" height="69"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="h5D-3W-Sz0" id="n8f-LO-SFs">
@@ -1524,14 +1516,14 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenDetailsActivityItemCell" rowHeight="102" id="T53-a7-Zcb" customClass="TokenDetailsActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenDetailsActivityItemCell" rowHeight="102" id="T53-a7-Zcb" customClass="TokenDetailsActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="1093" width="393" height="102"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="T53-a7-Zcb" id="jmj-b0-wUB">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G9U-N9-JvJ">
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G9U-N9-JvJ">
                                                     <rect key="frame" x="16" y="2" width="361" height="98"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="b3Z-o7-wze">
@@ -1541,44 +1533,44 @@
                                                                 <constraint firstAttribute="width" constant="32" id="oD0-Vp-dFJ"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gGT-a1-2V8">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gGT-a1-2V8">
                                                             <rect key="frame" x="48" y="11.666666666666664" width="10" height="10"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="10" id="A3I-qK-egA"/>
                                                                 <constraint firstAttribute="width" constant="10" id="szu-zw-z5D"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;type&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTA-tL-Lit">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;type&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTA-tL-Lit">
                                                             <rect key="frame" x="66" y="8" width="47.666666666666657" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Grey1000"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;amount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3j-rN-Jyd">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;amount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3j-rN-Jyd">
                                                             <rect key="frame" x="48.000000000000007" y="29" width="67.666666666666686" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;to&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypX-6l-tNI">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" ambiguous="YES" text="&lt;to&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ypX-6l-tNI">
                                                             <rect key="frame" x="48" y="50" width="27" height="14.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                             <color key="textColor" name="Grey1000"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;destination&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cn-OD-6bf">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="&lt;destination&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Cn-OD-6bf">
                                                             <rect key="frame" x="83" y="50" width="270" height="14.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                             <color key="textColor" name="Grey800"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;time&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ma-k6-ewL">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="&lt;time&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5ma-k6-ewL">
                                                             <rect key="frame" x="312.33333333333331" y="72.666666666666671" width="40.666666666666686" height="17.333333333333329"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                             <color key="textColor" name="Grey1200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-yi-Ax3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w4K-yi-Ax3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                             <rect key="frame" x="309" y="8" width="44" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="gUG-Dr-iqZ"/>
@@ -1649,7 +1641,7 @@
                                             <outlet property="type" destination="hTA-tL-Lit" id="NOh-XC-WMb"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenDetailsMessageCell" id="Eg4-53-Enn" customClass="TokenDetailsMessageCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenDetailsMessageCell" id="Eg4-53-Enn" customClass="TokenDetailsMessageCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="1195" width="393" height="33"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eg4-53-Enn" id="LOT-Zs-4wA">
@@ -1711,6 +1703,7 @@
                         <outlet property="headerSymbol" destination="AmE-DB-rmw" id="H9N-OJ-brr"/>
                         <outlet property="tableView" destination="ITw-HP-Zep" id="hbb-Sc-2gf"/>
                         <segue destination="5px-c7-QlA" kind="custom" identifier="tokenContract" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b5W-IZ-X2h"/>
+                        <segue destination="lNz-f0-GWo" kind="custom" identifier="stakingInfo" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="zQd-an-fzm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sib-vO-ppd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1811,7 +1804,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZgH-Mr-oNc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3476" y="201"/>
+            <point key="canvasLocation" x="-3053" y="201"/>
         </scene>
         <!--Hidden Tokens Balances View Controller-->
         <scene sceneID="WbA-uM-4yE">
@@ -1964,25 +1957,62 @@
             </objects>
             <point key="canvasLocation" x="-5089" y="202"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="iIv-J2-nlU">
+            <objects>
+                <viewController id="lNz-f0-GWo" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="b0Q-KL-cqP">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Staking Info" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTz-3P-7LT">
+                                <rect key="frame" x="16" y="83" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Grey200"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All the cool kids are doing it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OJY-ci-65Q">
+                                <rect key="frame" x="16" y="131" width="361" height="19.333333333333343"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Brand200"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Nhg-vl-3VD"/>
+                        <color key="backgroundColor" name="Grey1800"/>
+                        <constraints>
+                            <constraint firstItem="OJY-ci-65Q" firstAttribute="leading" secondItem="Nhg-vl-3VD" secondAttribute="leading" constant="16" id="13Q-Td-zAx"/>
+                            <constraint firstItem="OJY-ci-65Q" firstAttribute="top" secondItem="WTz-3P-7LT" secondAttribute="bottom" constant="24" id="OWh-FJ-Z89"/>
+                            <constraint firstItem="WTz-3P-7LT" firstAttribute="top" secondItem="Nhg-vl-3VD" secondAttribute="top" constant="24" id="Sh7-Lz-NQ4"/>
+                            <constraint firstItem="Nhg-vl-3VD" firstAttribute="trailing" secondItem="OJY-ci-65Q" secondAttribute="trailing" constant="16" id="go0-km-bOs"/>
+                            <constraint firstItem="WTz-3P-7LT" firstAttribute="leading" secondItem="Nhg-vl-3VD" secondAttribute="leading" constant="16" id="jfD-rA-bLm"/>
+                            <constraint firstItem="Nhg-vl-3VD" firstAttribute="trailing" secondItem="WTz-3P-7LT" secondAttribute="trailing" constant="16" id="sv4-Tq-eSY"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="u6a-EB-cTy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3851" y="201"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="HWh-3N-OmY">
-            <size key="intrinsicContentSize" width="67" height="17"/>
+            <size key="intrinsicContentSize" width="53" height="29"/>
         </designable>
         <designable name="KZY-Kx-eVb">
-            <size key="intrinsicContentSize" width="38" height="28"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="Qsj-vp-rBE">
-            <size key="intrinsicContentSize" width="54" height="44"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="79" height="20"/>
+            <size key="intrinsicContentSize" width="66" height="32"/>
         </designable>
         <designable name="f3O-0J-SHH">
-            <size key="intrinsicContentSize" width="54" height="44"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="w4K-yi-Ax3">
-            <size key="intrinsicContentSize" width="44" height="19"/>
+            <size key="intrinsicContentSize" width="32" height="16"/>
         </designable>
         <designable name="wd9-Tq-SPJ">
             <size key="intrinsicContentSize" width="36" height="29"/>

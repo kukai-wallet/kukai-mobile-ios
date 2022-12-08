@@ -56,8 +56,11 @@ struct TokenDetailsMessageData: Hashable {
 
 
 
-protocol TokenDetailsViewModelDelegate: AnyObject {
+@objc protocol TokenDetailsViewModelDelegate: AnyObject {
 	func moreMenu() -> UIMenu
+	func setBakerTapped()
+	func stakingRewardsInfoTapped()
+	func launchExternalBrowser(withURL url: URL)
 }
 
 public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
@@ -134,6 +137,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					} else {
 						cell.tokenIcon.image = self.tokenIcon
 					}
+					cell.bakerButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.setBakerTapped), for: .touchUpInside)
 					cell.setup(data: obj)
 					
 					return cell
@@ -147,6 +151,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let obj = item as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
+				cell.infoButton.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.stakingRewardsInfoTapped), for: .touchUpInside)
 				cell.setup(data: obj)
 				return cell
 				
@@ -168,6 +173,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					cell.tokenIcon.image = self.tokenIcon
 				}
 				
+				cell.moreButton.menu = self.menuFor(transaction: obj)
+				cell.moreButton.showsMenuAsPrimaryAction = true
 				cell.setup(data: obj)
 				return cell
 				
@@ -492,6 +499,30 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func chartRangeChanged(to: TokenDetailsChartCellRange) {
 		currentChartRange = to
+	}
+	
+	func isIndexActivityViewMore(_ indexPath: IndexPath) -> Bool {
+		let item = currentSnapshot.itemIdentifiers[indexPath.row]
+		
+		if item is TokenDetailsActivityHeader {
+			return true
+		}
+		
+		return false
+	}
+	
+	func menuFor(transaction: TzKTTransactionGroup) -> UIMenu {
+		let actions: [UIAction] = [
+			UIAction(title: "View on TzKT", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
+				guard let url = URL(string: "https://tzkt.io/\(transaction.transactions[0].hash)") else {
+					return
+				}
+				
+				self?.delegate?.launchExternalBrowser(withURL: url)
+			})
+		]
+		
+		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
 	}
 	
 	

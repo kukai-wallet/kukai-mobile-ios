@@ -117,12 +117,30 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			vc.setup(tokenId: viewModel.token?.tokenId?.description ?? "0", contractAddress: viewModel.token?.tokenContractAddress ?? "")
 		}
 	}
+}
+
+
+// MARK: - UITableViewDelegate
+
+extension TokenDetailsViewController {
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
 		if let c = cell as? UITableViewCellContainerView {
 			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		if viewModel.isIndexActivityViewMore(indexPath) {
+			let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
+			
+			self.dismiss(animated: true) {
+				homeTabController?.selectedIndex = 3
+			}
 		}
 	}
 }
@@ -194,6 +212,22 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 		}
 		
 		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
+	}
+	
+	func setBakerTapped() {
+		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
+		
+		self.dismiss(animated: true) {
+			homeTabController?.performSegue(withIdentifier: "stake", sender: nil)
+		}
+	}
+	
+	func stakingRewardsInfoTapped() {
+		self.performSegue(withIdentifier: "stakingInfo", sender: nil)
+	}
+	
+	func launchExternalBrowser(withURL url: URL) {
+		UIApplication.shared.open(url)
 	}
 }
 
