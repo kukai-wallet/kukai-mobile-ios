@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import KukaiCoreSwift
 
-class TokenDetailsViewController: UIViewController {
+class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var headerIcon: UIImageView!
 	@IBOutlet weak var headerSymbol: UILabel!
@@ -38,6 +38,7 @@ class TokenDetailsViewController: UIViewController {
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
+		tableView.delegate = self
 		loadPlaceholderUI()
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
@@ -114,6 +115,14 @@ class TokenDetailsViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let vc = segue.destination as? TokenContractViewController {
 			vc.setup(tokenId: viewModel.token?.tokenId?.description ?? "0", contractAddress: viewModel.token?.tokenContractAddress ?? "")
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 }

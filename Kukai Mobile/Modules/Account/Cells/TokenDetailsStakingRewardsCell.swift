@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class TokenDetailsStakingRewardsCell: UITableViewCell {
+class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
 	
@@ -27,7 +27,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 	@IBOutlet weak var nextTime: UILabel!
 	@IBOutlet weak var nextCycle: UILabel!
 	
-	private var gradient = CAGradientLayer()
+	var gradientLayer = CAGradientLayer()
 	
 	func setup(data: AggregateRewardInformation) {
 		if let previousReward = data.previousReward {
@@ -80,12 +80,5 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 	}
 	
 	@IBAction func infoTapped(_ sender: Any) {
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		gradient.removeFromSuperlayer()
-		gradient = self.containerView.addGradientPanelRows(withFrame: self.containerView.bounds)
 	}
 }

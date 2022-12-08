@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class TokenDetailsActivityItemCell: UITableViewCell {
+class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var tokenIcon: UIImageView!
@@ -20,7 +20,41 @@ class TokenDetailsActivityItemCell: UITableViewCell {
 	@IBOutlet weak var timeLabel: UILabel!
 	@IBOutlet weak var moreButton: UIButton!
 	
+	var gradientLayer = CAGradientLayer()
+	
 	func setup(data: TzKTTransactionGroup) {
+		var color = UIColor.white
+		var typeimage = UIImage()
 		
+		if data.groupType == .receive {
+			color = UIColor.colorNamed("Brand1000")
+			typeimage = UIImage(named: "arrow-down-right") ?? UIImage.unknownToken()
+			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
+			typeimage = typeimage.withTintColor(color)
+			
+		} else {
+			color = UIColor.colorNamed("Grey1000")
+			typeimage = UIImage(named: "arrow-up-right") ?? UIImage.unknownToken()
+			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
+			typeimage = typeimage.withTintColor(color)
+		}
+		
+		
+		transactionTypeIcon.image = typeimage
+		type.text = data.groupType == .send ? "Send" : "Receive"
+		type.textColor = color
+		
+		amount.text = (data.primaryToken?.amount.description ?? "") + " \(data.primaryToken?.token.symbol ?? "")"
+		toLabel.text = data.groupType == .send ? "To:" : "From:"
+		destinationLabel.text = destinationFrom(data)
+		timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
+	}
+	
+	private func destinationFrom(_ group: TzKTTransactionGroup) -> String {
+		if group.groupType == .send {
+			return group.transactions[0].target?.alias ?? group.transactions[0].target?.address ?? ""
+		} else {
+			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address
+		}
 	}
 }

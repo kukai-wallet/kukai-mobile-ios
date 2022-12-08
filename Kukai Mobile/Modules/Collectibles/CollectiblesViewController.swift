@@ -84,11 +84,11 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 				c.addGradientBorder(withFrame: c.containerView.bounds)
 				
 			} else {
-				c.addGradientBackground(withFrame: c.containerView.bounds)
+				c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 			}
 			
-		} else if let c = cell as? NFTGroupSingleCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
+		} else if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 			
 		} else if let c = cell as? NFTItemCell {
 			let numberOfCellsInSection = tableView.numberOfRows(inSection: indexPath.section)

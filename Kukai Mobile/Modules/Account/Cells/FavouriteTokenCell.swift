@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouriteTokenCell: UITableViewCell {
+class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var tokenIcon: UIImageView!
@@ -15,21 +15,11 @@ class FavouriteTokenCell: UITableViewCell {
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var containerView: UIView!
 	
-	private var gradient = CAGradientLayer()
-	private var correctFrame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
+	var gradientLayer = CAGradientLayer()
 	private var myReorderImage: UIImage? = nil
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
-	}
-	
-	public func addGradientBackground(withFrame: CGRect) {
-		correctFrame = withFrame
-		
-		containerView.customCornerRadius = 8
-		containerView.maskToBounds = true
-		gradient.removeFromSuperlayer()
-		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}
 	
 	func setFav(_ isFav: Bool) {

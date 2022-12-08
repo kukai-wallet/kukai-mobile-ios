@@ -161,6 +161,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityItemCell", for: indexPath) as? TokenDetailsActivityItemCell {
+				if let tokenURL = self.tokenIconURL {
+					MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+					
+				} else {
+					cell.tokenIcon.image = self.tokenIcon
+				}
+				
 				cell.setup(data: obj)
 				return cell
 				
@@ -191,7 +198,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			data.append(stakingRewardLoadingData)
 		}
 		
-		let initialActivitySection: [AnyHashable] = [activityHeaderData, activityLoadingData, activityFooterData]
+		let initialActivitySection: [AnyHashable] = [activityHeaderData, activityLoadingData]
 		data.append(contentsOf: initialActivitySection)
 		
 		
@@ -225,19 +232,21 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 		}
 		
-		loadBakerData { [weak self] result in
-			guard let self = self else { return }
-			
-			switch result {
-				case .success(let data):
-					self.currentSnapshot.deleteItems([self.stakingRewardLoadingData])
-					self.stakingRewardData = data
-					self.currentSnapshot.insertItems([data], afterItem: self.sendData)
-					
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
-					
-				case .failure(let error):
-					self.state = .failure(error, "Unable to get chart data")
+		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true {
+			loadBakerData { [weak self] result in
+				guard let self = self else { return }
+				
+				switch result {
+					case .success(let data):
+						self.currentSnapshot.deleteItems([self.stakingRewardLoadingData])
+						self.stakingRewardData = data
+						self.currentSnapshot.insertItems([data], afterItem: self.sendData)
+						
+						ds.apply(self.currentSnapshot, animatingDifferences: true)
+						
+					case .failure(let error):
+						self.state = .failure(error, "Unable to get chart data")
+				}
 			}
 		}
 		
@@ -253,7 +262,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 						self.currentSnapshot.insertItems([self.noItemsData], afterItem: self.activityHeaderData)
 						
 					} else {
-						self.currentSnapshot.insertItems(data, afterItem: self.activityHeaderData)
+						var dataToAdd: [AnyHashable] = data
+						dataToAdd.append(self.activityFooterData)
+						
+						self.currentSnapshot.insertItems(dataToAdd, afterItem: self.activityHeaderData)
 					}
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)

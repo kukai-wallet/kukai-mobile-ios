@@ -68,8 +68,8 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		if let c = cell as? AddressChoiceCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 	
