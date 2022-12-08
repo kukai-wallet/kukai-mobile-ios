@@ -12,6 +12,8 @@ import KukaiCoreSwift
 class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var headerIcon: UIImageView!
+	@IBOutlet weak var headerIconWidthConstraint: NSLayoutConstraint!
+	@IBOutlet weak var headerIconHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var headerSymbol: UILabel!
 	@IBOutlet weak var headerFiat: UILabel!
 	@IBOutlet weak var headerPriceChange: UILabel!
@@ -22,6 +24,9 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
+	private var headerAnimator = UIViewPropertyAnimator()
+	private var headerAnimatorStarted = false
+	private var firstLoad = true
 	
 	
 	
@@ -35,10 +40,11 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		viewModel.delegate = self
 		viewModel.chartDelegate = self
 		viewModel.buttonDelegate = self
-		
 		viewModel.makeDataSource(withTableView: tableView)
+		
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
 		loadPlaceholderUI()
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
@@ -61,7 +67,11 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.refresh(animate: true)
+		
+		if firstLoad {
+			viewModel.refresh(animate: true)
+			firstLoad = false
+		}
 	}
 	
 	func loadPlaceholderUI() {
@@ -120,6 +130,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 }
 
 
+
 // MARK: - UITableViewDelegate
 
 extension TokenDetailsViewController {
@@ -141,6 +152,61 @@ extension TokenDetailsViewController {
 			self.dismiss(animated: true) {
 				homeTabController?.selectedIndex = 3
 			}
+		}
+	}
+	
+	
+	
+	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		guard headerAnimatorStarted == false else {
+			return
+		}
+		
+		// make sure we only run this ocne
+		headerAnimatorStarted = true
+		
+		
+		// Set what we want the constraints to be
+		self.headerIconWidthConstraint.constant = 28
+		self.headerIconHeightConstraint.constant = 28
+		
+		// Labels are weird, grab properties to manipulate later
+		let labelLayer = self.headerFiat.layer
+		let position = labelLayer.frame.origin
+		labelLayer.anchorPoint = CGPoint(x: 0, y: 0)
+		labelLayer.position = position
+		
+		
+		// Setup property animator
+		headerAnimator = UIViewPropertyAnimator(duration: 3, curve: .easeOut, animations: { [weak self] in
+			
+			// Refresh consttraints
+			self?.view.layoutIfNeeded()
+			
+			// Update label
+			labelLayer.setAffineTransform(CGAffineTransform(scaleX: 0.6, y: 0.6))
+			labelLayer.position = CGPoint(x: self?.headerSymbol.frame.minX ?? 0, y: self?.headerSymbol.frame.maxY ?? 0)
+			
+			// Alpha the rest
+			self?.headerPriceChange.alpha = 0
+			self?.headerPriceChangeDate.alpha = 0
+			self?.headerPriceChangeArrow.alpha = 0
+		})
+		
+		headerAnimator.startAnimation()
+		headerAnimator.pauseAnimation()
+	}
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		
+		// Every move event, compute how much things should change
+		let fraction = self.tableView.contentOffset.y / 100
+		if fraction <= 1 {
+			headerAnimator.fractionComplete = fraction
+			
+		} else {
+			// For some reason, after a point, label jumps to somwhere else, need to avoid that
+			self.headerFiat.layer.position = CGPoint(x: self.headerSymbol.frame.minX, y: self.headerSymbol.frame.maxY)
 		}
 	}
 }

@@ -653,7 +653,7 @@
                                 <color key="textColor" name="Positive900"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;fiat&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVG-6O-GrW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="250" text="&lt;fiat&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mVG-6O-GrW">
                                 <rect key="frame" x="60.000000000000014" y="94.333333333333329" width="154.33333333333337" height="21.666666666666671"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Grey900"/>
@@ -665,7 +665,7 @@
                                 <color key="textColor" name="Grey1200"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;symbol&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmE-DB-rmw">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;symbol&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmE-DB-rmw">
                                 <rect key="frame" x="60.000000000000014" y="75" width="172.33333333333337" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Grey200"/>
@@ -679,7 +679,7 @@
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ITw-HP-Zep">
-                                <rect key="frame" x="0.0" y="119" width="393" height="733"/>
+                                <rect key="frame" x="0.0" y="123" width="393" height="729"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsChartCell" rowHeight="230" id="lEl-wU-gPM" customClass="TokenDetailsChartCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -1214,16 +1214,16 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="223"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ftF-Gh-anU">
+                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ftF-Gh-anU">
                                                     <rect key="frame" x="16" y="0.0" width="361" height="223"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="STAKING REWARDS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tz6-Gu-Qdf">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="STAKING REWARDS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tz6-Gu-Qdf">
                                                             <rect key="frame" x="124.33333333333334" y="7.9999999999999991" width="112.66666666666666" height="14.666666666666664"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                             <color key="textColor" name="Grey900"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZY-Kx-eVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KZY-Kx-eVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                             <rect key="frame" x="331" y="0.0" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="6H6-x4-cFl"/>
@@ -1242,29 +1242,29 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="xcK-7H-uuJ">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="xcK-7H-uuJ">
                                                             <rect key="frame" x="8" y="38.666666666666671" width="153" height="176.33333333333331"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="o53-fr-Mzc">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="o53-fr-Mzc">
                                                                     <rect key="frame" x="0.0" y="0.0" width="153" height="26"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Gr-L7K">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lgM-Gr-L7K">
                                                                             <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="width" constant="26" id="Hf9-6S-sMp"/>
                                                                                 <constraint firstAttribute="height" constant="26" id="fI3-56-8ug"/>
                                                                             </constraints>
                                                                         </imageView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CZ8-oE-pdB">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="CZ8-oE-pdB">
                                                                             <rect key="frame" x="34" y="0.0" width="119" height="26"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="LAST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AI8-2h-a1j">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="LAST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AI8-2h-a1j">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="119" height="12"/>
                                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
                                                                                     <color key="textColor" name="Grey900"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;lastBaker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMU-ig-6DU">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="&lt;lastBaker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMU-ig-6DU">
                                                                                     <rect key="frame" x="0.0" y="12" width="119" height="14"/>
                                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                                     <color key="textColor" name="Grey1100"/>
@@ -1274,37 +1274,37 @@
                                                                         </stackView>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92C-3j-nAx">
-                                                                    <rect key="frame" x="0.0" y="35.000000000000007" width="153" height="14.666666666666664"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="92C-3j-nAx">
+                                                                    <rect key="frame" x="0.0" y="35.000000000000014" width="153" height="14.666666666666664"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;amount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxa-PQ-Xkx">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;amount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxa-PQ-Xkx">
                                                                     <rect key="frame" x="0.0" y="58.666666666666657" width="153" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zqB-yx-8tU">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zqB-yx-8tU">
                                                                     <rect key="frame" x="0.0" y="84.666666666666657" width="153" height="14.666666666666671"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;time&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaF-f6-OMH">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" ambiguous="YES" text="&lt;time&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IaF-f6-OMH">
                                                                     <rect key="frame" x="0.0" y="108.33333333333334" width="153" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ud4-25-8gU">
-                                                                    <rect key="frame" x="0.0" y="134.33333333333334" width="153" height="14.666666666666657"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ud4-25-8gU">
+                                                                    <rect key="frame" x="0.0" y="134.33333333333337" width="153" height="14.666666666666657"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="&lt;cycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zuB-hP-i9K">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" ambiguous="YES" text="&lt;cycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zuB-hP-i9K">
                                                                     <rect key="frame" x="0.0" y="158" width="153" height="18.333333333333343"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
@@ -1312,29 +1312,29 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="jSe-2Z-wEL">
+                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="jSe-2Z-wEL">
                                                             <rect key="frame" x="200" y="38.666666666666671" width="153" height="176.33333333333331"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fyn-Ob-CVh">
+                                                                <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fyn-Ob-CVh">
                                                                     <rect key="frame" x="0.0" y="0.0" width="153" height="26"/>
                                                                     <subviews>
-                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rb2-wQ-dcE">
+                                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Rb2-wQ-dcE">
                                                                             <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="26" id="2Aq-dQ-ocu"/>
                                                                                 <constraint firstAttribute="width" constant="26" id="b3W-YU-Ez0"/>
                                                                             </constraints>
                                                                         </imageView>
-                                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-ca-vRh">
+                                                                        <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="kyh-ca-vRh">
                                                                             <rect key="frame" x="34" y="0.0" width="119" height="26"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="NEXT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSg-Jt-LYV">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="NEXT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSg-Jt-LYV">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="119" height="12"/>
                                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
                                                                                     <color key="textColor" name="Grey900"/>
                                                                                     <nil key="highlightedColor"/>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;nextBaker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqL-mw-CdG">
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="&lt;nextBaker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fqL-mw-CdG">
                                                                                     <rect key="frame" x="0.0" y="12" width="119" height="14"/>
                                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                                     <color key="textColor" name="Grey1100"/>
@@ -1344,37 +1344,37 @@
                                                                         </stackView>
                                                                     </subviews>
                                                                 </stackView>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snd-8g-0XL">
-                                                                    <rect key="frame" x="0.0" y="35.000000000000007" width="153" height="14.666666666666664"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Est Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Snd-8g-0XL">
+                                                                    <rect key="frame" x="0.0" y="35.000000000000014" width="153" height="14.666666666666664"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;estAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HvI-zk-JOK">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;estAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HvI-zk-JOK">
                                                                     <rect key="frame" x="0.0" y="58.666666666666657" width="153" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Irp-M8-CcS">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Est Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Irp-M8-CcS">
                                                                     <rect key="frame" x="0.0" y="84.666666666666657" width="153" height="14.666666666666671"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;estTime&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sz-cu-D3h">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="&lt;estTime&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5sz-cu-D3h">
                                                                     <rect key="frame" x="0.0" y="108.33333333333334" width="153" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QKe-WY-oed">
-                                                                    <rect key="frame" x="0.0" y="134.33333333333334" width="153" height="14.666666666666657"/>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QKe-WY-oed">
+                                                                    <rect key="frame" x="0.0" y="134.33333333333337" width="153" height="14.666666666666657"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                                     <color key="textColor" name="Grey1100"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="&lt;estCycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YDO-jg-hcX">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" ambiguous="YES" text="&lt;estCycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YDO-jg-hcX">
                                                                     <rect key="frame" x="0.0" y="158" width="153" height="18.333333333333343"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Grey200"/>
@@ -1382,7 +1382,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </stackView>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-right-large" translatesAutoresizingMaskIntoConstraints="NO" id="2I8-OI-6L8">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="arrow-right-large" translatesAutoresizingMaskIntoConstraints="NO" id="2I8-OI-6L8">
                                                             <rect key="frame" x="161" y="94" width="35" height="35"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="35" id="U8c-0J-qTx"/>
@@ -1448,13 +1448,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="68"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Recent Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ui-4r-VpC">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="Recent Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9ui-4r-VpC">
                                                     <rect key="frame" x="16" y="24" width="174" height="36"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Grey200"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="6bV-2K-NsR">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="6bV-2K-NsR">
                                                     <rect key="frame" x="363" y="35" width="14" height="14"/>
                                                     <color key="tintColor" name="Brand900"/>
                                                     <constraints>
@@ -1462,7 +1462,7 @@
                                                         <constraint firstAttribute="width" constant="14" id="rQM-LH-bWz"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kX-me-6Oc">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8kX-me-6Oc">
                                                     <rect key="frame" x="291" y="33.666666666666664" width="68" height="17"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="textColor" name="Brand900"/>
@@ -1490,7 +1490,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="69"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="G2l-A8-oaz">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="G2l-A8-oaz">
                                                     <rect key="frame" x="363" y="27.666666666666671" width="14" height="14"/>
                                                     <color key="tintColor" name="Brand900"/>
                                                     <constraints>
@@ -1498,7 +1498,7 @@
                                                         <constraint firstAttribute="height" constant="14" id="rLT-vd-rpm"/>
                                                     </constraints>
                                                 </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsi-NQ-KFU">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xsi-NQ-KFU">
                                                     <rect key="frame" x="291" y="8" width="68" height="45"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="textColor" name="Brand900"/>
@@ -1682,21 +1682,23 @@
                             <constraint firstItem="JxS-C1-8ro" firstAttribute="top" secondItem="tpb-e7-XF0" secondAttribute="bottom" constant="3" id="AAZ-M2-YRb"/>
                             <constraint firstItem="tpb-e7-XF0" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="top" id="Cxj-1U-17H"/>
                             <constraint firstAttribute="bottom" secondItem="ITw-HP-Zep" secondAttribute="bottom" id="Ff0-Eb-ax1"/>
-                            <constraint firstItem="mVG-6O-GrW" firstAttribute="top" secondItem="AmE-DB-rmw" secondAttribute="bottom" id="JtB-EG-wbz"/>
                             <constraint firstItem="WKV-57-Y9W" firstAttribute="leading" secondItem="xt6-og-l4q" secondAttribute="leading" constant="16" id="LQf-cS-rPy"/>
                             <constraint firstItem="AmE-DB-rmw" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="top" id="M6l-6Q-YfX"/>
+                            <constraint firstItem="mVG-6O-GrW" firstAttribute="top" secondItem="AmE-DB-rmw" secondAttribute="bottom" id="PCc-yu-w9l"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="trailing" secondItem="xt6-og-l4q" secondAttribute="trailing" id="UtG-Gn-lg0"/>
                             <constraint firstItem="xt6-og-l4q" firstAttribute="trailing" secondItem="tpb-e7-XF0" secondAttribute="trailing" constant="16" id="aN2-hl-Voj"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="leading" secondItem="xt6-og-l4q" secondAttribute="leading" id="dZ2-Oa-otn"/>
                             <constraint firstItem="mVG-6O-GrW" firstAttribute="leading" secondItem="AmE-DB-rmw" secondAttribute="leading" id="lVt-rQ-ysu"/>
                             <constraint firstItem="WKV-57-Y9W" firstAttribute="top" secondItem="xt6-og-l4q" secondAttribute="top" constant="16" id="mmt-uD-E4O"/>
                             <constraint firstItem="JxS-C1-8ro" firstAttribute="trailing" secondItem="tpb-e7-XF0" secondAttribute="trailing" id="to5-c0-kjn"/>
-                            <constraint firstItem="ITw-HP-Zep" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="4" id="wGs-q2-HMm"/>
+                            <constraint firstItem="ITw-HP-Zep" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="8" id="wGs-q2-HMm"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="headerFiat" destination="mVG-6O-GrW" id="oJy-3q-o7c"/>
                         <outlet property="headerIcon" destination="WKV-57-Y9W" id="50k-w3-F3V"/>
+                        <outlet property="headerIconHeightConstraint" destination="l4a-FS-D9D" id="jXB-Mq-WRH"/>
+                        <outlet property="headerIconWidthConstraint" destination="RBI-EY-1Zf" id="ABT-FQ-7MV"/>
                         <outlet property="headerPriceChange" destination="tpb-e7-XF0" id="8av-9J-h8y"/>
                         <outlet property="headerPriceChangeArrow" destination="7Zt-dG-2vQ" id="LUc-Hz-GmP"/>
                         <outlet property="headerPriceChangeDate" destination="JxS-C1-8ro" id="JZs-2U-lML"/>

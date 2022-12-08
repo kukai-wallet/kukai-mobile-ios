@@ -38,7 +38,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			lastAmountTitle.text = "Amount (fee)"
 			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
 			lastTimeTitle.text = "Time"
-			lastTime.text = previousReward.timeString
+			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Cycle"
 			lastCycle.text = previousReward.cycle.description
 			
@@ -49,7 +49,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			lastAmountTitle.text = "Est Amount (fee)"
 			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
 			lastTimeTitle.text = "Est Time"
-			lastTime.text = previousReward.timeString
+			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Est Cycle"
 			lastCycle.text = previousReward.cycle.description
 			
@@ -67,7 +67,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			
 			nextBaker.text = nextReward.bakerAlias
 			nextAmount.text = nextReward.amount.normalisedRepresentation + " (\(nextReward.fee * 100)%)"
-			nextTime.text = nextReward.timeString
+			nextTime.text = nextReward.dateOfPayment.timeAgoDisplay()
 			nextCycle.text = nextReward.cycle.description
 			
 		} else {
