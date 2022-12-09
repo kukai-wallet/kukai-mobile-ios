@@ -92,15 +92,8 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		// TODO: make a protocol for generic support
-		if let c = cell as? FavouriteTokenCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
-			
-		} else if let c = cell as? TokenBalanceCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
-			
-		} else if let c = cell as? FavouriteTokenEditCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 	

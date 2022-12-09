@@ -11,7 +11,7 @@ import Charts
 
 
 
-public struct ChartViewDataPoint: Identifiable {
+public struct ChartViewDataPoint: Hashable, Identifiable, Equatable {
 	public var value: Double
 	public var date: Date
 	public var id = UUID()
@@ -21,8 +21,14 @@ public struct ChartViewDataPoint: Identifiable {
 
 // MARK: - UIKit
 
+protocol ChartHostingControllerDelegate: AnyObject {
+	func didSelectPoint(_ point: ChartViewDataPoint?, ofIndex: Int)
+	func didFinishSelectingPoint()
+}
+
 class ChartViewIntegrationService: ObservableObject {
 	@Published var data: [ChartViewDataPoint] = []
+	var delegate: ChartHostingControllerDelegate? = nil
 }
 
 class ChartHostingController: UIHostingController<AnyView> {
@@ -34,8 +40,16 @@ class ChartHostingController: UIHostingController<AnyView> {
 		super.init(coder: coder, rootView: AnyView(chartView.environmentObject(integration)))
 	}
 	
+	init() {
+		super.init(rootView: AnyView(chartView.environmentObject(integration)))
+	}
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+	}
+	
+	public func setDelegate(_ delegate: ChartHostingControllerDelegate?) {
+		integration.delegate = delegate
 	}
 	
 	public func setData(_ data: [ChartViewDataPoint]) {
@@ -60,46 +74,23 @@ struct ChartView: View {
 	
 	@EnvironmentObject private var integration: ChartViewIntegrationService
 	
+	private let gradient = LinearGradient(
+		gradient: Gradient(
+			colors: [
+				Color(red: 0.333, green: 0.361, blue: 0.792, opacity: 0.48),
+				Color(red: 0.333, green: 0.361, blue: 0.792, opacity: 0)
+			]
+		),
+		startPoint: .top,
+		endPoint: .bottom
+	)
+	
 	var body: some View {
 		VStack(spacing: 0) {
-			topSelectedView
 			topAnnotationView
 			chart
-			bottomAnnotationView
 			
 		}.background(.clear)
-	}
-	
-	private var topSelectedView: some View {
-		VStack {
-			ZStack(alignment: .topLeading) {
-				GeometryReader { geo in
-					
-					if isDragging, let selectedData {
-						let widthOfString = doubleFormatter(selectedData.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
-						let boxOffset = max(0, min(geo.size.width - widthOfString, selectedDataPoint.x - widthOfString / 2))
-						
-						VStack(alignment: .center) {
-							Text(doubleFormatter(selectedData.value))
-								.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
-								.foregroundStyle(Color("Grey2000"))
-						}
-						.frame(width: widthOfString, alignment: .center)
-						.background {
-							ZStack {
-								RoundedRectangle(cornerRadius: 8)
-									.fill(.white.opacity(0.7))
-							}
-							.padding(.horizontal, -8)
-							.padding(.vertical, -4)
-						}
-						.offset(x: boxOffset)
-					}
-				}
-			}
-		}
-		.frame(height: 18)
-		.background(.clear)
 	}
 	
 	private var topAnnotationView: some View {
@@ -112,39 +103,7 @@ struct ChartView: View {
 					
 					VStack(alignment: .trailing) {
 						Text(doubleFormatter(maxData?.value))
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
-							.foregroundStyle(Color("Grey900"))
-						
-					}
-					.offset(x: boxOffset)
-					
-					if isDragging {
-						let lineX = selectedDataPoint.x
-						let lineHeight = 18.0
-						
-						Rectangle()
-							.fill(.white.opacity(0.5))
-							.frame(width: 2, height: lineHeight)
-							.position(x: lineX, y: lineHeight / 2)
-					}
-				}
-			}
-		}
-		.frame(height: 18)
-		.background(.clear)
-	}
-	
-	private var bottomAnnotationView: some View {
-		VStack {
-			ZStack(alignment: .topLeading) {
-				GeometryReader { geo in
-						
-					let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
-					let boxOffset = max(0, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
-					
-					VStack(alignment: .trailing) {
-						Text(doubleFormatter(minData?.value))
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
 							.foregroundStyle(Color("Grey900"))
 						
 					}
@@ -157,33 +116,24 @@ struct ChartView: View {
 	}
 	
 	private var chart: some View {
-		Chart(integration.data) {
-			LineMark(x: .value("Date", $0.date), y: .value("Value", $0.value))
-				.lineStyle(StrokeStyle(lineWidth: 3))
-				.foregroundStyle(Color("Brand1200"))
-				.interpolationMethod(.linear)
+		Chart {
+			ForEach(integration.data) { element in
+				AreaMark(x: .value("Date", element.date), y: .value("Value", element.value))
+					.interpolationMethod(.linear)
+					.foregroundStyle(gradient)
+				
+				LineMark(x: .value("Date", element.date), y: .value("Value", element.value))
+					.lineStyle(StrokeStyle(lineWidth: 3))
+					.foregroundStyle(Color("Brand1200"))
+					.interpolationMethod(.linear)
+			}
 		}
 		.chartXAxis(.hidden)
 		.chartYAxis(.hidden)
 		.backgroundStyle(Color.clear)
-		.chartBackground { proxy in
-			ZStack(alignment: .topLeading) {
-				GeometryReader { geo in
-					useProxy(proxy)
-					
-					if isDragging {
-						let lineX = selectedDataPoint.x + geo[proxy.plotAreaFrame].origin.x
-						let lineHeight = selectedDataPoint.y
-						
-						Rectangle()
-							.fill(.white.opacity(0.5))
-							.frame(width: 2, height: lineHeight)
-							.position(x: lineX, y: lineHeight / 2)
-					}
-				}
-			}
-		}
 		.chartOverlay { proxy in
+			useProxy(proxy)
+			
 			GeometryReader { geometry in
 				Rectangle().fill(.clear).contentShape(Rectangle())
 					.gesture(
@@ -193,15 +143,57 @@ struct ChartView: View {
 								
 								let origin = geometry[proxy.plotAreaFrame].origin
 								if let datePos = proxy.value(atX: value.location.x - origin.x, as: Date.self), let firstGreater = integration.data.lastIndex(where: { $0.date < datePos }) {
-									selectedData = integration.data[firstGreater]
-									selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+									let newPoint = integration.data[firstGreater]
+									
+									if selectedData != newPoint {
+										selectedData = newPoint
+										integration.delegate?.didSelectPoint(selectedData, ofIndex: firstGreater)
+										
+										if selectedDataPoint.x == 0 && selectedDataPoint.y == 0 {
+											selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+										} else {
+											withAnimation(.linear(duration: 0.3)) {
+												selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+											}
+										}
+									}
 								}
 							}
 							.onEnded { value in
 								self.isDragging = false
 								self.selectedData = nil
+								self.selectedDataPoint = CGPoint(x: 0, y: 0)
+								
+								integration.delegate?.didFinishSelectingPoint()
 							}
 					)
+				
+				
+				// Add text annotation of lowest value as overlay to bottom of chart
+				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
+				let boxOffset = max(0, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+				
+				VStack(alignment: .trailing) {
+					Text(doubleFormatter(minData?.value))
+						.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
+						.foregroundStyle(Color("Grey900"))
+					
+				}
+				.offset(x: boxOffset, y: minDataPoint.y + 8)
+				
+				
+				// If the user is dragging their finger across the chart, compute and record the closest datapoint
+				if isDragging {
+					Circle()
+						.fill(Color("Brand500").opacity(0.1))
+						.frame(width: 32, height: 32)
+						.position(x: selectedDataPoint.x, y: selectedDataPoint.y)
+					
+					Circle()
+						.fill(Color("Brand500"))
+						.frame(width: 6, height: 6)
+						.position(x: selectedDataPoint.x, y: selectedDataPoint.y)
+				}
 			}
 		}
 	}
@@ -245,6 +237,6 @@ struct TokenDetailsChartView_Previews: PreviewProvider {
 		let integration = ChartViewIntegrationService()
 		integration.data = tempData
 		
-		return AnyView(ChartView().environmentObject(integration))
+		return AnyView(ChartView().frame(width: 300, height: 150).environmentObject(integration))
 	}
 }

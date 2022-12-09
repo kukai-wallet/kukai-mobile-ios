@@ -11,7 +11,6 @@ import Combine
 class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
-	//@IBOutlet weak var balancesMoreButton: UIButton!
 	
 	private let viewModel = AccountViewModel()
 	private var cancellable: AnyCancellable?
@@ -24,9 +23,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		
 		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
-		
-		//balancesMoreButton.menu = menuForBalancesMore()
-		//balancesMoreButton.showsMenuAsPrimaryAction = true
 		
 		viewModel.balancesMenu = menuForBalancesMore()
 		viewModel.makeDataSource(withTableView: tableView)
@@ -88,8 +84,8 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		if let c = cell as? TokenBalanceCell {
-			c.addGradientBackground(withFrame: c.containerView.bounds)
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 	

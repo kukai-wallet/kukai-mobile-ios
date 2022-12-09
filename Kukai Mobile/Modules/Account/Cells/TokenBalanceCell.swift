@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TokenBalanceCell: UITableViewCell {
+class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
 
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
@@ -17,8 +17,7 @@ class TokenBalanceCell: UITableViewCell {
 	@IBOutlet weak var priceChangeIcon: UIImageView!
 	@IBOutlet weak var priceChangeLabel: UILabel!
 	
-	private var gradient = CAGradientLayer()
-	private var correctFrame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
+	var gradientLayer = CAGradientLayer()
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
@@ -39,14 +38,5 @@ class TokenBalanceCell: UITableViewCell {
 			priceChangeIcon.tintColor = color
 			priceChangeLabel.textColor = color
 		}
-	}
-	
-	public func addGradientBackground(withFrame: CGRect) {
-		correctFrame = withFrame
-		
-		containerView.customCornerRadius = 8
-		containerView.maskToBounds = true
-		gradient.removeFromSuperlayer()
-		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}
 }

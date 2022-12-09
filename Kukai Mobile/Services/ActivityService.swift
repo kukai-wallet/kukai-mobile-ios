@@ -86,7 +86,7 @@ public class ActivityService {
 		}
 	}
 	
-	public func filterSendReceive(forToken: Token) -> [TzKTTransactionGroup] {
+	public func filterSendReceive(forToken: Token, count: Int) -> [TzKTTransactionGroup] {
 		var transactions: [TzKTTransactionGroup] = []
 		
 		for group in self.transactionGroups {
@@ -95,6 +95,10 @@ public class ActivityService {
 			   (group.primaryToken?.token.tokenContractAddress == forToken.tokenContractAddress && group.primaryToken?.token.tokenId == forToken.tokenId && group.primaryToken?.token.symbol == forToken.symbol) {
 				
 				transactions.append(group)
+				
+				if transactions.count == count {
+					break
+				}
 			}
 		}
 		

@@ -16,15 +16,4 @@ class EstimatedTotalCell: UITableViewCell {
 	override class func awakeFromNib() {
 		super.awakeFromNib()
 	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		var image = UIImage(named: "info-template")
-		image = image?.resizedImage(Size: CGSize(width: 13, height: 13))
-		image = image?.withTintColor(UIColor.colorNamed("Grey1100"))
-		
-		totalEstButton.setImage(image, for: .normal)
-		totalEstButton.tintColor = UIColor.colorNamed("Grey1100")
-	}
 }

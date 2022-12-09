@@ -7,28 +7,18 @@
 
 import UIKit
 
-class FavouriteTokenEditCell: UITableViewCell {
+class FavouriteTokenEditCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var containerView: UIView!
 	
-	private var gradient = CAGradientLayer()
-	private var correctFrame: CGRect = CGRect(x: 0, y: 0, width: 0, height: 0)
+	var gradientLayer = CAGradientLayer()
 	private var myReorderImage: UIImage? = nil
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
-	}
-	
-	public func addGradientBackground(withFrame: CGRect) {
-		correctFrame = withFrame
-		
-		containerView.customCornerRadius = 8
-		containerView.maskToBounds = true
-		gradient.removeFromSuperlayer()
-		gradient = containerView.addGradientPanelRows(withFrame: containerView.bounds)
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
