@@ -26,6 +26,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	private var cancellable: AnyCancellable?
 	private var headerAnimator = UIViewPropertyAnimator()
 	private var headerAnimatorStarted = false
+	private let defaultHeaderFiatFontSize = 18
+	private var currentHeaderFiatFontSize: CGFloat = 18
 	private var firstLoad = true
 	
 	
@@ -165,16 +167,9 @@ extension TokenDetailsViewController {
 		// make sure we only run this ocne
 		headerAnimatorStarted = true
 		
-		
 		// Set what we want the constraints to be
 		self.headerIconWidthConstraint.constant = 28
 		self.headerIconHeightConstraint.constant = 28
-		
-		// Labels are weird, grab properties to manipulate later
-		let labelLayer = self.headerFiat.layer
-		let position = labelLayer.frame.origin
-		labelLayer.anchorPoint = CGPoint(x: 0, y: 0)
-		labelLayer.position = position
 		
 		
 		// Setup property animator
@@ -182,10 +177,6 @@ extension TokenDetailsViewController {
 			
 			// Refresh consttraints
 			self?.view.layoutIfNeeded()
-			
-			// Update label
-			labelLayer.setAffineTransform(CGAffineTransform(scaleX: 0.6, y: 0.6))
-			labelLayer.position = CGPoint(x: self?.headerSymbol.frame.minX ?? 0, y: self?.headerSymbol.frame.maxY ?? 0)
 			
 			// Alpha the rest
 			self?.headerPriceChange.alpha = 0
@@ -201,12 +192,21 @@ extension TokenDetailsViewController {
 		
 		// Every move event, compute how much things should change
 		let fraction = self.tableView.contentOffset.y / 100
+		
 		if fraction <= 1 {
 			headerAnimator.fractionComplete = fraction
 			
-		} else {
-			// For some reason, after a point, label jumps to somwhere else, need to avoid that
-			self.headerFiat.layer.position = CGPoint(x: self.headerSymbol.frame.minX, y: self.headerSymbol.frame.maxY)
+			let fontSizeReduction = Int(fraction / 0.1)
+			var newSize = CGFloat(defaultHeaderFiatFontSize - fontSizeReduction)
+			
+			if newSize < 12 {
+				newSize = 12
+			}
+			
+			if newSize != currentHeaderFiatFontSize {
+				self.headerFiat.font = UIFont.custom(ofType: .medium, andSize: newSize)
+				currentHeaderFiatFontSize = newSize
+			}
 		}
 	}
 }
