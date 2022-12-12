@@ -82,21 +82,23 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		dataSource = MoveableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
 			
-			if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage(named: "tezos-logo")
-				cell.symbolLabel.text = "Tezos"
-				cell.balanceLabel.text = amount.normalisedRepresentation
-				
-				cell.priceChangeIcon.image = UIImage(named: "arrow-up-green")
-				cell.priceChangeLabel.text = "\(Int.random(in: 1..<100))%"
-				cell.priceChangeLabel.textColor = UIColor.colorNamed("Positive900")
-				
-				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-				
-				cell.containerView.layer.opacity = 0.5
-				
-				return cell
+			if let amount = item as? XTZAmount {
+				if self.isEditing == false, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
+					cell.tokenIcon.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.symbolLabel.text = "Tezos"
+					cell.balanceLabel.text = amount.normalisedRepresentation
+					cell.setFav(true)
+					cell.containerView.layer.opacity = 0.5
+					
+					return cell
+				} else if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenEditCell", for: indexPath) as? FavouriteTokenEditCell {
+					cell.tokenIcon.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.symbolLabel.text = "Tezos"
+					cell.balanceLabel.text = amount.normalisedRepresentation
+					cell.containerView.layer.opacity = 0.5
+					
+					return cell
+				}
 				
 			} else if let obj = item as? Token, self.isEditing == false, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
 				
@@ -118,9 +120,9 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
 				return cell
 				
-			} else {
-				return UITableViewCell()
 			}
+			
+			return UITableViewCell()
 		})
 		
 		dataSource?.defaultRowAnimation = .fade

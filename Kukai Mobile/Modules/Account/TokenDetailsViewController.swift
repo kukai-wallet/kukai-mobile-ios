@@ -114,7 +114,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			headerPriceChange.textColor = color
 			
 		} else {
-			let color = UIColor.colorNamed("Grey1100")
+			let color = UIColor.colorNamed("Caution900")
 			var image = UIImage(named: "arrow-down")
 			image = image?.resizedImage(Size: CGSize(width: 11, height: 11))
 			image = image?.withTintColor(color)

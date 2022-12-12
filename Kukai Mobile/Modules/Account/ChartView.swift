@@ -149,6 +149,9 @@ struct ChartView: View {
 										selectedData = newPoint
 										integration.delegate?.didSelectPoint(selectedData, ofIndex: firstGreater)
 										
+										selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
+										
+										/*
 										if selectedDataPoint.x == 0 && selectedDataPoint.y == 0 {
 											selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
 										} else {
@@ -156,6 +159,7 @@ struct ChartView: View {
 												selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
 											}
 										}
+										*/
 									}
 								}
 							}
