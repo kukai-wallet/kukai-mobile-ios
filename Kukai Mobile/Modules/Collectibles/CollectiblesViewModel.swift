@@ -10,15 +10,123 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
-struct SpecialGroup: Hashable {
+struct ControlGroupData: Hashable {
+	let id = UUID()
+}
+
+struct SpecialGroupData: Hashable {
 	let imageName: String
 	let title: String
 	let count: Int
+	let isShowcase: Bool
 	let nfts: [NFT]
 }
 
-class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
+	typealias SectionEnum = Int
+	typealias CellDataType = AnyHashable
+	
+	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	
+	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
+	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
+	var hashableData: [[AnyHashable]] = [[]]
+	
+	
+	// MARK: - CollectionView Setup
+	
+	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
+		collectionView.register(UINib(nibName: "CollectiblesSearchCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesSearchCell")
+		collectionView.register(UINib(nibName: "CollectibleSpecialGroupCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleSpecialGroupCell")
+		collectionView.register(UINib(nibName: "CollectiblesListGroupCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListGroupCell")
+		collectionView.register(UINib(nibName: "CollectiblesListItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListItemCell")
+		
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+			if let _ = item as? ControlGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+				return cell
+				
+			} else if let obj = item as? SpecialGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleSpecialGroupCell", for: indexPath) as? CollectibleSpecialGroupCell {
+				cell.iconView.image = UIImage(named: obj.imageName) ?? UIImage()
+				cell.titleLabel.text = obj.title
+				cell.countLabel.text = obj.count.description
+				cell.moreButton.isHidden = !obj.isShowcase
+				return cell
+				
+			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListGroupCell", for: indexPath) as? CollectiblesListGroupCell {
+				cell.titleLabel.text = obj.name ?? obj.tokenContractAddress
+				cell.countLabel.text = obj.nfts?.count.description ?? ""
+				return cell
+				
+			} else if let _ = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
+				return cell
+				
+			}
+			
+			return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListGroupCell", for: indexPath)
+		})
+	}
+	
+	
+	func refresh(animate: Bool, successMessage: String? = nil) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		let l = CollectibleListLayout()
+		l.delegate = self
+		layout = l
+		
+		
+		hashableData = [[ControlGroupData()]]
+		
+		if let firstNFT = DependencyManager.shared.balanceService.account.nfts.first?.nfts?.first {
+			var duplicateCopy = firstNFT
+			
+			duplicateCopy.duplicateID = 1
+			hashableData.append( [SpecialGroupData(imageName: "star-fill", title: "Favorites", count: 1, isShowcase: false, nfts: [duplicateCopy])] )
+			
+			duplicateCopy.duplicateID = 2
+			hashableData.append( [SpecialGroupData(imageName: "collectible-group-recents", title: "Recents", count: 1, isShowcase: false, nfts: [duplicateCopy])] )
+			
+			duplicateCopy.duplicateID = 3
+			hashableData.append( [SpecialGroupData(imageName: "collectible-group-showcase", title: "Showcase", count: 1, isShowcase: true, nfts: [duplicateCopy])] )
+		}
+		
+		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+			hashableData.append( [nftGroup] )
+		}
+		
+		
+		// Build snapshot
+		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot.appendSections(Array(0..<(hashableData.count) ))
+		
+		for (index, item) in hashableData.enumerated() {
+			currentSnapshot.appendItems(item, toSection: index)
+		}
+		
+		ds.apply(currentSnapshot, animatingDifferences: animate)
+		
+		
+		// Return success
+		self.state = .success(nil)
+	}
+}
+
+extension CollectiblesViewModel: CollectibleListLayoutDelegate {
+	
+	func data() -> [[AnyHashable]] {
+		return hashableData
+	}
+}
+	
+	
+	
+	
+	
+	/*
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
@@ -250,4 +358,4 @@ class CollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func isLastSpecialGroupSection(_ section: Int) -> Bool {
 		return section == specialGroups.count-1
 	}
-}
+	*/

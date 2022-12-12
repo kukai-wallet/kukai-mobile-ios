@@ -8,19 +8,61 @@
 import UIKit
 import Combine
 
-class CollectiblesViewController: UIViewController, UITableViewDelegate {
+class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
-	@IBOutlet weak var controlsStackView: UIStackView!
-	@IBOutlet weak var searchTextField: ValidatorTextField!
-	@IBOutlet weak var buttonsStackView: UIStackView!
-	@IBOutlet weak var filterButton: UIButton!
-	@IBOutlet weak var sortButton: UIButton!
-	@IBOutlet weak var moreButton: UIButton!
-	@IBOutlet weak var tableView: UITableView!
+	//@IBOutlet weak var controlsStackView: UIStackView!
+	//@IBOutlet weak var searchTextField: ValidatorTextField!
+	//@IBOutlet weak var buttonsStackView: UIStackView!
+	//@IBOutlet weak var filterButton: UIButton!
+	//@IBOutlet weak var sortButton: UIButton!
+	//@IBOutlet weak var moreButton: UIButton!
+	//@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesViewModel()
 	private var cancellable: AnyCancellable?
 	
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		viewModel.makeDataSource(withCollectionView: collectionView)
+		collectionView.dataSource = viewModel.dataSource
+		collectionView.delegate = self
+		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					//self?.showLoadingView(completion: nil)
+					print("loading")
+					
+				case .failure(_, let errorString):
+					//self?.hideLoadingView(completion: nil)
+					self?.alert(withTitle: "Error", andMessage: errorString)
+					
+				case .success:
+					//self?.hideLoadingView(completion: nil)
+					self?.setup()
+			}
+		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		viewModel.refresh(animate: false)
+	}
+	
+	func setup() {
+		self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+		self.collectionView.collectionViewLayout = viewModel.layout
+	}
+	
+	
+	
+	
+	
+	
+	
+	/*
     override func viewDidLoad() {
         super.viewDidLoad()
 		setupUI()
@@ -148,8 +190,10 @@ class CollectiblesViewController: UIViewController, UITableViewDelegate {
 			self?.view.layoutIfNeeded()
 		}
 	}
+	 */
 }
 
+/*
 extension CollectiblesViewController: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -168,3 +212,4 @@ extension CollectiblesViewController: ValidatorTextFieldDelegate {
 		
 	}
 }
+*/

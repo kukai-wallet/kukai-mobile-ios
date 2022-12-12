@@ -20,7 +20,21 @@ public class ValidatorTextField: UITextField {
 	public var validator: Validator?
 	public weak var validatorTextFieldDelegate: ValidatorTextFieldDelegate?
 	
+	private var didSetupCustomImage = false
 	@IBInspectable var leftPadding: CGFloat = 0
+	@IBInspectable var textPadding: CGFloat = 0
+	@IBInspectable var leftImageWidth: CGFloat = 0{
+		didSet {
+			updateView()
+		}
+	}
+	
+	@IBInspectable var leftImageHeight: CGFloat = 0{
+		didSet {
+			updateView()
+		}
+	}
+	
 	@IBInspectable var leftImage: UIImage? {
 		didSet {
 			updateView()
@@ -55,6 +69,12 @@ public class ValidatorTextField: UITextField {
 		return textRect
 	}
 	
+	public override func textRect(forBounds bounds: CGRect) -> CGRect {
+		var textRect = super.textRect(forBounds: bounds)
+		textRect.origin.x += textPadding
+		return textRect
+	}
+	
 	func setup() {
 		self.delegate = self
 	}
@@ -74,12 +94,13 @@ public class ValidatorTextField: UITextField {
 	}
 	
 	func updateView() {
-		if let image = leftImage {
+		if let image = leftImage, leftImageWidth != 0, leftImageHeight != 0, !didSetupCustomImage {
 			leftViewMode = UITextField.ViewMode.always
-			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 20, height: 20))
-			imageView.contentMode = .scaleAspectFit
-			imageView.image = image
+			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: leftImageWidth, height: leftImageHeight))
+			imageView.contentMode = .center
+			imageView.image = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight)) ?? UIImage()
 			leftView = imageView
+			didSetupCustomImage = true
 		} else {
 			leftViewMode = UITextField.ViewMode.never
 			leftView = nil
