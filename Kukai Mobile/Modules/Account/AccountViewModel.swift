@@ -173,7 +173,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: /*address*/ "tz1aUcretSMmLvAfdzJY3cD83izkkkh1kvTq", refreshType: .refreshEverything) { [weak self] error in
 			guard let self = self else { return }
 			
 			if let e = error {
@@ -204,11 +204,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		/*
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
+		*/
 	}
 }

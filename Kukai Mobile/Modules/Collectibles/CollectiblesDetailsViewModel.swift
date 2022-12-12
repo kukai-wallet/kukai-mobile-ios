@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 import AVKit
+import MediaPlayer
 
 
 // MARK: Content objects
@@ -20,6 +21,7 @@ struct MediaContent: Hashable {
 	let isImage: Bool
 	let isThumbnail: Bool
 	let mediaURL: URL?
+	let mediaURL2: URL?
 	let width: Double
 	let height: Double
 	let quantity: String?
@@ -67,6 +69,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
 	private var playerController: AVPlayerViewController? = nil
+	private var playerControllerBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
 	private var playerLooper: AVPlayerLooper? = nil
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	
@@ -209,7 +212,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			else if response.needsToDownloadFullImage {
 				let mediaURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: .small)
 				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
-					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
+					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, mediaURL2: nil, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
 					self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
 				}
 			}
@@ -246,33 +249,40 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// Can't find data offline, and its not cached already
 			if mediaType == nil {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), width: 300, height: 300, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), mediaURL2: nil, width: 300, height: 300, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 				return
 			}
 			
 			// Display full image
-			else if (mediaType == .imageOnly || mediaType == .gifOnly || mediaType == .imageAndAudio), isCached {
+			else if (mediaType == .imageOnly || mediaType == .gifOnly), isCached {
 				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: false, completion: completion)
 				return
 			}
 			
 			// Load thumbnail, then display image
-			else if (mediaType == .imageOnly || mediaType == .gifOnly  || mediaType == .imageAndAudio), !isCached {
+			else if (mediaType == .imageOnly || mediaType == .gifOnly), !isCached {
 				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: true, completion: completion)
 				return
 			}
 			
 			// Load video cell straight away
 			else if mediaType == .videoOnly {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), width: 0, height: 0, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: nil, width: 0, height: 0, quantity: quantityString)
+				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				return
+			}
+			
+			// Download display iamge and stream audio
+			else if mediaType == .imageAndAudio {
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 				return
 			}
 			
 			// Fallback
 			else {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .icon), width: 300, height: 300, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .icon), mediaURL2: nil, width: 300, height: 300, quantity: quantityString)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 			}
 		}
@@ -289,17 +299,17 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			let mediaType = MediaProxyService.typesContents(res) ?? .imageOnly
 			if mediaType == .imageOnly {
 				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { size in
-					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
+					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, mediaURL2: nil, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
 					completion(mediaContent)
 					return
 				}
 			} else if mediaType == .gifOnly {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), mediaURL2: nil, width: 0, height: 0, quantity: quantityString)
 				completion(mediaContent)
 				return
 				
 			} else {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), width: 0, height: 0, quantity: quantityString)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: nil, width: 0, height: 0, quantity: quantityString)
 				completion(mediaContent)
 				return
 			}
@@ -318,20 +328,20 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			let finalSize = (size ?? CGSize(width: 300, height: 300))
 			if mediaType == .imageOnly {
 				let url = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI ?? nft?.artifactURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
-				let mediaContent = MediaContent(isImage: true, isThumbnail: loadingThumbnailFirst, mediaURL: url, width: finalSize.width, height: finalSize.height, quantity: quantity)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: loadingThumbnailFirst, mediaURL: url, mediaURL2: nil, width: finalSize.width, height: finalSize.height, quantity: quantity)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: loadingThumbnailFirst, needsMediaTypeVerification: false))
 				
 			} else if mediaType == .gifOnly {
 				let url = MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: url, width: 0, height: 0, quantity: quantity)
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: url, mediaURL2: nil, width: 0, height: 0, quantity: quantity)
 				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 				
 			} else {
-				let url1 = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
-				let url2 = MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw)
-				let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: url1, width: finalSize.width, height: finalSize.height, quantity: quantity)
-				let audioScrubber = AudioScrubber(audioURL: url2)
-				completion((mediaContent: mediaContent, audioScrubber: audioScrubber, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				let url1 = MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw)
+				let url2 = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: url1, mediaURL2: url2, width: finalSize.width, height: finalSize.height, quantity: quantity)
+				//let audioScrubber = AudioScrubber(audioURL: url1)
+				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 			}
 			
 			return
@@ -463,14 +473,135 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// Make sure we only register the player controller once
 			if self.playerController == nil, let url = obj.mediaURL {
+				
 				self.playerController = AVPlayerViewController()
 				
-				let playerItem = AVPlayerItem(url: url)
-				let player = AVQueuePlayer(playerItem: playerItem)
-				self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
 				
-				self.playerController?.player = player
-				self.playerController?.player?.play()
+				/*
+				MediaProxyService.cacheImage(url: obj.mediaURL2, cache: MediaProxyService.temporaryImageCache()) { size in
+					print("cached")
+				}
+				*/
+				
+				MediaProxyService.temporaryImageCache().retrieveImage(forKey: obj.mediaURL2?.absoluteString ?? "", options: []) { result in
+					guard let res = try? result.get() else {
+						print("Didn't have image cached")
+						return
+					}
+					
+					print("Did have image cached")
+					
+					self.playerControllerBackground.image = res.image
+					self.playerController?.contentOverlayView?.addSubview(self.playerControllerBackground)
+					
+					if let overlay = self.playerController?.contentOverlayView {
+						self.playerControllerBackground.translatesAutoresizingMaskIntoConstraints = false
+						NSLayoutConstraint.activate([
+							self.playerControllerBackground.leadingAnchor.constraint(equalTo: overlay.leadingAnchor),
+							self.playerControllerBackground.trailingAnchor.constraint(equalTo: overlay.trailingAnchor),
+							self.playerControllerBackground.topAnchor.constraint(equalTo: overlay.topAnchor),
+							self.playerControllerBackground.bottomAnchor.constraint(equalTo: overlay.bottomAnchor)
+						])
+					}
+					
+					let playerItem = AVPlayerItem(url: url)
+					
+					let title = AVMutableMetadataItem()
+					title.identifier = .commonIdentifierTitle
+					title.value = (self.nft?.name ?? "123") as NSString
+					title.extendedLanguageTag = "und"
+					
+					let artist = AVMutableMetadataItem()
+					artist.identifier = .commonIdentifierArtist
+					artist.value = (self.nft?.parentAlias ?? "456") as NSString
+					artist.extendedLanguageTag = "und"
+					
+					let artwork = AVMutableMetadataItem()
+					artwork.identifier = .commonIdentifierArtwork
+					artwork.value = (self.playerControllerBackground.image?.jpegData(compressionQuality: 1) ?? Data()) as NSData
+					artwork.dataType = kCMMetadataBaseDataType_JPEG as String
+					artwork.extendedLanguageTag = "und"
+					
+					playerItem.externalMetadata = [title, artist, artwork]
+					
+					//self.playerController?.updatesNowPlayingInfoCenter = false
+					
+					
+					let player = AVQueuePlayer(playerItem: playerItem)
+					
+					
+					/*
+					let artwork2 = MPMediaItemArtwork(boundsSize: CGSize(width: 300, height: 300)) { size in
+						print("Inside MPMediaItemArtwork request")
+						return res.image ?? UIImage.unknownToken()
+					}
+					
+					let mpNowPlayingInfoCenter = MPNowPlayingInfoCenter.default()
+					mpNowPlayingInfoCenter.nowPlayingInfo = [
+						MPMediaItemPropertyTitle: "Video Name",
+						MPMediaItemPropertyArtist: "Artist Name",
+						MPMediaItemPropertyAlbumTitle: "Album Title",
+						MPMediaItemPropertyArtwork: artwork2,
+						MPMediaItemPropertyMediaType: MPNowPlayingInfoMediaType.audio.rawValue, // can also be audio
+						MPNowPlayingInfoPropertyElapsedPlaybackTime: 0.0, // just starting
+						MPNowPlayingInfoPropertyPlaybackRate: 1.0, // this indicates the playing speed
+					]
+					*/
+					
+					player.allowsExternalPlayback = false
+					
+					
+					let audioSession = AVAudioSession.sharedInstance()
+					if let sessionResult = try? audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio) {
+						print("details set on shared instance: \(sessionResult)")
+						
+						UIApplication.shared.beginReceivingRemoteControlEvents()
+						let commandCenter = MPRemoteCommandCenter.shared()
+						
+						commandCenter.playCommand.isEnabled = true
+						commandCenter.pauseCommand.isEnabled = true
+						
+						commandCenter.playCommand.addTarget { [self] (commandEvent) -> MPRemoteCommandHandlerStatus in
+							print("inside remote player play command")
+							player.play()
+							return MPRemoteCommandHandlerStatus.success
+						}
+						
+						commandCenter.pauseCommand.addTarget { [self] (commandEvent) -> MPRemoteCommandHandlerStatus in
+							print("inside remote player pause command")
+							player.pause()
+							return MPRemoteCommandHandlerStatus.success
+						}
+						
+					}
+					
+					
+					
+					
+					/*
+					let audioSession = AVAudioSession.sharedInstance()
+					if let sessionResult = try? audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio) {
+						print("details set on shared instance: \(sessionResult)")
+						
+						let artwork = MPMediaItemArtwork(boundsSize: CGSize(width: 300, height: 300)) { size in
+							print("Inside MPMediaItemArtwork request")
+							return res.image ?? UIImage.unknownToken()
+						}
+						
+						//self.playerController?.updatesNowPlayingInfoCenter = true
+						//self.playerController?.player?.currentItem?.nowPlayingInfo = [MPMediaItemPropertyTitle: self.nft?.name ?? "123", MPMediaItemPropertyArtist: self.nft?.parentAlias ?? "456", MPMediaItemPropertyArtwork: artwork]
+						
+						//MPNowPlayingInfoCenter.default().nowPlayingInfo = [MPMediaItemPropertyTitle: self.nft?.name ?? "123", MPMediaItemPropertyArtist: self.nft?.parentAlias ?? "456", MPMediaItemPropertyArtwork: artwork]
+					} else {
+						print("unable to set shared session details")
+					}
+					*/
+					
+					self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+					self.playerController?.player = player
+					self.playerController?.player?.play()
+					
+				}
 			}
 			
 			if let pvc = self.playerController {
