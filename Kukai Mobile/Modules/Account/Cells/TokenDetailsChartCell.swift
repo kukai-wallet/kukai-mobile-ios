@@ -32,7 +32,9 @@ class TokenDetailsChartCell: UITableViewCell {
 	private weak var chartController: ChartHostingController? = nil
 	private var allChartData: AllChartData? = nil
 	private let chartButtonBackgroundColor = UIColor.colorNamed("Grey1900")
+	private let chartButtonBorderColor = UIColor.colorNamed("Brand1600")
 	private let chartButtonSelectedBackgroundColor = UIColor.colorNamed("Grey1800")
+	private let chartButtonSelectedBorderColor = UIColor.colorNamed("Grey1600")
 	
 	
 	func setup() {
@@ -70,12 +72,16 @@ class TokenDetailsChartCell: UITableViewCell {
 			
 			dayButton.isSelected = true
 			dayButton.backgroundColor = chartButtonSelectedBackgroundColor
+			dayButton.borderColor = chartButtonSelectedBorderColor
 			weekButton.isSelected = false
 			weekButton.backgroundColor = chartButtonBackgroundColor
+			weekButton.borderColor = chartButtonBorderColor
 			monthButton.isSelected = false
 			monthButton.backgroundColor = chartButtonBackgroundColor
+			monthButton.borderColor = chartButtonBorderColor
 			yearButton.isSelected = false
 			yearButton.backgroundColor = chartButtonBackgroundColor
+			yearButton.borderColor = chartButtonBorderColor
 		}
 	}
 	
@@ -88,12 +94,16 @@ class TokenDetailsChartCell: UITableViewCell {
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor
+			dayButton.borderColor = chartButtonBorderColor
 			weekButton.isSelected = true
 			weekButton.backgroundColor = chartButtonSelectedBackgroundColor
+			weekButton.borderColor = chartButtonSelectedBorderColor
 			monthButton.isSelected = false
 			monthButton.backgroundColor = chartButtonBackgroundColor
+			monthButton.borderColor = chartButtonBorderColor
 			yearButton.isSelected = false
 			yearButton.backgroundColor = chartButtonBackgroundColor
+			yearButton.borderColor = chartButtonBorderColor
 		}
 	}
 	
@@ -106,12 +116,16 @@ class TokenDetailsChartCell: UITableViewCell {
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor
+			dayButton.borderColor = chartButtonBorderColor
 			weekButton.isSelected = false
 			weekButton.backgroundColor = chartButtonBackgroundColor
+			weekButton.borderColor = chartButtonBorderColor
 			monthButton.isSelected = true
 			monthButton.backgroundColor = chartButtonSelectedBackgroundColor
+			monthButton.borderColor = chartButtonSelectedBorderColor
 			yearButton.isSelected = false
 			yearButton.backgroundColor = chartButtonBackgroundColor
+			yearButton.borderColor = chartButtonBorderColor
 		}
 	}
 	
@@ -124,12 +138,16 @@ class TokenDetailsChartCell: UITableViewCell {
 			
 			dayButton.isSelected = false
 			dayButton.backgroundColor = chartButtonBackgroundColor
+			dayButton.borderColor = chartButtonBorderColor
 			weekButton.isSelected = false
 			weekButton.backgroundColor = chartButtonBackgroundColor
+			weekButton.borderColor = chartButtonBorderColor
 			monthButton.isSelected = false
 			monthButton.backgroundColor = chartButtonBackgroundColor
+			monthButton.borderColor = chartButtonBorderColor
 			yearButton.isSelected = true
 			yearButton.backgroundColor = chartButtonSelectedBackgroundColor
+			yearButton.borderColor = chartButtonSelectedBorderColor
 		}
 	}
 }
