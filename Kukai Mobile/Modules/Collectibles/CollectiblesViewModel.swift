@@ -22,6 +22,7 @@ struct SpecialGroupData: Hashable {
 	let nfts: [NFT]
 }
 
+
 class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -34,6 +35,9 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
 	var isVisible = false
+	var isSearching = false
+	
+	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
 	
 	
@@ -64,9 +68,12 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		collectionView.register(UINib(nibName: "CollectibleSpecialGroupCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleSpecialGroupCell")
 		collectionView.register(UINib(nibName: "CollectiblesListGroupCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListGroupCell")
 		collectionView.register(UINib(nibName: "CollectiblesListItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListItemCell")
+		collectionView.register(UINib(nibName: "CollectiblesSearchResultCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesSearchResultCell")
 		
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			if let _ = item as? ControlGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+				cell.searchBar.validator = FreeformValidator()
+				cell.searchBar.validatorTextFieldDelegate = self?.validatorTextfieldDelegate
 				return cell
 				
 			} else if let obj = item as? SpecialGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleSpecialGroupCell", for: indexPath) as? CollectibleSpecialGroupCell {
@@ -90,7 +97,15 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				cell.countLabel.text = obj.nfts?.count.description ?? ""
 				return cell
 				
-			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
+			} else if let obj = item as? NFT, self?.isSearching == false, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
+				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				cell.setup(title: obj.name, balance: obj.balance)
+				cell.subTitleLabel.text = obj.parentAlias ?? obj.parentContract
+				
+				return cell
+				
+			} else if let obj = item as? NFT, self?.isSearching == true, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchResultCell", for: indexPath) as? CollectiblesSearchResultCell {
 				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
 				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
 				cell.setup(title: obj.name, balance: obj.balance)
@@ -240,6 +255,34 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	
 	func isSectionExpanded(_ section: Int) -> Bool {
 		return expandedIndex?.section == section
+	}
+	
+	func searchFor(_ text: String) {
+		let numberOfSections = currentSnapshot.numberOfSections
+		
+		if numberOfSections > 1 {
+			currentSnapshot.deleteSections(Array(1..<numberOfSections))
+		}
+		
+		var searchResults: [NFT] = []
+		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+			
+			let results = nftGroup.nfts?.filter({ nft in
+				return nft.name.range(of: text, options: .caseInsensitive) != nil
+			})
+			
+			if let res = results {
+				searchResults.append(contentsOf: res)
+			}
+		}
+		
+		currentSnapshot.appendSections([1])
+		currentSnapshot.appendItems(searchResults, toSection: 1)
+		dataSource?.apply(currentSnapshot, animatingDifferences: true)
+	}
+	
+	func endSearching() {
+		
 	}
 }
 

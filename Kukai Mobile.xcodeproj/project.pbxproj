@@ -212,6 +212,9 @@
 		C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */; };
 		C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */; };
 		C0C8F1B6291E5515008D94EB /* NFTGroupSingleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C8F1B5291E5515008D94EB /* NFTGroupSingleCell.swift */; };
+		C0CB6AC02948E5E300E7B4DF /* CollectiblesSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB6ABE2948E5E300E7B4DF /* CollectiblesSearchResultCell.swift */; };
+		C0CB6AC12948E5E300E7B4DF /* CollectiblesSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0CB6ABF2948E5E300E7B4DF /* CollectiblesSearchResultCell.xib */; };
+		C0CB6AC32948ED4300E7B4DF /* FreeformValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */; };
 		C0D383B02941F3C900F036E1 /* UITableViewCell+gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D383AF2941F3C900F036E1 /* UITableViewCell+gradient.swift */; };
 		C0D6D50428B66572001B8130 /* Fees.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0D6D50328B66572001B8130 /* Fees.storyboard */; };
 		C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */; };
@@ -509,6 +512,9 @@
 		C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewController.swift; sourceTree = "<group>"; };
 		C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewModel.swift; sourceTree = "<group>"; };
 		C0C8F1B5291E5515008D94EB /* NFTGroupSingleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NFTGroupSingleCell.swift; sourceTree = "<group>"; };
+		C0CB6ABE2948E5E300E7B4DF /* CollectiblesSearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesSearchResultCell.swift; sourceTree = "<group>"; };
+		C0CB6ABF2948E5E300E7B4DF /* CollectiblesSearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectiblesSearchResultCell.xib; sourceTree = "<group>"; };
+		C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeformValidator.swift; sourceTree = "<group>"; };
 		C0D383AF2941F3C900F036E1 /* UITableViewCell+gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+gradient.swift"; sourceTree = "<group>"; };
 		C0D6D50328B66572001B8130 /* Fees.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Fees.storyboard; sourceTree = "<group>"; };
 		C0D6D50528B66B07001B8130 /* EditFeesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFeesViewController.swift; sourceTree = "<group>"; };
@@ -949,6 +955,7 @@
 				C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */,
 				C009F88E28197F1D007EA8A8 /* GmailValidator.swift */,
 				C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */,
+				C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1054,6 +1061,8 @@
 				C0B768AA2947776900EF893E /* CollectiblesListGroupCell.xib */,
 				C0B768AD2947779A00EF893E /* CollectiblesListItemCell.swift */,
 				C0B768AE2947779A00EF893E /* CollectiblesListItemCell.xib */,
+				C0CB6ABE2948E5E300E7B4DF /* CollectiblesSearchResultCell.swift */,
+				C0CB6ABF2948E5E300E7B4DF /* CollectiblesSearchResultCell.xib */,
 			);
 			path = "List xibs";
 			sourceTree = "<group>";
@@ -1305,6 +1314,7 @@
 				C0EA19CB29096DD200E6B40D /* CollectibleDetailNameCell.xib in Resources */,
 				C0EA19C129096D9400E6B40D /* CollectibleDetailImageCell.xib in Resources */,
 				C0214A062935054D0006E2E4 /* CollectibleDetailAudioScrubberCell.xib in Resources */,
+				C0CB6AC12948E5E300E7B4DF /* CollectiblesSearchResultCell.xib in Resources */,
 				C0B768B729477B5000EF893E /* CollectibleSpecialGroupCell.xib in Resources */,
 				C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */,
 				C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */,
@@ -1478,6 +1488,7 @@
 				C00AE0052886F67900184DF7 /* LiquidityViewController.swift in Sources */,
 				C0536912282BCCC80006A1C4 /* BeaconSignViewController.swift in Sources */,
 				C009F89128197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift in Sources */,
+				C0CB6AC02948E5E300E7B4DF /* CollectiblesSearchResultCell.swift in Sources */,
 				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
 				C0EA19DE29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift in Sources */,
 				C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */,
@@ -1544,6 +1555,7 @@
 				C0B08A33270DC25900075618 /* SendLedgerApproveViewController.swift in Sources */,
 				C06E0D63287C3E50007A580B /* WalletConnectApproveViewController.swift in Sources */,
 				C0D383B02941F3C900F036E1 /* UITableViewCell+gradient.swift in Sources */,
+				C0CB6AC32948ED4300E7B4DF /* FreeformValidator.swift in Sources */,
 				C07FA42627AC3F1F004B3BDF /* DisplayVideoViewController.swift in Sources */,
 				C07374A52798386B00726C01 /* Option1AllViewController.swift in Sources */,
 				C0EA19D629096E3200E6B40D /* CollectibleDetailSendCell.swift in Sources */,

@@ -18,6 +18,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 	static let specialGroupHeight: CGFloat = 64
 	static let groupHeight: CGFloat = 64
 	static let itemHeight: CGFloat = 94
+	static let searchItemHeight: CGFloat = 88
 	
 	fileprivate let groupSpacing: CGFloat = 4
 	
@@ -33,6 +34,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 	}
 	
 	public weak var delegate: CollectibleListLayoutDelegate?
+	public var isSearching = false
 	
 	
 	
@@ -55,14 +57,17 @@ class CollectibleListLayout: UICollectionViewLayout {
 				if item is ControlGroupData {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
 					
-				} else if item is SpecialGroupData {
+				} else if !isSearching, item is SpecialGroupData {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.specialGroupHeight)
 					
-				} else if item is Token {
+				} else if !isSearching, item is Token {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.groupHeight)
 					
-				} else {
+				} else if !isSearching {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.itemHeight)
+					
+				} else {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.searchItemHeight)
 				}
 				
 				let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: itemIndex, section: groupIndex))

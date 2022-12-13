@@ -18,6 +18,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	//@IBOutlet weak var moreButton: UIButton!
 	//@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var collectionView: UICollectionView!
+	@IBOutlet weak var collectionViewTopConstraint: NSLayoutConstraint!
 	
 	private let viewModel = CollectiblesViewModel()
 	private var cancellable: AnyCancellable?
@@ -28,7 +29,11 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
+		self.navigationController?.hidesBarsWhenKeyboardAppears = true
+		
+		viewModel.validatorTextfieldDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
+		
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
 		
@@ -102,6 +107,62 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 			self.performSegue(withIdentifier: "details", sender: self)
 		}
 	}
+}
+
+extension CollectiblesViewController: ValidatorTextFieldDelegate {
+	
+	public func textFieldDidBeginEditing(_ textField: UITextField) {
+		viewModel.isSearching = true
+		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = true
+		
+		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.buttonsStackView.isHidden = true
+		
+		//self.collectionViewTopConstraint.constant = -60
+		/*UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -100))
+			//self?.view.layoutSubviews()
+		}*/
+		
+		/*
+		self.collectionViewTopConstraint.constant = -60
+		self.view.layoutIfNeeded()
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -90))
+			self?.collectionView.contentOffset = CGPoint(x: -16, y: 60)
+			
+		} completion: { [weak self] complete in
+			//self?.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+			//print("Current offset: \(self?.collectionView.contentOffset)")
+			
+			//self?.collectionView.setContentOffset(CGPoint(x: -16, y: 60), animated: true)
+		}
+		*/
+	}
+	
+	public func textFieldDidEndEditing(_ textField: UITextField) {
+		viewModel.isSearching = false
+		viewModel.endSearching()
+		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
+		
+		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.buttonsStackView.isHidden = false
+		
+		self.collectionViewTopConstraint.constant = 0
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.navigationController?.navigationBar.transform = .identity
+			self?.view.layoutIfNeeded()
+		}
+	}
+	
+	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		return true
+	}
+	
+	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		viewModel.searchFor(text)
+	}
+}
 	
 	
 	
@@ -238,7 +299,6 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		}
 	}
 	 */
-}
 
 /*
 extension CollectiblesViewController: ValidatorTextFieldDelegate {
