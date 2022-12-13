@@ -7,21 +7,36 @@
 
 import UIKit
 
-class CollectiblesListGroupCell: UICollectionViewCell {
+class CollectiblesListGroupCell: UICollectionViewCell, ExpandableCell {
 
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var countLabel: UILabel!
+	@IBOutlet weak var chevronView: UIImageView!
 	
 	private var gradientLayer: CAGradientLayer? = nil
 	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if gradientLayer == nil {
-			self.contentView.customCornerRadius = 8
-			self.contentView.maskToBounds = true
-			gradientLayer = self.contentView.addGradientPanelRows(withFrame: self.contentView.bounds)
-		}
+	public func addGradientBackground() {
+		contentView.customCornerRadius = 8
+		contentView.maskToBounds = true
+		gradientLayer?.removeFromSuperlayer()
+		gradientLayer = self.contentView.addGradientPanelRows(withFrame: self.contentView.bounds)
+	}
+	
+	public func addGradientBorder() {
+		contentView.customCornerRadius = 0
+		contentView.maskToBounds = false
+		gradientLayer?.removeFromSuperlayer()
+		gradientLayer = contentView.addGradientNFTSection_top(withFrame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height+10))
+	}
+	
+	public func setOpen() {
+		addGradientBorder()
+		chevronView.rotate(degrees: 90, duration: 0.3)
+	}
+	
+	public func setClosed() {
+		addGradientBackground()
+		chevronView.rotateBack(duration: 0.3)
 	}
 }

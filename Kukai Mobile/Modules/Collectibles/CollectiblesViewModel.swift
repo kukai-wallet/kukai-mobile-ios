@@ -28,10 +28,33 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	typealias CellDataType = AnyHashable
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var expandedIndex: IndexPath? = nil
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
-	var hashableData: [[AnyHashable]] = [[]]
+	var isVisible = false
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+			.dropFirst()
+			.sink { [weak self] _ in
+				if self?.dataSource != nil && self?.isVisible == true {
+					self?.refresh(animate: true)
+				}
+			}
+	}
+	
+	deinit {
+		accountDataRefreshedCancellable?.cancel()
+	}
+	
 	
 	
 	// MARK: - CollectionView Setup
@@ -54,11 +77,25 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				return cell
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListGroupCell", for: indexPath) as? CollectiblesListGroupCell {
-				cell.titleLabel.text = obj.name ?? obj.tokenContractAddress
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				
+				if let alias = obj.name {
+					cell.titleLabel.text = alias
+					cell.titleLabel.lineBreakMode = .byTruncatingTail
+				} else {
+					cell.titleLabel.text = obj.tokenContractAddress
+					cell.titleLabel.lineBreakMode = .byTruncatingMiddle
+				}
+				
 				cell.countLabel.text = obj.nfts?.count.description ?? ""
 				return cell
 				
-			} else if let _ = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
+			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
+				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				cell.setup(title: obj.name, balance: obj.balance)
+				cell.subTitleLabel.text = obj.parentAlias ?? obj.parentContract
+				
 				return cell
 				
 			}
@@ -79,7 +116,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		layout = l
 		
 		
-		hashableData = [[ControlGroupData()]]
+		var hashableData: [[AnyHashable]] = [[ControlGroupData()]]
 		
 		if let firstNFT = DependencyManager.shared.balanceService.account.nfts.first?.nfts?.first {
 			var duplicateCopy = firstNFT
@@ -113,12 +150,103 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		// Return success
 		self.state = .success(nil)
 	}
+	
+	
+	
+	// MARK: UI functions
+	
+	func shouldOpenCloseForIndexPathTap(_ indexPath: IndexPath) -> Bool {
+		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
+		
+		if item is SpecialGroupData {
+			return true
+			
+		} else if item is Token {
+			return true
+			
+		} else {
+			return false
+		}
+	}
+	
+	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		if expandedIndex == nil {
+			expandedIndex = indexPath
+			self.openGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if expandedIndex == indexPath {
+			expandedIndex = nil
+			self.closeGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if let previousIndex = expandedIndex, previousIndex != indexPath {
+			self.openGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			self.closeGroup(forCollectionView: collectionView, atIndexPath: previousIndex)
+			expandedIndex = indexPath
+		}
+		
+		ds.apply(currentSnapshot, animatingDifferences: true)
+	}
+	
+	private func openGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? ExpandableCell {
+			cell.setOpen()
+		}
+		
+		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
+		
+		if let special = item as? SpecialGroupData {
+			currentSnapshot.insertItems(special.nfts, afterItem: special)
+			
+		} else if let group = item as? Token {
+			currentSnapshot.insertItems(group.nfts ?? [], afterItem: group)
+		}
+	}
+	
+	private func closeGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
+		if let cell = collectionView.cellForItem(at: indexPath) as? ExpandableCell {
+			cell.setClosed()
+		}
+		
+		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
+		
+		if let special = item as? SpecialGroupData {
+			currentSnapshot.deleteItems(special.nfts)
+			
+		} else if let group = item as? Token {
+			currentSnapshot.deleteItems(group.nfts ?? [])
+		}
+	}
+	
+	func nft(atIndexPath: IndexPath) -> NFT? {
+		let item = currentSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+		
+		if let special = item as? SpecialGroupData {
+			return special.nfts[atIndexPath.row-1]
+			
+		} else if let group = item as? Token {
+			return group.nfts?[atIndexPath.row-1]
+			
+		} else if let i = item as? NFT {
+			return i
+		}
+		
+		return nil
+	}
+	
+	func isSectionExpanded(_ section: Int) -> Bool {
+		return expandedIndex?.section == section
+	}
 }
 
 extension CollectiblesViewModel: CollectibleListLayoutDelegate {
 	
-	func data() -> [[AnyHashable]] {
-		return hashableData
+	func data() -> NSDiffableDataSourceSnapshot<SectionEnum, CellDataType> {
+		return currentSnapshot
 	}
 }
 	

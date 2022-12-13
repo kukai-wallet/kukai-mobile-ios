@@ -25,6 +25,9 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
+		let _ = self.view.addGradientBackgroundFull()
+		
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
@@ -48,12 +51,56 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		viewModel.isVisible = true
 		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func setup() {
 		self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 		self.collectionView.collectionViewLayout = viewModel.layout
+	}
+	
+	
+	
+	// MARK: - CollectionView
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if let c = cell as? ExpandableCell {
+			c.addGradientBackground()
+			
+		} else if let c = cell as? CollectiblesListItemCell {
+			let numberOfCellsInSection = collectionView.numberOfItems(inSection: indexPath.section)
+			c.addGradientBorder(withFrame: CGRect(x: 0, y: 0, width: collectionView.frame.width - (collectionView.contentInset.left * 2), height: CollectibleListLayout.itemHeight), isLast: indexPath.row == numberOfCellsInSection-1)
+			c.iconView.alpha = 0
+			c.titleLabel.alpha = 0
+			c.subTitleLabel.alpha = 0
+			c.quantityView.alpha = 0
+			
+			DispatchQueue.main.asyncAfter(deadline: .now()) {
+				UIView.animate(withDuration: 0.5, delay: 0.1) {
+					c.iconView.alpha = 1
+					c.titleLabel.alpha = 1
+					c.subTitleLabel.alpha = 1
+					c.quantityView.alpha = 1
+				}
+			}
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		if viewModel.shouldOpenCloseForIndexPathTap(indexPath) {
+			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if let nft = viewModel.nft(atIndexPath: indexPath) {
+			TransactionService.shared.sendData.chosenToken = nil
+			TransactionService.shared.sendData.chosenNFT = nft
+			self.performSegue(withIdentifier: "details", sender: self)
+		}
 	}
 	
 	

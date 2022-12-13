@@ -9,15 +9,15 @@ import UIKit
 import KukaiCoreSwift
 
 protocol CollectibleListLayoutDelegate: AnyObject {
-	func data() -> [[AnyHashable]]
+	func data() -> NSDiffableDataSourceSnapshot<Int, AnyHashable>
 }
 
 class CollectibleListLayout: UICollectionViewLayout {
 	
-	fileprivate let controlGroupHeight: CGFloat = 62
-	fileprivate let specialGroupHeight: CGFloat = 64
-	fileprivate let groupHeight: CGFloat = 64
-	fileprivate let itemHeight: CGFloat = 94
+	static let controlGroupHeight: CGFloat = 62
+	static let specialGroupHeight: CGFloat = 64
+	static let groupHeight: CGFloat = 64
+	static let itemHeight: CGFloat = 94
 	
 	fileprivate let groupSpacing: CGFloat = 4
 	
@@ -47,6 +47,36 @@ class CollectibleListLayout: UICollectionViewLayout {
 		
 		var yOffset: CGFloat = 0
 		
+		
+		let numberOfSections = data.numberOfSections
+		for groupIndex in 0..<numberOfSections {
+			for (itemIndex, item) in data.itemIdentifiers(inSection: groupIndex).enumerated() {
+				var frame = CGRect.zero
+				if item is ControlGroupData {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
+					
+				} else if item is SpecialGroupData {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.specialGroupHeight)
+					
+				} else if item is Token {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.groupHeight)
+					
+				} else {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.itemHeight)
+				}
+				
+				let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: itemIndex, section: groupIndex))
+				attributes.frame = frame
+				cache[groupIndex].append(attributes)
+				
+				yOffset += frame.size.height
+			}
+			
+			yOffset += groupSpacing
+			cache.append([])
+		}
+		
+		/*
 		for (groupIndex, group) in data.enumerated() {
 			for (itemIndex, item) in group.enumerated() {
 				
@@ -74,6 +104,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 			yOffset += groupSpacing
 			cache.append([])
 		}
+		*/
 		
 		contentHeight = yOffset
 	}

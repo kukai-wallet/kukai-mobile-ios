@@ -53,11 +53,20 @@ class TokenDetailsChartCell: UITableViewCell {
 		
 		self.delegate = delegate
 		self.chartController = chartController
-		self.chartController?.view.backgroundColor = .clear
-		
 		self.chartContainer?.backgroundColor = .clear
-		self.chartContainer?.addSubview(self.chartController?.view ?? UIView())
-		self.chartController?.view.frame = chartContainer.bounds
+		
+		if let cView = self.chartController?.view {
+			cView.backgroundColor = .clear
+			self.chartContainer?.addSubview(cView)
+			
+			cView.translatesAutoresizingMaskIntoConstraints = false
+			NSLayoutConstraint.activate([
+				cView.leadingAnchor.constraint(equalTo: self.chartContainer.leadingAnchor),
+				cView.trailingAnchor.constraint(equalTo: self.chartContainer.trailingAnchor),
+				cView.topAnchor.constraint(equalTo: self.chartContainer.topAnchor),
+				cView.bottomAnchor.constraint(equalTo: self.chartContainer.bottomAnchor)
+			])
+		}
 		
 		self.allChartData = allChartData
 		self.dayButtonTapped(self)

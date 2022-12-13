@@ -15,4 +15,27 @@ class CollectiblesListItemCell: UICollectionViewCell {
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
 	
+	private var gradientLayer = CAGradientLayer()
+	
+	func setup(title: String, balance: Decimal) {
+		titleLabel.text = title
+		
+		if balance > 1 {
+			quantityView.isHidden = false
+			quantityLabel.text = balance.description
+		} else {
+			quantityView.isHidden = true
+		}
+	}
+	
+	public func addGradientBorder(withFrame: CGRect, isLast: Bool) {
+		gradientLayer.removeFromSuperlayer()
+		
+		if isLast {
+			gradientLayer = contentView.addGradientNFTSection_bottom(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+5))
+			
+		} else {
+			gradientLayer = contentView.addGradientNFTSection_middle(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+10))
+		}
+	}
 }
