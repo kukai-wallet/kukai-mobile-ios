@@ -172,7 +172,13 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	// MARK: UI functions
 	
 	func shouldOpenCloseForIndexPathTap(_ indexPath: IndexPath) -> Bool {
-		let item = normalSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
+		var item: AnyHashable = ""
+		
+		if isSearching {
+			item = searchSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
+		} else {
+			item = normalSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
+		}
 		
 		if item is SpecialGroupData {
 			return true
@@ -239,7 +245,13 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	}
 	
 	func nft(atIndexPath: IndexPath) -> NFT? {
-		let item = normalSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+		var item: AnyHashable = ""
+		
+		if isSearching {
+			item = searchSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+		} else {
+			item = normalSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+		}
 		
 		if let special = item as? SpecialGroupData {
 			return special.nfts[atIndexPath.row-1]

@@ -113,8 +113,6 @@ extension CollectiblesViewController: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
 		self.showSearchingUI()
-		
-		print("Did begin editing")
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
