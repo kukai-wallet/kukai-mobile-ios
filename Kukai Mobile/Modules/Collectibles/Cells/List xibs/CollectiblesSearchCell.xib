@@ -16,16 +16,16 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectiblesSearchCell" id="gTV-IL-0wX" customClass="CollectiblesSearchCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="485" height="62"/>
+            <rect key="frame" x="0.0" y="0.0" width="485" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="485" height="62"/>
+                <rect key="frame" x="0.0" y="0.0" width="485" height="50"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="3tt-10-QNm">
-                        <rect key="frame" x="0.0" y="16" width="485" height="34"/>
+                        <rect key="frame" x="0.0" y="4" width="485" height="34"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="389" height="34"/>
                                 <color key="backgroundColor" name="Grey1600"/>
                                 <color key="textColor" name="Grey200"/>
@@ -117,7 +117,7 @@
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="3tt-10-QNm" secondAttribute="bottom" constant="12" id="0h2-SA-Rbx"/>
-                <constraint firstItem="3tt-10-QNm" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="16" id="CQe-82-7tj"/>
+                <constraint firstItem="3tt-10-QNm" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="4" id="CQe-82-7tj"/>
                 <constraint firstItem="3tt-10-QNm" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="wwE-jC-C4v"/>
                 <constraint firstAttribute="trailing" secondItem="3tt-10-QNm" secondAttribute="trailing" id="zcS-GR-yCQ"/>
             </constraints>
@@ -133,13 +133,13 @@
     </objects>
     <designables>
         <designable name="CEw-Bt-YVZ">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="19"/>
         </designable>
         <designable name="JrW-xZ-m9g">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="42" height="32"/>
         </designable>
         <designable name="kBC-Zb-iRc">
-            <size key="intrinsicContentSize" width="44.666666666666664" height="18.666666666666668"/>
+            <size key="intrinsicContentSize" width="80" height="18.666666666666668"/>
         </designable>
     </designables>
     <resources>

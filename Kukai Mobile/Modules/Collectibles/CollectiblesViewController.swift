@@ -29,7 +29,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
-		self.navigationController?.hidesBarsWhenKeyboardAppears = true
+		//self.navigationController?.hidesBarsWhenKeyboardAppears = true
 		
 		viewModel.validatorTextfieldDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
@@ -112,55 +112,61 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 extension CollectiblesViewController: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
-		viewModel.isSearching = true
-		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = true
+		self.showSearchingUI()
 		
-		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
-		searchCell?.buttonsStackView.isHidden = true
-		
-		//self.collectionViewTopConstraint.constant = -60
-		/*UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-			self?.navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -100))
-			//self?.view.layoutSubviews()
-		}*/
-		
-		/*
-		self.collectionViewTopConstraint.constant = -60
-		self.view.layoutIfNeeded()
-		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-			self?.navigationController?.navigationBar.transform = .init(translationX: 0, y: min(0, -90))
-			self?.collectionView.contentOffset = CGPoint(x: -16, y: 60)
-			
-		} completion: { [weak self] complete in
-			//self?.collectionView.scrollToItem(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
-			//print("Current offset: \(self?.collectionView.contentOffset)")
-			
-			//self?.collectionView.setContentOffset(CGPoint(x: -16, y: 60), animated: true)
-		}
-		*/
+		print("Did begin editing")
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
-		viewModel.isSearching = false
-		viewModel.endSearching()
-		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
+		
+	}
+	
+	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		self.hideSearchingUI()
+		return false // When user taps clear we want to resignFirstResponder, but apple re-focuses on clear. So we do our own clear and tell apple not too
+	}
+	
+	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		if text != "" {
+			viewModel.searchFor(text)
+			
+		} else {
+			self.hideSearchingUI()
+		}
+	}
+	
+	private func showSearchingUI() {
+		viewModel.isSearching = true
+		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = true
+		
+		self.navigationController?.setNavigationBarHidden(true, animated: true)
 		
 		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
-		searchCell?.buttonsStackView.isHidden = false
+		searchCell?.buttonsStackView.isHidden = true
+		searchCell?.searchBar.text = ""
 		
-		self.collectionViewTopConstraint.constant = 0
+		collectionViewTopConstraint.constant = 0
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-			self?.navigationController?.navigationBar.transform = .identity
 			self?.view.layoutIfNeeded()
 		}
 	}
 	
-	func textFieldShouldClear(_ textField: UITextField) -> Bool {
-		return true
-	}
-	
-	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		viewModel.searchFor(text)
+	private func hideSearchingUI() {
+		viewModel.isSearching = false
+		viewModel.endSearching()
+		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
+		
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
+		
+		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.buttonsStackView.isHidden = false
+		searchCell?.searchBar.text = ""
+		searchCell?.searchBar.resignFirstResponder()
+		
+		collectionViewTopConstraint.constant = 12
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.view.layoutIfNeeded()
+		}
 	}
 }
 	
