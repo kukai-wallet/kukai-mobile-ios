@@ -28,7 +28,8 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	private var searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	private var expandedIndex: IndexPath? = nil
 	
@@ -152,14 +153,14 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		
 		// Build snapshot
-		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		currentSnapshot.appendSections(Array(0..<(hashableData.count) ))
+		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		normalSnapshot.appendSections(Array(0..<(hashableData.count) ))
 		
 		for (index, item) in hashableData.enumerated() {
-			currentSnapshot.appendItems(item, toSection: index)
+			normalSnapshot.appendItems(item, toSection: index)
 		}
 		
-		ds.apply(currentSnapshot, animatingDifferences: animate)
+		ds.apply(normalSnapshot, animatingDifferences: animate)
 		
 		
 		// Return success
@@ -171,7 +172,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	// MARK: UI functions
 	
 	func shouldOpenCloseForIndexPathTap(_ indexPath: IndexPath) -> Bool {
-		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
+		let item = normalSnapshot.itemIdentifiers(inSection: indexPath.section)[indexPath.row]
 		
 		if item is SpecialGroupData {
 			return true
@@ -204,7 +205,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 			expandedIndex = indexPath
 		}
 		
-		ds.apply(currentSnapshot, animatingDifferences: true)
+		ds.apply(normalSnapshot, animatingDifferences: true)
 	}
 	
 	private func openGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
@@ -212,13 +213,13 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 			cell.setOpen()
 		}
 		
-		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
+		let item = normalSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
 		
 		if let special = item as? SpecialGroupData {
-			currentSnapshot.insertItems(special.nfts, afterItem: special)
+			normalSnapshot.insertItems(special.nfts, afterItem: special)
 			
 		} else if let group = item as? Token {
-			currentSnapshot.insertItems(group.nfts ?? [], afterItem: group)
+			normalSnapshot.insertItems(group.nfts ?? [], afterItem: group)
 		}
 	}
 	
@@ -227,18 +228,18 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 			cell.setClosed()
 		}
 		
-		let item = currentSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
+		let item = normalSnapshot.itemIdentifiers(inSection: indexPath.section)[0]
 		
 		if let special = item as? SpecialGroupData {
-			currentSnapshot.deleteItems(special.nfts)
+			normalSnapshot.deleteItems(special.nfts)
 			
 		} else if let group = item as? Token {
-			currentSnapshot.deleteItems(group.nfts ?? [])
+			normalSnapshot.deleteItems(group.nfts ?? [])
 		}
 	}
 	
 	func nft(atIndexPath: IndexPath) -> NFT? {
-		let item = currentSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+		let item = normalSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
 		
 		if let special = item as? SpecialGroupData {
 			return special.nfts[atIndexPath.row-1]
@@ -258,10 +259,11 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	}
 	
 	func searchFor(_ text: String) {
-		let numberOfSections = currentSnapshot.numberOfSections
+		searchSnapshot = normalSnapshot
+		let numberOfSections = searchSnapshot.numberOfSections
 		
 		if numberOfSections > 1 {
-			currentSnapshot.deleteSections(Array(1..<numberOfSections))
+			searchSnapshot.deleteSections(Array(1..<numberOfSections))
 		}
 		
 		var searchResults: [NFT] = []
@@ -276,20 +278,27 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 			}
 		}
 		
-		currentSnapshot.appendSections([1])
-		currentSnapshot.appendItems(searchResults, toSection: 1)
-		dataSource?.apply(currentSnapshot, animatingDifferences: true)
+		searchSnapshot.appendSections([1])
+		searchSnapshot.appendItems(searchResults, toSection: 1)
+		dataSource?.apply(searchSnapshot, animatingDifferences: true)
+		
 	}
 	
 	func endSearching() {
-		
+		searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+		dataSource?.apply(normalSnapshot, animatingDifferences: true)
 	}
 }
 
 extension CollectiblesViewModel: CollectibleListLayoutDelegate {
 	
 	func data() -> NSDiffableDataSourceSnapshot<SectionEnum, CellDataType> {
-		return currentSnapshot
+		
+		if isSearching {
+			return searchSnapshot
+		}
+		
+		return normalSnapshot
 	}
 }
 	

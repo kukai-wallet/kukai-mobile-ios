@@ -136,8 +136,8 @@ extension CollectiblesViewController: ValidatorTextFieldDelegate {
 	}
 	
 	private func showSearchingUI() {
-		viewModel.isSearching = true
 		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = true
+		viewModel.isSearching = true
 		
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 		
@@ -152,9 +152,9 @@ extension CollectiblesViewController: ValidatorTextFieldDelegate {
 	}
 	
 	private func hideSearchingUI() {
+		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
 		viewModel.isSearching = false
 		viewModel.endSearching()
-		(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
 		
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 		
