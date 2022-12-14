@@ -31,12 +31,12 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
-	private var expandedIndex: IndexPath? = nil
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
 	var isVisible = false
 	var isSearching = false
+	var expandedIndex: IndexPath? = nil
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -96,6 +96,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				}
 				
 				cell.countLabel.text = obj.nfts?.count.description ?? ""
+				
 				return cell
 				
 			} else if let obj = item as? NFT, self?.isSearching == false, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
@@ -132,23 +133,59 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		layout = l
 		
 		
-		var hashableData: [[AnyHashable]] = [[ControlGroupData()]]
+		// Build special lists list
+		var favs: [NFT] = []
+		var recents: [NFT] = []
+		var showcases: [SpecialGroupData] = []
 		
-		if let firstNFT = DependencyManager.shared.balanceService.account.nfts.first?.nfts?.first {
-			var duplicateCopy = firstNFT
+		// Favourites
+		for token in DependencyManager.shared.balanceService.account.nfts { // TODO: mark token as hidden if every nft in it is hidden to save time
+			guard !token.isHidden else {
+				continue
+			}
 			
-			duplicateCopy.duplicateID = 1
-			hashableData.append( [SpecialGroupData(imageName: "star-fill", title: "Favorites", count: 1, isShowcase: false, nfts: [duplicateCopy])] )
-			
-			duplicateCopy.duplicateID = 2
-			hashableData.append( [SpecialGroupData(imageName: "collectible-group-recents", title: "Recents", count: 1, isShowcase: false, nfts: [duplicateCopy])] )
-			
-			duplicateCopy.duplicateID = 3
-			hashableData.append( [SpecialGroupData(imageName: "collectible-group-showcase", title: "Showcase", count: 1, isShowcase: true, nfts: [duplicateCopy])] )
+			favs.append(contentsOf: (token.nfts ?? []).filter({ $0.isFavourite && !$0.isHidden }) )
 		}
 		
-		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-			hashableData.append( [nftGroup] )
+		// Add duplicate ids to statisfy diffable data source
+		for (index, _) in favs.enumerated() {
+			favs[index].duplicateID = index+1
+		}
+		
+		
+		// Build snapshot data
+		var hashableData: [[AnyHashable]] = [[ControlGroupData()]]
+		
+		if favs.count > 0 {
+			hashableData.append([SpecialGroupData(imageName: "star-fill", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])
+		}
+		
+		if recents.count > 0 {
+			hashableData.append([SpecialGroupData(imageName: "collectible-group-recents", title: "Recents", count: 0, isShowcase: false, nfts: [])])
+		}
+		
+		if showcases.count > 0 {
+			for showcase in showcases {
+				hashableData.append([showcase])
+			}
+		}
+		
+		
+		// Add non hidden groups
+		let previousSectionCount = hashableData.count
+		for (index, nftGroup) in DependencyManager.shared.balanceService.account.nfts.enumerated() {
+			guard !nftGroup.isHidden else {
+				continue
+			}
+			
+			if (index + previousSectionCount) == expandedIndex?.section {
+				var tempData: [AnyHashable] = [nftGroup]
+				tempData.append(contentsOf: (nftGroup.nfts ?? []).filter({ !$0.isHidden }) )
+				hashableData.append(tempData)
+				
+			} else {
+				hashableData.append( [nftGroup] )
+			}
 		}
 		
 		
@@ -161,7 +198,6 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		}
 		
 		ds.apply(normalSnapshot, animatingDifferences: animate)
-		
 		
 		// Return success
 		self.state = .success(nil)

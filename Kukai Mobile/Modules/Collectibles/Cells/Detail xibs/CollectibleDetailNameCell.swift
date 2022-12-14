@@ -126,7 +126,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			return
 		}
 		
-		favouriteButton.isSelected = isFavouritedNft
+		favouriteButton.isSelected = !isFavouritedNft
 		
 		if isFavouritedNft {
 			if TokenStateService.shared.removeFavourite(nft: nft) {

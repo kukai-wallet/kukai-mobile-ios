@@ -75,7 +75,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	// MARK: - CollectionView
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		if let c = cell as? ExpandableCell {
+		if indexPath.section != viewModel.expandedIndex?.section, let c = cell as? ExpandableCell {
 			c.addGradientBackground()
 			
 		} else if let c = cell as? CollectiblesListItemCell {
