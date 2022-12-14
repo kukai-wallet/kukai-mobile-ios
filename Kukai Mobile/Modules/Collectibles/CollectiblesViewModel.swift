@@ -248,7 +248,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		var item: AnyHashable = ""
 		
 		if isSearching {
-			item = searchSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
+			item = searchSnapshot.itemIdentifiers(inSection: atIndexPath.section)[atIndexPath.row]
 		} else {
 			item = normalSnapshot.itemIdentifiers(inSection: atIndexPath.section)[0]
 		}
