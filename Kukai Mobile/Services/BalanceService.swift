@@ -219,13 +219,22 @@ public class BalanceService {
 		}
 		
 		for nftGroup in self.account.nfts {
+			
+			var hiddenCount = 0
 			for nftIndex in 0..<(nftGroup.nfts ?? []).count {
 				
 				if let nft = nftGroup.nfts?[nftIndex] {
-					nftGroup.nfts?[nftIndex].isHidden = TokenStateService.shared.isHidden(nft: nft)
+					
+					let isHidden = TokenStateService.shared.isHidden(nft: nft)
+					hiddenCount += (isHidden ? 1 : 0)
+					
+					nftGroup.nfts?[nftIndex].isHidden = isHidden
 					nftGroup.nfts?[nftIndex].isFavourite = TokenStateService.shared.isFavourite(nft: nft)
 				}
-				
+			}
+			
+			if hiddenCount == nftGroup.nfts?.count {
+				nftGroup.isHidden = true 
 			}
 		}
 		

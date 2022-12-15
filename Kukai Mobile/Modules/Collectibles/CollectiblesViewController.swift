@@ -78,6 +78,9 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		if indexPath.section != viewModel.expandedIndex?.section, let c = cell as? ExpandableCell {
 			c.addGradientBackground()
 			
+		} else if indexPath.section == viewModel.expandedIndex?.section, let c = cell as? CollectibleSpecialGroupCell {
+			c.setOpen()
+			
 		} else if let c = cell as? CollectiblesListItemCell {
 			let numberOfCellsInSection = collectionView.numberOfItems(inSection: indexPath.section)
 			c.addGradientBorder(withFrame: CGRect(x: 0, y: 0, width: collectionView.frame.width - (collectionView.contentInset.left * 2), height: CollectibleListLayout.itemHeight), isLast: indexPath.row == numberOfCellsInSection-1)

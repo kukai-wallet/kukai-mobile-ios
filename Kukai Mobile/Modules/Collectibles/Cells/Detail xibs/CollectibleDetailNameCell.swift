@@ -126,12 +126,12 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			return
 		}
 		
-		favouriteButton.isSelected = !isFavouritedNft
-		
 		if isFavouritedNft {
 			if TokenStateService.shared.removeFavourite(nft: nft) {
 				DependencyManager.shared.balanceService.updateTokenStates()
 				DependencyManager.shared.accountBalancesDidUpdate = true
+				favouriteButton.isSelected = false
+				isFavouritedNft = false
 				
 			} else {
 				self.delegate?.errorMessage(message: "Unable to unfavourite collectible")
@@ -141,6 +141,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			if TokenStateService.shared.addFavourite(nft: nft) {
 				DependencyManager.shared.balanceService.updateTokenStates()
 				DependencyManager.shared.accountBalancesDidUpdate = true
+				favouriteButton.isSelected = true
+				isFavouritedNft = true
 				
 			} else {
 				self.delegate?.errorMessage(message: "Unable to favourite collectible")

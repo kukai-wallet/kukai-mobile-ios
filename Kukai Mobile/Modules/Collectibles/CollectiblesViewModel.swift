@@ -37,6 +37,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	var isVisible = false
 	var isSearching = false
 	var expandedIndex: IndexPath? = nil
+	var previousSectionCount = 0
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -96,7 +97,6 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				}
 				
 				cell.countLabel.text = obj.nfts?.count.description ?? ""
-				
 				return cell
 				
 			} else if let obj = item as? NFT, self?.isSearching == false, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
@@ -172,22 +172,13 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		
 		// Add non hidden groups
-		let previousSectionCount = hashableData.count
-		for (index, nftGroup) in DependencyManager.shared.balanceService.account.nfts.enumerated() {
+		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
 			guard !nftGroup.isHidden else {
 				continue
 			}
 			
-			if (index + previousSectionCount) == expandedIndex?.section {
-				var tempData: [AnyHashable] = [nftGroup]
-				tempData.append(contentsOf: (nftGroup.nfts ?? []).filter({ !$0.isHidden }) )
-				hashableData.append(tempData)
-				
-			} else {
-				hashableData.append( [nftGroup] )
-			}
+			hashableData.append( [nftGroup] )
 		}
-		
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
@@ -197,7 +188,38 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 			normalSnapshot.appendItems(item, toSection: index)
 		}
 		
+		
+		// If refreshing during editing, check if we have the same number of sections at end of last run, if so expand the previously expanded item
+		var itemToRefresh: AnyHashable? = nil
+		if let eIndex = expandedIndex, normalSnapshot.numberOfSections == previousSectionCount {
+			let itemToCheck = hashableData[eIndex.section][0]
+			
+			if let special = itemToCheck as? SpecialGroupData {
+				normalSnapshot.insertItems(special.nfts, afterItem: special)
+				itemToRefresh = special.nfts.last
+				
+			} else if let group = itemToCheck as? Token {
+				normalSnapshot.insertItems(group.nfts ?? [], afterItem: group)
+				itemToRefresh = group.nfts?.last
+			}
+			
+		} else {
+			expandedIndex = nil
+		}
+		
+		
+		previousSectionCount = normalSnapshot.numberOfSections
 		ds.apply(normalSnapshot, animatingDifferences: animate)
+		
+		// The last item in each expanded list needs a different gradient, incase the last item is removed, we need to reload that one in order for it to be processed correctly
+		if let item = itemToRefresh {
+			DispatchQueue.main.async { [weak self] in
+				guard let self = self else { return }
+				
+				self.normalSnapshot.reloadItems([item])
+				self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true)
+			}
+		}
 		
 		// Return success
 		self.state = .success(nil)
