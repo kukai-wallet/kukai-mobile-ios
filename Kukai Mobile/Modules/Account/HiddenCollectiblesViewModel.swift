@@ -1,15 +1,15 @@
 //
-//  HiddenBalancesViewModel.swift
+//  HiddenCollectiblesViewModel.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 21/11/2022.
+//  Created by Simon Mcloughlin on 15/12/2022.
 //
 
 import UIKit
 import KukaiCoreSwift
 import Combine
 
-class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
@@ -17,7 +17,7 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashable
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	var tokensToDisplay: [Token] = []
+	var collectiblesToDisplay: [NFT] = []
 	
 	
 	// MARK: - Init
@@ -46,10 +46,11 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
-				cell.symbolLabel.text = obj.symbol
-				cell.balanceLabel.text = obj.balance.normalisedRepresentation
+			if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
+				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: .icon)
+				MediaProxyService.load(url: url, to: cell.tokenIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+				cell.symbolLabel.text = obj.name
+				cell.balanceLabel.text = obj.parentAlias ?? obj.parentContract
 				
 				return cell
 				
@@ -69,8 +70,13 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		tokensToDisplay = DependencyManager.shared.balanceService.account.tokens.filter({ $0.isHidden })
-		var section1Data: [AnyHashable] = tokensToDisplay
+		
+		collectiblesToDisplay = []
+		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+			collectiblesToDisplay.append(contentsOf: (nftGroup.nfts ?? []).filter({ $0.isHidden }))
+		}
+		
+		var section1Data: [AnyHashable] = collectiblesToDisplay
 		
 		if section1Data.count == 0 {
 			section1Data = [""]
@@ -85,7 +91,7 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func token(atIndexPath: IndexPath) -> Token? {
-		return tokensToDisplay[atIndexPath.row]
+	func nft(atIndexPath: IndexPath) -> NFT? {
+		return collectiblesToDisplay[atIndexPath.row]
 	}
 }
