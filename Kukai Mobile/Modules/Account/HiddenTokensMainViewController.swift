@@ -20,9 +20,10 @@ class HiddenTokensMainViewController: UIViewController {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		segmetnedButton.addUnderlineForSelectedSegment()
-		if segmetnedButton.selectedSegmentIndex == 0 {
-			self.collectiblesContainer.isHidden = true
-		}
+		
+		let homeTabBar = self.navigationController?.viewControllers[(self.navigationController?.viewControllers.count ?? 2)-2] as? HomeTabBarController
+		segmetnedButton.selectedSegmentIndex = homeTabBar?.selectedIndex == 0 ? 0 : 1
+		segmentedButtonChanged(segmetnedButton as Any)
     }
 	
 	@IBAction func segmentedButtonChanged(_ sender: Any) {
@@ -40,5 +41,9 @@ class HiddenTokensMainViewController: UIViewController {
 	
 	public func openTokenDetails() {
 		self.performSegue(withIdentifier: "tokenDetails", sender: nil)
+	}
+	
+	public func openCollectibleDetails() {
+		self.performSegue(withIdentifier: "collectibleDetails", sender: nil)
 	}
 }

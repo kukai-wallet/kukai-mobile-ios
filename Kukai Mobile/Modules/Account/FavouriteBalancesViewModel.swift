@@ -45,7 +45,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	class MoveableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-			if indexPath.row == 0 {
+			if indexPath.section == 0 {
 				return false
 			}
 			
@@ -53,7 +53,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		}
 		
 		override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-			if indexPath.row == 0 {
+			if indexPath.section == 0 {
 				return false
 			}
 			
@@ -61,11 +61,11 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		}
 		
 		override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-			guard sourceIndexPath.row != destinationIndexPath.row else {
+			guard sourceIndexPath.section != destinationIndexPath.section else {
 				return
 			}
 			
-			if TokenStateService.shared.moveFavourite(tokenIndex: sourceIndexPath.row-1, toIndex: destinationIndexPath.row-1) {
+			if TokenStateService.shared.moveFavourite(tokenIndex: sourceIndexPath.section-1, toIndex: destinationIndexPath.section-1) {
 				DependencyManager.shared.balanceService.updateTokenStates()
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				
@@ -133,9 +133,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			return
 		}
 		
-		var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
-		
-		
 		// Group and srot favourites (and remove hidden)
 		tokensToDisplay = []
 		var nonFavourites: [Token] = []
@@ -160,12 +157,14 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			tokensToDisplay.append(contentsOf: nonFavourites)
 		}
 		
-		section1Data.append(contentsOf: tokensToDisplay)
-		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		snapshot.appendSections([0])
-		snapshot.appendItems(section1Data, toSection: 0)
+		snapshot.appendSections(Array(0..<tokensToDisplay.count+1))
+		snapshot.appendItems([DependencyManager.shared.balanceService.account.xtzBalance], toSection: 0)
+		
+		for (index, item) in tokensToDisplay.enumerated() {
+			snapshot.appendItems([item], toSection: index+1)
+		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		self.state = .success(nil)
@@ -174,7 +173,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	func reload(animating: Bool) {
 		if let ds = dataSource {
 			var snapshot = ds.snapshot()
-			snapshot.reloadSections([0])
+			snapshot.reloadSections(Array(0..<snapshot.numberOfSections))
 			ds.apply(snapshot, animatingDifferences: animating)
 		}
 	}

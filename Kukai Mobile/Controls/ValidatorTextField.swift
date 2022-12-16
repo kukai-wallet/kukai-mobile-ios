@@ -72,6 +72,14 @@ public class ValidatorTextField: UITextField {
 	public override func textRect(forBounds bounds: CGRect) -> CGRect {
 		var textRect = super.textRect(forBounds: bounds)
 		textRect.origin.x += textPadding
+		textRect.size.width -= textPadding
+		return textRect
+	}
+	
+	public override func editingRect(forBounds bounds: CGRect) -> CGRect {
+		var textRect = super.textRect(forBounds: bounds)
+		textRect.origin.x += textPadding
+		textRect.size.width -= textPadding
 		return textRect
 	}
 	

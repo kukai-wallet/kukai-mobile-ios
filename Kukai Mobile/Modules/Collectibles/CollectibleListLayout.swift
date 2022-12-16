@@ -14,10 +14,11 @@ protocol CollectibleListLayoutDelegate: AnyObject {
 
 class CollectibleListLayout: UICollectionViewLayout {
 	
-	static let controlGroupHeight: CGFloat = 62
+	static let controlGroupHeight: CGFloat = 50
 	static let specialGroupHeight: CGFloat = 64
 	static let groupHeight: CGFloat = 64
 	static let itemHeight: CGFloat = 94
+	static let searchItemHeight: CGFloat = 88
 	
 	fileprivate let groupSpacing: CGFloat = 4
 	
@@ -33,6 +34,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 	}
 	
 	public weak var delegate: CollectibleListLayoutDelegate?
+	public var isSearching = false
 	
 	
 	
@@ -45,8 +47,16 @@ class CollectibleListLayout: UICollectionViewLayout {
 			return
 		}
 		
+		if isSearching {
+			createSearchCache(data: data)
+			
+		} else {
+			createNormalCache(data: data)
+		}
+	}
+	
+	private func createNormalCache(data: NSDiffableDataSourceSnapshot<Int, AnyHashable>) {
 		var yOffset: CGFloat = 0
-		
 		
 		let numberOfSections = data.numberOfSections
 		for groupIndex in 0..<numberOfSections {
@@ -76,22 +86,21 @@ class CollectibleListLayout: UICollectionViewLayout {
 			cache.append([])
 		}
 		
-		/*
-		for (groupIndex, group) in data.enumerated() {
-			for (itemIndex, item) in group.enumerated() {
-				
+		contentHeight = yOffset
+	}
+	
+	private func createSearchCache(data: NSDiffableDataSourceSnapshot<Int, AnyHashable>) {
+		var yOffset: CGFloat = 0
+		
+		let numberOfSections = data.numberOfSections
+		for groupIndex in 0..<numberOfSections {
+			for (itemIndex, item) in data.itemIdentifiers(inSection: groupIndex).enumerated() {
 				var frame = CGRect.zero
 				if item is ControlGroupData {
-					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: controlGroupHeight)
-					
-				} else if item is SpecialGroupData {
-					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: specialGroupHeight)
-					
-				} else if item is Token {
-					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: groupHeight)
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
 					
 				} else {
-					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: itemHeight)
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.searchItemHeight)
 				}
 				
 				let attributes = UICollectionViewLayoutAttributes(forCellWith: IndexPath(row: itemIndex, section: groupIndex))
@@ -104,7 +113,6 @@ class CollectibleListLayout: UICollectionViewLayout {
 			yOffset += groupSpacing
 			cache.append([])
 		}
-		*/
 		
 		contentHeight = yOffset
 	}

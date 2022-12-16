@@ -12,14 +12,12 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var reOrderButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
-	@IBOutlet weak var subHeadingLabel: UILabel!
-	
-	@IBOutlet var subHeadingBottomConstraint: NSLayoutConstraint!
 	@IBOutlet var tableViewTopConstraint: NSLayoutConstraint!
 	
-	private var isReOrder = false
 	private let viewModel = FavouriteBalancesViewModel()
 	private var cancellable: AnyCancellable?
+	private var isReOrder = false
+	private let sectionFooterSpacer = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,6 +28,7 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		sectionFooterSpacer.backgroundColor = .clear
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -54,14 +53,10 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		isReOrder = !isReOrder
 		
 		if isReOrder {
-			reOrderButton.setTitle("Done", for: .normal)
-			subHeadingLabel.isHidden = true
-			subHeadingBottomConstraint.isActive = false
-			tableViewTopConstraint.isActive = true
+			self.title = "Re-Order Favourites"
 			
-			UIView.animate(withDuration: 0.3, delay: 0) {
-				self.view.layoutIfNeeded()
-			}
+			reOrderButton.setTitle("Done", for: .normal)
+			tableViewTopConstraint.isActive = true
 			
 			viewModel.isEditing = true
 			viewModel.reload(animating: true)
@@ -69,14 +64,10 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 			tableView.isEditing = true // set tableView editing after so it doesn't edit existing cells
 			
 		} else {
-			reOrderButton.setTitle("Re-Order", for: .normal)
-			subHeadingLabel.isHidden = false
-			subHeadingBottomConstraint.isActive = true
-			tableViewTopConstraint.isActive = false
+			self.title = "Favourites"
 			
-			UIView.animate(withDuration: 0.3, delay: 0) {
-				self.view.layoutIfNeeded()
-			}
+			reOrderButton.setTitle("Re-Order", for: .normal)
+			tableViewTopConstraint.isActive = false
 			
 			tableView.isEditing = false // set tableview editing before so it does edit exising cells
 			viewModel.isEditing = false
@@ -88,6 +79,18 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
 	
 	// MARK: Tableview
+	
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return 62
+	}
+	
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		return sectionFooterSpacer
+	}
+	
+	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		return 4
+	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()

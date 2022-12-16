@@ -35,7 +35,7 @@ class CollectibleSpecialGroupCell: UICollectionViewCell, ExpandableCell {
 		contentView.customCornerRadius = 0
 		contentView.maskToBounds = false
 		gradientLayer?.removeFromSuperlayer()
-		gradientLayer = contentView.addGradientNFTSection_top(withFrame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height+10))
+		gradientLayer = contentView.addGradientNFTSection_top_border(withFrame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height+10))
 	}
 	
 	public func setOpen() {
