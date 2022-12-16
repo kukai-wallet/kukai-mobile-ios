@@ -141,6 +141,7 @@ class HomeTabBarController: UITabBarController {
 		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
 	}
 	
 	func setupTzKTAccountListener() {
@@ -168,7 +169,6 @@ class HomeTabBarController: UITabBarController {
 		], for: .selected)
 		
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
-		let _ = self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0)))
 	}
 	
 	public func updateAccountButton() {

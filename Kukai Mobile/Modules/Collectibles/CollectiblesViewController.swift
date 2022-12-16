@@ -91,7 +91,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 			c.quantityView.alpha = 0
 			
 			DispatchQueue.main.asyncAfter(deadline: .now()) {
-				UIView.animate(withDuration: 0.5, delay: 0.1) {
+				UIView.animate(withDuration: 0.5, delay: 0.3) {
 					c.iconView.alpha = 1
 					c.titleLabel.alpha = 1
 					c.subTitleLabel.alpha = 1

@@ -76,7 +76,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.iconView.image = UIImage.unknownToken()
 				}
 				
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				let imageSize = CGSize(width: cell.iconView.frame.width+2, height: cell.iconView.frame.height+2)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: imageSize)
 				cell.symbolLabel.text = token.symbol
 				cell.balanceLabel.text = token.balance.normalisedRepresentation
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))

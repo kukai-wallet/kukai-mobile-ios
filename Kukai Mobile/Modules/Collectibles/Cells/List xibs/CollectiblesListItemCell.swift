@@ -32,10 +32,10 @@ class CollectiblesListItemCell: UICollectionViewCell {
 		gradientLayer.removeFromSuperlayer()
 		
 		if isLast {
-			gradientLayer = contentView.addGradientNFTSection_bottom(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+5))
+			gradientLayer = contentView.addGradientNFTSection_bottom_border(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+5))
 			
 		} else {
-			gradientLayer = contentView.addGradientNFTSection_middle(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+10))
+			gradientLayer = contentView.addGradientNFTSection_middle_border(withFrame: CGRect(x: 0, y: -5, width: withFrame.width, height: withFrame.height+10))
 		}
 	}
 }
