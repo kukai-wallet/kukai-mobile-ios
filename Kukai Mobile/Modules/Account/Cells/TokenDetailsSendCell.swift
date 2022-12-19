@@ -21,7 +21,7 @@ class TokenDetailsSendCell: UITableViewCell {
 			image = image?.withTintColor(.colorNamed("Brand600"))
 			
 			sendButton.setImage(image, for: .normal)
-			sendButton.configuration?.attributedTitle = AttributedString("Get Tez", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)] ))
+			sendButton.configuration?.attributedTitle = AttributedString("Get Tez", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)] ))
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .leading
 			
@@ -31,7 +31,7 @@ class TokenDetailsSendCell: UITableViewCell {
 			image = image?.withTintColor(.colorNamed("Brand600"))
 			
 			sendButton.setImage(image, for: .normal)
-			sendButton.configuration?.attributedTitle = AttributedString("Send", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)] ))
+			sendButton.configuration?.attributedTitle = AttributedString("Send", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)] ))
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .trailing
 		}

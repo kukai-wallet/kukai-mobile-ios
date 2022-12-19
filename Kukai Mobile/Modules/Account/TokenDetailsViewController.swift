@@ -26,8 +26,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	private var cancellable: AnyCancellable?
 	private var headerAnimator = UIViewPropertyAnimator()
 	private var headerAnimatorStarted = false
-	private let defaultHeaderFiatFontSize = 18
-	private var currentHeaderFiatFontSize: CGFloat = 18
+	private let defaultHeaderFiatFontSize = 19
+	private var currentHeaderFiatFontSize: CGFloat = 19
 	private var firstLoad = true
 	
 	
@@ -200,7 +200,7 @@ extension TokenDetailsViewController {
 			var newSize = CGFloat(defaultHeaderFiatFontSize - fontSizeReduction)
 			
 			if newSize < 12 {
-				newSize = 12
+				newSize = 13
 			}
 			
 			if newSize != currentHeaderFiatFontSize {

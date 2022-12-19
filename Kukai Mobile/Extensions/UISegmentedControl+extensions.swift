@@ -19,11 +19,11 @@ extension UISegmentedControl {
 		self.setDividerImage(dividerImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
 		self.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Brand1000"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 17)
 		], for: .normal)
 		self.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 17)
 		], for: .selected)
 	}
 	

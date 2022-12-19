@@ -295,7 +295,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		navigationBarAppearance.shadowColor = .clear
 		navigationBarAppearance.titleTextAttributes = [
 			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)
 		]
 		
 		UINavigationBar.appearance().standardAppearance = navigationBarAppearance
