@@ -226,26 +226,31 @@ extension EnterAddressComponent: AddressTypeDelegate {
 		switch type {
 			case .tezosAddress:
 				sendToIcon.image = UIImage(named: "tezos-logo-no-background")
+				addressTypeButton.setTitle("Tezos Address", for: .normal)
 				textField.placeholder = "Enter Address"
 				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 				
 			case .tezosDomain:
-				sendToIcon.image = UIImage(systemName: "social-tezos-domain")
+				sendToIcon.image = UIImage(named: "social-tezos-domain")
+				addressTypeButton.setTitle("Tezos Domain", for: .normal)
 				textField.placeholder = "Enter Tezos Domain"
 				textField.validator = TezosDomainValidator()
 				
 			case .gmail:
-				sendToIcon.image = UIImage(systemName: "social-google")
+				sendToIcon.image = UIImage(named: "social-google")
+				addressTypeButton.setTitle("Google", for: .normal)
 				textField.placeholder = "Enter Google Account"
 				textField.validator = GmailValidator()
 				
 			case .reddit:
-				sendToIcon.image = UIImage(systemName: "social-reddit")
+				sendToIcon.image = UIImage(named: "social-reddit")
+				addressTypeButton.setTitle("Reddit", for: .normal)
 				textField.placeholder = "Enter Reddit Name"
 				textField.validator = NoWhiteSpaceStringValidator()
 				
 			case .twitter:
-				sendToIcon.image = UIImage(systemName: "social-twitter")
+				sendToIcon.image = UIImage(named: "social-twitter")
+				addressTypeButton.setTitle("Twitter", for: .normal)
 				textField.placeholder = "@ Enter Twitter Handle"
 				textField.validator = NoWhiteSpaceStringValidator()
 		}
