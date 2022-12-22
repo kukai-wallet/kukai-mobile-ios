@@ -241,4 +241,40 @@ public class CoinGeckoService {
 		
 		return outputString
 	}
+	
+	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int) -> String {
+		var reducedNumber: Decimal = 0
+		var reducedNumberSymbol: String? = nil
+		
+		switch num {
+			case 1_000_000_000_000...:
+				reducedNumber = num / 1_000_000_000
+				reducedNumberSymbol = "t"
+				
+			case 1_000_000_000...:
+				reducedNumber = num / 1_000_000_000
+				reducedNumberSymbol = "b"
+				
+			case 1_000_000...:
+				reducedNumber = num / 1_000_000
+				reducedNumberSymbol = "m"
+				
+			case 0...:
+				reducedNumber = num
+				
+			default:
+				reducedNumber = num
+		}
+		
+		var stringToReturn = ""
+		if let symbol = reducedNumberSymbol {
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: 3)
+			stringToReturn += symbol
+			
+		} else {
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: decimalPlaces)
+		}
+		
+		return stringToReturn
+	}
 }

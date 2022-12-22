@@ -61,9 +61,9 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 50, height: 50))
-				cell.symbolLabel.text = "Tezos"
-				cell.balanceLabel.text = amount.normalisedRepresentation
+				cell.iconView.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 52, height: 52))
+				cell.symbolLabel.text = "Tez"
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
 				cell.setPriceChange(value: 100)
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -79,7 +79,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				let imageSize = CGSize(width: cell.iconView.frame.width+2, height: cell.iconView.frame.height+2)
 				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: imageSize)
 				cell.symbolLabel.text = token.symbol
-				cell.balanceLabel.text = token.balance.normalisedRepresentation
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
@@ -94,7 +94,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let total = item as? TotalEstiamtedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
-				cell.balanceLabel.text = total.tez.normalisedRepresentation + " tez"
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " tez"
 				cell.valueLabel.text = total.value
 				return cell
 				
@@ -205,13 +205,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		/*
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-		*/
 	}
 }

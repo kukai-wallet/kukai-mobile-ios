@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="4" width="485" height="34"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="389" height="34"/>
+                                <rect key="frame" x="0.0" y="0.0" width="384" height="34"/>
                                 <color key="backgroundColor" name="Grey1600"/>
                                 <color key="textColor" name="Grey200"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
@@ -58,7 +58,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="bNq-tE-Fxv">
-                                <rect key="frame" x="401" y="0.0" width="84" height="34"/>
+                                <rect key="frame" x="396" y="0.0" width="89" height="34"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrW-xZ-m9g" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
@@ -89,16 +89,28 @@
                                             <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="sort"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEw-Bt-YVZ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="50" y="0.0" width="34" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="34" id="AlO-pM-E5p"/>
-                                            <constraint firstAttribute="width" constant="34" id="LZE-Da-acT"/>
-                                        </constraints>
-                                        <color key="tintColor" name="Brand1000"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" image="ellipses"/>
-                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHp-p9-DHe">
+                                        <rect key="frame" x="50" y="0.0" width="39" height="34"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CEw-Bt-YVZ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="34" id="AlO-pM-E5p"/>
+                                                    <constraint firstAttribute="width" constant="34" id="LZE-Da-acT"/>
+                                                </constraints>
+                                                <color key="tintColor" name="Brand1000"/>
+                                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" image="ellipses"/>
+                                            </button>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RgQ-0C-sqH">
+                                                <rect key="frame" x="34" y="0.0" width="5" height="34"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="5" id="cuT-Ew-pos"/>
+                                                </constraints>
+                                            </view>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                             </stackView>
                         </subviews>

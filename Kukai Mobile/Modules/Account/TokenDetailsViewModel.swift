@@ -293,7 +293,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		self.token = token
 		tokenSymbol = token.symbol
 		
-		let tokenBalance = token.balance.normalisedRepresentation
+		let tokenBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.balance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 		
 		if token.isXTZ() {
 			tokenIcon = UIImage(named: "tezos-logo")

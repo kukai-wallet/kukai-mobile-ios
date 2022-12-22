@@ -99,7 +99,7 @@ struct ChartView: View {
 				GeometryReader { geo in
 					
 					let widthOfString = doubleFormatter(maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 13))
-					let boxOffset = max(0, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
+					let boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
 					
 					VStack(alignment: .trailing) {
 						Text(doubleFormatter(maxData?.value))
@@ -175,7 +175,7 @@ struct ChartView: View {
 				
 				// Add text annotation of lowest value as overlay to bottom of chart
 				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 13))
-				let boxOffset = max(0, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+				let boxOffset = max(4, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
 				
 				VStack(alignment: .trailing) {
 					Text(doubleFormatter(minData?.value))
@@ -229,13 +229,13 @@ struct ChartView: View {
 struct TokenDetailsChartView_Previews: PreviewProvider {
 	static var previews: some View {
 		let tempData: [ChartViewDataPoint] = [
-			.init(value: 400, date: Date()),
+			.init(value: 900, date: Date()),
 			.init(value: 500, date: Date().addingTimeInterval(10000)),
 			.init(value: 80.7, date: Date().addingTimeInterval(20000)),
-			.init(value: 20, date: Date().addingTimeInterval(30000)),
-			.init(value: 900, date: Date().addingTimeInterval(40000)),
+			.init(value: 400, date: Date().addingTimeInterval(30000)),
+			.init(value: 890, date: Date().addingTimeInterval(40000)),
 			.init(value: 80, date: Date().addingTimeInterval(50000)),
-			.init(value: 890, date: Date().addingTimeInterval(60000))
+			.init(value: 900, date: Date().addingTimeInterval(60000))
 		]
 		
 		let integration = ChartViewIntegrationService()
