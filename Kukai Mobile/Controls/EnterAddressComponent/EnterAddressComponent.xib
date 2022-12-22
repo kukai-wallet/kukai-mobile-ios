@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
@@ -13,10 +13,14 @@
         <array key="Figtree-Bold.ttf">
             <string>Figtree-Bold</string>
         </array>
+        <array key="Figtree-Medium.ttf">
+            <string>Figtree-Medium</string>
+        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EnterAddressComponent" customModule="Kukai_Mobile" customModuleProvider="target">
             <connections>
+                <outlet property="addressTypeButton" destination="cJo-dB-oV7" id="hYE-rr-OoC"/>
                 <outlet property="buttonsStackview" destination="08s-au-9Ew" id="SH6-Cd-DlB"/>
                 <outlet property="containerStackView" destination="Zwp-dO-dRd" id="o88-FK-xns"/>
                 <outlet property="errorIcon" destination="ZBQ-md-pva" id="y1M-rs-a52"/>
@@ -24,31 +28,78 @@
                 <outlet property="errorStackView" destination="Mg2-P3-7lq" id="bRx-wL-9Ki"/>
                 <outlet property="headerLabel" destination="3BH-hp-rC3" id="CJf-G8-X58"/>
                 <outlet property="inputControlsStackView" destination="7k6-7j-3jS" id="DIO-c9-DC6"/>
+                <outlet property="outerButtonStackview" destination="v9f-de-6RC" id="Ziz-Lk-E5h"/>
+                <outlet property="sendButton" destination="BeQ-m7-CDp" id="cHm-Jw-DmV"/>
+                <outlet property="sendToIcon" destination="vZE-UR-e9Q" id="BhT-1P-zoC"/>
                 <outlet property="textField" destination="NiH-S7-rDy" id="8wU-BW-bFe"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="602" height="104"/>
+            <rect key="frame" x="0.0" y="0.0" width="602" height="90"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Zwp-dO-dRd">
-                    <rect key="frame" x="0.0" y="0.0" width="602" height="104"/>
+                    <rect key="frame" x="0.0" y="0.0" width="602" height="90"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BH-hp-rC3">
-                            <rect key="frame" x="0.0" y="0.0" width="602" height="36"/>
-                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
-                            <color key="textColor" name="Grey1000"/>
-                            <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        </label>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7k6-7j-3jS">
-                            <rect key="frame" x="0.0" y="40" width="602" height="44"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="98O-Nm-ZMD">
+                            <rect key="frame" x="0.0" y="0.0" width="602" height="16"/>
                             <subviews>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. tz1abc123..." textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NiH-S7-rDy" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="490" height="44"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BH-hp-rC3">
+                                    <rect key="frame" x="0.0" y="0.0" width="54" height="16"/>
+                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                    <color key="textColor" name="Grey1000"/>
+                                    <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </label>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tezos-logo-no-background" translatesAutoresizingMaskIntoConstraints="NO" id="vZE-UR-e9Q">
+                                    <rect key="frame" x="58" y="0.0" width="16" height="16"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="16" id="BqX-Wp-5AL"/>
+                                        <constraint firstAttribute="width" constant="16" id="YgS-d8-MI0"/>
+                                    </constraints>
+                                </imageView>
+                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJo-dB-oV7" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <rect key="frame" x="78" y="0.0" width="92" height="16"/>
+                                    <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                    <color key="tintColor" name="Brand1100"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" title="Tezos Address">
+                                        <color key="titleColor" name="Grey1000"/>
+                                    </state>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="chevron-right"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                            <real key="value" value="16"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                            <real key="value" value="16"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="addressTypeTapped:" destination="-1" eventType="touchUpInside" id="1yR-lw-nd2"/>
+                                    </connections>
+                                </button>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-bU-5Xa">
+                                    <rect key="frame" x="174" y="0.0" width="428" height="16"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                            </subviews>
+                        </stackView>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wf4-v0-w2Y">
+                            <rect key="frame" x="0.0" y="20" width="602" height="4"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="4" id="WyF-bZ-M5A"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7k6-7j-3jS">
+                            <rect key="frame" x="0.0" y="28" width="602" height="42"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="left" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NiH-S7-rDy" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="462" height="42"/>
                                     <color key="backgroundColor" name="Grey1600"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="44" id="Cyi-Rl-Ciw"/>
+                                        <constraint firstAttribute="height" constant="42" id="Cyi-Rl-Ciw"/>
                                     </constraints>
                                     <color key="textColor" name="Grey200"/>
                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
@@ -62,61 +113,106 @@
                                             <color key="value" name="Grey1000"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="clearButtonTint">
-                                            <color key="value" name="Grey1000"/>
+                                            <color key="value" name="Brand1000"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
+                                            <real key="value" value="8"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                 </textField>
-                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="08s-au-9Ew">
-                                    <rect key="frame" x="506" y="0.0" width="96" height="44"/>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="r3P-Px-14g">
+                                    <rect key="frame" x="478" y="0.0" width="124" height="42"/>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-ME-5XM">
-                                            <rect key="frame" x="0.0" y="0.0" width="44" height="44"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSS-2W-3vD">
+                                            <rect key="frame" x="0.0" y="0.0" width="124" height="3"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="44" id="21D-QS-VFF"/>
-                                                <constraint firstAttribute="height" constant="44" id="vCB-ch-DMW"/>
+                                                <constraint firstAttribute="height" constant="3" id="OQf-yR-pFX"/>
                                             </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" title="" image="qr-code"/>
-                                            <state key="highlighted">
-                                                <imageReference key="backgroundImage" image="qrcode" catalog="system" renderingMode="hierarchical">
-                                                    <hierarchicalColors>
-                                                        <color name="text-tertiary"/>
-                                                        <color name="text-tertiary"/>
-                                                        <color name="text-tertiary"/>
-                                                    </hierarchicalColors>
-                                                </imageReference>
-                                            </state>
-                                            <connections>
-                                                <action selector="qrCodeTapped:" destination="-1" eventType="touchUpInside" id="L6y-jr-Xar"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSD-EA-R8x">
-                                            <rect key="frame" x="52" y="0.0" width="44" height="44"/>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="right" translatesAutoresizingMaskIntoConstraints="NO" id="v9f-de-6RC">
+                                            <rect key="frame" x="0.0" y="3" width="124" height="36"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeQ-m7-CDp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="36" id="4LA-q6-qpv"/>
+                                                        <constraint firstAttribute="height" constant="36" id="Luv-Kj-azj"/>
+                                                    </constraints>
+                                                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="18"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="sendButtonTapped:" destination="-1" eventType="touchUpInside" id="pYK-Lo-77W"/>
+                                                    </connections>
+                                                </button>
+                                                <stackView opaque="NO" contentMode="right" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="08s-au-9Ew">
+                                                    <rect key="frame" x="36" y="0.0" width="88" height="36"/>
+                                                    <subviews>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-ME-5XM">
+                                                            <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="36" id="21D-QS-VFF"/>
+                                                                <constraint firstAttribute="height" constant="36" id="vCB-ch-DMW"/>
+                                                            </constraints>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" title="" image="qr-code"/>
+                                                            <state key="highlighted">
+                                                                <imageReference key="backgroundImage" image="qrcode" catalog="system" renderingMode="hierarchical">
+                                                                    <hierarchicalColors>
+                                                                        <color name="text-tertiary"/>
+                                                                        <color name="text-tertiary"/>
+                                                                        <color name="text-tertiary"/>
+                                                                    </hierarchicalColors>
+                                                                </imageReference>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="qrCodeTapped:" destination="-1" eventType="touchUpInside" id="L6y-jr-Xar"/>
+                                                            </connections>
+                                                        </button>
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSD-EA-R8x">
+                                                            <rect key="frame" x="52" y="0.0" width="36" height="36"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="36" id="ZVw-4Q-2Vw"/>
+                                                                <constraint firstAttribute="width" constant="36" id="jih-t7-a0i"/>
+                                                            </constraints>
+                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                            <state key="normal" image="paste"/>
+                                                            <state key="highlighted">
+                                                                <imageReference key="backgroundImage" image="text.viewfinder" catalog="system" renderingMode="hierarchical">
+                                                                    <hierarchicalColors>
+                                                                        <color name="text-tertiary"/>
+                                                                        <color name="text-tertiary"/>
+                                                                        <color name="text-tertiary"/>
+                                                                    </hierarchicalColors>
+                                                                </imageReference>
+                                                            </state>
+                                                            <connections>
+                                                                <action selector="pasteTapped:" destination="-1" eventType="touchUpInside" id="vLL-y0-epq"/>
+                                                            </connections>
+                                                        </button>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwn-nH-rmj">
+                                            <rect key="frame" x="0.0" y="39" width="124" height="3"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="44" id="ZVw-4Q-2Vw"/>
-                                                <constraint firstAttribute="width" constant="44" id="jih-t7-a0i"/>
+                                                <constraint firstAttribute="height" constant="3" id="gQw-WA-EYm"/>
                                             </constraints>
-                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                            <state key="normal" image="paste"/>
-                                            <state key="highlighted">
-                                                <imageReference key="backgroundImage" image="text.viewfinder" catalog="system" renderingMode="hierarchical">
-                                                    <hierarchicalColors>
-                                                        <color name="text-tertiary"/>
-                                                        <color name="text-tertiary"/>
-                                                        <color name="text-tertiary"/>
-                                                    </hierarchicalColors>
-                                                </imageReference>
-                                            </state>
-                                            <connections>
-                                                <action selector="pasteTapped:" destination="-1" eventType="touchUpInside" id="vLL-y0-epq"/>
-                                            </connections>
-                                        </button>
+                                        </view>
                                     </subviews>
                                 </stackView>
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Mg2-P3-7lq">
-                            <rect key="frame" x="0.0" y="88" width="602" height="16"/>
+                            <rect key="frame" x="0.0" y="74" width="602" height="16"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xmark.octagon.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZBQ-md-pva">
                                     <rect key="frame" x="0.0" y="1" width="16" height="14.5"/>
@@ -150,16 +246,27 @@
         </view>
     </objects>
     <designables>
+        <designable name="BeQ-m7-CDp">
+            <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
         <designable name="NiH-S7-rDy">
-            <size key="intrinsicContentSize" width="105" height="18.5"/>
+            <size key="intrinsicContentSize" width="99" height="18.5"/>
         </designable>
     </designables>
     <resources>
-        <image name="paste" width="25" height="24"/>
-        <image name="qr-code" width="30" height="33"/>
+        <image name="chevron-right" width="21" height="20"/>
+        <image name="paste" width="28" height="28"/>
+        <image name="qr-code" width="29" height="28"/>
         <image name="qrcode" catalog="system" width="128" height="114"/>
         <image name="text.viewfinder" catalog="system" width="128" height="115"/>
+        <image name="tezos-logo-no-background" width="31" height="31"/>
         <image name="xmark.octagon.fill" catalog="system" width="128" height="112"/>
+        <namedColor name="Brand1000">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Brand1100">
+            <color red="0.396078431372549" green="0.42745098039215684" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Grey1000">
             <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

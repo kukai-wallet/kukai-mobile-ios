@@ -205,11 +205,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		/*
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
+		*/
 	}
 }

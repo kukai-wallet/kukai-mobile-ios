@@ -16,16 +16,19 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var containerStackView: UIStackView!
 	@IBOutlet weak var inputControlsStackView: UIStackView!
 	@IBOutlet weak var errorStackView: UIStackView!
-	@IBOutlet weak var buttonsStackview: UIStackView!
+	@IBOutlet weak var outerButtonStackview: UIStackView!
+	@IBOutlet var buttonsStackview: UIStackView!
 	
 	@IBOutlet weak var headerLabel: UILabel!
+	@IBOutlet weak var sendToIcon: UIImageView!
+	@IBOutlet weak var addressTypeButton: CustomisableButton!
+	@IBOutlet var sendButton: CustomisableButton!
 	@IBOutlet weak var textField: ValidatorTextField!
 	@IBOutlet weak var errorIcon: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
 	
-	private let textFieldLeftViewOption = UIView()
-	private var textFieldLeftViewImageTypeLogo = UIImageView()
 	private var currentSelectedType: AddressType = .tezosAddress
+	private var gradientLayer: CAGradientLayer? = nil
 	
 	private let scanVC = ScanViewController()
 	private let addressTypeVC = AddressTypeViewController()
@@ -53,40 +56,30 @@ public class EnterAddressComponent: UIView {
 	private func setup() {
 		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 		textField.validatorTextFieldDelegate = self
-		textField.leftViewMode = .always
 		
+		var image = UIImage(named: "chevron-right")
+		image = image?.resizedImage(Size: CGSize(width: 20, height: 20))
+		image = image?.withTintColor(.white)
 		
-		textFieldLeftViewOption.frame = CGRect(x: 0, y: 0, width: 64, height: textField.frame.height)
-		textFieldLeftViewOption.backgroundColor = .clear
-		textFieldLeftViewOption.isUserInteractionEnabled = true
-		textFieldLeftViewOption.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(leftOptionTapped)))
-		
-		let innerView = HighlightView(frame: CGRect(x: 4, y: 4, width: textFieldLeftViewOption.frame.width - 8, height: textFieldLeftViewOption.frame.height - 8))
-		innerView.backgroundHighlightColor = .colorNamed("Grey200")
-		innerView.customCornerRadius = 8
-		innerView.borderWidth = 1
-		innerView.borderColor = .colorNamed("Grey1400")
-		
-		textFieldLeftViewImageTypeLogo = UIImageView(image: UIImage(named: "tezos-logo"))
-		textFieldLeftViewImageTypeLogo.frame = CGRect(x: 4, y: 4, width: innerView.frame.height - 8, height: innerView.frame.height - 8)
-		
-		let textFieldLeftViewImageChevron = UIImageView(image: UIImage(named: "chevron-down"))
-		textFieldLeftViewImageChevron.frame = CGRect(x: textFieldLeftViewImageTypeLogo.frame.width + 4, y: (innerView.frame.height / 2) - 10, width: 20, height: 20)
-		
-		innerView.addSubview(textFieldLeftViewImageTypeLogo)
-		innerView.addSubview(textFieldLeftViewImageChevron)
-		textFieldLeftViewOption.addSubview(innerView)
-		
-		textField.leftView = textFieldLeftViewOption
+		sendButton.setImage(image, for: .normal)
 		
 		self.hideError(animate: false)
+		outerButtonStackview.removeArrangedSubview(sendButton)
+		self.sendButton.isHidden = true
+	}
+	
+	public override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		gradientLayer?.removeFromSuperlayer()
+		gradientLayer = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
 	}
 	
 	
 	
 	// MARK: - Button actions
 	
-	@objc func leftOptionTapped() {
+	@IBAction func addressTypeTapped(_ sender: Any) {
 		guard let parent = self.parentViewController() else {
 			return
 		}
@@ -95,7 +88,6 @@ public class EnterAddressComponent: UIView {
 		addressTypeVC.modalPresentationStyle = .pageSheet
 		parent.present(addressTypeVC, animated: true, completion: nil)
 	}
-	
 	
 	@IBAction func qrCodeTapped(_ sender: Any) {
 		guard let parent = self.parentViewController() else {
@@ -111,11 +103,18 @@ public class EnterAddressComponent: UIView {
 		let _ = self.textField.revalidateTextfield()
 	}
 	
+	@IBAction func sendButtonTapped(_ sender: Any) {
+	}
+	
 	
 	
 	// MARK: - UI functions
 	
 	private func animateButtonsOut() {
+		outerButtonStackview.insertArrangedSubview(sendButton, at: 1)
+		sendButton.isHidden = false
+		
+		outerButtonStackview.removeArrangedSubview(buttonsStackview)
 		buttonsStackview.isHidden = true
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
@@ -124,7 +123,11 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func animatedButtonsIn() {
+		outerButtonStackview.insertArrangedSubview(buttonsStackview, at: 1)
 		buttonsStackview.isHidden = false
+		
+		outerButtonStackview.removeArrangedSubview(sendButton)
+		sendButton.isHidden = true
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.layoutIfNeeded()
@@ -222,28 +225,28 @@ extension EnterAddressComponent: AddressTypeDelegate {
 		
 		switch type {
 			case .tezosAddress:
-				textFieldLeftViewImageTypeLogo.image = UIImage(named: "tezos-logo")
-				textField.placeholder = "e.g. tz1abc123..."
+				sendToIcon.image = UIImage(named: "tezos-logo-no-background")
+				textField.placeholder = "Enter Address"
 				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 				
 			case .tezosDomain:
-				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
-				textField.placeholder = "e.g. johndoe.tez"
+				sendToIcon.image = UIImage(systemName: "social-tezos-domain")
+				textField.placeholder = "Enter Tezos Domain"
 				textField.validator = TezosDomainValidator()
 				
 			case .gmail:
-				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
-				textField.placeholder = "e.g. johndoe@gmail.com"
+				sendToIcon.image = UIImage(systemName: "social-google")
+				textField.placeholder = "Enter Google Account"
 				textField.validator = GmailValidator()
 				
 			case .reddit:
-				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
-				textField.placeholder = "e.g. johndoe"
+				sendToIcon.image = UIImage(systemName: "social-reddit")
+				textField.placeholder = "Enter Reddit Name"
 				textField.validator = NoWhiteSpaceStringValidator()
 				
 			case .twitter:
-				textFieldLeftViewImageTypeLogo.image = UIImage(systemName: "xmark.octagon")
-				textField.placeholder = "e.g. johndoe"
+				sendToIcon.image = UIImage(systemName: "social-twitter")
+				textField.placeholder = "@ Enter Twitter Handle"
 				textField.validator = NoWhiteSpaceStringValidator()
 		}
 		
