@@ -94,10 +94,12 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	}
 	
 	func navigate() {
-		if TransactionService.shared.sendData.chosenToken == nil && TransactionService.shared.sendData.chosenNFT == nil {
+		/*if TransactionService.shared.sendData.chosenToken == nil && TransactionService.shared.sendData.chosenNFT == nil {
 			self.performSegue(withIdentifier: "choose-token", sender: self)
 			
-		} else if TransactionService.shared.sendData.chosenToken != nil {
+		} else*/
+		
+		if TransactionService.shared.sendData.chosenToken != nil {
 			self.performSegue(withIdentifier: "enter-amount", sender: self)
 			
 		} else if TransactionService.shared.sendData.chosenNFT != nil {

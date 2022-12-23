@@ -40,7 +40,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		
 		if let sheetController = self.presentationController as? UISheetPresentationController {
 			let customMediumHeight = UISheetPresentationController.Detent.custom { context in
-				return context.maximumDetentValue * 0.80
+				return context.maximumDetentValue * 0.90
 			}
 			
 			sheetController.detents = [customMediumHeight, .large()]
