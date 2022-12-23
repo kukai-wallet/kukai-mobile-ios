@@ -16,10 +16,10 @@ class SendEnterAmountViewController: UIViewController {
 	
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var textfield: ValidatorTextField!
-	@IBOutlet weak var errorMessage: UILabel!
-	@IBOutlet weak var fiatLabel: UILabel!
-	@IBOutlet weak var fiatValue: UILabel!
-	@IBOutlet weak var feeValue: UILabel!
+	@IBOutlet weak var errorMessage: UILabel?
+	@IBOutlet weak var fiatLabel: UILabel?
+	@IBOutlet weak var fiatValue: UILabel?
+	@IBOutlet weak var feeValue: UILabel?
 	@IBOutlet weak var reviewButton: UIButton!
 	
 	private var isToken = false
@@ -46,31 +46,32 @@ class SendEnterAmountViewController: UIViewController {
 			isToken = true
 			balanceLabel.text = "Balance: " + token.balance.normalisedRepresentation + " \(token.symbol)"
 			textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
-			fiatValue.text = " "
-			feeValue.text = " "
+			fiatValue?.text = " "
+			feeValue?.text = " "
 			
 			
 		} else if let nft = TransactionService.shared.sendData.chosenNFT {
 			isToken = false
 			balanceLabel.text = "Balance: " + nft.balance.description
 			textfield.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: nft.balance, decimalPlaces: 0), decimalPlaces: 0)
-			fiatValue.text = "..."
-			feeValue.text = " "
+			fiatValue?.text = "..."
+			feeValue?.text = " "
 			
 		} else {
 			balanceLabel.text = ""
 		}
 		
-		errorMessage.text = ""
-		fiatLabel.text = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased() + ":"
+		errorMessage?.text = ""
+		fiatLabel?.text = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased() + ":"
 		
 		reviewButton.isEnabled = false
 	}
 	
 	func setupTextField() {
-		textfield.leftViewMode = .always
+		//textfield.leftViewMode = .always
 		textfield.validatorTextFieldDelegate = self
 		
+		/*
 		let image = UIImageView(frame: CGRect(x: 5, y: 0, width: 40, height: 30))
 		image.translatesAutoresizingMaskIntoConstraints = false
 		image.contentMode = .scaleAspectFit
@@ -115,6 +116,7 @@ class SendEnterAmountViewController: UIViewController {
 		
 		textfield.rightViewMode = .always
 		textfield.rightView = textfieldRightView
+		*/
 		
 		textfield.customCornerRadius = textfield.frame.height / 2
 		textfield.maskToBounds = true
@@ -152,7 +154,7 @@ class SendEnterAmountViewController: UIViewController {
 				switch estimationResult {
 					case .success(let estimatedOperations):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
-						self?.feeValue.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
+						self?.feeValue?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
 						self?.reviewButton.isEnabled = true
 						
 					case .failure(let estimationError):
@@ -182,19 +184,19 @@ extension SendEnterAmountViewController: ValidatorTextFieldDelegate {
 		if validated {
 			textfield.borderColor = .lightGray
 			textfield.borderWidth = 0
-			errorMessage.text = ""
+			errorMessage?.text = ""
 			
 			if isToken, let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: text) {
-				self.fiatValue.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
+				self.fiatValue?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
 			}
 			
 		} else if text != "" {
 			textfield.borderColor = .red
 			textfield.borderWidth = 1
-			errorMessage.text = "Invalid amount"
+			errorMessage?.text = "Invalid amount"
 			
 			if isToken {
-				self.fiatValue.text = "0"
+				self.fiatValue?.text = "0"
 			}
 		}
 	}

@@ -104,6 +104,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	@IBAction func sendButtonTapped(_ sender: Any) {
+		let _ = self.textField.revalidateTextfield()
 	}
 	
 	
@@ -135,12 +136,6 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	public func showError(message: String) {
-		/*
-		errorLabel.text = message
-		errorLabel.alpha = 1
-		errorIcon.alpha = 1
-		 */
-		
 		errorLabel.text = message
 		textField.borderColor = UIColor.red
 		errorStackView.isHidden = false
@@ -151,9 +146,6 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	public func hideError(animate: Bool) {
-		/*errorLabel.alpha = 0
-		errorIcon.alpha = 0*/
-		
 		textField.borderColor = UIColor.lightGray
 		errorStackView.isHidden = true
 		

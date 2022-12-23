@@ -193,9 +193,9 @@ class HomeTabBarController: UITabBarController {
 		let menu1 = UIMenu(title: "", options: .displayInline, children: firstGroup)
 		
 		let secondGroup: [UIAction] = [
-			UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
+			/*UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
 				self?.sendButtonTapped()
-			}),
+			}),*/
 			UIAction(title: "Swap", image: UIImage(named: "swap"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
 			}),
@@ -269,7 +269,6 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		/*
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
 		
@@ -285,7 +284,6 @@ class HomeTabBarController: UITabBarController {
 			self.updateLoadingModalStatusLabel(message: "")
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-		*/
 	}
 	
 	func sendButtonTapped() {
