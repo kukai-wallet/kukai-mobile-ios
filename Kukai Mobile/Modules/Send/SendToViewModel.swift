@@ -16,6 +16,10 @@ struct WalletObj: Hashable {
 	let address: String
 }
 
+struct NoContacts: Hashable {
+	let id = UUID()
+}
+
 class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -33,6 +37,9 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.address
 				
+				return cell
+				
+			} else if let _ = item as? NoContacts, let cell = tableView.dequeueReusableCell(withIdentifier: "NoContactsCell", for: indexPath) as? NoContactsCell {
 				return cell
 				
 			} else {
@@ -76,10 +83,16 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		snapshot.appendSections([0, 1])
 		
-		snapshot.appendItems([], toSection: 0)
-		snapshot.appendItems(walletObjs, toSection: 1)
+		if wallets.count > 0 {
+			snapshot.appendSections([0, 1])
+			snapshot.appendItems([NoContacts()], toSection: 0)
+			snapshot.appendItems(walletObjs, toSection: 1)
+			
+		} else {
+			snapshot.appendSections([0])
+			snapshot.appendItems([NoContacts()], toSection: 0)
+		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		

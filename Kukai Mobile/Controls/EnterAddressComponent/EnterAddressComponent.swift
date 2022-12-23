@@ -31,7 +31,7 @@ public class EnterAddressComponent: UIView {
 	private var gradientLayer: CAGradientLayer? = nil
 	
 	private let scanVC = ScanViewController()
-	private let addressTypeVC = AddressTypeViewController()
+	private let addressTypeVC = UIStoryboard(name: "SendAddressType", bundle: nil).instantiateInitialViewController() as? AddressTypeViewController
 	private let nibName = "EnterAddressComponent"
 	
 	public weak var delegate: EnterAddressComponentDelegate? = nil
@@ -80,13 +80,13 @@ public class EnterAddressComponent: UIView {
 	// MARK: - Button actions
 	
 	@IBAction func addressTypeTapped(_ sender: Any) {
-		guard let parent = self.parentViewController() else {
+		guard let parent = self.parentViewController(), let addressVC = addressTypeVC else {
 			return
 		}
 		
-		addressTypeVC.delegate = self
-		addressTypeVC.modalPresentationStyle = .pageSheet
-		parent.present(addressTypeVC, animated: true, completion: nil)
+		addressVC.delegate = self
+		addressVC.modalPresentationStyle = .pageSheet
+		parent.present(addressVC, animated: true, completion: nil)
 	}
 	
 	@IBAction func qrCodeTapped(_ sender: Any) {
@@ -225,31 +225,31 @@ extension EnterAddressComponent: AddressTypeDelegate {
 		
 		switch type {
 			case .tezosAddress:
-				sendToIcon.image = UIImage(named: "tezos-logo-no-background")
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Tezos Address", for: .normal)
 				textField.placeholder = "Enter Address"
 				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWallet?.address ?? "")
 				
 			case .tezosDomain:
-				sendToIcon.image = UIImage(named: "social-tezos-domain")
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Tezos Domain", for: .normal)
 				textField.placeholder = "Enter Tezos Domain"
 				textField.validator = TezosDomainValidator()
 				
 			case .gmail:
-				sendToIcon.image = UIImage(named: "social-google")
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Google", for: .normal)
 				textField.placeholder = "Enter Google Account"
 				textField.validator = GmailValidator()
 				
 			case .reddit:
-				sendToIcon.image = UIImage(named: "social-reddit")
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Reddit", for: .normal)
 				textField.placeholder = "Enter Reddit Name"
 				textField.validator = NoWhiteSpaceStringValidator()
 				
 			case .twitter:
-				sendToIcon.image = UIImage(named: "social-twitter")
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Twitter", for: .normal)
 				textField.placeholder = "@ Enter Twitter Handle"
 				textField.validator = NoWhiteSpaceStringValidator()

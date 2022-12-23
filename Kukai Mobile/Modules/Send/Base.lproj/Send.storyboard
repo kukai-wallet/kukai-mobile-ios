@@ -90,16 +90,13 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zba-qH-4Z6">
-                                                            <rect key="frame" x="42" y="16" width="332" height="18"/>
+                                                            <rect key="frame" x="42" y="16" width="328" height="18"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
                                                             <color key="textColor" name="Grey200"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EPf-sq-ZEr">
-                                                            <rect key="frame" x="42" y="38" width="110" height="18"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="110" id="4BE-zg-J0L"/>
-                                                            </constraints>
+                                                            <rect key="frame" x="42" y="38" width="129" height="18"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="15"/>
                                                             <color key="textColor" name="Grey900"/>
                                                             <nil key="highlightedColor"/>
@@ -107,11 +104,12 @@
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
+                                                        <constraint firstAttribute="centerX" secondItem="EPf-sq-ZEr" secondAttribute="trailing" constant="20" id="4dP-RZ-3Sq"/>
                                                         <constraint firstItem="Zba-qH-4Z6" firstAttribute="leading" secondItem="luo-7k-wxc" secondAttribute="trailing" constant="10" id="L6N-kd-iWD"/>
                                                         <constraint firstAttribute="bottom" secondItem="luo-7k-wxc" secondAttribute="bottom" constant="33" id="SZw-Hu-mdn"/>
                                                         <constraint firstItem="EPf-sq-ZEr" firstAttribute="leading" secondItem="Zba-qH-4Z6" secondAttribute="leading" id="Tax-Fb-pHI"/>
                                                         <constraint firstItem="luo-7k-wxc" firstAttribute="leading" secondItem="4Qg-Jd-Yy6" secondAttribute="leading" constant="12" id="Vb4-nK-XUt"/>
-                                                        <constraint firstAttribute="trailing" secondItem="Zba-qH-4Z6" secondAttribute="trailing" constant="8" id="g9v-BU-F0s"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Zba-qH-4Z6" secondAttribute="trailing" constant="12" id="g9v-BU-F0s"/>
                                                         <constraint firstItem="luo-7k-wxc" firstAttribute="top" secondItem="4Qg-Jd-Yy6" secondAttribute="top" constant="16" id="muu-Zh-ReD"/>
                                                         <constraint firstItem="EPf-sq-ZEr" firstAttribute="top" secondItem="Zba-qH-4Z6" secondAttribute="bottom" constant="4" id="shA-jp-q3M"/>
                                                         <constraint firstItem="Zba-qH-4Z6" firstAttribute="top" secondItem="luo-7k-wxc" secondAttribute="top" id="uqB-i5-hxd"/>
@@ -157,10 +155,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vgc-Vz-UdF">
-                                                            <rect key="frame" x="42" y="38" width="110" height="18"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="110" id="486-l8-fYo"/>
-                                                            </constraints>
+                                                            <rect key="frame" x="42" y="38" width="129" height="18"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="15"/>
                                                             <color key="textColor" name="Grey900"/>
                                                             <nil key="highlightedColor"/>
@@ -194,6 +189,7 @@
                                                         <constraint firstItem="vgc-Vz-UdF" firstAttribute="top" secondItem="4um-8O-zV2" secondAttribute="bottom" constant="4" id="YQa-ec-5cV"/>
                                                         <constraint firstItem="4um-8O-zV2" firstAttribute="leading" secondItem="dF5-9i-9N2" secondAttribute="trailing" constant="10" id="bIH-Pb-DVf"/>
                                                         <constraint firstItem="VCc-XV-wEO" firstAttribute="leading" secondItem="4um-8O-zV2" secondAttribute="trailing" id="hFa-6g-SWC"/>
+                                                        <constraint firstAttribute="centerX" secondItem="vgc-Vz-UdF" secondAttribute="trailing" constant="20" id="jET-do-hSm"/>
                                                         <constraint firstItem="4um-8O-zV2" firstAttribute="top" secondItem="dF5-9i-9N2" secondAttribute="top" id="l8S-Ia-QUh"/>
                                                         <constraint firstItem="dF5-9i-9N2" firstAttribute="top" secondItem="C21-qV-Nfu" secondAttribute="top" constant="16" id="udn-yl-d3V"/>
                                                         <constraint firstAttribute="trailing" secondItem="VCc-XV-wEO" secondAttribute="trailing" id="vNr-12-oUH"/>
@@ -214,6 +210,61 @@
                                             <outlet property="moreButton" destination="VCc-XV-wEO" id="lVY-1Q-tLA"/>
                                             <outlet property="subtitleLabel" destination="vgc-Vz-UdF" id="Il9-Jp-oF6"/>
                                             <outlet property="titleLabel" destination="4um-8O-zV2" id="51o-P0-7pF"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoContactsCell" rowHeight="73" id="eVR-2f-GQa" customClass="NoContactsCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="229.5" width="414" height="73"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eVR-2f-GQa" id="EOg-G9-um9">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="73"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NpH-37-geR">
+                                                    <rect key="frame" x="16" y="2" width="382" height="69"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You have no contacts!" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hPH-s6-SF6">
+                                                            <rect key="frame" x="10" y="14" width="362" height="18"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
+                                                            <color key="textColor" name="Grey1200"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Add contacts in Activity or by Scanning QR codes" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ahm-Cp-IEC">
+                                                            <rect key="frame" x="10" y="36" width="362" height="19"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="15"/>
+                                                            <color key="textColor" name="Grey1200"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" name="Grey1800"/>
+                                                    <constraints>
+                                                        <constraint firstItem="hPH-s6-SF6" firstAttribute="leading" secondItem="NpH-37-geR" secondAttribute="leading" constant="10" id="1DH-sg-VUI"/>
+                                                        <constraint firstItem="ahm-Cp-IEC" firstAttribute="trailing" secondItem="hPH-s6-SF6" secondAttribute="trailing" id="73n-H2-ts9"/>
+                                                        <constraint firstItem="ahm-Cp-IEC" firstAttribute="top" secondItem="hPH-s6-SF6" secondAttribute="bottom" constant="4" id="Ixs-Br-PBq"/>
+                                                        <constraint firstAttribute="trailing" secondItem="hPH-s6-SF6" secondAttribute="trailing" constant="10" id="Kzj-rO-wr5"/>
+                                                        <constraint firstItem="hPH-s6-SF6" firstAttribute="top" secondItem="NpH-37-geR" secondAttribute="top" constant="14" id="g2F-fe-2wo"/>
+                                                        <constraint firstItem="ahm-Cp-IEC" firstAttribute="leading" secondItem="hPH-s6-SF6" secondAttribute="leading" id="n88-nf-voj"/>
+                                                        <constraint firstAttribute="bottom" secondItem="ahm-Cp-IEC" secondAttribute="bottom" constant="14" id="yWr-8E-7RF"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="NpH-37-geR" secondAttribute="bottom" constant="2" id="7KM-yH-1ZV"/>
+                                                <constraint firstItem="NpH-37-geR" firstAttribute="leading" secondItem="EOg-G9-um9" secondAttribute="leading" constant="16" id="ZdX-ct-yzZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="NpH-37-geR" secondAttribute="trailing" constant="16" id="blO-bw-rgH"/>
+                                                <constraint firstItem="NpH-37-geR" firstAttribute="top" secondItem="EOg-G9-um9" secondAttribute="top" constant="2" id="xbI-hf-e4w"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="NpH-37-geR" id="Nmd-ae-Qcf"/>
+                                            <outlet property="subtitleLabel" destination="ahm-Cp-IEC" id="NnW-Z7-7fj"/>
+                                            <outlet property="titleLabel" destination="hPH-s6-SF6" id="ESu-EG-AFm"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -248,7 +299,7 @@
         <!--Choose Token-->
         <scene sceneID="VEe-iR-Xuu">
             <objects>
-                <viewController title="Choose Token" id="xcX-fn-KlC" customClass="SendChooseTokenViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="chooseToken" title="Choose Token" id="xcX-fn-KlC" customClass="SendChooseTokenViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fv0-MM-pxX">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1987,6 +2038,11 @@
             <point key="canvasLocation" x="4096" y="-535"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="VCc-XV-wEO">
+            <size key="intrinsicContentSize" width="17" height="22"/>
+        </designable>
+    </designables>
     <resources>
         <image name="circle" catalog="system" width="128" height="123"/>
         <image name="clock.fill" catalog="system" width="128" height="123"/>
@@ -2001,6 +2057,12 @@
         </namedColor>
         <namedColor name="Grey1000">
             <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey1200">
+            <color red="0.41176470588235292" green="0.41568627450980394" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey1800">
+            <color red="0.10980392156862745" green="0.10980392156862745" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
