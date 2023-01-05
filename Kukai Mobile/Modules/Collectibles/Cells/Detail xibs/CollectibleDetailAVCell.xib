@@ -35,12 +35,18 @@
                         <color key="tintColor" name="Brand200"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
+                        <connections>
+                            <action selector="playPauseButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="pDC-f5-e5U"/>
+                        </connections>
                     </button>
                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ug-l3-7rn">
                         <rect key="frame" x="47" y="325.66666666666669" width="206" height="31"/>
                         <color key="minimumTrackTintColor" name="Brand300"/>
                         <color key="maximumTrackTintColor" name="Grey1000"/>
                         <color key="thumbTintColor" name="Grey200"/>
+                        <connections>
+                            <action selector="scrubberDidChange:" destination="gTV-IL-0wX" eventType="valueChanged" id="qhr-LM-D1i"/>
+                        </connections>
                     </slider>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnv-Au-EcP">
                         <rect key="frame" x="267" y="324" width="33" height="33"/>

@@ -434,7 +434,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			if !parsedCell.setup, let url = obj.mediaURL {
 				let player = AVPlayer(url: url)
 				self.avPlayer = player
-				//parsedCell.setup(mediaContent: obj, avPlayer: player)
+				parsedCell.setup(mediaContent: obj, airPlayName: self.nft?.name ?? "", airPlayArtist: self.nft?.parentAlias ?? "", airPlayAlbum: self.nft?.parentContract ?? "", avPlayer: player)
 			}
 			
 			return parsedCell
