@@ -27,10 +27,6 @@ struct MediaContent: Hashable {
 	let quantity: String?
 }
 
-struct AudioScrubber: Hashable {
-	let audioURL: URL?
-}
-
 struct NameContent: Hashable {
 	let name: String
 	let collectionIcon: URL?
@@ -68,10 +64,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
-	private var playerController: AVPlayerViewController? = nil
-	private var playerControllerBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
-	private var playerLooper: AVPlayerLooper? = nil
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
+	private var avPlayer: AVPlayer? = nil
+	/*
+	 private var playerController: AVPlayerViewController? = nil
+	 private var playerControllerBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
+	 private var playerLooper: AVPlayerLooper? = nil
+	 */
 	
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
@@ -92,8 +91,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
 		collectionView.register(UINib(nibName: "CollectibleDetailOnSaleCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailOnSaleCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailImageCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailImageCell")
-		collectionView.register(UINib(nibName: "CollectibleDetailVideoCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailVideoCell")
-		collectionView.register(UINib(nibName: "CollectibleDetailAudioScrubberCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAudioScrubberCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailAVCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAVCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailNameCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailNameCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailShowcaseCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailShowcaseCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailSendCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailSendCell")
@@ -116,10 +114,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? MediaContent, !item.isImage {
-				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailVideoCell", for: indexPath), withItem: item)
-				
-			} else if let item = item as? AudioScrubber {
-				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAudioScrubberCell", for: indexPath), withItem: item)
+				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAVCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? NameContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: item)
@@ -173,14 +168,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return
 			}
 			
-			// Process section 0
 			self.isImage = response.mediaContent.isImage
 			section1Content.append(response.mediaContent)
-			
-			if let audioScrubber = response.audioScrubber {
-				section1Content.append(audioScrubber)
-			}
-			
 			section1Content.append(self.nameContent)
 			section1Content.append(ShowcaseContent(count: 1))
 			section1Content.append(SendContent(enabled: true))
@@ -210,9 +199,15 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// If we don't have the full image cached, download it and replace the thumbnail with the real thing
 			else if response.needsToDownloadFullImage {
-				let mediaURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: .small)
-				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
-					let newMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, mediaURL2: nil, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: self?.quantityString(forNFT: self?.nft))
+				let newURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: .small)
+				let isDualURL = (response.mediaContent.mediaURL2 != nil)
+				
+				MediaProxyService.cacheImage(url: newURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
+					let mediaURL1 = isDualURL ? response.mediaContent.mediaURL : newURL
+					let mediaURL2 = isDualURL ? newURL : nil
+					let width = Double(size?.width ?? 300)
+					let height = Double(size?.height ?? 300)
+					let newMediaContent = MediaContent(isImage: response.mediaContent.isImage, isThumbnail: false, mediaURL: mediaURL1, mediaURL2: mediaURL2, width: width, height: height, quantity: self?.quantityString(forNFT: self?.nft))
 					self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
 				}
 			}
@@ -233,7 +228,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		return quantity
 	}
 	
-	func mediaContentForInitialLoad(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( (mediaContent: MediaContent, audioScrubber: AudioScrubber?, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
+	func mediaContentForInitialLoad(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( (mediaContent: MediaContent, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
 		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nil) { [weak self] result in
 			
 			let isCached = MediaProxyService.isCached(url: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), cache: MediaProxyService.temporaryImageCache())
@@ -250,17 +245,17 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			// Can't find data offline, and its not cached already
 			if mediaType == nil {
 				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), mediaURL2: nil, width: 300, height: 300, quantity: quantityString)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 				return
 			}
 			
-			// Display full image
+			// if cached, Display full image
 			else if (mediaType == .imageOnly || mediaType == .gifOnly), isCached {
 				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: false, completion: completion)
 				return
 			}
 			
-			// Load thumbnail, then display image
+			// if its an image, but not cached, Load thumbnail, then display image
 			else if (mediaType == .imageOnly || mediaType == .gifOnly), !isCached {
 				self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: true, completion: completion)
 				return
@@ -269,21 +264,28 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			// Load video cell straight away
 			else if mediaType == .videoOnly {
 				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: nil, width: 0, height: 0, quantity: quantityString)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 				return
 			}
 			
-			// Download display iamge and stream audio
-			else if mediaType == .imageAndAudio {
+			// if image + audio, and we have the image cached, Load display image and stream audio
+			else if mediaType == .imageAndAudio, isCached {
 				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				return
+			}
+			
+			// if image + audio but we don't have the image image cached, Load thumbnail image, then download full image and stream audio
+			else if mediaType == .imageAndAudio, !isCached {
+				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: true, needsMediaTypeVerification: false))
 				return
 			}
 			
 			// Fallback
 			else {
 				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .icon), mediaURL2: nil, width: 300, height: 300, quantity: quantityString)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 			}
 		}
 	}
@@ -320,7 +322,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 								   mediaType: MediaProxyService.AggregatedMediaType?,
 								   quantity: String?,
 								   loadingThumbnailFirst: Bool,
-								   completion: @escaping (( (mediaContent: MediaContent, audioScrubber: AudioScrubber?, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
+								   completion: @escaping (( (mediaContent: MediaContent, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
 		
 		let cacheURL = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
 		MediaProxyService.sizeForImageIfCached(url: cacheURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
@@ -329,19 +331,18 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			if mediaType == .imageOnly {
 				let url = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI ?? nft?.artifactURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
 				let mediaContent = MediaContent(isImage: true, isThumbnail: loadingThumbnailFirst, mediaURL: url, mediaURL2: nil, width: finalSize.width, height: finalSize.height, quantity: quantity)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: loadingThumbnailFirst, needsMediaTypeVerification: false))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: loadingThumbnailFirst, needsMediaTypeVerification: false))
 				
 			} else if mediaType == .gifOnly {
 				let url = MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: .small)
 				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: url, mediaURL2: nil, width: 0, height: 0, quantity: quantity)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 				
 			} else {
 				let url1 = MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw)
 				let url2 = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
 				let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: url1, mediaURL2: url2, width: finalSize.width, height: finalSize.height, quantity: quantity)
-				//let audioScrubber = AudioScrubber(audioURL: url1)
-				completion((mediaContent: mediaContent, audioScrubber: nil, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
 			}
 			
 			return
@@ -423,50 +424,24 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return parsedCell
 			
 		} else if let obj = item as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
-			
-			if parsedCell.setup {
-				return parsedCell
+			if !parsedCell.setup {
+				parsedCell.setup(mediaContent: obj, layoutOnly: layoutOnly)
 			}
 			
-			if obj.isThumbnail {
-				parsedCell.activityIndicator.startAnimating()
-			} else {
-				parsedCell.activityIndicator.isHidden = true
-			}
-			
-			// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
-			if obj.width > obj.height {
-				parsedCell.aspectRatioConstraint.isActive = false
-				parsedCell.imageView.widthAnchor.constraint(equalTo: parsedCell.imageView.heightAnchor, multiplier: obj.width/obj.height).isActive = true
-			}
-			
-			// If not a landscape image, keep square shape, but adjust the quantity view so that it always appears in bototm left of image, not of the container (as image may be smaller width)
-			else {
-				parsedCell.layoutIfNeeded()
-				
-				let newImageWidth = parsedCell.imageView.frame.size.height * (obj.width/obj.height)
-				let difference = parsedCell.imageView.frame.size.width - newImageWidth
-				
-				parsedCell.quantityViewLeadingConstraint.constant += (difference / 2)
-			}
-			
-			
-			// Load image if not only perfroming collectionview layout logic
-			if !layoutOnly {
-				MediaProxyService.load(url: obj.mediaURL, to: parsedCell.imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
-				
-				if let quantity = obj.quantity {
-					parsedCell.quantityLabel.text = quantity
-					
-				} else {
-					parsedCell.quantityView.isHidden = true
-				}
-			}
-			
-			parsedCell.setup = true
 			return parsedCell
 			
-		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailVideoCell {
+		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailAVCell {
+			if !parsedCell.setup, let url = obj.mediaURL {
+				let player = AVPlayer(url: url)
+				self.avPlayer = player
+				//parsedCell.setup(mediaContent: obj, avPlayer: player)
+			}
+			
+			return parsedCell
+			
+			
+			
+			/*
 			if layoutOnly {
 				return parsedCell
 			}
@@ -609,14 +584,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			}
 			
 			return parsedCell
-			
-		} else if let obj = item as? AudioScrubber, let parsedCell = cell as? CollectibleDetailAudioScrubberCell {
-			if layoutOnly {
-				return parsedCell
-			}
-			
-			parsedCell.setup(withURL: obj.audioURL)
-			return parsedCell
+			*/
 			
 		} else if let obj = item as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
 			parsedCell.nameLabel.text = obj.name
@@ -682,10 +650,7 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? MediaContent, !item.isImage {
-			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailVideoCell", ofType: CollectibleDetailVideoCell.self), withItem: item, layoutOnly: true)
-			
-		} else if let item = item as? AudioScrubber {
-			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAudioScrubberCell", ofType: CollectibleDetailAudioScrubberCell.self), withItem: item, layoutOnly: true)
+			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAVCell", ofType: CollectibleDetailAVCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? NameContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item, layoutOnly: true)
