@@ -84,7 +84,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
-		if wallets.count > 0 {
+		if wallets.count > 1 {
 			snapshot.appendSections([0, 1])
 			snapshot.appendItems([NoContacts()], toSection: 0)
 			snapshot.appendItems(walletObjs, toSection: 1)
