@@ -18,26 +18,42 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	@IBOutlet weak var scrubber: UISlider!
 	@IBOutlet weak var startTimeLabel: UILabel!
 	@IBOutlet weak var endTimeLabel: UILabel!
+	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
+	@IBOutlet weak var scrubberActivityView: UIActivityIndicatorView!
 	
 	private var imageView: UIImageView? = nil
 	private var avPlayer: AVPlayer? = nil
+	private var avPlayerLayer: AVPlayerLayer? = nil
+	private var airPlayTextLayer: CATextLayer? = nil
 	private var isPlaying = false
-	private var playbackLikelyToKeepUpContext = 0
 	private var periodicTimeObserver: Any? = nil
+	private var playbackReadyObservation: NSKeyValueObservation? = nil
+	private var rateChangeObservation: NSKeyValueObservation? = nil
 	private var airPlayButton = AVRoutePickerView()
 	private var didSetNowPlaying = false
-	private var nowPlayingImage: UIImage? = nil
-	private var nowPlayingTitle = ""
-	private var nowPlayingArtist = ""
-	private var nowPlayingAlbum = ""
+	private var isAudio = false
+	private var nowPlayingInfo: [String: Any] = [:] {
+		didSet {
+			MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+		}
+	}
 	
 	public var setup = false
 	
-	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, avPlayer: AVPlayer) {
+	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, player: AVPlayer, playerLayer: AVPlayerLayer?) {
 		self.setup = true
-		self.avPlayer = avPlayer
+		self.avPlayer = player
+		self.showScrubberLoading()
 		
-		if let audioURL = mediaContent.mediaURL, let audioImageURL = mediaContent.mediaURL2 {
+		// Audio + image
+		if let audioImageURL = mediaContent.mediaURL2 {
+			isAudio = true
+			if mediaContent.isThumbnail {
+				mediaActivityView.startAnimating()
+			} else {
+				mediaActivityView.isHidden = true
+			}
+			
 			imageView = UIImageView(frame: placeholderView.bounds)
 			guard let audioImageView = imageView else {
 				return
@@ -55,43 +71,51 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			
 			MediaProxyService.temporaryImageCache().retrieveImage(forKey: audioImageURL.absoluteString, options: []) { [weak self] result in
 				guard let res = try? result.get() else {
-					print("Didn't have image cached")
 					return
 				}
 				
-				print("Did have image cached")
 				audioImageView.image = res.image
+				player.allowsExternalPlayback = false
 				
-				
-				let title = AVMutableMetadataItem()
-				title.identifier = .commonIdentifierTitle
-				title.value = (airPlayName as NSString)
-				title.extendedLanguageTag = "und"
-				
-				let artist = AVMutableMetadataItem()
-				artist.identifier = .commonIdentifierArtist
-				artist.value = (airPlayArtist as NSString)
-				artist.extendedLanguageTag = "und"
-				
-				let artwork = AVMutableMetadataItem()
-				artwork.identifier = .commonIdentifierArtwork
-				artwork.value = (res.image?.jpegData(compressionQuality: 1) ?? Data()) as NSData
-				artwork.dataType = kCMMetadataBaseDataType_JPEG as String
-				artwork.extendedLanguageTag = "und"
-				
-				avPlayer.currentItem?.externalMetadata = [title, artist, artwork]
-				avPlayer.allowsExternalPlayback = false
-				
-				
-				self?.nowPlayingTitle = airPlayName
-				self?.nowPlayingArtist = airPlayArtist
-				self?.nowPlayingAlbum = airPlayAlbum
-				self?.nowPlayingImage = res.image ?? UIImage.unknownToken()
+				self?.nowPlayingInfo = [
+					MPMediaItemPropertyTitle: airPlayName,
+					MPMediaItemPropertyArtist: airPlayArtist,
+					MPMediaItemPropertyAlbumTitle: airPlayAlbum,
+					MPNowPlayingInfoPropertyPlaybackRate: 1.0,
+					MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: res.image?.size ?? CGSize(width: 50, height: 50)) { size in
+						return res.image?.resizedImage(Size: size) ?? UIImage.unknownToken()
+					}
+				]
 			}
 			
 			
-		} else if let videoURL = mediaContent.mediaURL {
+		} else if let pLayer = playerLayer {
+			isAudio = false
+			mediaActivityView.startAnimating()
 			
+			let attributedString = NSAttributedString(string: "Playing on external device", attributes: [
+				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200"),
+				NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14)
+			])
+			airPlayTextLayer = CATextLayer()
+			airPlayTextLayer?.string = attributedString
+			airPlayTextLayer?.contentsScale = UIScreen.main.scale
+			airPlayTextLayer?.frame = CGRect(x: 0, y: placeholderView.frame.height/2 - 10, width: placeholderView.frame.width, height: 20)
+			airPlayTextLayer?.alignmentMode = .center
+			airPlayTextLayer?.isHidden = true
+			
+			pLayer.frame = placeholderView.bounds
+			
+			placeholderView.layer.addSublayer(airPlayTextLayer ?? CATextLayer())
+			placeholderView.layer.addSublayer(pLayer)
+			self.avPlayerLayer = pLayer
+			
+			self.nowPlayingInfo = [
+				MPMediaItemPropertyTitle: airPlayName,
+				MPMediaItemPropertyArtist: airPlayArtist,
+				MPMediaItemPropertyAlbumTitle: airPlayAlbum,
+				MPNowPlayingInfoPropertyPlaybackRate: 1.0
+			]
 		}
 		
 		scrubber.value = 0
@@ -99,18 +123,76 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		setupAirPlay()
 	}
 	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		if let layer = avPlayerLayer {
+			layer.frame = placeholderView.bounds
+			airPlayTextLayer?.frame = CGRect(x: 0, y: placeholderView.frame.height/2 - 10, width: placeholderView.frame.width, height: 20)
+		}
+	}
+	
 	private func setupScrubber() {
 		guard let avPlayer = avPlayer else {
 			return
 		}
 		
-		avPlayer.addObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", options: .new, context: &playbackLikelyToKeepUpContext)
+		playbackReadyObservation = avPlayer.currentItem?.observe(\.status, changeHandler: { [weak self] item, value in
+			if item.status == .readyToPlay {
+				self?.hideScrubberLoading()
+				
+				let duration = avPlayer.currentItem?.duration ?? CMTime()
+				self?.scrubber.minimumValue = 0
+				self?.scrubber.maximumValue = Float(CMTimeGetSeconds(duration))
+				
+				self?.nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = CMTimeGetSeconds(duration)
+				
+				self?.startTimeLabel.text = avPlayer.currentItem?.currentTime().durationText
+				self?.endTimeLabel.text = duration.durationText
+				
+				if self?.isAudio == false {
+					// If video, make sure we stop the spinner when the video is ready
+					self?.mediaActivityView.stopAnimating()
+					self?.mediaActivityView.isHidden = true
+					self?.airPlayTextLayer?.isHidden = false
+				}
+			}
+		})
+		
+		rateChangeObservation = avPlayer.observe(\.rate) { [weak self] avPlayer, value in
+			if avPlayer.rate == 0 && self?.isPlaying == true {
+				self?.commandReset()
+			}
+		}
+		
 		periodicTimeObserver = avPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1, preferredTimescale: 1), queue: nil) { [weak self] time in
 			guard self?.scrubber.isTracking == false else { return }
 			
 			//if slider is not being touched, then update the slider from here
 			self?.updateScrubber(with: time)
 		}
+	}
+	
+	private func showScrubberLoading() {
+		scrubberActivityView.isHidden = false
+		scrubberActivityView.startAnimating()
+		
+		playPauseButton.isHidden = true
+		scrubber.isHidden = true
+		airPlayPlaceholderView.isHidden = true
+		startTimeLabel.isHidden = true
+		endTimeLabel.isHidden = true
+	}
+	
+	private func hideScrubberLoading() {
+		scrubberActivityView.stopAnimating()
+		scrubberActivityView.isHidden = true
+		
+		playPauseButton.isHidden = false
+		scrubber.isHidden = false
+		airPlayPlaceholderView.isHidden = false
+		startTimeLabel.isHidden = false
+		endTimeLabel.isHidden = false
 	}
 	
 	private func setupAirPlay() {
@@ -125,32 +207,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			airPlayButton.topAnchor.constraint(equalTo: airPlayPlaceholderView.topAnchor),
 			airPlayButton.bottomAnchor.constraint(equalTo: airPlayPlaceholderView.bottomAnchor)
 		])
-	}
-	
-	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		guard let avPlayer = avPlayer else {
-			return
-		}
-		
-		if context == &playbackLikelyToKeepUpContext {
-			if avPlayer.currentItem?.isPlaybackLikelyToKeepUp ?? false {
-				//activityIndicator.stopAnimating()
-				//activityIndicator.isHidden = true
-				
-				let duration = avPlayer.currentItem?.duration ?? CMTime()
-				playPauseButton.isHidden = false
-				scrubber.isHidden = false
-				scrubber.minimumValue = 0
-				scrubber.maximumValue = Float(CMTimeGetSeconds(duration))
-				
-				startTimeLabel.text = "0:00"
-				endTimeLabel.text = duration.durationText
-				
-			} else {
-				//activityIndicator.startAnimating()
-				//activityIndicator.isHidden = false
-			}
-		}
 	}
 	
 	private func updateScrubber(with: CMTime) {
@@ -169,36 +225,19 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func setNowPlaying() {
-		if !didSetNowPlaying {
-			didSetNowPlaying = true
+		if didSetNowPlaying {
 			return
 		}
+		didSetNowPlaying = true
 		
-		let audioSession = AVAudioSession.sharedInstance()
-		if let _ = try? audioSession.setCategory(.playback, mode: .default, policy: .longFormAudio) {
-			
-			MPNowPlayingInfoCenter.default().nowPlayingInfo = [
-				MPMediaItemPropertyTitle: nowPlayingTitle,
-				MPMediaItemPropertyArtist: nowPlayingArtist,
-				MPMediaItemPropertyAlbumTitle: nowPlayingAlbum,
-				MPNowPlayingInfoPropertyPlaybackRate: 1.0,
-				MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: nowPlayingImage?.size ?? CGSize(width: 50, height: 50)) { [weak self] size in
-					return self?.nowPlayingImage?.resizedImage(Size: size) ?? UIImage.unknownToken()
-				}
-			]
-			
+		if let _ = try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: isAudio ? .longFormAudio : .longFormVideo) {
 			let commandCenter = MPRemoteCommandCenter.shared()
-			
 			commandCenter.stopCommand.addTarget { [weak self] commandEvent in
-				print("Command: stopCommand")
-				
 				self?.commandPause()
 				return .success
 			}
 			
 			commandCenter.togglePlayPauseCommand.addTarget { [weak self] commandEvent in
-				print("Command: togglePlayPauseCommand")
-				
 				if self?.isPlaying ?? true {
 					self?.commandPause()
 					
@@ -209,15 +248,11 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			}
 			
 			commandCenter.playCommand.addTarget { [weak self] commandEvent in
-				print("Command: playCommand")
-				
 				self?.commandPlay()
 				return .success
 			}
 			
 			commandCenter.pauseCommand.addTarget { [weak self] commandEvent in
-				print("Command: pauseCommand")
-				
 				self?.commandPause()
 				return .success
 			}
@@ -225,26 +260,29 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func commandPlay() {
-		print("playing")
-		
 		playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
 		avPlayer?.play()
 		setNowPlaying()
 		let _ = try? AVAudioSession.sharedInstance().setActive(true)
 		
 		if let player = avPlayer {
-			MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+			self.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
 		}
 		
 		isPlaying = !isPlaying
 	}
 	
 	private func commandPause() {
-		print("pausing")
-		
 		playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
 		avPlayer?.pause()
 		let _ = try? AVAudioSession.sharedInstance().setActive(false)
+		
+		isPlaying = !isPlaying
+	}
+	
+	private func commandReset() {
+		playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
+		avPlayer?.seek(to: CMTime.zero)
 		
 		isPlaying = !isPlaying
 	}
@@ -257,8 +295,17 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	
 	deinit {
 		if let ob = periodicTimeObserver {
-			avPlayer?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp")
+			playbackReadyObservation = nil
+			rateChangeObservation = nil
 			avPlayer?.removeTimeObserver(ob)
+			
+			let commandCenter = MPRemoteCommandCenter.shared()
+			commandCenter.togglePlayPauseCommand.removeTarget(self)
+			commandCenter.stopCommand.removeTarget(self)
+			commandCenter.playCommand.removeTarget(self)
+			commandCenter.pauseCommand.removeTarget(self)
+			
+			didSetNowPlaying = false
 		}
 	}
 }

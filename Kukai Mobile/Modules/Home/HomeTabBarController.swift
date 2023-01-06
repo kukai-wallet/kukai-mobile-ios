@@ -161,11 +161,11 @@ class HomeTabBarController: UITabBarController {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 11)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
 			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
-			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 11)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
@@ -238,8 +238,8 @@ class HomeTabBarController: UITabBarController {
 	}
 	
 	func textForWallet(wallet: Wallet) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 13), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 13), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
+		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
 		
 		if let sWallet = wallet as? TorusWallet {
 			var topText = sWallet.socialUserId ?? ""
