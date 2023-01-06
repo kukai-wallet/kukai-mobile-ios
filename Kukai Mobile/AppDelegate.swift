@@ -33,6 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 			os_log(.error, log: .default, "Sentry throw an error: %@", "\(error)")
 		}
 		
+		application.beginReceivingRemoteControlEvents()
+		
 		return true
 	}
 	

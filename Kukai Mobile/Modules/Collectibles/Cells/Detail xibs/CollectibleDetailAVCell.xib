@@ -26,6 +26,10 @@
                         <rect key="frame" x="0.0" y="8" width="300" height="300"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fVZ-ec-hFZ">
+                        <rect key="frame" x="140" y="148" width="20" height="20"/>
+                        <color key="color" name="Grey200"/>
+                    </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73D-pt-ZBl">
                         <rect key="frame" x="0.0" y="324" width="33" height="33"/>
                         <constraints>
@@ -35,12 +39,18 @@
                         <color key="tintColor" name="Brand200"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
+                        <connections>
+                            <action selector="playPauseButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="pDC-f5-e5U"/>
+                        </connections>
                     </button>
                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ug-l3-7rn">
                         <rect key="frame" x="47" y="325.66666666666669" width="206" height="31"/>
                         <color key="minimumTrackTintColor" name="Brand300"/>
                         <color key="maximumTrackTintColor" name="Grey1000"/>
                         <color key="thumbTintColor" name="Grey200"/>
+                        <connections>
+                            <action selector="scrubberDidChange:" destination="gTV-IL-0wX" eventType="valueChanged" id="qhr-LM-D1i"/>
+                        </connections>
                     </slider>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnv-Au-EcP">
                         <rect key="frame" x="267" y="324" width="33" height="33"/>
@@ -51,22 +61,29 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;startTime&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wPi-Ru-RCn">
-                        <rect key="frame" x="49.000000000000007" y="355.66666666666669" width="66.666666666666686" height="14.666666666666686"/>
+                        <rect key="frame" x="49.000000000000007" y="355.66666666666669" width="66.666666666666686" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Grey200"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;endTime&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Trj-n0-yRV">
-                        <rect key="frame" x="188.66666666666666" y="355.66666666666669" width="62.333333333333343" height="14.666666666666686"/>
+                        <rect key="frame" x="188.66666666666666" y="355.66666666666669" width="62.333333333333343" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Grey200"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="OML-a1-Yr5">
+                        <rect key="frame" x="140" y="330.66666666666669" width="20" height="20"/>
+                        <color key="color" name="Grey200"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstItem="OML-a1-Yr5" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="3QQ-HH-PDr"/>
+                <constraint firstItem="fVZ-ec-hFZ" firstAttribute="centerY" secondItem="kC8-mQ-rG0" secondAttribute="centerY" id="B0X-Pd-baR"/>
                 <constraint firstItem="73D-pt-ZBl" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" id="Ek7-kq-y6l"/>
+                <constraint firstItem="fVZ-ec-hFZ" firstAttribute="centerX" secondItem="kC8-mQ-rG0" secondAttribute="centerX" id="FrW-NI-sTy"/>
                 <constraint firstItem="Gnv-Au-EcP" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="16" id="Ga8-8y-XL2"/>
                 <constraint firstItem="wPi-Ru-RCn" firstAttribute="leading" secondItem="2Ug-l3-7rn" secondAttribute="leading" id="JVY-d7-c3N"/>
                 <constraint firstItem="Gnv-Au-EcP" firstAttribute="leading" secondItem="2Ug-l3-7rn" secondAttribute="trailing" constant="16" id="LWl-zu-dWp"/>
@@ -80,6 +97,7 @@
                 <constraint firstItem="2Ug-l3-7rn" firstAttribute="leading" secondItem="73D-pt-ZBl" secondAttribute="trailing" constant="16" id="jpA-pG-KRY"/>
                 <constraint firstItem="kC8-mQ-rG0" firstAttribute="height" secondItem="kC8-mQ-rG0" secondAttribute="width" multiplier="1:1" id="kzq-hd-e8B"/>
                 <constraint firstItem="Trj-n0-yRV" firstAttribute="trailing" secondItem="2Ug-l3-7rn" secondAttribute="trailing" id="laF-xu-TOh"/>
+                <constraint firstItem="OML-a1-Yr5" firstAttribute="centerY" secondItem="2Ug-l3-7rn" secondAttribute="centerY" id="lrc-re-9md"/>
                 <constraint firstAttribute="trailing" secondItem="kC8-mQ-rG0" secondAttribute="trailing" id="odq-9B-kiE"/>
                 <constraint firstItem="wPi-Ru-RCn" firstAttribute="top" secondItem="2Ug-l3-7rn" secondAttribute="bottom" id="qmx-SZ-Lt6"/>
                 <constraint firstItem="kC8-mQ-rG0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="qzg-kW-j4s"/>
@@ -88,9 +106,11 @@
             <connections>
                 <outlet property="airPlayPlaceholderView" destination="Gnv-Au-EcP" id="hym-V6-rlL"/>
                 <outlet property="endTimeLabel" destination="Trj-n0-yRV" id="XqY-N1-zPj"/>
+                <outlet property="mediaActivityView" destination="fVZ-ec-hFZ" id="NA9-DB-vuw"/>
                 <outlet property="placeholderView" destination="kC8-mQ-rG0" id="YQS-x0-twW"/>
                 <outlet property="playPauseButton" destination="73D-pt-ZBl" id="Fe3-bx-UF4"/>
                 <outlet property="scrubber" destination="2Ug-l3-7rn" id="joH-4M-A42"/>
+                <outlet property="scrubberActivityView" destination="OML-a1-Yr5" id="X8A-do-zVN"/>
                 <outlet property="startTimeLabel" destination="wPi-Ru-RCn" id="f1F-Oe-cXR"/>
             </connections>
             <point key="canvasLocation" x="68.702290076335871" y="-104.92957746478874"/>
