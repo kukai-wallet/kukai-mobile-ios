@@ -84,7 +84,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			if let amount = item as? XTZAmount {
 				if self.isEditing == false, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage(named: "tz-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setFav(true)
@@ -92,7 +92,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 					
 					return cell
 				} else if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenEditCell", for: indexPath) as? FavouriteTokenEditCell {
-					cell.tokenIcon.image = UIImage(named: "tezos-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage(named: "tz-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.containerView.layer.opacity = 0.5
@@ -102,7 +102,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				
 			} else if let obj = item as? Token, self.isEditing == false, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
 				
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.tokenIcon.frame.size)
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				cell.setFav(obj.isFavourite)
@@ -111,7 +111,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				
 			} else if let obj = item as? Token, self.isEditing == true, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenEditCell", for: indexPath) as? FavouriteTokenEditCell {
 				
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: cell.tokenIcon.frame.size)
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				
@@ -119,7 +119,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				
 			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
 				return cell
-				
 			}
 			
 			return UITableViewCell()
@@ -183,11 +182,11 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	}
 	
 	func handleTap(onTableView: UITableView, atIndexPath: IndexPath) {
-		guard atIndexPath.row != 0, let cell = onTableView.cellForRow(at: atIndexPath) as? FavouriteTokenCell else {
+		guard atIndexPath.section != 0, let cell = onTableView.cellForRow(at: atIndexPath) as? FavouriteTokenCell else {
 			return
 		}
 		
-		let token = tokensToDisplay[atIndexPath.row - 1]
+		let token = tokensToDisplay[atIndexPath.section-1]
 		
 		if TokenStateService.shared.isFavourite(token: token).isFavourite {
 			if TokenStateService.shared.removeFavourite(token: token) {

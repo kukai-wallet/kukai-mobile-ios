@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -24,10 +23,11 @@
                         <nil key="title"/>
                         <barButtonItem key="leftBarButtonItem" id="0DE-Z8-pWv">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aMh-89-6he">
-                                <rect key="frame" x="16" y="11" width="26" height="22"/>
+                                <rect key="frame" x="16" y="9.6666666666666643" width="26" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" name="Grey900"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="side-menu-icon"/>
+                                <state key="normal" image="Hamburger"/>
                                 <connections>
                                     <segue destination="ThT-HF-yA8" kind="show" id="OnS-Ci-B0T"/>
                                 </connections>
@@ -40,7 +40,7 @@
                             <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
                             <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="8" maxY="0.0"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                            <state key="normal" image="social-apple">
+                            <state key="normal" image="apple">
                                 <string key="title">&lt;Account Name&gt;
 &lt;Account Address&gt;</string>
                                 <color key="titleColor" name="Grey200"/>
@@ -69,8 +69,9 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JFG-vv-GSa">
                                 <rect key="frame" x="330" y="0.0" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" name="Grey900"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="nav-more"/>
+                                <state key="normal" image="Shortcut"/>
                             </button>
                         </barButtonItem>
                     </navigationItem>
@@ -79,6 +80,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" name="Grey1700"/>
+                        <color key="tintColor" name="Brand800"/>
+                        <color key="selectedImageTintColor" name="Brand800"/>
                     </tabBar>
                     <connections>
                         <outlet property="accountButton" destination="d7D-y1-ezY" id="w0S-Gj-l3u"/>
@@ -631,7 +634,7 @@
                             <constraint firstItem="gfL-he-lHC" firstAttribute="trailing" secondItem="jx7-mT-1wi" secondAttribute="trailing" id="mrd-Wi-cAq"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Activity" image="activity-tab-off" selectedImage="activity-tab-on" id="iOc-EI-EPw"/>
+                    <tabBarItem key="tabBarItem" title="Activity" image="Activity-Off" selectedImage="Activity-On" id="iOc-EI-EPw"/>
                     <connections>
                         <outlet property="tableView" destination="gfL-he-lHC" id="Hnq-u6-F8X"/>
                     </connections>
@@ -1319,7 +1322,7 @@
                             <constraint firstItem="LvA-3X-4A5" firstAttribute="leading" secondItem="AUk-ge-tUg" secondAttribute="leading" id="bdP-0a-1K0"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Discover" image="discover-tab-off" selectedImage="discover-tab-on" id="V4o-jD-k5C"/>
+                    <tabBarItem key="tabBarItem" title="Discover" image="Discover-Off" selectedImage="Discover-On" id="V4o-jD-k5C"/>
                     <connections>
                         <outlet property="tableView" destination="LvA-3X-4A5" id="48d-Dp-58k"/>
                     </connections>
@@ -1436,18 +1439,21 @@
         </scene>
     </scenes>
     <resources>
-        <image name="activity-tab-off" width="24" height="24"/>
-        <image name="activity-tab-on" width="24" height="24"/>
+        <image name="Activity-Off" width="26" height="26"/>
+        <image name="Activity-On" width="26" height="26"/>
+        <image name="Discover-Off" width="26" height="26"/>
+        <image name="Discover-On" width="26" height="26"/>
+        <image name="Hamburger" width="25" height="25"/>
+        <image name="Shortcut" width="25" height="25"/>
+        <image name="apple" width="30" height="30"/>
         <image name="arrow.down.right" catalog="system" width="128" height="112"/>
         <image name="arrow.turn.down.right" catalog="system" width="128" height="99"/>
         <image name="arrow.up.right" catalog="system" width="128" height="112"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
-        <image name="discover-tab-off" width="24" height="24"/>
-        <image name="discover-tab-on" width="24" height="24"/>
-        <image name="nav-more" width="26" height="26"/>
-        <image name="side-menu-icon" width="26" height="20"/>
-        <image name="social-apple" width="30" height="30"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
+        <namedColor name="Brand800">
+            <color red="0.57300001382827759" green="0.59600001573562622" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Grey1000">
             <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -1462,6 +1468,9 @@
         </namedColor>
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Grey900">
+            <color red="0.63529411764705879" green="0.64313725490196083" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="background">
             <color red="0.89800000190734863" green="0.89800000190734863" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

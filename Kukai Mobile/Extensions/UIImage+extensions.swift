@@ -54,6 +54,6 @@ extension UIImage {
 	}
 	
 	class func unknownToken() -> UIImage {
-		return UIImage(named: "unknown-token")?.resizedImage(Size: CGSize(width: 52, height: 52)) ?? UIImage()
+		return UIImage(named: "unknown")?.resizedImage(Size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
 }

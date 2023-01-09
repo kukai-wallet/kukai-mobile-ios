@@ -75,7 +75,7 @@ class SendEnterAmountViewController: UIViewController {
 		let image = UIImageView(frame: CGRect(x: 5, y: 0, width: 40, height: 30))
 		image.translatesAutoresizingMaskIntoConstraints = false
 		image.contentMode = .scaleAspectFit
-		image.image = UIImage(named: "tezos-logo")
+		image.image = UIImage(named: "tz-logo")
 		
 		textfieldLeftView.translatesAutoresizingMaskIntoConstraints = false
 		textfieldLeftView.frame = CGRect(x: 0, y: 0, width: 50, height: 40)

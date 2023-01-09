@@ -100,7 +100,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		} else {
 			actions.append(
-				UIAction(title: "Hide Collectible", image: UIImage(named: "context-menu-hidden"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Hide Collectible", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}

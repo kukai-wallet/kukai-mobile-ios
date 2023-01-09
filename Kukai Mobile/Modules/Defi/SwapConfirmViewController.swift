@@ -59,7 +59,7 @@ class SwapConfirmViewController: UIViewController {
 		let settings = DexCalculationService.settings(forDex: exchange.name)
 		
 		if TransactionService.shared.exchangeData.isXtzToToken == true {
-			tokenFromIcon.image = UIImage(named: "tezos-logo")
+			tokenFromIcon.image = UIImage(named: "tz-logo")
 			tokenFromLabel.text = "XTZ"
 			tokenFromAmountLabel.text = TransactionService.shared.exchangeData.fromAmount?.normalisedRepresentation ?? ""
 			tokenFromBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
@@ -85,7 +85,7 @@ class SwapConfirmViewController: UIViewController {
 			tokenFromAmountLabel.text = TransactionService.shared.exchangeData.fromAmount?.normalisedRepresentation ?? ""
 			tokenFromBalanceLabel.text = "Balance: \(tokenBalanceString) \(exchange.token.symbol)"
 			
-			tokenToIcon.image = UIImage(named: "tezos-logo")
+			tokenToIcon.image = UIImage(named: "tz-logo")
 			tokenToLabel.text = "XTZ"
 			tokenToAmountLabel.text = TransactionService.shared.exchangeData.toAmount?.normalisedRepresentation ?? ""
 			tokenToBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"

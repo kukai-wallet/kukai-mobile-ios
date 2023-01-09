@@ -248,7 +248,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 				)
 			} else {
 				actions.append(
-					UIAction(title: "Hide Token", image: UIImage(named: "context-menu-hidden"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Hide Token", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.alert(errorWithMessage: "Unable to find token reference")
 							return

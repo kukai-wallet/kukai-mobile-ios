@@ -114,7 +114,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
 	func menuForMore() -> UIMenu {
 		let options: [UIAction] = [
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "context-menu-hidden"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]

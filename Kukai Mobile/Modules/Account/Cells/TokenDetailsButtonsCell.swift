@@ -25,7 +25,7 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		self.buttonData = buttonData
 		self.delegate = delegate
 		
-		favouriteButton.setImage( buttonData.isFavourited ? UIImage(named: "star-fill") : UIImage(named: "star-no-fill") , for: .normal)
+		favouriteButton.setImage( buttonData.isFavourited ? UIImage(named: "Favorites") : UIImage(named: "FavoritesOff") , for: .normal)
 		buyButton.isHidden = !buttonData.canBePurchased
 		
 		if buttonData.hasMoreButton, let menu = moreMenu {
@@ -44,7 +44,7 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		}
 		
 		if let result = delegate?.favouriteTapped(){
-			favouriteButton.setImage( result ? UIImage(named: "star-fill") : UIImage(named: "star-no-fill") , for: .normal)
+			favouriteButton.setImage( result ? UIImage(named: "Favorites") : UIImage(named: "FavoritesOff") , for: .normal)
 		}
 	}
 	

@@ -24,10 +24,10 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 	
 	func setFav(_ isFav: Bool) {
 		if isFav {
-			favIcon.image = UIImage(named: "star-fill")
+			favIcon.image = UIImage(named: "Favorites")
 			
 		} else {
-			favIcon.image = UIImage(named: "star-no-fill")
+			favIcon.image = UIImage(named: "FavoritesOff")
 		}
 	}
 }

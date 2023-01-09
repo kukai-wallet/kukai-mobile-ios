@@ -53,7 +53,7 @@ class SendApproveViewController: UIViewController {
 			
 			
 		} else if let nft = TransactionService.shared.sendData.chosenNFT, let iconView = nftIcon {
-			MediaProxyService.load(url: MediaProxyService.url(fromUri: nft.thumbnailURI, ofFormat: .icon), to: iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(named: "unknown-token") ?? UIImage(), downSampleSize: iconView.frame.size)
+			MediaProxyService.load(url: MediaProxyService.url(fromUri: nft.thumbnailURI, ofFormat: .icon), to: iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: iconView.frame.size)
 			nftName?.text = nft.name
 			
 		} else {

@@ -17,7 +17,7 @@ class SwapViewModel: ViewModel {
 	var tokenFromTitle = "XTZ"
 	var tokenFromBalanceText = "Balance: 0"
 	var tokenFromValidator = TokenAmountValidator(balanceLimit: TokenAmount.zero())
-	var tokenFromIconImage: UIImage? = UIImage(named: "tezos-logo")
+	var tokenFromIconImage: UIImage? = UIImage(named: "tz-logo")
 	var tokenFromIconURL: URL? = nil
 	var tokenFromTextfieldInput = ""
 	
@@ -51,7 +51,7 @@ class SwapViewModel: ViewModel {
 		
 		if xtzToToken {
 			tokenFromTitle = "XTZ"
-			tokenFromIconImage = UIImage(named: "tezos-logo")
+			tokenFromIconImage = UIImage(named: "tz-logo")
 			tokenFromIconURL = nil
 			tokenFromBalanceText = "Balance: \(xtzBalance.normalisedRepresentation)"
 			tokenFromValidator = TokenAmountValidator(balanceLimit: xtzBalance)
@@ -72,7 +72,7 @@ class SwapViewModel: ViewModel {
 			tokenFromValidator = TokenAmountValidator(balanceLimit: tokenData?.token.balance ?? TokenAmount.zero(), decimalPlaces: exchange.token.decimals)
 			
 			tokenToTitle = "XTZ"
-			tokenToIconImage = UIImage(named: "tezos-logo")
+			tokenToIconImage = UIImage(named: "tz-logo")
 			tokenToIconURL = nil
 			tokenToBalanceText = "Balance: \(xtzBalance.normalisedRepresentation)"
 			

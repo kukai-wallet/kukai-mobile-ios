@@ -28,13 +28,13 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
 		
 		if value > 0 {
 			let color = UIColor.colorNamed("Positive900")
-			priceChangeIcon.image = UIImage(named: "arrow-up")
+			priceChangeIcon.image = UIImage(named: "arrow_Up")
 			priceChangeIcon.tintColor = color
 			priceChangeLabel.textColor = color
 			
 		} else {
 			let color = UIColor.colorNamed("Grey1100")
-			priceChangeIcon.image = UIImage(named: "arrow-down")
+			priceChangeIcon.image = UIImage(named: "arrow_Down")
 			priceChangeIcon.tintColor = color
 			priceChangeLabel.textColor = color
 		}
