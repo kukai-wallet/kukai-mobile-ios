@@ -305,9 +305,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			let bakerString = (account.delegate?.alias ?? account.delegate?.address ?? "") + "  "
 			
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: account.delegate?.alias ?? account.delegate?.address ?? "")
+			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: bakerString)
 			
 		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 			tokenIconURL = token.thumbnailURL

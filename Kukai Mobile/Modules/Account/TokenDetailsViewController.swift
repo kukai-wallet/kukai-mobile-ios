@@ -106,7 +106,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		
 		if viewModel.tokenPriceChangeIsUp {
 			let color = UIColor.colorNamed("Positive900")
-			var image = UIImage(named: "arrow-up")
+			var image = UIImage(named: "arrow_Up")
 			image = image?.resizedImage(Size: CGSize(width: 11, height: 11))
 			image = image?.withTintColor(color)
 			
@@ -115,7 +115,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			
 		} else {
 			let color = UIColor.colorNamed("Caution900")
-			var image = UIImage(named: "arrow-down")
+			var image = UIImage(named: "arrow_Down")
 			image = image?.resizedImage(Size: CGSize(width: 11, height: 11))
 			image = image?.withTintColor(color)
 			
@@ -231,7 +231,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 		if viewModel.buttonData?.canBeHidden == true {
 			if viewModel.buttonData?.isHidden == true {
 				actions.append(
-					UIAction(title: "Unhide Token", image: UIImage(named: "context-menu-unhide"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Unhide Token", image: UIImage(named: "Hidden_Off"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.alert(errorWithMessage: "Unable to find token reference")
 							return

@@ -77,8 +77,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 				
 				let imageSize = CGSize(width: cell.iconView.frame.width+2, height: cell.iconView.frame.height+2)
+				var symbol = token.symbol
+				if symbol == "" {
+					symbol = " "
+				}
+				
 				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: imageSize)
-				cell.symbolLabel.text = token.symbol
+				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))
 				
