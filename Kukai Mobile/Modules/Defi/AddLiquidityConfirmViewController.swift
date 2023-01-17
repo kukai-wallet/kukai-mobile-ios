@@ -39,7 +39,7 @@ class AddLiquidityConfirmViewController: UIViewController {
 			tokenBalanceString =  tokenData.token.balance.normalisedRepresentation
 		}
 		
-		token1Icon.image = UIImage(named: "tz-logo")
+		token1Icon.image = UIImage(named: "tezos")
 		token1Label.text = "XTZ"
 		token1AmountLabel.text = TransactionService.shared.addLiquidityData.token1?.normalisedRepresentation ?? ""
 		token1BalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"

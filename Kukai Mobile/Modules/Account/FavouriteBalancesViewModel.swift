@@ -84,7 +84,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			if let amount = item as? XTZAmount {
 				if self.isEditing == false, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage(named: "tz-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setFav(true)
@@ -92,7 +92,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 					
 					return cell
 				} else if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenEditCell", for: indexPath) as? FavouriteTokenEditCell {
-					cell.tokenIcon.image = UIImage(named: "tz-logo")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.containerView.layer.opacity = 0.5

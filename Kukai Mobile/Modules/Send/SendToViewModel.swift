@@ -70,13 +70,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
 				
 			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tz-logo"), title: wallet.address, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: wallet.address, address: wallet.address))
 				for child in hdWallet.childWallets {
 					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: child.address, address: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tz-logo"), title: wallet.address, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: wallet.address, address: wallet.address))
 			}
 		}
 		
@@ -101,7 +101,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func imageAndTitleForSocialWallet(wallet: Wallet) -> (image: UIImage?, title: String) {
 		guard let socialWallet = wallet as? TorusWallet else {
-			return (image: UIImage(named: "tz-logo"), title: wallet.address)
+			return (image: UIImage(named: "tezos"), title: wallet.address)
 		}
 		
 		switch socialWallet.authProvider {
@@ -115,10 +115,10 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return (image: UIImage(named: "social-google"), title: socialWallet.socialUserId ?? socialWallet.address)
 				
 			case .reddit:
-				return (image: UIImage(named: "tz-logo"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "tezos"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
 				
 			case .facebook:
-				return (image: UIImage(named: "tz-logo"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "tezos"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
 		}
 	}
 	

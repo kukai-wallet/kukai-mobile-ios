@@ -168,6 +168,7 @@ class HomeTabBarController: UITabBarController {
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
+		self.tabBar.unselectedItemTintColor = UIColor(named: "Grey800")
 		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
 	}
 	

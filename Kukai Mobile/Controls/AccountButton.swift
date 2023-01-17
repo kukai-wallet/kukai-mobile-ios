@@ -9,9 +9,9 @@ import UIKit
 
 class AccountButton: UIButton {
 	
-	private let additionalImage = UIImageView(image: UIImage(named: "chevronRight"))
-	private let additionalImageWidth: CGFloat = 15
-	private let additionalImageHeight: CGFloat = 15
+	private let additionalImage = UIImageView(image: UIImage(named: "chevron-right"))
+	private let additionalImageWidth: CGFloat = 8
+	private let additionalImageHeight: CGFloat = 12
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()

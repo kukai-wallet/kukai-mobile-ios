@@ -27,6 +27,7 @@ class CustomisableButton: UIButton {
 			customImage = customImage.resizedImage(Size: CGSize(width: imageWidth, height: imageHeight)) ?? UIImage()
 			customImage = customImage.withTintColor(tintColor)
 			
+			imageView?.contentMode = .center
 			setImage(customImage, for: .normal)
 			didSetupCustomImage = true
 		}

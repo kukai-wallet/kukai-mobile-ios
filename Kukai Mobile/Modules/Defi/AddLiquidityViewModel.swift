@@ -19,7 +19,7 @@ class AddLiquidityViewModel: ViewModel {
 	var token1Title = "XTZ"
 	var token1BalanceText = "Balance: 0"
 	var token1Validator = TokenAmountValidator(balanceLimit: TokenAmount.zero())
-	var token1IconImage: UIImage? = UIImage(named: "tz-logo")
+	var token1IconImage: UIImage? = UIImage(named: "tezos")
 	var token1IconURL: URL? = nil
 	var token1TextfieldInput = ""
 	

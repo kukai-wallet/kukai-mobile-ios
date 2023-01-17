@@ -189,7 +189,7 @@
                             <constraint firstItem="A3L-Qm-fly" firstAttribute="leading" secondItem="OYg-W2-SFI" secondAttribute="trailing" constant="20" id="lpl-ly-JGz"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Defi" image="DeFi-Off" selectedImage="DeFi-On" id="uM0-jR-D1H"/>
+                    <tabBarItem key="tabBarItem" title="Defi" image="defi-off" selectedImage="defi-on" id="uM0-jR-D1H"/>
                     <navigationItem key="navigationItem" title="Defi" id="vx1-Dt-ieO"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
@@ -663,13 +663,13 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="183" height="62"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price Impact:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l8Q-So-7t6">
-                                                        <rect key="frame" x="0.0" y="8" width="85" height="21"/>
+                                                        <rect key="frame" x="0.0" y="8" width="85" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" name="text-tertiary"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6ZK-CL-T2e">
-                                                        <rect key="frame" x="93" y="7.5" width="45" height="22"/>
+                                                        <rect key="frame" x="93" y="5.5" width="45" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="58f-mh-Vup"/>
                                                             <constraint firstAttribute="width" constant="45" id="80i-ZW-hof"/>
@@ -681,7 +681,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;priceImpact&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wbm-uX-EJh">
-                                                        <rect key="frame" x="0.0" y="37" width="175" height="17"/>
+                                                        <rect key="frame" x="0.0" y="33" width="175" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -703,7 +703,7 @@
                                                 <rect key="frame" x="191" y="0.0" width="183" height="62"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="G0H-Yp-Nrx">
-                                                        <rect key="frame" x="98.5" y="7.5" width="45" height="22"/>
+                                                        <rect key="frame" x="98.5" y="5.5" width="45" height="22"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="22" id="Tkd-2F-SXj"/>
                                                             <constraint firstAttribute="width" constant="45" id="wvV-Sq-RfP"/>
@@ -715,13 +715,13 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;minReceived&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WnG-84-7lR">
-                                                        <rect key="frame" x="0.0" y="37" width="100" height="17"/>
+                                                        <rect key="frame" x="0.0" y="33" width="100" height="21"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Min Received:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wc4-bT-gt8">
-                                                        <rect key="frame" x="0.0" y="8" width="90.5" height="21"/>
+                                                        <rect key="frame" x="0.0" y="8" width="90.5" height="17"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="textColor" name="text-tertiary"/>
                                                         <nil key="highlightedColor"/>
@@ -2545,14 +2545,14 @@ Blah Blah Blah Blah Blah</string>
         <segue reference="Ubh-lT-8QK"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="DeFi-Off" width="26" height="26"/>
-        <image name="DeFi-On" width="26" height="26"/>
         <image name="arrow.clockwise" catalog="system" width="113" height="128"/>
         <image name="arrow.down" catalog="system" width="118" height="128"/>
         <image name="arrow.up.arrow.down.circle.fill" catalog="system" width="128" height="123"/>
         <image name="chevron.down" catalog="system" width="128" height="70"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="clock.fill" catalog="system" width="128" height="123"/>
+        <image name="defi-off" width="24" height="25"/>
+        <image name="defi-on" width="24" height="25"/>
         <image name="gearshape.fill" catalog="system" width="128" height="123"/>
         <image name="info.circle.fill" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
