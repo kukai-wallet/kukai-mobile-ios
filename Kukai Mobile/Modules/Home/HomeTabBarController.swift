@@ -222,20 +222,20 @@ class HomeTabBarController: UITabBarController {
 		if wallet.type == .social, let sWallet = wallet as? TorusWallet {
 			switch sWallet.authProvider {
 				case .apple:
-					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
 				case .google:
-					return UIImage(named: "social-google")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					return UIImage(named: "social-google")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
 				case .twitter:
-					return UIImage(named: "social-twitter")?.resizedImage(Size: CGSize(width: 20, height: 20))
+					return UIImage(named: "social-twitter")?.resizedImage(Size: CGSize(width: 24, height: 24))
 				
 				default:
-					return UIImage(systemName: "xmark.octagon")
+					return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
 			}
 		}
 		
-		return nil
+		return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
 	}
 	
 	func textForWallet(wallet: Wallet) -> NSAttributedString {
@@ -252,14 +252,22 @@ class HomeTabBarController: UITabBarController {
 				}
 			}
 			
+			
+			let approxPixelsPerCharacter: CGFloat = 10
+			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
+		
+			if topText.count > maxCharacters {
+				topText = String(topText.prefix(maxCharacters)) + "..."
+			}
+			
 			let attributedString1 = NSMutableAttributedString(string: "\(topText)\n", attributes: attrs1)
-			let attributedString2 = NSMutableAttributedString(string: sWallet.address, attributes: attrs2)
+			let attributedString2 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs2)
 			attributedString1.append(attributedString2)
 			
 			return attributedString1
 			
 		} else {
-			let attributedString1 = NSMutableAttributedString(string: wallet.address, attributes: attrs1)
+			let attributedString1 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs1)
 			return attributedString1
 		}
 	}

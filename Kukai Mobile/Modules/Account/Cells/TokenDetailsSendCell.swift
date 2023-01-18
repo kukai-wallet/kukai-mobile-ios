@@ -18,20 +18,20 @@ class TokenDetailsSendCell: UITableViewCell {
 		if data.isBuyTez {
 			var image = UIImage(named: "plus")
 			image = image?.resizedImage(Size: CGSize(width: 20, height: 20))
-			image = image?.withTintColor(.colorNamed("Brand600"))
+			image = image?.withTintColor(.colorNamed("Brand400"))
 			
 			sendButton.setImage(image, for: .normal)
-			sendButton.configuration?.attributedTitle = AttributedString("Get Tez", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)] ))
+			sendButton.configuration?.attributedTitle = AttributedString("Get Tez", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)] ))
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .leading
 			
 		} else {
 			var image = UIImage(named: "arrow-up-right")
 			image = image?.resizedImage(Size: CGSize(width: 20, height: 20))
-			image = image?.withTintColor(.colorNamed("Brand600"))
+			image = image?.withTintColor(.colorNamed("Brand400"))
 			
 			sendButton.setImage(image, for: .normal)
-			sendButton.configuration?.attributedTitle = AttributedString("Send", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)] ))
+			sendButton.configuration?.attributedTitle = AttributedString("Send", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)] ))
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .trailing
 		}

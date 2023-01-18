@@ -32,7 +32,7 @@ class TokenDetailsChartCell: UITableViewCell {
 	private weak var chartController: ChartHostingController? = nil
 	private var allChartData: AllChartData? = nil
 	private let chartButtonBackgroundColor = UIColor.colorNamed("Grey1900")
-	private let chartButtonBorderColor = UIColor.colorNamed("Brand1600")
+	private let chartButtonBorderColor = UIColor.colorNamed("Brand1400")
 	private let chartButtonSelectedBackgroundColor = UIColor.colorNamed("Grey1800")
 	private let chartButtonSelectedBorderColor = UIColor.colorNamed("Grey1600")
 	

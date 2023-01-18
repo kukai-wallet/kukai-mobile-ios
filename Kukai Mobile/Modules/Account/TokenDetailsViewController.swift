@@ -26,8 +26,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	private var cancellable: AnyCancellable?
 	private var headerAnimator = UIViewPropertyAnimator()
 	private var headerAnimatorStarted = false
-	private let defaultHeaderFiatFontSize = 19
-	private var currentHeaderFiatFontSize: CGFloat = 19
+	private let defaultHeaderFiatFontSize: CGFloat = 18
+	private var currentHeaderFiatFontSize: CGFloat = 18
 	private var firstLoad = true
 	
 	
@@ -106,7 +106,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		
 		if viewModel.tokenPriceChangeIsUp {
 			let color = UIColor.colorNamed("Positive900")
-			var image = UIImage(named: "arrow-up-no-padding")
+			var image = UIImage(named: "arrow-up")
 			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
@@ -115,7 +115,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			
 		} else {
 			let color = UIColor.colorNamed("Caution900")
-			var image = UIImage(named: "arrow-down-no-padding")
+			var image = UIImage(named: "arrow-down")
 			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
@@ -196,11 +196,13 @@ extension TokenDetailsViewController {
 		if fraction <= 1 {
 			headerAnimator.fractionComplete = fraction
 			
-			let fontSizeReduction = Int(fraction / 0.1)
+			let fontSizeReduction: CGFloat = CGFloat(Int(fraction / 0.1))
 			var newSize = CGFloat(defaultHeaderFiatFontSize - fontSizeReduction)
 			
 			if newSize < 12 {
 				newSize = 13
+			} else if newSize > defaultHeaderFiatFontSize {
+				newSize = defaultHeaderFiatFontSize
 			}
 			
 			if newSize != currentHeaderFiatFontSize {
@@ -231,7 +233,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 		if viewModel.buttonData?.canBeHidden == true {
 			if viewModel.buttonData?.isHidden == true {
 				actions.append(
-					UIAction(title: "Unhide Token", image: UIImage(named: "Hidden_Off"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Unhide Token", image: UIImage(named: "hidden-off"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.alert(errorWithMessage: "Unable to find token reference")
 							return
@@ -248,7 +250,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 				)
 			} else {
 				actions.append(
-					UIAction(title: "Hide Token", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
+					UIAction(title: "Hide Token", image: UIImage(named: "hidden-on"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
 							self?.alert(errorWithMessage: "Unable to find token reference")
 							return
@@ -269,7 +271,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 		
 		if viewModel.buttonData?.canBeViewedOnline == true {
 			actions.append(
-				UIAction(title: "View on Blockchain", image: UIImage(named: "external-link"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "View on Blockchain", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
 					if let contract = self?.viewModel.token?.tokenContractAddress, let url = URL(string: "https://better-call.dev/mainnet/\(contract)") {
 						UIApplication.shared.open(url, completionHandler: nil)
 					}

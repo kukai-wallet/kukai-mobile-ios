@@ -38,4 +38,8 @@ extension String {
 		let size = self.size(withAttributes: fontAttributes)
 		return size.width
 	}
+	
+	func truncateTezosAddress() -> String {
+		return "\(self.prefix(6))...\(self.suffix(4))"
+	}
 }

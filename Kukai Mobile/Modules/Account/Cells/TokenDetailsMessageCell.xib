@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Regular.ttf">
+            <string>Figtree-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenDetailsMessageCell" rowHeight="45" id="W7n-aw-rox" customClass="TokenDetailsMessageCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="45"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W7n-aw-rox" id="xlT-uE-I6s">
+                <rect key="frame" x="0.0" y="0.0" width="393" height="45"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;message&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pvo-Xg-5Kg">
+                        <rect key="frame" x="16" y="8" width="361" height="29"/>
+                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="15"/>
+                        <color key="textColor" name="Grey600"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="Pvo-Xg-5Kg" firstAttribute="leading" secondItem="xlT-uE-I6s" secondAttribute="leading" constant="16" id="3jL-PV-Y19"/>
+                    <constraint firstAttribute="bottom" secondItem="Pvo-Xg-5Kg" secondAttribute="bottom" constant="8" id="7t0-Lb-RqR"/>
+                    <constraint firstItem="Pvo-Xg-5Kg" firstAttribute="top" secondItem="xlT-uE-I6s" secondAttribute="top" constant="8" id="MWa-hr-OD0"/>
+                    <constraint firstAttribute="trailing" secondItem="Pvo-Xg-5Kg" secondAttribute="trailing" constant="16" id="QzE-ew-qWo"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="messageLabel" destination="Pvo-Xg-5Kg" id="Xc0-cA-6cV"/>
+            </connections>
+            <point key="canvasLocation" x="-65" y="21"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Grey600">
+            <color red="0.83529411764705885" green="0.83921568627450982" blue="0.90980392156862744" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
