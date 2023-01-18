@@ -98,12 +98,12 @@ struct ChartView: View {
 			ZStack(alignment: .topLeading) {
 				GeometryReader { geo in
 					
-					let widthOfString = doubleFormatter(maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 13))
+					let widthOfString = doubleFormatter(maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
 					let boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
 					
 					VStack(alignment: .trailing) {
 						Text(doubleFormatter(maxData?.value))
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 11)))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
 							.foregroundStyle(Color("Grey900"))
 						
 					}
@@ -174,12 +174,12 @@ struct ChartView: View {
 				
 				
 				// Add text annotation of lowest value as overlay to bottom of chart
-				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 13))
+				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
 				let boxOffset = max(4, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
 				
 				VStack(alignment: .trailing) {
 					Text(doubleFormatter(minData?.value))
-						.font(Font(UIFont.custom(ofType: .bold, andSize: 11)))
+						.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
 						.foregroundStyle(Color("Grey900"))
 					
 				}

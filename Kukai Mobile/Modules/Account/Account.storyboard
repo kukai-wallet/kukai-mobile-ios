@@ -556,32 +556,33 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-up" translatesAutoresizingMaskIntoConstraints="NO" id="7Zt-dG-2vQ">
-                                <rect key="frame" x="242.33333333333334" y="77" width="11" height="22"/>
+                                <rect key="frame" x="248.33333333333334" y="78.666666666666671" width="12.000000000000028" height="12"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="11" id="u7y-ka-gYR"/>
+                                    <constraint firstAttribute="height" constant="12" id="6Ao-8S-3N0"/>
+                                    <constraint firstAttribute="width" constant="12" id="u7y-ka-gYR"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="&lt;priceChange&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpb-e7-XF0">
-                                <rect key="frame" x="257.33333333333331" y="75" width="119.66666666666669" height="26"/>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="17"/>
+                                <rect key="frame" x="264.33333333333331" y="75" width="112.66666666666669" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Positive900"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="&lt;fiat&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVG-6O-GrW">
-                                <rect key="frame" x="60" y="96" width="52.666666666666657" height="23"/>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="19"/>
+                                <rect key="frame" x="60" y="97.333333333333329" width="50" height="21.666666666666671"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Grey900"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;priceChangeDate&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JxS-C1-8ro">
-                                <rect key="frame" x="221" y="104" width="156" height="20.666666666666671"/>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="17"/>
+                                <rect key="frame" x="230.33333333333337" y="97.333333333333329" width="146.66666666666663" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Grey1200"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;symbol&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmE-DB-rmw">
-                                <rect key="frame" x="60.000000000000014" y="75" width="166.33333333333337" height="20.666666666666671"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="17"/>
+                                <rect key="frame" x="60.000000000000014" y="75" width="172.33333333333337" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Grey200"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -608,16 +609,15 @@
                             <constraint firstAttribute="bottom" secondItem="ITw-HP-Zep" secondAttribute="bottom" id="Ff0-Eb-ax1"/>
                             <constraint firstItem="WKV-57-Y9W" firstAttribute="leading" secondItem="xt6-og-l4q" secondAttribute="leading" constant="16" id="LQf-cS-rPy"/>
                             <constraint firstItem="AmE-DB-rmw" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="top" id="M6l-6Q-YfX"/>
+                            <constraint firstItem="7Zt-dG-2vQ" firstAttribute="centerY" secondItem="tpb-e7-XF0" secondAttribute="centerY" id="R7l-5I-m5G"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="trailing" secondItem="xt6-og-l4q" secondAttribute="trailing" id="UtG-Gn-lg0"/>
                             <constraint firstItem="xt6-og-l4q" firstAttribute="trailing" secondItem="tpb-e7-XF0" secondAttribute="trailing" constant="16" id="aN2-hl-Voj"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="leading" secondItem="xt6-og-l4q" secondAttribute="leading" id="dZ2-Oa-otn"/>
                             <constraint firstItem="mVG-6O-GrW" firstAttribute="bottom" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="4" id="kGM-0A-b6l"/>
                             <constraint firstItem="mVG-6O-GrW" firstAttribute="leading" secondItem="AmE-DB-rmw" secondAttribute="leading" id="lVt-rQ-ysu"/>
                             <constraint firstItem="WKV-57-Y9W" firstAttribute="top" secondItem="xt6-og-l4q" secondAttribute="top" constant="16" id="mmt-uD-E4O"/>
-                            <constraint firstItem="7Zt-dG-2vQ" firstAttribute="bottom" secondItem="tpb-e7-XF0" secondAttribute="bottom" constant="-2" id="rQU-ZK-OoJ"/>
                             <constraint firstItem="JxS-C1-8ro" firstAttribute="trailing" secondItem="tpb-e7-XF0" secondAttribute="trailing" id="to5-c0-kjn"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="8" id="wGs-q2-HMm"/>
-                            <constraint firstItem="7Zt-dG-2vQ" firstAttribute="top" secondItem="tpb-e7-XF0" secondAttribute="top" constant="2" id="zzj-8R-91p"/>
                         </constraints>
                     </view>
                     <connections>
