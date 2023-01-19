@@ -91,10 +91,10 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	func menuForBalancesMore() -> UIMenu {
 		let options: [UIAction] = [
-			UIAction(title: "Favourites", image: UIImage(named: "FavoritesOff"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "Favourites", image: UIImage(named: "favourite-off"), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "hidden-on"), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
