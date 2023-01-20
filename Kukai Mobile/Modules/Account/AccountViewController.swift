@@ -24,7 +24,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
-		viewModel.balancesMenu = menuForBalancesMore()
+		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -89,8 +89,8 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
-	func menuForBalancesMore() -> UIMenu {
-		let options: [UIAction] = [
+	func menuVCForBalancesMore() -> MenuViewController {
+		let actions: [UIAction] = [
 			UIAction(title: "Favourites", image: UIImage(named: "favourite-off"), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
@@ -99,6 +99,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			}),
 		]
 		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: options)
+		return MenuViewController(actions: actions, sourceViewController: self)
 	}
 }
