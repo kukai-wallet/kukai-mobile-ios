@@ -26,7 +26,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var isPresentedForSelectingToken = false
 	var isVisible = false
 	var tokensToDisplay: [Token] = []
-	var balancesMenu: UIMenu? = nil
+	var balancesMenuVC: MenuViewController? = nil
 	
 	
 	// MARK: - Init
@@ -56,8 +56,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? UIMenu, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
-				cell.setup(menu: obj)
+			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+				cell.setup(menuVC: obj)
 				return cell
 				
 			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
@@ -154,7 +154,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(section1Data, toSection: 0)
 			
 		} else {
-			var data: [AnyHashable] = [balancesMenu]
+			var data: [AnyHashable] = [balancesMenuVC]
 			if section1Data.count > 1 {
 				data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
 			}

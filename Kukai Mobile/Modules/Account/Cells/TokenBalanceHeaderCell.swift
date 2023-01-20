@@ -10,13 +10,17 @@ import UIKit
 class TokenBalanceHeaderCell: UITableViewCell {
 	
 	@IBOutlet weak var moreButton: UIButton!
+	private var menu: MenuViewController? = nil
 	
 	override func awakeFromNib() {
         super.awakeFromNib()
     }
 	
-	func setup(menu: UIMenu) {
-		moreButton.menu = menu
-		moreButton.showsMenuAsPrimaryAction = true
+	func setup(menuVC: MenuViewController) {
+		menu = menuVC
+	}
+	
+	@IBAction func moreTapped(_ sender: UIButton) {
+		menu?.display(attachedTo: sender)
 	}
 }

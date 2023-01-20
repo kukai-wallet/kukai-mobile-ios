@@ -10,6 +10,7 @@ import UIKit
 class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var favIcon: UIImageView!
+	@IBOutlet weak var favIconStackview: UIStackView!
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
@@ -24,10 +25,45 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 	
 	func setFav(_ isFav: Bool) {
 		if isFav {
-			favIcon.image = UIImage(named: "Favorites")
+			favIcon.image = UIImage(named: "favourite-on")
 			
 		} else {
-			favIcon.image = UIImage(named: "FavoritesOff")
+			favIcon.image = UIImage(named: "favourite-off")
+		}
+	}
+	
+	override func setEditing(_ editing: Bool, animated: Bool) {
+		super.setEditing(editing, animated: animated)
+		setEditView(editing: editing, withAnimation: true)
+		
+		if editing {
+			for subViewA in self.subviews {
+				if (subViewA.classForCoder.description() == "UITableViewCellReorderControl") {
+					for subViewB in subViewA.subviews {
+						if (subViewB.isKind(of: UIImageView.classForCoder())) {
+							let imageView = subViewB as! UIImageView
+							if (self.myReorderImage == nil) {
+								let myImage = imageView.image
+								myReorderImage = myImage?.withRenderingMode(.alwaysTemplate)
+							}
+							imageView.image = self.myReorderImage
+							imageView.tintColor = UIColor.colorNamed("Grey1200")
+							break
+						}
+					}
+					break
+				}
+			}
+		}
+	}
+	
+	public func setEditView(editing: Bool, withAnimation: Bool) {
+		favIconStackview.isHidden = editing
+		
+		if withAnimation {
+			UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+				self?.layoutIfNeeded()
+			}
 		}
 	}
 }

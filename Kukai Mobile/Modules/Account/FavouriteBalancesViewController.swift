@@ -12,7 +12,6 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var reOrderButton: UIButton!
 	@IBOutlet weak var tableView: UITableView!
-	@IBOutlet var tableViewTopConstraint: NSLayoutConstraint!
 	
 	private let viewModel = FavouriteBalancesViewModel()
 	private var cancellable: AnyCancellable?
@@ -54,25 +53,25 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		
 		if isReOrder {
 			self.title = "Re-Order Favourites"
-			
 			reOrderButton.setTitle("Done", for: .normal)
-			tableViewTopConstraint.isActive = true
 			
-			viewModel.isEditing = true
-			viewModel.reload(animating: true)
+			viewModel.isEditing = isReOrder
 			viewModel.refresh(animate: true)
-			tableView.isEditing = true // set tableView editing after so it doesn't edit existing cells
+			tableView.isEditing = isReOrder // set editing after cells removed, so old cells don't show edit then slide away
+			
+			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? FavouriteTokenCell
+			cell?.setEditView(editing: true, withAnimation: true)
 			
 		} else {
 			self.title = "Favourites"
-			
 			reOrderButton.setTitle("Re-Order", for: .normal)
-			tableViewTopConstraint.isActive = false
 			
-			tableView.isEditing = false // set tableview editing before so it does edit exising cells
-			viewModel.isEditing = false
-			viewModel.reload(animating: false)
+			tableView.isEditing = isReOrder // remove editing before cells added, so old cells appear without edit as they slide in
+			viewModel.isEditing = isReOrder
 			viewModel.refresh(animate: true)
+			
+			let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? FavouriteTokenCell
+			cell?.setEditView(editing: false, withAnimation: true)
 		}
 	}
 	
