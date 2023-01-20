@@ -9,12 +9,15 @@ import UIKit
 
 class MenuViewController: UITableViewController, UIPopoverPresentationControllerDelegate {
 	
-	private var actions: [UIAction] = []
-	private weak var sourceVC: UIViewController? = nil
 	private static let rowHeight: CGFloat = 56
+	private static let sectionFooterHeight: CGFloat = 8
+	private static let preferredWidth: CGFloat = 274
 	
-	convenience init(actions: [UIAction], sourceViewController: UIViewController) {
-		self.init(style: .plain)
+	private var actions: [[UIAction]] = []
+	private weak var sourceVC: UIViewController? = nil
+	
+	convenience init(actions: [[UIAction]], sourceViewController: UIViewController) {
+		self.init(style: .grouped)
 		self.actions = actions
 		self.sourceVC = sourceViewController
 		
@@ -23,13 +26,19 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	}
 	
 	func setup() {
-		var height = MenuViewController.rowHeight * CGFloat(actions.count)
-		if height > 350 {
-			height = 350
+		var height = MenuViewController.rowHeight * CGFloat(actions.map({ $0.count }).reduce(0, +))
+		
+		if actions.count > 1 {
+			height += (MenuViewController.sectionFooterHeight * CGFloat(actions.count-1))
+		}
+		
+		let maxHeight = UIScreen.main.bounds.height * 0.75
+		if height > maxHeight {
+			height = maxHeight
 		}
 		
 		modalPresentationStyle = .popover
-		preferredContentSize = CGSize(width: 274, height: height)
+		preferredContentSize = CGSize(width: MenuViewController.preferredWidth, height: height)
 		presentationController?.delegate = self
 		popoverPresentationController?.permittedArrowDirections = []
 	}
@@ -39,6 +48,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		tableView.register(UITableViewCell.self, forCellReuseIdentifier: "UITableViewCell")
 		tableView.rowHeight = MenuViewController.rowHeight
 		tableView.separatorInset = .zero
+		tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 0.1))
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -46,13 +56,17 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		self.popoverPresentationController?.containerView?.backgroundColor = UIColor.black.withAlphaComponent(0.2)
 	}
 	
-	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	override func numberOfSections(in tableView: UITableView) -> Int {
 		return actions.count
+	}
+	
+	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return actions[section].count
 	}
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-		let action = actions[indexPath.row]
+		let action = actions[indexPath.section][indexPath.row]
 		cell.textLabel?.text = action.title
 		cell.textLabel?.textColor = UIColor.colorNamed("Grey400")
 		cell.textLabel?.font = UIFont.custom(ofType: .bold, andSize: 18)
@@ -72,7 +86,30 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		self.dismiss(animated: true)
-		actions[indexPath.row].performWithSender(nil, target: nil)
+		actions[indexPath.section][indexPath.row].performWithSender(nil, target: nil)
+	}
+	
+	override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return 0.1
+	}
+	
+	override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+		return nil
+	}
+	
+	override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+		if actions.count > 1 && actions.count-1 != section{
+			return MenuViewController.sectionFooterHeight
+		} else {
+			return 0
+		}
+	}
+	
+	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		let view = UIView(frame: CGRect(x: 0, y: 0, width: MenuViewController.preferredWidth, height: MenuViewController.sectionFooterHeight))
+		view.backgroundColor = .colorNamed("Grey1500")
+		
+		return view
 	}
 	
 	func adaptivePresentationStyle(for controller: UIPresentationController, traitCollection: UITraitCollection) -> UIModalPresentationStyle {

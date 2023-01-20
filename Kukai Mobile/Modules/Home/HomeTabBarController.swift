@@ -24,6 +24,7 @@ class HomeTabBarController: UITabBarController {
 	private var walletChangeCancellable: AnyCancellable?
 	private var activityDetectedCancellable: AnyCancellable?
 	private var refreshType: BalanceService.RefreshType = .useCache
+	private var topRightMenu = MenuViewController()
 	
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
@@ -64,8 +65,10 @@ class HomeTabBarController: UITabBarController {
 		
 		
 		// Setup buttons
-		sendButton.menu = menuForTopRight()
-		sendButton.showsMenuAsPrimaryAction = true
+		topRightMenu = menuVCForTopRight()
+		sendButton.addAction(UIAction(handler: { [weak self] action in
+			self?.topRightMenu.display(attachedTo: self?.sendButton ?? UIButton())
+		}), for: .touchUpInside)
 		
 		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
@@ -182,7 +185,7 @@ class HomeTabBarController: UITabBarController {
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
 	
-	func menuForTopRight() -> UIMenu {
+	func menuVCForTopRight() -> MenuViewController {
 		let firstGroup: [UIAction] = [
 			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { action in
 				UIPasteboard.general.string = DependencyManager.shared.selectedWallet?.address ?? ""
@@ -191,20 +194,18 @@ class HomeTabBarController: UITabBarController {
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
 			}),
 		]
-		let menu1 = UIMenu(title: "", options: .displayInline, children: firstGroup)
 		
 		let secondGroup: [UIAction] = [
 			/*UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
-				self?.sendButtonTapped()
-			}),*/
+			 self?.sendButtonTapped()
+			 }),*/
 			UIAction(title: "Swap", image: UIImage(named: "swap"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
 			}),
 		]
-		let menu2 = UIMenu(title: "", options: .displayInline, children: secondGroup)
 		
-		let thirdGroup: [UIMenuElement] = [
-			UIAction(title: "Get Tez", image: UIImage(named: "get-tez"), identifier: nil, handler: { [weak self] action in
+		let thirdGroup: [UIAction] = [
+			UIAction(title: "Get Tez", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
 			}),
 			UIAction(title: "Scan", image: UIImage(named: "scan"), identifier: nil, handler: { [weak self] action in
@@ -212,10 +213,7 @@ class HomeTabBarController: UITabBarController {
 			}),
 		]
 		
-		var items: [UIMenuElement] = [menu1, menu2]
-		items.append(contentsOf: thirdGroup)
-		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: items)
+		return MenuViewController(actions: [firstGroup, secondGroup, thirdGroup], sourceViewController: self)
 	}
 	
 	func imageForWallet(wallet: Wallet) -> UIImage? {
