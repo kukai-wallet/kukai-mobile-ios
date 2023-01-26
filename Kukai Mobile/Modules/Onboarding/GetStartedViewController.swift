@@ -95,7 +95,10 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 					let walletCache = WalletCacheService()
 					
 					// try to cache new one, and move on if successful
-					if walletCache.cache(wallet: wallet) {
+					if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: 0, child: nil)
+						
 						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
 							self?.handleSuccessNavigation()
 						}

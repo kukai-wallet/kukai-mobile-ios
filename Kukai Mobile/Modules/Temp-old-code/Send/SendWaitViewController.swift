@@ -14,6 +14,7 @@ class SendWaitViewController: UIViewController {
         super.viewDidLoad()
     }
 	
+	/*
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -48,4 +49,5 @@ class SendWaitViewController: UIViewController {
 			}
 		}
 	}
+	*/
 }

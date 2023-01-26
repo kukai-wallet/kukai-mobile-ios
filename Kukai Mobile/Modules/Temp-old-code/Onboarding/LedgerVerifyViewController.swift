@@ -57,7 +57,9 @@ class LedgerVerifyViewController: UIViewController {
 			return
 		}
 		
-		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet) {
+		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet, childOfIndex: nil) {
+			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count, child: nil)
 			LedgerService.shared.disconnectFromDevice()
 			
 			if self.isAddingAdditionalWallet() {

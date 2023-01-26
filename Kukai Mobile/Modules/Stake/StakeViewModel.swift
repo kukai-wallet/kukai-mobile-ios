@@ -194,7 +194,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func setDelegateAndRefresh(toAddress: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
-		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
+		/*guard let selectedWallet = DependencyManager.shared.selectedWallet else {
 			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
 			return
 		}
@@ -221,7 +221,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					}
 				}
 			}
-		}
+		}*/
 	}
 }
 

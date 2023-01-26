@@ -79,6 +79,7 @@ class SendReviewViewController: UIViewController {
 	
 	
 	func updateNFTOperation() {
+		/*
 		guard let nft = TransactionService.shared.sendData.chosenNFT,
 			  let amount = TransactionService.shared.sendData.chosenAmount,
 			  let wallet = DependencyManager.shared.selectedWallet,
@@ -105,6 +106,7 @@ class SendReviewViewController: UIViewController {
 					self?.sendButton.isEnabled = false
 			}
 		}
+		*/
 	}
 	
 	func updateFees() {

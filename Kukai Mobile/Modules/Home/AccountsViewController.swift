@@ -60,7 +60,7 @@ class AccountsViewController: UIViewController {
 	
 	func closeAndBackToStart() {
 		self.presentingViewController?.dismiss(animated: true)
-		let _ = WalletCacheService().deleteCacheAndKeys()
+		let _ = WalletCacheService().deleteAllCacheAndKeys()
 		DependencyManager.shared.balanceService.deleteAllCachedData()
 		TransactionService.shared.resetState()
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()

@@ -316,7 +316,7 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(address: params.account) else {
+		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
 			self.alert(errorWithMessage: "Processing WalletConnect request, unable to parse response or locate wallet")
 			return
 		}
@@ -332,7 +332,7 @@ class HomeTabBarController: UITabBarController {
 		// Map all beacon objects to kuaki objects
 		let convertedOps = requestParams.kukaiOperations()
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
 				self?.hideLoadingModal(completion: {
 					self?.alert(errorWithMessage: "Processing WalletConnect request, unable to estimate fees")
@@ -387,7 +387,7 @@ class HomeTabBarController: UITabBarController {
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
-		guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
+		/*guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
 			self.alert(errorWithMessage: "Processing Beacon request, request is for a different network than the one currently selected on device. Please check the dApp and apps settings to match sure they match")
 			return
 		}
@@ -400,14 +400,15 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		self.showLoadingModal { [weak self] in
 			self?.processAndShow(withWallet: wallet, operationRequest: operationRequest)
 		}
+		*/
 	}
 	
 	private func processAndShow(withWallet wallet: Wallet, operationRequest: OperationTezosRequest) {
-		
+		/*
 		// Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
 		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
 				self?.hideLoadingModal(completion: {
 					self?.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
@@ -417,10 +418,11 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 			
 			self?.processTransactions(estimatedOperations: estimatedOps, operationRequest: operationRequest)
 		}
+		*/
 	}
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], operationRequest: OperationTezosRequest) {
-		TransactionService.shared.currentTransactionType = .beaconOperation
+		/*TransactionService.shared.currentTransactionType = .beaconOperation
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
 		
@@ -456,6 +458,6 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		
 		self.hideLoadingModal(completion: { [weak self] in
 			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
-		})
+		})*/
 	}
 }

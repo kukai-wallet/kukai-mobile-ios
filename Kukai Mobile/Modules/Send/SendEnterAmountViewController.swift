@@ -133,7 +133,7 @@ class SendEnterAmountViewController: UIViewController {
 	}
 	
 	@objc func estimateFee() {
-		textfield.resignFirstResponder()
+		/*textfield.resignFirstResponder()
 		
 		guard let wallet = DependencyManager.shared.selectedWallet, let destination = TransactionService.shared.sendData.destination else {
 			self.alert(errorWithMessage: "Can't find wallet")
@@ -162,7 +162,7 @@ class SendEnterAmountViewController: UIViewController {
 						self?.reviewButton.isEnabled = false
 				}
 			}
-		}
+		}*/
 	}
 }
 

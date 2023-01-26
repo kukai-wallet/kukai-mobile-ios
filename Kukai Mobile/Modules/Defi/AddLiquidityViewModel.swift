@@ -126,7 +126,7 @@ class AddLiquidityViewModel: ViewModel {
 	}
 	
 	func estimate() {
-		guard let calc = calculationResult,
+		/*guard let calc = calculationResult,
 			  let wallet = DependencyManager.shared.selectedWallet,
 			  let exchange = TransactionService.shared.addLiquidityData.selectedExchangeAndToken,
 			  let xtz = XTZAmount(fromNormalisedAmount: token1TextfieldInput, decimalPlaces: 6),
@@ -151,6 +151,6 @@ class AddLiquidityViewModel: ViewModel {
 					self?.isAddButtonHidden = true
 					self?.state = .failure(error, error.description)
 			}
-		}
+		}*/
 	}
 }
