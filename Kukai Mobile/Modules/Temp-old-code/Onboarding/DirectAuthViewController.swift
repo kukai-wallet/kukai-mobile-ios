@@ -59,7 +59,7 @@ class DirectAuthViewController: UIViewController {
 				// try to cache new one, and move on if successful
 				if walletCache.cache(wallet: wallet, childOfIndex: nil) {
 					DependencyManager.shared.walletList = walletCache.readNonsensitive()
-					DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count, child: nil)
+					DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
 					handleSuccessNavigation()
 					
 				} else {

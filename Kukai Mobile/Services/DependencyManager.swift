@@ -81,7 +81,7 @@ class DependencyManager {
 	
 	// Wallet info / helpers
 	
-	var walletList: [WalletMetadata] = []
+	var walletList: [WalletMetadata] = WalletCacheService().readNonsensitive()
 	
 	var selectedWalletIndex: WalletIndex {
 		set {

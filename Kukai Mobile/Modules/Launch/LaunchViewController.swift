@@ -346,7 +346,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
-		if DependencyManager.shared.walletList.count != 0 {
+		if DependencyManager.shared.walletList.count > 0 {
 			self.performSegue(withIdentifier: "home", sender: nil)
 		} else {
 			self.performSegue(withIdentifier: "onboarding", sender: nil)

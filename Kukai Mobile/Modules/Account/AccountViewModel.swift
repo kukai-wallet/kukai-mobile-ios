@@ -174,11 +174,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		guard let address = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to locate wallet")
-			return
-		}
-		
+		let address = DependencyManager.shared.selectedWalletAddress
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
 			guard let self = self else { return }
 			
@@ -210,10 +206,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 		return
 	#else
-		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
-			return
-		}
-		
+		let wallet = DependencyManager.shared.selectedWalletAddress
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			

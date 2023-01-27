@@ -176,9 +176,7 @@ class HomeTabBarController: UITabBarController {
 	}
 	
 	public func updateAccountButton() {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
-			return
-		}
+		let wallet = DependencyManager.shared.selectedWalletMetadata
 		
 		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
 		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
@@ -188,7 +186,7 @@ class HomeTabBarController: UITabBarController {
 	func menuVCForTopRight() -> MenuViewController {
 		let firstGroup: [UIAction] = [
 			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { action in
-				UIPasteboard.general.string = DependencyManager.shared.selectedWallet?.address ?? ""
+				UIPasteboard.general.string = DependencyManager.shared.selectedWalletAddress
 			}),
 			UIAction(title: "Show QR Code", image: UIImage(named: "qr-code"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
@@ -216,9 +214,9 @@ class HomeTabBarController: UITabBarController {
 		return MenuViewController(actions: [firstGroup, secondGroup, thirdGroup], sourceViewController: self)
 	}
 	
-	func imageForWallet(wallet: Wallet) -> UIImage? {
-		if wallet.type == .social, let sWallet = wallet as? TorusWallet {
-			switch sWallet.authProvider {
+	func imageForWallet(wallet: WalletMetadata) -> UIImage? {
+		if wallet.type == .social {
+			switch wallet.socialType {
 				case .apple:
 					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
@@ -236,21 +234,12 @@ class HomeTabBarController: UITabBarController {
 		return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
 	}
 	
-	func textForWallet(wallet: Wallet) -> NSAttributedString {
+	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {
 		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
 		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
 		
-		if let sWallet = wallet as? TorusWallet {
-			var topText = sWallet.socialUserId ?? ""
-			if sWallet.authProvider == .apple {
-				if let username = sWallet.socialUsername, username != "" {
-					topText = username
-				} else {
-					topText = "Apple account"
-				}
-			}
-			
-			
+		if wallet.type == .social {
+			var topText = wallet.displayName ?? wallet.address
 			let approxPixelsPerCharacter: CGFloat = 10
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
 		
@@ -275,7 +264,7 @@ class HomeTabBarController: UITabBarController {
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 		return
 	#else
-		guard let address = DependencyManager.shared.selectedWallet?.address else {
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
 			self.alert(errorWithMessage: "Can't refresh data, unable to locate selected wallet")
 			return
 		}
