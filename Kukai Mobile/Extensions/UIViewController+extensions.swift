@@ -227,7 +227,7 @@ extension UIViewController {
 	
 	open override func awakeAfter(using coder: NSCoder) -> Any? {
 		navigationItem.backButtonDisplayMode = .minimal
-		self.navigationController?.navigationBar.tintColor = UIColor.colorNamed("Brand1100")
+		self.navigationController?.navigationBar.tintColor = UIColor.colorNamed("TxtB6")
 		
 		return super.awakeAfter(using: coder)
 	}

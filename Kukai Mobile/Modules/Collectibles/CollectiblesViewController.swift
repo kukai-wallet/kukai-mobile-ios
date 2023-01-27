@@ -25,8 +25,6 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
-		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
 		
 		//self.navigationController?.hidesBarsWhenKeyboardAppears = true

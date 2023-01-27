@@ -142,8 +142,11 @@ class HomeTabBarController: UITabBarController {
 		}
 		
 		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sendButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
 	}
 	
@@ -163,16 +166,15 @@ class HomeTabBarController: UITabBarController {
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Txt6") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "BGB6") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
-		self.tabBar.unselectedItemTintColor = UIColor(named: "Grey800")
-		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
+		self.tabBar.unselectedItemTintColor = UIColor(named: "Txt6")
 	}
 	
 	public func updateAccountButton() {
@@ -235,8 +237,8 @@ class HomeTabBarController: UITabBarController {
 	}
 	
 	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
+		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
 		
 		if wallet.type == .social {
 			var topText = wallet.displayName ?? wallet.address
