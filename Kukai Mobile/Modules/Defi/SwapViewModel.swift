@@ -160,6 +160,8 @@ class SwapViewModel: ViewModel {
 	}
 	
 	func estimate() {
+		
+		/*
 		guard let calc = calculationResult, calc.minimum > TokenAmount.zero(), let wallet = DependencyManager.shared.selectedWallet, let exchange = TransactionService.shared.exchangeData.selectedExchangeAndToken else {
 			state = .failure(KukaiError.unknown(withString: "Invalid calculation or wallet"), "Invalid calculation or wallet")
 			return
@@ -187,5 +189,6 @@ class SwapViewModel: ViewModel {
 					self?.state = .failure(error, error.description)
 			}
 		}
+		*/
 	}
 }

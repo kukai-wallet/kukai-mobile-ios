@@ -127,7 +127,7 @@ class RemoveLiquidityViewModel: ViewModel {
 	}
 	
 	func estimate() {
-		guard let calc = calculationResult, calc.expectedToken > TokenAmount.zero(),
+		/*guard let calc = calculationResult, calc.expectedToken > TokenAmount.zero(),
 			  let wallet = DependencyManager.shared.selectedWallet,
 			  let position = TransactionService.shared.removeLiquidityData.position,
 			  let lpTokenAmount = TokenAmount(fromNormalisedAmount: lpTokenTextfieldInput, decimalPlaces: position.exchange.liquidityTokenDecimalPlaces())
@@ -150,6 +150,6 @@ class RemoveLiquidityViewModel: ViewModel {
 					self?.isRemoveButtonHidden = true
 					self?.state = .failure(error, error.description)
 			}
-		}
+		}*/
 	}
 }

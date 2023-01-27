@@ -21,7 +21,7 @@ class NewWalletMnemonicViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if let mnemonic = (WalletCacheService().fetchWallets()?.last as? HDWallet)?.mnemonic {
+		if let mnemonic = (WalletCacheService().fetchWallet(forAddress: DependencyManager.shared.selectedWalletAddress) as? HDWallet)?.mnemonic {
 			
 			let words = mnemonic.words
 			var colCount = 0

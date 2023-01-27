@@ -33,7 +33,9 @@ class NewWalletPasswordViewController: UIViewController {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: passwordTextField.text ?? "") {
 			let walletCache = WalletCacheService()
 			
-			if walletCache.cache(wallet: wallet) {
+			if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+				DependencyManager.shared.walletList = walletCache.readNonsensitive()
+				DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
 				DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
 					self?.performSegue(withIdentifier: "next", sender: self)
 				}

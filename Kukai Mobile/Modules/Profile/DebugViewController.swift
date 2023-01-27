@@ -45,8 +45,7 @@ class DebugViewController: UITableViewController {
 	private func generateReport() {
 		var report = "State / Useful information: \n\n"
 		
-		let walletCacheService = WalletCacheService()
-		let wallets = walletCacheService.fetchWallets()
+		let wallets = DependencyManager.shared.walletList
 		
 		report += "Network: \n"
 		report += "Current Network type: \n" + DependencyManager.shared.currentNetworkType.rawValue + " \n\n"
@@ -59,7 +58,7 @@ class DebugViewController: UITableViewController {
 		report += "Selected Wallet index parent: \n" + "\(DependencyManager.shared.selectedWalletIndex.parent)" + " \n\n"
 		report += "Selected Wallet index child: \n" + "\(DependencyManager.shared.selectedWalletIndex.child ?? -1)" + " \n\n"
 		report += "Selected Wallet address: \n" + (DependencyManager.shared.selectedWallet?.address ?? "-None-") + " \n\n"
-		report += "Total wallet count: \n" + "\(wallets?.count ?? 0)" + " \n\n"
+		report += "Total wallet count: \n" + "\(wallets.count)" + " \n\n"
 		
 		report += "\n\n\nBalances: \n"
 		report += "Has fetched initial data: \n" + "\(DependencyManager.shared.balanceService.hasFetchedInitialData)" + " \n\n"
@@ -88,7 +87,7 @@ class DebugViewController: UITableViewController {
 				DispatchQueue.main.async {
 					DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 					
-					let _ = WalletCacheService().deleteCacheAndKeys()
+					let _ = WalletCacheService().deleteAllCacheAndKeys()
 					self?.clearDocumentsDirectory()
 					TransactionService.shared.resetState()
 					

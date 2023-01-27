@@ -47,7 +47,7 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 	}
 	
 	func withdrawRewards() {
-		state = .loading
+		/*state = .loading
 		
 		guard let wallet = DependencyManager.shared.selectedWallet else {
 			state = .failure(KukaiError.unknown(), "Can't find wallet")
@@ -77,6 +77,6 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 				case .failure(let error):
 					self?.state = .failure(error, error.description)
 			}
-		}
+		}*/
 	}
 }

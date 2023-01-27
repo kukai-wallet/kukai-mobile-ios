@@ -98,7 +98,9 @@ class ImportFaucetViewController: UIViewController {
 	func cahceWalletAndSegue(wallet: RegularWallet) {
 		let walletCache = WalletCacheService()
 		
-		if walletCache.cache(wallet: wallet) {
+		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
 			self.hideLoadingModal(completion: nil)
 			self.performSegue(withIdentifier: "complete", sender: self)
 			

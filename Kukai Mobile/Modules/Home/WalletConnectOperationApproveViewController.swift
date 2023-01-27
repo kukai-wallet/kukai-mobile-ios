@@ -98,7 +98,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let wallet = WalletCacheService().fetchWallet(address: TransactionService.shared.walletConnectOperationData.requestParams?.account ?? "") else {
+		guard let wallet = WalletCacheService().fetchWallet(forAddress: TransactionService.shared.walletConnectOperationData.requestParams?.account ?? "") else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
 		}

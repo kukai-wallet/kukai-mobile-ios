@@ -61,7 +61,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build arrays of data
-		let wallets = WalletCacheService().fetchWallets() ?? []
+		let wallets = DependencyManager.shared.walletList
 		walletObjs = []
 		
 		for wallet in wallets where wallet.address != address {
@@ -69,9 +69,9 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				let details = imageAndTitleForSocialWallet(wallet: wallet)
 				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
 				
-			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
+			} else if wallet.type == .hd {
 				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: wallet.address, address: wallet.address))
-				for child in hdWallet.childWallets {
+				for child in wallet.children {
 					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: child.address, address: child.address))
 				}
 				
@@ -99,26 +99,29 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		state = .success(nil)
 	}
 	
-	func imageAndTitleForSocialWallet(wallet: Wallet) -> (image: UIImage?, title: String) {
-		guard let socialWallet = wallet as? TorusWallet else {
+	func imageAndTitleForSocialWallet(wallet: WalletMetadata) -> (image: UIImage?, title: String) {
+		if wallet.type != .social {
 			return (image: UIImage(named: "tezos"), title: wallet.address)
 		}
 		
-		switch socialWallet.authProvider {
+		switch wallet.socialType {
 			case .apple:
 				return (image: UIImage(named: "social-apple"), title: "Apple account")
 				
 			case .twitter:
-				return (image: UIImage(named: "social-twitter"), title: socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "social-twitter"), title: wallet.displayName ?? wallet.address)
 				
 			case .google:
-				return (image: UIImage(named: "social-google"), title: socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "social-google"), title: wallet.displayName ?? wallet.address)
 				
 			case .reddit:
-				return (image: UIImage(named: "tezos"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "tezos"), title: wallet.displayName ?? wallet.address)
 				
 			case .facebook:
-				return (image: UIImage(named: "tezos"), title: socialWallet.socialUsername ?? socialWallet.socialUserId ?? socialWallet.address)
+				return (image: UIImage(named: "tezos"), title: wallet.displayName ?? wallet.address)
+				
+			case .none:
+				return (image: UIImage(named: "tezos"), title: wallet.address)
 		}
 	}
 	

@@ -90,7 +90,7 @@ class WalletConnectSignViewController: UIViewController {
 	}
 	
 	@IBAction func signTapped(_ sender: Any) {
-		guard let wallet = WalletCacheService().fetchWallet(address: accountToSign) else {
+		/*guard let wallet = WalletCacheService().fetchWallet(address: accountToSign) else {
 			self.alert(errorWithMessage: "Can't find requested wallet: \(accountToSign)")
 			return
 		}
@@ -114,7 +114,7 @@ class WalletConnectSignViewController: UIViewController {
 			}
 			
 			self?.respondOnSign(signature: signature.toHexString())
-		}
+		}*/
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {

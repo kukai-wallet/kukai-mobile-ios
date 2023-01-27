@@ -17,7 +17,7 @@ class AccountButton: UIButton {
 		super.layoutSubviews()
 		
 		if additionalImage.superview == nil {
-			additionalImage.tintColor = UIColor.colorNamed("Brand1100")
+			additionalImage.tintColor = UIColor.colorNamed("BGB4")
 			self.addSubview(additionalImage)
 		}
 		

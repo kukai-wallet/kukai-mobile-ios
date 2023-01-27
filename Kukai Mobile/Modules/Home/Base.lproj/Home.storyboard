@@ -25,7 +25,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="aMh-89-6he">
                                 <rect key="frame" x="16" y="9.6666666666666643" width="26" height="25"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" name="Grey900"/>
+                                <color key="tintColor" name="BG10"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="side-menu"/>
                                 <connections>
@@ -43,14 +43,14 @@
                             <state key="normal" image="social-apple">
                                 <string key="title">&lt;Account Name&gt;
 &lt;Account Address&gt;</string>
-                                <color key="titleColor" name="Grey200"/>
+                                <color key="titleColor" name="Txt2"/>
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                             </state>
                             <state key="selected">
-                                <color key="titleColor" name="Grey1100"/>
+                                <color key="titleColor" name="Txt10"/>
                             </state>
                             <state key="highlighted">
-                                <color key="titleColor" name="Grey1100"/>
+                                <color key="titleColor" name="Txt10"/>
                             </state>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
@@ -69,7 +69,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JFG-vv-GSa">
                                 <rect key="frame" x="330" y="0.0" width="44" height="44"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" name="Grey900"/>
+                                <color key="tintColor" name="BG10"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="right-menu"/>
                             </button>
@@ -79,8 +79,8 @@
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="f31-ee-dpO">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" name="Grey1700"/>
-                        <color key="selectedImageTintColor" name="Brand800"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="selectedImageTintColor" name="BGB6"/>
                     </tabBar>
                     <connections>
                         <outlet property="accountButton" destination="d7D-y1-ezY" id="w0S-Gj-l3u"/>
@@ -1450,8 +1450,11 @@
         <image name="side-menu" width="22" height="16"/>
         <image name="social-apple" width="30" height="30"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
-        <namedColor name="Brand800">
-            <color red="0.57300001382827759" green="0.59600001573562622" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BG10">
+            <color red="0.52549019610000003" green="0.53333333329999999" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGB6">
+            <color red="0.42745098040000001" green="0.45882352939999999" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey1000">
             <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1462,14 +1465,14 @@
         <namedColor name="Grey1200">
             <color red="0.41176470588235292" green="0.41568627450980394" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Grey1700">
-            <color red="0.13333333333333333" green="0.13333333333333333" blue="0.1803921568627451" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Grey900">
-            <color red="0.63529411764705879" green="0.64313725490196083" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Txt10">
+            <color red="0.52549019610000003" green="0.53333333329999999" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10980392160000001" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="background">
             <color red="0.89800000190734863" green="0.89800000190734863" blue="0.89800000190734863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

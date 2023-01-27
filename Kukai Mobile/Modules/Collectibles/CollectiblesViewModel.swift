@@ -138,8 +138,8 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		// Build special lists list
 		var favs: [NFT] = []
-		var recents: [NFT] = []
-		var showcases: [SpecialGroupData] = []
+		let recents: [NFT] = []
+		let showcases: [SpecialGroupData] = []
 		
 		// Favourites
 		for token in DependencyManager.shared.balanceService.account.nfts { // TODO: mark token as hidden if every nft in it is hidden to save time

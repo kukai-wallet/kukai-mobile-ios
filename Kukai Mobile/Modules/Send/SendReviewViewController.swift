@@ -31,8 +31,6 @@ class SendReviewViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		
-		self.view.backgroundColor = UIColor.colorNamed("Grey1900")
 		let _ = self.view.addGradientBackgroundFull()
     }
 	
@@ -79,6 +77,7 @@ class SendReviewViewController: UIViewController {
 	
 	
 	func updateNFTOperation() {
+		/*
 		guard let nft = TransactionService.shared.sendData.chosenNFT,
 			  let amount = TransactionService.shared.sendData.chosenAmount,
 			  let wallet = DependencyManager.shared.selectedWallet,
@@ -105,6 +104,7 @@ class SendReviewViewController: UIViewController {
 					self?.sendButton.isEnabled = false
 			}
 		}
+		*/
 	}
 	
 	func updateFees() {

@@ -142,8 +142,11 @@ class HomeTabBarController: UITabBarController {
 		}
 		
 		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( sendButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
 	}
 	
@@ -163,22 +166,19 @@ class HomeTabBarController: UITabBarController {
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Grey800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "Txt6") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Brand800") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "BGB6") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
-		self.tabBar.unselectedItemTintColor = UIColor(named: "Grey800")
-		self.tabBar.barTintColor = UIColor.colorNamed("Grey1700")
+		self.tabBar.unselectedItemTintColor = UIColor(named: "Txt6")
 	}
 	
 	public func updateAccountButton() {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
-			return
-		}
+		let wallet = DependencyManager.shared.selectedWalletMetadata
 		
 		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
 		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
@@ -188,7 +188,7 @@ class HomeTabBarController: UITabBarController {
 	func menuVCForTopRight() -> MenuViewController {
 		let firstGroup: [UIAction] = [
 			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { action in
-				UIPasteboard.general.string = DependencyManager.shared.selectedWallet?.address ?? ""
+				UIPasteboard.general.string = DependencyManager.shared.selectedWalletAddress
 			}),
 			UIAction(title: "Show QR Code", image: UIImage(named: "qr-code"), identifier: nil, handler: { [weak self] action in
 				self?.alert(withTitle: "View Hidden Tokens", andMessage: "hold your horses, not done yet")
@@ -216,9 +216,9 @@ class HomeTabBarController: UITabBarController {
 		return MenuViewController(actions: [firstGroup, secondGroup, thirdGroup], sourceViewController: self)
 	}
 	
-	func imageForWallet(wallet: Wallet) -> UIImage? {
-		if wallet.type == .social, let sWallet = wallet as? TorusWallet {
-			switch sWallet.authProvider {
+	func imageForWallet(wallet: WalletMetadata) -> UIImage? {
+		if wallet.type == .social {
+			switch wallet.socialType {
 				case .apple:
 					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
@@ -236,21 +236,12 @@ class HomeTabBarController: UITabBarController {
 		return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
 	}
 	
-	func textForWallet(wallet: Wallet) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey1000")]
+	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {
+		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
+		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
 		
-		if let sWallet = wallet as? TorusWallet {
-			var topText = sWallet.socialUserId ?? ""
-			if sWallet.authProvider == .apple {
-				if let username = sWallet.socialUsername, username != "" {
-					topText = username
-				} else {
-					topText = "Apple account"
-				}
-			}
-			
-			
+		if wallet.type == .social {
+			var topText = wallet.displayName ?? wallet.address
 			let approxPixelsPerCharacter: CGFloat = 10
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
 		
@@ -275,7 +266,7 @@ class HomeTabBarController: UITabBarController {
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 		return
 	#else
-		guard let address = DependencyManager.shared.selectedWallet?.address else {
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
 			self.alert(errorWithMessage: "Can't refresh data, unable to locate selected wallet")
 			return
 		}
@@ -316,7 +307,7 @@ class HomeTabBarController: UITabBarController {
 			return
 		}
 		
-		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(address: params.account) else {
+		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
 			self.alert(errorWithMessage: "Processing WalletConnect request, unable to parse response or locate wallet")
 			return
 		}
@@ -332,7 +323,7 @@ class HomeTabBarController: UITabBarController {
 		// Map all beacon objects to kuaki objects
 		let convertedOps = requestParams.kukaiOperations()
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
 				self?.hideLoadingModal(completion: {
 					self?.alert(errorWithMessage: "Processing WalletConnect request, unable to estimate fees")
@@ -387,7 +378,7 @@ class HomeTabBarController: UITabBarController {
 extension HomeTabBarController: BeaconServiceOperationDelegate {
 	
 	func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
-		guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
+		/*guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
 			self.alert(errorWithMessage: "Processing Beacon request, request is for a different network than the one currently selected on device. Please check the dApp and apps settings to match sure they match")
 			return
 		}
@@ -400,14 +391,15 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		self.showLoadingModal { [weak self] in
 			self?.processAndShow(withWallet: wallet, operationRequest: operationRequest)
 		}
+		*/
 	}
 	
 	private func processAndShow(withWallet wallet: Wallet, operationRequest: OperationTezosRequest) {
-		
+		/*
 		// Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
 		let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, withWallet: wallet) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 			guard let estimatedOps = try? result.get() else {
 				self?.hideLoadingModal(completion: {
 					self?.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
@@ -417,10 +409,11 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 			
 			self?.processTransactions(estimatedOperations: estimatedOps, operationRequest: operationRequest)
 		}
+		*/
 	}
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], operationRequest: OperationTezosRequest) {
-		TransactionService.shared.currentTransactionType = .beaconOperation
+		/*TransactionService.shared.currentTransactionType = .beaconOperation
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
 		
@@ -456,6 +449,6 @@ extension HomeTabBarController: BeaconServiceOperationDelegate {
 		
 		self.hideLoadingModal(completion: { [weak self] in
 			self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
-		})
+		})*/
 	}
 }

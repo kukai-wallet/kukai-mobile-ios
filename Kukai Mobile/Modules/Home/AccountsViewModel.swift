@@ -60,21 +60,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let selectedAddress = DependencyManager.shared.selectedWallet?.address
 		
-		let wallets = WalletCacheService().fetchWallets() ?? []
+		let wallets = DependencyManager.shared.walletList
 		var snapshot = NSDiffableDataSourceSnapshot<Int, WalletData>()
 		snapshot.appendSections(Array(0...wallets.count))
 		
 		for (index, wallet) in wallets.enumerated() {
 			
 			if wallet.type == .social {
-				let username = (wallet as? TorusWallet)?.socialUserId
-				let authProvider = (wallet as? TorusWallet)?.authProvider
-				let data = WalletData(type: wallet.type, authProvider: authProvider, username: username, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
+				let username = wallet.displayName
+				let data = WalletData(type: wallet.type, authProvider: wallet.socialType, username: username, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
 				snapshot.appendItems([data], toSection: index)
 				
-			} else if wallet.type == .hd, let hdWallet = wallet as? HDWallet {
+			} else if wallet.type == .hd {
 				var data: [WalletData] = [WalletData(type: wallet.type, authProvider: nil, username: nil, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)]
-				for child in hdWallet.childWallets {
+				for child in wallet.children {
 					data.append(WalletData(type: .hd, authProvider: nil, username: nil, address: child.address, selected: child.address == selectedAddress, isChild: true, parentAddress: wallet.address))
 				}
 				snapshot.appendItems(data, toSection: index)
@@ -113,12 +112,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if walletData.type == .hd && indexPath.row == 0 {
 			options.append(
 				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { [weak self] action in
-					guard let hdWallet = WalletCacheService().fetchWallets()?[indexPath.section] as? HDWallet else {
+					guard let hdWallet = WalletCacheService().fetchWallet(forAddress: walletData.address) as? HDWallet else {
 						self?.state = .failure(KukaiError.unknown(), "Unable to add new wallet")
 						return
 					}
 					
-					if hdWallet.addNextChildWallet() && WalletCacheService().update(hdWallet: hdWallet, atIndex: indexPath.section) {
+					let numberOfChildren = DependencyManager.shared.walletList[indexPath.section].children.count
+					if let child = hdWallet.createChild(accountIndex: numberOfChildren+1), WalletCacheService().cache(wallet: child, childOfIndex: indexPath.section) {
+						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
 						self?.refresh(animate: true)
 						
 					} else {
@@ -132,14 +133,15 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			UIAction(title: "Delete", image: UIImage(systemName: "delete.left.fill"), identifier: nil) { [weak self] action in
 				var deletingSelected = false
 				
-				if walletData.address == DependencyManager.shared.selectedWallet?.address {
+				if walletData.address == DependencyManager.shared.selectedWalletAddress {
 					deletingSelected = true
 				}
 				
-				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentHDWallet: walletData.parentAddress) {
+				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentIndex: walletData.isChild ? indexPath.section : nil) {
+					DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
 					
 					// If we are deleting selected, we need to select another wallet, but not if we deleted the last one
-					if deletingSelected && WalletCacheService().fetchPrimaryWallet() != nil {
+					if deletingSelected && DependencyManager.shared.walletList.count > 0 {
 						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: 0, child: nil)
 					}
 					

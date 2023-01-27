@@ -78,7 +78,11 @@ class DependencyManager {
 	}
 	
 	
-	// Selected Wallet data
+	
+	// Wallet info / helpers
+	
+	var walletList: [WalletMetadata] = WalletCacheService().readNonsensitive()
+	
 	var selectedWalletIndex: WalletIndex {
 		set {
 			UserDefaults.standard.setValue(newValue.parent, forKey: "app.kukai.mobile.selected.wallet.parent")
@@ -89,32 +93,28 @@ class DependencyManager {
 			let parent = UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet.parent")
 			let child = UserDefaults.standard.object(forKey: "app.kukai.mobile.selected.wallet.child") as? Int
 			return WalletIndex(parent: parent, child: child)
-			
+		}
+	}
+	
+	var selectedWalletMetadata: WalletMetadata {
+		get {
+			if let childIndex = selectedWalletIndex.child {
+				return walletList[selectedWalletIndex.parent].children[childIndex]
+			} else {
+				return walletList[selectedWalletIndex.parent]
+			}
+		}
+	}
+	
+	var selectedWalletAddress: String {
+		get {
+			return selectedWalletMetadata.address
 		}
 	}
 	
 	var selectedWallet: Wallet? {
 		get {
-			if let wallets = WalletCacheService().fetchWallets() {
-				
-				if wallets.count == 0 {
-					return nil
-				}
-				
-				if selectedWalletIndex.parent >= wallets.count {
-					selectedWalletIndex = WalletIndex(parent: wallets.count-1, child: nil)
-				}
-				
-				let wallet = wallets[selectedWalletIndex.parent]
-				
-				if let childIndex = selectedWalletIndex.child, let hdWallet = wallet as? HDWallet {
-					return hdWallet.childWallets[childIndex]
-				} else {
-					return wallet
-				}
-			}
-			
-			return nil
+			return WalletCacheService().fetchWallet(forAddress: selectedWalletMetadata.address)
 		}
 	}
 	
