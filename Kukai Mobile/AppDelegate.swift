@@ -181,11 +181,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"gradTabBar-2": UIColor("#181820"),
 				"gradPanelRows-1": UIColor("#C1C1D9", alpha: 0.1),
 				"gradPanelRows-2": UIColor("#D3D3E7", alpha: 0.05),
-				
 				"gradNavBarPanels-1": UIColor("#181826", alpha: 0.25),
 				"gradNavBarPanels-2": UIColor("#181826", alpha: 0.1),
 				"gradStroke_NavBarPanels-1": UIColor("#3A3D63", alpha: 1),
 				"gradStroke_NavBarPanels-2": UIColor("#5861DE", alpha: 0.51),
+				"BtnPrim-1": UIColor("#626AED"),
+				"BtnPrim-2": UIColor("#862AFC"),
 			],
 			others: [
 				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [

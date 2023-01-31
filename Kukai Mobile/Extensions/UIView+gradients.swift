@@ -114,10 +114,10 @@ extension UIView {
 		return addBackgroundGradient(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("BtnPrim-1").cgColor,
+				UIColor.colorNamed("BtnPrim-2").cgColor,
 			],
-			locations: [0.22, 0.81],
+			locations: [0.20, 0.87],
 			degress: cssDegreesToIOS(117.79))
 	}
 	
