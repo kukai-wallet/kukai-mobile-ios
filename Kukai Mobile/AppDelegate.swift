@@ -86,6 +86,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"TxtB-alt6": UIColor("#FFD66C"),
 				
 				// Buttons background
+				"BGBtn_Slider": UIColor("#4954ff", alpha: 0.07),
+				"BGBtn_SliderFill": UIColor("#6d75f4", alpha: 0.25),
 				
 				// Background
 				"BG0": UIColor("#FFFFFF"),
@@ -152,6 +154,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"TxtB-alt6": UIColor("#AF8D34"),
 				
 				// Buttons background
+				"BGBtn_Slider": UIColor("#4954ff", alpha: 0.07),
+				"BGBtn_SliderFill": UIColor("#6d75f4", alpha: 0.25),
 				
 				// Background
 				"BG0": UIColor("#000000"),
@@ -187,6 +191,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				"gradStroke_NavBarPanels-2": UIColor("#5861DE", alpha: 0.51),
 				"BtnPrim-1": UIColor("#626AED"),
 				"BtnPrim-2": UIColor("#862AFC"),
+				"gradSliderCircle-1": UIColor("#FFFFFF"),
+				"gradSliderCircle-2": UIColor("#9b9cb4"),
+				"gradStrokeSlider-1": UIColor("#3F427E"),
+				"gradStrokeSlider-2": UIColor("#464A8B"),
 			],
 			others: [
 				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [

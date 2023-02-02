@@ -32,8 +32,7 @@ class SendTokenAmountViewController: UIViewController {
 	
 	@IBOutlet weak var reviewButton: UIButton!
 	
-	
-	
+	private var gradientLayer = CAGradientLayer()
 	private var selectedToken: Token? = nil
 	
 	
@@ -67,12 +66,7 @@ class SendTokenAmountViewController: UIViewController {
 		symbolLabel.text = token.symbol
 		fiatValueLabel?.text = " "
 		feeValueLabel?.text = "0 tez"
-		
-		if token.isXTZ() {
-			tokenIcon.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: tokenIcon.frame.width+2, height: tokenIcon.frame.height+2))
-		} else {
-			MediaProxyService.load(url: token.thumbnailURL, to: tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: tokenIcon.frame.size)
-		}
+		tokenIcon.addTokenIcon(token: token)
 		
 		
 		// Textfield
@@ -83,9 +77,16 @@ class SendTokenAmountViewController: UIViewController {
 		feeButton.configuration?.imagePlacement = .trailing
 		feeButton.configuration?.imagePadding = 6
 		
-		let _ = reviewButton.addGradientButtonPrimary(withFrame: reviewButton.bounds)
 		reviewButton.isEnabled = false
+		reviewButton.layer.opacity = 0.5
     }
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		gradientLayer.removeFromSuperlayer()
+		gradientLayer = reviewButton.addGradientButtonPrimary(withFrame: reviewButton.bounds)
+	}
 	
 	@IBAction func maxButtonTapped(_ sender: UIButton) {
 		if let balance = balanceLabel.text {
@@ -121,10 +122,12 @@ class SendTokenAmountViewController: UIViewController {
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
 						self?.feeValueLabel?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
 						self?.reviewButton.isEnabled = true
+						self?.reviewButton.layer.opacity = 1
 						
 					case .failure(let estimationError):
 						self?.alert(errorWithMessage: "\(estimationError)")
 						self?.reviewButton.isEnabled = false
+						self?.reviewButton.layer.opacity = 0.5
 				}
 			}
 		}

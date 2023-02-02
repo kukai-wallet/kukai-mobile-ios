@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import KukaiCoreSwift
 
 extension UIImageView {
 	
@@ -17,5 +18,13 @@ extension UIImageView {
 	func tint(color: UIColor) {
 		self.image = self.image?.withRenderingMode(.alwaysTemplate)
 		self.tintColor = color
+	}
+	
+	func addTokenIcon(token: Token) {
+		if token.isXTZ() {
+			self.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
+		} else {
+			MediaProxyService.load(url: token.thumbnailURL, to: self, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.frame.size)
+		}
 	}
 }
