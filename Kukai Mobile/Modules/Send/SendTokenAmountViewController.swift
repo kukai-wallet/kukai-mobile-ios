@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class SendTokenAmountViewController: UIViewController {
+class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDelegate {
 
 	@IBOutlet weak var toStackViewSocial: UIStackView!
 	@IBOutlet weak var toStackViewRegular: UIStackView!
@@ -74,8 +74,10 @@ class SendTokenAmountViewController: UIViewController {
 		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
 		
+		updateFees()
 		feeButton.configuration?.imagePlacement = .trailing
 		feeButton.configuration?.imagePadding = 6
+		feeButton.isEnabled = false
 		
 		reviewButton.isEnabled = false
 		reviewButton.layer.opacity = 0.5
@@ -121,16 +123,25 @@ class SendTokenAmountViewController: UIViewController {
 					case .success(let estimatedOperations):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
 						self?.feeValueLabel?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
+						self?.feeButton.isEnabled = true
 						self?.reviewButton.isEnabled = true
 						self?.reviewButton.layer.opacity = 1
 						
 					case .failure(let estimationError):
 						self?.alert(errorWithMessage: "\(estimationError)")
+						self?.feeButton.isEnabled = false
 						self?.reviewButton.isEnabled = false
 						self?.reviewButton.layer.opacity = 0.5
 				}
 			}
 		}
+	}
+	
+	func updateFees() {
+		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		
+		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
+		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 }
 

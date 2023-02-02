@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Edit Fees View Controller-->
         <scene sceneID="s0d-6b-0kx">
@@ -18,145 +22,191 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jps-w9-yw5">
-                                <rect key="frame" x="20" y="129.5" width="374" height="32"/>
+                                <rect key="frame" x="20" y="80" width="374" height="32"/>
+                                <color key="backgroundColor" name="BG4"/>
                                 <segments>
                                     <segment title="Normal"/>
                                     <segment title="Fast"/>
                                     <segment title="Custom"/>
                                 </segments>
+                                <color key="selectedSegmentTintColor" name="BG6"/>
                                 <connections>
                                     <action selector="segmentedButtonTapped:" destination="Y6W-OH-hqX" eventType="valueChanged" id="sNX-t8-dtP"/>
                                 </connections>
                             </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Gas Limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxY-NP-Bvy">
-                                <rect key="frame" x="20" y="196.5" width="179" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="text-secondary"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="20" y="217.5" width="179" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="253" y="201" width="145" height="26"/>
+                                <color key="backgroundColor" name="BG4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="7gh-Tj-fBy"/>
+                                </constraints>
+                                <color key="textColor" name="Txt2"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Fee (tez)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Thn-Rz-aNQ">
-                                <rect key="frame" x="215" y="196.5" width="179" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="text-secondary"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;fee&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="67P-1Z-wq0" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="215" y="217.5" width="179" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;fee&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="67P-1Z-wq0" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="253" y="143" width="145" height="26"/>
+                                <color key="backgroundColor" name="BG4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="bl4-9B-qg8"/>
+                                </constraints>
+                                <color key="textColor" name="Txt2"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="decimalPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Storage Limit" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEf-Zy-hor">
-                                <rect key="frame" x="20" y="275.5" width="179" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="text-secondary"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;storageLimit&gt;" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xbO-bZ-r3K" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="20" y="296.5" width="179" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;storageLimit&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xbO-bZ-r3K" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="253" y="259" width="145" height="26"/>
+                                <color key="backgroundColor" name="BG4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="Mbb-cV-zPi"/>
+                                </constraints>
+                                <color key="textColor" name="Txt2"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost (tez)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BW4-zJ-Xod">
-                                <rect key="frame" x="215" y="275.5" width="179" height="17"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <color key="textColor" name="text-secondary"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="&lt;storageCost&gt;" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="apl-sR-g28">
-                                <rect key="frame" x="215" y="296.5" width="179" height="34"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fees" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jPf-89-ylO">
-                                <rect key="frame" x="105.5" y="64" width="203" height="33.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfh-pE-6Ig">
-                                <rect key="frame" x="363" y="66" width="31" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="31" id="ibd-ny-k0t"/>
-                                    <constraint firstAttribute="height" constant="31" id="knJ-TK-KfV"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" backgroundImage="info.circle.fill" catalog="system"/>
-                                <connections>
-                                    <segue destination="wYb-DZ-McV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="fbE-ex-v3M"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z00-ny-0fx">
-                                <rect key="frame" x="20" y="362.5" width="374" height="44"/>
-                                <color key="backgroundColor" name="primary-button-background"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="8uG-dy-Wxm"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Save">
-                                    <color key="titleColor" name="primary-button-text"/>
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jyl-eL-Wbd" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="16" y="147.5" width="205" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="tintColor" name="BG10"/>
+                                <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
+                                <state key="normal" title="Fee">
+                                    <color key="titleColor" name="Txt10"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="22"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-info-fill"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="14"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="saveTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="xej-8P-aia"/>
+                                    <segue destination="wYb-DZ-McV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="8sb-x5-dHd"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TlC-dR-JTf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="16" y="205.5" width="205" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="tintColor" name="BG10"/>
+                                <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
+                                <state key="normal" title="Gas Limit">
+                                    <color key="titleColor" name="Txt10"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-info-fill"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="wYb-DZ-McV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="FQG-GV-eyy"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-dt-g9M" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="16" y="263.5" width="205" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="tintColor" name="BG10"/>
+                                <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
+                                <state key="normal" title="Storage Limit">
+                                    <color key="titleColor" name="Txt10"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-info-fill"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="14"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="wYb-DZ-McV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="y9V-EB-ziZ"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rnn-3H-Rsw">
+                                <rect key="frame" x="100.5" y="325" width="213" height="17"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qit-Eg-Wvz">
+                                        <rect key="frame" x="0.0" y="0.0" width="114" height="17"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt10"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;maxStorage&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om3-MQ-wmM">
+                                        <rect key="frame" x="120" y="0.0" width="93" height="17"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="om3-MQ-wmM" secondAttribute="trailing" id="1xW-Ns-fAP"/>
+                                    <constraint firstItem="om3-MQ-wmM" firstAttribute="top" secondItem="Rnn-3H-Rsw" secondAttribute="top" id="2al-U6-knh"/>
+                                    <constraint firstItem="qit-Eg-Wvz" firstAttribute="leading" secondItem="Rnn-3H-Rsw" secondAttribute="leading" id="PRx-lO-cHV"/>
+                                    <constraint firstAttribute="bottom" secondItem="om3-MQ-wmM" secondAttribute="bottom" id="ebS-hH-eEf"/>
+                                    <constraint firstItem="qit-Eg-Wvz" firstAttribute="top" secondItem="Rnn-3H-Rsw" secondAttribute="top" id="m4O-jE-Nhr"/>
+                                    <constraint firstItem="om3-MQ-wmM" firstAttribute="leading" secondItem="qit-Eg-Wvz" secondAttribute="trailing" constant="6" id="ntQ-ZA-z44"/>
+                                    <constraint firstAttribute="bottom" secondItem="qit-Eg-Wvz" secondAttribute="bottom" id="v4l-TU-Q9K"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="apl-sR-g28" firstAttribute="top" secondItem="BW4-zJ-Xod" secondAttribute="bottom" constant="4" id="0FO-zK-mcG"/>
-                            <constraint firstItem="BW4-zJ-Xod" firstAttribute="top" secondItem="67P-1Z-wq0" secondAttribute="bottom" constant="24" id="2dN-vo-ybY"/>
-                            <constraint firstItem="apl-sR-g28" firstAttribute="width" secondItem="67P-1Z-wq0" secondAttribute="width" id="36F-rq-vR5"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="pfX-zJ-QUN" secondAttribute="trailing" constant="16" id="3NS-nN-lAA"/>
+                            <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="Jyl-eL-Wbd" secondAttribute="trailing" constant="32" id="1u3-3Y-OeF"/>
+                            <constraint firstItem="67P-1Z-wq0" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.35" id="3En-jM-P26"/>
                             <constraint firstItem="jps-w9-yw5" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="7eN-yK-zSU"/>
-                            <constraint firstItem="zEf-Zy-hor" firstAttribute="trailing" secondItem="xbO-bZ-r3K" secondAttribute="trailing" id="B5f-L5-9qD"/>
-                            <constraint firstItem="jPf-89-ylO" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="Cl7-Jm-UcP"/>
+                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="leading" secondItem="RY5-dt-g9M" secondAttribute="trailing" constant="32" id="FT9-NG-Jqk"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" constant="20" id="G8G-ER-bpD"/>
-                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="top" secondItem="zEf-Zy-hor" secondAttribute="bottom" constant="4" id="KRO-hg-UdB"/>
-                            <constraint firstItem="apl-sR-g28" firstAttribute="height" secondItem="xbO-bZ-r3K" secondAttribute="height" id="Lb8-w6-Vqo"/>
-                            <constraint firstItem="pfX-zJ-QUN" firstAttribute="top" secondItem="dxY-NP-Bvy" secondAttribute="bottom" constant="4" id="PqP-Ls-t9O"/>
-                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="width" secondItem="pfX-zJ-QUN" secondAttribute="width" id="VWr-EH-jpl"/>
-                            <constraint firstItem="Thn-Rz-aNQ" firstAttribute="top" secondItem="jps-w9-yw5" secondAttribute="bottom" constant="36" id="VcD-AQ-bsd"/>
-                            <constraint firstItem="BW4-zJ-Xod" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" id="Wgt-h4-fgM"/>
-                            <constraint firstItem="dxY-NP-Bvy" firstAttribute="leading" secondItem="jps-w9-yw5" secondAttribute="leading" id="Xea-AC-erB"/>
-                            <constraint firstItem="jPf-89-ylO" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="16" id="YI8-MJ-BuS"/>
-                            <constraint firstItem="pfX-zJ-QUN" firstAttribute="leading" secondItem="dxY-NP-Bvy" secondAttribute="leading" id="aaT-o9-TBK"/>
-                            <constraint firstItem="Z00-ny-0fx" firstAttribute="top" secondItem="xbO-bZ-r3K" secondAttribute="bottom" constant="32" id="eIZ-9a-xkw"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="trailing" secondItem="Thn-Rz-aNQ" secondAttribute="trailing" id="eLe-A2-dfI"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="top" secondItem="Thn-Rz-aNQ" secondAttribute="bottom" constant="4" id="ewc-zz-XkL"/>
-                            <constraint firstItem="dxY-NP-Bvy" firstAttribute="trailing" secondItem="pfX-zJ-QUN" secondAttribute="trailing" id="fSl-5L-2QU"/>
-                            <constraint firstItem="Hfh-pE-6Ig" firstAttribute="centerY" secondItem="jPf-89-ylO" secondAttribute="centerY" id="glN-ek-MgI"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Hfh-pE-6Ig" secondAttribute="trailing" constant="20" id="hMV-pV-5gs"/>
-                            <constraint firstItem="jps-w9-yw5" firstAttribute="top" secondItem="jPf-89-ylO" secondAttribute="bottom" constant="32" id="hu5-WX-tw6"/>
-                            <constraint firstItem="zEf-Zy-hor" firstAttribute="top" secondItem="pfX-zJ-QUN" secondAttribute="bottom" constant="24" id="j9F-RF-Hjc"/>
-                            <constraint firstItem="BW4-zJ-Xod" firstAttribute="leading" secondItem="Thn-Rz-aNQ" secondAttribute="leading" id="k6j-dG-4cK"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Z00-ny-0fx" secondAttribute="trailing" constant="20" id="msj-eK-bfw"/>
-                            <constraint firstItem="Thn-Rz-aNQ" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" id="npr-Sl-dYJ"/>
-                            <constraint firstItem="BW4-zJ-Xod" firstAttribute="trailing" secondItem="apl-sR-g28" secondAttribute="trailing" id="oRT-nc-pE1"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="Thn-Rz-aNQ" secondAttribute="leading" id="prj-y6-gg7"/>
-                            <constraint firstItem="dxY-NP-Bvy" firstAttribute="top" secondItem="jps-w9-yw5" secondAttribute="bottom" constant="36" id="tLH-C8-61j"/>
-                            <constraint firstItem="Z00-ny-0fx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="vOA-JZ-O1k"/>
-                            <constraint firstItem="apl-sR-g28" firstAttribute="leading" secondItem="BW4-zJ-Xod" secondAttribute="leading" id="vh8-vR-GgT"/>
-                            <constraint firstItem="zEf-Zy-hor" firstAttribute="leading" secondItem="jps-w9-yw5" secondAttribute="leading" id="wjD-x0-cWG"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="width" secondItem="pfX-zJ-QUN" secondAttribute="width" id="yai-vP-fe1"/>
-                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="leading" secondItem="zEf-Zy-hor" secondAttribute="leading" id="ysN-F3-hre"/>
+                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="JxY-eh-2QA"/>
+                            <constraint firstItem="TlC-dR-JTf" firstAttribute="centerY" secondItem="pfX-zJ-QUN" secondAttribute="centerY" id="NHD-0r-aeG"/>
+                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="top" secondItem="xbO-bZ-r3K" secondAttribute="bottom" constant="40" id="OX5-ca-G7X"/>
+                            <constraint firstItem="jps-w9-yw5" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="32" id="P24-t4-mDp"/>
+                            <constraint firstItem="67P-1Z-wq0" firstAttribute="top" secondItem="jps-w9-yw5" secondAttribute="bottom" constant="32" id="VIl-NP-WK4"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="67P-1Z-wq0" secondAttribute="trailing" constant="16" id="WJG-cG-56J"/>
+                            <constraint firstItem="RY5-dt-g9M" firstAttribute="centerY" secondItem="xbO-bZ-r3K" secondAttribute="centerY" id="YBP-u0-Ikd"/>
+                            <constraint firstItem="pfX-zJ-QUN" firstAttribute="top" secondItem="67P-1Z-wq0" secondAttribute="bottom" constant="32" id="evP-ZP-VrB"/>
+                            <constraint firstItem="RY5-dt-g9M" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="gTE-pQ-kCg"/>
+                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="leading" secondItem="67P-1Z-wq0" secondAttribute="leading" id="hRa-8T-faN"/>
+                            <constraint firstItem="TlC-dR-JTf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="jE4-Fi-Fb3"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="pfX-zJ-QUN" secondAttribute="trailing" constant="16" id="kiU-dH-t8j"/>
+                            <constraint firstItem="Jyl-eL-Wbd" firstAttribute="centerY" secondItem="67P-1Z-wq0" secondAttribute="centerY" id="nP5-Rv-Kc9"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Rnn-3H-Rsw" secondAttribute="trailing" constant="16" id="opK-jM-B4N"/>
+                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="pnR-vS-CJY"/>
+                            <constraint firstItem="pfX-zJ-QUN" firstAttribute="leading" secondItem="67P-1Z-wq0" secondAttribute="leading" id="sfl-z8-55I"/>
+                            <constraint firstItem="Jyl-eL-Wbd" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="stX-Se-G1y"/>
+                            <constraint firstItem="xbO-bZ-r3K" firstAttribute="top" secondItem="pfX-zJ-QUN" secondAttribute="bottom" constant="32" id="unY-ee-tep"/>
+                            <constraint firstItem="pfX-zJ-QUN" firstAttribute="leading" secondItem="TlC-dR-JTf" secondAttribute="trailing" constant="32" id="vPI-rc-mkJ"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="xbO-bZ-r3K" secondAttribute="trailing" constant="16" id="zg6-gq-R91"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="feeTextField" destination="67P-1Z-wq0" id="Kc8-Uc-G2c"/>
                         <outlet property="gasLimitTextField" destination="pfX-zJ-QUN" id="GRc-bO-dec"/>
-                        <outlet property="maxStorageCostTextField" destination="apl-sR-g28" id="Rfa-sk-jV2"/>
-                        <outlet property="saveButton" destination="Z00-ny-0fx" id="9kB-Wc-vKr"/>
+                        <outlet property="maxStorageCostLbl" destination="om3-MQ-wmM" id="Jr3-M5-NPd"/>
                         <outlet property="segmentedButton" destination="jps-w9-yw5" id="Sgj-9b-SxQ"/>
                         <outlet property="storageLimitTextField" destination="xbO-bZ-r3K" id="DWM-rN-yu7"/>
                     </connections>
@@ -165,16 +215,16 @@
             </objects>
             <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
         </scene>
-        <!--View Controller-->
+        <!--Fee Info View Controller-->
         <scene sceneID="KUu-s0-1Zf">
             <objects>
-                <viewController storyboardIdentifier="info" id="wYb-DZ-McV" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="info" id="wYb-DZ-McV" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="f6a-Jc-7cd">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Fees" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QIZ-Rz-LVu">
-                                <rect key="frame" x="105.5" y="64" width="203" height="33.5"/>
+                                <rect key="frame" x="16" y="64" width="382" height="33.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -187,9 +237,11 @@
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="0NH-CY-7xk"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="a5f-OO-Ydk" firstAttribute="leading" secondItem="0NH-CY-7xk" secondAttribute="leading" constant="20" id="0h3-WG-mYe"/>
+                            <constraint firstItem="0NH-CY-7xk" firstAttribute="trailing" secondItem="QIZ-Rz-LVu" secondAttribute="trailing" constant="16" id="Aja-ot-nOa"/>
+                            <constraint firstItem="QIZ-Rz-LVu" firstAttribute="leading" secondItem="0NH-CY-7xk" secondAttribute="leading" constant="16" id="RuK-yG-9TX"/>
                             <constraint firstItem="QIZ-Rz-LVu" firstAttribute="top" secondItem="0NH-CY-7xk" secondAttribute="top" constant="16" id="Spe-DZ-CM6"/>
                             <constraint firstItem="a5f-OO-Ydk" firstAttribute="top" secondItem="QIZ-Rz-LVu" secondAttribute="bottom" constant="20" id="lcm-rQ-LQi"/>
                             <constraint firstItem="QIZ-Rz-LVu" firstAttribute="centerX" secondItem="0NH-CY-7xk" secondAttribute="centerX" id="mDq-lg-ECL"/>
@@ -204,28 +256,43 @@
     </scenes>
     <designables>
         <designable name="67P-1Z-wq0">
-            <size key="intrinsicContentSize" width="66" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="18"/>
+        </designable>
+        <designable name="Jyl-eL-Wbd">
+            <size key="intrinsicContentSize" width="38" height="17"/>
+        </designable>
+        <designable name="RY5-dt-g9M">
+            <size key="intrinsicContentSize" width="98" height="17"/>
+        </designable>
+        <designable name="TlC-dR-JTf">
+            <size key="intrinsicContentSize" width="74" height="17"/>
         </designable>
         <designable name="pfX-zJ-QUN">
-            <size key="intrinsicContentSize" width="100" height="34"/>
+            <size key="intrinsicContentSize" width="70" height="18"/>
         </designable>
         <designable name="xbO-bZ-r3K">
-            <size key="intrinsicContentSize" width="126" height="34"/>
+            <size key="intrinsicContentSize" width="95" height="18"/>
         </designable>
     </designables>
+    <inferredMetricsTieBreakers>
+        <segue reference="8sb-x5-dHd"/>
+    </inferredMetricsTieBreakers>
     <resources>
-        <image name="info.circle.fill" catalog="system" width="128" height="123"/>
-        <namedColor name="primary-button-background">
-            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="circle-info-fill" width="36" height="36"/>
+        <namedColor name="BG10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="primary-button-text">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BG4">
+            <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="text-secondary">
-            <color red="0.32941176470588235" green="0.32941176470588235" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BG6">
+            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

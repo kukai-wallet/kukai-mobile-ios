@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
-class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol {
+class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol, EditFeesViewControllerDelegate {
 	
 	@IBOutlet weak var largeDisplayStackView: UIStackView!
 	@IBOutlet weak var largeDisplayIcon: UIImageView!
@@ -84,9 +84,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		
 		// Fees
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
-		feeValueLabel?.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
-		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
+		updateFees()
 		feeButton.configuration?.imagePlacement = .trailing
 		feeButton.configuration?.imagePadding = 6
 		
@@ -128,5 +126,12 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 				}
 			})
 		}
+	}
+	
+	func updateFees() {
+		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		
+		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
+		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 }
