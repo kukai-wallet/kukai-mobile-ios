@@ -24,6 +24,7 @@ class SlideButton: UIView {
 	
 	private let nibName = "SlideButton"
 	private var gradientsSetup = false
+	private var isComplete = false
 	private var borderGradient = CAGradientLayer()
 	private var buttonViewGradient = CAGradientLayer()
 	private var shadowLayer1 = CAShapeLayer()
@@ -103,6 +104,8 @@ class SlideButton: UIView {
 	}
 	
 	@objc private func touched(_ gestureRecognizer: UIGestureRecognizer) {
+		guard !isComplete else { return }
+		
 		let padding: CGFloat = 8
 		let locationInView = gestureRecognizer.location(in: containerView)
 		
@@ -166,6 +169,7 @@ class SlideButton: UIView {
 	}
 	
 	public func markComplete(withText: String) {
+		isComplete = true
 		activityIndicator.stopAnimating()
 		label.text = withText
 		

@@ -5,10 +5,9 @@
 //  Created by Simon Mcloughlin on 31/01/2023.
 //
 
-import Foundation
-
 import UIKit
 import KukaiCoreSwift
+import OSLog
 
 class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol {
 	
@@ -105,14 +104,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	}
 	
 	func didCompleteSlide() {
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-			self?.slideButton.markComplete(withText: "Confirmed!")
-		}
-		
-		print("send")
-		
-		/*guard let wallet = DependencyManager.shared.selectedWallet else {
+		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find wallet")
 			self.slideButton.resetSlider()
 			return
@@ -121,10 +113,12 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		self.showLoadingModal(completion: nil)
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
+			self?.slideButton.markComplete(withText: "Confirmed!")
+			
 			self?.hideLoadingModal(completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						print("Sent: \(opHash)")
+						os_log("Sent: %@", log: .default, type: .default,  opHash)
 						self?.dismiss(animated: true, completion: nil)
 						(self?.presentingViewController as? UINavigationController)?.popToHome()
 						
@@ -133,6 +127,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 						self?.slideButton?.resetSlider()
 				}
 			})
-		}*/
+		}
 	}
 }
