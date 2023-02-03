@@ -68,7 +68,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
 		let action = actions[indexPath.section][indexPath.row]
 		cell.textLabel?.text = action.title
-		cell.textLabel?.textColor = UIColor.colorNamed("txtMenuContext")
+		cell.textLabel?.textColor = UIColor.colorNamed("TxtMenuContext")
 		cell.textLabel?.font = UIFont.custom(ofType: .bold, andSize: 18)
 		
 		let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))

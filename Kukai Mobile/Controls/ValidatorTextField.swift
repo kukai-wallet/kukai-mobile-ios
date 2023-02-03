@@ -46,7 +46,6 @@ public class ValidatorTextField: UITextField {
 			updateView()
 		}
 	}
-	var placeholderFont: UIFont = .systemFont(ofSize: 14)
 	
 	@IBInspectable var clearButtonTint: UIColor = .lightGray
 	
@@ -116,7 +115,7 @@ public class ValidatorTextField: UITextField {
 		
 		attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [
 			NSAttributedString.Key.foregroundColor: placeholderColor,
-			NSAttributedString.Key.font: placeholderFont,
+			NSAttributedString.Key.font: self.font,
 		])
 	}
 	

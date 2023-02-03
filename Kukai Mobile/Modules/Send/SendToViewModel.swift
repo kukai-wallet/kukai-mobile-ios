@@ -142,13 +142,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
 			cell.iconView.image = UIImage(named: "contacts")
-			cell.iconView.tintColor = .colorNamed("Grey1000")
+			cell.iconView.tintColor = .colorNamed("Txt10")
 			cell.headingLabel.text = "Contacts"
 			return cell.contentView
 			
 		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
 			cell.iconView.image = UIImage(named: "wallet")
-			cell.iconView.tintColor = .colorNamed("Grey1000")
+			cell.iconView.tintColor = .colorNamed("Txt10")
 			cell.headingLabel.text = "My Wallets"
 			return cell.contentView
 			

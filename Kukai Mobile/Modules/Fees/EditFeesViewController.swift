@@ -86,7 +86,15 @@ class EditFeesViewController: UIViewController {
 		
 		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
 		
+		// Check if a previous bototm sheet is displaying a transaction, and update its fee
+		if let parentVC = self.presentingViewController as? EditFeesViewControllerDelegate {
+			parentVC.updateFees()
+		}
+		
+		// Check if there is a full screen (possibly as well as above) displaying a transaction, and update its fee
 		if let parentVC = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
+			parentVC.updateFees()
+		} else if let parentVC = (self.presentingViewController?.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
 			parentVC.updateFees()
 		}
 	}
