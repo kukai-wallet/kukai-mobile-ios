@@ -50,7 +50,9 @@ class ImportMnemonicViewController: UIViewController {
 		
 		if isHDWallet, let hdWallet = HDWallet(withMnemonic: mnemonic, passphrase: passwordTextField.text ?? "", derivationPath: derivationPathTextField?.text ?? HD.defaultDerivationPath) {
 			if walletCache.cache(wallet: hdWallet, childOfIndex: nil) {
-				self.performSegue(withIdentifier: "complete", sender: self)
+				DependencyManager.shared.walletList = walletCache.readNonsensitive()
+				DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
+				handleSuccessNavigation()
 			} else {
 				alert(withTitle: "Error", andMessage: "unable to cache")
 			}

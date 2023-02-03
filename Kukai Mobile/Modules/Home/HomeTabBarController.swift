@@ -170,11 +170,11 @@ class HomeTabBarController: UITabBarController {
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "BGB6") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "TxtB4") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
-		self.tabBar.unselectedItemTintColor = UIColor(named: "Txt6")
+		self.tabBar.unselectedItemTintColor = UIColor(named: "BG12")
 	}
 	
 	public func updateAccountButton() {

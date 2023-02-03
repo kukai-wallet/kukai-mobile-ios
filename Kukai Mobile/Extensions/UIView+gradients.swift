@@ -66,7 +66,7 @@ extension UIView {
 			withFrame: self.bounds,
 			colors: [
 				UIColor.colorNamed("gradStroke_NavBarPanels-1").cgColor,
-				UIColor.colorNamed("gradStroke_NavBarPanels-1").cgColor
+				UIColor.colorNamed("gradStroke_NavBarPanels-2").cgColor
 			],
 			locations: [0, 0.65],
 			degrees: cssDegreesToIOS(180),
@@ -114,11 +114,36 @@ extension UIView {
 		return addBackgroundGradient(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("BtnPrim-1").cgColor,
+				UIColor.colorNamed("BtnPrim-2").cgColor,
 			],
-			locations: [0.22, 0.81],
+			locations: [0.20, 0.87],
 			degress: cssDegreesToIOS(117.79))
+	}
+	
+	func addSliderButton(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor.colorNamed("gradSliderCircle-1").cgColor,
+				UIColor.colorNamed("gradSliderCircle-2").cgColor,
+			],
+			locations: [0.20, 1],
+			degress: cssDegreesToIOS(180))
+	}
+	
+	func addSliderBorder(withFrame frame: CGRect) -> CAGradientLayer {
+		return addGradientBorder(
+			withFrame: self.bounds,
+			colors: [
+				UIColor.colorNamed("gradStrokeSlider-1").cgColor,
+				UIColor.colorNamed("gradStrokeSlider-2").cgColor
+			],
+			locations: [0, 0.5],
+			degrees: cssDegreesToIOS(180),
+			lineWidth: 2,
+			corners: [.allCorners],
+			cornerRadius: frame.height/2)
 	}
 	
 	

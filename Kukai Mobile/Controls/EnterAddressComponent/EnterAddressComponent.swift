@@ -58,8 +58,8 @@ public class EnterAddressComponent: UIView {
 		textField.validatorTextFieldDelegate = self
 		
 		var image = UIImage(named: "chevron-right")
-		image = image?.resizedImage(Size: CGSize(width: 20, height: 20))
-		image = image?.withTintColor(.white)
+		image = image?.resizedImage(Size: CGSize(width: 12, height: 18))
+		image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
 		
 		sendButton.setImage(image, for: .normal)
 		

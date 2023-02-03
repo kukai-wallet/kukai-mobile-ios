@@ -18,12 +18,12 @@ extension UISegmentedControl {
 		let dividerImage = UIImage.getColoredRectImageWith(color: UIColor.clear.cgColor, andSize: CGSize(width: 1.0, height: self.bounds.size.height))
 		self.setDividerImage(dividerImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
 		self.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Brand1000"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 17)
+			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6"),
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
 		], for: .normal)
 		self.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 17)
+			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"),
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
 		], for: .selected)
 	}
 	
@@ -35,7 +35,7 @@ extension UISegmentedControl {
 		let underLineYPosition = self.bounds.size.height - (underlineHeight * 2)
 		let underlineFrame = CGRect(x: underlineXPosition, y: underLineYPosition, width: underlineWidth, height: underlineHeight)
 		let underline = UIView(frame: underlineFrame)
-		underline.backgroundColor = UIColor.colorNamed("Brand800")
+		underline.backgroundColor = UIColor.colorNamed("BGB6")
 		underline.tag = 1
 		self.clipsToBounds = false
 		self.layer.masksToBounds = false

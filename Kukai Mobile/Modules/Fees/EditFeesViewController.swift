@@ -8,17 +8,27 @@
 import UIKit
 import KukaiCoreSwift
 
+protocol EditFeesViewControllerDelegate {
+	func updateFees()
+}
+
 class EditFeesViewController: UIViewController {
 	
 	@IBOutlet weak var segmentedButton: UISegmentedControl!
 	@IBOutlet weak var gasLimitTextField: ValidatorTextField!
 	@IBOutlet weak var feeTextField: ValidatorTextField!
 	@IBOutlet weak var storageLimitTextField: ValidatorTextField!
-	@IBOutlet weak var maxStorageCostTextField: UITextField!
-	@IBOutlet weak var saveButton: UIButton!
+	@IBOutlet weak var maxStorageCostLbl: UILabel!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
+		
+		let selectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
+		let normalAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6")]
+		
+		segmentedButton.setTitleTextAttributes(normalAttributes, for: .normal)
+		segmentedButton.setTitleTextAttributes(selectedAttributes, for: .selected)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -49,6 +59,7 @@ class EditFeesViewController: UIViewController {
 	@IBAction func segmentedButtonTapped(_ sender: Any) {
 		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
 		updateFeeDisplay()
+		recordFee()
 		
 		if segmentedButton.selectedSegmentIndex != 2 {
 			disableAllFields()
@@ -57,7 +68,14 @@ class EditFeesViewController: UIViewController {
 		}
 	}
 	
-	@IBAction func saveTapped(_ sender: Any) {
+	func updateFeeDisplay() {
+		gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
+		storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
+		feeTextField.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation
+		maxStorageCostLbl.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation
+	}
+	
+	func recordFee() {
 		if segmentedButton.selectedSegmentIndex == 2 {
 			let xtzAmount = XTZAmount(fromNormalisedAmount: feeTextField.text ?? "0", decimalPlaces: 6)
 			let gasLimit = Int(gasLimitTextField.text ?? "0")
@@ -67,26 +85,36 @@ class EditFeesViewController: UIViewController {
 		}
 		
 		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
-		self.dismissBottomSheet()
-	}
-	
-	func updateFeeDisplay() {
-		gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
-		storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
-		feeTextField.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation
-		maxStorageCostTextField.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation
+		
+		// Check if a previous bototm sheet is displaying a transaction, and update its fee
+		if let parentVC = self.presentingViewController as? EditFeesViewControllerDelegate {
+			parentVC.updateFees()
+		}
+		
+		// Check if there is a full screen (possibly as well as above) displaying a transaction, and update its fee
+		if let parentVC = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
+			parentVC.updateFees()
+		} else if let parentVC = (self.presentingViewController?.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
+			parentVC.updateFees()
+		}
 	}
 	
 	func disableAllFields() {
 		gasLimitTextField.isEnabled = false
+		gasLimitTextField.alpha = 0.5
 		feeTextField.isEnabled = false
+		feeTextField.alpha = 0.5
 		storageLimitTextField.isEnabled = false
+		storageLimitTextField.alpha = 0.5
 	}
 	
 	func enableAllFields() {
 		gasLimitTextField.isEnabled = true
+		gasLimitTextField.alpha = 1
 		feeTextField.isEnabled = true
+		feeTextField.alpha = 1
 		storageLimitTextField.isEnabled = true
+		storageLimitTextField.alpha = 1
 	}
 }
 
@@ -97,7 +125,7 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		
+		recordFee()
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {

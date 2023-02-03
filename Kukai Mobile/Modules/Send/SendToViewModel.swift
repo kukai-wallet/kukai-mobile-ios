@@ -12,7 +12,7 @@ import OSLog
 
 struct WalletObj: Hashable {
 	let icon: UIImage?
-	let title: String
+	let title: String?
 	let address: String
 }
 
@@ -34,8 +34,14 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
 				cell.iconView.image = obj.icon
-				cell.titleLabel.text = obj.title
-				cell.subtitleLabel.text = obj.address
+				
+				if let title = obj.title {
+					cell.titleLabel.text = title
+					cell.subtitleLabel.text = obj.address
+				} else {
+					cell.titleLabel.text = obj.address
+					cell.subtitleLabel.text = " "
+				}
 				
 				return cell
 				
@@ -70,13 +76,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
 				
 			} else if wallet.type == .hd {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: wallet.address, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: nil, address: wallet.address))
 				for child in wallet.children {
-					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: child.address, address: child.address))
+					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: nil, address: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: wallet.address, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: nil, address: wallet.address))
 			}
 		}
 		
@@ -136,13 +142,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
 			cell.iconView.image = UIImage(named: "contacts")
-			cell.iconView.tintColor = .colorNamed("Grey1000")
+			cell.iconView.tintColor = .colorNamed("Txt10")
 			cell.headingLabel.text = "Contacts"
 			return cell.contentView
 			
 		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
 			cell.iconView.image = UIImage(named: "wallet")
-			cell.iconView.tintColor = .colorNamed("Grey1000")
+			cell.iconView.tintColor = .colorNamed("Txt10")
 			cell.headingLabel.text = "My Wallets"
 			return cell.contentView
 			
@@ -151,8 +157,8 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func address(forIndexPath indexPath: IndexPath) -> String {
-		return walletObjs[indexPath.row].address
+	func walletObj(forIndexPath indexPath: IndexPath) -> WalletObj {
+		return walletObjs[indexPath.row]
 	}
 	
 	func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, KukaiError>) -> Void)) {

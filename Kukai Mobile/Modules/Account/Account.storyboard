@@ -5,7 +5,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -243,7 +242,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="gVm-gI-ruh"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="Bx0-JG-6Gg" firstAttribute="bottom" secondItem="gVm-gI-ruh" secondAttribute="bottom" id="1Iu-Vm-ASw"/>
                             <constraint firstItem="Bx0-JG-6Gg" firstAttribute="trailing" secondItem="gVm-gI-ruh" secondAttribute="trailing" id="B2Z-Ga-vQ1"/>
@@ -301,7 +300,7 @@
                             </containerView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="BVE-hr-LWs"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="SP1-tp-66F" firstAttribute="leading" secondItem="BVE-hr-LWs" secondAttribute="leading" id="6Jn-nR-pKw"/>
                             <constraint firstItem="h8T-gk-boF" firstAttribute="top" secondItem="zcF-o0-QLV" secondAttribute="bottom" constant="2" id="ARr-rI-jfV"/>
@@ -374,7 +373,7 @@
                                                                         </view>
                                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="1000" verticalHuggingPriority="251" image="favourite-off" translatesAutoresizingMaskIntoConstraints="NO" id="bjy-d6-vTX">
                                                                             <rect key="frame" x="0.0" y="7" width="24" height="24"/>
-                                                                            <color key="tintColor" name="Brand1000"/>
+                                                                            <color key="tintColor" name="BGB4"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="24" id="74J-pl-x6A"/>
                                                                                 <constraint firstAttribute="width" constant="24" id="gKL-3l-IaK"/>
@@ -409,13 +408,13 @@
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3av-9Z-pCs">
                                                                             <rect key="frame" x="0.0" y="0.0" width="235" height="23"/>
                                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="19"/>
-                                                                            <color key="textColor" name="Grey200"/>
+                                                                            <color key="textColor" name="Txt2"/>
                                                                             <color key="highlightedColor" red="0.1764705882" green="0.18039215689999999" blue="0.2470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2lH-8Y-L3H">
                                                                             <rect key="frame" x="0.0" y="23" width="235" height="15"/>
                                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="15"/>
-                                                                            <color key="textColor" name="Grey1100"/>
+                                                                            <color key="textColor" name="Txt10"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
@@ -460,7 +459,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jsv-DB-BSC"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="leading" secondItem="jsv-DB-BSC" secondAttribute="leading" id="2cj-6M-ymd"/>
                             <constraint firstItem="oRe-e5-5oV" firstAttribute="trailing" secondItem="jsv-DB-BSC" secondAttribute="trailing" id="KcU-sP-ubU"/>
@@ -477,7 +476,7 @@
                                 <color key="tintColor" name="Brand1000"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Re-Order">
-                                    <color key="titleColor" name="Brand1000"/>
+                                    <color key="titleColor" name="TxtB6"/>
                                 </state>
                                 <connections>
                                     <action selector="reOrderButtonTapped:" destination="r1r-bU-jrg" eventType="touchUpInside" id="3Al-nC-gKH"/>
@@ -513,25 +512,25 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="&lt;priceChange&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpb-e7-XF0">
                                 <rect key="frame" x="264.33333333333331" y="75" width="112.66666666666669" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
-                                <color key="textColor" name="Positive900"/>
+                                <color key="textColor" name="TxtGood4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="&lt;fiat&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVG-6O-GrW">
                                 <rect key="frame" x="60" y="97.333333333333329" width="50" height="21.666666666666671"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
-                                <color key="textColor" name="Grey900"/>
+                                <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;priceChangeDate&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JxS-C1-8ro">
                                 <rect key="frame" x="230.33333333333337" y="97.333333333333329" width="146.66666666666663" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
-                                <color key="textColor" name="Grey1200"/>
+                                <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;symbol&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmE-DB-rmw">
                                 <rect key="frame" x="60.000000000000014" y="75" width="172.33333333333337" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                <color key="textColor" name="Grey200"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WKV-57-Y9W">
@@ -547,7 +546,7 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xt6-og-l4q"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="7Zt-dG-2vQ" firstAttribute="leading" secondItem="AmE-DB-rmw" secondAttribute="trailing" constant="16" id="0iW-L3-8MQ"/>
                             <constraint firstItem="AmE-DB-rmw" firstAttribute="leading" secondItem="WKV-57-Y9W" secondAttribute="trailing" constant="4" id="42J-hZ-Yyl"/>
@@ -595,25 +594,26 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token Contract" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6WT-qP-AZW">
-                                <rect key="frame" x="16" y="83" width="361" height="25.333333333333329"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="21"/>
+                                <rect key="frame" x="16" y="83" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Grey200"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfB-BJ-uRz">
-                                <rect key="frame" x="35.999999999999993" y="144.33333333333334" width="67.333333333333314" height="20"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="17"/>
-                                <color key="textColor" name="Brand200"/>
+                                <rect key="frame" x="36" y="143" width="63.666666666666657" height="20"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;tokenID&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQ9-ZC-W14">
-                                <rect key="frame" x="36" y="168.33333333333334" width="61.666666666666657" height="15.666666666666657"/>
-                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="13"/>
-                                <color key="textColor" name="Grey1100"/>
+                                <rect key="frame" x="36" y="167" width="57" height="15.666666666666657"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wl6-j1-EYt">
-                                <rect key="frame" x="309" y="135.33333333333334" width="48" height="38"/>
+                                <rect key="frame" x="309" y="134" width="48" height="38"/>
+                                <color key="tintColor" name="BGB4"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="copy"/>
                                 <connections>
@@ -621,19 +621,20 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contract" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x66-7b-Ffj">
-                                <rect key="frame" x="35.999999999999993" y="220" width="70.333333333333314" height="20"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="17"/>
-                                <color key="textColor" name="Brand200"/>
+                                <rect key="frame" x="35.999999999999993" y="218.66666666666666" width="66.333333333333314" height="20"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;contract&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Obi-1p-QLV">
-                                <rect key="frame" x="36" y="244" width="66" height="15.666666666666686"/>
-                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="13"/>
-                                <color key="textColor" name="Grey1100"/>
+                                <rect key="frame" x="36" y="242.66666666666666" width="61" height="14.666666666666657"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9NG-uy-GQe">
-                                <rect key="frame" x="309" y="211" width="48" height="38"/>
+                                <rect key="frame" x="309" y="209.66666666666666" width="48" height="38"/>
+                                <color key="tintColor" name="BGB4"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="copy"/>
                                 <connections>
@@ -641,11 +642,11 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEZ-bX-bZg">
-                                <rect key="frame" x="16" y="283.66666666666669" width="361" height="39.333333333333314"/>
-                                <color key="tintColor" name="Brand900"/>
+                                <rect key="frame" x="16" y="281.33333333333331" width="361" height="38"/>
+                                <color key="tintColor" name="TxtB6"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="external-link" title="View Contract in BCD" imagePadding="12">
-                                    <fontDescription key="titleFontDescription" name="Figtree-Medium" family="Figtree" pointSize="21"/>
+                                    <fontDescription key="titleFontDescription" name="Figtree-Medium" family="Figtree" pointSize="20"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="viewOnBCDTapped:" destination="5px-c7-QlA" eventType="touchUpInside" id="SgR-rk-UgN"/>
@@ -706,7 +707,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No hidden tokens yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcG-IT-tfT">
                                                     <rect key="frame" x="16" y="40" width="361" height="38"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
-                                                    <color key="textColor" name="Grey800"/>
+                                                    <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -732,7 +733,7 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hidden-on" translatesAutoresizingMaskIntoConstraints="NO" id="J67-vf-han">
                                                             <rect key="frame" x="16" y="20" width="24" height="24"/>
-                                                            <color key="tintColor" name="Brand1000"/>
+                                                            <color key="tintColor" name="BGB4"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="24" id="oxQ-ZJ-VX7"/>
                                                                 <constraint firstAttribute="height" constant="24" id="rcF-iL-hWl"/>
@@ -755,13 +756,13 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8q-Fb-K5L">
                                                             <rect key="frame" x="108" y="12" width="237" height="23"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="19"/>
-                                                            <color key="textColor" name="Grey200"/>
+                                                            <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fd9-v5-h5P">
                                                             <rect key="frame" x="108" y="37" width="237" height="18"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="15"/>
-                                                            <color key="textColor" name="Grey1100"/>
+                                                            <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -846,7 +847,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No hidden collectibles yet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="af5-Sq-Qfv">
                                                     <rect key="frame" x="16" y="40" width="361" height="38"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
-                                                    <color key="textColor" name="Grey800"/>
+                                                    <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
@@ -872,7 +873,7 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="hidden-on" translatesAutoresizingMaskIntoConstraints="NO" id="OHp-Fc-hTh">
                                                             <rect key="frame" x="16" y="32" width="24" height="24"/>
-                                                            <color key="tintColor" name="Brand1000"/>
+                                                            <color key="tintColor" name="BGB4"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="24" id="aVi-Lf-Ezt"/>
                                                                 <constraint firstAttribute="width" constant="24" id="er4-rs-6Tb"/>
@@ -895,13 +896,13 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;name&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Bg-1k-5Ks">
                                                             <rect key="frame" x="148" y="21" width="197" height="23"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="19"/>
-                                                            <color key="textColor" name="Grey200"/>
+                                                            <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;collection&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uj4-Eh-rAU">
                                                             <rect key="frame" x="148" y="46" width="197" height="18"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="15"/>
-                                                            <color key="textColor" name="Grey1100"/>
+                                                            <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -973,15 +974,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Staking Info" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WTz-3P-7LT">
-                                <rect key="frame" x="16" y="83" width="361" height="25.333333333333329"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="21"/>
-                                <color key="textColor" name="Grey200"/>
+                                <rect key="frame" x="16" y="83" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All the cool kids are doing it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OJY-ci-65Q">
-                                <rect key="frame" x="16" y="132.33333333333334" width="361" height="20.666666666666657"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="17"/>
-                                <color key="textColor" name="Brand200"/>
+                                <rect key="frame" x="16" y="131" width="361" height="19.333333333333343"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1011,7 +1012,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="zcN-zW-iIF"/>
+        <segue reference="rj3-ts-vdk"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="account-off" width="24" height="25"/>
@@ -1024,25 +1025,16 @@
         <image name="favourite-off" width="22" height="22"/>
         <image name="hidden-on" width="24" height="16"/>
         <namedColor name="BG10">
-            <color red="0.52549019610000003" green="0.53333333329999999" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG2">
+            <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
-            <color red="0.42745098040000001" green="0.45882352939999999" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Brand1000">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Brand200">
-            <color red="0.94900000095367432" green="0.95300000905990601" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Brand900">
-            <color red="0.51800000667572021" green="0.54500001668930054" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Grey1100">
-            <color red="0.47058823529411764" green="0.47843137254901963" blue="0.56862745098039214" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Grey1200">
-            <color red="0.41176470588235292" green="0.41568627450980394" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Grey1800">
             <color red="0.10980392156862745" green="0.10980392156862745" blue="0.15294117647058825" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1050,26 +1042,20 @@
         <namedColor name="Grey200">
             <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Grey800">
-            <color red="0.73725490196078436" green="0.74509803921568629" blue="0.83529411764705885" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Grey900">
-            <color red="0.63529411764705879" green="0.64313725490196083" blue="0.72941176470588232" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Positive900">
-            <color red="0.035294117647058823" green="0.68235294117647061" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Txt10">
-            <color red="0.52549019610000003" green="0.53333333329999999" blue="0.61568627450000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt2">
-            <color red="0.10980392160000001" green="0.10980392160000001" blue="0.1529411765" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB6">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtGood4">
-            <color red="0.035294117649999998" green="0.68235294120000001" blue="0.29411764709999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.035000000149011612" green="0.68199998140335083" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

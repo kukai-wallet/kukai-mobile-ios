@@ -53,7 +53,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	static func imageFor(addressType: AddressType) -> UIImage {
 		switch addressType {
 			case .tezosAddress:
-				return UIImage(named: "tezos-logo-no-background") ?? UIImage()
+				return UIImage(named: "social-tezos-no-background") ?? UIImage()
 				
 			case .tezosDomain:
 				return UIImage(named: "social-tezos-domain") ?? UIImage()

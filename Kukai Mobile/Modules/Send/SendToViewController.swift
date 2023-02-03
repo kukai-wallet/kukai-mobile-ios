@@ -56,9 +56,12 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
+		let walletObj = viewModel.walletObj(forIndexPath: indexPath)
 		
 		TransactionService.shared.currentTransactionType = .send
-		TransactionService.shared.sendData.destination = viewModel.address(forIndexPath: indexPath)
+		TransactionService.shared.sendData.destinationIcon = walletObj.icon
+		TransactionService.shared.sendData.destination = walletObj.address
+		TransactionService.shared.sendData.destinationAlias = walletObj.title
 		
 		self.navigate()
 	}
@@ -92,11 +95,6 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	}
 	
 	func navigate() {
-		/*if TransactionService.shared.sendData.chosenToken == nil && TransactionService.shared.sendData.chosenNFT == nil {
-			self.performSegue(withIdentifier: "choose-token", sender: self)
-			
-		} else*/
-		
 		if TransactionService.shared.sendData.chosenToken != nil {
 			self.performSegue(withIdentifier: "enter-amount", sender: self)
 			
