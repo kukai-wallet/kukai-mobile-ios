@@ -380,7 +380,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		navigationBarAppearance.shadowColor = .clear
 		navigationBarAppearance.titleTextAttributes = [
 			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 21)
+			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)
 		]
 		
 		UINavigationBar.appearance().standardAppearance = navigationBarAppearance
@@ -389,9 +389,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		
 		
 		// Change back button tint
-		//let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
-		//barButtonAppearence.tintColor = UIColor.colorNamed("Brand1100")
-		//barButtonAppearence.setTitleTextAttributes([.foregroundColor: UIColor.clear, .font: UIFont.systemFont(ofSize: 1)], for: .normal)
+		let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
+		barButtonAppearence.tintColor = UIColor.colorNamed("BGB4")
+		barButtonAppearence.setTitleTextAttributes([.foregroundColor: UIColor.clear, .font: UIFont.systemFont(ofSize: 1)], for: .normal)
 	}
 }
 

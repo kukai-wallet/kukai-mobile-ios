@@ -23,7 +23,7 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 			
 		} else {
 			bakerButton?.borderWidth = 1
-			bakerButton?.borderColor = UIColor.colorNamed("Brand1000")
+			bakerButton?.borderColor = UIColor.colorNamed("BtnStrokeSec1")
 			bakerButton?.customCornerRadius = 8
 		}
 	}

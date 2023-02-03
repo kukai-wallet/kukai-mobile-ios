@@ -21,8 +21,8 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		self.actions = actions
 		self.sourceVC = sourceViewController
 		
-		self.tableView.backgroundColor = UIColor.colorNamed("Txt10")
-		self.tableView.separatorColor = UIColor.colorNamed("Txt8")
+		self.tableView.backgroundColor = UIColor.colorNamed("BGMenuContext")
+		self.tableView.separatorColor = UIColor.colorNamed("LineMenuContext")
 	}
 	
 	func setup() {
@@ -68,13 +68,13 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
 		let action = actions[indexPath.section][indexPath.row]
 		cell.textLabel?.text = action.title
-		cell.textLabel?.textColor = UIColor.colorNamed("Txt6")
+		cell.textLabel?.textColor = UIColor.colorNamed("txtMenuContext")
 		cell.textLabel?.font = UIFont.custom(ofType: .bold, andSize: 18)
 		
 		let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
 		var image = action.image
 		image = image?.resizedImage(Size: imageView.frame.size)
-		image = image?.withTintColor(.colorNamed("TxB6"))
+		image = image?.withTintColor(.colorNamed("BGB4"))
 		imageView.image = image
 		cell.accessoryView = imageView
 		
@@ -107,7 +107,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	
 	override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		let view = UIView(frame: CGRect(x: 0, y: 0, width: MenuViewController.preferredWidth, height: MenuViewController.sectionFooterHeight))
-		view.backgroundColor = .colorNamed("Txt10")
+		view.backgroundColor = .colorNamed("LineMenuContext")
 		
 		return view
 	}
