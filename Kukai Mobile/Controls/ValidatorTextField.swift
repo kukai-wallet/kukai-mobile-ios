@@ -115,7 +115,7 @@ public class ValidatorTextField: UITextField {
 		
 		attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [
 			NSAttributedString.Key.foregroundColor: placeholderColor,
-			NSAttributedString.Key.font: self.font,
+			NSAttributedString.Key.font: self.font ?? UIFont.systemFont(ofSize: 14),
 		])
 	}
 	

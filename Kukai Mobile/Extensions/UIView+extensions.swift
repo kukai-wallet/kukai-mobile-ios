@@ -54,7 +54,6 @@ extension UIView {
 		layer.mask = mask
 	}
 	
-	
 	func parentViewController() -> UIViewController? {
 		var responder: UIResponder? = self
 		while !(responder is UIViewController) {
