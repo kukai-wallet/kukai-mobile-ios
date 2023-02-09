@@ -167,11 +167,10 @@ extension UIView {
 		return addGradientBorder(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("gradExpBorderTop-1").cgColor,
+				UIColor.colorNamed("gradExpBorderTop-2").cgColor,
 			],
-			locations: [0, 0.75, 0.9],
+			locations: [0.04, 0.54],
 			degrees: cssDegreesToIOS(180),
 			lineWidth: 2,
 			corners: [.topLeft, .topRight],
@@ -182,8 +181,8 @@ extension UIView {
 		return addGradientBorder(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("gradExpBorderMiddle-1").cgColor,
+				UIColor.colorNamed("gradExpBorderMiddle-2").cgColor,
 			],
 			locations: [0, 0.9],
 			degrees: cssDegreesToIOS(180),
@@ -196,11 +195,10 @@ extension UIView {
 		return addGradientBorder(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("gradExpBorderBottom-1").cgColor,
+				UIColor.colorNamed("gradExpBorderBottom-2").cgColor,
 			],
-			locations: [0, 0.75, 0.9],
+			locations: [0.54, 0.97],
 			degrees: cssDegreesToIOS(180),
 			lineWidth: 2,
 			corners: [.bottomLeft, .bottomRight],
@@ -211,8 +209,8 @@ extension UIView {
 		return addBackgroundGradient(
 			withFrame: frame,
 			colors: [
-				UIColor.purple.cgColor,
-				UIColor.purple.cgColor,
+				UIColor.colorNamed("gradPanelAttributes-1").cgColor,
+				UIColor.colorNamed("gradPanelAttributes-2").cgColor,
 			],
 			locations: [0, 1],
 			degress: cssDegreesToIOS(180))

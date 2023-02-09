@@ -160,11 +160,11 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		var hashableData: [[AnyHashable]] = [[ControlGroupData()]]
 		
 		if favs.count > 0 {
-			hashableData.append([SpecialGroupData(imageName: "star-fill", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])
+			hashableData.append([SpecialGroupData(imageName: "favourite-on", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])
 		}
 		
 		if recents.count > 0 {
-			hashableData.append([SpecialGroupData(imageName: "collectible-group-recents", title: "Recents", count: 0, isShowcase: false, nfts: [])])
+			hashableData.append([SpecialGroupData(imageName: "timer", title: "Recents", count: 0, isShowcase: false, nfts: [])])
 		}
 		
 		if showcases.count > 0 {
