@@ -38,9 +38,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	
 	var bottomSheetMaxHeight: CGFloat = 475
 	
-	// TODO:
-	// make fee button work
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -59,7 +56,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 			
 		} else {
-			// large disaply
+			// large display
 			smallDisplayStackView.isHidden = true
 			largeDisplayIcon.addTokenIcon(token: token)
 			largeDisplayAmount.text = amountText
@@ -70,7 +67,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		// Destination view configuration
 		if let alias = TransactionService.shared.sendData.destinationAlias {
-			// social dispaly
+			// social display
 			toStackViewRegular.isHidden = true
 			socialAlias.text = alias
 			socialIcon.image = TransactionService.shared.sendData.destinationIcon
