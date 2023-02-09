@@ -105,10 +105,7 @@ public class ValidatorTextField: UITextField {
 			leftViewMode = UITextField.ViewMode.always
 			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: leftImageWidth, height: leftImageHeight))
 			imageView.contentMode = .center
-			
-			var modifiedImage = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight)) ?? UIImage()
-			modifiedImage.withTintColor(clearButtonTint)
-			imageView.image = modifiedImage
+			imageView.image = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight))?.withTintColor(.colorNamed("BGB4"))
 			leftView = imageView
 			didSetupCustomImage = true
 		} else {
