@@ -59,11 +59,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let address = DependencyManager.shared.selectedWalletAddress else {
-			self.state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
-			return
-		}
-		
+		let address = DependencyManager.shared.selectedWalletAddress
 		if DependencyManager.shared.balanceService.exchangeData.count == 0 {
 			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .useCache) { [weak self] error in
 				if let err = error {
