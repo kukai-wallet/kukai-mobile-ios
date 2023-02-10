@@ -94,7 +94,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			mediaActivityView.startAnimating()
 			
 			let attributedString = NSAttributedString(string: "Playing on external device", attributes: [
-				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Grey200"),
+				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"),
 				NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14)
 			])
 			airPlayTextLayer = CATextLayer()

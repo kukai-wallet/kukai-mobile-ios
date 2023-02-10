@@ -28,7 +28,7 @@
                     </view>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fVZ-ec-hFZ">
                         <rect key="frame" x="140" y="148" width="20" height="20"/>
-                        <color key="color" name="Grey200"/>
+                        <color key="color" name="Txt2"/>
                     </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73D-pt-ZBl">
                         <rect key="frame" x="0.0" y="324" width="33" height="33"/>
@@ -36,7 +36,7 @@
                             <constraint firstAttribute="height" constant="33" id="WFo-Ca-M2v"/>
                             <constraint firstAttribute="width" constant="33" id="bVT-hT-OiL"/>
                         </constraints>
-                        <color key="tintColor" name="Brand200"/>
+                        <color key="tintColor" name="BGB4"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
                         <connections>
@@ -45,9 +45,9 @@
                     </button>
                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ug-l3-7rn">
                         <rect key="frame" x="47" y="325.66666666666669" width="206" height="31"/>
-                        <color key="minimumTrackTintColor" name="Brand300"/>
-                        <color key="maximumTrackTintColor" name="Grey1000"/>
-                        <color key="thumbTintColor" name="Grey200"/>
+                        <color key="minimumTrackTintColor" name="BGB4"/>
+                        <color key="maximumTrackTintColor" name="Txt10"/>
+                        <color key="thumbTintColor" name="Txt2"/>
                         <connections>
                             <action selector="scrubberDidChange:" destination="gTV-IL-0wX" eventType="valueChanged" id="qhr-LM-D1i"/>
                         </connections>
@@ -63,18 +63,18 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;startTime&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wPi-Ru-RCn">
                         <rect key="frame" x="49.000000000000007" y="355.66666666666669" width="66.666666666666686" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
-                        <color key="textColor" name="Grey200"/>
+                        <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;endTime&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Trj-n0-yRV">
                         <rect key="frame" x="188.66666666666666" y="355.66666666666669" width="62.333333333333343" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
-                        <color key="textColor" name="Grey200"/>
+                        <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="OML-a1-Yr5">
                         <rect key="frame" x="140" y="330.66666666666669" width="20" height="20"/>
-                        <color key="color" name="Grey200"/>
+                        <color key="color" name="Txt2"/>
                     </activityIndicatorView>
                 </subviews>
             </view>
@@ -118,17 +118,14 @@
     </objects>
     <resources>
         <image name="play.fill" catalog="system" width="117" height="128"/>
-        <namedColor name="Brand200">
-            <color red="0.94900000095367432" green="0.95300000905990601" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BGB4">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Brand300">
-            <color red="0.90600001811981201" green="0.9100000262260437" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Grey1000">
-            <color red="0.52549019607843139" green="0.53333333333333333" blue="0.61568627450980395" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Grey200">
-            <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

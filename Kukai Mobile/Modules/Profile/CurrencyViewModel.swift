@@ -100,11 +100,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-				self.state = .failure(KukaiError.unknown(), "Can't find wallet details")
-				return
-			}
-			
+			let walletAddress = DependencyManager.shared.selectedWalletAddress
 			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { error in
 				if let e = error {
 					self.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")

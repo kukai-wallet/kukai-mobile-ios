@@ -57,7 +57,7 @@ class DebugViewController: UITableViewController {
 		report += "\n\n\nWallet: \n"
 		report += "Selected Wallet index parent: \n" + "\(DependencyManager.shared.selectedWalletIndex.parent)" + " \n\n"
 		report += "Selected Wallet index child: \n" + "\(DependencyManager.shared.selectedWalletIndex.child ?? -1)" + " \n\n"
-		report += "Selected Wallet address: \n" + (DependencyManager.shared.selectedWallet?.address ?? "-None-") + " \n\n"
+		report += "Selected Wallet address: \n" + (DependencyManager.shared.selectedWalletAddress) + " \n\n"
 		report += "Total wallet count: \n" + "\(wallets.count)" + " \n\n"
 		
 		report += "\n\n\nBalances: \n"

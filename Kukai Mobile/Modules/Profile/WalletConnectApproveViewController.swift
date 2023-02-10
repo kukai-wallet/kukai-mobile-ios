@@ -39,7 +39,8 @@ class WalletConnectApproveViewController: UIViewController {
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal, let account = DependencyManager.shared.selectedWallet?.address else {
+		let account = DependencyManager.shared.selectedWalletAddress
+		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			return
 		}
 		

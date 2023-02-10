@@ -10,13 +10,6 @@ import Combine
 
 class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
-	//@IBOutlet weak var controlsStackView: UIStackView!
-	//@IBOutlet weak var searchTextField: ValidatorTextField!
-	//@IBOutlet weak var buttonsStackView: UIStackView!
-	//@IBOutlet weak var filterButton: UIButton!
-	//@IBOutlet weak var sortButton: UIButton!
-	//@IBOutlet weak var moreButton: UIButton!
-	//@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var collectionViewTopConstraint: NSLayoutConstraint!
 	
@@ -26,8 +19,6 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
-		
-		//self.navigationController?.hidesBarsWhenKeyboardAppears = true
 		
 		viewModel.moreMenu = menuForMore()
 		viewModel.validatorTextfieldDelegate = self

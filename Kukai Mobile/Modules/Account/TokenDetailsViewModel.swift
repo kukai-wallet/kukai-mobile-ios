@@ -364,11 +364,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	}
 	
 	func loadActivityData(completion: @escaping ((Result<[TzKTTransactionGroup], KukaiError>) -> Void)) {
-		guard let wallet = DependencyManager.shared.selectedWallet?.address else {
-			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
-			return
-		}
-		
+		let wallet = DependencyManager.shared.selectedWalletAddress
 		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
 			if let err = error {
 				completion(Result.failure(err))

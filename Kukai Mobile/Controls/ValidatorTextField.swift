@@ -105,7 +105,7 @@ public class ValidatorTextField: UITextField {
 			leftViewMode = UITextField.ViewMode.always
 			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: leftImageWidth, height: leftImageHeight))
 			imageView.contentMode = .center
-			imageView.image = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight)) ?? UIImage()
+			imageView.image = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight))?.withTintColor(.colorNamed("BGB4"))
 			leftView = imageView
 			didSetupCustomImage = true
 		} else {
@@ -115,7 +115,7 @@ public class ValidatorTextField: UITextField {
 		
 		attributedPlaceholder = NSAttributedString(string: placeholder ?? "", attributes: [
 			NSAttributedString.Key.foregroundColor: placeholderColor,
-			NSAttributedString.Key.font: self.font,
+			NSAttributedString.Key.font: self.font ?? UIFont.systemFont(ofSize: 14),
 		])
 	}
 	

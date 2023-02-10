@@ -26,20 +26,22 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-right" translatesAutoresizingMaskIntoConstraints="NO" id="zx3-qd-Dv7">
-                        <rect key="frame" x="498" y="22" width="20" height="20"/>
+                        <rect key="frame" x="506" y="23" width="12" height="18"/>
+                        <color key="tintColor" name="BGB4"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="UfK-Zh-7e7"/>
-                            <constraint firstAttribute="height" constant="20" id="p7v-wQ-Tyj"/>
+                            <constraint firstAttribute="width" constant="12" id="UfK-Zh-7e7"/>
+                            <constraint firstAttribute="height" constant="18" id="p7v-wQ-Tyj"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyo-pg-gSi">
-                        <rect key="frame" x="424.33333333333331" y="21.666666666666664" width="65.666666666666686" height="20.666666666666664"/>
+                        <rect key="frame" x="432.33333333333331" y="22" width="65.666666666666686" height="20"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="17"/>
-                        <color key="textColor" name="Brand700"/>
+                        <color key="textColor" name="TxtB4"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="L9Q-gy-qLL">
                         <rect key="frame" x="19" y="19" width="26" height="26"/>
+                        <color key="tintColor" name="BGB4"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="26" id="I5c-6r-6ly"/>
                             <constraint firstAttribute="width" constant="26" id="dXJ-81-tqL"/>
@@ -52,26 +54,26 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="so5-XY-TLc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="376.33333333333331" y="0.0" width="44" height="64"/>
+                        <rect key="frame" x="384.33333333333331" y="0.0" width="44" height="64"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="44" id="pAo-II-yuo"/>
                         </constraints>
-                        <color key="tintColor" name="Brand1100"/>
+                        <color key="tintColor" name="BGB4"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ellipse-circle"/>
+                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-ellipses"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                <real key="value" value="23"/>
+                                <real key="value" value="24"/>
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                <real key="value" value="23"/>
+                                <real key="value" value="24"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeK-AU-ND0">
-                        <rect key="frame" x="59" y="21.666666666666664" width="301.33333333333331" height="20.666666666666664"/>
+                        <rect key="frame" x="59" y="22" width="309.33333333333331" height="20"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="17"/>
-                        <color key="textColor" name="Grey200"/>
+                        <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
@@ -105,20 +107,20 @@
     </objects>
     <designables>
         <designable name="so5-XY-TLc">
-            <size key="intrinsicContentSize" width="23" height="23"/>
+            <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
     </designables>
     <resources>
-        <image name="chevron-right" width="21" height="20"/>
-        <image name="ellipse-circle" width="35" height="35"/>
-        <namedColor name="Brand1100">
-            <color red="0.396078431372549" green="0.42745098039215684" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="chevron-right" width="12" height="18"/>
+        <image name="circle-ellipses" width="36" height="36"/>
+        <namedColor name="BGB4">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Brand700">
-            <color red="0.67100000381469727" green="0.68999999761581421" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Grey200">
-            <color red="0.96470588235294119" green="0.96470588235294119" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="TxtB4">
+            <color red="0.36100000143051147" green="0.39599999785423279" blue="0.94099998474121094" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

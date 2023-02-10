@@ -268,6 +268,7 @@
 		C0FA565427BFB77900AFC9A7 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */; };
 		C0FA565A27BFFBF600AFC9A7 /* CollectiblesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565927BFFBF600AFC9A7 /* CollectiblesViewController.swift */; };
 		C0FA565C27BFFC0A00AFC9A7 /* CollectiblesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FA565B27BFFC0900AFC9A7 /* CollectiblesViewModel.swift */; };
+		C0FAD1D62992992500FB813B /* SendCollectibleConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0FAD1D52992992500FB813B /* SendCollectibleConfirmViewController.swift */; };
 		C0FBC883292BCEEF00B29921 /* Figtree-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC880292BCEEF00B29921 /* Figtree-Bold.ttf */; };
 		C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */; };
 		C0FBC885292BCEEF00B29921 /* Figtree-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */; };
@@ -588,6 +589,7 @@
 		C0FA565327BFB77900AFC9A7 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		C0FA565927BFFBF600AFC9A7 /* CollectiblesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesViewController.swift; sourceTree = "<group>"; };
 		C0FA565B27BFFC0900AFC9A7 /* CollectiblesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesViewModel.swift; sourceTree = "<group>"; };
+		C0FAD1D52992992500FB813B /* SendCollectibleConfirmViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleConfirmViewController.swift; sourceTree = "<group>"; };
 		C0FBC880292BCEEF00B29921 /* Figtree-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Bold.ttf"; sourceTree = "<group>"; };
 		C0FBC881292BCEEF00B29921 /* Figtree-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Medium.ttf"; sourceTree = "<group>"; };
 		C0FBC882292BCEEF00B29921 /* Figtree-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-Regular.ttf"; sourceTree = "<group>"; };
@@ -1061,6 +1063,7 @@
 		C0B08A29270DBF6500075618 /* Send */ = {
 			isa = PBXGroup;
 			children = (
+				C0FAD1D3299298D000FB813B /* Old */,
 				C07FC40727C538810056FA47 /* Cells */,
 				C0503665271ED8FD00E7A664 /* Send.storyboard */,
 				C09860A927C3C24E00F888AF /* SendToViewController.swift */,
@@ -1068,9 +1071,7 @@
 				C09860AD27C3C26B00F888AF /* SendTokenAmountViewController.swift */,
 				C0E2317C29897BB5007BC79D /* SendTokenConfirmViewController.swift */,
 				C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */,
-				C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */,
-				C09860B127C3C29A00F888AF /* SendApproveViewController.swift */,
-				C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */,
+				C0FAD1D52992992500FB813B /* SendCollectibleConfirmViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -1174,6 +1175,16 @@
 				C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */,
 			);
 			path = Stake;
+			sourceTree = "<group>";
+		};
+		C0FAD1D3299298D000FB813B /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */,
+				C09860B127C3C29A00F888AF /* SendApproveViewController.swift */,
+				C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */,
+			);
+			path = Old;
 			sourceTree = "<group>";
 		};
 		C0FBC886292BE0ED00B29921 /* Account */ = {
@@ -1528,6 +1539,7 @@
 				C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */,
 				C04E2862293F94A800DC4171 /* TokenDetailsButtonsCell.swift in Sources */,
 				C0E4EF3E294105E3007C69CA /* TokenDetailsMessageCell.swift in Sources */,
+				C0FAD1D62992992500FB813B /* SendCollectibleConfirmViewController.swift in Sources */,
 				C05D4E0A287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift in Sources */,
 				C0EA19CA29096DD200E6B40D /* CollectibleDetailNameCell.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,

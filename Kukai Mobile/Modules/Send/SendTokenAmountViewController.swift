@@ -62,7 +62,6 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 		
 		// Token data
 		balanceLabel.text = token.balance.normalisedRepresentation
-		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
 		symbolLabel.text = token.symbol
 		fiatValueLabel?.text = " "
 		feeValueLabel?.text = "0 tez"
@@ -152,7 +151,7 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func textFieldDidEndEditing(_ textField: UITextField) {
-		//estimateFee()
+		
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {

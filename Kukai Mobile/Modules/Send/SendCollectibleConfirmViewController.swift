@@ -1,26 +1,20 @@
 //
-//  SendTokenConfirmViewController.swift
+//  SendCollectibleConfirmViewController.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 31/01/2023.
+//  Created by Simon Mcloughlin on 07/02/2023.
 //
 
 import UIKit
 import KukaiCoreSwift
 import OSLog
 
-class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol, EditFeesViewControllerDelegate {
+class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
-	@IBOutlet weak var largeDisplayStackView: UIStackView!
-	@IBOutlet weak var largeDisplayIcon: UIImageView!
-	@IBOutlet weak var largeDisplayAmount: UILabel!
-	@IBOutlet weak var largeDisplaySymbol: UILabel!
-	@IBOutlet weak var largeDisplayFiat: UILabel!
-	
-	@IBOutlet weak var smallDisplayStackView: UIStackView!
-	@IBOutlet weak var smallDisplayIcon: UIImageView!
-	@IBOutlet weak var smallDisplayAmount: UILabel!
-	@IBOutlet weak var smallDisplayFiat: UILabel!
+	@IBOutlet weak var collectibleImage: UIImageView!
+	@IBOutlet weak var collectibleNameLabel: UILabel!
+	@IBOutlet weak var quantityStackView: UIStackView!
+	@IBOutlet weak var collectibleQuantityLabel: UILabel!
 	
 	@IBOutlet weak var toStackViewSocial: UIStackView!
 	@IBOutlet weak var socialIcon: UIImageView!
@@ -36,33 +30,29 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	
-	var bottomSheetMaxHeight: CGFloat = 475
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
+		guard let token = TransactionService.shared.sendData.chosenNFT, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return
 		}
 		
-		// Amount view configuration
-		let amountText = amount.normalisedRepresentation
-		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
-			// small display
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-			
+		
+		// Token data
+		collectibleNameLabel.text = token.name
+		let quantityString = amount.normalisedRepresentation
+		if quantityString == "1" {
+			quantityStackView.isHidden = true
 		} else {
-			// large display
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			quantityStackView.isHidden = false
+			collectibleQuantityLabel.text = quantityString
 		}
+		
+		feeValueLabel?.text = "0 tez"
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: collectibleImage.frame.size)
+		
 		
 		
 		// Destination view configuration
@@ -96,7 +86,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		errorLabel.isHidden = true
 		
 		slideButton.delegate = self
-	}
+    }
 	
 	func didCompleteSlide() {
 		guard let wallet = DependencyManager.shared.selectedWallet else {

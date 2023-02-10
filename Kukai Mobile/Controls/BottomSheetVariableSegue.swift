@@ -26,12 +26,23 @@ public class BottomSheetCustomSegue: UIStoryboardSegue {
 			dest.detents = [customDetent]
 			
 		} else {
-			dest.detents = [.large()]
+			let customId = UISheetPresentationController.Detent.Identifier("large-minus-background-effect")
+			let customDetent = UISheetPresentationController.Detent.custom(identifier: customId) { context in
+				return context.maximumDetentValue - 0.1
+			}
+			dest.detents = [customDetent]
 		}
 		
 		dest.prefersGrabberVisible = true
 		dest.preferredCornerRadius = 30
 		
 		source.present(destination, animated: true)
+		
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+			UIView.animate(withDuration: 0.3, delay: 0) {
+				dest.containerView?.backgroundColor = UIColor("#000000", alpha: 0.75)
+			}
+		})
 	}
 }

@@ -25,7 +25,8 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let selectedPosition = TransactionService.shared.liquidityDetails.selectedPosition, let address = DependencyManager.shared.selectedWallet?.address else {
+		let address = DependencyManager.shared.selectedWalletAddress
+		guard let selectedPosition = TransactionService.shared.liquidityDetails.selectedPosition else {
 			self.state = .failure(KukaiError.unknown(withString: "Can't find wallet"), "Can't find wallet")
 			return
 		}
