@@ -58,7 +58,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		let selectedAddress = DependencyManager.shared.selectedWallet?.address
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress
 		
 		let wallets = DependencyManager.shared.walletList
 		var snapshot = NSDiffableDataSourceSnapshot<Int, WalletData>()

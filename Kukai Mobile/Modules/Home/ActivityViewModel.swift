@@ -55,7 +55,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self, let walletAddress = DependencyManager.shared.selectedWallet?.address else { return UITableViewCell() }
+			let walletAddress = DependencyManager.shared.selectedWalletAddress
+			guard let self = self else { return UITableViewCell() }
 			
 			if let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
 				
@@ -146,12 +147,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		guard let walletAddress = DependencyManager.shared.selectedWallet?.address else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find wallet")
-			return
-		}
-		
-		
+		let walletAddress = DependencyManager.shared.selectedWalletAddress
 		if !forceRefresh, currentSnapshot.numberOfItems == 0, let cachedGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityViewModel.cachedFileName) {
 			self.groups = cachedGroups
 			self.loadGroups()
