@@ -68,7 +68,7 @@ class WalletConnectViewController: UIViewController {
 	
 	
 	// MARK: - Wallet Connect
-	
+	/*
 	@MainActor
 	private func pairClient(uri: String) {
 		os_log("WC pairing to %@", log: .default, type: .info, uri)
@@ -80,9 +80,9 @@ class WalletConnectViewController: UIViewController {
 			}
 		}
 	}
-	
+	*/
 	public func setupWCCallbacks() {
-		Sign.instance.sessionProposalPublisher
+		/*Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
 				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
@@ -103,6 +103,7 @@ class WalletConnectViewController: UIViewController {
 				os_log("WC sessionDeletePublisher %@", log: .default, type: .info)
 				self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
+		*/
 	}
 }
 
@@ -111,6 +112,6 @@ extension WalletConnectViewController: ScanViewControllerDelegate {
 	func scannedQRCode(code: String) {
 		if code == "" { return }
 		
-		pairClient(uri: code)
+		//pairClient(uri: code)
 	}
 }

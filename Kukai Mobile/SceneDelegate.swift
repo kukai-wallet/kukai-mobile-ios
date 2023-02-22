@@ -7,8 +7,7 @@
 
 import UIKit
 import CustomAuth
-import WalletConnectSign
-import WalletConnectRelay
+import WalletConnectPairing
 import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -24,8 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let _ = (scene as? UIWindowScene) else { return }
 		
-		//let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"])
-		//Sign.configure(metadata: metadata, projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
+		
+		if let userActivity = connectionOptions.userActivities.first {
+			os_log("Handling user activity", log: .default, type: .info)
+			handle(userActivity: userActivity)
+		}
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -35,15 +37,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
-		BeaconService.shared.resumeBeacon { success in
+		/*BeaconService.shared.resumeBeacon { success in
 			
 			// Ignore nil response on initial app startup, until beacon has actully been started by the hometabcontroller
 			if success == true || success == false {
 				os_log("Beacon resumed: %@", log: .default, type: .info, "\(success ?? false)")
 			}
-		}
-		
-		//try? Sign.instance.connect()
+		}*/
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
@@ -59,9 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		showPrivacyProtectionWindow()
 		
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-		BeaconService.shared.pauseBeacon(completion: nil)
-		
-		//try? Sign.instance.disconnect(closeCode: .normalClosure)
+		//BeaconService.shared.pauseBeacon(completion: nil)
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -96,6 +94,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			
 		} completion: { [weak self] finish in
 			self?.privacyProtectionWindow = nil
+		}
+	}
+	
+	private func handle(userActivity: NSUserActivity) {
+		guard let url = userActivity.webpageURL, userActivity.activityType == NSUserActivityTypeBrowsingWeb else { return }
+		
+		os_log("Attempting to handle Wallet Connect pairing", log: .default, type: .info)
+		let wcUri = url.absoluteString.deletingPrefix("https://walletconnect.com/wc?uri=")
+		Task(priority: .high) {
+			try! await Pair.instance.pair(uri: WalletConnectURI(string: wcUri)!)
 		}
 	}
 }

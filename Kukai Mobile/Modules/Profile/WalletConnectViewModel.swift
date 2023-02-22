@@ -84,7 +84,7 @@ extension WalletConnectViewModel: WalletConnectCellProtocol {
 	
 	@MainActor
 	func deleteTapped(forRow: Int) {
-		self.state = .loading
+		/*self.state = .loading
 		
 		let item = sessions[forRow]
 		Task {
@@ -98,6 +98,6 @@ extension WalletConnectViewModel: WalletConnectCellProtocol {
 					self?.state = .failure(KukaiError.internalApplicationError(error: error), "Error occurred deleting session")
 				}
 			}
-		}
+		}*/
 	}
 }

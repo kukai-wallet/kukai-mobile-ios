@@ -100,8 +100,11 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		previewLayer.frame = view.layer.bounds
 		previewLayer.videoGravity = .resizeAspectFill
 		view.layer.addSublayer(previewLayer)
-
-		captureSession.startRunning()
+		
+		// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			self?.captureSession.startRunning()
+		}
 		
 		view.setNeedsLayout()
 	}

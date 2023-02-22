@@ -6,39 +6,64 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class WalletConnectApproveViewController: UIViewController {
+class WalletConnectApproveViewController: UIViewController, BottomSheetCustomProtocol {
 	
-	@IBOutlet weak var nameLbl: UILabel!
-	@IBOutlet weak var methodsLbl: UILabel!
-	@IBOutlet weak var eventsLbl: UILabel!
+	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet weak var accountLabel: UILabel!
+	@IBOutlet weak var accountButton: UIButton!
+	@IBOutlet weak var accountButtonContainer: UIView!
+	@IBOutlet weak var rejectButton: UIButton!
+	@IBOutlet weak var connectButton: UIButton!
+	
+	private var rejectGradient = CAGradientLayer()
+	private var connectGradient = CAGradientLayer()
+	
+	var bottomSheetMaxHeight: CGFloat = 450
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
-		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal, let methods = proposal.requiredNamespaces["tezos"]?.methods, let events = proposal.requiredNamespaces["tezos"]?.events else {
+		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			return
 		}
 		
-		var methodString = ""
-		methods.forEach { str in
-			methodString += "\(str)\n"
+		if let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
+			MediaProxyService.load(url: iconUrl, to: self.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.iconView.frame.size)
 		}
+		self.nameLabel.text = proposal.proposer.name
 		
-		var eventString = ""
-		events.forEach { str in
-			eventString += "\(str)\n"
+		
+		if DependencyManager.shared.walletList.count == 1 {
+			accountLabel.text = DependencyManager.shared.selectedWalletAddress.truncateTezosAddress()
+			accountButtonContainer.isHidden = true
+		} else {
+			accountLabel.isHidden = true
+			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress.truncateTezosAddress(), for: .normal)
 		}
-		
-		self.nameLbl.text = proposal.proposer.name
-		self.methodsLbl.text = methodString
-		self.eventsLbl.text = eventString
 		
 	}
 	
-	@IBAction func approveTapped(_ sender: Any) {
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		rejectGradient.removeFromSuperlayer()
+		//rejectGradient = rejectButton.add
+		
+		connectGradient.removeFromSuperlayer()
+		connectGradient = connectButton.addGradientButtonPrimary(withFrame: connectButton.bounds)
+	}
+	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.dismissBottomSheet()
+	}
+	
+	@IBAction func connectTapped(_ sender: Any) {
 		let account = DependencyManager.shared.selectedWalletAddress
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			return
@@ -46,17 +71,16 @@ class WalletConnectApproveViewController: UIViewController {
 		
 		self.showLoadingModal()
 		var sessionNamespaces = [String: SessionNamespace]()
+		
 		proposal.requiredNamespaces.forEach {
 			let caip2Namespace = $0.key
 			let proposalNamespace = $0.value
-			let accounts = Set(proposalNamespace.chains.compactMap { Account($0.absoluteString + ":\(account)") })
 			
-			let extensions: [SessionNamespace.Extension]? = proposalNamespace.extensions?.map { element in
-				let accounts = Set(element.chains.compactMap { Account($0.absoluteString + ":\(account)") })
-				return SessionNamespace.Extension(accounts: accounts, methods: element.methods, events: element.events)
+			if let chains = proposalNamespace.chains {
+				let accounts = Set(chains.compactMap { Account($0.absoluteString + ":\(account)") })
+				let sessionNamespace = SessionNamespace(accounts: accounts, methods: proposalNamespace.methods, events: proposalNamespace.events)
+				sessionNamespaces[caip2Namespace] = sessionNamespace
 			}
-			let sessionNamespace = SessionNamespace(accounts: accounts, methods: proposalNamespace.methods, events: proposalNamespace.events, extensions: extensions)
-			sessionNamespaces[caip2Namespace] = sessionNamespace
 		}
 		
 		approve(proposalId: proposal.id, namespaces: sessionNamespaces)
@@ -88,7 +112,7 @@ class WalletConnectApproveViewController: UIViewController {
 		}
 		
 		self.showLoadingModal()
-		reject(proposalId: proposal.id, reason: .disapprovedChains)
+		reject(proposalId: proposal.id, reason: .userRejected)
 	}
 	
 	@MainActor
