@@ -20,13 +20,15 @@ class BeaconSignViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		/*
 		if let string = TransactionService.shared.beaconSignData.humanReadableString {
 			payloadLabel.text = string
 		}
+		*/
 	}
 	
 	@IBAction func signTapped(_ sender: Any) {
-		guard let wallet = DependencyManager.shared.selectedWallet, let request = TransactionService.shared.beaconSignData.request else {
+		/*guard let wallet = DependencyManager.shared.selectedWallet, let request = TransactionService.shared.beaconSignData.request else {
 			self.alert(errorWithMessage: "Can't find wallet")
 			return
 		}
@@ -50,10 +52,11 @@ class BeaconSignViewController: UIViewController {
 			
 			self?.continueWith(request: request, signature: signature.toHexString())
 		}
+		 */
 	}
 	
 	private func continueWith(request: SignPayloadTezosRequest, signature: String) {
-		BeaconService.shared.signPayloadRequest(request: request, signature: signature) { [weak self] result in
+		/*BeaconService.shared.signPayloadRequest(request: request, signature: signature) { [weak self] result in
 			switch result {
 				case .success(()):
 					self?.presentingViewController?.dismiss(animated: true)
@@ -61,11 +64,11 @@ class BeaconSignViewController: UIViewController {
 				case .failure(let error):
 					self?.alert(errorWithMessage: "Error: \(error)")
 			}
-		}
+		}*/
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		guard let request = TransactionService.shared.beaconSignData.request else {
+		/*guard let request = TransactionService.shared.beaconSignData.request else {
 			self.alert(errorWithMessage: "Can't find beacon operation data")
 			return
 		}
@@ -85,6 +88,6 @@ class BeaconSignViewController: UIViewController {
 						self?.alert(errorWithMessage: "Error: \(error)")
 					})
 			}
-		}
+		}*/
 	}
 }

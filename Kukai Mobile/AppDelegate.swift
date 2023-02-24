@@ -7,6 +7,8 @@
 
 import UIKit
 import Sentry
+import WalletConnectNetworking
+import WalletConnectPairing
 import os.log
 
 @main
@@ -33,7 +35,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 			os_log(.error, log: .default, "Sentry throw an error: %@", "\(error)")
 		}
 		
+		// Airplay audio/video support
 		application.beginReceivingRemoteControlEvents()
+		
+		
+		// Wallet connect
+		Networking.configure(projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
+		let metadata = AppMetadata(name: "Kukai iOS",
+								   description: "Kukai iOS",
+								   url: "https://wallet.kukai.app",
+								   icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
+								   redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
+		Pair.configure(metadata: metadata)
 		
 		return true
 	}

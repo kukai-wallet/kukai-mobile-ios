@@ -17,14 +17,16 @@ class BeaconApproveViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		/*
 		if let request = TransactionService.shared.beaconApproveData.request {
 			nameLabel.text = request.appMetadata.name
 			networkLabel.text = request.network.type.rawValue
 		}
+		*/
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let wallet = DependencyManager.shared.selectedWallet, let request = TransactionService.shared.beaconApproveData.request else {
+		/*guard let wallet = DependencyManager.shared.selectedWallet, let request = TransactionService.shared.beaconApproveData.request else {
 			self.alert(errorWithMessage: "Can't find wallet")
 			return
 		}
@@ -38,11 +40,11 @@ class BeaconApproveViewController: UIViewController {
 				case .failure(let error):
 					self?.alert(errorWithMessage: "Error: \(error)")
 			}
-		}
+		}*/
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		guard let request = TransactionService.shared.beaconApproveData.request else {
+		/*guard let request = TransactionService.shared.beaconApproveData.request else {
 			self.alert(errorWithMessage: "Can't find beacon object details")
 			return
 		}
@@ -60,6 +62,6 @@ class BeaconApproveViewController: UIViewController {
 						self?.alert(errorWithMessage: "Error: \(error)")
 					})
 			}
-		}
+		}*/
 	}
 }

@@ -34,7 +34,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		nameLabel.text = "..."
 		networkLabel.text = data.request?.chainId.absoluteString ?? "..."
 		addressLabel.text = data.requestParams?.account
-		entrypoint.text = data.entrypointToCall ?? "..."
+		//entrypoint.text = data.entrypointToCall ?? "..."
 		gasLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.gasLimit)"
 		storageLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.storageLimit)"
 		transactionCost.text = (TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation) + " tez"
@@ -52,11 +52,9 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		}
 		
 		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
-		let response = JSONRPCResponse<AnyCodable>(id: request.id, result: AnyCodable(opHash))
-		
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, response: .response(response))
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -83,7 +81,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, response: .error(JSONRPCErrorResponse(id: request.id, error: JSONRPCErrorResponse.Error(code: 0, message: ""))))
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})

@@ -113,19 +113,19 @@ extension BeaconViewController: ScanViewControllerDelegate {
 extension BeaconViewController: BeaconServiceConnectionDelegate {
 	
 	func permissionRequest(requestingAppName: String, permissionRequest: PermissionTezosRequest) {
-		TransactionService.shared.currentTransactionType = .beaconApprove
+		/*TransactionService.shared.currentTransactionType = .beaconApprove
 		TransactionService.shared.beaconApproveData.request = permissionRequest
 		
 		self.hideLoadingModal {
 			self.performSegue(withIdentifier: "beaconApprove", sender: self)
-		}
+		}*/
 	}
 	
 	func signPayload(requestingAppName: String, humanReadableString: String, payloadRequest: SignPayloadTezosRequest) {
-		TransactionService.shared.currentTransactionType = .beaconSign
+		/*TransactionService.shared.currentTransactionType = .beaconSign
 		TransactionService.shared.beaconSignData.request = payloadRequest
 		TransactionService.shared.beaconSignData.humanReadableString = humanReadableString
 		
-		self.performSegue(withIdentifier: "beaconSign", sender: self)
+		self.performSegue(withIdentifier: "beaconSign", sender: self)*/
 	}
 }

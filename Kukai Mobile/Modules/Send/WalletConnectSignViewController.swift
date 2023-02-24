@@ -44,11 +44,9 @@ class WalletConnectSignViewController: UIViewController {
 		}
 		
 		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
-		let response = JSONRPCResponse<AnyCodable>(id: request.id, result: AnyCodable(signature))
-		
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, response: .response(response))
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: signature)))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -75,7 +73,7 @@ class WalletConnectSignViewController: UIViewController {
 		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, response: .error(JSONRPCErrorResponse(id: request.id, error: JSONRPCErrorResponse.Error(code: 0, message: ""))))
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -90,7 +88,7 @@ class WalletConnectSignViewController: UIViewController {
 	}
 	
 	@IBAction func signTapped(_ sender: Any) {
-		/*guard let wallet = WalletCacheService().fetchWallet(address: accountToSign) else {
+		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
 			self.alert(errorWithMessage: "Can't find requested wallet: \(accountToSign)")
 			return
 		}
@@ -114,7 +112,7 @@ class WalletConnectSignViewController: UIViewController {
 			}
 			
 			self?.respondOnSign(signature: signature.toHexString())
-		}*/
+		}
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {

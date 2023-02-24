@@ -28,6 +28,7 @@ class BeaconOperationApproveViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		/*
 		let data = TransactionService.shared.beaconOperationData
 		
 		nameLabel.text = data.beaconRequest?.appMetadata?.name ?? "..."
@@ -38,10 +39,11 @@ class BeaconOperationApproveViewController: UIViewController {
 		storageLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.storageLimit)"
 		transactionCost.text = (TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation) + " tez"
 		maxStorageCost.text = (TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation) + " tez"
+		*/
 	}
 	
 	@IBAction func approveTapped(_ sender: Any) {
-		guard let wallet = WalletCacheService().fetchWallet(forAddress: TransactionService.shared.beaconOperationData.beaconRequest?.sourceAddress ?? ""),
+		/*guard let wallet = WalletCacheService().fetchWallet(forAddress: TransactionService.shared.beaconOperationData.beaconRequest?.sourceAddress ?? ""),
 			  let beaconRequest = TransactionService.shared.beaconOperationData.beaconRequest else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
@@ -77,11 +79,11 @@ class BeaconOperationApproveViewController: UIViewController {
 						})
 				}
 			}
-		}
+		}*/
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		guard let beaconRequest = TransactionService.shared.beaconOperationData.beaconRequest else {
+		/*guard let beaconRequest = TransactionService.shared.beaconOperationData.beaconRequest else {
 			self.alert(errorWithMessage: "Either can't find beacon operations, or selected wallet")
 			return
 		}
@@ -99,6 +101,6 @@ class BeaconOperationApproveViewController: UIViewController {
 				case .failure(let error):
 					self?.alert(errorWithMessage: "\(error)")
 			}
-		}
+		}*/
 	}
 }

@@ -20,6 +20,7 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	init(withURL url: URL) {
 		self.socket = URLSession.shared.webSocketTask(with: url)
 		self.isConnected = false
+		self.request = URLRequest(url: url)
 		super.init()
 		
 		self.socket?.delegate = self
@@ -36,6 +37,8 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	public var onDisconnect: ((Error?) -> Void)?
 	
 	public var onText: ((String) -> Void)?
+	
+	public var request: URLRequest
 	
 	public func connect() {
 		socket?.resume()

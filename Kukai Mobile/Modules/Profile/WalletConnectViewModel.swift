@@ -50,7 +50,6 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		
 		// Get data
 		self.sessions = Sign.instance.getSessions().map { session -> SessionObj in
 			return SessionObj(name: session.peer.name, url: session.peer.url, topic: session.topic)
@@ -89,13 +88,13 @@ extension WalletConnectViewModel: WalletConnectCellProtocol {
 		let item = sessions[forRow]
 		Task {
 			do {
-				try await Sign.instance.disconnect(topic: item.topic, reason: Reason(code: 0, message: "disconnect"))
+				try await Sign.instance.disconnect(topic: item.topic)
 				DispatchQueue.main.async { [weak self] in
 					self?.refresh(animate: true)
 				}
 			} catch {
 				DispatchQueue.main.async { [weak self] in
-					self?.state = .failure(KukaiError.internalApplicationError(error: error), "Error occurred deleting session")
+					self?.state = .failure(KukaiError.internalApplicationError(error: error), "\(error)")
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="GSw-5d-eoR">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -769,27 +769,8 @@ Mainly used by developers to experiment / test. Or members of the public when te
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lmg-qZ-Bkx">
-                                <rect key="frame" x="24" y="810" width="366" height="44"/>
-                                <color key="backgroundColor" name="primary-button-background"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="73i-Ym-UVN"/>
-                                </constraints>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" title="Delete All">
-                                    <color key="titleColor" name="primary-button-text"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="8"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="deleteAllTapped:" destination="RHc-rd-Gy9" eventType="touchUpInside" id="qDF-VI-Hu8"/>
-                                </connections>
-                            </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="oOX-ff-ICz">
-                                <rect key="frame" x="0.0" y="92" width="414" height="710"/>
+                                <rect key="frame" x="0.0" y="92" width="414" height="770"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WalletConnectCell" rowHeight="75" id="4T3-ED-dsR" customClass="WalletConnectCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -805,10 +786,10 @@ Mainly used by developers to experiment / test. Or members of the public when te
                                                         <constraint firstAttribute="height" constant="44" id="MjS-89-2zd"/>
                                                         <constraint firstAttribute="width" constant="44" id="fkE-5p-5FI"/>
                                                     </constraints>
-                                                    <color key="tintColor" name="text-primary"/>
+                                                    <color key="tintColor" name="Txt2"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <state key="normal" image="xmark" catalog="system">
-                                                        <color key="titleColor" name="text-primary"/>
+                                                        <color key="titleColor" name="Txt2"/>
                                                     </state>
                                                     <connections>
                                                         <action selector="deleteTapped:" destination="4T3-ED-dsR" eventType="touchUpInside" id="9L0-Ju-fcj"/>
@@ -852,30 +833,14 @@ Mainly used by developers to experiment / test. Or members of the public when te
                         <viewLayoutGuide key="safeArea" id="1b0-CD-KNE"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="1b0-CD-KNE" firstAttribute="trailing" secondItem="lmg-qZ-Bkx" secondAttribute="trailing" constant="24" id="L06-0e-Ecb"/>
+                            <constraint firstItem="1b0-CD-KNE" firstAttribute="bottom" secondItem="oOX-ff-ICz" secondAttribute="bottom" id="3LL-gJ-BQY"/>
                             <constraint firstItem="oOX-ff-ICz" firstAttribute="leading" secondItem="1b0-CD-KNE" secondAttribute="leading" id="Q45-cg-lwM"/>
-                            <constraint firstItem="lmg-qZ-Bkx" firstAttribute="top" secondItem="oOX-ff-ICz" secondAttribute="bottom" constant="8" id="Z3F-3Y-iUE"/>
                             <constraint firstItem="oOX-ff-ICz" firstAttribute="top" secondItem="1b0-CD-KNE" secondAttribute="top" id="arQ-dY-aid"/>
-                            <constraint firstItem="1b0-CD-KNE" firstAttribute="bottom" secondItem="lmg-qZ-Bkx" secondAttribute="bottom" constant="8" id="hbg-fr-RXk"/>
                             <constraint firstItem="oOX-ff-ICz" firstAttribute="trailing" secondItem="1b0-CD-KNE" secondAttribute="trailing" id="wPq-sF-zCg"/>
-                            <constraint firstItem="lmg-qZ-Bkx" firstAttribute="leading" secondItem="1b0-CD-KNE" secondAttribute="leading" constant="24" id="ziq-Xc-z2A"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Wallet Connect" id="fKv-3T-zWp">
-                        <barButtonItem key="rightBarButtonItem" id="WsJ-DG-Hyo">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="CuO-5D-kc5">
-                                <rect key="frame" x="364" y="7" width="30" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                <state key="normal" image="plus" catalog="system"/>
-                                <connections>
-                                    <action selector="plusTapped:" destination="RHc-rd-Gy9" eventType="touchUpInside" id="aaa-14-hId"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Wallet Connect" id="fKv-3T-zWp"/>
                     <connections>
-                        <outlet property="deleteAllButton" destination="lmg-qZ-Bkx" id="VYW-Uc-TFw"/>
                         <outlet property="tableView" destination="oOX-ff-ICz" id="wI8-gY-cFE"/>
                         <segue destination="XLF-Ma-14E" kind="custom" identifier="approve" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" id="eof-QQ-OFC"/>
                     </connections>
@@ -892,10 +857,13 @@ Mainly used by developers to experiment / test. Or members of the public when te
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BG12">
-            <color red="0.41176470590000003" green="0.41568627450000001" blue="0.50196078430000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt0">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="primary-button-background">
             <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
