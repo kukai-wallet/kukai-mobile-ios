@@ -91,7 +91,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 			do {
 				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces)
 				self.hideLoadingModal(completion: { [weak self] in
-					((self?.presentingViewController as? UINavigationController)?.viewControllers.last as? WalletConnectViewController)?.sessionAdded()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				

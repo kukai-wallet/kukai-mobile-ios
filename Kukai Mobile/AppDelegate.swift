@@ -48,9 +48,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 								   redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
 		Pair.configure(metadata: metadata)
 		
-		
-		//try? Pair.instance.cleanup()
-		
 		return true
 	}
 	
