@@ -21,7 +21,7 @@ struct WalletConnectRequestParams: Codable {
 		
 		for dict in operations {
 			
-			// Extract Beacon Operation JSON as Data
+			// Extract Wallet Connect Operation JSON as Data
 			guard let opJson = try? JSONEncoder().encode(dict), let kind = dict["kind"] else {
 				continue
 			}

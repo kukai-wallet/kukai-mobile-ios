@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		Pair.configure(metadata: metadata)
 		
 		
-		try? Pair.instance.cleanup()
+		//try? Pair.instance.cleanup()
 		
 		return true
 	}

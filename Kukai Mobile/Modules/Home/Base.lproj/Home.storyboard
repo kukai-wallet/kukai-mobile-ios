@@ -93,7 +93,9 @@
                         <segue destination="oFv-JK-bav" kind="relationship" relationship="viewControllers" id="x8x-6C-f4b"/>
                         <segue destination="uaA-v4-Akd" kind="relationship" relationship="viewControllers" id="zlz-AY-6kb"/>
                         <segue destination="T8s-a1-hfd" kind="relationship" relationship="viewControllers" id="nnL-5U-OWA"/>
-                        <segue destination="CEA-Fb-Cw7" kind="custom" identifier="wallet-connect-connect" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="cc6-vy-YqU"/>
+                        <segue destination="CEA-Fb-Cw7" kind="custom" identifier="wallet-connect-pair" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="cc6-vy-YqU"/>
+                        <segue destination="0cZ-a4-Orp" kind="custom" identifier="wallet-connect-send-token" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="1ej-Gz-DCj"/>
+                        <segue destination="ROo-sk-Fdh" kind="custom" identifier="wallet-connect-send-nft" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="isl-Kv-SQN"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -329,7 +331,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U09-pO-QAf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-168" y="-2690"/>
+            <point key="canvasLocation" x="-173" y="-2709"/>
         </scene>
         <!--Account-->
         <scene sceneID="74F-YN-StF">
@@ -649,7 +651,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tm4-sM-m3n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-159" y="-2800"/>
+            <point key="canvasLocation" x="-165" y="-2988"/>
         </scene>
         <!--Add Wallet View Controller-->
         <scene sceneID="a8z-Fh-p82">
@@ -950,15 +952,35 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOT-Rd-hYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-168" y="-2620"/>
+            <point key="canvasLocation" x="-168" y="-2947"/>
         </scene>
-        <!--wallet-connect-connect-->
+        <!--wallet-connect-pair-->
         <scene sceneID="byn-vW-3cp">
             <objects>
-                <viewControllerPlaceholder storyboardName="ConnectedApps" referencedIdentifier="wallet-connect-connect" id="CEA-Fb-Cw7" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="ConnectedApps" referencedIdentifier="wallet-connect-pair" id="CEA-Fb-Cw7" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QnG-MF-pKd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2055" y="-2059"/>
+            <point key="canvasLocation" x="-102" y="-2653"/>
+        </scene>
+        <!--confirm-token-->
+        <scene sceneID="YOA-u3-CLF">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" referencedIdentifier="confirm-token" id="0cZ-a4-Orp" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="ktt-IU-zMf"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YTq-CW-GDq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-130" y="-2606"/>
+        </scene>
+        <!--confirm-nft-->
+        <scene sceneID="PqD-Ne-PVV">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" referencedIdentifier="confirm-nft" id="ROo-sk-Fdh" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="2NC-1I-snR"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9k3-NS-wNe" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-142" y="-2557"/>
         </scene>
     </scenes>
     <resources>

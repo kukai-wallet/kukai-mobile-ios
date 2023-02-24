@@ -1,5 +1,5 @@
 //
-//  WalletConnectApproveViewController.swift
+//  WalletConnectPairViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 11/07/2022.
@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class WalletConnectApproveViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtocol {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
@@ -20,7 +20,6 @@ class WalletConnectApproveViewController: UIViewController, BottomSheetCustomPro
 	@IBOutlet weak var rejectButton: UIButton!
 	@IBOutlet weak var connectButton: UIButton!
 	
-	private var rejectGradient = CAGradientLayer()
 	private var connectGradient = CAGradientLayer()
 	
 	var bottomSheetMaxHeight: CGFloat = 450
@@ -46,14 +45,10 @@ class WalletConnectApproveViewController: UIViewController, BottomSheetCustomPro
 			accountLabel.isHidden = true
 			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress.truncateTezosAddress(), for: .normal)
 		}
-		
 	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		
-		rejectGradient.removeFromSuperlayer()
-		//rejectGradient = rejectButton.add
 		
 		connectGradient.removeFromSuperlayer()
 		connectGradient = connectButton.addGradientButtonPrimary(withFrame: connectButton.bounds)
@@ -72,13 +67,16 @@ class WalletConnectApproveViewController: UIViewController, BottomSheetCustomPro
 		self.showLoadingModal()
 		var sessionNamespaces = [String: SessionNamespace]()
 		
+		let supportedMethods = ["tezos_send", "tezos_sign"]
+		let supportedEvents: [String] = []
+		
 		proposal.requiredNamespaces.forEach {
 			let caip2Namespace = $0.key
 			let proposalNamespace = $0.value
 			
 			if let chains = proposalNamespace.chains {
-				let accounts = Set(chains.compactMap { Account($0.absoluteString + ":\(account)") })
-				let sessionNamespace = SessionNamespace(accounts: accounts, methods: proposalNamespace.methods, events: proposalNamespace.events)
+				let accounts = Set(chains.compactMap { Account("\($0.absoluteString):\(account)") })
+				let sessionNamespace = SessionNamespace(accounts: accounts, methods: proposalNamespace.methods.filter({ supportedMethods.contains([$0]) }), events: proposalNamespace.events.filter({ supportedEvents.contains([$0]) }))
 				sessionNamespaces[caip2Namespace] = sessionNamespace
 			}
 		}

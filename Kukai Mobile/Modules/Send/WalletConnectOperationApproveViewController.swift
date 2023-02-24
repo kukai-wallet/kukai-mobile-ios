@@ -34,7 +34,7 @@ class WalletConnectOperationApproveViewController: UIViewController {
 		nameLabel.text = "..."
 		networkLabel.text = data.request?.chainId.absoluteString ?? "..."
 		addressLabel.text = data.requestParams?.account
-		entrypoint.text = data.entrypointToCall ?? "..."
+		//entrypoint.text = data.entrypointToCall ?? "..."
 		gasLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.gasLimit)"
 		storageLimitLabel.text = "\(TransactionService.shared.currentOperationsAndFeesData.storageLimit)"
 		transactionCost.text = (TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation) + " tez"

@@ -123,7 +123,7 @@
 		C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = C06E0D5C287C365F007A580B /* WalletConnect */; };
 		C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */; };
 		C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */; };
-		C06E0D63287C3E50007A580B /* WalletConnectApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */; };
+		C06E0D63287C3E50007A580B /* WalletConnectPairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D62287C3E50007A580B /* WalletConnectPairViewController.swift */; };
 		C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */; };
 		C06E0D6A287C71EA007A580B /* WalletConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D69287C71EA007A580B /* WalletConnectCell.swift */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
@@ -441,7 +441,7 @@
 		C06997F22833D93700F6929D /* DebugViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugViewController.swift; sourceTree = "<group>"; };
 		C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewController.swift; sourceTree = "<group>"; };
 		C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectViewModel.swift; sourceTree = "<group>"; };
-		C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectApproveViewController.swift; sourceTree = "<group>"; };
+		C06E0D62287C3E50007A580B /* WalletConnectPairViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectPairViewController.swift; sourceTree = "<group>"; };
 		C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSignViewController.swift; sourceTree = "<group>"; };
 		C06E0D69287C71EA007A580B /* WalletConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectCell.swift; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
@@ -696,9 +696,7 @@
 			isa = PBXGroup;
 			children = (
 				C0122E4729A663CB00FFE8F7 /* ConnectedApps.storyboard */,
-				C06E0D62287C3E50007A580B /* WalletConnectApproveViewController.swift */,
-				C05D4E09287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift */,
-				C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */,
+				C06E0D62287C3E50007A580B /* WalletConnectPairViewController.swift */,
 			);
 			path = ConnectedApps;
 			sourceTree = "<group>";
@@ -1083,6 +1081,8 @@
 				C0E2317C29897BB5007BC79D /* SendTokenConfirmViewController.swift */,
 				C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */,
 				C0FAD1D52992992500FB813B /* SendCollectibleConfirmViewController.swift */,
+				C05D4E09287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift */,
+				C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */,
 			);
 			path = Send;
 			sourceTree = "<group>";
@@ -1648,7 +1648,7 @@
 				C0258921292D1166000D59F6 /* FavouriteTokenCell.swift in Sources */,
 				C0EA19DA29096E4600E6B40D /* CollectibleDetailDescriptionCell.swift in Sources */,
 				C0B08A33270DC25900075618 /* SendLedgerApproveViewController.swift in Sources */,
-				C06E0D63287C3E50007A580B /* WalletConnectApproveViewController.swift in Sources */,
+				C06E0D63287C3E50007A580B /* WalletConnectPairViewController.swift in Sources */,
 				C0D383B02941F3C900F036E1 /* UITableViewCell+gradient.swift in Sources */,
 				C0CB6AC32948ED4300E7B4DF /* FreeformValidator.swift in Sources */,
 				C039C3BB298BD75600112500 /* BottomSheetVariableSegue.swift in Sources */,

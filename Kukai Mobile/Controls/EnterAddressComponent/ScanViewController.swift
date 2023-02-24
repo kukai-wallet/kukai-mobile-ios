@@ -246,7 +246,10 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		super.viewWillAppear(animated)
 
 		if (captureSession?.isRunning == false) {
-			captureSession.startRunning()
+			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
+			DispatchQueue.global(qos: .background).async { [weak self] in
+				self?.captureSession.startRunning()
+			}
 		}
 	}
 

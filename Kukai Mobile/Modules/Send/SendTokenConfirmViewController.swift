@@ -7,10 +7,29 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectSign
 import OSLog
 
 class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol, EditFeesViewControllerDelegate {
 	
+	// Connected app
+	@IBOutlet weak var connectedAppLabel: UILabel!
+	@IBOutlet weak var connectedAppIcon: UIImageView!
+	@IBOutlet weak var connectedAppNameLabel: UILabel!
+	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
+	
+	// From
+	@IBOutlet weak var fromContainer: UIView!
+	
+	@IBOutlet weak var fromStackViewSocial: UIStackView!
+	@IBOutlet weak var fromSocialIcon: UIImageView!
+	@IBOutlet weak var fromSocialAlias: UILabel!
+	@IBOutlet weak var fromSocialAddress: UILabel!
+	
+	@IBOutlet weak var fromStackViewRegular: UIStackView!
+	@IBOutlet weak var fromRegularAddress: UILabel!
+	
+	// Send
 	@IBOutlet weak var largeDisplayStackView: UIStackView!
 	@IBOutlet weak var largeDisplayIcon: UIImageView!
 	@IBOutlet weak var largeDisplayAmount: UILabel!
@@ -22,28 +41,80 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	@IBOutlet weak var smallDisplayAmount: UILabel!
 	@IBOutlet weak var smallDisplayFiat: UILabel!
 	
+	// To
 	@IBOutlet weak var toStackViewSocial: UIStackView!
-	@IBOutlet weak var socialIcon: UIImageView!
-	@IBOutlet weak var socialAlias: UILabel!
-	@IBOutlet weak var socialAddress: UILabel!
+	@IBOutlet weak var toSocialIcon: UIImageView!
+	@IBOutlet weak var toSocialAlias: UILabel!
+	@IBOutlet weak var toSocialAddress: UILabel!
 	
 	@IBOutlet weak var toStackViewRegular: UIStackView!
-	@IBOutlet weak var regularAddress: UILabel!
+	@IBOutlet weak var toRegularAddress: UILabel!
 	
+	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	
+	private var didSend = false
+	
 	var bottomSheetMaxHeight: CGFloat = 475
+	
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+		
+		if TransactionService.shared.walletConnectOperationData.proposal != nil {
+			bottomSheetMaxHeight += 100
+		}
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		if TransactionService.shared.walletConnectOperationData.proposal != nil {
+			bottomSheetMaxHeight += 100
+		}
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
+		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
 		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return
+		}
+		
+		
+		// Handle wallet connect data
+		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
+			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
+				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.connectedAppIcon.frame.size)
+			}
+			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
+			
+			// TODO: add selected wallet to send data
+			// TODO: wallet metadata doesn't support tezos domains
+			let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
+			if selectedWalletMetadata.type == .social {
+				// social display
+				fromStackViewRegular.isHidden = true
+				fromSocialAlias.text = selectedWalletMetadata.displayName
+				fromSocialIcon.image = HomeTabBarController.imageForWallet(wallet: selectedWalletMetadata)
+				fromSocialAddress.text = selectedWalletMetadata.address.truncateTezosAddress()
+				
+			} else {
+				// basic display
+				fromStackViewSocial.isHidden = true
+				fromRegularAddress.text = selectedWalletMetadata.address.truncateTezosAddress()
+			}
+			
+		} else {
+			connectedAppMetadataStackView.isHidden = true
+			connectedAppLabel.isHidden = true
+			fromContainer.isHidden = true
 		}
 		
 		// Amount view configuration
@@ -69,14 +140,14 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		if let alias = TransactionService.shared.sendData.destinationAlias {
 			// social display
 			toStackViewRegular.isHidden = true
-			socialAlias.text = alias
-			socialIcon.image = TransactionService.shared.sendData.destinationIcon
-			socialAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			toSocialAlias.text = alias
+			toSocialIcon.image = TransactionService.shared.sendData.destinationIcon
+			toSocialAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
 			
 		} else {
 			// basic display
 			toStackViewSocial.isHidden = true
-			regularAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			toRegularAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
 		}
 		
 		
@@ -114,8 +185,14 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent: %@", log: .default, type: .default,  opHash)
-						self?.dismiss(animated: true, completion: nil)
-						(self?.presentingViewController as? UINavigationController)?.popToHome()
+						
+						self?.didSend = true
+						if TransactionService.shared.walletConnectOperationData.proposal != nil {
+							self?.walletConnectRespondOnSign(opHash: opHash)
+							
+						} else {
+							self?.dismissAndReturn()
+						}
 						
 					case .failure(let sendError):
 						self?.alert(errorWithMessage: sendError.description)
@@ -130,5 +207,68 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didSend && TransactionService.shared.walletConnectOperationData.proposal != nil {
+			walletConnectRespondOnReject()
+		}
+	}
+	
+	@IBAction func closeTapped(_ sender: Any) {
+		self.dismissBottomSheet()
+	}
+	
+	func dismissAndReturn() {
+		self.dismiss(animated: true, completion: nil)
+		(self.presentingViewController as? UINavigationController)?.popToHome()
+	}
+	
+	@MainActor
+	private func walletConnectRespondOnSign(opHash: String) {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
+			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.dismissAndReturn()
+			return
+		}
+		
+		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
+				self.dismissAndReturn()
+				
+			} catch {
+				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.dismissAndReturn()
+			}
+		}
+	}
+	
+	@MainActor
+	private func walletConnectRespondOnReject() {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.dismissAndReturn()
+			return
+		}
+		
+		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
+				self.dismissAndReturn()
+				
+			} catch {
+				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.dismissAndReturn()
+			}
+		}
 	}
 }

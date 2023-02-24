@@ -162,7 +162,7 @@ class HomeTabBarController: UITabBarController {
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
 		
-		accountButton.setImage(imageForWallet(wallet: wallet), for: .normal)
+		accountButton.setImage(HomeTabBarController.imageForWallet(wallet: wallet), for: .normal)
 		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
@@ -199,7 +199,7 @@ class HomeTabBarController: UITabBarController {
 		return MenuViewController(actions: [firstGroup, secondGroup, thirdGroup], sourceViewController: self)
 	}
 	
-	func imageForWallet(wallet: WalletMetadata) -> UIImage? {
+	static func imageForWallet(wallet: WalletMetadata) -> UIImage? {
 		if wallet.type == .social {
 			switch wallet.socialType {
 				case .apple:
@@ -271,87 +271,6 @@ class HomeTabBarController: UITabBarController {
 	func sendButtonTapped() {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
-	
-	
-	
-	// MARK: - External Wallet Connection
-	
-	private func processWalletConnectRequest() {
-		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
-			  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
-			  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
-		else {
-			let onDevice = "tezos:\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "")"
-			self.alert(errorWithMessage: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match")
-			return
-		}
-		
-		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-			self.alert(errorWithMessage: "Processing WalletConnect request, unable to parse response or locate wallet")
-			return
-		}
-		
-		TransactionService.shared.walletConnectOperationData.requestParams = params
-		self.showLoadingModal { [weak self] in
-			self?.processAndShow(withWallet: wallet, requestParams: params)
-		}
-	}
-	
-	private func processAndShow(withWallet wallet: Wallet, requestParams: WalletConnectRequestParams) {
-		
-		// Map all beacon objects to kuaki objects
-		let convertedOps = requestParams.kukaiOperations()
-		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
-			guard let estimatedOps = try? result.get() else {
-				self?.hideLoadingModal(completion: {
-					self?.alert(errorWithMessage: "Processing WalletConnect request, unable to estimate fees")
-				})
-				return
-			}
-			
-			self?.processTransactions(estimatedOperations: estimatedOps)
-		}
-	}
-	
-	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
-		TransactionService.shared.currentTransactionType = .walletConnectOperation
-		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
-		
-		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
-			
-			if transactionOperation.parameters == nil {
-				TransactionService.shared.walletConnectOperationData.operationType = .sendXTZ
-				
-				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
-				TransactionService.shared.walletConnectOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
-				
-			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
-				if token.isNFT {
-					TransactionService.shared.walletConnectOperationData.operationType = .sendNFT
-					TransactionService.shared.walletConnectOperationData.tokenToSend = token.token
-					
-				} else {
-					TransactionService.shared.walletConnectOperationData.operationType = .sendToken
-					TransactionService.shared.walletConnectOperationData.tokenToSend = token.token
-				}
-				
-			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
-				TransactionService.shared.walletConnectOperationData.operationType = .callSmartContract
-				TransactionService.shared.walletConnectOperationData.entrypointToCall = entrypoint
-				
-			} else {
-				TransactionService.shared.walletConnectOperationData.operationType = .unknown
-			}
-			
-		} else {
-			TransactionService.shared.walletConnectOperationData.operationType = .unknown
-		}
-		
-		self.hideLoadingModal(completion: { [weak self] in
-			self?.performSegue(withIdentifier: "wallet-connect-operation-approve", sender: nil)
-		})
-	}
 }
 
 extension HomeTabBarController: ScanViewControllerDelegate {
@@ -405,7 +324,7 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 			.sink { [weak self] sessionProposal in
 				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
 				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal
-				self?.performSegue(withIdentifier: "wallet-connect-connect", sender: nil)
+				self?.performSegue(withIdentifier: "wallet-connect-pair", sender: nil)
 			}.store(in: &bag)
 		
 		Sign.instance.sessionSettlePublisher
@@ -421,6 +340,95 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 				os_log("WC sessionDeletePublisher %@", log: .default, type: .info)
 				//self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
+	}
+	
+	
+	
+	
+	
+	private func processWalletConnectRequest() {
+		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
+			  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+			  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+		else {
+			let onDevice = "tezos:\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "")"
+			self.alert(errorWithMessage: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match")
+			return
+		}
+		
+		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
+			self.alert(errorWithMessage: "Processing WalletConnect request, unable to parse response or locate wallet")
+			return
+		}
+		
+		TransactionService.shared.walletConnectOperationData.requestParams = params
+		self.showLoadingModal { [weak self] in
+			self?.processAndShow(withWallet: wallet, requestParams: params)
+		}
+	}
+	
+	private func processAndShow(withWallet wallet: Wallet, requestParams: WalletConnectRequestParams) {
+		
+		// Map all beacon objects to kuaki objects
+		let convertedOps = requestParams.kukaiOperations()
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
+			guard let estimatedOps = try? result.get() else {
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: "Processing WalletConnect request, unable to estimate fees")
+				})
+				return
+			}
+			
+			self?.processTransactions(estimatedOperations: estimatedOps)
+		}
+	}
+	
+	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
+		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
+		
+		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
+			
+			if transactionOperation.parameters == nil {
+				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+				let amount = Token.xtz(withAmount: xtzAmount)
+				
+				TransactionService.shared.currentTransactionType = .send
+				TransactionService.shared.sendData.chosenToken = amount
+				TransactionService.shared.sendData.chosenAmount = xtzAmount
+				TransactionService.shared.sendData.destination = transactionOperation.destination
+				
+			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
+				if token.isNFT {
+					// TransactionService.shared.sendData.chosenNFT = token.token.n
+				} else {
+					TransactionService.shared.sendData.chosenToken = token.token
+				}
+				TransactionService.shared.currentTransactionType = .send
+				//TransactionService.shared.sendData.chosenAmount = xtzAmount
+				TransactionService.shared.sendData.destination = transactionOperation.destination
+				
+			}/* else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
+				TransactionService.shared.walletConnectOperationData.operationType = .callSmartContract
+				TransactionService.shared.walletConnectOperationData.entrypointToCall = entrypoint
+				
+			} else {
+				TransactionService.shared.walletConnectOperationData.operationType = .unknown
+			}*/
+			
+		} else {
+			TransactionService.shared.currentTransactionType = .none
+		}
+		
+		self.hideLoadingModal(completion: { [weak self] in
+			
+			if TransactionService.shared.currentTransactionType == .send, TransactionService.shared.sendData.chosenToken == nil {
+				self?.performSegue(withIdentifier: "wallet-connect-send-nft", sender: nil)
+				
+			} else {
+				self?.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
+			}
+		})
 	}
 }
 
