@@ -15,21 +15,22 @@ import WalletConnectPairing
 import Combine
 import OSLog
 
-class HomeTabBarController: UITabBarController {
+class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
 	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
-	@IBOutlet weak var sendButton: UIButton!
 	
 	private var refreshType: BalanceService.RefreshType = .useCache
 	private var topRightMenu = MenuViewController()
 	private let scanner = ScanViewController()
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
+	private var highlightedGradient = CAGradientLayer()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.setupAppearence()
+		self.delegate = self
 		
 		// Load any initial data so we can draw UI immediately without lag
 		DependencyManager.shared.balanceService.loadCache()
@@ -62,24 +63,15 @@ class HomeTabBarController: UITabBarController {
 		setupTzKTAccountListener()
 		
 		
-		// Setup buttons
-		topRightMenu = menuVCForTopRight()
-		sendButton.addAction(UIAction(handler: { [weak self] action in
-			self?.topRightMenu.display(attachedTo: self?.sendButton ?? UIButton())
-		}), for: .touchUpInside)
-		
-		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
+		let accountButtonWidth = self.view.frame.width - (32 + 44 + 10) // 16 * 2 for left/right gutter, 44 for side menu button width, 10 for spacing in between
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: self.view.frame.width - (32 + 88 + 20)))
+		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: accountButtonWidth))
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
 		
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
-		
-		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
-		sendButton.addConstraint(NSLayoutConstraint(item: sendButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -124,9 +116,22 @@ class HomeTabBarController: UITabBarController {
 		gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
-		gradientLayers.append( sendButton.addTitleButtonBorderGradient() )
-		gradientLayers.append( sendButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
+		
+		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
+	}
+	
+	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
+		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
+		let position = CGRect(x: 0 + (widthPerItem * CGFloat(index)), y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		
+		if highlightedGradient.frame.width == 0 {
+			highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
+			self.tabBar.layer.addSublayer(highlightedGradient)
+		} else {
+			highlightedGradient.frame.origin.x = 0 + (widthPerItem * CGFloat(index))
+		}
 	}
 	
 	func setupTzKTAccountListener() {
@@ -145,15 +150,17 @@ class HomeTabBarController: UITabBarController {
 	func setupAppearence() {
 		let appearance = UITabBarItem.appearance(whenContainedInInstancesOf: [HomeTabBarController.self])
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "Txt6") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "BG10") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .normal)
 		appearance.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor(named: "TxtB4") ?? .purple,
+			NSAttributedString.Key.foregroundColor: UIColor(named: "BGB6") ?? .purple,
 			NSAttributedString.Key.font: UIFont.custom(ofType: .medium, andSize: 10)
 		], for: .selected)
 		
-		self.tabBar.unselectedItemTintColor = UIColor(named: "BG12")
+		self.tabBar.shadowImage = nil
+		self.tabBar.tintColor = UIColor(named: "BGB6")
+		self.tabBar.unselectedItemTintColor = UIColor(named: "BG10")
 	}
 	
 	public func updateAccountButton() {
@@ -164,56 +171,24 @@ class HomeTabBarController: UITabBarController {
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
 	
-	func menuVCForTopRight() -> MenuViewController {
-		let firstGroup: [UIAction] = [
-			UIAction(title: "Copy Address", image: UIImage(named: "copy"), identifier: nil, handler: { action in
-				UIPasteboard.general.string = DependencyManager.shared.selectedWalletAddress
-			}),
-			UIAction(title: "Show QR Code", image: UIImage(named: "qr-code"), identifier: nil, handler: { [weak self] action in
-				self?.alert(withTitle: "Show QR Code", andMessage: "hold your horses, not done yet")
-			}),
-		]
-		
-		let secondGroup: [UIAction] = [
-			/*UIAction(title: "Send", image: UIImage(named: "send"), identifier: nil, handler: { [weak self] action in
-			 self?.sendButtonTapped()
-			 }),*/
-			UIAction(title: "Swap", image: UIImage(named: "swap"), identifier: nil, handler: { [weak self] action in
-				self?.alert(withTitle: "Swap", andMessage: "hold your horses, not done yet")
-			}),
-		]
-		
-		let thirdGroup: [UIAction] = [
-			UIAction(title: "Get Tez", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
-				self?.alert(withTitle: "Get Tez", andMessage: "hold your horses, not done yet")
-			}),
-			UIAction(title: "Scan", image: UIImage(named: "scan"), identifier: nil, handler: { [weak self] action in
-				guard let self = self else { return }
-				self.present(self.scanner, animated: true, completion: nil)
-			}),
-		]
-		
-		return MenuViewController(actions: [firstGroup, secondGroup, thirdGroup], sourceViewController: self)
-	}
-	
 	static func imageForWallet(wallet: WalletMetadata) -> UIImage? {
 		if wallet.type == .social {
 			switch wallet.socialType {
 				case .apple:
-					return UIImage(named: "social-apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
+					return UIImage(named: "Social_Apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
 				case .google:
-					return UIImage(named: "social-google")?.resizedImage(Size: CGSize(width: 24, height: 24))
+					return UIImage(named: "Social_Google_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
 					
 				case .twitter:
-					return UIImage(named: "social-twitter")?.resizedImage(Size: CGSize(width: 24, height: 24))
+					return UIImage(named: "Social_Twitter_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
 				
 				default:
-					return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
+					return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
 			}
 		}
 		
-		return UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 24, height: 24))
+		return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
 	}
 	
 	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {

@@ -9,7 +9,7 @@ import UIKit
 
 class AccountButton: UIButton {
 	
-	private let additionalImage = UIImageView(image: UIImage(named: "chevron-right"))
+	private let additionalImage = UIImageView(image: UIImage(named: "ChevronRight"))
 	private let additionalImageWidth: CGFloat = 8
 	private let additionalImageHeight: CGFloat = 12
 	
@@ -27,11 +27,11 @@ class AccountButton: UIButton {
 			let additionalImageFrame = CGRect(x: self.bounds.width - (additionalImageWidth + 12), y: (self.bounds.height - additionalImageHeight) / 2, width: additionalImageWidth, height: additionalImageHeight)
 			
 			imageView?.frame = CGRect(x: leftImageMargin, y: existingImageFrame.origin.y, width: existingImageFrame.width, height: existingImageFrame.height)
-			titleLabel?.frame = CGRect(x: leftTextMargin, y: existingTextFrame.origin.y, width: (self.bounds.width - leftTextMargin) - (additionalImageWidth + 24), height: existingTextFrame.height)
+			titleLabel?.frame = CGRect(x: leftTextMargin, y: existingTextFrame.origin.y, width: (self.bounds.width - leftTextMargin) - (additionalImageWidth + 22), height: existingTextFrame.height)
 			additionalImage.frame = additionalImageFrame
 			
 		} else if let existingFrame = titleLabel?.frame {
-			titleLabel?.frame = CGRect(x: existingFrame.origin.x + 6, y: existingFrame.origin.y, width: existingFrame.width - 24, height: existingFrame.height)
+			titleLabel?.frame = CGRect(x: existingFrame.origin.x + 6, y: existingFrame.origin.y, width: existingFrame.width - 22, height: existingFrame.height)
 			additionalImage.frame = CGRect(x: self.bounds.width - (additionalImageWidth + 12), y: (self.bounds.height - additionalImageHeight) / 2, width: additionalImageWidth, height: additionalImageHeight)
 		}
 	}

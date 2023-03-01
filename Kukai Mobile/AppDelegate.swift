@@ -87,4 +87,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		barButtonAppearence.setTitleTextAttributes([.foregroundColor: UIColor.clear, .font: UIFont.systemFont(ofSize: 1)], for: .normal)
 	}
 }
-

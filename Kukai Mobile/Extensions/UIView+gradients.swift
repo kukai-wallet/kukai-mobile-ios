@@ -114,8 +114,8 @@ extension UIView {
 		return addBackgroundGradient(
 			withFrame: frame,
 			colors: [
-				UIColor.colorNamed("BtnPrim-1").cgColor,
-				UIColor.colorNamed("BtnPrim-2").cgColor,
+				UIColor.colorNamed("BtnPrim1-1").cgColor,
+				UIColor.colorNamed("BtnPrim1-2").cgColor,
 			],
 			locations: [0.20, 0.87],
 			degress: cssDegreesToIOS(117.79))
@@ -147,6 +147,42 @@ extension UIView {
 	}
 	
 	
+	
+	
+	// Tab bar
+	
+	func addTabbarHighlightedBackgroundGradient(rect: CGRect) -> CAGradientLayer {
+		//let rect = CGRect(x: 0, y: -2, width: width, height: height)
+		/*let gradientLayer = self.addBackgroundGradient(withFrame: rect,
+													   colors: [
+														UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
+														UIColor.colorNamed("gradTabBar_Highlight-2").cgColor
+													   ],
+													   locations: [0, 0.79],
+													   degress: cssDegreesToIOS(180))*/
+		
+		let gradientLayer = CAGradientLayer()
+		gradientLayer.colors = [
+			UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
+			UIColor.colorNamed("gradTabBar_Highlight-2").cgColor
+		]
+		
+		gradientLayer.locations = [0, 0.79]
+		gradientLayer.frame = rect
+		gradientLayer.calculatePoints(for: cssDegreesToIOS(180))
+		
+		let maskLayer = CAGradientLayer()
+		maskLayer.frame = rect
+		maskLayer.shadowRadius = 5
+		maskLayer.shadowPath = CGPath(roundedRect: rect.insetBy(dx: 3, dy: 0), cornerWidth: 0, cornerHeight: 0, transform: nil)
+		maskLayer.shadowOpacity = 1
+		maskLayer.shadowOffset = CGSize.zero
+		maskLayer.shadowColor = UIColor.white.cgColor
+		
+		gradientLayer.mask = maskLayer
+		
+		return gradientLayer
+	}
 	
 	
 	
