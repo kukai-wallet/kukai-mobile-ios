@@ -328,7 +328,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				self?.alert(errorWithMessage: "\(e)")
 				
 			} else {
-				self?.alert(errorWithMessage: "Unknown Wallet COnnect error occured")
+				self?.alert(errorWithMessage: "Unknown Wallet Connect error occured")
 			}
 		}
 	}
