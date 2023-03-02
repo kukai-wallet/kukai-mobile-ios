@@ -15,7 +15,6 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var aspectRatioConstraint: NSLayoutConstraint!
-	@IBOutlet weak var quantityViewLeadingConstraint: NSLayoutConstraint!
 	
 	public var setup = false
 	
@@ -39,8 +38,6 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 			
 			let newImageWidth = imageView.frame.size.height * (mediaContent.width/mediaContent.height)
 			let difference = imageView.frame.size.width - newImageWidth
-			
-			quantityViewLeadingConstraint.constant += (difference / 2)
 		}
 		
 		

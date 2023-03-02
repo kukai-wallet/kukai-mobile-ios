@@ -224,6 +224,7 @@ public class ThemeManager {
 				"playerFill": UIColor("#888FFF"),
 				"playerFillInset": UIColor("#86889D"),
 				"playerIconSlider": UIColor("#888FFF"),
+				"playerSliderAlt": UIColor("##22232C"),
 				
 				// Gradient
 				"BtnPrim1-1": UIColor("#626AED"),
@@ -422,6 +423,7 @@ public class ThemeManager {
 				"playerFill": UIColor("#888FFF"),
 				"playerFillInset": UIColor("#86889D"),
 				"playerIconSlider": UIColor("#888FFF"),
+				"playerSliderAlt": UIColor("#FFFFFF"),
 				
 				
 				// Gradient

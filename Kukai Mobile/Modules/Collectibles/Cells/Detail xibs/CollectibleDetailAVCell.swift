@@ -13,6 +13,8 @@ import MediaPlayer
 class CollectibleDetailAVCell: UICollectionViewCell {
 
 	@IBOutlet weak var placeholderView: UIView!
+	@IBOutlet weak var quantityView: UIView!
+	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var playPauseButton: UIButton!
 	@IBOutlet weak var airPlayPlaceholderView: UIView!
 	@IBOutlet weak var scrubber: UISlider!
@@ -40,10 +42,25 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	
 	public var setup = false
 	
-	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, player: AVPlayer, playerLayer: AVPlayerLayer?) {
+	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, player: AVPlayer, playerLayer: AVPlayerLayer?, layoutOnly: Bool) {
 		self.setup = true
 		self.avPlayer = player
 		self.showScrubberLoading()
+		
+		// Load image if not only perfroming collectionview layout logic
+		if layoutOnly {
+			return
+		}
+		
+		// Quantity
+		if let quantity = mediaContent.quantity {
+			quantityLabel.text = quantity
+			quantityView.layer.zPosition = 100
+			
+		} else {
+			quantityView.isHidden = true
+		}
+		
 		
 		// Audio + image
 		if let audioImageURL = mediaContent.mediaURL2 {
@@ -197,7 +214,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	
 	private func setupAirPlay() {
 		airPlayButton.frame = airPlayPlaceholderView.frame
-		airPlayButton.tintColor = .white
+		airPlayButton.tintColor = .colorNamed("playerIconSlider")
 		airPlayButton.translatesAutoresizingMaskIntoConstraints = false
 		airPlayPlaceholderView.addSubview(airPlayButton)
 		

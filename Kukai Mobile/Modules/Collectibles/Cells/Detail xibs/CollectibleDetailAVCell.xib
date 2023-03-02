@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -8,8 +8,11 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Figtree-Regular.ttf">
-            <string>Figtree-Regular</string>
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
         </array>
     </customFonts>
     <objects>
@@ -31,12 +34,12 @@
                         <color key="color" name="Txt2"/>
                     </activityIndicatorView>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="73D-pt-ZBl">
-                        <rect key="frame" x="0.0" y="324" width="33" height="33"/>
+                        <rect key="frame" x="16" y="324" width="33" height="33"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="33" id="WFo-Ca-M2v"/>
                             <constraint firstAttribute="width" constant="33" id="bVT-hT-OiL"/>
                         </constraints>
-                        <color key="tintColor" name="BGB4"/>
+                        <color key="tintColor" name="playerSliderAlt"/>
                         <state key="normal" title="Button"/>
                         <buttonConfiguration key="configuration" style="plain" image="play.fill" catalog="system"/>
                         <connections>
@@ -44,16 +47,16 @@
                         </connections>
                     </button>
                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="2Ug-l3-7rn">
-                        <rect key="frame" x="47" y="325.66666666666669" width="206" height="31"/>
-                        <color key="minimumTrackTintColor" name="BGB4"/>
-                        <color key="maximumTrackTintColor" name="Txt10"/>
-                        <color key="thumbTintColor" name="Txt2"/>
+                        <rect key="frame" x="63" y="325.66666666666669" width="174" height="31"/>
+                        <color key="minimumTrackTintColor" name="playerFill"/>
+                        <color key="maximumTrackTintColor" name="playerFillInset"/>
+                        <color key="thumbTintColor" name="playerKnob"/>
                         <connections>
                             <action selector="scrubberDidChange:" destination="gTV-IL-0wX" eventType="valueChanged" id="qhr-LM-D1i"/>
                         </connections>
                     </slider>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnv-Au-EcP">
-                        <rect key="frame" x="267" y="324" width="33" height="33"/>
+                        <rect key="frame" x="251" y="324" width="33" height="33"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="33" id="AyV-bw-aBN"/>
@@ -61,33 +64,61 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;startTime&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wPi-Ru-RCn">
-                        <rect key="frame" x="49.000000000000007" y="355.66666666666669" width="66.666666666666686" height="14"/>
-                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                        <rect key="frame" x="65" y="355.66666666666669" width="68.333333333333314" height="14"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;endTime&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Trj-n0-yRV">
-                        <rect key="frame" x="188.66666666666666" y="355.66666666666669" width="62.333333333333343" height="14"/>
-                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                        <rect key="frame" x="172" y="355.66666666666669" width="63" height="14"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="OML-a1-Yr5">
                         <rect key="frame" x="140" y="330.66666666666669" width="20" height="20"/>
-                        <color key="color" name="Txt2"/>
+                        <color key="color" name="playerKnob"/>
                     </activityIndicatorView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zhP-fZ-deK">
+                        <rect key="frame" x="16" y="266" width="85.666666666666671" height="26"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bH2-sr-yQS">
+                                <rect key="frame" x="4" y="4" width="77.666666666666671" height="18"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
+                                <color key="textColor" name="TxtQuantity"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BGQunatity"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="bH2-sr-yQS" secondAttribute="trailing" constant="4" id="33J-71-J42"/>
+                            <constraint firstAttribute="bottom" secondItem="bH2-sr-yQS" secondAttribute="bottom" constant="4" id="4TX-6S-hpt"/>
+                            <constraint firstAttribute="height" constant="26" id="PhJ-WU-emh"/>
+                            <constraint firstItem="bH2-sr-yQS" firstAttribute="leading" secondItem="zhP-fZ-deK" secondAttribute="leading" constant="4" id="xhY-2Z-IOg"/>
+                            <constraint firstItem="bH2-sr-yQS" firstAttribute="top" secondItem="zhP-fZ-deK" secondAttribute="top" constant="4" id="z4g-Eq-5QP"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="13"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstItem="zhP-fZ-deK" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" constant="16" id="042-QO-pMX"/>
+                <constraint firstItem="zhP-fZ-deK" firstAttribute="bottom" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="-16" id="24T-mA-YgL"/>
                 <constraint firstItem="OML-a1-Yr5" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="3QQ-HH-PDr"/>
                 <constraint firstItem="fVZ-ec-hFZ" firstAttribute="centerY" secondItem="kC8-mQ-rG0" secondAttribute="centerY" id="B0X-Pd-baR"/>
-                <constraint firstItem="73D-pt-ZBl" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" id="Ek7-kq-y6l"/>
+                <constraint firstItem="73D-pt-ZBl" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" constant="16" id="Ek7-kq-y6l"/>
                 <constraint firstItem="fVZ-ec-hFZ" firstAttribute="centerX" secondItem="kC8-mQ-rG0" secondAttribute="centerX" id="FrW-NI-sTy"/>
                 <constraint firstItem="Gnv-Au-EcP" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="16" id="Ga8-8y-XL2"/>
                 <constraint firstItem="wPi-Ru-RCn" firstAttribute="leading" secondItem="2Ug-l3-7rn" secondAttribute="leading" id="JVY-d7-c3N"/>
                 <constraint firstItem="Gnv-Au-EcP" firstAttribute="leading" secondItem="2Ug-l3-7rn" secondAttribute="trailing" constant="16" id="LWl-zu-dWp"/>
-                <constraint firstItem="Gnv-Au-EcP" firstAttribute="trailing" secondItem="kC8-mQ-rG0" secondAttribute="trailing" id="LhY-8X-Gg7"/>
+                <constraint firstItem="Gnv-Au-EcP" firstAttribute="trailing" secondItem="kC8-mQ-rG0" secondAttribute="trailing" constant="-16" id="LhY-8X-Gg7"/>
                 <constraint firstItem="2Ug-l3-7rn" firstAttribute="centerY" secondItem="73D-pt-ZBl" secondAttribute="centerY" id="WQ7-oN-fCy"/>
                 <constraint firstItem="73D-pt-ZBl" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="16" id="a5t-d3-BA8"/>
                 <constraint firstAttribute="bottom" secondItem="73D-pt-ZBl" secondAttribute="bottom" constant="24" id="aqJ-y7-9Sb"/>
@@ -109,6 +140,8 @@
                 <outlet property="mediaActivityView" destination="fVZ-ec-hFZ" id="NA9-DB-vuw"/>
                 <outlet property="placeholderView" destination="kC8-mQ-rG0" id="YQS-x0-twW"/>
                 <outlet property="playPauseButton" destination="73D-pt-ZBl" id="Fe3-bx-UF4"/>
+                <outlet property="quantityLabel" destination="bH2-sr-yQS" id="Ezw-s0-EZx"/>
+                <outlet property="quantityView" destination="zhP-fZ-deK" id="paV-l5-Tt1"/>
                 <outlet property="scrubber" destination="2Ug-l3-7rn" id="joH-4M-A42"/>
                 <outlet property="scrubberActivityView" destination="OML-a1-Yr5" id="X8A-do-zVN"/>
                 <outlet property="startTimeLabel" destination="wPi-Ru-RCn" id="f1F-Oe-cXR"/>
@@ -118,14 +151,26 @@
     </objects>
     <resources>
         <image name="play.fill" catalog="system" width="117" height="128"/>
-        <namedColor name="BGB4">
-            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="Txt10">
-            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BGQunatity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtQuantity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="playerFill">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="playerFillInset">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="playerKnob">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="playerSliderAlt">
+            <color red="0.1333333333" green="0.13725490200000001" blue="0.17254901959999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
