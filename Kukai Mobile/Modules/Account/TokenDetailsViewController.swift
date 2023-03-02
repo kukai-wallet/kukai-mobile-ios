@@ -343,8 +343,8 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 		return nil
 	}
 	
-	func buyTapped() {
-		alert(errorWithMessage: "Purchases not setup yet")
+	func swapTapped() {
+		alert(errorWithMessage: "Swapping not setup yet")
 	}
 }
 

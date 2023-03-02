@@ -357,7 +357,7 @@ public class ThemeManager {
 				"BtnStrokeMicroB3": UIColor("#343994"),
 				"BtnStrokeMicroB4": UIColor("#343994"),
 				"BtnGraph1": UIColor("#14141D"),
-				"BtnGraphB1": UIColor("#FFFFFF"),
+				"BtnGraphB1": UIColor("#14141D"),
 				"BGBtn_Slider": UIColor("#4954ff", alpha: 0.07),
 				"BGBtn_SliderFill": UIColor("#6d75f4", alpha: 0.25),
 				"BtnAlert1": UIColor("#2C0000", alpha: 0.2),

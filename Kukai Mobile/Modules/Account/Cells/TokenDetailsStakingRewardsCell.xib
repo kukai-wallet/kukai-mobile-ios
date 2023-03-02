@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -43,7 +43,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
                                 <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-info-fill"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnInfoKnockout"/>
                                     <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
                                         <real key="value" value="14"/>
                                     </userDefinedRuntimeAttribute>
@@ -69,14 +69,14 @@
                                                 <rect key="frame" x="34" y="0.0" width="123" height="26"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="LAST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zFp-1U-ILM">
-                                                        <rect key="frame" x="0.0" y="0.0" width="123" height="13.333333333333334"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="11"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="123" height="12"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
                                                         <color key="textColor" name="Txt8"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;lastBaker&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ubc-vp-oLJ">
-                                                        <rect key="frame" x="0.0" y="13.333333333333336" width="123" height="12.666666666666664"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="13"/>
+                                                        <rect key="frame" x="0.0" y="12" width="123" height="14"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                         <color key="textColor" name="Txt10"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -192,7 +192,7 @@
                                     </label>
                                 </subviews>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-right-large-filled" translatesAutoresizingMaskIntoConstraints="NO" id="i2b-ye-lhv">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowDirectiRightFilled" translatesAutoresizingMaskIntoConstraints="NO" id="i2b-ye-lhv">
                                 <rect key="frame" x="165" y="96.666666666666671" width="27" height="30"/>
                                 <color key="tintColor" name="BGB4"/>
                                 <constraints>
@@ -260,8 +260,8 @@
         </designable>
     </designables>
     <resources>
-        <image name="arrow-right-large-filled" width="18" height="20"/>
-        <image name="circle-info-fill" width="36" height="36"/>
+        <image name="ArrowDirectiRightFilled" width="18" height="20"/>
+        <image name="btnInfoKnockout" width="36" height="36"/>
         <namedColor name="BG10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -309,7 +309,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		let tokenBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.balance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 		
 		if token.isXTZ() {
-			tokenIcon = UIImage(named: "tezos")
+			tokenIcon = UIImage.tezosToken()
 			tokenSymbol = "Tezos"
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
