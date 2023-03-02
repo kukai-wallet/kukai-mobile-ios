@@ -55,7 +55,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		
 		if isImage {
 			actions.append(
-				UIAction(title: "Save to Photos", image: UIImage(named: "arrow-down"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Save to Photos", image: UIImage(named: "ArrowDown"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft, let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
 						return
 					}
@@ -83,7 +83,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		
 		if isHiddenNft {
 			actions.append(
-				UIAction(title: "Unhide Collectible", image: UIImage(named: "hidden-off"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}
@@ -100,7 +100,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		} else {
 			actions.append(
-				UIAction(title: "Hide Collectible", image: UIImage(named: "hidden-on"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}

@@ -72,8 +72,9 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		cell.textLabel?.font = UIFont.custom(ofType: .bold, andSize: 18)
 		
 		let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 28, height: 28))
+		imageView.contentMode = .center
+		
 		var image = action.image
-		image = image?.resizedImage(Size: imageView.frame.size)
 		image = image?.withTintColor(.colorNamed("BGB4"))
 		imageView.image = image
 		cell.accessoryView = imageView

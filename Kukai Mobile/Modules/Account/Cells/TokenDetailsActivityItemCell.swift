@@ -28,13 +28,13 @@ class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerVie
 		
 		if data.groupType == .receive {
 			color = UIColor.colorNamed("TxtB6")
-			typeimage = UIImage(named: "arrow-down-right") ?? UIImage.unknownToken()
+			typeimage = UIImage(named: "ArrowDown-right") ?? UIImage.unknownToken()
 			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 			
 		} else {
 			color = UIColor.colorNamed("Txt10")
-			typeimage = UIImage(named: "arrow-up-right") ?? UIImage.unknownToken()
+			typeimage = UIImage(named: "ArrowUp-right") ?? UIImage.unknownToken()
 			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 		}

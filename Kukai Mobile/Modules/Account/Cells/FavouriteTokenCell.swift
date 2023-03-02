@@ -14,6 +14,7 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
+	@IBOutlet weak var lockContainer: UIStackView!
 	@IBOutlet weak var containerView: UIView!
 	
 	var gradientLayer = CAGradientLayer()
@@ -23,12 +24,18 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 		super.awakeFromNib()
 	}
 	
-	func setFav(_ isFav: Bool) {
+	func setup(isFav: Bool, isLocked: Bool) {
 		if isFav {
-			favIcon.image = UIImage(named: "favourite-on")
+			favIcon.image = UIImage(named: "FavoritesOn")
 			
 		} else {
-			favIcon.image = UIImage(named: "favourite-off")
+			favIcon.image = UIImage(named: "FavoritesOff")
+		}
+		
+		if isLocked {
+			lockContainer.isHidden = false
+		} else {
+			lockContainer.isHidden = true
 		}
 	}
 	

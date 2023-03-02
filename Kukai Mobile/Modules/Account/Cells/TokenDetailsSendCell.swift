@@ -26,7 +26,7 @@ class TokenDetailsSendCell: UITableViewCell {
 			sendButton.configuration?.imagePlacement = .leading
 			
 		} else {
-			var image = UIImage(named: "arrow-up-right")
+			var image = UIImage(named: "ArrowUp-right")
 			image = image?.resizedImage(Size: CGSize(width: 15, height: 15))
 			image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
 			
