@@ -10,10 +10,6 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
-struct ControlGroupData: Hashable {
-	let id = UUID()
-}
-
 struct SpecialGroupData: Hashable {
 	let imageName: String
 	let title: String
@@ -38,7 +34,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	var isSearching = false
 	var expandedIndex: IndexPath? = nil
 	var previousSectionCount = 0
-	var moreMenu: UIMenu? = nil
+	var moreMenuVc: MenuViewController? = nil
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -74,11 +70,11 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		collectionView.register(UINib(nibName: "CollectiblesSearchResultCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesSearchResultCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
-			if let _ = item as? ControlGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+			
+			if let menu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
 				cell.searchBar.validator = FreeformValidator()
 				cell.searchBar.validatorTextFieldDelegate = self?.validatorTextfieldDelegate
-				cell.moreButton.menu = self?.moreMenu
-				cell.moreButton.showsMenuAsPrimaryAction = true
+				cell.setup(menuVC: menu)
 				return cell
 				
 			} else if let obj = item as? SpecialGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleSpecialGroupCell", for: indexPath) as? CollectibleSpecialGroupCell {
@@ -157,14 +153,14 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		
 		// Build snapshot data
-		var hashableData: [[AnyHashable]] = [[ControlGroupData()]]
+		var hashableData: [[AnyHashable]] = [[moreMenuVc]]
 		
 		if favs.count > 0 {
 			hashableData.append([SpecialGroupData(imageName: "FavoritesOn", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])
 		}
 		
 		if recents.count > 0 {
-			hashableData.append([SpecialGroupData(imageName: "timer", title: "Recents", count: 0, isShowcase: false, nfts: [])])
+			hashableData.append([SpecialGroupData(imageName: "Timer", title: "Recents", count: 0, isShowcase: false, nfts: [])])
 		}
 		
 		if showcases.count > 0 {

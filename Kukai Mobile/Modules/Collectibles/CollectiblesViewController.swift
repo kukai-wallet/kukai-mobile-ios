@@ -20,7 +20,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		viewModel.moreMenu = menuForMore()
+		viewModel.moreMenuVc = menuVCForMore()
 		viewModel.validatorTextfieldDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
@@ -101,14 +101,14 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		}
 	}
 	
-	func menuForMore() -> UIMenu {
-		let options: [UIAction] = [
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
+	func menuVCForMore() -> MenuViewController {
+		let actions: [UIAction] = [
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn")?.resizedImage(Size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
 		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: options)
+		return MenuViewController(actions: [actions], sourceViewController: self)
 	}
 }
 

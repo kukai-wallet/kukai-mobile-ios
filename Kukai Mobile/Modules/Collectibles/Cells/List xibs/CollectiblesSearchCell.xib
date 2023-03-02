@@ -35,7 +35,7 @@
                                     <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="leftImage" value="search"/>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="leftImage" value="Search"/>
                                     <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
                                         <color key="value" name="Txt10"/>
                                     </userDefinedRuntimeAttribute>
@@ -81,12 +81,12 @@
                                                 <real key="value" value="8"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                                <real key="value" value="16"/>
+                                                <real key="value" value="18"/>
                                             </userDefinedRuntimeAttribute>
                                             <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                                <real key="value" value="12"/>
+                                                <real key="value" value="18"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="filter"/>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Sort"/>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eHp-p9-DHe">
@@ -100,7 +100,18 @@
                                                 </constraints>
                                                 <color key="tintColor" name="BGB4"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" image="ellipses"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Ellipses"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                        <real key="value" value="28"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                        <real key="value" value="7"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="moreTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="Uuo-Si-qtc"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RgQ-0C-sqH">
                                                 <rect key="frame" x="34" y="0.0" width="5" height="34"/>
@@ -136,19 +147,19 @@
     </objects>
     <designables>
         <designable name="CEw-Bt-YVZ">
-            <size key="intrinsicContentSize" width="24" height="22"/>
+            <size key="intrinsicContentSize" width="28" height="22"/>
         </designable>
         <designable name="JrW-xZ-m9g">
-            <size key="intrinsicContentSize" width="40" height="26"/>
+            <size key="intrinsicContentSize" width="42" height="32"/>
         </designable>
         <designable name="kBC-Zb-iRc">
             <size key="intrinsicContentSize" width="74.666666666666671" height="18.666666666666668"/>
         </designable>
     </designables>
     <resources>
-        <image name="ellipses" width="24" height="6"/>
-        <image name="filter" width="20" height="15"/>
-        <image name="search" width="21" height="21"/>
+        <image name="Ellipses" width="24" height="6"/>
+        <image name="Search" width="20" height="20"/>
+        <image name="Sort" width="22" height="20"/>
         <namedColor name="BG12">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

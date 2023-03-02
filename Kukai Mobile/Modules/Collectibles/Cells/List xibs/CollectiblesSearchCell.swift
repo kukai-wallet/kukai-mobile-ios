@@ -14,4 +14,13 @@ class CollectiblesSearchCell: UICollectionViewCell {
 	@IBOutlet weak var moreButton: CustomisableButton!
 	@IBOutlet weak var buttonsStackView: UIStackView!
 	
+	private var menu: MenuViewController? = nil
+	
+	func setup(menuVC: MenuViewController) {
+		menu = menuVC
+	}
+	
+	@IBAction func moreTapped(_ sender: UIButton) {
+		menu?.display(attachedTo: sender)
+	}
 }
