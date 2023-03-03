@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -13,6 +13,9 @@
         </array>
         <array key="Figtree-Medium.ttf">
             <string>Figtree-Medium</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
         </array>
     </customFonts>
     <objects>
@@ -27,7 +30,7 @@
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="lGC-FZ-bOF">
                         <rect key="frame" x="0.0" y="5" width="78" height="78"/>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="backgroundColor" name="BGThumbNFT"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="78" id="Jeo-dO-gtn"/>
                             <constraint firstAttribute="width" constant="78" id="fl1-P8-CiV"/>
@@ -40,19 +43,19 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Su4-18-qWC">
-                        <rect key="frame" x="0.0" y="59" width="61" height="24"/>
+                        <rect key="frame" x="3" y="66" width="56" height="14"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rDW-oG-AfU">
-                                <rect key="frame" x="2" y="2" width="57" height="20"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="11"/>
-                                <color key="textColor" name="Txt14"/>
+                                <rect key="frame" x="2" y="2" width="52" height="10"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                <color key="textColor" name="TxtQuantity"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" name="Txt2"/>
+                        <color key="backgroundColor" name="BGQunatity"/>
                         <constraints>
                             <constraint firstItem="rDW-oG-AfU" firstAttribute="top" secondItem="Su4-18-qWC" secondAttribute="top" constant="2" id="9Sc-OV-uV6"/>
-                            <constraint firstAttribute="height" constant="24" id="EUA-AL-5tD"/>
+                            <constraint firstAttribute="height" constant="14" id="EUA-AL-5tD"/>
                             <constraint firstItem="rDW-oG-AfU" firstAttribute="leading" secondItem="Su4-18-qWC" secondAttribute="leading" constant="2" id="Iah-JA-oHm"/>
                             <constraint firstAttribute="bottom" secondItem="rDW-oG-AfU" secondAttribute="bottom" constant="2" id="rjm-Eo-IRH"/>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="24" id="tPG-OT-VEQ"/>
@@ -64,19 +67,19 @@
                             </userDefinedRuntimeAttribute>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                <real key="value" value="12"/>
+                                <real key="value" value="7"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzM-7s-QAJ">
                         <rect key="frame" x="92" y="48" width="436" height="15.666666666666664"/>
-                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="13"/>
+                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt10"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7dM-wf-XVt">
-                        <rect key="frame" x="92" y="26" width="436" height="18"/>
-                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="15"/>
+                        <rect key="frame" x="92" y="24.666666666666671" width="436" height="19.333333333333329"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -91,9 +94,9 @@
                 <constraint firstItem="mzM-7s-QAJ" firstAttribute="trailing" secondItem="7dM-wf-XVt" secondAttribute="trailing" id="P28-4p-vuZ"/>
                 <constraint firstAttribute="trailing" secondItem="7dM-wf-XVt" secondAttribute="trailing" id="R8T-yb-KS9"/>
                 <constraint firstItem="7dM-wf-XVt" firstAttribute="leading" secondItem="lGC-FZ-bOF" secondAttribute="trailing" constant="14" id="dIF-xB-plB"/>
-                <constraint firstItem="Su4-18-qWC" firstAttribute="leading" secondItem="lGC-FZ-bOF" secondAttribute="leading" id="eBv-Me-zAX"/>
+                <constraint firstItem="Su4-18-qWC" firstAttribute="leading" secondItem="lGC-FZ-bOF" secondAttribute="leading" constant="3" id="eBv-Me-zAX"/>
                 <constraint firstItem="7dM-wf-XVt" firstAttribute="bottom" secondItem="lGC-FZ-bOF" secondAttribute="centerY" id="rob-0U-Cgv"/>
-                <constraint firstItem="Su4-18-qWC" firstAttribute="bottom" secondItem="lGC-FZ-bOF" secondAttribute="bottom" id="svY-03-Jva"/>
+                <constraint firstItem="Su4-18-qWC" firstAttribute="bottom" secondItem="lGC-FZ-bOF" secondAttribute="bottom" constant="-3" id="svY-03-Jva"/>
                 <constraint firstItem="lGC-FZ-bOF" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="u2I-Lo-S8P"/>
                 <constraint firstItem="lGC-FZ-bOF" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="5" id="wpt-V3-pq2"/>
             </constraints>
@@ -109,14 +112,20 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <namedColor name="BGQunatity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGThumbNFT">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="Txt14">
-            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtQuantity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

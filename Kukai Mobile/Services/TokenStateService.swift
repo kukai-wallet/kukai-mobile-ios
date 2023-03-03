@@ -158,7 +158,7 @@ public class TokenStateService {
 	
 	
 	
-	// MARK: Re-order
+	// MARK: Reorder
 	
 	public func moveFavourite(tokenIndex fromIndex: Int, toIndex: Int) -> Bool {
 		favouriteBalances.move(fromOffsets: IndexSet([fromIndex]), toOffset: toIndex)

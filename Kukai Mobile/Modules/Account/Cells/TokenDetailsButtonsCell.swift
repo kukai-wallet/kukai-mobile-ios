@@ -9,13 +9,13 @@ import UIKit
 
 protocol TokenDetailsButtonsCellDelegate: AnyObject {
 	func favouriteTapped() -> Bool?
-	func buyTapped()
+	func swapTapped()
 }
 
 class TokenDetailsButtonsCell: UITableViewCell {
 	
 	@IBOutlet weak var favouriteButton: UIButton!
-	@IBOutlet weak var buyButton: UIButton!
+	@IBOutlet weak var swapButton: CustomisableButton!
 	@IBOutlet weak var moreButton: UIButton!
 	
 	private var buttonData: TokenDetailsButtonData? = nil
@@ -25,8 +25,7 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		self.buttonData = buttonData
 		self.delegate = delegate
 		
-		favouriteButton.setImage( buttonData.isFavourited ? UIImage(named: "favorites-on") : UIImage(named: "favorites-off") , for: .normal)
-		buyButton.isHidden = !buttonData.canBePurchased
+		favouriteButton.setImage( buttonData.isFavourited ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff") , for: .normal)
 		
 		if buttonData.hasMoreButton, let menu = moreMenu {
 			moreButton.isHidden = false
@@ -44,11 +43,11 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		}
 		
 		if let result = delegate?.favouriteTapped(){
-			favouriteButton.setImage( result ? UIImage(named: "favorites-on") : UIImage(named: "favorites-off") , for: .normal)
+			favouriteButton.setImage( result ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff") , for: .normal)
 		}
 	}
 	
-	@IBAction func buyTapped(_ sender: Any) {
-		delegate?.buyTapped()
+	@IBAction func swapButtonTapped(_ sender: Any) {
+		delegate?.swapTapped()
 	}
 }

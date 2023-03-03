@@ -27,14 +27,14 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
 		priceChangeLabel.text = "\(abs(value).rounded(scale: 2, roundingMode: .bankers))%"
 		
 		if value > 0 {
-			priceChangeIcon.image = UIImage(named: "arrow-up")
+			priceChangeIcon.image = UIImage(named: "ArrowUp")
 			priceChangeIcon.tintColor = UIColor.colorNamed("BGGood4")
 			priceChangeLabel.textColor = UIColor.colorNamed("TxtGood4")
 			
 		} else {
-			priceChangeIcon.image = UIImage(named: "arrow-down")
-			priceChangeIcon.tintColor = UIColor.colorNamed("BGAlert4")
-			priceChangeLabel.textColor = UIColor.colorNamed("TxtAlert4")
+			priceChangeIcon.image = UIImage(named: "ArrowDown")
+			priceChangeIcon.tintColor = UIColor.colorNamed("Txt10")
+			priceChangeLabel.textColor = UIColor.colorNamed("Txt10")
 		}
 	}
 }

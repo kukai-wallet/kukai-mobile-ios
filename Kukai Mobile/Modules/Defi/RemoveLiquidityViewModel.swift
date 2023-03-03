@@ -20,9 +20,9 @@ class RemoveLiquidityViewModel: ViewModel {
 	var lpTokenTitle = "XTZ"
 	var lpTokenBalanceText = "Balance: 0"
 	var lpTokenValidator = TokenAmountValidator(balanceLimit: TokenAmount.zero())
-	var lpToken1IconImage: UIImage? = UIImage(named: "tezos")
+	var lpToken1IconImage: UIImage? = UIImage.tezosToken()
 	var lpToken1IconURL: URL? = nil
-	var lpToken2IconImage: UIImage? = UIImage(named: "tezos")
+	var lpToken2IconImage: UIImage? = UIImage.tezosToken()
 	var lpToken2IconURL: URL? = nil
 	var lpTokenTextfieldInput = ""
 	
@@ -58,7 +58,7 @@ class RemoveLiquidityViewModel: ViewModel {
 		lpTokenTitle = "XTZ/\(position.exchange.token.symbol)"
 		lpTokenBalanceText = "Balance: \(lqtTokenBalance.normalisedRepresentation)"
 		lpTokenValidator = TokenAmountValidator(balanceLimit: lqtTokenBalance, decimalPlaces: lqtTokenBalance.decimalPlaces)
-		lpToken1IconImage = UIImage(named: "tezos")
+		lpToken1IconImage = UIImage.tezosToken()
 		lpToken1IconURL = nil
 		lpToken2IconImage = nil
 		lpToken2IconURL = tokenIconURL

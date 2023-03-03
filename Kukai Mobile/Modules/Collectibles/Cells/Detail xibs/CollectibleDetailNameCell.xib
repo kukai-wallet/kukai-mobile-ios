@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -12,8 +11,8 @@
         <array key="Figtree-Bold.ttf">
             <string>Figtree-Bold</string>
         </array>
-        <array key="Figtree-Medium.ttf">
-            <string>Figtree-Medium</string>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
         </array>
     </customFonts>
     <objects>
@@ -35,7 +34,7 @@
                         <color key="tintColor" name="BGB4"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="favourite-off"/>
+                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="FavoritesOff"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
                                 <real key="value" value="30"/>
                             </userDefinedRuntimeAttribute>
@@ -48,7 +47,7 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t4X-6d-7yz" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="266" y="8" width="34" height="34"/>
+                        <rect key="frame" x="274" y="8" width="34" height="34"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="34" id="W6V-sW-qTC"/>
                             <constraint firstAttribute="height" constant="34" id="oCR-hx-GSI"/>
@@ -56,7 +55,7 @@
                         <color key="tintColor" name="BGB4"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="share"/>
+                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Share"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
                                 <real key="value" value="25"/>
                             </userDefinedRuntimeAttribute>
@@ -77,7 +76,7 @@
                         <color key="tintColor" name="BGB4"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <userDefinedRuntimeAttributes>
-                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="circle-ellipses"/>
+                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnEllipseOutline_Dark"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
                                 <real key="value" value="30"/>
                             </userDefinedRuntimeAttribute>
@@ -85,6 +84,9 @@
                                 <real key="value" value="30"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="moreTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="cQl-RV-fNQ"/>
+                        </connections>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;name&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vqi-Iq-V2i">
                         <rect key="frame" x="0.0" y="58" width="358" height="23"/>
@@ -105,16 +107,30 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VH8-VN-qf9">
-                        <rect key="frame" x="32" y="92" width="310" height="18"/>
-                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
+                    <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VH8-VN-qf9" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                        <rect key="frame" x="32" y="87.666666666666671" width="59" height="27"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                         <color key="tintColor" name="BGB4"/>
                         <inset key="imageEdgeInsets" minX="8" minY="0.0" maxX="5" maxY="0.0"/>
                         <state key="normal" title="&lt;website&gt;">
                             <color key="titleColor" name="Txt8"/>
-                            <imageReference key="image" image="chevron-right" symbolScale="medium"/>
                         </state>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ChevronRight"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                <real key="value" value="7"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text=" Showcase (&lt;count&gt;)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ona-Lg-C3d">
+                        <rect key="frame" x="241" y="93.666666666666671" width="117" height="15"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="TxtB6"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -124,17 +140,19 @@
                 <constraint firstItem="VH8-VN-qf9" firstAttribute="centerY" secondItem="BlB-Cr-WmB" secondAttribute="centerY" id="3ag-eQ-fKH"/>
                 <constraint firstAttribute="trailing" secondItem="vqi-Iq-V2i" secondAttribute="trailing" id="Au1-xH-dSh"/>
                 <constraint firstItem="BlB-Cr-WmB" firstAttribute="leading" secondItem="vqi-Iq-V2i" secondAttribute="leading" id="Cvu-j5-dyx"/>
-                <constraint firstItem="1YF-RG-4MB" firstAttribute="leading" secondItem="t4X-6d-7yz" secondAttribute="trailing" constant="24" id="Kgf-NA-pF3"/>
+                <constraint firstAttribute="trailing" secondItem="ona-Lg-C3d" secondAttribute="trailing" id="HrM-mj-T5g"/>
+                <constraint firstItem="1YF-RG-4MB" firstAttribute="leading" secondItem="t4X-6d-7yz" secondAttribute="trailing" constant="16" id="Kgf-NA-pF3"/>
                 <constraint firstItem="VH8-VN-qf9" firstAttribute="leading" secondItem="BlB-Cr-WmB" secondAttribute="trailing" constant="8" id="KsA-gy-cwx"/>
                 <constraint firstItem="1YF-RG-4MB" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="QYz-Qd-Rhc"/>
                 <constraint firstItem="yZN-6N-2WX" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="TWL-Il-DD8"/>
                 <constraint firstAttribute="bottom" secondItem="BlB-Cr-WmB" secondAttribute="bottom" id="V3B-O8-bJn"/>
                 <constraint firstItem="BlB-Cr-WmB" firstAttribute="top" secondItem="vqi-Iq-V2i" secondAttribute="bottom" constant="8" id="WnO-2v-ZIH"/>
                 <constraint firstItem="yZN-6N-2WX" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Y5s-lI-RSA"/>
+                <constraint firstItem="ona-Lg-C3d" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VH8-VN-qf9" secondAttribute="trailing" constant="16" id="ey2-dV-mZD"/>
                 <constraint firstItem="vqi-Iq-V2i" firstAttribute="top" secondItem="yZN-6N-2WX" secondAttribute="bottom" constant="16" id="ieL-4v-Jwa"/>
                 <constraint firstItem="t4X-6d-7yz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="jvT-ps-pop"/>
+                <constraint firstItem="ona-Lg-C3d" firstAttribute="centerY" secondItem="VH8-VN-qf9" secondAttribute="centerY" id="qWd-BA-46z"/>
                 <constraint firstAttribute="trailing" secondItem="1YF-RG-4MB" secondAttribute="trailing" id="vW7-ZC-H8j"/>
-                <constraint firstItem="VH8-VN-qf9" firstAttribute="trailing" secondItem="vqi-Iq-V2i" secondAttribute="trailing" constant="-16" id="wBJ-nv-Q2q"/>
             </constraints>
             <size key="customSize" width="358" height="113"/>
             <connections>
@@ -142,17 +160,29 @@
                 <outlet property="moreButton" destination="1YF-RG-4MB" id="4Yl-CK-NLV"/>
                 <outlet property="nameLabel" destination="vqi-Iq-V2i" id="AOv-F6-Oxo"/>
                 <outlet property="shareButton" destination="t4X-6d-7yz" id="y4L-Fs-36s"/>
+                <outlet property="showcaseLabel" destination="ona-Lg-C3d" id="Bxm-gw-pOF"/>
                 <outlet property="websiteButton" destination="VH8-VN-qf9" id="geT-i8-a69"/>
                 <outlet property="websiteImageView" destination="BlB-Cr-WmB" id="KHv-JV-mZu"/>
             </connections>
             <point key="canvasLocation" x="-3.0769230769230766" y="43.009478672985779"/>
         </collectionViewCell>
     </objects>
+    <designables>
+        <designable name="1YF-RG-4MB">
+            <size key="intrinsicContentSize" width="30" height="30"/>
+        </designable>
+        <designable name="t4X-6d-7yz">
+            <size key="intrinsicContentSize" width="25" height="30"/>
+        </designable>
+        <designable name="yZN-6N-2WX">
+            <size key="intrinsicContentSize" width="30" height="30"/>
+        </designable>
+    </designables>
     <resources>
-        <image name="chevron-right" width="12" height="18"/>
-        <image name="circle-ellipses" width="36" height="36"/>
-        <image name="favourite-off" width="22" height="22"/>
-        <image name="share" width="20" height="24"/>
+        <image name="ChevronRight" width="10" height="18"/>
+        <image name="FavoritesOff" width="22" height="22"/>
+        <image name="Share" width="20" height="24"/>
+        <image name="btnEllipseOutline_Dark" width="36" height="36"/>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -161,6 +191,9 @@
         </namedColor>
         <namedColor name="Txt8">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB6">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

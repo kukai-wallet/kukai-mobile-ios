@@ -20,7 +20,8 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		viewModel.moreMenu = menuForMore()
+		viewModel.sortMenu = sortMenu()
+		viewModel.moreMenu = moreMenu()
 		viewModel.validatorTextfieldDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
@@ -101,14 +102,30 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 		}
 	}
 	
-	func menuForMore() -> UIMenu {
-		let options: [UIAction] = [
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "Hidden_On"), identifier: nil, handler: { [weak self] action in
+	func sortMenu() -> MenuViewController {
+		let choices: [MenuChoice] = [
+			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents")?.resizedImage(Size: CGSize(width: 24, height: 24)), identifier: nil, handler: { [weak self] action in
+				self?.alert(errorWithMessage: "Recent sort not functional yet")
+			})),
+			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+				self?.alert(errorWithMessage: "Alphabetical sort not functional yet")
+			})),
+			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(Size: CGSize(width: 26, height: 20)), identifier: nil, handler: { [weak self] action in
+				self?.alert(errorWithMessage: "CollectionGroupView sort not functional yet")
+			}))
+		]
+		
+		return MenuViewController(choices: choices, header: "Sort Tokens", sourceViewController: self)
+	}
+	
+	func moreMenu() -> MenuViewController {
+		let actions: [UIAction] = [
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn")?.resizedImage(Size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
 		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: options)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }
 

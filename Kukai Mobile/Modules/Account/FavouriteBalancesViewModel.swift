@@ -83,11 +83,10 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			if let amount = item as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage.tezosToken().resizedImage(Size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
-					cell.setFav(true)
-					cell.containerView.layer.opacity = 0.5
+					cell.setup(isFav: true, isLocked: true)
 					
 					return cell
 				}
@@ -97,7 +96,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
-				cell.setFav(obj.isFavourite)
+				cell.setup(isFav: obj.isFavourite, isLocked: false)
 				
 				return cell
 				
@@ -166,7 +165,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		
 		if TokenStateService.shared.isFavourite(token: token).isFavourite {
 			if TokenStateService.shared.removeFavourite(token: token) {
-				cell.setFav(false)
+				cell.setup(isFav: false, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates()
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount -= 1
@@ -177,7 +176,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 		} else {
 			if TokenStateService.shared.addFavourite(token: token) {
-				cell.setFav(true)
+				cell.setup(isFav: true, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates()
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount += 1

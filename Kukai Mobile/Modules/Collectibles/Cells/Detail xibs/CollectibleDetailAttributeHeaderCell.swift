@@ -16,10 +16,10 @@ class CollectibleDetailAttributeHeaderCell: UICollectionViewCell {
     }
 	
 	public func setOpen() {
-		chevronImage.rotate(degrees: 180, duration: 0.3)
+		chevronImage.rotateBack(duration: 0.3)
 	}
 	
 	public func setClosed() {
-		chevronImage.rotateBack(duration: 0.3)
+		chevronImage.rotate(degrees: 180, duration: 0.3)
 	}
 }

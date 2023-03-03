@@ -23,11 +23,13 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 	@IBOutlet weak var nameLabel: UILabel!
 	@IBOutlet weak var websiteImageView: UIImageView!
 	@IBOutlet weak var websiteButton: UIButton!
+	@IBOutlet weak var showcaseLabel: UILabel!
 	
 	private var nft: NFT? = nil
 	private var isImage: Bool = false
 	private var isFavouritedNft: Bool = false
 	private var isHiddenNft: Bool = false
+	private var menuVc: MenuViewController? = nil
 	
 	public weak var delegate: CollectibleDetailNameCellDelegate? = nil
 	
@@ -38,24 +40,33 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		websiteButton.setImage(websiteButton.image(for: .normal)?.resizedImage(Size: CGSize(width: 13, height: 13)), for: .normal)
     }
 	
-	func setup(nft: NFT?, isImage: Bool, isFavourited: Bool, isHidden: Bool) {
+	func setup(nft: NFT?, isImage: Bool, isFavourited: Bool, isHidden: Bool, showcaseCount: Int, menuSourceVc: UIViewController) {
 		self.nft = nft
 		self.isImage = isImage
 		self.isFavouritedNft = isFavourited
 		self.isHiddenNft = isHidden
 		
 		favouriteButton.isSelected = isFavourited
-		moreButton.menu = menuForMore()
-		moreButton.showsMenuAsPrimaryAction = true
+		menuVc = menuForMore(sourceViewController: menuSourceVc)
+		
+		if showcaseCount > 0 {
+			showcaseLabel.text = "Showcase (\(showcaseCount))"
+		} else {
+			showcaseLabel.isHidden = true
+		}
 	}
 	
-	func menuForMore() -> UIMenu {
+	@IBAction func moreTapped(_ sender: UIButton) {
+		menuVc?.display(attachedTo: sender)
+	}
+	
+	func menuForMore(sourceViewController: UIViewController) -> MenuViewController {
 		var actions: [UIAction] = []
 		
 		
 		if isImage {
 			actions.append(
-				UIAction(title: "Save to Photos", image: UIImage(named: "arrow-down"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos")?.resizedImage(Size: CGSize(width: 21, height: 24)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft, let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
 						return
 					}
@@ -77,13 +88,13 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		actions.append(UIAction(title: "Token Contract", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
+		actions.append(UIAction(title: "Token Contract", image: UIImage(named: "About")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 			self?.delegate?.tokenContractDisplayRequested()
 		}))
 		
 		if isHiddenNft {
 			actions.append(
-				UIAction(title: "Unhide Collectible", image: UIImage(named: "hidden-off"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff")?.resizedImage(Size: CGSize(width: 24, height: 17)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}
@@ -100,7 +111,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		} else {
 			actions.append(
-				UIAction(title: "Hide Collectible", image: UIImage(named: "hidden-on"), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn")?.resizedImage(Size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}
@@ -117,7 +128,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: sourceViewController)
 	}
 	
 	

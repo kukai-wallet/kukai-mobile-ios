@@ -13,6 +13,7 @@ extension UIFont {
 		case regular = "Figtree-Regular"
 		case medium = "Figtree-Medium"
 		case bold = "Figtree-Bold"
+		case semiBold = "Figtree-SemiBold"
 	}
 	
 	static func custom(ofType type: fontType, andSize size: CGFloat) -> UIFont {

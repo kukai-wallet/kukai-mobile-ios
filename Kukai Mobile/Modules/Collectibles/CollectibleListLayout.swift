@@ -62,7 +62,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 		for groupIndex in 0..<numberOfSections {
 			for (itemIndex, item) in data.itemIdentifiers(inSection: groupIndex).enumerated() {
 				var frame = CGRect.zero
-				if item is ControlGroupData {
+				if item is MenuViewController {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
 					
 				} else if item is SpecialGroupData {
@@ -96,7 +96,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 		for groupIndex in 0..<numberOfSections {
 			for (itemIndex, item) in data.itemIdentifiers(inSection: groupIndex).enumerated() {
 				var frame = CGRect.zero
-				if item is ControlGroupData {
+				if item is MenuViewController {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
 					
 				} else {

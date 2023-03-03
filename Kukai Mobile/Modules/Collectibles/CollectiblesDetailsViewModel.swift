@@ -9,6 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import AVKit
 import MediaPlayer
+import OSLog
 
 
 // MARK: Content objects
@@ -32,10 +33,7 @@ struct NameContent: Hashable {
 	let collectionIcon: URL?
 	let collectionName: String?
 	let collectionLink: URL?
-}
-
-struct ShowcaseContent: Hashable {
-	let count: Int
+	let showcaseCount: Int
 }
 
 struct SendContent: Hashable {
@@ -67,11 +65,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	private var avPlayer: AVPlayer? = nil
 	private var avPlayerLayer: AVPlayerLayer? = nil
-	/*
-	 private var playerController: AVPlayerViewController? = nil
-	 private var playerControllerBackground = UIImageView(frame: CGRect(x: 0, y: 0, width: 300, height: 300))
-	 private var playerLooper: AVPlayerLooper? = nil
-	 */
 	
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
@@ -80,10 +73,11 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var isImage = false
 	var isFavourited = false
 	var isHidden = false
-	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil)
-	var attributesContent = AttributesContent(expanded: false)
+	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil, showcaseCount: 0)
+	var attributesContent = AttributesContent(expanded: true)
 	var attributes: [TzKTBalanceMetadataAttributeKeyValue] = []
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
+	weak var menuSourceController: UIViewController? = nil
 	
 	
 	
@@ -94,7 +88,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectibleDetailImageCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailImageCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAVCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAVCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailNameCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailNameCell")
-		collectionView.register(UINib(nibName: "CollectibleDetailShowcaseCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailShowcaseCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailSendCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailSendCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailDescriptionCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailDescriptionCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeHeaderCell")
@@ -120,9 +113,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			} else if let item = item as? NameContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? ShowcaseContent {
-				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailShowcaseCell", for: indexPath), withItem: item)
-				
 			} else if let item = item as? SendContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: item)
 				
@@ -133,6 +123,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: item)
 				
 			} else {
+				os_log("Collectible details unknown type: %@", type: .error, "\(item)")
 				return self.configure(cell: nil, withItem: item)
 			}
 		})
@@ -147,6 +138,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		reusableAttributeSizingCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
 		reusableAttributeSizingCell?.keyLabel.text = "a"
 		reusableAttributeSizingCell?.valueLabel.text = "b"
+		reusableAttributeSizingCell?.percentLabel.text = "c"
 		
 		isFavourited = TokenStateService.shared.isFavourite(nft: nft)
 		isHidden = TokenStateService.shared.isHidden(nft: nft)
@@ -160,7 +152,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		var section1Content: [CellDataType] = []
 		
 		let nameIcon = DependencyManager.shared.tzktClient.avatarURL(forToken: nft.parentContract)
-		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil)
+		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil, showcaseCount: 2)
 		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
@@ -172,15 +164,17 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			self.isImage = response.mediaContent.isImage
 			section1Content.append(response.mediaContent)
 			section1Content.append(self.nameContent)
-			section1Content.append(ShowcaseContent(count: 1))
 			section1Content.append(SendContent(enabled: true))
 			section1Content.append(DescriptionContent(description: self.nft?.description ?? ""))
 			
 			if self.attributes.count > 0 {
 				section1Content.append(self.attributesContent)
+				self.currentSnapshot.appendItems(section1Content, toSection: 0)
+				self.currentSnapshot.appendItems(self.attributes, toSection: 1)
+				
+			} else {
+				self.currentSnapshot.appendItems(section1Content, toSection: 0)
 			}
-			
-			self.currentSnapshot.appendItems(section1Content, toSection: 0)
 			
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
 			self.state = .success(nil)
@@ -418,6 +412,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		if let obj = item as? TzKTBalanceMetadataAttributeKeyValue, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
 			parsedCell.keyLabel.text = obj.key
 			parsedCell.valueLabel.text = obj.value
+			parsedCell.percentLabel.text = "0%"
 			return parsedCell
 			
 		} else if let item = item as? OnSaleData, let parsedCell = cell as? CollectibleDetailOnSaleCell {
@@ -444,25 +439,21 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				let title = self.nft?.name ?? ""
 				let artist = self.nft?.parentAlias ?? ""
 				let album = self.nft?.parentContract ?? ""
-				parsedCell.setup(mediaContent: obj, airPlayName: title, airPlayArtist: artist, airPlayAlbum: album, player: player, playerLayer: self.avPlayerLayer)
+				parsedCell.setup(mediaContent: obj, airPlayName: title, airPlayArtist: artist, airPlayAlbum: album, player: player, playerLayer: self.avPlayerLayer, layoutOnly: layoutOnly)
 			}
 			
 			return parsedCell
 			
-		} else if let obj = item as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
+		} else if let obj = item as? NameContent, let sourceVc = menuSourceController, let parsedCell = cell as? CollectibleDetailNameCell {
 			parsedCell.nameLabel.text = obj.name
 			parsedCell.websiteButton.setTitle(obj.collectionName, for: .normal)
-			parsedCell.setup(nft: nft, isImage: isImage, isFavourited: isFavourited, isHidden: isHidden)
+			parsedCell.setup(nft: nft, isImage: isImage, isFavourited: isFavourited, isHidden: isHidden, showcaseCount: obj.showcaseCount, menuSourceVc: sourceVc)
 			parsedCell.delegate = self.actionsDelegate
 			
 			if !layoutOnly {
 				MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
 			}
 			
-			return parsedCell
-			
-		} else if let obj = item as? ShowcaseContent, let parsedCell = cell as? CollectibleDetailShowcaseCell {
-			parsedCell.showcaseLabel.text = "In Showcase (\(obj.count))"
 			return parsedCell
 			
 		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
@@ -517,9 +508,6 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 			
 		} else if let item = item as? NameContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item, layoutOnly: true)
-			
-		} else if let item = item as? ShowcaseContent {
-			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailShowcaseCell", ofType: CollectibleDetailShowcaseCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? SendContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item, layoutOnly: true)

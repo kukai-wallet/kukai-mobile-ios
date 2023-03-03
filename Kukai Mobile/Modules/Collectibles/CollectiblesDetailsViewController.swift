@@ -29,6 +29,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.sendTarget = self
 		viewModel.sendAction = #selector(self.sendTapped)
 		viewModel.actionsDelegate = self
+		viewModel.menuSourceController = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self

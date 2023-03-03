@@ -61,7 +61,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage(named: "tezos")?.resizedImage(Size: CGSize(width: 50, height: 50))
+				cell.iconView.image = UIImage.tezosToken().resizedImage(Size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "Tez"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
 				cell.setPriceChange(value: 100)

@@ -49,10 +49,10 @@
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="24H">
-                                    <color key="titleColor" name="TxtBtnMicroB1"/>
+                                    <color key="titleColor" name="TxtBtnGraph1"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" name="Grey1200"/>
+                                    <color key="titleColor" name="TxtBtnGraphOn1"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -63,6 +63,9 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="dayButtonTapped:" destination="nv8-lb-vdw" eventType="touchUpInside" id="jcH-E1-lZ0"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b6H-d2-nWK">
                                 <rect key="frame" x="138.66666666666666" y="0.0" width="34" height="24"/>
@@ -74,10 +77,10 @@
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="1W">
-                                    <color key="titleColor" name="TxtBtnMicroB1"/>
+                                    <color key="titleColor" name="TxtBtnGraph1"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" name="Grey1200"/>
+                                    <color key="titleColor" name="TxtBtnGraphOn1"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -88,6 +91,9 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="weekButtonTapped:" destination="nv8-lb-vdw" eventType="touchUpInside" id="Ymc-bf-QSy"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="syf-Ih-djo">
                                 <rect key="frame" x="188.66666666666666" y="0.0" width="34" height="24"/>
@@ -99,10 +105,10 @@
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="1M">
-                                    <color key="titleColor" name="TxtBtnMicroB1"/>
+                                    <color key="titleColor" name="TxtBtnGraph1"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" name="Grey1200"/>
+                                    <color key="titleColor" name="TxtBtnGraphOn1"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -113,6 +119,9 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="monthButtonTapped:" destination="nv8-lb-vdw" eventType="touchUpInside" id="eVW-8J-kra"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gcb-kf-8RQ">
                                 <rect key="frame" x="238.66666666666666" y="0.0" width="33.999999999999972" height="24"/>
@@ -124,10 +133,10 @@
                                 <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="1Y">
-                                    <color key="titleColor" name="TxtBtnMicroB1"/>
+                                    <color key="titleColor" name="TxtBtnGraph1"/>
                                 </state>
                                 <state key="selected">
-                                    <color key="titleColor" name="Grey1200"/>
+                                    <color key="titleColor" name="TxtBtnGraphOn1"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -138,6 +147,9 @@
                                         <real key="value" value="1"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="yearButtonTapped:" destination="nv8-lb-vdw" eventType="touchUpInside" id="7g3-6Z-k3O"/>
+                                </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZxZ-gP-g4H">
                                 <rect key="frame" x="288.66666666666669" y="0.0" width="72.333333333333314" height="24"/>
@@ -175,14 +187,14 @@
         </tableViewCell>
     </objects>
     <resources>
-        <namedColor name="Grey1200">
-            <color red="0.41176470588235292" green="0.41568627450980394" blue="0.50196078431372548" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="TxtBtnMicroB1">
-            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="TxtBtnGraph1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtBtnGraphOn1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>

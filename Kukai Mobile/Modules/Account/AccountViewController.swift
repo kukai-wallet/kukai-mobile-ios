@@ -89,14 +89,14 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	func menuVCForBalancesMore() -> MenuViewController {
 		let actions: [UIAction] = [
-			UIAction(title: "Favourites", image: UIImage(named: "favourite-off"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "Favourites", image: UIImage(named: "FavoritesOn")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "hidden-on"), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(Size: CGSize(width: 26, height: 17)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
 		
-		return MenuViewController(actions: [actions], sourceViewController: self)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }

@@ -16,7 +16,7 @@ class TokenDetailsSendCell: UITableViewCell {
 	func setup(data: TokenDetailsSendData) {
 		
 		if data.isBuyTez {
-			var image = UIImage(named: "plus")
+			var image = UIImage(named: "Plus")
 			image = image?.resizedImage(Size: CGSize(width: 15, height: 15))
 			image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
 			
@@ -26,11 +26,6 @@ class TokenDetailsSendCell: UITableViewCell {
 			sendButton.configuration?.imagePlacement = .leading
 			
 		} else {
-			var image = UIImage(named: "arrow-up-right")
-			image = image?.resizedImage(Size: CGSize(width: 15, height: 15))
-			image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
-			
-			sendButton.setImage(image, for: .normal)
 			sendButton.configuration?.attributedTitle = AttributedString("Send", attributes: AttributeContainer( [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 20)] ))
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .trailing

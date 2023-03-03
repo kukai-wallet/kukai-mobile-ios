@@ -31,10 +31,10 @@ class TokenDetailsChartCell: UITableViewCell {
 	private weak var delegate: TokenDetailsChartCellDelegate? = nil
 	private weak var chartController: ChartHostingController? = nil
 	private var allChartData: AllChartData? = nil
-	private let chartButtonBackgroundColor = UIColor.colorNamed("BtnMicroB1")
-	private let chartButtonBorderColor = UIColor.colorNamed("BtnStrokeMicroB1")
+	private let chartButtonBackgroundColor = UIColor.colorNamed("BtnGraphB1")
+	private let chartButtonBorderColor = UIColor.clear
 	private let chartButtonSelectedBackgroundColor = UIColor.colorNamed("BtnMicro1")
-	private let chartButtonSelectedBorderColor = UIColor.colorNamed("BtnStrokeMicro1")
+	private let chartButtonSelectedBorderColor = UIColor.clear
 	
 	
 	func setup() {

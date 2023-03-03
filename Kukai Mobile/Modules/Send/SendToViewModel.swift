@@ -77,13 +77,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
 				
 			} else if wallet.type == .hd {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: nil, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage.tezosToken(), title: nil, address: wallet.address))
 				for child in wallet.children {
 					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: nil, address: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: UIImage(named: "tezos"), title: nil, address: wallet.address))
+				walletObjs.append(WalletObj(icon: UIImage.tezosToken(), title: nil, address: wallet.address))
 			}
 		}
 		
@@ -106,9 +106,10 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		state = .success(nil)
 	}
 	
+	// TODO: centralise
 	func imageAndTitleForSocialWallet(wallet: WalletMetadata) -> (image: UIImage?, title: String) {
 		if wallet.type != .social {
-			return (image: UIImage(named: "tezos"), title: wallet.address)
+			return (image: UIImage.tezosToken(), title: wallet.address)
 		}
 		
 		switch wallet.socialType {
@@ -122,13 +123,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return (image: UIImage(named: "social-google"), title: wallet.displayName ?? wallet.address)
 				
 			case .reddit:
-				return (image: UIImage(named: "tezos"), title: wallet.displayName ?? wallet.address)
+				return (image: UIImage.tezosToken(), title: wallet.displayName ?? wallet.address)
 				
 			case .facebook:
-				return (image: UIImage(named: "tezos"), title: wallet.displayName ?? wallet.address)
+				return (image: UIImage.tezosToken(), title: wallet.displayName ?? wallet.address)
 				
 			case .none:
-				return (image: UIImage(named: "tezos"), title: wallet.address)
+				return (image: UIImage.tezosToken(), title: wallet.address)
 		}
 	}
 	

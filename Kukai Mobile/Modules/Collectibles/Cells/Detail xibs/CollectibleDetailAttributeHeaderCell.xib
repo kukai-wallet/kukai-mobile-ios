@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_0" orientation="portrait" appearance="light"/>
+    <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -23,13 +23,13 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" text="Attributes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LyG-Wb-pyY">
-                        <rect key="frame" x="0.0" y="16" width="324" height="50"/>
+                        <rect key="frame" x="0.0" y="16" width="324" height="42"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron-down" translatesAutoresizingMaskIntoConstraints="NO" id="0tn-Kb-5dU">
-                        <rect key="frame" x="340" y="35" width="18" height="12"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronUp" translatesAutoresizingMaskIntoConstraints="NO" id="0tn-Kb-5dU">
+                        <rect key="frame" x="340" y="31" width="18" height="12"/>
                         <color key="tintColor" name="BGB4"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="12" id="OFk-az-Edu"/>
@@ -43,7 +43,7 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="0tn-Kb-5dU" secondAttribute="trailing" id="Ak9-6I-xdU"/>
                 <constraint firstItem="0tn-Kb-5dU" firstAttribute="centerY" secondItem="LyG-Wb-pyY" secondAttribute="centerY" id="FCA-r2-NA5"/>
-                <constraint firstAttribute="bottom" secondItem="LyG-Wb-pyY" secondAttribute="bottom" id="Qdc-oA-oM4"/>
+                <constraint firstAttribute="bottom" secondItem="LyG-Wb-pyY" secondAttribute="bottom" constant="8" id="Qdc-oA-oM4"/>
                 <constraint firstItem="LyG-Wb-pyY" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="VOf-iM-O2x"/>
                 <constraint firstItem="LyG-Wb-pyY" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="16" id="gZ1-5f-X5r"/>
                 <constraint firstItem="0tn-Kb-5dU" firstAttribute="leading" secondItem="LyG-Wb-pyY" secondAttribute="trailing" constant="16" id="uXW-l2-GN1"/>
@@ -56,7 +56,7 @@
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="chevron-down" width="18" height="12"/>
+        <image name="ChevronUp" width="18" height="10"/>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -28,13 +28,13 @@ class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerVie
 		
 		if data.groupType == .receive {
 			color = UIColor.colorNamed("TxtB6")
-			typeimage = UIImage(named: "arrow-down-right") ?? UIImage.unknownToken()
+			typeimage = UIImage(named: "ArrowReceive") ?? UIImage.unknownToken()
 			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 			
 		} else {
 			color = UIColor.colorNamed("Txt10")
-			typeimage = UIImage(named: "arrow-up-right") ?? UIImage.unknownToken()
+			typeimage = UIImage(named: "ArrowSend") ?? UIImage.unknownToken()
 			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 		}
@@ -52,9 +52,9 @@ class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerVie
 	
 	private func destinationFrom(_ group: TzKTTransactionGroup) -> String {
 		if group.groupType == .send {
-			return group.transactions[0].target?.alias ?? group.transactions[0].target?.address ?? ""
+			return group.transactions[0].target?.alias ?? group.transactions[0].target?.address.truncateTezosAddress() ?? ""
 		} else {
-			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address
+			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address.truncateTezosAddress()
 		}
 	}
 }

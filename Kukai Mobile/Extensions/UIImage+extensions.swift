@@ -49,6 +49,10 @@ extension UIImage {
 		return rectangleImage!
 	}
 	
+	class func tezosToken() -> UIImage {
+		return UIImage(named: "Social_TZ_Ovalcolor") ?? UIImage()
+	}
+	
 	class func unknownToken() -> UIImage {
 		return UIImage(named: "unknown")?.resizedImage(Size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}

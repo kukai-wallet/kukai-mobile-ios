@@ -77,8 +77,8 @@ struct ChartView: View {
 	private let gradient = LinearGradient(
 		gradient: Gradient(
 			colors: [
-				Color(red: 0.333, green: 0.361, blue: 0.792, opacity: 0.48),
-				Color(red: 0.333, green: 0.361, blue: 0.792, opacity: 0)
+				Color(UIColor.colorNamed("gradGraphToken-1")),
+				Color(UIColor.colorNamed("gradGraphToken-2"))
 			]
 		),
 		startPoint: .top,
@@ -103,8 +103,8 @@ struct ChartView: View {
 					
 					VStack(alignment: .trailing) {
 						Text(doubleFormatter(maxData?.value))
-							.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
-							.foregroundStyle(Color("Grey900"))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+							.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
 						
 					}
 					.offset(x: boxOffset)
@@ -124,7 +124,7 @@ struct ChartView: View {
 				
 				LineMark(x: .value("Date", element.date), y: .value("Value", element.value))
 					.lineStyle(StrokeStyle(lineWidth: 3))
-					.foregroundStyle(Color("Brand1200"))
+					.foregroundStyle(Color(UIColor.colorNamed("BGB2")))
 					.interpolationMethod(.linear)
 			}
 		}
@@ -179,8 +179,8 @@ struct ChartView: View {
 				
 				VStack(alignment: .trailing) {
 					Text(doubleFormatter(minData?.value))
-						.font(Font(UIFont.custom(ofType: .bold, andSize: 10)))
-						.foregroundStyle(Color("Grey900"))
+						.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+						.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
 					
 				}
 				.offset(x: boxOffset, y: minDataPoint.y + 8)
@@ -189,12 +189,12 @@ struct ChartView: View {
 				// If the user is dragging their finger across the chart, compute and record the closest datapoint
 				if isDragging {
 					Circle()
-						.fill(Color("Brand500").opacity(0.1))
+						.fill(Color(UIColor.colorNamed("BGB8")).opacity(0.1))
 						.frame(width: 32, height: 32)
 						.position(x: selectedDataPoint.x, y: selectedDataPoint.y)
 					
 					Circle()
-						.fill(Color("Brand500"))
+						.fill(Color(UIColor.colorNamed("BGB8")))
 						.frame(width: 6, height: 6)
 						.position(x: selectedDataPoint.x, y: selectedDataPoint.y)
 				}
