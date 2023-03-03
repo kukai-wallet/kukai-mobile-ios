@@ -37,6 +37,12 @@
 		C00AE0072887017400184DF7 /* SwapTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00AE0062887017400184DF7 /* SwapTokenCell.swift */; };
 		C0122E4829A663CB00FFE8F7 /* ConnectedApps.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0122E4729A663CB00FFE8F7 /* ConnectedApps.storyboard */; };
 		C012792C29B0AF1800BDC08E /* Figtree-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C012792B29B0AF1700BDC08E /* Figtree-SemiBold.ttf */; };
+		C01372AA29B206CD0083E297 /* MenuActionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01372A829B206CD0083E297 /* MenuActionCell.swift */; };
+		C01372AB29B206CD0083E297 /* MenuActionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01372A929B206CD0083E297 /* MenuActionCell.xib */; };
+		C01372AE29B206E00083E297 /* MenuChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01372AC29B206E00083E297 /* MenuChoiceCell.swift */; };
+		C01372AF29B206E00083E297 /* MenuChoiceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01372AD29B206E00083E297 /* MenuChoiceCell.xib */; };
+		C01372B229B206FF0083E297 /* MenuHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01372B029B206FF0083E297 /* MenuHeaderCell.swift */; };
+		C01372B329B206FF0083E297 /* MenuHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01372B129B206FF0083E297 /* MenuHeaderCell.xib */; };
 		C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3A282956B9005F50B8 /* BeaconViewController.swift */; };
 		C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */; };
 		C015F8D5285B407200FF4C71 /* PrototypeChooseTokenMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015F8D4285B407200FF4C71 /* PrototypeChooseTokenMain.swift */; };
@@ -345,6 +351,12 @@
 		C00AE0062887017400184DF7 /* SwapTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenCell.swift; sourceTree = "<group>"; };
 		C0122E4729A663CB00FFE8F7 /* ConnectedApps.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ConnectedApps.storyboard; sourceTree = "<group>"; };
 		C012792B29B0AF1700BDC08E /* Figtree-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Figtree-SemiBold.ttf"; sourceTree = "<group>"; };
+		C01372A829B206CD0083E297 /* MenuActionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuActionCell.swift; sourceTree = "<group>"; };
+		C01372A929B206CD0083E297 /* MenuActionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuActionCell.xib; sourceTree = "<group>"; };
+		C01372AC29B206E00083E297 /* MenuChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuChoiceCell.swift; sourceTree = "<group>"; };
+		C01372AD29B206E00083E297 /* MenuChoiceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuChoiceCell.xib; sourceTree = "<group>"; };
+		C01372B029B206FF0083E297 /* MenuHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuHeaderCell.swift; sourceTree = "<group>"; };
+		C01372B129B206FF0083E297 /* MenuHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuHeaderCell.xib; sourceTree = "<group>"; };
 		C015BB3A282956B9005F50B8 /* BeaconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewController.swift; sourceTree = "<group>"; };
 		C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewModel.swift; sourceTree = "<group>"; };
 		C015F8D4285B407200FF4C71 /* PrototypeChooseTokenMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrototypeChooseTokenMain.swift; sourceTree = "<group>"; };
@@ -702,6 +714,20 @@
 			path = ConnectedApps;
 			sourceTree = "<group>";
 		};
+		C01372A729B206810083E297 /* MenuViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C0742C52297ADC8E005D6DB0 /* MenuViewController.swift */,
+				C01372B029B206FF0083E297 /* MenuHeaderCell.swift */,
+				C01372B129B206FF0083E297 /* MenuHeaderCell.xib */,
+				C01372A829B206CD0083E297 /* MenuActionCell.swift */,
+				C01372A929B206CD0083E297 /* MenuActionCell.xib */,
+				C01372AC29B206E00083E297 /* MenuChoiceCell.swift */,
+				C01372AD29B206E00083E297 /* MenuChoiceCell.xib */,
+			);
+			path = MenuViewController;
+			sourceTree = "<group>";
+		};
 		C0239B982886B90900E0C973 /* Defi */ = {
 			isa = PBXGroup;
 			children = (
@@ -841,6 +867,7 @@
 		C06EA1A426A56C3F006029CF /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				C01372A729B206810083E297 /* MenuViewController */,
 				C0EF1BBF2892968000AA5DD4 /* SlideButton */,
 				C0A321D427C68BA300D7788B /* Validators */,
 				C09860B527C3DE3700F888AF /* EnterAddressComponent */,
@@ -858,7 +885,6 @@
 				C084624429195C9D00B7D62D /* AccountButton.swift */,
 				C0BB8BA0293F5E6200C0E1DD /* CustomisableButton.swift */,
 				C039C3BC298BDB0000112500 /* MultiStateGradientButton.swift */,
-				C0742C52297ADC8E005D6DB0 /* MenuViewController.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1401,9 +1427,11 @@
 				C0503660271ED8F300E7A664 /* Home.storyboard in Resources */,
 				C0503663271ED8FD00E7A664 /* Send.storyboard in Resources */,
 				C0EA19DB29096E4600E6B40D /* CollectibleDetailDescriptionCell.xib in Resources */,
+				C01372AB29B206CD0083E297 /* MenuActionCell.xib in Resources */,
 				C01A6349297847AA00278689 /* TokenDetailsSendCell.xib in Resources */,
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
 				C01A634B297847FB00278689 /* TokenDetailsStakingRewardsCell.xib in Resources */,
+				C01372B329B206FF0083E297 /* MenuHeaderCell.xib in Resources */,
 				C08C973D2908165D00249959 /* CollectibleDetailAttributeItemCell.xib in Resources */,
 				C0EA19DF29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.xib in Resources */,
 				C01A634F2978481100278689 /* TokenDetailsActivityItemCell.xib in Resources */,
@@ -1420,6 +1448,7 @@
 				C01A63452978470000278689 /* TokenDetailsBalanceAndBakerCell_nobaker.xib in Resources */,
 				C01A6355297848B200278689 /* TokenDetailsActivityHeaderCell_footer.xib in Resources */,
 				C0B768B729477B5000EF893E /* CollectibleSpecialGroupCell.xib in Resources */,
+				C01372AF29B206E00083E297 /* MenuChoiceCell.xib in Resources */,
 				C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */,
 				C0ABB81029AFB315002F1BF7 /* Activity.storyboard in Resources */,
 				C01A63532978482800278689 /* TokenDetailsMessageCell.xib in Resources */,
@@ -1483,6 +1512,7 @@
 				C0081FD627D8FE2300F7FEFF /* ActivityViewController.swift in Sources */,
 				C06997F12832946B00F6929D /* UITextView+extensions.swift in Sources */,
 				C0BAE0042915566300E78C26 /* UIFont+extensions.swift in Sources */,
+				C01372AE29B206E00083E297 /* MenuChoiceCell.swift in Sources */,
 				C0DAD65826B00D64001DF430 /* LoginViewController.swift in Sources */,
 				C08C97432908344300249959 /* Collection+extensions.swift in Sources */,
 				C0FA565C27BFFC0A00AFC9A7 /* CollectiblesViewModel.swift in Sources */,
@@ -1624,6 +1654,7 @@
 				C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */,
 				C0E2317D29897BB5007BC79D /* SendTokenConfirmViewController.swift in Sources */,
 				C07374A3279836F000726C01 /* Option1TokenCell.swift in Sources */,
+				C01372AA29B206CD0083E297 /* MenuActionCell.swift in Sources */,
 				C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */,
 				C08C973C2908165D00249959 /* CollectibleDetailAttributeItemCell.swift in Sources */,
 				C00AE0032886F66A00184DF7 /* SwapViewController.swift in Sources */,
@@ -1635,6 +1666,7 @@
 				C0536910282BCCBC0006A1C4 /* BeaconApproveViewController.swift in Sources */,
 				C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */,
 				C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */,
+				C01372B229B206FF0083E297 /* MenuHeaderCell.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
 				C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */,
 				C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */,

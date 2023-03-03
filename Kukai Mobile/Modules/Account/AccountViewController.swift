@@ -97,6 +97,6 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			}),
 		]
 		
-		return MenuViewController(actions: [actions], sourceViewController: self)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }

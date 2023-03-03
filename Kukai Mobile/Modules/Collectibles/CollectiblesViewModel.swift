@@ -34,7 +34,8 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	var isSearching = false
 	var expandedIndex: IndexPath? = nil
 	var previousSectionCount = 0
-	var moreMenuVc: MenuViewController? = nil
+	var sortMenu: MenuViewController? = nil
+	var moreMenu: MenuViewController? = nil
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -71,10 +72,10 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
-			if let menu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+			if let menu = item as? MenuViewController, let sortMenu = self?.sortMenu, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
 				cell.searchBar.validator = FreeformValidator()
 				cell.searchBar.validatorTextFieldDelegate = self?.validatorTextfieldDelegate
-				cell.setup(menuVC: menu)
+				cell.setup(sortMenu: sortMenu, moreMenu: menu)
 				return cell
 				
 			} else if let obj = item as? SpecialGroupData, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleSpecialGroupCell", for: indexPath) as? CollectibleSpecialGroupCell {
@@ -153,7 +154,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		
 		// Build snapshot data
-		var hashableData: [[AnyHashable]] = [[moreMenuVc]]
+		var hashableData: [[AnyHashable]] = [[moreMenu]]
 		
 		if favs.count > 0 {
 			hashableData.append([SpecialGroupData(imageName: "FavoritesOn", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])

@@ -32,14 +32,6 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 			imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: mediaContent.width/mediaContent.height).isActive = true
 		}
 		
-		// If not a landscape image, keep square shape, but adjust the quantity view so that it always appears in bototm left of image, not of the container (as image may be smaller width)
-		else {
-			layoutIfNeeded()
-			
-			let newImageWidth = imageView.frame.size.height * (mediaContent.width/mediaContent.height)
-			let difference = imageView.frame.size.width - newImageWidth
-		}
-		
 		
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {

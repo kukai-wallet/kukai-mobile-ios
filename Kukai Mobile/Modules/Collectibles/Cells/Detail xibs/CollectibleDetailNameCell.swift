@@ -128,7 +128,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		return MenuViewController(actions: [actions], sourceViewController: sourceViewController)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: sourceViewController)
 	}
 	
 	

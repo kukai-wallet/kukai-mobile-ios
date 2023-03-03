@@ -83,6 +83,7 @@ public class ThemeManager {
 				"Txt12": UIColor("#BCBED4"),
 				"Txt14": UIColor("#D5D6E8"),
 				"TxtMenuContext": UIColor("#2D2E3F"),
+				"TxtMenuTitleContext": UIColor("#86879C"),
 				"TxtQuantity": UIColor("#2D2E3F"),
 				"TxtSale": UIColor("#FFFFFF"),
 				
@@ -281,6 +282,7 @@ public class ThemeManager {
 				"Txt12": UIColor("#696A80"),
 				"Txt14": UIColor("#4E5066"),
 				"TxtMenuContext": UIColor("#E9EAF5"),
+				"TxtMenuTitleContext": UIColor("#86879C"),
 				"TxtQuantity": UIColor("#2D2E3F"),
 				"TxtSale": UIColor("#FFFFFF"),
 				
