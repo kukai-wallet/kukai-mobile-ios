@@ -161,4 +161,8 @@ extension AddLiquidityViewController: ValidatorTextFieldDelegate {
 			updateUI()
 		}
 	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
+	}
 }

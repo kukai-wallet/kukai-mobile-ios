@@ -165,53 +165,35 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
+		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .small)
 		
-		accountButton.setImage(HomeTabBarController.imageForWallet(wallet: wallet), for: .normal)
-		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
+		accountButton.setImage(media.image, for: .normal)
+		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
 	
-	static func imageForWallet(wallet: WalletMetadata) -> UIImage? {
-		if wallet.type == .social {
-			switch wallet.socialType {
-				case .apple:
-					return UIImage(named: "Social_Apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
-					
-				case .google:
-					return UIImage(named: "Social_Google_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
-					
-				case .twitter:
-					return UIImage(named: "Social_Twitter_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
-				
-				default:
-					return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
-			}
-		}
-		
-		return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
-	}
-	
-	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {
+	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {
 		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
 		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
 		
-		if wallet.type == .social {
-			var topText = wallet.displayName ?? wallet.address
+		
+		if let subtitle = subtitle {
+			var topText = title
 			let approxPixelsPerCharacter: CGFloat = 10
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
-		
+			
 			if topText.count > maxCharacters {
 				topText = String(topText.prefix(maxCharacters)) + "..."
 			}
 			
 			let attributedString1 = NSMutableAttributedString(string: "\(topText)\n", attributes: attrs1)
-			let attributedString2 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs2)
+			let attributedString2 = NSMutableAttributedString(string: subtitle, attributes: attrs2)
 			attributedString1.append(attributedString2)
 			
 			return attributedString1
 			
 		} else {
-			let attributedString1 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs1)
+			let attributedString1 = NSMutableAttributedString(string: title, attributes: attrs1)
 			return attributedString1
 		}
 	}

@@ -17,22 +17,19 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var inputControlsStackView: UIStackView!
 	@IBOutlet weak var errorStackView: UIStackView!
 	@IBOutlet weak var outerButtonStackview: UIStackView!
-	@IBOutlet var buttonsStackview: UIStackView!
 	
 	@IBOutlet weak var headerLabel: UILabel!
 	@IBOutlet weak var sendToIcon: UIImageView!
 	@IBOutlet weak var addressTypeButton: CustomisableButton!
 	@IBOutlet var sendButton: CustomisableButton!
 	@IBOutlet weak var textField: ValidatorTextField!
-	@IBOutlet weak var errorIcon: UIImageView!
 	@IBOutlet weak var errorLabel: UILabel!
-	
-	private var currentSelectedType: AddressType = .tezosAddress
-	private var gradientLayer: CAGradientLayer? = nil
 	
 	private let scanVC = ScanViewController()
 	private let addressTypeVC = UIStoryboard(name: "SendAddressType", bundle: nil).instantiateInitialViewController() as? AddressTypeViewController
 	private let nibName = "EnterAddressComponent"
+	
+	private var currentSelectedType: AddressType = .tezosAddress
 	
 	public weak var delegate: EnterAddressComponentDelegate? = nil
 	
@@ -57,22 +54,8 @@ public class EnterAddressComponent: UIView {
 		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress)
 		textField.validatorTextFieldDelegate = self
 		
-		var image = UIImage(named: "chevron-right")
-		image = image?.resizedImage(Size: CGSize(width: 12, height: 18))
-		image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
-		
-		sendButton.setImage(image, for: .normal)
-		
 		self.hideError(animate: false)
-		outerButtonStackview.removeArrangedSubview(sendButton)
-		self.sendButton.isHidden = true
-	}
-	
-	public override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		gradientLayer?.removeFromSuperlayer()
-		gradientLayer = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
+		self.sendButton.isEnabled = false
 	}
 	
 	
@@ -98,46 +81,17 @@ public class EnterAddressComponent: UIView {
 		parent.present(scanVC, animated: true, completion: nil)
 	}
 	
-	@IBAction func pasteTapped(_ sender: Any) {
-		self.textField.text = UIPasteboard.general.string
-		let _ = self.textField.revalidateTextfield()
-	}
-	
 	@IBAction func sendButtonTapped(_ sender: Any) {
-		let _ = self.textField.revalidateTextfield()
+		self.delegate?.validatedInput(entered: textField.text ?? "", validAddress: true, ofType: currentSelectedType)
 	}
 	
 	
 	
 	// MARK: - UI functions
 	
-	private func animateButtonsOut() {
-		outerButtonStackview.insertArrangedSubview(sendButton, at: 1)
-		sendButton.isHidden = false
-		
-		outerButtonStackview.removeArrangedSubview(buttonsStackview)
-		buttonsStackview.isHidden = true
-		
-		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.layoutIfNeeded()
-		}
-	}
-	
-	private func animatedButtonsIn() {
-		outerButtonStackview.insertArrangedSubview(buttonsStackview, at: 1)
-		buttonsStackview.isHidden = false
-		
-		outerButtonStackview.removeArrangedSubview(sendButton)
-		sendButton.isHidden = true
-		
-		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.layoutIfNeeded()
-		}
-	}
-	
 	public func showError(message: String) {
 		errorLabel.text = message
-		textField.borderColor = UIColor.red
+		textField.borderColor = UIColor.colorNamed("TxtAlert6")
 		errorStackView.isHidden = false
 		
 		UIView.animate(withDuration: 0.3) {
@@ -146,7 +100,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	public func hideError(animate: Bool) {
-		textField.borderColor = UIColor.lightGray
+		textField.borderColor = UIColor.clear
 		errorStackView.isHidden = true
 		
 		if animate {
@@ -160,25 +114,39 @@ public class EnterAddressComponent: UIView {
 extension EnterAddressComponent: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
-		animateButtonsOut()
+		self.hideError(animate: true)
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
-		animatedButtonsIn()
+		if !self.textField.isValid {
+			self.showError(message: self.messageForType())
+		} else {
+			self.hideError(animate: true)
+		}
 	}
 	
 	public func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if validated && text != "" {
-			self.hideError(animate: true)
-			self.delegate?.validatedInput(entered: text, validAddress: true, ofType: currentSelectedType)
+			self.sendButton.isEnabled = true
 			
 		} else if text == "" {
-			self.hideError(animate: true)
-			self.delegate?.validatedInput(entered: "", validAddress: false, ofType: currentSelectedType)
+			self.sendButton.isEnabled = false
 			
 		} else {
+			self.sendButton.isEnabled = false
+		}
+	}
+	
+	public func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		if !isValid {
 			self.showError(message: self.messageForType())
-			self.delegate?.validatedInput(entered: text, validAddress: false, ofType: currentSelectedType)
+			
+		} else if text == nil || text == "" {
+			self.hideError(animate: true)
+			
+		} else {
+			self.hideError(animate: true)
+			self.delegate?.validatedInput(entered: textField.text ?? "", validAddress: true, ofType: currentSelectedType)
 		}
 	}
 	
@@ -203,6 +171,7 @@ extension EnterAddressComponent: ValidatorTextFieldDelegate {
 	
 	public func textFieldShouldClear(_ textField: UITextField) -> Bool {
 		self.hideError(animate: true)
+		self.sendButton.isEnabled = false
 		return true
 	}
 }
@@ -252,6 +221,10 @@ extension EnterAddressComponent: AddressTypeDelegate {
 				textField.validator = NoWhiteSpaceStringValidator()
 		}
 		
-		let _ = textField.revalidateTextfield()
+		if !textField.revalidateTextfield() {
+			self.showError(message: self.messageForType())
+		} else {
+			self.hideError(animate: true)
+		}
 	}
 }

@@ -100,7 +100,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 					MPMediaItemPropertyAlbumTitle: airPlayAlbum,
 					MPNowPlayingInfoPropertyPlaybackRate: 1.0,
 					MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: res.image?.size ?? CGSize(width: 50, height: 50)) { size in
-						return res.image?.resizedImage(Size: size) ?? UIImage.unknownToken()
+						return res.image?.resizedImage(size: size) ?? UIImage.unknownToken()
 					}
 				]
 			}

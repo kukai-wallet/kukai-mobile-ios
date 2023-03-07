@@ -105,7 +105,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		if viewModel.tokenPriceChangeIsUp {
 			let color = UIColor.colorNamed("TxtGood4")
 			var image = UIImage(named: "ArrowUp")
-			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
+			image = image?.resizedImage(size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
 			headerPriceChangeArrow.image = image
@@ -114,7 +114,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		} else {
 			let color = UIColor.colorNamed("TxtAlert4")
 			var image = UIImage(named: "ArrowDown")
-			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
+			image = image?.resizedImage(size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
 			headerPriceChangeArrow.image = image

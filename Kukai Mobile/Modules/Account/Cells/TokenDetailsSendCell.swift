@@ -17,7 +17,7 @@ class TokenDetailsSendCell: UITableViewCell {
 		
 		if data.isBuyTez {
 			var image = UIImage(named: "Plus")
-			image = image?.resizedImage(Size: CGSize(width: 15, height: 15))
+			image = image?.resizedImage(size: CGSize(width: 15, height: 15))
 			image = image?.withTintColor(.colorNamed("TxtBtnPrim1"))
 			
 			sendButton.setImage(image, for: .normal)

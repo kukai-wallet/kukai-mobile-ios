@@ -24,7 +24,7 @@ class CustomisableButton: UIButton {
 	
 	func setupUI() {
 		if imageWidth != 0 && imageHeight != 0 && !didSetupCustomImage {
-			customImage = customImage.resizedImage(Size: CGSize(width: imageWidth, height: imageHeight)) ?? UIImage()
+			customImage = customImage.resizedImage(size: CGSize(width: imageWidth, height: imageHeight)) ?? UIImage()
 			customImage = customImage.withTintColor(tintColor)
 			
 			imageView?.contentMode = .center

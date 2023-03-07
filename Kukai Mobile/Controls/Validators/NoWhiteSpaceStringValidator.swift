@@ -25,6 +25,6 @@ public struct NoWhiteSpaceStringValidator: Validator {
 	}
 	
 	public func onlyValidateOnReturn() -> Bool {
-		return true
+		return false
 	}
 }

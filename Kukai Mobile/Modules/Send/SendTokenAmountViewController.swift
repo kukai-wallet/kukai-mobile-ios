@@ -174,4 +174,8 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 			self.fiatValueLabel?.text = "0"
 		}
 	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
+	}
 }

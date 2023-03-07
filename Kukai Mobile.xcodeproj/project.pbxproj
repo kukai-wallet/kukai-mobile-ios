@@ -178,10 +178,7 @@
 		C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */; };
 		C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */; };
 		C09860AA27C3C24E00F888AF /* SendToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860A927C3C24E00F888AF /* SendToViewController.swift */; };
-		C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */; };
 		C09860AE27C3C26B00F888AF /* SendTokenAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AD27C3C26B00F888AF /* SendTokenAmountViewController.swift */; };
-		C09860B027C3C27D00F888AF /* SendReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */; };
-		C09860B227C3C29A00F888AF /* SendApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860B127C3C29A00F888AF /* SendApproveViewController.swift */; };
 		C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */; };
 		C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */; };
 		C0A19B4828857301000291A0 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A19B4728857301000291A0 /* String+extensions.swift */; };
@@ -505,10 +502,7 @@
 		C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+extensions.swift"; sourceTree = "<group>"; };
 		C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collectibles.storyboard; sourceTree = "<group>"; };
 		C09860A927C3C24E00F888AF /* SendToViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToViewController.swift; sourceTree = "<group>"; };
-		C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendChooseTokenViewController.swift; sourceTree = "<group>"; };
 		C09860AD27C3C26B00F888AF /* SendTokenAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenAmountViewController.swift; sourceTree = "<group>"; };
-		C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendReviewViewController.swift; sourceTree = "<group>"; };
-		C09860B127C3C29A00F888AF /* SendApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendApproveViewController.swift; sourceTree = "<group>"; };
 		C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressComponent.swift; sourceTree = "<group>"; };
 		C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnterAddressComponent.xib; sourceTree = "<group>"; };
 		C0A19B4728857301000291A0 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
@@ -1120,7 +1114,6 @@
 		C0B08A29270DBF6500075618 /* Send */ = {
 			isa = PBXGroup;
 			children = (
-				C0FAD1D3299298D000FB813B /* Old */,
 				C07FC40727C538810056FA47 /* Cells */,
 				C0503665271ED8FD00E7A664 /* Send.storyboard */,
 				C09860A927C3C24E00F888AF /* SendToViewController.swift */,
@@ -1234,16 +1227,6 @@
 				C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */,
 			);
 			path = Stake;
-			sourceTree = "<group>";
-		};
-		C0FAD1D3299298D000FB813B /* Old */ = {
-			isa = PBXGroup;
-			children = (
-				C09860AF27C3C27D00F888AF /* SendReviewViewController.swift */,
-				C09860B127C3C29A00F888AF /* SendApproveViewController.swift */,
-				C09860AB27C3C25D00F888AF /* SendChooseTokenViewController.swift */,
-			);
-			path = Old;
 			sourceTree = "<group>";
 		};
 		C0FBC886292BE0ED00B29921 /* Account */ = {
@@ -1534,7 +1517,6 @@
 				C0A321D627C68C0100D7788B /* Validator.swift in Sources */,
 				C0B768B92947991D00EF893E /* CollectibleListLayout.swift in Sources */,
 				C07FA42427AC3F03004B3BDF /* DisplayImageViewController.swift in Sources */,
-				C09860B027C3C27D00F888AF /* SendReviewViewController.swift in Sources */,
 				C0B08A35270DC26700075618 /* SendWaitViewController.swift in Sources */,
 				C08462412919204800B7D62D /* UIView+gradients.swift in Sources */,
 				C0B768AB2947776900EF893E /* CollectiblesListGroupCell.swift in Sources */,
@@ -1588,7 +1570,6 @@
 				C0081FD427D8FA7B00F7FEFF /* ActivitySubItemCell.swift in Sources */,
 				C0082BF926A7076500DB160B /* ImportMnemonicViewController.swift in Sources */,
 				C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */,
-				C09860B227C3C29A00F888AF /* SendApproveViewController.swift in Sources */,
 				C0AC1D422771F5D4002F66C0 /* ImportChoiceViewController.swift in Sources */,
 				C025891D292CD985000D59F6 /* TokenStateService.swift in Sources */,
 				C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */,
@@ -1669,7 +1650,6 @@
 				C01372B229B206FF0083E297 /* MenuHeaderCell.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
 				C05240A92770E1210031B5D1 /* GetStartedViewController.swift in Sources */,
-				C09860AC27C3C25D00F888AF /* SendChooseTokenViewController.swift in Sources */,
 				C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */,
 				C0846243291925A100B7D62D /* CAGradientLayer+extensions.swift in Sources */,
 				C00AE0072887017400184DF7 /* SwapTokenCell.swift in Sources */,

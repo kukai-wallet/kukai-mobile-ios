@@ -96,19 +96,17 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
 			
 			// TODO: add selected wallet to send data
-			// TODO: wallet metadata doesn't support tezos domains
+			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
 			let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
-			if selectedWalletMetadata.type == .social {
-				// social display
+			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .medium)
+			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
-				fromSocialAlias.text = selectedWalletMetadata.displayName
-				fromSocialIcon.image = HomeTabBarController.imageForWallet(wallet: selectedWalletMetadata)
-				fromSocialAddress.text = selectedWalletMetadata.address.truncateTezosAddress()
-				
+				fromSocialAlias.text = media.title
+				fromSocialIcon.image = media.image
+				fromSocialAddress.text = subtitle
 			} else {
-				// basic display
 				fromStackViewSocial.isHidden = true
-				fromRegularAddress.text = selectedWalletMetadata.address.truncateTezosAddress()
+				fromRegularAddress.text = media.title
 			}
 			
 		} else {

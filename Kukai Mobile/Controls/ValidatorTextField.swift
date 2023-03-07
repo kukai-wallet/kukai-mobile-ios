@@ -12,12 +12,14 @@ public protocol ValidatorTextFieldDelegate: AnyObject {
 	func textFieldDidEndEditing(_ textField: UITextField)
 	func textFieldShouldClear(_ textField: UITextField) -> Bool
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String)
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?)
 }
 
 @IBDesignable
 public class ValidatorTextField: UITextField {
 
 	public var validator: Validator?
+	public var isValid: Bool = false
 	public weak var validatorTextFieldDelegate: ValidatorTextFieldDelegate?
 	
 	private var didSetupCustomImage = false
@@ -90,14 +92,15 @@ public class ValidatorTextField: UITextField {
 	
 	public func revalidateTextfield() -> Bool {
 		guard let text = self.text, text != "" else {
-			validatorTextFieldDelegate?.validated(true, textfield: self, forText: "")
+			isValid = true
+			validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: "")
 			return true
 		}
 		
-		let result = validator?.validate(text: text) ?? true
-		validatorTextFieldDelegate?.validated(result, textfield: self, forText: text)
+		isValid = validator?.validate(text: text) ?? true
+		validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: text)
 		
-		return result
+		return isValid
 	}
 	
 	func updateView() {
@@ -105,7 +108,7 @@ public class ValidatorTextField: UITextField {
 			leftViewMode = UITextField.ViewMode.always
 			let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: leftImageWidth, height: leftImageHeight))
 			imageView.contentMode = .center
-			imageView.image = image.resizedImage(Size: CGSize(width: leftImageWidth, height: leftImageHeight))?.withTintColor(.colorNamed("BGB4"))
+			imageView.image = image.resizedImage(size: CGSize(width: leftImageWidth, height: leftImageHeight))?.withTintColor(.colorNamed("BGB4"))
 			leftView = imageView
 			didSetupCustomImage = true
 		} else {
@@ -154,7 +157,8 @@ extension ValidatorTextField: UITextFieldDelegate {
 			let fullString = textFieldString.replacingCharacters(in: swtRange, with: string)
 			
 			if validator.validate(text: fullString) {
-				validatorTextFieldDelegate?.validated(true, textfield: self, forText: fullString)
+				isValid = true
+				validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: fullString)
 				return true
 			} else {
 				
@@ -166,10 +170,12 @@ extension ValidatorTextField: UITextFieldDelegate {
 				// If the user enters 7, we want the textfield to not show the 7th digit and only show the 6 previously entered.
 				// However this will return a failed validation, disabling a continue/next button, desptite the fact that what the user sees in the textfield should be fine
 				if validator.restrictEntryIfInvalid(text: fullString) {
-					validatorTextFieldDelegate?.validated(validator.validate(text: textFieldString), textfield: self, forText: textFieldString)
+					isValid = validator.validate(text: textFieldString)
+					validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: textFieldString)
 					
 				} else {
-					validatorTextFieldDelegate?.validated(false, textfield: self, forText: fullString)
+					isValid = false
+					validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: fullString)
 				}
 				
 				// If restrict entry turned on, prevent text from being entered until the problem is solved
@@ -179,16 +185,19 @@ extension ValidatorTextField: UITextFieldDelegate {
 			}
 		}
 		
-		validatorTextFieldDelegate?.validated(false, textfield: self, forText: "")
+		isValid = false
+		validatorTextFieldDelegate?.validated(isValid, textfield: self, forText: "")
 		return true
 	}
 	
 	public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		if revalidateTextfield() {
 			textField.resignFirstResponder()
+			self.validatorTextFieldDelegate?.doneOrReturnTapped(isValid: true, textfield: self, forText: textField.text)
 			return true
 		}
 		
+		self.validatorTextFieldDelegate?.doneOrReturnTapped(isValid: false, textfield: self, forText: textField.text)
 		return false
 	}
 	

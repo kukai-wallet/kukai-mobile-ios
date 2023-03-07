@@ -104,13 +104,13 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
 	func sortMenu() -> MenuViewController {
 		let choices: [MenuChoice] = [
-			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents")?.resizedImage(Size: CGSize(width: 24, height: 24)), identifier: nil, handler: { [weak self] action in
+			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents")?.resizedImage(size: CGSize(width: 24, height: 24)), identifier: nil, handler: { [weak self] action in
 				self?.alert(errorWithMessage: "Recent sort not functional yet")
 			})),
-			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.alert(errorWithMessage: "Alphabetical sort not functional yet")
 			})),
-			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(Size: CGSize(width: 26, height: 20)), identifier: nil, handler: { [weak self] action in
+			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(size: CGSize(width: 26, height: 20)), identifier: nil, handler: { [weak self] action in
 				self?.alert(errorWithMessage: "CollectionGroupView sort not functional yet")
 			}))
 		]
@@ -120,7 +120,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	
 	func moreMenu() -> MenuViewController {
 		let actions: [UIAction] = [
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn")?.resizedImage(Size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn")?.resizedImage(size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]
@@ -151,6 +151,10 @@ extension CollectiblesViewController: ValidatorTextFieldDelegate {
 		} else {
 			self.hideSearchingUI()
 		}
+	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
 	}
 	
 	private func showSearchingUI() {

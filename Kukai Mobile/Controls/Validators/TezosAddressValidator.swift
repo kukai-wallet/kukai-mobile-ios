@@ -28,7 +28,7 @@ public struct TezosAddressValidator: Validator {
 	}
 	
 	public func onlyValidateOnReturn() -> Bool {
-		return true
+		return false
 	}
 	
 	public func isNotOwnAddress(text: String) -> Bool {

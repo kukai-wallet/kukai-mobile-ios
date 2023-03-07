@@ -139,4 +139,8 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 			textfield.backgroundColor = .white
 		}
 	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
+	}
 }

@@ -215,4 +215,8 @@ extension SendCollectibleAmountViewController: ValidatorTextFieldDelegate {
 			quantityTextField.borderWidth = 1
 		}
 	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
+	}
 }
