@@ -147,11 +147,9 @@ extension TokenDetailsViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if viewModel.isIndexActivityViewMore(indexPath) {
-			let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-			
-			self.dismiss(animated: true) {
-				homeTabController?.selectedIndex = 3
-			}
+			let homeTabController = self.navigationController?.previousViewController() as? HomeTabBarController
+			homeTabController?.manuallySetSlectedTab(toIndex: 3)
+			self.navigationController?.popViewController(animated: true)
 		}
 	}
 	
@@ -281,19 +279,11 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	}
 	
 	func setBakerTapped() {
-		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-		
-		self.dismiss(animated: true) {
-			homeTabController?.performSegue(withIdentifier: "stake", sender: nil)
-		}
+		self.performSegue(withIdentifier: "stake", sender: nil)
 	}
 	
 	func sendTapped() {
-		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-		
-		self.dismiss(animated: true) {
-			homeTabController?.sendButtonTapped()
-		}
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
 	func stakingRewardsInfoTapped() {

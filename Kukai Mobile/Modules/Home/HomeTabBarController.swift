@@ -122,6 +122,11 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
 	}
 	
+	public func manuallySetSlectedTab(toIndex: Int) {
+		self.selectedIndex = toIndex
+		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
+	}
+	
 	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()

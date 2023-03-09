@@ -18,4 +18,12 @@ public extension UINavigationController {
 		
 		self.popToViewController(homeTabController, animated: true)
 	}
+	
+	func previousViewController() -> UIViewController? {
+		if self.viewControllers.count-2 < 0 {
+			return nil
+		}
+		
+		return self.viewControllers[self.viewControllers.count-2]
+	}
 }
