@@ -26,6 +26,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
+	private var testnetWarningView = UIView()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,6 +171,32 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		accountButton.setImage(media.image, for: .normal)
 		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+	}
+	
+	public func addTestnetWarning() {
+		testnetWarningView.translatesAutoresizingMaskIntoConstraints = false
+		testnetWarningView.backgroundColor = .red.withAlphaComponent(0.5)
+		
+		self.tabBar.addSubview(testnetWarningView)
+		NSLayoutConstraint.activate([
+			testnetWarningView.leadingAnchor.constraint(equalTo: self.tabBar.leadingAnchor),
+			testnetWarningView.trailingAnchor.constraint(equalTo: self.tabBar.trailingAnchor),
+			testnetWarningView.bottomAnchor.constraint(equalTo: self.tabBar.bottomAnchor),
+			testnetWarningView.heightAnchor.constraint(equalToConstant: 26)
+		])
+		
+		let label = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.textColor = .white
+		label.text = "Testnet"
+		
+		testnetWarningView.addSubview(label)
+		NSLayoutConstraint.activate([
+			label.leadingAnchor.constraint(equalTo: testnetWarningView.leadingAnchor, constant: 34),
+			label.trailingAnchor.constraint(equalTo: testnetWarningView.trailingAnchor),
+			label.bottomAnchor.constraint(equalTo: testnetWarningView.bottomAnchor),
+			label.topAnchor.constraint(equalTo: testnetWarningView.topAnchor),
+		])
 	}
 	
 	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {

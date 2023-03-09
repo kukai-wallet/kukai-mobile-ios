@@ -13,7 +13,8 @@ import OSLog
 struct WalletObj: Hashable {
 	let icon: UIImage?
 	let title: String?
-	let address: String
+	let displayAddress: String
+	let fullAddress: String
 }
 
 struct NoContacts: Hashable {
@@ -37,9 +38,9 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				if let title = obj.title {
 					cell.titleLabel.text = title
-					cell.subtitleLabel.text = obj.address
+					cell.subtitleLabel.text = obj.displayAddress
 				} else {
-					cell.titleLabel.text = obj.address
+					cell.titleLabel.text = obj.displayAddress
 					cell.subtitleLabel.text = " "
 				}
 				
@@ -74,16 +75,16 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		for wallet in wallets where wallet.address != address {
 			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .medium)
 			if wallet.type == .social {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, address: media.subtitle ?? ""))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
 				
 			} else if wallet.type == .hd {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, address: media.subtitle ?? ""))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
 				for child in wallet.children {
-					walletObjs.append(WalletObj(icon: UIImage(named: "ArrowReceive"), title: child.address, address: ""))
+					walletObjs.append(WalletObj(icon: UIImage(named: "ArrowReceive"), title: child.address, displayAddress: "", fullAddress: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, address: media.subtitle ?? ""))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
 			}
 		}
 		

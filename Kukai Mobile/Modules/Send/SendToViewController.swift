@@ -60,7 +60,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		
 		TransactionService.shared.currentTransactionType = .send
 		TransactionService.shared.sendData.destinationIcon = walletObj.icon
-		TransactionService.shared.sendData.destination = walletObj.address
+		TransactionService.shared.sendData.destination = walletObj.fullAddress
 		TransactionService.shared.sendData.destinationAlias = walletObj.title
 		
 		self.navigate()

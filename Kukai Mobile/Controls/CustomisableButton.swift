@@ -15,6 +15,7 @@ class CustomisableButton: UIButton {
 	@IBInspectable var imageWidth: CGFloat = 0
 	@IBInspectable var imageHeight: CGFloat = 0
 	@IBInspectable var customImage: UIImage = UIImage()
+	@IBInspectable var customImageTint: UIColor? = nil
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
@@ -25,7 +26,12 @@ class CustomisableButton: UIButton {
 	func setupUI() {
 		if imageWidth != 0 && imageHeight != 0 && !didSetupCustomImage {
 			customImage = customImage.resizedImage(size: CGSize(width: imageWidth, height: imageHeight)) ?? UIImage()
-			customImage = customImage.withTintColor(tintColor)
+			
+			if let imageTint = customImageTint {
+				customImage = customImage.withTintColor(imageTint)
+			} else {
+				customImage = customImage.withTintColor(tintColor)
+			}
 			
 			imageView?.contentMode = .center
 			setImage(customImage, for: .normal)
