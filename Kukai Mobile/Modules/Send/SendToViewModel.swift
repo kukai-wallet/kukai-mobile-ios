@@ -12,9 +12,9 @@ import OSLog
 
 struct WalletObj: Hashable {
 	let icon: UIImage?
-	let title: String?
-	let displayAddress: String
-	let fullAddress: String
+	let title: String
+	let subtitle: String?
+	let address: String
 }
 
 struct NoContacts: Hashable {
@@ -35,14 +35,8 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
 				cell.iconView.image = obj.icon
-				
-				if let title = obj.title {
-					cell.titleLabel.text = title
-					cell.subtitleLabel.text = obj.displayAddress
-				} else {
-					cell.titleLabel.text = obj.displayAddress
-					cell.subtitleLabel.text = " "
-				}
+				cell.titleLabel.text = obj.title
+				cell.subtitleLabel.text = obj.subtitle
 				
 				return cell
 				
@@ -75,16 +69,16 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		for wallet in wallets where wallet.address != address {
 			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .medium)
 			if wallet.type == .social {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 				
 			} else if wallet.type == .hd {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 				for child in wallet.children {
-					walletObjs.append(WalletObj(icon: UIImage(named: "ArrowReceive"), title: child.address, displayAddress: "", fullAddress: child.address))
+					walletObjs.append(WalletObj(icon: UIImage(named: "ArrowReceive"), title: child.address, subtitle: nil, address: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: media.image, title: media.title, displayAddress: media.subtitle ?? "", fullAddress: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 			}
 		}
 		
