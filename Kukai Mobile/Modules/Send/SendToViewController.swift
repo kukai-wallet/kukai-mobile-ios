@@ -46,6 +46,10 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		viewModel.refresh(animate: true, successMessage: nil)
 	}
 	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
+	}
+	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
 	}

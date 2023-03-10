@@ -187,7 +187,7 @@ extension UIViewController {
 	}
 
 	@objc func keyboardWillShow(notification: NSNotification) {
-		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? String), duration != "0" {
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
 			var newRect = self.view.bounds
 			newRect.size = CGSize(width: newRect.width, height: (newRect.height - keyboardSize.height))
 			

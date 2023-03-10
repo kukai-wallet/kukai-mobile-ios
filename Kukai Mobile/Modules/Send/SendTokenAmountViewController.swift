@@ -82,6 +82,10 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 		reviewButton.layer.opacity = 0.5
     }
 	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
+	}
+	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
