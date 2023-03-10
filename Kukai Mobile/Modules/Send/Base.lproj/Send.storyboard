@@ -763,10 +763,10 @@
             </objects>
             <point key="canvasLocation" x="1483" y="-570"/>
         </scene>
-        <!--Approve-->
+        <!--Send Token Confirm View Controller-->
         <scene sceneID="E1q-HX-3F3">
             <objects>
-                <viewController storyboardIdentifier="confirm-token" title="Approve" id="erK-uk-IwA" customClass="SendTokenConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirm-token" id="erK-uk-IwA" customClass="SendTokenConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Qpm-TV-IxR">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -778,7 +778,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zSd-e8-R4y">
-                                <rect key="frame" x="16" y="117.66666666666666" width="361" height="440.66666666666686"/>
+                                <rect key="frame" x="16" y="117.66666666666666" width="361" height="440.66666666666674"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uMZ-Mp-TxS">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="14.666666666666666"/>
@@ -1918,10 +1918,10 @@
             </objects>
             <point key="canvasLocation" x="1481.679389312977" y="503.52112676056339"/>
         </scene>
-        <!--Approve-->
+        <!--Send Collectible Confirm View Controller-->
         <scene sceneID="T28-gb-Kr0">
             <objects>
-                <viewController storyboardIdentifier="confirm-nft" title="Approve" id="cQH-gJ-RS2" customClass="SendCollectibleConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirm-nft" id="cQH-gJ-RS2" customClass="SendCollectibleConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="k4o-IG-25j">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2266,7 +2266,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="closeTapped:" destination="erK-uk-IwA" eventType="touchUpInside" id="ylz-oS-Z8y"/>
+                                    <action selector="closeTapped:" destination="cQH-gJ-RS2" eventType="touchUpInside" id="aJS-oS-L5l"/>
                                 </connections>
                             </button>
                         </subviews>
