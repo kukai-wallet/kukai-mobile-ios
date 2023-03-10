@@ -18,4 +18,24 @@ public extension UINavigationController {
 		
 		self.popToViewController(homeTabController, animated: true)
 	}
+	
+	func popToDetails() {
+		if let tokenDetails = self.viewControllers.first(where: { $0 is TokenDetailsViewController }) {
+			self.popToViewController(tokenDetails, animated: true)
+			
+		} else if let collectibleDetails = self.viewControllers.first(where: { $0 is CollectiblesDetailsViewController }) {
+			self.popToViewController(collectibleDetails, animated: true)
+			
+		} else {
+			popToHome()
+		}
+	}
+	
+	func previousViewController() -> UIViewController? {
+		if self.viewControllers.count-2 < 0 {
+			return nil
+		}
+		
+		return self.viewControllers[self.viewControllers.count-2]
+	}
 }

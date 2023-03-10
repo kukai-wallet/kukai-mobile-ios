@@ -32,7 +32,7 @@ extension UIImage {
 		}
 	}
 	
-	func resizedImage(Size sizeImage: CGSize) -> UIImage? {
+	func resizedImage(size sizeImage: CGSize) -> UIImage? {
 		return UIGraphicsImageRenderer(size: sizeImage).image { _ in
 			self.draw(in: CGRect(origin: .zero, size: sizeImage))
 		}
@@ -54,6 +54,6 @@ extension UIImage {
 	}
 	
 	class func unknownToken() -> UIImage {
-		return UIImage(named: "unknown")?.resizedImage(Size: CGSize(width: 52, height: 52)) ?? UIImage()
+		return UIImage(named: "unknown")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
 }

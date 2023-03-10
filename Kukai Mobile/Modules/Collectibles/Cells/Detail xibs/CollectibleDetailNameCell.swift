@@ -37,7 +37,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
         super.awakeFromNib()
 		
 		// Can't shrink image in IB
-		websiteButton.setImage(websiteButton.image(for: .normal)?.resizedImage(Size: CGSize(width: 13, height: 13)), for: .normal)
+		websiteButton.setImage(websiteButton.image(for: .normal)?.resizedImage(size: CGSize(width: 13, height: 13)), for: .normal)
     }
 	
 	func setup(nft: NFT?, isImage: Bool, isFavourited: Bool, isHidden: Bool, showcaseCount: Int, menuSourceVc: UIViewController) {
@@ -66,7 +66,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		
 		if isImage {
 			actions.append(
-				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos")?.resizedImage(Size: CGSize(width: 21, height: 24)), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos")?.resizedImage(size: CGSize(width: 21, height: 24)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft, let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
 						return
 					}
@@ -88,13 +88,13 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		actions.append(UIAction(title: "Token Contract", image: UIImage(named: "About")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+		actions.append(UIAction(title: "Token Contract", image: UIImage(named: "About")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 			self?.delegate?.tokenContractDisplayRequested()
 		}))
 		
 		if isHiddenNft {
 			actions.append(
-				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff")?.resizedImage(Size: CGSize(width: 24, height: 17)), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 24, height: 17)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}
@@ -111,7 +111,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		} else {
 			actions.append(
-				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn")?.resizedImage(Size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn")?.resizedImage(size: CGSize(width: 24, height: 19)), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
 					}

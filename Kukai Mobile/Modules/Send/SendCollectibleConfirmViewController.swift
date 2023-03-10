@@ -88,6 +88,10 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		slideButton.delegate = self
     }
 	
+	@IBAction func closeTapped(_ sender: Any) {
+		self.dismissBottomSheet()
+	}
+	
 	func didCompleteSlide() {
 		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find wallet")

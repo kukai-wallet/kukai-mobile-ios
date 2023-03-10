@@ -14,7 +14,7 @@ class MenuChoiceCell: UITableViewCell {
 	@IBOutlet weak var iconView: UIImageView!
 	
 	func setTick() {
-		let image = UIImage(named: "Check")?.resizedImage(Size: CGSize(width: 15, height: 13))
+		let image = UIImage(named: "Check")?.resizedImage(size: CGSize(width: 15, height: 13))
 		selectedView.image = image?.withTintColor(.colorNamed("TxtMenuContext"))
 	}
 	

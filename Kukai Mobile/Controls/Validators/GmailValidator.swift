@@ -26,6 +26,6 @@ public struct GmailValidator: Validator {
 	}
 	
 	public func onlyValidateOnReturn() -> Bool {
-		return true
+		return false
 	}
 }

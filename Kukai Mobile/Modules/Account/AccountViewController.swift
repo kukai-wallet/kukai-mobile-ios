@@ -67,16 +67,9 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
-		if viewModel.isPresentedForSelectingToken, let parent = self.parent as? SendChooseTokenViewController {
-			TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
-			TransactionService.shared.sendData.chosenNFT = nil
-			parent.tokenChosen()
-			
-		} else {
-			TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
-			TransactionService.shared.sendData.chosenNFT = nil
-			self.performSegue(withIdentifier: "details", sender: self)
-		}
+		TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
+		TransactionService.shared.sendData.chosenNFT = nil
+		self.performSegue(withIdentifier: "details", sender: self)
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -89,10 +82,10 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	
 	func menuVCForBalancesMore() -> MenuViewController {
 		let actions: [UIAction] = [
-			UIAction(title: "Favourites", image: UIImage(named: "FavoritesOn")?.resizedImage(Size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "Favourites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(Size: CGSize(width: 26, height: 17)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 17)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]

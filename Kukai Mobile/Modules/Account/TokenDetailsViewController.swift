@@ -105,7 +105,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		if viewModel.tokenPriceChangeIsUp {
 			let color = UIColor.colorNamed("TxtGood4")
 			var image = UIImage(named: "ArrowUp")
-			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
+			image = image?.resizedImage(size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
 			headerPriceChangeArrow.image = image
@@ -114,7 +114,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		} else {
 			let color = UIColor.colorNamed("TxtAlert4")
 			var image = UIImage(named: "ArrowDown")
-			image = image?.resizedImage(Size: CGSize(width: 12, height: 12))
+			image = image?.resizedImage(size: CGSize(width: 12, height: 12))
 			image = image?.withTintColor(color)
 			
 			headerPriceChangeArrow.image = image
@@ -147,11 +147,9 @@ extension TokenDetailsViewController {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if viewModel.isIndexActivityViewMore(indexPath) {
-			let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-			
-			self.dismiss(animated: true) {
-				homeTabController?.selectedIndex = 3
-			}
+			let homeTabController = self.navigationController?.previousViewController() as? HomeTabBarController
+			homeTabController?.manuallySetSlectedTab(toIndex: 3)
+			self.navigationController?.popViewController(animated: true)
 		}
 	}
 	
@@ -281,19 +279,11 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	}
 	
 	func setBakerTapped() {
-		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-		
-		self.dismiss(animated: true) {
-			homeTabController?.performSegue(withIdentifier: "stake", sender: nil)
-		}
+		self.performSegue(withIdentifier: "stake", sender: nil)
 	}
 	
 	func sendTapped() {
-		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
-		
-		self.dismiss(animated: true) {
-			homeTabController?.sendButtonTapped()
-		}
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
 	func stakingRewardsInfoTapped() {

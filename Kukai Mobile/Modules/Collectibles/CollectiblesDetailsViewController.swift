@@ -81,13 +81,9 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	}
 	
 	@objc func sendTapped() {
-		let homeTabController = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController
 		TransactionService.shared.sendData.chosenNFT = viewModel.nft
 		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
-		
-		self.dismiss(animated: true) {
-			homeTabController?.sendButtonTapped()
-		}
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 }
 

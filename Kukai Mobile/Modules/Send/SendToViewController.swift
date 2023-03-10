@@ -46,6 +46,10 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		viewModel.refresh(animate: true, successMessage: nil)
 	}
 	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
+	}
+	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
 	}
@@ -61,7 +65,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		TransactionService.shared.currentTransactionType = .send
 		TransactionService.shared.sendData.destinationIcon = walletObj.icon
 		TransactionService.shared.sendData.destination = walletObj.address
-		TransactionService.shared.sendData.destinationAlias = walletObj.title
+		TransactionService.shared.sendData.destinationAlias = walletObj.subtitle == nil ? nil : walletObj.title
 		
 		self.navigate()
 	}

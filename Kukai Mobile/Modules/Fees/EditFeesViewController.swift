@@ -19,6 +19,7 @@ class EditFeesViewController: UIViewController {
 	@IBOutlet weak var feeTextField: ValidatorTextField!
 	@IBOutlet weak var storageLimitTextField: ValidatorTextField!
 	@IBOutlet weak var maxStorageCostLbl: UILabel!
+	private var infoIndex = 0
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -116,6 +117,28 @@ class EditFeesViewController: UIViewController {
 		storageLimitTextField.isEnabled = true
 		storageLimitTextField.alpha = 1
 	}
+	
+	
+	@IBAction func feeInfoTapped(_ sender: Any) {
+		infoIndex = 1
+		self.performSegue(withIdentifier: "feeInfo", sender: nil)
+	}
+	
+	@IBAction func gasLimitInfoTapped(_ sender: Any) {
+		infoIndex = 2
+		self.performSegue(withIdentifier: "feeInfo", sender: nil)
+	}
+	
+	@IBAction func storageInfoTapped(_ sender: Any) {
+		infoIndex = 3
+		self.performSegue(withIdentifier: "feeInfo", sender: nil)
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let dest = segue.destination as? OnboardingPageViewController {
+			dest.startIndex = infoIndex
+		}
+	}
 }
 
 extension EditFeesViewController: ValidatorTextFieldDelegate {
@@ -138,5 +161,9 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 		} else {
 			textfield.backgroundColor = .white
 		}
+	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
 	}
 }

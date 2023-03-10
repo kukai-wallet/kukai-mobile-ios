@@ -83,7 +83,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			if let amount = item as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage.tezosToken().resizedImage(Size: CGSize(width: 40, height: 40))
+					cell.tokenIcon.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setup(isFav: true, isLocked: true)

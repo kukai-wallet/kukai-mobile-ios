@@ -6,12 +6,12 @@
 //
 
 import Foundation
-
 import UIKit
 import KukaiCoreSwift
 
 class SendCollectibleAmountViewController: UIViewController, EditFeesViewControllerDelegate {
 	
+	@IBOutlet weak var scrollView: UIScrollView!
 	@IBOutlet weak var toStackViewSocial: UIStackView!
 	@IBOutlet weak var toStackViewRegular: UIStackView!
 	
@@ -21,6 +21,7 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	@IBOutlet weak var regularAddressLabel: UILabel!
 	
 	@IBOutlet weak var collectibleImage: UIImageView!
+	@IBOutlet weak var collectibleName: UILabel!
 	
 	@IBOutlet weak var quantityContainer: UIView!
 	@IBOutlet weak var quantityMinusButton: CustomisableButton!
@@ -65,11 +66,13 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		if token.balance == 1 {
 			maxButton.isHidden = true
 		} else {
-			maxButton.setTitle("  MAX (\(token.balance))  ", for: .normal)
+			let amountDisplay = token.balance > 100 ? "99+" : token.balance.description
+			maxButton.setTitle("Max \(amountDisplay)", for: .normal)
 		}
 		
 		feeValueLabel?.text = "0 tez"
 		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: .small), to: collectibleImage, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: collectibleImage.frame.size)
+		collectibleName.text = selectedToken?.name ?? ""
 		
 		
 		// Textfield
@@ -87,9 +90,18 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		reviewButton.layer.opacity = 0.5
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.startListeningForKeyboard()
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		estimateFee()
+	}
+	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -97,6 +109,11 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		
 		gradientLayer.removeFromSuperlayer()
 		gradientLayer = reviewButton.addGradientButtonPrimary(withFrame: reviewButton.bounds)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.stopListeningForKeyboard()
 	}
 	
 	@objc func estimateFee() {
@@ -213,6 +230,40 @@ extension SendCollectibleAmountViewController: ValidatorTextFieldDelegate {
 		} else if text != "" {
 			quantityTextField.borderColor = .red
 			quantityTextField.borderWidth = 1
+		}
+	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
+	}
+}
+
+extension SendCollectibleAmountViewController {
+	
+	func startListeningForKeyboard() {
+		NotificationCenter.default.addObserver(self, selector: #selector(customKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(customLeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	func stopListeningForKeyboard() {
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	@objc func customKeyboardWillShow(notification: NSNotification) {
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
+			let whereKeyboardWillGoToo = ((self.scrollView.frame.height + self.view.safeAreaInsets.bottom) - keyboardSize.height)
+			let whereNeedsToBeDisplayed = (feeButton.convert(CGPoint(x: 0, y: 0), to: scrollView).y + feeButton.frame.height + 8).rounded(.up)
+			
+			if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
+				self.scrollView.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
+			}
+		}
+	}
+	
+	@objc func customLeyboardWillHide(notification: NSNotification) {
+		if let _ = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
+			self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
 		}
 	}
 }

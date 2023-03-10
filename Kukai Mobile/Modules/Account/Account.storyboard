@@ -27,11 +27,11 @@
             <objects>
                 <viewController storyboardIdentifier="account-home" automaticallyAdjustsScrollViewInsets="NO" id="jPJ-eK-beO" customClass="AccountViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="M7I-Dt-kRs">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="749"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Bx0-JG-6Gg">
-                                <rect key="frame" x="0.0" y="61" width="393" height="757"/>
+                                <rect key="frame" x="0.0" y="2" width="393" height="713"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="85" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -255,11 +255,12 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Account" image="Account" selectedImage="AccountOn" id="C6v-aT-auG"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="Bx0-JG-6Gg" id="3RY-12-3OS"/>
                         <segue destination="coy-OE-NPZ" kind="show" identifier="hidden" id="D3A-Jh-dg3"/>
                         <segue destination="r1r-bU-jrg" kind="show" identifier="favourites" id="3hk-qU-4Ic"/>
-                        <segue destination="PJu-ck-fWS" kind="custom" identifier="details" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="zcN-zW-iIF"/>
+                        <segue destination="PJu-ck-fWS" kind="show" identifier="details" id="zcN-zW-iIF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -325,8 +326,8 @@
                         <outlet property="balancesContainer" destination="SP1-tp-66F" id="pW8-25-uJc"/>
                         <outlet property="collectiblesContainer" destination="h8T-gk-boF" id="n0J-Bd-g0O"/>
                         <outlet property="segmetnedButton" destination="zcF-o0-QLV" id="rkJ-Nj-syu"/>
-                        <segue destination="PJu-ck-fWS" kind="custom" identifier="tokenDetails" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="rj3-ts-vdk"/>
-                        <segue destination="RVb-b6-DQh" kind="custom" identifier="collectibleDetails" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Wvd-MJ-rCH"/>
+                        <segue destination="PJu-ck-fWS" kind="show" identifier="tokenDetails" id="rj3-ts-vdk"/>
+                        <segue destination="RVb-b6-DQh" kind="show" identifier="collectibleDetails" id="Wvd-MJ-rCH"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qHi-zO-xEK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -336,7 +337,9 @@
         <!--detail-->
         <scene sceneID="GJ0-X4-BCe">
             <objects>
-                <viewControllerPlaceholder storyboardName="Collectibles" referencedIdentifier="detail" id="RVb-b6-DQh" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Collectibles" referencedIdentifier="detail" id="RVb-b6-DQh" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="hsp-JR-hfs"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wez-8X-PNa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-4566" y="-415"/>
@@ -531,45 +534,45 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowUp" translatesAutoresizingMaskIntoConstraints="NO" id="7Zt-dG-2vQ">
-                                <rect key="frame" x="233.33333333333334" y="79.666666666666671" width="12" height="12"/>
+                                <rect key="frame" x="233.33333333333334" y="107.66666666666667" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="6Ao-8S-3N0"/>
                                     <constraint firstAttribute="width" constant="12" id="u7y-ka-gYR"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="&lt;priceChange&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpb-e7-XF0">
-                                <rect key="frame" x="249.33333333333334" y="75" width="127.66666666666666" height="21"/>
+                                <rect key="frame" x="249.33333333333334" y="103" width="127.66666666666666" height="21"/>
                                 <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="TxtGood4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="250" text="&lt;fiat&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mVG-6O-GrW">
-                                <rect key="frame" x="60" y="98" width="51.666666666666657" height="21"/>
+                                <rect key="frame" x="60" y="126" width="51.666666666666657" height="21"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;priceChangeDate&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JxS-C1-8ro">
-                                <rect key="frame" x="230.33333333333337" y="99" width="146.66666666666663" height="19.333333333333329"/>
+                                <rect key="frame" x="230.33333333333337" y="126.99999999999999" width="146.66666666666663" height="19.333333333333329"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;symbol&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AmE-DB-rmw">
-                                <rect key="frame" x="60.000000000000014" y="75" width="157.33333333333337" height="21"/>
+                                <rect key="frame" x="60.000000000000014" y="103" width="157.33333333333337" height="21"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WKV-57-Y9W">
-                                <rect key="frame" x="16" y="75" width="40" height="40"/>
+                                <rect key="frame" x="16" y="103" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="RBI-EY-1Zf"/>
                                     <constraint firstAttribute="height" constant="40" id="l4a-FS-D9D"/>
                                 </constraints>
                             </imageView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ITw-HP-Zep">
-                                <rect key="frame" x="0.0" y="123" width="393" height="729"/>
+                                <rect key="frame" x="0.0" y="151" width="393" height="701"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
@@ -590,11 +593,12 @@
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="leading" secondItem="xt6-og-l4q" secondAttribute="leading" id="dZ2-Oa-otn"/>
                             <constraint firstItem="mVG-6O-GrW" firstAttribute="bottom" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="4" id="kGM-0A-b6l"/>
                             <constraint firstItem="mVG-6O-GrW" firstAttribute="leading" secondItem="AmE-DB-rmw" secondAttribute="leading" id="lVt-rQ-ysu"/>
-                            <constraint firstItem="WKV-57-Y9W" firstAttribute="top" secondItem="xt6-og-l4q" secondAttribute="top" constant="16" id="mmt-uD-E4O"/>
+                            <constraint firstItem="WKV-57-Y9W" firstAttribute="top" secondItem="xt6-og-l4q" secondAttribute="top" id="mmt-uD-E4O"/>
                             <constraint firstItem="JxS-C1-8ro" firstAttribute="trailing" secondItem="tpb-e7-XF0" secondAttribute="trailing" id="to5-c0-kjn"/>
                             <constraint firstItem="ITw-HP-Zep" firstAttribute="top" secondItem="WKV-57-Y9W" secondAttribute="bottom" constant="8" id="wGs-q2-HMm"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="93d-eq-YzC"/>
                     <connections>
                         <outlet property="headerFiat" destination="mVG-6O-GrW" id="oJy-3q-o7c"/>
                         <outlet property="headerIcon" destination="WKV-57-Y9W" id="50k-w3-F3V"/>
@@ -607,6 +611,8 @@
                         <outlet property="tableView" destination="ITw-HP-Zep" id="hbb-Sc-2gf"/>
                         <segue destination="5px-c7-QlA" kind="custom" identifier="tokenContract" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b5W-IZ-X2h"/>
                         <segue destination="lNz-f0-GWo" kind="custom" identifier="stakingInfo" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="zQd-an-fzm"/>
+                        <segue destination="B45-4v-gNa" kind="show" identifier="send" id="MP4-fT-iEx"/>
+                        <segue destination="DOo-M8-i54" kind="show" identifier="stake" id="Ogz-o0-4kt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sib-vO-ppd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -628,19 +634,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Token ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sfB-BJ-uRz">
-                                <rect key="frame" x="36" y="143" width="63.666666666666657" height="20"/>
+                                <rect key="frame" x="36" y="143" width="63.666666666666657" height="18.666666666666657"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;tokenID&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hQ9-ZC-W14">
-                                <rect key="frame" x="36" y="167" width="57" height="15.666666666666657"/>
+                                <rect key="frame" x="36" y="165.66666666666666" width="57" height="14"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                                 <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wl6-j1-EYt">
-                                <rect key="frame" x="312" y="134" width="45" height="38"/>
+                                <rect key="frame" x="312" y="133.33333333333334" width="45" height="38"/>
                                 <color key="tintColor" name="BGB4"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Copy"/>
@@ -649,19 +655,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Contract" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="x66-7b-Ffj">
-                                <rect key="frame" x="35.999999999999993" y="218.66666666666666" width="66.333333333333314" height="20"/>
+                                <rect key="frame" x="35.999999999999993" y="215.66666666666666" width="66.333333333333314" height="18.666666666666657"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;contract&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Obi-1p-QLV">
-                                <rect key="frame" x="36" y="242.66666666666666" width="61" height="14.666666666666657"/>
+                                <rect key="frame" x="36" y="238.33333333333334" width="61" height="14"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                                 <color key="textColor" name="Txt12"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9NG-uy-GQe">
-                                <rect key="frame" x="312" y="209.66666666666666" width="45" height="38"/>
+                                <rect key="frame" x="312" y="206" width="45" height="38"/>
                                 <color key="tintColor" name="BGB4"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Copy"/>
@@ -670,7 +676,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HEZ-bX-bZg">
-                                <rect key="frame" x="16" y="281.33333333333331" width="361" height="38"/>
+                                <rect key="frame" x="16" y="276.33333333333331" width="361" height="38"/>
                                 <color key="tintColor" name="TxtB6"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="ArrowWeb" title="View Contract in BCD" imagePadding="12">
@@ -1030,6 +1036,26 @@
             </objects>
             <point key="canvasLocation" x="-3851" y="201"/>
         </scene>
+        <!--Send-->
+        <scene sceneID="LfV-aW-eTJ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" id="B45-4v-gNa" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="BHZ-8m-oti"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ywx-rf-ATo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2785" y="-644"/>
+        </scene>
+        <!--Stake-->
+        <scene sceneID="Tu6-UP-AWy">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" id="DOo-M8-i54" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="5uL-U4-ybA"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6h4-T7-hA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2782" y="-495"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="405-zw-M1R">
@@ -1040,7 +1066,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="zcN-zW-iIF"/>
+        <segue reference="rj3-ts-vdk"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Account" width="24" height="24"/>

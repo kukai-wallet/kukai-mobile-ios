@@ -29,13 +29,13 @@ class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerVie
 		if data.groupType == .receive {
 			color = UIColor.colorNamed("TxtB6")
 			typeimage = UIImage(named: "ArrowReceive") ?? UIImage.unknownToken()
-			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
+			typeimage = typeimage.resizedImage(size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 			
 		} else {
 			color = UIColor.colorNamed("Txt10")
 			typeimage = UIImage(named: "ArrowSend") ?? UIImage.unknownToken()
-			typeimage = typeimage.resizedImage(Size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
+			typeimage = typeimage.resizedImage(size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
 			typeimage = typeimage.withTintColor(color)
 		}
 		

@@ -82,6 +82,10 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 		reviewButton.layer.opacity = 0.5
     }
 	
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
+	}
+	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
@@ -173,5 +177,9 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 			
 			self.fiatValueLabel?.text = "0"
 		}
+	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
 	}
 }

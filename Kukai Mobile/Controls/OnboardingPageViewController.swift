@@ -12,6 +12,7 @@ import UIKit
 class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 	
 	public var items: [UIViewController] = []
+	public var startIndex: Int = 0
 	private var pageControl: UIPageControl? = nil
 	
 	/**
@@ -19,6 +20,9 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	*/
 	@IBInspectable var commaSeperatedStoryboardIds: String = ""
 	
+	required init?(coder: NSCoder) {
+		super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -28,7 +32,7 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 			items.append(self.storyboard?.instantiateViewController(identifier: id) ?? UIViewController())
 		}
 		
-		setViewControllers([items[0]], direction: .forward, animated: true, completion: nil)
+		setViewControllers([items[0]], direction: .forward, animated: false, completion: nil)
 		self.dataSource = self
 		self.delegate = self
 		
@@ -36,8 +40,8 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 		pageControl?.translatesAutoresizingMaskIntoConstraints = false
 		pageControl?.numberOfPages = items.count
 		pageControl?.currentPage = 0
-		pageControl?.currentPageIndicatorTintColor = .systemBlue
-		pageControl?.pageIndicatorTintColor = .lightGray
+		pageControl?.currentPageIndicatorTintColor = .colorNamed("Txt2")
+		pageControl?.pageIndicatorTintColor = .colorNamed("Txt10")
 		pageControl?.addTarget(self, action: #selector(pageControlTapped), for: .valueChanged)
 		
 		if let pc = pageControl {
@@ -45,9 +49,16 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 			self.view.addConstraints([
 				NSLayoutConstraint(item: pc, attribute: .leading, relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 24),
 				NSLayoutConstraint(item: pc, attribute: .trailing, relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -24),
-				NSLayoutConstraint(item: pc, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottom, multiplier: 1, constant: 0)
+				NSLayoutConstraint(item: pc, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottomMargin, multiplier: 1, constant: 0)
 			])
 		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
+		self.pageControl?.currentPage = startIndex
 	}
 	
 	func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

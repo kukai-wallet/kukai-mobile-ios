@@ -47,6 +47,12 @@ public class TransactionService {
 		}
 	}
 	
+	public enum WalletIconSize {
+		case small
+		case medium
+		case large
+	}
+	
 	
 	
 	// MARK: - Structs
@@ -284,6 +290,129 @@ public class TransactionService {
 				break
 		}
 	}
+	
+	public static func walletMedia(forWalletMetadata metadata: WalletMetadata, ofSize size: WalletIconSize) -> (image: UIImage, title: String, subtitle: String?) {
+		
+		// Early exit if tezos domain
+		if metadata.hasTezosDomain() {
+			var imageSize = CGSize(width: 10, height: 10)
+			switch size {
+				case .small:
+					imageSize = CGSize(width: 16, height: 16)
+				case .medium:
+					imageSize = CGSize(width: 21, height: 21)
+				case .large:
+					imageSize = CGSize(width: 24, height: 24)
+			}
+			
+			let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
+			return (image: image, title: metadata.tezosDomain ?? "", subtitle: metadata.address.truncateTezosAddress())
+		}
+		
+		// Second Early exit if non-social wallet without domain
+		if metadata.type != .social {
+			var imageSize = CGSize(width: 10, height: 10)
+			switch size {
+				case .small:
+					imageSize = CGSize(width: 10, height: 14)
+				case .medium:
+					imageSize = CGSize(width: 14, height: 18)
+				case .large:
+					imageSize = CGSize(width: 17, height: 23)
+			}
+			
+			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
+			return (image: image, title: metadata.address.truncateTezosAddress(), subtitle: nil)
+		}
+		
+		// Iterate through social
+		switch metadata.socialType {
+			case .apple:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 14, height: 14)
+					case .medium:
+						imageSize = CGSize(width: 18, height: 18)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Apple")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: "Apple account", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .twitter:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 12)
+					case .medium:
+						imageSize = CGSize(width: 18, height: 14)
+					case .large:
+						imageSize = CGSize(width: 21, height: 16)
+				}
+				
+				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .google:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 14, height: 14)
+					case .medium:
+						imageSize = CGSize(width: 18, height: 18)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Google_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .reddit:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Reddit_Color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .facebook:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Facebook_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .none:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage.unknownToken().resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.address.truncateTezosAddress(), subtitle: nil)
+		}
+	}
+	
 	
 	/// Hacky function to create a deep copy of an array of Operations
 	public static func makeCopyOf(operations: [KukaiCoreSwift.Operation]) -> [KukaiCoreSwift.Operation] {

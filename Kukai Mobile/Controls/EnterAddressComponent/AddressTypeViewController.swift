@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 public enum AddressType: String, CaseIterable {
 	case tezosAddress = "Tezos Address"
@@ -29,6 +30,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		self.view.addSubview(tableView)
 		self.tableView.delegate = self
@@ -51,24 +53,31 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	}
 	
 	static func imageFor(addressType: AddressType) -> UIImage {
+		var tempMetadata = WalletMetadata(address: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+		
 		switch addressType {
 			case .tezosAddress:
-				return UIImage(named: "social-tezos-no-background") ?? UIImage()
+				tempMetadata = WalletMetadata(address: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .tezosDomain:
-				return UIImage(named: "social-tezos-domain") ?? UIImage()
+				tempMetadata = WalletMetadata(address: "", displayName: "", tezosDomain: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .gmail:
-				return UIImage(named: "social-google") ?? UIImage()
+				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .google, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .reddit:
-				return UIImage(named: "social-reddit") ?? UIImage()
+				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .reddit, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .twitter:
-				return UIImage(named: "social-twitter") ?? UIImage()
+				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .twitter, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 		}
+		
+		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .medium).image
 	}
 	
+	@IBAction func closeTapped(_ sender: Any) {
+		self.dismiss(animated: true)
+	}
 	
 	
 	// MARK: - TableView

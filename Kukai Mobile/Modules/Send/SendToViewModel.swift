@@ -12,7 +12,8 @@ import OSLog
 
 struct WalletObj: Hashable {
 	let icon: UIImage?
-	let title: String?
+	let title: String
+	let subtitle: String?
 	let address: String
 }
 
@@ -34,14 +35,8 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
 				cell.iconView.image = obj.icon
-				
-				if let title = obj.title {
-					cell.titleLabel.text = title
-					cell.subtitleLabel.text = obj.address
-				} else {
-					cell.titleLabel.text = obj.address
-					cell.subtitleLabel.text = " "
-				}
+				cell.titleLabel.text = obj.title
+				cell.subtitleLabel.text = obj.subtitle
 				
 				return cell
 				
@@ -72,18 +67,18 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletObjs = []
 		
 		for wallet in wallets where wallet.address != address {
+			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .medium)
 			if wallet.type == .social {
-				let details = imageAndTitleForSocialWallet(wallet: wallet)
-				walletObjs.append(WalletObj(icon: details.image, title: details.title, address: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 				
 			} else if wallet.type == .hd {
-				walletObjs.append(WalletObj(icon: UIImage.tezosToken(), title: nil, address: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 				for child in wallet.children {
-					walletObjs.append(WalletObj(icon: UIImage(systemName: "arrow.turn.down.right"), title: nil, address: child.address))
+					walletObjs.append(WalletObj(icon: UIImage(named: "ArrowReceive"), title: child.address, subtitle: nil, address: child.address))
 				}
 				
 			} else {
-				walletObjs.append(WalletObj(icon: UIImage.tezosToken(), title: nil, address: wallet.address))
+				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 			}
 		}
 		
@@ -106,33 +101,6 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		state = .success(nil)
 	}
 	
-	// TODO: centralise
-	func imageAndTitleForSocialWallet(wallet: WalletMetadata) -> (image: UIImage?, title: String) {
-		if wallet.type != .social {
-			return (image: UIImage.tezosToken(), title: wallet.address)
-		}
-		
-		switch wallet.socialType {
-			case .apple:
-				return (image: UIImage(named: "social-apple"), title: "Apple account")
-				
-			case .twitter:
-				return (image: UIImage(named: "social-twitter"), title: wallet.displayName ?? wallet.address)
-				
-			case .google:
-				return (image: UIImage(named: "social-google"), title: wallet.displayName ?? wallet.address)
-				
-			case .reddit:
-				return (image: UIImage.tezosToken(), title: wallet.displayName ?? wallet.address)
-				
-			case .facebook:
-				return (image: UIImage.tezosToken(), title: wallet.displayName ?? wallet.address)
-				
-			case .none:
-				return (image: UIImage.tezosToken(), title: wallet.address)
-		}
-	}
-	
 	func heightForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> CGFloat {
 		let view = viewForHeaderInSection(section, forTableView: tableView)
 		view.sizeToFit()
@@ -143,14 +111,12 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func viewForHeaderInSection(_ section: Int, forTableView tableView: UITableView) -> UIView {
 		
 		if section == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
-			cell.iconView.image = UIImage(named: "contacts")
-			cell.iconView.tintColor = .colorNamed("Txt10")
+			cell.iconView.image = UIImage(named: "Contacts")?.resizedImage(size: CGSize(width: 16, height: 11))?.withTintColor(.colorNamed("Txt10"))
 			cell.headingLabel.text = "Contacts"
 			return cell.contentView
 			
 		} else if section == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell") as? ImageHeadingCell {
-			cell.iconView.image = UIImage(named: "wallet")
-			cell.iconView.tintColor = .colorNamed("Txt10")
+			cell.iconView.image = UIImage(named: "Wallet")?.resizedImage(size: CGSize(width: 16, height: 15))?.withTintColor(.colorNamed("Txt10"))
 			cell.headingLabel.text = "My Wallets"
 			return cell.contentView
 			

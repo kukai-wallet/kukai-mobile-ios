@@ -24,10 +24,10 @@ class AddressTypeCell: UITableViewCell, UITableViewCellContainerView {
         super.setSelected(selected, animated: animated)
 		
 		if selected {
-			checkmarkImage.image = UIImage(named: "radial-checked")
+			checkmarkImage.image = UIImage(named: "btnChecked")
 			
 		} else {
-			checkmarkImage.image = UIImage(named: "radial-unchecked")
+			checkmarkImage.image = UIImage(named: "btnUnchecked")
 		}
     }
 }

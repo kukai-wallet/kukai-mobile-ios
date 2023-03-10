@@ -26,6 +26,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
+	private var testnetWarningView = UIView()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,6 +122,11 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
 	}
 	
+	public func manuallySetSlectedTab(toIndex: Int) {
+		self.selectedIndex = toIndex
+		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
+	}
+	
 	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
@@ -165,53 +171,61 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
+		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .small)
 		
-		accountButton.setImage(HomeTabBarController.imageForWallet(wallet: wallet), for: .normal)
-		accountButton.setAttributedTitle(textForWallet(wallet: wallet), for: .normal)
+		accountButton.setImage(media.image, for: .normal)
+		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
 	
-	static func imageForWallet(wallet: WalletMetadata) -> UIImage? {
-		if wallet.type == .social {
-			switch wallet.socialType {
-				case .apple:
-					return UIImage(named: "Social_Apple")?.resizedImage(Size: CGSize(width: 24, height: 24))
-					
-				case .google:
-					return UIImage(named: "Social_Google_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
-					
-				case .twitter:
-					return UIImage(named: "Social_Twitter_color")?.resizedImage(Size: CGSize(width: 24, height: 24))
-				
-				default:
-					return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
-			}
-		}
+	public func addTestnetWarning() {
+		testnetWarningView.translatesAutoresizingMaskIntoConstraints = false
+		testnetWarningView.backgroundColor = .red.withAlphaComponent(0.5)
 		
-		return UIImage(named: "Social_TZ_Ovalcolor")?.resizedImage(Size: CGSize(width: 24, height: 24))
+		self.tabBar.addSubview(testnetWarningView)
+		NSLayoutConstraint.activate([
+			testnetWarningView.leadingAnchor.constraint(equalTo: self.tabBar.leadingAnchor),
+			testnetWarningView.trailingAnchor.constraint(equalTo: self.tabBar.trailingAnchor),
+			testnetWarningView.bottomAnchor.constraint(equalTo: self.tabBar.bottomAnchor),
+			testnetWarningView.heightAnchor.constraint(equalToConstant: 26)
+		])
+		
+		let label = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+		label.translatesAutoresizingMaskIntoConstraints = false
+		label.textColor = .white
+		label.text = "Testnet"
+		
+		testnetWarningView.addSubview(label)
+		NSLayoutConstraint.activate([
+			label.leadingAnchor.constraint(equalTo: testnetWarningView.leadingAnchor, constant: 34),
+			label.trailingAnchor.constraint(equalTo: testnetWarningView.trailingAnchor),
+			label.bottomAnchor.constraint(equalTo: testnetWarningView.bottomAnchor),
+			label.topAnchor.constraint(equalTo: testnetWarningView.topAnchor),
+		])
 	}
 	
-	func textForWallet(wallet: WalletMetadata) -> NSAttributedString {
+	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {
 		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
 		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
 		
-		if wallet.type == .social {
-			var topText = wallet.displayName ?? wallet.address
+		
+		if let subtitle = subtitle {
+			var topText = title
 			let approxPixelsPerCharacter: CGFloat = 10
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
-		
+			
 			if topText.count > maxCharacters {
 				topText = String(topText.prefix(maxCharacters)) + "..."
 			}
 			
 			let attributedString1 = NSMutableAttributedString(string: "\(topText)\n", attributes: attrs1)
-			let attributedString2 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs2)
+			let attributedString2 = NSMutableAttributedString(string: subtitle, attributes: attrs2)
 			attributedString1.append(attributedString2)
 			
 			return attributedString1
 			
 		} else {
-			let attributedString1 = NSMutableAttributedString(string: wallet.address.truncateTezosAddress(), attributes: attrs1)
+			let attributedString1 = NSMutableAttributedString(string: title, attributes: attrs1)
 			return attributedString1
 		}
 	}

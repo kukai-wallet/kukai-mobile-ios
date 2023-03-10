@@ -13,17 +13,15 @@
         <array key="Figtree-Bold.ttf">
             <string>Figtree-Bold</string>
         </array>
-        <array key="Figtree-Medium.ttf">
-            <string>Figtree-Medium</string>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
         </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EnterAddressComponent" customModule="Kukai_Mobile" customModuleProvider="target">
             <connections>
                 <outlet property="addressTypeButton" destination="cJo-dB-oV7" id="hYE-rr-OoC"/>
-                <outlet property="buttonsStackview" destination="08s-au-9Ew" id="SH6-Cd-DlB"/>
                 <outlet property="containerStackView" destination="Zwp-dO-dRd" id="o88-FK-xns"/>
-                <outlet property="errorIcon" destination="ZBQ-md-pva" id="y1M-rs-a52"/>
                 <outlet property="errorLabel" destination="OKz-8U-EK6" id="UD3-dz-mCn"/>
                 <outlet property="errorStackView" destination="Mg2-P3-7lq" id="bRx-wL-9Ki"/>
                 <outlet property="headerLabel" destination="3BH-hp-rC3" id="CJf-G8-X58"/>
@@ -46,33 +44,34 @@
                             <rect key="frame" x="0.0" y="0.0" width="602" height="16"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send to:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BH-hp-rC3">
-                                    <rect key="frame" x="0.0" y="0.0" width="54" height="16"/>
-                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="53.5" height="16"/>
+                                    <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                     <color key="textColor" name="Txt10"/>
                                     <color key="highlightedColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </label>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="social-tezos-no-background" translatesAutoresizingMaskIntoConstraints="NO" id="vZE-UR-e9Q">
-                                    <rect key="frame" x="58" y="0.0" width="16" height="16"/>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Social_TZ_1color" translatesAutoresizingMaskIntoConstraints="NO" id="vZE-UR-e9Q">
+                                    <rect key="frame" x="57.5" y="0.0" width="16" height="16"/>
+                                    <color key="tintColor" name="BGB4"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="16" id="BqX-Wp-5AL"/>
                                         <constraint firstAttribute="width" constant="16" id="YgS-d8-MI0"/>
                                     </constraints>
                                 </imageView>
                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJo-dB-oV7" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                    <rect key="frame" x="78" y="0.0" width="102" height="16"/>
-                                    <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                    <rect key="frame" x="77.5" y="0.0" width="99" height="16"/>
+                                    <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                     <color key="tintColor" name="BGB4"/>
-                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <inset key="imageEdgeInsets" minX="8" minY="2" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" title="Tezos Address">
-                                        <color key="titleColor" name="Txt10"/>
+                                        <color key="titleColor" name="Txt6"/>
                                     </state>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="chevron-right"/>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ChevronRight"/>
                                         <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                            <real key="value" value="10"/>
+                                            <real key="value" value="7"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                            <real key="value" value="15"/>
+                                            <real key="value" value="13"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
@@ -80,7 +79,7 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-bU-5Xa">
-                                    <rect key="frame" x="184" y="0.0" width="418" height="16"/>
+                                    <rect key="frame" x="180.5" y="0.0" width="421.5" height="16"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
@@ -92,17 +91,17 @@
                                 <constraint firstAttribute="height" constant="5" id="WyF-bZ-M5A"/>
                             </constraints>
                         </view>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="7k6-7j-3jS">
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7k6-7j-3jS">
                             <rect key="frame" x="0.0" y="29" width="602" height="42"/>
                             <subviews>
                                 <textField opaque="NO" contentMode="left" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Enter Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="NiH-S7-rDy" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="462" height="42"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="514" height="42"/>
                                     <color key="backgroundColor" name="BG4"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="42" id="Cyi-Rl-Ciw"/>
                                     </constraints>
                                     <color key="textColor" name="Txt2"/>
-                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
+                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -110,7 +109,7 @@
                                             <real key="value" value="8"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                            <color key="value" name="Txt10"/>
+                                            <color key="value" name="Txt12"/>
                                         </userDefinedRuntimeAttribute>
                                         <userDefinedRuntimeAttribute type="color" keyPath="clearButtonTint">
                                             <color key="value" name="BGB4"/>
@@ -121,26 +120,50 @@
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="r3P-Px-14g">
-                                    <rect key="frame" x="478" y="0.0" width="124" height="42"/>
+                                    <rect key="frame" x="522" y="0.0" width="80" height="42"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eSS-2W-3vD">
-                                            <rect key="frame" x="0.0" y="0.0" width="124" height="3"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="80" height="3"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="3" id="OQf-yR-pFX"/>
                                             </constraints>
                                         </view>
-                                        <stackView opaque="NO" contentMode="right" translatesAutoresizingMaskIntoConstraints="NO" id="v9f-de-6RC">
-                                            <rect key="frame" x="0.0" y="3" width="124" height="36"/>
+                                        <stackView opaque="NO" contentMode="right" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="v9f-de-6RC">
+                                            <rect key="frame" x="0.0" y="3" width="80" height="36"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeQ-m7-CDp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-ME-5XM">
                                                     <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="36" id="21D-QS-VFF"/>
+                                                        <constraint firstAttribute="height" constant="36" id="vCB-ch-DMW"/>
+                                                    </constraints>
+                                                    <color key="tintColor" name="BGB4"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" title="" image="ScanQR"/>
+                                                    <state key="highlighted">
+                                                        <imageReference key="backgroundImage" image="qrcode" catalog="system" renderingMode="hierarchical">
+                                                            <hierarchicalColors>
+                                                                <color systemColor="labelColor"/>
+                                                                <color systemColor="secondaryLabelColor"/>
+                                                                <color systemColor="tertiaryLabelColor"/>
+                                                            </hierarchicalColors>
+                                                        </imageReference>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="qrCodeTapped:" destination="-1" eventType="touchUpInside" id="L6y-jr-Xar"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="topRight" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BeQ-m7-CDp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <rect key="frame" x="44" y="0.0" width="36" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="36" id="4LA-q6-qpv"/>
                                                         <constraint firstAttribute="height" constant="36" id="Luv-Kj-azj"/>
                                                     </constraints>
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" backgroundImage="btnChevornPrimary"/>
+                                                    <state key="disabled" backgroundImage="btnChevornPrimaryDisabled_Dark"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
                                                             <real key="value" value="18"/>
@@ -151,59 +174,10 @@
                                                         <action selector="sendButtonTapped:" destination="-1" eventType="touchUpInside" id="pYK-Lo-77W"/>
                                                     </connections>
                                                 </button>
-                                                <stackView opaque="NO" contentMode="right" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="08s-au-9Ew">
-                                                    <rect key="frame" x="36" y="0.0" width="88" height="36"/>
-                                                    <subviews>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DQz-ME-5XM">
-                                                            <rect key="frame" x="0.0" y="0.0" width="36" height="36"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="36" id="21D-QS-VFF"/>
-                                                                <constraint firstAttribute="height" constant="36" id="vCB-ch-DMW"/>
-                                                            </constraints>
-                                                            <color key="tintColor" name="BGB4"/>
-                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                            <state key="normal" title="" image="qr-code"/>
-                                                            <state key="highlighted">
-                                                                <imageReference key="backgroundImage" image="qrcode" catalog="system" renderingMode="hierarchical">
-                                                                    <hierarchicalColors>
-                                                                        <color systemColor="labelColor"/>
-                                                                        <color systemColor="secondaryLabelColor"/>
-                                                                        <color systemColor="tertiaryLabelColor"/>
-                                                                    </hierarchicalColors>
-                                                                </imageReference>
-                                                            </state>
-                                                            <connections>
-                                                                <action selector="qrCodeTapped:" destination="-1" eventType="touchUpInside" id="L6y-jr-Xar"/>
-                                                            </connections>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eSD-EA-R8x">
-                                                            <rect key="frame" x="52" y="0.0" width="36" height="36"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="36" id="ZVw-4Q-2Vw"/>
-                                                                <constraint firstAttribute="width" constant="36" id="jih-t7-a0i"/>
-                                                            </constraints>
-                                                            <color key="tintColor" name="BGB4"/>
-                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                            <state key="normal" image="paste"/>
-                                                            <state key="highlighted">
-                                                                <imageReference key="backgroundImage" image="text.viewfinder" catalog="system" renderingMode="hierarchical">
-                                                                    <hierarchicalColors>
-                                                                        <color systemColor="labelColor"/>
-                                                                        <color systemColor="secondaryLabelColor"/>
-                                                                        <color systemColor="tertiaryLabelColor"/>
-                                                                    </hierarchicalColors>
-                                                                </imageReference>
-                                                            </state>
-                                                            <connections>
-                                                                <action selector="pasteTapped:" destination="-1" eventType="touchUpInside" id="vLL-y0-epq"/>
-                                                            </connections>
-                                                        </button>
-                                                    </subviews>
-                                                </stackView>
                                             </subviews>
                                         </stackView>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jwn-nH-rmj">
-                                            <rect key="frame" x="0.0" y="39" width="124" height="3"/>
+                                            <rect key="frame" x="0.0" y="39" width="80" height="3"/>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="3" id="gQw-WA-EYm"/>
@@ -216,16 +190,8 @@
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Mg2-P3-7lq">
                             <rect key="frame" x="0.0" y="75" width="602" height="16"/>
                             <subviews>
-                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="xmark.octagon.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="ZBQ-md-pva">
-                                    <rect key="frame" x="0.0" y="1" width="16" height="14.5"/>
-                                    <color key="tintColor" name="TxtAlert6"/>
-                                    <constraints>
-                                        <constraint firstAttribute="width" constant="16" id="7Hr-JO-i4M"/>
-                                        <constraint firstAttribute="height" constant="16" id="wOp-VI-1pB"/>
-                                    </constraints>
-                                </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;Error message&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OKz-8U-EK6">
-                                    <rect key="frame" x="20" y="0.0" width="582" height="16"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="602" height="16"/>
                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="13"/>
                                     <color key="textColor" name="TxtAlert6"/>
                                     <nil key="highlightedColor"/>
@@ -249,23 +215,22 @@
     </objects>
     <designables>
         <designable name="BeQ-m7-CDp">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="NiH-S7-rDy">
-            <size key="intrinsicContentSize" width="105.5" height="19.5"/>
+            <size key="intrinsicContentSize" width="112" height="21"/>
         </designable>
         <designable name="cJo-dB-oV7">
-            <size key="intrinsicContentSize" width="102" height="17"/>
+            <size key="intrinsicContentSize" width="99" height="17"/>
         </designable>
     </designables>
     <resources>
-        <image name="chevron-right" width="12" height="18"/>
-        <image name="paste" width="24" height="24"/>
-        <image name="qr-code" width="22" height="22"/>
+        <image name="ChevronRight" width="10" height="18"/>
+        <image name="ScanQR" width="24" height="24"/>
+        <image name="Social_TZ_1color" width="20" height="27"/>
+        <image name="btnChevornPrimary" width="36" height="36"/>
+        <image name="btnChevornPrimaryDisabled_Dark" width="36" height="36"/>
         <image name="qrcode" catalog="system" width="128" height="114"/>
-        <image name="social-tezos-no-background" width="20" height="27"/>
-        <image name="text.viewfinder" catalog="system" width="128" height="115"/>
-        <image name="xmark.octagon.fill" catalog="system" width="128" height="112"/>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -275,8 +240,14 @@
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtAlert6">
             <color red="1" green="0.45899999141693115" blue="0.62000000476837158" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

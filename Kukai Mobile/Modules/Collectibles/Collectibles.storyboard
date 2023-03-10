@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="lcU-Xr-Yul">
-                                <rect key="frame" x="0.0" y="59" width="390" height="702"/>
+                                <rect key="frame" x="0.0" y="103" width="390" height="658"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="qGX-Hf-BuH">
                                     <size key="itemSize" width="128" height="128"/>
@@ -38,11 +38,12 @@
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Collectibles" image="Collectibles" selectedImage="CollectiblesOn" id="kxB-5B-YVX"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="collectionView" destination="lcU-Xr-Yul" id="EsE-rt-zQU"/>
                         <outlet property="collectionViewTopConstraint" destination="0Ne-vz-OnO" id="dhp-Mm-WMc"/>
-                        <segue destination="xby-4c-wEc" kind="custom" identifier="details" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="5fJ-eQ-pen"/>
+                        <segue destination="xby-4c-wEc" kind="show" identifier="details" id="5fJ-eQ-pen"/>
                         <segue destination="eX5-KQ-xN3" kind="show" identifier="hidden" id="9bV-Vc-NrM"/>
                     </connections>
                 </viewController>
@@ -59,7 +60,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-yg-0QC">
-                                <rect key="frame" x="0.0" y="55" width="390" height="789"/>
+                                <rect key="frame" x="0.0" y="99" width="390" height="745"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1xL-Fe-DP7">
                                     <size key="itemSize" width="390" height="210"/>
@@ -79,14 +80,26 @@
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="trailing" secondItem="BmB-t3-AoJ" secondAttribute="trailing" id="Qf7-jd-HeQ"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="pLd-oE-F0n"/>
                     <connections>
                         <outlet property="collectionView" destination="D8m-yg-0QC" id="NwR-md-06n"/>
                         <segue destination="JdE-iM-nJZ" kind="custom" identifier="tokenContract" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="MCW-sJ-eyP"/>
+                        <segue destination="FE5-Ks-oHm" kind="show" identifier="send" id="CzY-ee-j75"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWj-Sf-i5j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1246.1538461538462" y="-1420.3791469194312"/>
+        </scene>
+        <!--Send-->
+        <scene sceneID="SJr-kZ-cHn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Send" id="FE5-Ks-oHm" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="CsU-6g-ME3"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mLE-dO-OC1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-428" y="-1420"/>
         </scene>
         <!--hidden-->
         <scene sceneID="I5V-Lz-HLk">
