@@ -23,7 +23,7 @@ class AccountButton: UIButton {
 		
 		if let existingImageFrame = imageView?.frame, let existingTextFrame = titleLabel?.frame {
 			let leftImageMargin: CGFloat = 10
-			let leftTextMargin = leftImageMargin + existingImageFrame.width + 5
+			let leftTextMargin = leftImageMargin + existingImageFrame.width + 8
 			let additionalImageFrame = CGRect(x: self.bounds.width - (additionalImageWidth + 12), y: (self.bounds.height - additionalImageHeight) / 2, width: additionalImageWidth, height: additionalImageHeight)
 			
 			imageView?.frame = CGRect(x: leftImageMargin, y: existingImageFrame.origin.y, width: existingImageFrame.width, height: existingImageFrame.height)

@@ -26,12 +26,15 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
-	private var testnetWarningView = UIView()
+	private let sideMenuVc: SideMenuViewController = UIStoryboard(name: "SideMenu", bundle: nil).instantiateInitialViewController() ?? SideMenuViewController()
+	
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.setupAppearence()
 		self.delegate = self
+		
+		sideMenuVc.homeTabBarController = self
 		
 		// Load any initial data so we can draw UI immediately without lag
 		DependencyManager.shared.balanceService.loadCache()
@@ -149,6 +152,26 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 			}.store(in: &bag)
 	}
 	
+	@IBAction func sideMenuTapped(_ sender: Any) {
+		guard let currentWindow = UIApplication.shared.currentWindow else {
+			return
+		}
+		
+		let sideMenuWidth = currentWindow.bounds.width - 16
+		self.sideMenuVc.view.frame = CGRect(x: sideMenuWidth * -1, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+		currentWindow.addSubview(sideMenuVc.view)
+		
+		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.sideMenuVc.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+		}
+	}
+	
+	public func openScanner() {
+		self.present(scanner, animated: true)
+	}
+	
+	
+	
 	
 	
 	// MARK: UI functions
@@ -178,38 +201,12 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
 	}
 	
-	public func addTestnetWarning() {
-		testnetWarningView.translatesAutoresizingMaskIntoConstraints = false
-		testnetWarningView.backgroundColor = .red.withAlphaComponent(0.5)
-		
-		self.tabBar.addSubview(testnetWarningView)
-		NSLayoutConstraint.activate([
-			testnetWarningView.leadingAnchor.constraint(equalTo: self.tabBar.leadingAnchor),
-			testnetWarningView.trailingAnchor.constraint(equalTo: self.tabBar.trailingAnchor),
-			testnetWarningView.bottomAnchor.constraint(equalTo: self.tabBar.bottomAnchor),
-			testnetWarningView.heightAnchor.constraint(equalToConstant: 26)
-		])
-		
-		let label = UILabel(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
-		label.translatesAutoresizingMaskIntoConstraints = false
-		label.textColor = .white
-		label.text = "Testnet"
-		
-		testnetWarningView.addSubview(label)
-		NSLayoutConstraint.activate([
-			label.leadingAnchor.constraint(equalTo: testnetWarningView.leadingAnchor, constant: 34),
-			label.trailingAnchor.constraint(equalTo: testnetWarningView.trailingAnchor),
-			label.bottomAnchor.constraint(equalTo: testnetWarningView.bottomAnchor),
-			label.topAnchor.constraint(equalTo: testnetWarningView.topAnchor),
-		])
-	}
-	
 	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {
-		let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
-		let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
-		
 		
 		if let subtitle = subtitle {
+			let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
+			let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
+			
 			var topText = title
 			let approxPixelsPerCharacter: CGFloat = 10
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
@@ -225,6 +222,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 			return attributedString1
 			
 		} else {
+			let attrs1 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
 			let attributedString1 = NSMutableAttributedString(string: title, attributes: attrs1)
 			return attributedString1
 		}

@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 		setupTheme()
 		
 		// Setup Sentry, but with Anonymous events
-		do {
-			let sentryOptions = try Options(dict: ["dsn": "https://53b9190ed8364ecc9b418dcc3493c506@o926227.ingest.sentry.io/5875459"])
-			sentryOptions.beforeSend = { (event) -> Event? in
+		SentrySDK.start { options in
+			options.dsn = "https://53b9190ed8364ecc9b418dcc3493c506@o926227.ingest.sentry.io/5875459"
+			options.beforeSend = { (event) -> Event? in
 				
 				// Scrub any identifiable data to keep users anonymous
 				event.context?["app"]?.removeValue(forKey: "device_app_hash")
@@ -26,11 +26,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 				
 				return event
 			}
-			
-			SentrySDK.start(options: sentryOptions)
-			
-		} catch (let error) {
-			os_log(.error, log: .default, "Sentry throw an error: %@", "\(error)")
 		}
 		
 		// Airplay audio/video support

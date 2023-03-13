@@ -236,6 +236,10 @@
 		C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */; };
 		C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */; };
 		C0C7A0FE2955B8CF00ADCA51 /* NoContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7A0FD2955B8CF00ADCA51 /* NoContactsCell.swift */; };
+		C0C7DFB829BF34ED00F60E0C /* SideMenu.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0C7DFB729BF34ED00F60E0C /* SideMenu.storyboard */; };
+		C0C7DFBA29BF37FF00F60E0C /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7DFB929BF37FF00F60E0C /* SideMenuViewController.swift */; };
+		C0C7DFBD29BF707800F60E0C /* SideMenuOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7DFBC29BF707800F60E0C /* SideMenuOptionCell.swift */; };
+		C0C7DFBF29BF70DD00F60E0C /* SideMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C7DFBE29BF70DD00F60E0C /* SideMenuViewModel.swift */; };
 		C0CB6AC02948E5E300E7B4DF /* CollectiblesSearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB6ABE2948E5E300E7B4DF /* CollectiblesSearchResultCell.swift */; };
 		C0CB6AC12948E5E300E7B4DF /* CollectiblesSearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0CB6ABF2948E5E300E7B4DF /* CollectiblesSearchResultCell.xib */; };
 		C0CB6AC32948ED4300E7B4DF /* FreeformValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */; };
@@ -561,6 +565,10 @@
 		C0C6B5CE28CA27AF00368AEA /* StakeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewController.swift; sourceTree = "<group>"; };
 		C0C6B5D028CA2A6B00368AEA /* StakeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeViewModel.swift; sourceTree = "<group>"; };
 		C0C7A0FD2955B8CF00ADCA51 /* NoContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContactsCell.swift; sourceTree = "<group>"; };
+		C0C7DFB729BF34ED00F60E0C /* SideMenu.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SideMenu.storyboard; sourceTree = "<group>"; };
+		C0C7DFB929BF37FF00F60E0C /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		C0C7DFBC29BF707800F60E0C /* SideMenuOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuOptionCell.swift; sourceTree = "<group>"; };
+		C0C7DFBE29BF70DD00F60E0C /* SideMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewModel.swift; sourceTree = "<group>"; };
 		C0CB6ABE2948E5E300E7B4DF /* CollectiblesSearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesSearchResultCell.swift; sourceTree = "<group>"; };
 		C0CB6ABF2948E5E300E7B4DF /* CollectiblesSearchResultCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectiblesSearchResultCell.xib; sourceTree = "<group>"; };
 		C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeformValidator.swift; sourceTree = "<group>"; };
@@ -780,6 +788,7 @@
 				C0ABB80D29AFB2DE002F1BF7 /* Activity */,
 				C0ABB80E29AFB2E9002F1BF7 /* Discover */,
 				C0F91C6828BFB3010081E8E8 /* Stake */,
+				C0C7DFB629BF34D100F60E0C /* Side Menu */,
 				C005BA2E2822C44600D8369D /* Profile */,
 				C0B08A29270DBF6500075618 /* Send */,
 				C0122E4629A6639000FFE8F7 /* ConnectedApps */,
@@ -1181,6 +1190,25 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C0C7DFB629BF34D100F60E0C /* Side Menu */ = {
+			isa = PBXGroup;
+			children = (
+				C0C7DFBB29BF706300F60E0C /* Cells */,
+				C0C7DFB729BF34ED00F60E0C /* SideMenu.storyboard */,
+				C0C7DFB929BF37FF00F60E0C /* SideMenuViewController.swift */,
+				C0C7DFBE29BF70DD00F60E0C /* SideMenuViewModel.swift */,
+			);
+			path = "Side Menu";
+			sourceTree = "<group>";
+		};
+		C0C7DFBB29BF706300F60E0C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C0C7DFBC29BF707800F60E0C /* SideMenuOptionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
 		C0D6D50228B66550001B8130 /* Fees */ = {
 			isa = PBXGroup;
 			children = (
@@ -1425,6 +1453,7 @@
 				C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */,
 				C0678DC3272056D400DEF1CB /* Localizable.strings in Resources */,
 				C0EA19CB29096DD200E6B40D /* CollectibleDetailNameCell.xib in Resources */,
+				C0C7DFB829BF34ED00F60E0C /* SideMenu.storyboard in Resources */,
 				C0EA19C129096D9400E6B40D /* CollectibleDetailImageCell.xib in Resources */,
 				C008B9BB2965D2CA00B17D96 /* CollectibleDetailAVCell.xib in Resources */,
 				C0CB6AC12948E5E300E7B4DF /* CollectiblesSearchResultCell.xib in Resources */,
@@ -1514,6 +1543,7 @@
 				C07374A12798364400726C01 /* Option1MainViewController.swift in Sources */,
 				C0C7A0FE2955B8CF00ADCA51 /* NoContactsCell.swift in Sources */,
 				C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */,
+				C0C7DFBD29BF707800F60E0C /* SideMenuOptionCell.swift in Sources */,
 				C0A321D627C68C0100D7788B /* Validator.swift in Sources */,
 				C0B768B92947991D00EF893E /* CollectibleListLayout.swift in Sources */,
 				C07FA42427AC3F03004B3BDF /* DisplayImageViewController.swift in Sources */,
@@ -1523,6 +1553,7 @@
 				C04E2866293F94D700DC4171 /* TokenDetailsSendCell.swift in Sources */,
 				C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */,
 				C06E0D6A287C71EA007A580B /* WalletConnectCell.swift in Sources */,
+				C0C7DFBF29BF70DD00F60E0C /* SideMenuViewModel.swift in Sources */,
 				C04E2860293F940E00DC4171 /* TokenDetailsChartCell.swift in Sources */,
 				C08694EA27BD5F7D000A4909 /* CoinGeckoService.swift in Sources */,
 				C04B20A52930E1AF00C008CD /* ActivityService.swift in Sources */,
@@ -1618,6 +1649,7 @@
 				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
 				C0EA19DE29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift in Sources */,
 				C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */,
+				C0C7DFBA29BF37FF00F60E0C /* SideMenuViewController.swift in Sources */,
 				C05CBBAA28228D6F00568DC9 /* AccountBasicCell.swift in Sources */,
 				C0081FD827D8FE3700F7FEFF /* ActivityViewModel.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
@@ -2309,7 +2341,7 @@
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 7.1.3;
+				minimumVersion = 8.3.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
