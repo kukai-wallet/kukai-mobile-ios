@@ -66,29 +66,21 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	/*
-	
 	func segue(forIndexPath: IndexPath) -> String? {
 		if forIndexPath.row == 0 {
-			return "currency"
+			return "side-menu-wallet-connect"
 			
 		} else if forIndexPath.row == 1 {
-			return "theme"
+			return "side-menu-theme"
 			
 		} else if forIndexPath.row == 2 {
-			return "network"
+			return "side-menu-currency"
 			
 		} else if forIndexPath.row == 3 {
-			return "beacon"
+			return "side-menu-network"
 			
-		} else if forIndexPath.row == 4 {
-			return "wallet-connect"
-			
-		} else if forIndexPath.row == 5 {
-			return "debug"
 		}
 		
 		return nil
 	}
-	*/
 }

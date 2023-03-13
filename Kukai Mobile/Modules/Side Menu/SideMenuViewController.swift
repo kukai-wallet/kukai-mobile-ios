@@ -111,6 +111,9 @@ class SideMenuViewController: UIViewController {
 extension SideMenuViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		
+		if let segue = viewModel.segue(forIndexPath: indexPath) {
+			self.closeTapped(self)
+			homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+		}
 	}
 }
