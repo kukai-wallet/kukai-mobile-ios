@@ -29,7 +29,7 @@
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" image="Hamburger"/>
                                 <connections>
-                                    <segue destination="ThT-HF-yA8" kind="show" id="OnS-Ci-B0T"/>
+                                    <action selector="sideMenuTapped:" destination="B7V-6A-7eN" eventType="touchUpInside" id="L1B-ao-FFB"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -84,6 +84,10 @@
                         <segue destination="ROo-sk-Fdh" kind="custom" identifier="wallet-connect-send-nft" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="isl-Kv-SQN"/>
                         <segue destination="ERx-el-q4i" kind="relationship" relationship="viewControllers" id="ZJL-mW-czn"/>
                         <segue destination="TIR-Qd-Mky" kind="relationship" relationship="viewControllers" id="9Hz-0m-X40"/>
+                        <segue destination="Thj-8Y-lSQ" kind="show" identifier="side-menu-wallet-connect" id="ru4-xg-n5x"/>
+                        <segue destination="ItM-db-Hb6" kind="show" identifier="side-menu-currency" id="IHW-dh-XAr"/>
+                        <segue destination="VmY-1Z-Zfq" kind="show" identifier="side-menu-theme" id="HMK-mp-FuU"/>
+                        <segue destination="fCs-nt-4bZ" kind="show" identifier="side-menu-network" id="pv2-XV-0DA"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -351,17 +355,6 @@
             </objects>
             <point key="canvasLocation" x="-947" y="-2205"/>
         </scene>
-        <!--Profile-->
-        <scene sceneID="qMN-ri-OHS">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Profile" id="ThT-HF-yA8" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="GL2-1I-spN"/>
-                    <navigationItem key="navigationItem" id="nBE-Rt-jTP"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Tm4-sM-m3n" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-165" y="-2988"/>
-        </scene>
         <!--Add Wallet View Controller-->
         <scene sceneID="a8z-Fh-p82">
             <objects>
@@ -592,7 +585,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOT-Rd-hYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-168" y="-2947"/>
+            <point key="canvasLocation" x="-168" y="-2875"/>
         </scene>
         <!--wallet-connect-pair-->
         <scene sceneID="byn-vW-3cp">
@@ -631,6 +624,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nMw-ac-n19" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-596" y="-2205"/>
+        </scene>
+        <!--walletConnect-->
+        <scene sceneID="pd5-bu-nU3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="walletConnect" id="Thj-8Y-lSQ" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="0BW-61-riN"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2vh-QR-loL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-128" y="-3151"/>
+        </scene>
+        <!--currency-->
+        <scene sceneID="CLD-JP-zJb">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="currency" id="ItM-db-Hb6" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="sjv-nJ-Yc0"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jyt-aE-ajl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-154" y="-3112"/>
+        </scene>
+        <!--network-->
+        <scene sceneID="Fud-U0-MtG">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="network" id="fCs-nt-4bZ" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="F8J-dS-3X8"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sNW-DA-rih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-157" y="-3029"/>
+        </scene>
+        <!--theme-->
+        <scene sceneID="6nT-J2-Oy2">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="theme" id="VmY-1Z-Zfq" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="9u8-sx-FBH"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="E7o-l0-aif" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-165" y="-3073"/>
         </scene>
     </scenes>
     <resources>

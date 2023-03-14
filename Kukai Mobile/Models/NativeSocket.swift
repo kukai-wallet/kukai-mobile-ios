@@ -16,14 +16,23 @@ public enum NativeSocketError: Error {
 public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDelegate {
 	
 	private var socket: URLSessionWebSocketTask? = nil
+	private let initURL: URL
 	
-	init(withURL url: URL) {
+	public init(withURL url: URL) {
 		self.socket = URLSession.shared.webSocketTask(with: url)
 		self.isConnected = false
 		self.request = URLRequest(url: url)
+		self.initURL = url
 		super.init()
 		
 		self.socket?.delegate = self
+	}
+	
+	public func reconnect() {
+		self.socket = URLSession.shared.webSocketTask(with: initURL)
+		self.socket?.delegate = self
+		self.isConnected = false
+		self.connect()
 	}
 	
 	
@@ -68,6 +77,7 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	
 	public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
 		isConnected = true
+		os_log("NativeSocket connected", log: .default, type: .info)
 		
 		if let onC = onConnect {
 			onC()
@@ -78,13 +88,17 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	
 	public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didCloseWith closeCode: URLSessionWebSocketTask.CloseCode, reason: Data?) {
 		isConnected = false
+		os_log("NativeSocket did close", log: .default, type: .error)
 		
 		if let onD = onDisconnect {
 			if closeCode != URLSessionWebSocketTask.CloseCode.normalClosure {
+				os_log("NativeSocket did close with code: normal", log: .default, type: .error)
 				onD(NativeSocketError.errorWithCode(closeCode))
+				
+			} else {
+				os_log("NativeSocket did close with code: %@", log: .default, type: .error, "\(closeCode)")
+				onD(nil)
 			}
-			
-			onD(nil)
 		}
 	}
 	
@@ -99,6 +113,7 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 					let nsErr = error as NSError
 					if nsErr.code == 57 && nsErr.domain == "NSPOSIXErrorDomain" {
 						self?.disconnect()
+						self?.reconnect()
 					}
 					
 				case .success(let message):

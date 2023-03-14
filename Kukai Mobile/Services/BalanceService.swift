@@ -67,13 +67,15 @@ public class BalanceService {
 				  let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
 			
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get() else {
+				guard let res = try? result.get(), let updatedNFTs = self?.orderGroupAndAliasNFTs(tokens: res.nfts) else {
 					error = result.getFailure()
 					self?.dispatchGroupBalances.leave()
 					return
 				}
 				
-				self?.account = res
+				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
+				
+				self?.account = newAccount
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -94,13 +96,15 @@ public class BalanceService {
 		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get() else {
+				guard let res = try? result.get(), let updatedNFTs = self?.orderGroupAndAliasNFTs(tokens: res.nfts) else {
 					error = result.getFailure()
 					self?.dispatchGroupBalances.leave()
 					return
 				}
 				
-				self?.account = res
+				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
+				
+				self?.account = newAccount
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -194,6 +198,40 @@ public class BalanceService {
 				completion(nil)
 			}
 		}
+	}
+	
+	private func orderGroupAndAliasNFTs(tokens: [Token]) -> [Token] {
+		let contractAliases = DependencyManager.shared.environmentService.mainnetEnv.contractAliases
+		var updatedTokens: [Token] = []
+		var leftOverTokens = tokens
+		
+		// Loop through known contracts
+		for contractAlias in contractAliases {
+			
+			// Create dummy object for each
+			updatedTokens.append(Token(name: contractAlias.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: nil, tokenContractAddress: contractAlias.address[0], tokenId: 0, nfts: []))
+			
+			// Loop through tokens to see if any of them should be in group
+			var indexesToRemove: [Int] = []
+			for (index, token) in leftOverTokens.enumerated() {
+				if contractAlias.address.contains(where: { $0 == (token.tokenContractAddress ?? "") }) {
+					updatedTokens.last?.nfts?.append(contentsOf: token.nfts ?? [])
+					indexesToRemove.append(index)
+				}
+			}
+			if indexesToRemove.count > 0 {
+				leftOverTokens.remove(atOffsets: IndexSet(indexesToRemove))
+			}
+		}
+		
+		
+		// Loop over updatedTokens to remove any empty contractAlias
+		updatedTokens = updatedTokens.filter({ ($0.nfts ?? []).count > 0 })
+		
+		// Add left over tokens
+		updatedTokens.append(contentsOf: leftOverTokens)
+		
+		return updatedTokens
 	}
 	
 	private func updateEstimatedTotal() {

@@ -67,7 +67,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 		self.showLoadingModal()
 		var sessionNamespaces = [String: SessionNamespace]()
 		
-		let supportedMethods = ["tezos_send", "tezos_sign"]
+		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
 		let supportedEvents: [String] = []
 		
 		proposal.requiredNamespaces.forEach {

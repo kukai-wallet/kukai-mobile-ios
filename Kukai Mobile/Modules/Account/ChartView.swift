@@ -10,7 +10,6 @@ import SwiftUI
 import Charts
 
 
-
 public struct ChartViewDataPoint: Hashable, Identifiable, Equatable {
 	public var value: Double
 	public var date: Date
@@ -27,7 +26,22 @@ protocol ChartHostingControllerDelegate: AnyObject {
 }
 
 class ChartViewIntegrationService: ObservableObject {
-	@Published var data: [ChartViewDataPoint] = []
+	@Published var data: [ChartViewDataPoint] = [] {
+		didSet {
+			maxData = data.max(by: { $0.value < $1.value })
+			minData = data.max(by: { $0.value > $1.value })
+			
+			// We want the background gradient to overflow the bottom value a little so it covers the bottom annotation
+			// because we set the Yaxis domain to be from min -> max, we need to trigger this bleed based off
+			// a percentage of, the difference between max and min, so its consistent in size for any data set
+			if let max = maxData, let min = minData {
+				bottomGradientBleedValue = min.value - ((max.value - min.value) * 0.25)
+			}
+		}
+	}
+	var maxData: ChartViewDataPoint? = nil
+	var minData: ChartViewDataPoint? = nil
+	var bottomGradientBleedValue: Double = 0
 	var delegate: ChartHostingControllerDelegate? = nil
 }
 
@@ -65,11 +79,8 @@ struct ChartView: View {
 	
 	@State private var selectedData: ChartViewDataPoint?
 	@State private var selectedDataPoint: CGPoint = CGPoint(x: 0, y: 0)
-	@State private var maxData: ChartViewDataPoint?
 	@State private var maxDataPoint: CGPoint = CGPoint(x: 0, y: 0)
-	@State private var minData: ChartViewDataPoint?
 	@State private var minDataPoint: CGPoint = CGPoint(x: 0, y: 0)
-	@State private var middleValue: Decimal = 0
 	@State private var isDragging: Bool = false
 	
 	@EnvironmentObject private var integration: ChartViewIntegrationService
@@ -86,9 +97,10 @@ struct ChartView: View {
 	)
 	
 	var body: some View {
-		VStack(spacing: 0) {
+		VStack(spacing: 4) {
 			topAnnotationView
 			chart
+			bottomAnnotationView
 			
 		}.background(.clear)
 	}
@@ -98,11 +110,33 @@ struct ChartView: View {
 			ZStack(alignment: .topLeading) {
 				GeometryReader { geo in
 					
-					let widthOfString = doubleFormatter(maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
+					let widthOfString = doubleFormatter(integration.maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
 					let boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
 					
 					VStack(alignment: .trailing) {
-						Text(doubleFormatter(maxData?.value))
+						Text(doubleFormatter((integration.maxData?.value ?? 0)))
+							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+							.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
+						
+					}
+					.offset(x: boxOffset)
+				}
+			}
+		}
+		.frame(height: 18)
+		.background(.clear)
+	}
+	
+	private var bottomAnnotationView: some View {
+		VStack {
+			ZStack(alignment: .topLeading) {
+				GeometryReader { geo in
+					
+					let widthOfString = doubleFormatter(integration.minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
+					let boxOffset = max(4, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+					
+					VStack(alignment: .trailing) {
+						Text(doubleFormatter((integration.minData?.value ?? 0)))
 							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
 							.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
 						
@@ -118,18 +152,22 @@ struct ChartView: View {
 	private var chart: some View {
 		Chart {
 			ForEach(integration.data) { element in
-				AreaMark(x: .value("Date", element.date), y: .value("Value", element.value))
-					.interpolationMethod(.linear)
-					.foregroundStyle(gradient)
-				
 				LineMark(x: .value("Date", element.date), y: .value("Value", element.value))
 					.lineStyle(StrokeStyle(lineWidth: 3))
 					.foregroundStyle(Color(UIColor.colorNamed("BGB2")))
 					.interpolationMethod(.linear)
+				
+				AreaMark(
+					x: .value("Date", element.date),
+					yStart: .value("amount", integration.bottomGradientBleedValue),
+					yEnd: .value("amountEnd", element.value)
+				)
+				.foregroundStyle(gradient)
 			}
 		}
 		.chartXAxis(.hidden)
 		.chartYAxis(.hidden)
+		.chartYScale(domain: (integration.minData?.value ?? 0)...(integration.maxData?.value ?? 0))
 		.backgroundStyle(Color.clear)
 		.chartOverlay { proxy in
 			useProxy(proxy)
@@ -150,16 +188,6 @@ struct ChartView: View {
 										integration.delegate?.didSelectPoint(selectedData, ofIndex: firstGreater)
 										
 										selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
-										
-										/*
-										if selectedDataPoint.x == 0 && selectedDataPoint.y == 0 {
-											selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
-										} else {
-											withAnimation(.linear(duration: 0.3)) {
-												selectedDataPoint = proxy.position(for: (x: integration.data[firstGreater].date, y: integration.data[firstGreater].value)) ?? CGPoint(x: 0, y: 0)
-											}
-										}
-										*/
 									}
 								}
 							}
@@ -171,19 +199,6 @@ struct ChartView: View {
 								integration.delegate?.didFinishSelectingPoint()
 							}
 					)
-				
-				
-				// Add text annotation of lowest value as overlay to bottom of chart
-				let widthOfString = doubleFormatter(minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
-				let boxOffset = max(4, min(geometry.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
-				
-				VStack(alignment: .trailing) {
-					Text(doubleFormatter(minData?.value))
-						.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
-						.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
-					
-				}
-				.offset(x: boxOffset, y: minDataPoint.y + 8)
 				
 				
 				// If the user is dragging their finger across the chart, compute and record the closest datapoint
@@ -211,11 +226,8 @@ struct ChartView: View {
 	private func useProxy(_ proxy: ChartProxy) -> some View {
 		
 		DispatchQueue.main.async {
-			if let max = integration.data.max(by: { $0.value < $1.value }), let min = integration.data.max(by: { $0.value > $1.value }) {
-				self.maxData = max
+			if let max = integration.maxData, let min = integration.minData {
 				self.maxDataPoint = proxy.position(for: (x: max.date, y: max.value)) ?? CGPoint(x: 0, y: 0)
-				
-				self.minData = min
 				self.minDataPoint = proxy.position(for: (x: min.date, y: min.value)) ?? CGPoint(x: 0, y: 0)
 			}
 		}
@@ -228,7 +240,28 @@ struct ChartView: View {
 
 struct TokenDetailsChartView_Previews: PreviewProvider {
 	static var previews: some View {
-		let tempData: [ChartViewDataPoint] = [
+		
+		let tempData1: [ChartViewDataPoint] = [
+			.init(value: 1.0824332458790638, date: Date()),
+			.init(value: 1.0806859563659879, date: Date().addingTimeInterval(10000)),
+			.init(value: 1.0806711006253034, date: Date().addingTimeInterval(20000)),
+			.init(value: 1.0830491365529251, date: Date().addingTimeInterval(30000)),
+			.init(value: 1.0795723536365875, date: Date().addingTimeInterval(40000)),
+			.init(value: 1.0791162896315143, date: Date().addingTimeInterval(50000)),
+			.init(value: 1.0765211160416603, date: Date().addingTimeInterval(60000))
+		]
+		
+		let tempData2: [ChartViewDataPoint] = [
+			.init(value: 1.01, date: Date()),
+			.init(value: 1.02, date: Date().addingTimeInterval(10000)),
+			.init(value: 1.03, date: Date().addingTimeInterval(20000)),
+			.init(value: 1.07, date: Date().addingTimeInterval(30000)),
+			.init(value: 1.05, date: Date().addingTimeInterval(40000)),
+			.init(value: 1.06, date: Date().addingTimeInterval(50000)),
+			.init(value: 1.01, date: Date().addingTimeInterval(60000))
+		]
+		
+		let tempData3: [ChartViewDataPoint] = [
 			.init(value: 900, date: Date()),
 			.init(value: 500, date: Date().addingTimeInterval(10000)),
 			.init(value: 80.7, date: Date().addingTimeInterval(20000)),
@@ -238,9 +271,24 @@ struct TokenDetailsChartView_Previews: PreviewProvider {
 			.init(value: 900, date: Date().addingTimeInterval(60000))
 		]
 		
-		let integration = ChartViewIntegrationService()
-		integration.data = tempData
+		let dataArrays = [tempData1, tempData2, tempData3]
+		var currentIndex = 0
 		
-		return AnyView(ChartView().frame(width: 300, height: 150).environmentObject(integration))
+		let integration = ChartViewIntegrationService()
+		integration.data = dataArrays[currentIndex]
+		
+		
+		return VStack(spacing: 24) {
+			AnyView(ChartView().frame(width: 300, height: 150).environmentObject(integration))
+			Button("Switch data", action: {
+				currentIndex += 1
+				
+				if currentIndex > dataArrays.count-1 {
+					currentIndex = 0
+				}
+				
+				integration.data = dataArrays[currentIndex]
+			})
+		}
 	}
 }

@@ -34,9 +34,11 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 		if let previousReward = data.previousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: lastBakerIcon.frame.size)
 			
+			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			
 			lastBaker.text = previousReward.bakerAlias
 			lastAmountTitle.text = "Amount (fee)"
-			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
+			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(percentage)%)"
 			lastTimeTitle.text = "Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Cycle"
@@ -45,9 +47,11 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 		} else if let previousReward = data.estimatedPreviousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: lastBakerIcon.frame.size)
 			
+			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			
 			lastBaker.text = previousReward.bakerAlias
 			lastAmountTitle.text = "Est Amount (fee)"
-			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(previousReward.fee * 100)%)"
+			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(percentage)%)"
 			lastTimeTitle.text = "Est Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Est Cycle"
@@ -65,8 +69,10 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 		if let nextReward = data.estimatedNextReward {
 			MediaProxyService.load(url: nextReward.bakerLogo, to: nextBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: nextBakerIcon.frame.size)
 			
+			let percentage = Decimal(nextReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			
 			nextBaker.text = nextReward.bakerAlias
-			nextAmount.text = nextReward.amount.normalisedRepresentation + " (\(nextReward.fee * 100)%)"
+			nextAmount.text = nextReward.amount.normalisedRepresentation + " (\(percentage)%)"
 			nextTime.text = nextReward.dateOfPayment.timeAgoDisplay()
 			nextCycle.text = nextReward.cycle.description
 			
