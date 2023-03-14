@@ -305,6 +305,10 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
+	func provideAccountList() {
+		WalletConnectService.shared.respondWithAccounts()
+	}
+	
 	func error(message: String?, error: Error?) {
 		self.hideLoadingModal { [weak self] in
 			
