@@ -99,6 +99,7 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func copyTapped(_ sender: Any) {
+		UIPasteboard.general.string = DependencyManager.shared.selectedWalletAddress
 	}
 	
 	@IBAction func showQRTapped(_ sender: Any) {

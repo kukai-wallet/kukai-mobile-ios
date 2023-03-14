@@ -27,6 +27,8 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
+	private let contractAliases = DependencyManager.shared.environmentService.mainnetEnv.contractAliases
+	private let contractAliasesAddressShorthand = DependencyManager.shared.environmentService.mainnetEnv.contractAliases.map({ $0.address[0] })
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
@@ -86,7 +88,12 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				return cell
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListGroupCell", for: indexPath) as? CollectiblesListGroupCell {
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				
+				if let index = self?.contractAliasesAddressShorthand.firstIndex(of: obj.tokenContractAddress ?? "") {
+					cell.iconView.image = UIImage(named: self?.contractAliases[index].thumbnailUrl ?? "") ?? UIImage()
+				} else {
+					MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				}
 				
 				if let alias = obj.name {
 					cell.titleLabel.text = alias

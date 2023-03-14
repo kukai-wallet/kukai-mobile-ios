@@ -31,6 +31,7 @@ class DependencyManager {
 	
 	
 	// Kukai Core clients and properties
+	var environmentService: EnvironmentService
 	var tezosClientConfig: TezosNodeClientConfig
 	var tezosNodeClient: TezosNodeClient
 	var tzktClient: TzKTClient
@@ -149,6 +150,7 @@ class DependencyManager {
 		
 		// Can't call self until all properties init'd, or made optional and nil'd. We need this setup logic accessible outside of the init,
 		// To avoid code duplication, we setup the properties with default values and then call the shared func
+		environmentService = EnvironmentService()
 		tezosClientConfig = TezosNodeClientConfig(withDefaultsForNetworkType: .mainnet)
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
@@ -193,6 +195,7 @@ class DependencyManager {
 			networkType: currentNetworkType
 		)
 		
+		environmentService = EnvironmentService()
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)

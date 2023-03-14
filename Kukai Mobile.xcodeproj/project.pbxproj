@@ -192,6 +192,9 @@
 		C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D727C68C2B00D7788B /* NumberValidator.swift */; };
 		C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */; };
 		C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */; };
+		C0A4E04D29C0CA5F00644E16 /* EnvironmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A4E04C29C0CA5F00644E16 /* EnvironmentService.swift */; };
+		C0A4E05029C0CF0700644E16 /* ghostnet-env.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A4E04E29C0CF0700644E16 /* ghostnet-env.json */; };
+		C0A4E05129C0CF0700644E16 /* mainnet-env.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A4E04F29C0CF0700644E16 /* mainnet-env.json */; };
 		C0A9865729895A6A0092EA2F /* SendCollectibleAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */; };
 		C0ABB81029AFB315002F1BF7 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */; };
 		C0ABB81229AFB31E002F1BF7 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */; };
@@ -516,6 +519,9 @@
 		C0A321D727C68C2B00D7788B /* NumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberValidator.swift; sourceTree = "<group>"; };
 		C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosAddressValidator.swift; sourceTree = "<group>"; };
 		C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAmountValidator.swift; sourceTree = "<group>"; };
+		C0A4E04C29C0CA5F00644E16 /* EnvironmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentService.swift; sourceTree = "<group>"; };
+		C0A4E04E29C0CF0700644E16 /* ghostnet-env.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ghostnet-env.json"; sourceTree = "<group>"; };
+		C0A4E04F29C0CF0700644E16 /* mainnet-env.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "mainnet-env.json"; sourceTree = "<group>"; };
 		C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleAmountViewController.swift; sourceTree = "<group>"; };
 		C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
@@ -674,6 +680,7 @@
 		C0082BF126A6C69C00DB160B /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				C0A4E04B29C0CA3B00644E16 /* Environment */,
 				C0082BF226A6C6B300DB160B /* DependencyManager.swift */,
 				C024038826D925FB00E1CB80 /* BeaconService.swift */,
 				C0B08A38270DDED300075618 /* TransactionService.swift */,
@@ -1032,6 +1039,16 @@
 				C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */,
 			);
 			path = Validators;
+			sourceTree = "<group>";
+		};
+		C0A4E04B29C0CA3B00644E16 /* Environment */ = {
+			isa = PBXGroup;
+			children = (
+				C0A4E04E29C0CF0700644E16 /* ghostnet-env.json */,
+				C0A4E04F29C0CF0700644E16 /* mainnet-env.json */,
+				C0A4E04C29C0CA5F00644E16 /* EnvironmentService.swift */,
+			);
+			path = Environment;
 			sourceTree = "<group>";
 		};
 		C0ABB80D29AFB2DE002F1BF7 /* Activity */ = {
@@ -1440,6 +1457,7 @@
 				C0EA19DB29096E4600E6B40D /* CollectibleDetailDescriptionCell.xib in Resources */,
 				C01372AB29B206CD0083E297 /* MenuActionCell.xib in Resources */,
 				C01A6349297847AA00278689 /* TokenDetailsSendCell.xib in Resources */,
+				C0A4E05029C0CF0700644E16 /* ghostnet-env.json in Resources */,
 				C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */,
 				C01A634B297847FB00278689 /* TokenDetailsStakingRewardsCell.xib in Resources */,
 				C01372B329B206FF0083E297 /* MenuHeaderCell.xib in Resources */,
@@ -1464,6 +1482,7 @@
 				C0FBC884292BCEEF00B29921 /* Figtree-Medium.ttf in Resources */,
 				C0ABB81029AFB315002F1BF7 /* Activity.storyboard in Resources */,
 				C01A63532978482800278689 /* TokenDetailsMessageCell.xib in Resources */,
+				C0A4E05129C0CF0700644E16 /* mainnet-env.json in Resources */,
 				C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */,
 				C0EF1BC5289296D900AA5DD4 /* SlideButton.xib in Resources */,
 				C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */,
@@ -1587,6 +1606,7 @@
 				C02C20ED282A9E7C001089DF /* BeaconConfigCell.swift in Sources */,
 				C049B5AF26A079AF00F1C5E0 /* UIViewController+extensions.swift in Sources */,
 				C0BADFFD29153CCD00E78C26 /* UIColor+extensions.swift in Sources */,
+				C0A4E04D29C0CA5F00644E16 /* EnvironmentService.swift in Sources */,
 				C08694E027BD1B9B000A4909 /* EstimatedTotalCell.swift in Sources */,
 				C080CC0F2773568200780F7E /* MyAuthorizationAppleIDButton.swift in Sources */,
 				C04E2868293F94EA00DC4171 /* TokenDetailsStakingRewardsCell.swift in Sources */,
