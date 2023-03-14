@@ -92,8 +92,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 					cell.titleLabel.text = alias
 					cell.titleLabel.lineBreakMode = .byTruncatingTail
 				} else {
-					cell.titleLabel.text = obj.tokenContractAddress
-					cell.titleLabel.lineBreakMode = .byTruncatingMiddle
+					cell.titleLabel.text = obj.tokenContractAddress?.truncateTezosAddress()
 				}
 				
 				cell.countLabel.text = obj.nfts?.count.description ?? ""
