@@ -1,29 +1,28 @@
 //
-//  TokenDetailsActivityItemCell.swift
+//  ActivityContractCallCell.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 06/12/2022.
+//  Created by Simon Mcloughlin on 15/03/2023.
 //
 
 import UIKit
 import KukaiCoreSwift
 
-class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerView {
-	
+class ActivityContractCallCell: UITableViewCell, UITableViewCellContainerView {
+    
 	@IBOutlet weak var containerView: UIView!
-	@IBOutlet weak var tokenIcon: UIImageView!
-	@IBOutlet weak var transactionTypeIcon: UIImageView!
-	@IBOutlet weak var type: UILabel!
-	@IBOutlet weak var amount: UILabel!
-	@IBOutlet weak var toLabel: UILabel!
-	@IBOutlet weak var destinationLabel: UILabel!
+	
+	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var subtitleLabel: UILabel!
+	@IBOutlet weak var ellipsesImage: UIImageView!
+	@IBOutlet weak var chevronImage: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
-	@IBOutlet weak var moreButton: UIButton!
 	
 	var gradientLayer = CAGradientLayer()
 	
 	func setup(data: TzKTTransactionGroup) {
-		var color = UIColor.white
+		/*var color = UIColor.white
 		var typeimage = UIImage()
 		
 		if data.groupType == .receive {
@@ -48,13 +47,16 @@ class TokenDetailsActivityItemCell: UITableViewCell, UITableViewCellContainerVie
 		toLabel.text = data.groupType == .send ? "To:" : "From:"
 		destinationLabel.text = destinationFrom(data)
 		timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
+		 */
 	}
 	
-	private func destinationFrom(_ group: TzKTTransactionGroup) -> String {
-		if group.groupType == .send {
-			return group.transactions[0].target?.alias ?? group.transactions[0].target?.address.truncateTezosAddress() ?? ""
-		} else {
-			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address.truncateTezosAddress()
-		}
+	func setHasChildren() {
+		ellipsesImage.isHidden = true
+		chevronImage.isHidden = false
+	}
+	
+	func setHasNoChildren() {
+		ellipsesImage.isHidden = false
+		chevronImage.isHidden = true
 	}
 }

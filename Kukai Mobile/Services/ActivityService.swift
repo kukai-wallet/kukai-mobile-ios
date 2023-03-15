@@ -5,29 +5,6 @@
 //  Created by Simon Mcloughlin on 25/11/2022.
 //
 
-
-/*
-if !forceRefresh, currentSnapshot.numberOfItems == 0, let cachedGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityViewModel.cachedFileName) {
-	self.groups = cachedGroups
-	self.loadGroups()
-	
-} else if forceRefresh || currentSnapshot.numberOfItems == 0 {
-	DependencyManager.shared.tzktClient.fetchTransactions(forAddress: walletAddress) { [weak self] transactions in
-		guard let self = self else {
-			self?.state = .success(nil)
-			return
-		}
-		
-		self.forceRefresh = false
-		self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
-		let _ = DiskService.write(encodable: self.groups, toFileName: ActivityViewModel.cachedFileName)
-		
-		self.loadGroups()
-	}
-	
-	}
-*/
-
 import Foundation
 import KukaiCoreSwift
 
@@ -75,7 +52,7 @@ public class ActivityService {
 	}
 	
 	private func remoteFetch(forAddress address: String, completion: @escaping ((KukaiError?) -> Void)) {
-		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address) { [weak self] transactions in
+		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { [weak self] transactions in
 			let groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: address)
 			
 			self?.transactionGroups = groups
@@ -103,5 +80,9 @@ public class ActivityService {
 		}
 		
 		return transactions
+	}
+	
+	public func deleteCache() {
+		let _ = DiskService.delete(fileName: ActivityService.cachedFileName)
 	}
 }

@@ -45,7 +45,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 			.dropFirst()
 			.sink { [weak self] _ in
 				self?.setupTzKTAccountListener()
-				ActivityViewModel.deleteCache()
+				DependencyManager.shared.activityService.deleteCache()
 				AccountViewModel.setupAccountActivityListener()
 				
 				self?.refreshType = .refreshEverything
@@ -56,7 +56,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 			.dropFirst()
 			.sink { [weak self] _ in
 				DependencyManager.shared.balanceService.deleteAccountCachcedData()
-				ActivityViewModel.deleteCache()
+				DependencyManager.shared.activityService.deleteCache()
 				AccountViewModel.setupAccountActivityListener()
 				
 				self?.updateAccountButton()
