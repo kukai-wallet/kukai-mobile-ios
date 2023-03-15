@@ -17,6 +17,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -46,6 +47,14 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		
 		if indexPath.row == 0 {
 			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 	

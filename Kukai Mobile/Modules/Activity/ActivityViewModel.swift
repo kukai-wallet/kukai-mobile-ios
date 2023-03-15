@@ -19,13 +19,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	public var forceRefresh = false
+	public var menuVc: MenuViewController? = nil
 	
 	private var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var groups: [TzKTTransactionGroup] = []
-	private static let cachedFileName = "ActivityViewModel-transactions"
 	
 	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var selectedWalletAddress = DependencyManager.shared.selectedWalletAddress
 	
 	
 	
@@ -38,7 +39,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			.dropFirst()
 			.sink { [weak self] _ in
 				if self?.dataSource != nil {
-					ActivityViewModel.deleteCache()
 					self?.forceRefresh = true
 					self?.refresh(animate: true)
 				}
@@ -54,17 +54,47 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
+		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
+		tableView.register(UINib(nibName: "ActivityContractCallCell", bundle: nil), forCellReuseIdentifier: "ActivityContractCallCell")
+		tableView.register(UINib(nibName: "ActivitySubItemCell", bundle: nil), forCellReuseIdentifier: "ActivitySubItemCell")
+		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			let walletAddress = DependencyManager.shared.selectedWalletAddress
 			guard let self = self else { return UITableViewCell() }
 			
-			if let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
+			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+				cell.tokenIcon.addTokenIcon(token: obj.primaryToken?.token ?? Token.xtz())
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityContractCallCell", for: indexPath) as? ActivityContractCallCell {
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
+				cell.setup(data: obj)
+				return cell
+				
+			} else {
+				return UITableViewCell()
+			}
+				
+				
+				
+				
+				
+				
+				
+			/*
+				let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
 				
 				if let primaryToken = obj.primaryToken {
 					cell.titleLabel.text = self.titleTextFor(tokenDetails: primaryToken, transaction: obj.transactions.first)
 					
 				} else if let entrypoint = obj.entrypointCalled {
-					cell.titleLabel.text = "Called: \(entrypoint)"
+					cell.titleLabel.text = "Call: \(entrypoint)"
 					
 				} else if obj.groupType == .delegate {
 					cell.titleLabel.text = "Changed Delegate"
@@ -137,6 +167,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else {
 				return UITableViewCell()
 			}
+			*/
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -148,26 +179,15 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let walletAddress = DependencyManager.shared.selectedWalletAddress
-		if !forceRefresh, currentSnapshot.numberOfItems == 0, let cachedGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityViewModel.cachedFileName) {
-			self.groups = cachedGroups
-			self.loadGroups()
-			
-		} else if forceRefresh || currentSnapshot.numberOfItems == 0 {
-			DependencyManager.shared.tzktClient.fetchTransactions(forAddress: walletAddress) { [weak self] transactions in
-				guard let self = self else {
-					self?.state = .success(nil)
-					return
-				}
-				
-				self.forceRefresh = false
-				self.groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: walletAddress)
-				let _ = DiskService.write(encodable: self.groups, toFileName: ActivityViewModel.cachedFileName)
-				
-				self.loadGroups()
+		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: walletAddress, refreshType: self.forceRefresh ? .forceRefresh : .refreshIfCacheEmpty) { [weak self] error in
+			if let err = error {
+				self?.state = .failure(err, "Unable to fetch transactions")
+				return
 			}
 			
-		} else {
-			state = .success(nil)
+			self?.groups = DependencyManager.shared.activityService.transactionGroups
+			self?.loadGroups()
+			self?.state = .success(nil)
 		}
 	}
 	
@@ -179,11 +199,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot.appendSections(Array(0..<self.groups.count+1))
 		
-		self.currentSnapshot.appendSections(Array(0..<self.groups.count))
+		self.currentSnapshot.appendItems([MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())], toSection: 0)
 		
 		for (index, txGroup) in self.groups.enumerated() {
-			self.currentSnapshot.appendItems([txGroup], toSection: index)
+			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
 		ds.apply(self.currentSnapshot, animatingDifferences: true)
@@ -215,13 +236,13 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
+		/*if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
 			cell.setOpen()
 		}
 		
 		if let cell = tableView.cellForRow(at: indexPath) as? ActivityGenericCell {
 			cell.setOpen()
-		}
+		}*/
 		
 		let group = self.groups[indexPath.section]
 		
@@ -229,13 +250,13 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
+		/*if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
 			cell.setClosed()
 		}
 		
 		if let cell = tableView.cellForRow(at: indexPath) as? ActivityGenericCell {
 			cell.setClosed()
-		}
+		}*/
 		
 		let group = self.groups[indexPath.section]
 		
@@ -253,9 +274,5 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			return tokenDetails.amount.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
 		}
-	}
-	
-	public static func deleteCache() {
-		let _ = DiskService.delete(fileName: ActivityViewModel.cachedFileName)
 	}
 }
