@@ -48,7 +48,10 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.isVisible = true
-		viewModel.refresh(animate: false)
+		
+		if !viewModel.isSearching {
+			viewModel.refresh(animate: false)
+		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
