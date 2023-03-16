@@ -65,7 +65,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
-				cell.tokenIcon.addTokenIcon(token: obj.primaryToken?.token ?? Token.xtz())
+				cell.tokenIcon.addTokenIcon(token: obj.primaryToken ?? Token.xtz())
 				cell.setup(data: obj)
 				return cell
 				
@@ -263,16 +263,16 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		currentSnapshot.deleteItems(group.transactions)
 	}
 	
-	private func titleTextFor(tokenDetails: TzKTTransactionGroup.TokenDetails, transaction: TzKTTransaction? = nil) -> String {
-		if tokenDetails.isXTZ() {
-			return tokenDetails.amount.normalisedRepresentation + " XTZ"
+	private func titleTextFor(token: Token, transaction: TzKTTransaction? = nil) -> String {
+		if token.isXTZ() {
+			return token.balance.normalisedRepresentation + " XTZ"
 			
-		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(tokenDetails.token) {
-			tokenDetails.amount.decimalPlaces = exchangeData.token.decimals
-			return tokenDetails.amount.normalisedRepresentation + " \(exchangeData.token.symbol)"
+		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) {
+			token.balance.decimalPlaces = exchangeData.token.decimals
+			return token.balance.normalisedRepresentation + " \(exchangeData.token.symbol)"
 			
 		} else {
-			return tokenDetails.amount.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
+			return token.balance.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
 		}
 	}
 }

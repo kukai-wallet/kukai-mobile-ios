@@ -44,7 +44,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		type.text = data.groupType == .send ? "Send" : "Receive"
 		type.textColor = color
 		
-		amount.text = (data.primaryToken?.amount.description ?? "") + " \(data.primaryToken?.token.symbol ?? "")"
+		amount.text = (data.primaryToken?.balance.description ?? "") + " \(data.primaryToken?.symbol ?? "")"
 		toLabel.text = data.groupType == .send ? "To:" : "From:"
 		destinationLabel.text = destinationFrom(data)
 		timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""

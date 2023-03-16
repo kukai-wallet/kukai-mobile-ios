@@ -69,7 +69,7 @@ public class ActivityService {
 		for group in self.transactionGroups {
 			if group.transactions.count == 1,
 				(group.groupType == .send || group.groupType == .receive),
-			   (group.primaryToken?.token.tokenContractAddress == forToken.tokenContractAddress && group.primaryToken?.token.tokenId == forToken.tokenId && group.primaryToken?.token.symbol == forToken.symbol) {
+			   (group.primaryToken?.tokenContractAddress == forToken.tokenContractAddress && group.primaryToken?.tokenId == forToken.tokenId && group.primaryToken?.symbol == forToken.symbol) {
 				
 				transactions.append(group)
 				

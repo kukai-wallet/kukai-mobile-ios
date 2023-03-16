@@ -306,7 +306,7 @@ public class TransactionService {
 			}
 			
 			let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
-			return (image: image, title: metadata.tezosDomain ?? "", subtitle: metadata.address.truncateTezosAddress())
+			return (image: image, title: metadata.primaryTezosDomain() ?? "", subtitle: metadata.address.truncateTezosAddress())
 		}
 		
 		// Second Early exit if non-social wallet without domain
