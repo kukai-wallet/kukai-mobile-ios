@@ -57,6 +57,8 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.refresh(animate: false)
+		
+		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
