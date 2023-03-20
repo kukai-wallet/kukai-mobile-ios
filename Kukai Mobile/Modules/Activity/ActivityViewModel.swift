@@ -59,21 +59,16 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tableView.register(UINib(nibName: "ActivitySubItemCell", bundle: nil), forCellReuseIdentifier: "ActivitySubItemCell")
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self else { return UITableViewCell() }
+			//guard let self = self else { return UITableViewCell() }
 			
 			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
-				cell.tokenIcon.addTokenIcon(token: obj.primaryToken ?? Token.xtz())
+			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityContractCallCell", for: indexPath) as? ActivityContractCallCell {
-				cell.setup(data: obj)
-				return cell
-				
-			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
+			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
 				return cell
 				
@@ -244,7 +239,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setOpen()
 		}*/
 		
-		let group = self.groups[indexPath.section]
+		let group = self.groups[indexPath.section - 1]
 		
 		currentSnapshot.insertItems(group.transactions, afterItem: group)
 	}
@@ -258,7 +253,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}*/
 		
-		let group = self.groups[indexPath.section]
+		let group = self.groups[indexPath.section - 1]
 		
 		currentSnapshot.deleteItems(group.transactions)
 	}

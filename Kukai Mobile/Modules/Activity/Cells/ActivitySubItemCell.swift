@@ -14,8 +14,10 @@ class ActivitySubItemCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var transactionTypeIcon: UIImageView!
 	@IBOutlet weak var type: UILabel!
-	@IBOutlet weak var amount: UILabel!
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var subTitleLabel: UILabel!
 	@IBOutlet weak var toLabel: UILabel!
+	@IBOutlet weak var destinationImage: UIImageView!
 	@IBOutlet weak var destinationLabel: UILabel!
 	@IBOutlet weak var moreButton: UIButton!
 	

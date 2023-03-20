@@ -183,14 +183,15 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				if let tokenURL = self.tokenIconURL {
-					MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+					MediaProxyService.load(url: tokenURL, to: cell.typeIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.typeIcon.frame.size)
 					
 				} else {
-					cell.tokenIcon.image = self.tokenIcon
+					cell.typeIcon.image = self.tokenIcon
 				}
 				
-				cell.moreButton.menu = self.menuFor(transaction: obj)
-				cell.moreButton.showsMenuAsPrimaryAction = true
+				// TODO: re-enable
+				//cell.moreButton.menu = self.menuFor(transaction: obj)
+				//cell.moreButton.showsMenuAsPrimaryAction = true
 				cell.setup(data: obj)
 				return cell
 				
