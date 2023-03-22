@@ -169,14 +169,16 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			destinationIconStackView.isHidden = true
 			
 			if data.subType == .send {
-				typeIcon.image = .init(named: "ArrowSend")?.withTintColor(ActivityItemCell.sendTitleColor)
+				typeIcon.image = .init(named: "ArrowSend")
+				typeIcon.tintColor = ActivityItemCell.sendTitleColor
 				typeLabel.text = "Send"
 				typeLabel.textColor = ActivityItemCell.sendTitleColor
 				toLabel.text = "To: "
 				destinationLabel.text = data.target?.address.truncateTezosAddress()
 				
 			} else {
-				typeIcon.image = .init(named: "ArrowReceive")?.withTintColor(ActivityItemCell.receiveTitleColor)
+				typeIcon.image = .init(named: "ArrowReceive")
+				typeIcon.tintColor = ActivityItemCell.receiveTitleColor
 				typeLabel.text = "Receive"
 				typeLabel.textColor = ActivityItemCell.receiveTitleColor
 				toLabel.text = "From: "
