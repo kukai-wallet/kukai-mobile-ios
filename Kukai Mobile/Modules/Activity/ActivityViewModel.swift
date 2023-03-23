@@ -21,7 +21,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var forceRefresh = false
 	public var menuVc: MenuViewController? = nil
 	
-	private var expandedIndex: IndexPath? = nil
+	public var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var groups: [TzKTTransactionGroup] = []
 	
@@ -64,110 +64,26 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count == 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
-				cell.tokenIcon.addTokenIcon(token: obj.primaryToken?.token ?? Token.xtz())
+			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
+				
+				if self.expandedIndex == indexPath {
+					cell.setOpen()
+					
+				} else {
+					cell.setClosed()
+				}
+				
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityContractCallCell", for: indexPath) as? ActivityContractCallCell {
+			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
-				return cell
-				
-			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
-				cell.setup(data: obj)
+				cell.backgroundColor = .colorNamed("BGActivityBatch")
 				return cell
 				
 			} else {
 				return UITableViewCell()
 			}
-				
-				
-				
-				
-				
-				
-				
-			/*
-				let obj = item as? TzKTTransactionGroup, obj.groupType != .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityGenericCell", for: indexPath) as? ActivityGenericCell {
-				
-				if let primaryToken = obj.primaryToken {
-					cell.titleLabel.text = self.titleTextFor(tokenDetails: primaryToken, transaction: obj.transactions.first)
-					
-				} else if let entrypoint = obj.entrypointCalled {
-					cell.titleLabel.text = "Call: \(entrypoint)"
-					
-				} else if obj.groupType == .delegate {
-					cell.titleLabel.text = "Changed Delegate"
-					
-				} else if obj.groupType == .reveal {
-					cell.titleLabel.text = "Revealed"
-					
-				} else if obj.groupType == .unknown {
-					cell.titleLabel.text = "Unknown"
-				}
-				
-				if obj.groupType == .receive {
-					cell.prefixLabel.text = "From:"
-					cell.addressLabel.text = (obj.transactions.last?.sender.alias ?? obj.transactions.last?.sender.address) ?? "-"
-					cell.setReceived()
-					
-				} else {
-					cell.prefixLabel.text = "To:"
-					cell.addressLabel.text = (obj.transactions.last?.target?.alias ?? obj.transactions.last?.target?.address) ?? "-"
-					cell.setSent()
-				}
-				
-				if obj.transactions.count > 1 {
-					cell.setHasChildren()
-					
-				} else {
-					cell.setHasNoChildren()
-				}
-				
-				cell.date = obj.transactions.last?.date
-				
-				return cell
-				
-			} else if let obj = item as? TzKTTransactionGroup, obj.groupType == .exchange, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityExchangeCell", for: indexPath) as? ActivityExchangeCell {
-				
-				if let primaryToken = obj.primaryToken, let secondaryToken = obj.secondaryToken {
-					cell.sentLabel.text = self.titleTextFor(tokenDetails: primaryToken)
-					cell.receivedLabel.text = self.titleTextFor(tokenDetails: secondaryToken)
-				}
-				
-				cell.date = obj.transactions.last?.date
-				
-				return cell
-				
-			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivitySubItemCell", for: indexPath) as? ActivitySubItemCell {
-				
-				if let entrypoint = obj.getEntrypoint(), entrypoint == "transfer", let tokenData = obj.getFaTokenTransferData() {
-					if obj.getTokenTransferDestination() == walletAddress {
-						cell.titleLabel.text = "Received: \(self.titleTextFor(tokenDetails: tokenData, transaction: obj))"
-						
-					} else {
-						cell.titleLabel.text = "Sent: \(self.titleTextFor(tokenDetails: tokenData, transaction: obj))"
-					}
-					
-				} else if let entrypoint = obj.getEntrypoint() {
-					cell.titleLabel.text = "Called: \(entrypoint)"
-					
-				} else if obj.sender.address == walletAddress && obj.amount != .zero() {
-					cell.titleLabel.text = "Sent: \(obj.amount.normalisedRepresentation) XTZ"
-					
-				} else if obj.sender.address != walletAddress && obj.amount != .zero() {
-					cell.titleLabel.text = "Received: \(obj.amount.normalisedRepresentation) XTZ"
-					
-				} else {
-					cell.titleLabel.text = "Unknown Operation"
-				}
-				
-				return cell
-				
-			} else {
-				return UITableViewCell()
-			}
-			*/
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -236,43 +152,35 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		/*if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
 			cell.setOpen()
 		}
 		
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityGenericCell {
-			cell.setOpen()
-		}*/
-		
-		let group = self.groups[indexPath.section]
+		let group = self.groups[indexPath.section - 1]
 		
 		currentSnapshot.insertItems(group.transactions, afterItem: group)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		/*if let cell = tableView.cellForRow(at: indexPath) as? ActivityExchangeCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
 			cell.setClosed()
 		}
 		
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityGenericCell {
-			cell.setClosed()
-		}*/
-		
-		let group = self.groups[indexPath.section]
+		let group = self.groups[indexPath.section - 1]
 		
 		currentSnapshot.deleteItems(group.transactions)
 	}
 	
-	private func titleTextFor(tokenDetails: TzKTTransactionGroup.TokenDetails, transaction: TzKTTransaction? = nil) -> String {
-		if tokenDetails.isXTZ() {
-			return tokenDetails.amount.normalisedRepresentation + " XTZ"
+	private func titleTextFor(token: Token, transaction: TzKTTransaction? = nil) -> String {
+		if token.isXTZ() {
+			return token.balance.normalisedRepresentation + " XTZ"
 			
-		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(tokenDetails.token) {
-			tokenDetails.amount.decimalPlaces = exchangeData.token.decimals
-			return tokenDetails.amount.normalisedRepresentation + " \(exchangeData.token.symbol)"
+		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) {
+			token.balance.decimalPlaces = exchangeData.token.decimals
+			return token.balance.normalisedRepresentation + " \(exchangeData.token.symbol)"
 			
 		} else {
-			return tokenDetails.amount.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
+			return token.balance.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
 		}
 	}
 }

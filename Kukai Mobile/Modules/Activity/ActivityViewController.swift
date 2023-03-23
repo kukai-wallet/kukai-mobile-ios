@@ -14,6 +14,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	
 	private let viewModel = ActivityViewModel()
 	private var cancellable: AnyCancellable?
+	private var refreshControl = UIRefreshControl()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -22,6 +23,12 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
+		refreshControl.addAction(UIAction(handler: { [weak self] action in
+			self?.viewModel.forceRefresh = true
+			self?.viewModel.refresh(animate: true)
+		}), for: .valueChanged)
+		tableView.refreshControl = refreshControl
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -33,6 +40,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
+					self?.refreshControl.endRefreshing()
 					self?.hideLoadingView(completion: nil)
 			}
 		}
@@ -53,7 +61,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		if let c = cell as? UITableViewCellContainerView {
+		if let c = cell as? UITableViewCellContainerView, viewModel.expandedIndex != indexPath {
 			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}

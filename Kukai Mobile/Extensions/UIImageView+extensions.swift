@@ -20,7 +20,12 @@ extension UIImageView {
 		self.tintColor = color
 	}
 	
-	func addTokenIcon(token: Token) {
+	func addTokenIcon(token: Token?) {
+		guard let token = token else {
+			self.image = UIImage.unknownToken()
+			return
+		}
+		
 		if token.isXTZ() {
 			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
 		} else {

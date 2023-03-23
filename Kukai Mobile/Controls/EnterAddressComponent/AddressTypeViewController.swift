@@ -60,7 +60,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 				tempMetadata = WalletMetadata(address: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .tezosDomain:
-				tempMetadata = WalletMetadata(address: "", displayName: "", tezosDomain: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", displayName: "", tezosDomains: [""], type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .gmail:
 				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .google, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
