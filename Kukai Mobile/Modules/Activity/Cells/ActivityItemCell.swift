@@ -39,39 +39,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 	var gradientLayer = CAGradientLayer()
 	
 	
-	
-	
-	/*var color = UIColor.colorNamed("Txt10")
-	 var typeimage = UIImage()
-	 
-	 if data.groupType == .receive {
-	 color = UIColor.colorNamed("TxtB6")
-	 typeimage = UIImage(named: "ArrowReceive") ?? UIImage.unknownToken()
-	 typeimage = typeimage.resizedImage(size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
-	 typeimage = typeimage.withTintColor(color)
-	 
-	 } else {
-	 color = UIColor.colorNamed("Txt10")
-	 typeimage = UIImage(named: "ArrowSend") ?? UIImage.unknownToken()
-	 typeimage = typeimage.resizedImage(size: CGSize(width: 10, height: 10)) ?? UIImage.unknownToken()
-	 typeimage = typeimage.withTintColor(color)
-	 }
-	 
-	 
-	 transactionTypeIcon.image = typeimage
-	 type.text = data.groupType == .send ? "Send" : "Receive"
-	 type.textColor = color
-	 
-	 titleLabel.text = (data.primaryToken?.balance.description ?? "") + " \(data.primaryToken?.symbol ?? "")"
-	 toLabel.text = data.groupType == .send ? "To:" : "From:"
-	 destinationLabel.text = destinationFrom(data)
-	 timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
-	 */
-	
-	
-	
-	
-	
 	func setup(data: TzKTTransactionGroup) {
 		hasTime(true)
 		timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
@@ -116,8 +83,8 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			hasChildren(false)
 			hasType(true)
 			
-			iconView.image = UIImage.tezosToken()
-			titleLabel.text = "\(data.primaryToken?.balance.normalisedRepresentation ?? "0") \(data.primaryToken?.symbol ?? "")"
+			iconView.addTokenIcon(token: data.primaryToken)
+			titleLabel.text = titleLabel(forToken: data.primaryToken)
 			subTitleLabel.isHidden = true
 			destinationIconStackView.isHidden = true
 			destinationLabel.text = destinationFrom(data)
@@ -163,8 +130,8 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		} else if data.subType == .send || data.subType == .receive {
 			hasType(true)
 			
-			iconView.image = UIImage.tezosToken()
-			titleLabel.text = "\(data.primaryToken?.balance.normalisedRepresentation ?? "0") \(data.primaryToken?.symbol ?? "")"
+			iconView.addTokenIcon(token: data.primaryToken)
+			titleLabel.text = titleLabel(forToken: data.primaryToken)
 			subTitleLabel.isHidden = true
 			destinationIconStackView.isHidden = true
 			
@@ -174,7 +141,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				typeLabel.text = "Send"
 				typeLabel.textColor = ActivityItemCell.sendTitleColor
 				toLabel.text = "To: "
-				destinationLabel.text = data.target?.address.truncateTezosAddress()
+				destinationLabel.text = data.target?.alias ?? data.target?.address.truncateTezosAddress()
 				
 			} else {
 				typeIcon.image = .init(named: "ArrowReceive")
@@ -182,40 +149,13 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				typeLabel.text = "Receive"
 				typeLabel.textColor = ActivityItemCell.receiveTitleColor
 				toLabel.text = "From: "
-				destinationLabel.text = data.sender.address.truncateTezosAddress()
+				destinationLabel.text = data.sender.alias ?? data.sender.address.truncateTezosAddress()
 			}
 		}
 	}
 	
 	
 	// MARK: - UI Helpers
-	
-	/*
-	public static func iconFor(_ data: TzKTTransactionGroup) -> UIImage {
-		if data.transactions.count > 1 {
-			return UIImage(named: "BatchKnockout") ?? UIImage()
-			
-		} else if data.groupType == .contractCall {
-			return UIImage(named: "CallKnockout") ?? UIImage()
-			
-		} else if data.groupType == .send || data.groupType == .receive {
-			return UIImage.tezosToken()
-		}
-		
-		return UIImage.unknownToken()
-	}
-	
-	public static func iconFor(_ data: TzKTTransaction) -> UIImage {
-		if data.subType == .contractCall {
-			return UIImage(named: "CallKnockout") ?? UIImage()
-			
-		} else if data.subType == .send || data.subType == .receive {
-			return UIImage.tezosToken()
-		}
-		
-		return UIImage.unknownToken()
-	}
-	*/
 	
 	private func hasChildren(_ value: Bool) {
 		if value {
@@ -292,6 +232,30 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		} else {
 			return group.transactions[0].sender.alias ?? group.transactions[0].sender.address.truncateTezosAddress()
 		}
+	}
+	
+	private func titleLabel(forToken token: Token?) -> String {
+		guard let token = token else {
+			return "Unknown Token"
+		}
+		
+		if token.tokenType == .nonfungible {
+			return "(\(token.balance.normalisedRepresentation)) \(token.name ?? "")"
+		} else {
+			return "\(token.balance.normalisedRepresentation) \(token.symbol)"
+		}
+	}
+	
+	public func setOpen() {
+		gradientLayer.opacity = 0
+		backgroundColor = .colorNamed("BGActivityBatch")
+		chevronImage.rotate(degrees: 90, duration: 0.3)
+	}
+	
+	public func setClosed() {
+		gradientLayer.opacity = 1
+		backgroundColor = .clear
+		chevronImage.rotateBack(duration: 0.3)
 	}
 	
 	
