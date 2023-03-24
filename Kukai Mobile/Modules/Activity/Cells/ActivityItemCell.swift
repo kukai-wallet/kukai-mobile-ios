@@ -83,9 +83,16 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			hasChildren(false)
 			hasType(true)
 			
+			let titleText = titleAndSubtitle(forToken: data.primaryToken)
+			titleLabel.text = titleText.title
+			
+			if let subTitle = titleText.subtitle {
+				subTitleLabel.text = subTitle
+			} else {
+				subTitleLabel.isHidden = true
+			}
+			
 			iconView.addTokenIcon(token: data.primaryToken)
-			titleLabel.text = titleLabel(forToken: data.primaryToken)
-			subTitleLabel.isHidden = true
 			destinationIconStackView.isHidden = true
 			destinationLabel.text = destinationFrom(data)
 			
@@ -130,8 +137,16 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		} else if data.subType == .send || data.subType == .receive {
 			hasType(true)
 			
+			let titleText = titleAndSubtitle(forToken: data.primaryToken)
+			titleLabel.text = titleText.title
+			
+			if let subTitle = titleText.subtitle {
+				subTitleLabel.text = subTitle
+			} else {
+				subTitleLabel.isHidden = true
+			}
+			
 			iconView.addTokenIcon(token: data.primaryToken)
-			titleLabel.text = titleLabel(forToken: data.primaryToken)
 			subTitleLabel.isHidden = true
 			destinationIconStackView.isHidden = true
 			
@@ -234,18 +249,20 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		}
 	}
 	
-	private func titleLabel(forToken token: Token?) -> String {
+	private func titleAndSubtitle(forToken token: Token?) -> (title: String, subtitle: String?) {
 		guard let token = token else {
-			return "Unknown Token"
+			return (title: "Unknown Token", subtitle: nil)
 		}
 		
 		if token.tokenType == .nonfungible {
-			return "(\(token.balance.normalisedRepresentation)) \(token.name ?? "")"
+			return (title: "(\(token.balance.normalisedRepresentation)) \(token.name ?? "")",
+					subtitle: token.symbol == "" ? nil : token.symbol)
+			
 		} else {
-			return "\(token.balance.normalisedRepresentation) \(token.symbol)"
+			return (title: "\(token.balance.normalisedRepresentation) \(token.symbol)", subtitle: nil)
 		}
 	}
-	
+	 
 	public func setOpen() {
 		gradientLayer.opacity = 0
 		backgroundColor = .colorNamed("BGActivityBatch")

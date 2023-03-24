@@ -64,7 +64,7 @@ class SwapConfirmViewController: UIViewController {
 			tokenFromAmountLabel.text = TransactionService.shared.exchangeData.fromAmount?.normalisedRepresentation ?? ""
 			tokenFromBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
 			
-			let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: exchange.token.address)
+			let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
 			MediaProxyService.load(url: tokenIconURL, to: tokenToIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenToIcon.frame.size)
 			
 			tokenToLabel.text = exchange.token.symbol
@@ -78,7 +78,7 @@ class SwapConfirmViewController: UIViewController {
 			
 		} else {
 			
-			let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: exchange.token.address)
+			let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
 			MediaProxyService.load(url: tokenIconURL, to: tokenFromIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenFromIcon.frame.size)
 			
 			tokenFromLabel.text = exchange.token.symbol

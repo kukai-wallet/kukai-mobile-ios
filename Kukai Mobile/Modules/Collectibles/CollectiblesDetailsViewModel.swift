@@ -151,7 +151,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		var section1Content: [CellDataType] = []
 		
-		let nameIcon = DependencyManager.shared.tzktClient.avatarURL(forToken: nft.parentContract)
+		let nameIcon = TzKTClient.avatarURL(forToken: nft.parentContract)
 		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil, showcaseCount: 2)
 		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		

@@ -40,7 +40,7 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 			return
 		}
 		
-		let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: position.exchange.token.address)
+		let tokenIconURL = TzKTClient.avatarURL(forToken: position.exchange.token.address)
 		var tokenBalanceString = "0"
 		
 		if let tokenData = DependencyManager.shared.balanceService.token(forAddress: position.exchange.token.address) {
