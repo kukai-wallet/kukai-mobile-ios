@@ -45,7 +45,7 @@ class SwapViewModel: ViewModel {
 		previousExchange = exchange
 		
 		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-		let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: exchange.token.address)
+		let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
 		let tokenData = DependencyManager.shared.balanceService.token(forAddress: exchange.token.address)
 		let tokenBalance = tokenData?.token.balance ?? TokenAmount.zero()
 		

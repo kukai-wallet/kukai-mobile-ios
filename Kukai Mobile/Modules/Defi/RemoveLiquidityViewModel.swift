@@ -53,7 +53,7 @@ class RemoveLiquidityViewModel: ViewModel {
 		tokenData = DependencyManager.shared.balanceService.token(forAddress: position.exchange.token.address)
 		tokenBalance = tokenData?.token.balance ?? TokenAmount.zero()
 		
-		let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: position.exchange.token.address)
+		let tokenIconURL = TzKTClient.avatarURL(forToken: position.exchange.token.address)
 		
 		lpTokenTitle = "XTZ/\(position.exchange.token.symbol)"
 		lpTokenBalanceText = "Balance: \(lqtTokenBalance.normalisedRepresentation)"

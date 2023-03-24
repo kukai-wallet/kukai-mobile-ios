@@ -51,7 +51,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			let calc = self.calculations[indexPath.row]
-			let tokenIconURL = DependencyManager.shared.tzktClient.avatarURL(forToken: position.exchange.token.address)
+			let tokenIconURL = TzKTClient.avatarURL(forToken: position.exchange.token.address)
 			
 			cell.tokenIconLeft.image = UIImage.tezosToken()
 			MediaProxyService.load(url: tokenIconURL, to: cell.tokenIconRight, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconRight.frame.size)
