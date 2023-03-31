@@ -202,10 +202,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	static func setupAccountActivityListener() {
-	//#if DEBUG
+	#if DEBUG
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-	//	return
-	//#else
+		return
+	#else
 		let wallet = DependencyManager.shared.selectedWalletAddress
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
@@ -213,6 +213,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-	//#endif
+	#endif
 	}
 }
