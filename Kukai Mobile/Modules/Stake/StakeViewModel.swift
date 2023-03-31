@@ -194,14 +194,14 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func setDelegateAndRefresh(toAddress: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
-		/*guard let selectedWallet = DependencyManager.shared.selectedWallet else {
+		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
 			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
 			return
 		}
 		
 		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, withWallet: selectedWallet) { estimateResult in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { estimateResult in
 			guard let estimatedOperations = try? estimateResult.get() else {
 				completion(Result.failure(estimateResult.getFailure()))
 				return
@@ -221,7 +221,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					}
 				}
 			}
-		}*/
+		}
 	}
 }
 
