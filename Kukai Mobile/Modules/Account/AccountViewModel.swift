@@ -190,11 +190,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		if atIndexPath.row == 0 || atIndexPath.row == 1 {
+		if atIndexPath.row == 0 || (atIndexPath.row == 1 && tokensToDisplay.count > 0) {
 			return nil
 		}
 		
-		if atIndexPath.row == 2 {
+		if atIndexPath.row == 2 || (atIndexPath.row == 1 && tokensToDisplay.count == 0) {
 			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
 		} else {
 			return tokensToDisplay[atIndexPath.row - 3]
@@ -202,10 +202,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	static func setupAccountActivityListener() {
-	#if DEBUG
+	//#if DEBUG
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-		return
-	#else
+	//	return
+	//#else
 		let wallet = DependencyManager.shared.selectedWalletAddress
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
@@ -213,6 +213,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-	#endif
+	//#endif
 	}
 }

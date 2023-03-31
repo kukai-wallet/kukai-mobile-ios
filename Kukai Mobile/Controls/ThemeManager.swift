@@ -464,7 +464,7 @@ public class ThemeManager {
 				"gradGraphToken-1": UIColor("#555CCA", alpha: 0.48),
 				"gradGraphToken-2": UIColor("#555CCA", alpha: 0),
 				"gradUnconfirmed-1": UIColor("#33334E", alpha: 0.65),
-				"gradUnconfirmed-2": UIColor("#161A5F", alpha: 0.40),
+				"gradUnconfirmed-2": UIColor("#323251", alpha: 0.40),
 				"gradActivityIcons-1": UIColor("#767CE0", alpha: 0.45),
 				"gradActivityIcons-2": UIColor("#8280EC", alpha: 0.75),
 				

@@ -56,4 +56,14 @@ extension UIImage {
 	class func unknownToken() -> UIImage {
 		return UIImage(named: "unknown")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
+	
+	class func animationFrames(prefix: String, count: Int) -> [UIImage] {
+		var tempArray: [UIImage] = []
+		
+		for index in 0..<count {
+			tempArray.appendIfPresent(UIImage(named: prefix+String(format: "%02d", index)))
+		}
+		
+		return tempArray
+	}
 }

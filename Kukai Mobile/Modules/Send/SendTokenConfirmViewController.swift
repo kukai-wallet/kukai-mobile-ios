@@ -182,9 +182,10 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			self?.hideLoadingModal(completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						os_log("Sent: %@", log: .default, type: .default,  opHash)
+						os_log("Sent: %@", log: .default, type: .default, opHash)
 						
 						self?.didSend = true
+						self?.addPendingTransaction(opHash: opHash)
 						if TransactionService.shared.walletConnectOperationData.proposal != nil {
 							self?.walletConnectRespondOnSign(opHash: opHash)
 							
@@ -222,6 +223,45 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	func dismissAndReturn() {
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
+	}
+	
+	func addPendingTransaction(opHash: String) {
+		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
+		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
+		let destinationAlias = TransactionService.shared.sendData.destinationAlias
+		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()
+		let token = TransactionService.shared.sendData.chosenToken
+		
+		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
+		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
+		
+		var addPendingResult = true
+		if token?.isXTZ() ?? true {
+			addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
+																				   type: .transaction,
+																				   counter: counter,
+																				   fromWallet: selectedWalletMetadata,
+																				   destinationAddress: destinationAddress,
+																				   destinationAlias: destinationAlias,
+																				   xtzAmount: amount,
+																				   parameters: parameters,
+																				   primaryToken: nil)
+		} else {
+			token?.balance = amount
+			addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
+																				   type: .transaction,
+																				   counter: counter,
+																				   fromWallet: selectedWalletMetadata,
+																				   destinationAddress: destinationAddress,
+																				   destinationAlias: destinationAlias,
+																				   xtzAmount: .zero(),
+																				   parameters: parameters,
+																				   primaryToken: token)
+		}
+		
+		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	
 	@MainActor

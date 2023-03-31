@@ -15,7 +15,7 @@ import WalletConnectPairing
 import Combine
 import OSLog
 
-class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
+public class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
 	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
@@ -28,13 +28,19 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	private var highlightedGradient = CAGradientLayer()
 	private let sideMenuVc: SideMenuViewController = UIStoryboard(name: "SideMenu", bundle: nil).instantiateInitialViewController() ?? SideMenuViewController()
 	
+	private var activityAnimationFrames: [UIImage] = []
+	private var activityTabBarImageView: UIImageView? = nil
+	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 	
-    override func viewDidLoad() {
+	
+	public override func viewDidLoad() {
         super.viewDidLoad()
 		self.setupAppearence()
 		self.delegate = self
 		
 		sideMenuVc.homeTabBarController = self
+		activityAnimationFrames = UIImage.animationFrames(prefix: "ActivityAni", count: 90)
+		
 		
 		// Load any initial data so we can draw UI immediately without lag
 		DependencyManager.shared.balanceService.loadCache()
@@ -85,7 +91,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		WalletConnectService.shared.delegate = self
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
+	public override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -109,7 +115,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		}
 	}
 	
-	override func viewDidLayoutSubviews() {
+	public override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
 		for x in gradientLayers {
@@ -130,7 +136,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
 	}
 	
-	override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
+	public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
 		let position = CGRect(x: 0 + (widthPerItem * CGFloat(index)), y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
@@ -148,7 +154,7 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 			.dropFirst()
 			.sink { [weak self] _ in
 				self?.refreshType = .refreshEverything
-				self?.refresh()
+				self?.refresh(showLoading: false)
 			}.store(in: &bag)
 	}
 	
@@ -192,6 +198,51 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		self.tabBar.unselectedItemTintColor = UIColor(named: "BG10")
 	}
 	
+	func startActivityAnimation() {
+		
+		let sorted = self.tabBar.subviews.sorted { lhs, rhs in
+			return lhs.frame.origin.x < rhs.frame.origin.x
+		}
+		
+		let activitySubview = sorted[sorted.count-2]
+		guard let activityImageView = activitySubview.subviews.first as? UIImageView else { return }
+		
+		activityTabBarImageView = activityImageView
+		
+		activitySubview.addSubview(activityAnimationImageView)
+		activityAnimationImageView.frame = activityImageView.frame
+		activityAnimationImageView.animationImages = activityAnimationFrames
+		activityAnimationImageView.animationDuration = 3
+		
+		activityImageView.isHidden = true
+		activityAnimationImageView.isHidden = false
+		activityAnimationImageView.startAnimating()
+	}
+	
+	func stopActivityAnimation(success: Bool) {
+		var tabBarItem: UITabBarItem? = nil
+		
+		for item in (self.tabBar.items ?? []) {
+			if item.title == "Activity" {
+				tabBarItem = item
+			}
+		}
+		
+		if success {
+			tabBarItem?.image = UIImage(named: "ActivityCompleted")
+			tabBarItem?.selectedImage = UIImage(named: "ActivityCompletedOn")
+		}
+		
+		activityAnimationImageView.stopAnimating()
+		activityAnimationImageView.isHidden = true
+		activityTabBarImageView?.isHidden = false
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+			tabBarItem?.image = UIImage(named: "Activity")
+			tabBarItem?.selectedImage = UIImage(named: "ActivityOn")
+		}
+	}
+	
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
 		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .small)
@@ -228,14 +279,18 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 		}
 	}
 	
-	func refresh() {
-	#if DEBUG
+	func refresh(showLoading: Bool = true) {
+	//#if DEBUG
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-		return
-	#else
+	//	return
+	//#else
 		let address = DependencyManager.shared.selectedWalletAddress
-		self.showLoadingModal()
-		self.updateLoadingModalStatusLabel(message: "Refreshing balances")
+		
+		if showLoading {
+			self.showLoadingModal()
+			self.updateLoadingModalStatusLabel(message: "Refreshing balances")
+		}
+		let wasActivityPending = DependencyManager.shared.activityService.pendingTransactionGroups.count > 0
 		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
 			guard let self = self else { return }
@@ -245,11 +300,17 @@ class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 				self.alert(errorWithMessage: e.description)
 			}
 			
-			self.hideLoadingModal()
-			self.updateLoadingModalStatusLabel(message: "")
+			if wasActivityPending && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
+				self.stopActivityAnimation(success: true)
+			}
+			
+			if showLoading {
+				self.hideLoadingModal()
+				self.updateLoadingModalStatusLabel(message: "")
+			}
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-	#endif
+	//#endif
 	}
 	
 	func sendButtonTapped() {
@@ -278,19 +339,19 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 
 extension HomeTabBarController: WalletConnectServiceDelegate {
 	
-	func pairRequested() {
+	public func pairRequested() {
 		self.performSegue(withIdentifier: "wallet-connect-pair", sender: nil)
 	}
 	
-	func signRequested() {
+	public func signRequested() {
 		// self.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
 	}
 	
-	func processingIncomingOperations() {
+	public func processingIncomingOperations() {
 		self.showLoadingModal()
 	}
 	
-	func processedOperations(ofType: WalletConnectOperationType) {
+	public func processedOperations(ofType: WalletConnectOperationType) {
 		self.hideLoadingModal { [weak self] in
 			switch ofType {
 				case .sendToken:
@@ -305,11 +366,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
-	func provideAccountList() {
+	public func provideAccountList() {
 		WalletConnectService.shared.respondWithAccounts()
 	}
 	
-	func error(message: String?, error: Error?) {
+	public func error(message: String?, error: Error?) {
 		self.hideLoadingModal { [weak self] in
 			
 			if let m = message {

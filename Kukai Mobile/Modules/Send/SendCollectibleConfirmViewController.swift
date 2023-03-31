@@ -108,8 +108,9 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent: %@", log: .default, type: .default,  opHash)
-						self?.dismiss(animated: true, completion: nil)
-						(self?.presentingViewController as? UINavigationController)?.popToHome()
+						
+						self?.dismissAndReturn()
+						self?.addPendingTransaction(opHash: opHash)
 						
 					case .failure(let sendError):
 						self?.alert(errorWithMessage: sendError.description)
@@ -124,5 +125,39 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
+	}
+	
+	func dismissAndReturn() {
+		self.dismiss(animated: true, completion: nil)
+		(self.presentingViewController as? UINavigationController)?.popToHome()
+	}
+	
+	func addPendingTransaction(opHash: String) {
+		guard let nft = TransactionService.shared.sendData.chosenNFT else { return }
+		
+		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
+		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
+		let destinationAlias = TransactionService.shared.sendData.destinationAlias
+		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()
+		
+		let mediaURL = MediaProxyService.thumbnailURL(forNFT: nft)
+		let token = Token.placeholder(fromNFT: nft, amount: amount, thumbnailURL: mediaURL)
+		
+		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
+		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
+		
+		let result = DependencyManager.shared.activityService.addPending(opHash: opHash,
+																		 type: .transaction,
+																		 counter: counter,
+																		 fromWallet: selectedWalletMetadata,
+																		 destinationAddress: destinationAddress,
+																		 destinationAlias: destinationAlias,
+																		 xtzAmount: .zero(),
+																		 parameters: parameters,
+																		 primaryToken: token)
+		
+		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		os_log("Recorded pending transaction: %@", "\(result)")
 	}
 }

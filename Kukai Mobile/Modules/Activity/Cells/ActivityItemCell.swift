@@ -41,8 +41,27 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 	
 	func setup(data: TzKTTransactionGroup) {
 		hasTime(true)
-		timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
 		
+		let timeSinceNow = (data.transactions[0].date ?? Date()).timeIntervalSince(Date())
+		
+		// Status
+		if timeSinceNow > -60 && data.transactions.first?.status != .unconfirmed {
+			timeLabel.textColor = .colorNamed("TxtGood4")
+			timeLabel.text = "CONFIRMED"
+			
+		} else {
+			timeLabel.textColor = .colorNamed("Txt12")
+			
+			if data.transactions.first?.status == .unconfirmed {
+				timeLabel.text = "UNCONFIRMED"
+			} else {
+				
+				timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
+			}
+		}
+		
+		
+		// Type
 		if data.transactions.count > 1 {
 			hasChildren(true)
 			hasType(false)
@@ -58,7 +77,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				
 			} else {
 				toLabel.isHidden = true
-				destinationLabel.text = data.transactions[0].target?.address ?? ""
+				destinationLabel.text = data.transactions[0].target?.address.truncateTezosAddress() ?? ""
 			}
 			
 		} else if data.groupType == .contractCall {
@@ -134,6 +153,17 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				destinationLabel.text = data.target?.address ?? ""
 			}
 			
+		} else if data.subType == .reveal {
+			hasType(false)
+			hasDestinationImage(false)
+			
+			iconView.image = UIImage(named: "CallKnockOut")
+			typeLabel.textColor = ActivityItemCell.contractTitleColor
+			typeLabel.text = "Reveal public key"
+			
+			toLabel.isHidden = true
+			destinationLabel.isHidden = true
+			
 		} else if data.subType == .send || data.subType == .receive {
 			hasType(true)
 			
@@ -144,7 +174,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				subTitleLabel.text = subTitle
 			} else {
 				subTitleLabel.isHidden = true
-			}
+			} 
 			
 			iconView.addTokenIcon(token: data.primaryToken)
 			subTitleLabel.isHidden = true

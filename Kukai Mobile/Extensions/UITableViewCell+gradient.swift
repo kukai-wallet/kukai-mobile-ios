@@ -27,4 +27,14 @@ extension UITableViewCell: UITableViewCellGradient {
 			cell.gradientLayer = toView.addGradientPanelRows(withFrame: toView.bounds)
 		}
 	}
+	
+	func addUnconfirmedGradientBackground(withFrame: CGRect, toView: UIView) {
+		toView.customCornerRadius = 8
+		toView.maskToBounds = true
+		
+		if let cell = self as? UITableViewCellContainerView {
+			cell.gradientLayer.removeFromSuperlayer()
+			cell.gradientLayer = toView.addUnconfirmedGradientPanelRows(withFrame: toView.bounds)
+		}
+	}
 }

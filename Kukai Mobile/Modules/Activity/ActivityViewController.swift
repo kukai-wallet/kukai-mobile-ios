@@ -61,7 +61,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		if let c = cell as? UITableViewCellContainerView, viewModel.expandedIndex != indexPath {
+		if let c = cell as? UITableViewCellContainerView, viewModel.isUnconfirmed(indexPath: indexPath) {
+			c.addUnconfirmedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+			
+		} else if let c = cell as? UITableViewCellContainerView, viewModel.expandedIndex != indexPath {
 			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}

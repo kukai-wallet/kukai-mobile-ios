@@ -199,6 +199,17 @@ extension UIView {
 			degress: cssDegreesToIOS(92.91))
 	}
 	
+	func addUnconfirmedGradientPanelRows(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor.colorNamed("gradUnconfirmed-1").cgColor,
+				UIColor.colorNamed("gradUnconfirmed-2").cgColor,
+			],
+			locations: [0.01, 0.93],
+			degress: cssDegreesToIOS(90.36))
+	}
+	
 	func addGradientNFTSection_top_border(withFrame frame: CGRect) -> CAGradientLayer {
 		return addGradientBorder(
 			withFrame: frame,

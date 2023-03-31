@@ -185,6 +185,7 @@
 		C09CEB4429C213AE00D95D69 /* ActivitySubItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C09CEB4229C213AE00D95D69 /* ActivitySubItemCell.xib */; };
 		C0A19B4828857301000291A0 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A19B4728857301000291A0 /* String+extensions.swift */; };
 		C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */; };
+		C0A2623A29D2FCDC00F26C36 /* Array+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A2623929D2FCDC00F26C36 /* Array+extensions.swift */; };
 		C0A315062836354D00D1CCB4 /* BeaconBlockchainTezos in Frameworks */ = {isa = PBXBuildFile; productRef = C0A315052836354D00D1CCB4 /* BeaconBlockchainTezos */; };
 		C0A315082836354D00D1CCB4 /* BeaconClientWallet in Frameworks */ = {isa = PBXBuildFile; productRef = C0A315072836354D00D1CCB4 /* BeaconClientWallet */; };
 		C0A3150A2836354D00D1CCB4 /* BeaconCore in Frameworks */ = {isa = PBXBuildFile; productRef = C0A315092836354D00D1CCB4 /* BeaconCore */; };
@@ -518,6 +519,7 @@
 		C09CEB4229C213AE00D95D69 /* ActivitySubItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ActivitySubItemCell.xib; sourceTree = "<group>"; };
 		C0A19B4728857301000291A0 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
+		C0A2623929D2FCDC00F26C36 /* Array+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+extensions.swift"; sourceTree = "<group>"; };
 		C0A321D227C68B9E00D7788B /* ValidatorTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorTextField.swift; sourceTree = "<group>"; };
 		C0A321D527C68C0100D7788B /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
 		C0A321D727C68C2B00D7788B /* NumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberValidator.swift; sourceTree = "<group>"; };
@@ -833,10 +835,10 @@
 				C049B5B826A084A500F1C5E0 /* UIView+extensions.swift */,
 				C08462402919204800B7D62D /* UIView+gradients.swift */,
 				C0846242291925A100B7D62D /* CAGradientLayer+extensions.swift */,
+				C0AC1D4327722EF3002F66C0 /* UIImage+extensions.swift */,
 				C0B860EE26AF0CA400BB7E6B /* UIImageView+extensions.swift */,
 				C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */,
 				C06997F02832946B00F6929D /* UITextView+extensions.swift */,
-				C0AC1D4327722EF3002F66C0 /* UIImage+extensions.swift */,
 				C05361BC277490FA002B51A4 /* UIApplication+extensions.swift */,
 				C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */,
 				C02A4FD927DA421100F42DE4 /* Date+extensions.swift */,
@@ -848,6 +850,7 @@
 				C0BAE0032915566300E78C26 /* UIFont+extensions.swift */,
 				C0FBC896292C16FF00B29921 /* UISegmentedControl+extensions.swift */,
 				C06683FE296726C000FBAA7B /* CMTime+extensions.swift */,
+				C0A2623929D2FCDC00F26C36 /* Array+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1565,6 +1568,7 @@
 				C009308F28CB3DC500763885 /* StakeHeadingCell.swift in Sources */,
 				C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */,
 				C0081FD627D8FE2300F7FEFF /* ActivityViewController.swift in Sources */,
+				C0A2623A29D2FCDC00F26C36 /* Array+extensions.swift in Sources */,
 				C06997F12832946B00F6929D /* UITextView+extensions.swift in Sources */,
 				C0BAE0042915566300E78C26 /* UIFont+extensions.swift in Sources */,
 				C01372AE29B206E00083E297 /* MenuChoiceCell.swift in Sources */,
@@ -2360,7 +2364,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = develop;
+				branch = feature/activity;
 				kind = branch;
 			};
 		};

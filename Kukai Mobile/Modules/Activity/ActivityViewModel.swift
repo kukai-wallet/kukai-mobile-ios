@@ -101,7 +101,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			self?.groups = DependencyManager.shared.activityService.transactionGroups
+			var full = DependencyManager.shared.activityService.pendingTransactionGroups
+			full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
+			
+			self?.groups = full
 			self?.loadGroups()
 			self?.state = .success(nil)
 		}
@@ -149,6 +152,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		ds.apply(currentSnapshot, animatingDifferences: true)
+	}
+	
+	public func isUnconfirmed(indexPath: IndexPath) -> Bool {
+		if indexPath.section == 0 {
+			return false
+		}
+		
+		return (self.groups[indexPath.section - 1].transactions.first?.status ?? .applied) == .unconfirmed
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
