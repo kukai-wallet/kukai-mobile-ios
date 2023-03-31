@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="2mK-hk-rbP">
@@ -17,68 +21,12 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="8ga-5r-6QX"/>
+                        <segue destination="DZJ-iw-6qn" kind="relationship" relationship="rootViewController" id="5dL-lp-c5A"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Feo-oq-io3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-957" y="139"/>
-        </scene>
-        <!--Launch View Controller-->
-        <scene sceneID="s0d-6b-0kx">
-            <objects>
-                <viewController id="Y6W-OH-hqX" customClass="LaunchViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai-text-medium" translatesAutoresizingMaskIntoConstraints="NO" id="trG-h5-KOb">
-                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seu-gn-HeW">
-                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknown" translatesAutoresizingMaskIntoConstraints="NO" id="obb-AB-lJ7">
-                                <rect key="frame" x="186.5" y="427.5" width="41" height="41"/>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai" translatesAutoresizingMaskIntoConstraints="NO" id="rHh-rC-Am3">
-                                <rect key="frame" x="167" y="408" width="80" height="80"/>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="3EV-Q1-7pC"/>
-                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="9NW-dW-61k"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="height" secondItem="trG-h5-KOb" secondAttribute="height" id="B9y-gp-APg"/>
-                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="Fc0-zQ-eaD"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="width" secondItem="trG-h5-KOb" secondAttribute="width" id="X3d-ap-aDE"/>
-                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="-25" id="XYg-WT-D1h"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="top" secondItem="trG-h5-KOb" secondAttribute="top" id="aUC-pg-SLX"/>
-                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="dml-oX-3wB"/>
-                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="hoj-X0-PeA"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="trailing" secondItem="trG-h5-KOb" secondAttribute="trailing" id="xdl-HM-Bdj"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="leading" secondItem="trG-h5-KOb" secondAttribute="leading" id="xsd-7n-Mdj"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="wat-Df-g1q"/>
-                    <connections>
-                        <outlet property="constraintKukaiLogoXCenter" destination="9NW-dW-61k" id="NF9-6m-7xo"/>
-                        <outlet property="constraintKukaiLogoYCenter" destination="3EV-Q1-7pC" id="dBU-v3-OHi"/>
-                        <outlet property="constraintKukaiTextX" destination="XYg-WT-D1h" id="NHA-G2-vs2"/>
-                        <outlet property="constraintKukaiTextY" destination="Fc0-zQ-eaD" id="txY-Wb-9Kf"/>
-                        <outlet property="kukaiLogo" destination="rHh-rC-Am3" id="vai-I2-pws"/>
-                        <outlet property="kukaiTextCoverView" destination="seu-gn-HeW" id="3RG-ZA-pMF"/>
-                        <outlet property="kukaiTextImage" destination="trG-h5-KOb" id="eR4-DR-lL4"/>
-                        <outlet property="safeImage" destination="obb-AB-lJ7" id="PFn-i2-i9R"/>
-                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="mlf-fv-fJw"/>
-                        <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="d30-CS-0YC"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
         </scene>
         <!--Onboarding-->
         <scene sceneID="5W5-l9-FJm">
@@ -88,7 +36,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trw-99-FrK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="985" y="42"/>
+            <point key="canvasLocation" x="986" y="-7"/>
         </scene>
         <!--Home-->
         <scene sceneID="TCV-Of-zIe">
@@ -98,456 +46,67 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G1b-Rb-7s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="958" y="230"/>
+            <point key="canvasLocation" x="961" y="274"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="wRg-Fy-VWU">
+        <!--Launch View Controller-->
+        <scene sceneID="vO5-IM-Hey">
             <objects>
-                <navigationController storyboardIdentifier="prototype" id="xYK-fq-aY8" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Vbu-tR-U0L">
-                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="d9u-fn-2Wd" kind="relationship" relationship="rootViewController" id="hZm-Db-fMt"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ZXn-Wg-5pA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-958" y="1167"/>
-        </scene>
-        <!--Choose Token-->
-        <scene sceneID="cjG-Jd-o56">
-            <objects>
-                <viewController id="d9u-fn-2Wd" customClass="PrototypeChooseTokenMain" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="4rk-f3-mnS">
+                <viewController id="DZJ-iw-6qn" customClass="LaunchViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="TUJ-Gs-nWN">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5sm-B4-LHS">
-                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
-                                <connections>
-                                    <segue destination="mhz-rX-HXM" kind="embed" id="rGL-yf-Dte"/>
-                                </connections>
-                            </containerView>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Whl-HA-dRR">
-                                <rect key="frame" x="0.0" y="122" width="414" height="740"/>
-                                <connections>
-                                    <segue destination="0NX-Ex-3Sa" kind="embed" id="Z3h-Jh-n3w"/>
-                                </connections>
-                            </containerView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vqe-Sn-4od">
-                                <rect key="frame" x="0.0" y="92" width="414" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mu5-51-piQ">
-                                        <rect key="frame" x="4" y="4" width="199" height="22"/>
-                                        <color key="backgroundColor" name="primary-button-text"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Balances">
-                                            <color key="titleColor" name="text-primary"/>
-                                        </state>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                <real key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="balancesTapped:" destination="d9u-fn-2Wd" eventType="touchUpInside" id="Jmg-0G-axs"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vVI-kf-ijC">
-                                        <rect key="frame" x="211" y="4" width="199" height="22"/>
-                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Collectibles"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                <real key="value" value="4"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="collectiblesTapped:" destination="d9u-fn-2Wd" eventType="touchUpInside" id="5Mb-qa-cii"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                                <color key="backgroundColor" name="primary-button-background"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="WFk-R7-mwy">
+                                <rect key="frame" x="60.5" y="108" width="293" height="80"/>
                                 <constraints>
-                                    <constraint firstItem="vVI-kf-ijC" firstAttribute="top" secondItem="vqe-Sn-4od" secondAttribute="top" constant="4" id="29N-aG-yoW"/>
-                                    <constraint firstAttribute="height" constant="30" id="DZh-DF-gaK"/>
-                                    <constraint firstAttribute="bottom" secondItem="vVI-kf-ijC" secondAttribute="bottom" constant="4" id="Ko7-W1-hY9"/>
-                                    <constraint firstItem="vVI-kf-ijC" firstAttribute="leading" secondItem="Mu5-51-piQ" secondAttribute="trailing" constant="8" id="Vpu-Pi-9t2"/>
-                                    <constraint firstItem="Mu5-51-piQ" firstAttribute="width" secondItem="vVI-kf-ijC" secondAttribute="width" id="eRE-jJ-sl9"/>
-                                    <constraint firstItem="Mu5-51-piQ" firstAttribute="leading" secondItem="vqe-Sn-4od" secondAttribute="leading" constant="4" id="iBe-UD-RBB"/>
-                                    <constraint firstItem="Mu5-51-piQ" firstAttribute="top" secondItem="vqe-Sn-4od" secondAttribute="top" constant="4" id="iiV-Bk-NuZ"/>
-                                    <constraint firstAttribute="bottom" secondItem="Mu5-51-piQ" secondAttribute="bottom" constant="4" id="y64-P5-BP2"/>
-                                    <constraint firstAttribute="trailing" secondItem="vVI-kf-ijC" secondAttribute="trailing" constant="4" id="znX-dr-vAM"/>
+                                    <constraint firstAttribute="height" constant="80" id="Hj3-qG-ajo"/>
+                                    <constraint firstAttribute="width" constant="293" id="aEX-bH-nvi"/>
                                 </constraints>
-                            </view>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVu-zQ-AHc">
+                                <rect key="frame" x="16" y="204" width="382" height="38.5"/>
+                                <string key="text">A Secure Home
+for your Digital Assets</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="qKc-JW-MUf"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <viewLayoutGuide key="safeArea" id="zYH-Tx-QRj"/>
+                        <color key="backgroundColor" name="BG2"/>
                         <constraints>
-                            <constraint firstItem="5sm-B4-LHS" firstAttribute="bottom" secondItem="qKc-JW-MUf" secondAttribute="bottom" id="5wJ-Ne-908"/>
-                            <constraint firstItem="Whl-HA-dRR" firstAttribute="trailing" secondItem="qKc-JW-MUf" secondAttribute="trailing" id="LZN-eL-C3N"/>
-                            <constraint firstItem="vqe-Sn-4od" firstAttribute="top" secondItem="qKc-JW-MUf" secondAttribute="top" id="P3u-RU-69G"/>
-                            <constraint firstItem="Whl-HA-dRR" firstAttribute="leading" secondItem="qKc-JW-MUf" secondAttribute="leading" id="SBT-fb-gMi"/>
-                            <constraint firstItem="Whl-HA-dRR" firstAttribute="bottom" secondItem="qKc-JW-MUf" secondAttribute="bottom" id="SWT-tp-3RO"/>
-                            <constraint firstItem="Whl-HA-dRR" firstAttribute="top" secondItem="vqe-Sn-4od" secondAttribute="bottom" id="iCi-YH-1Qv"/>
-                            <constraint firstItem="vqe-Sn-4od" firstAttribute="leading" secondItem="qKc-JW-MUf" secondAttribute="leading" id="qbK-aJ-gNP"/>
-                            <constraint firstItem="vqe-Sn-4od" firstAttribute="trailing" secondItem="qKc-JW-MUf" secondAttribute="trailing" id="r8Q-pM-sC8"/>
-                            <constraint firstItem="5sm-B4-LHS" firstAttribute="trailing" secondItem="qKc-JW-MUf" secondAttribute="trailing" id="xGX-j5-ojQ"/>
-                            <constraint firstItem="5sm-B4-LHS" firstAttribute="top" secondItem="vqe-Sn-4od" secondAttribute="bottom" id="xR6-2Y-eSQ"/>
-                            <constraint firstItem="5sm-B4-LHS" firstAttribute="leading" secondItem="qKc-JW-MUf" secondAttribute="leading" id="z0P-I4-d2I"/>
+                            <constraint firstItem="OVu-zQ-AHc" firstAttribute="leading" secondItem="zYH-Tx-QRj" secondAttribute="leading" constant="16" id="2vO-VJ-ycf"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="top" secondItem="zYH-Tx-QRj" secondAttribute="top" constant="60" id="Jlj-zn-AB9"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="centerX" secondItem="TUJ-Gs-nWN" secondAttribute="centerX" id="Tfx-NZ-FTJ"/>
+                            <constraint firstItem="OVu-zQ-AHc" firstAttribute="top" secondItem="WFk-R7-mwy" secondAttribute="bottom" constant="16" id="Z6N-rZ-Pbx"/>
+                            <constraint firstItem="zYH-Tx-QRj" firstAttribute="trailing" secondItem="OVu-zQ-AHc" secondAttribute="trailing" constant="16" id="hvf-Yl-0vA"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="centerY" secondItem="TUJ-Gs-nWN" secondAttribute="centerY" constant="-40" id="wOz-Vk-q0Q"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose Token" id="bx1-HQ-ya2">
-                        <barButtonItem key="rightBarButtonItem" systemItem="cancel" id="qtN-6d-HmQ">
-                            <color key="tintColor" name="tertiary-button-background"/>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" id="ggH-Ru-fIo"/>
                     <connections>
-                        <outlet property="balancesButton" destination="Mu5-51-piQ" id="s4b-bt-e6V"/>
-                        <outlet property="balancesContainer" destination="5sm-B4-LHS" id="2g6-Jj-MI8"/>
-                        <outlet property="collectiblesButton" destination="vVI-kf-ijC" id="BB2-Z5-1cr"/>
-                        <outlet property="collectiblesContainer" destination="Whl-HA-dRR" id="qZI-Wi-MpM"/>
+                        <outlet property="kukaiLogo" destination="WFk-R7-mwy" id="4DL-R6-DvP"/>
+                        <outlet property="logoCenterConstraint" destination="wOz-Vk-q0Q" id="ICc-2M-XP9"/>
+                        <outlet property="logoHeightConstraint" destination="Hj3-qG-ajo" id="Gvu-bF-h3M"/>
+                        <outlet property="logoText" destination="OVu-zQ-AHc" id="uKI-ml-aI0"/>
+                        <outlet property="logoTopConstraint" destination="Jlj-zn-AB9" id="GjD-ZO-RPO"/>
+                        <outlet property="logoWidthConstraint" destination="aEX-bH-nvi" id="nUS-MR-64i"/>
+                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="cXp-Id-QMn"/>
+                        <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="4yH-5V-vYY"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="KZA-0k-Ypa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iwm-mZ-HDy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="1166.5178571428571"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="Zfi-36-yOs">
-            <objects>
-                <tableViewController id="mhz-rX-HXM" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="XeW-62-zH5">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <sections>
-                            <tableViewSection id="pP3-kB-CXz">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="laF-tg-mQ2">
-                                        <rect key="frame" x="0.0" y="18" width="414" height="39"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="laF-tg-mQ2" id="M8n-bh-mAc">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="groupedHeader" text="Most Recent" secondaryText=""/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="Yij-bE-TtE">
-                                        <rect key="frame" x="0.0" y="57" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yij-bE-TtE" id="cPe-Ph-wO1">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="amQ-kW-L6V">
-                                        <rect key="frame" x="0.0" y="121" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="amQ-kW-L6V" id="iuC-fd-Mx3">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="471 kUSD" secondaryText="$3.14" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="XIL-QP-K6i">
-                                        <rect key="frame" x="0.0" y="185" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="XIL-QP-K6i" id="sSV-Yr-eRf">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="812 USDtz" secondaryText="$793.42" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                            <tableViewSection id="v2R-1U-WkU">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="w7y-4I-7vj">
-                                        <rect key="frame" x="0.0" y="285" width="414" height="39"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w7y-4I-7vj" id="XMO-j5-gtb">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="39"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="groupedHeader" text="All" secondaryText=""/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="NkK-ja-YJW">
-                                        <rect key="frame" x="0.0" y="324" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="NkK-ja-YJW" id="v5n-mV-2lT">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="HDM-ok-oK8">
-                                        <rect key="frame" x="0.0" y="388" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="HDM-ok-oK8" id="NSr-rW-Eff">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="S6w-1j-Xog">
-                                        <rect key="frame" x="0.0" y="452" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="S6w-1j-Xog" id="FWI-Y6-IgC">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="gKU-9D-nba">
-                                        <rect key="frame" x="0.0" y="516" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="gKU-9D-nba" id="OZ1-im-b4z">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="kRN-nK-FfY">
-                                        <rect key="frame" x="0.0" y="580" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kRN-nK-FfY" id="geW-og-doU">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="64" id="QE8-14-oZZ">
-                                        <rect key="frame" x="0.0" y="644" width="414" height="64"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="QE8-14-oZZ" id="fZN-VZ-kqD">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="64"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="sidebarCell" text="1000 tzBTC" secondaryText="$14,000.67" image="tezos-xtz-logo" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="mhz-rX-HXM" id="wct-QY-wzu"/>
-                            <outlet property="delegate" destination="mhz-rX-HXM" id="5yq-QA-1C9"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="tTK-gF-U4B" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-288.40579710144931" y="1884.7098214285713"/>
-        </scene>
-        <!--Table View Controller-->
-        <scene sceneID="Okc-ce-s6j">
-            <objects>
-                <tableViewController id="0NX-Ex-3Sa" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" id="Pfc-3o-fXP">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <sections>
-                            <tableViewSection id="4t5-nH-rkN">
-                                <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="34" id="b7U-Qc-KOh">
-                                        <rect key="frame" x="0.0" y="18" width="414" height="34"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="b7U-Qc-KOh" id="a4I-Kr-na8">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="34"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jv3-Ot-8af">
-                                                    <rect key="frame" x="8" y="4" width="142" height="26"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E68-TX-K2J">
-                                                    <rect key="frame" x="158" y="4" width="120" height="26"/>
-                                                    <color key="tintColor" name="text-primary"/>
-                                                    <inset key="imageEdgeInsets" minX="-12" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="For Sale" image="dollarsign.circle" catalog="system">
-                                                        <color key="titleColor" name="text-primary"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                            <real key="value" value="1"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                            <real key="value" value="13"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" name="text-primary"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </button>
-                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Co8-9h-Yqs">
-                                                    <rect key="frame" x="286" y="4" width="120" height="26"/>
-                                                    <color key="tintColor" name="text-primary"/>
-                                                    <inset key="imageEdgeInsets" minX="-12" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                    <state key="normal" title="Sort" image="arrow.up.arrow.down" catalog="system">
-                                                        <color key="titleColor" name="text-primary"/>
-                                                    </state>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                            <real key="value" value="1"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" name="text-primary"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                            <real key="value" value="13"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </button>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="Co8-9h-Yqs" firstAttribute="leading" secondItem="E68-TX-K2J" secondAttribute="trailing" constant="8" id="3cJ-38-aLY"/>
-                                                <constraint firstAttribute="bottom" secondItem="E68-TX-K2J" secondAttribute="bottom" constant="4" id="4OL-J0-Pym"/>
-                                                <constraint firstItem="Jv3-Ot-8af" firstAttribute="leading" secondItem="a4I-Kr-na8" secondAttribute="leading" constant="8" id="4be-yy-4ug"/>
-                                                <constraint firstItem="E68-TX-K2J" firstAttribute="top" secondItem="a4I-Kr-na8" secondAttribute="top" constant="4" id="7Ya-Jf-zCE"/>
-                                                <constraint firstItem="Co8-9h-Yqs" firstAttribute="top" secondItem="a4I-Kr-na8" secondAttribute="top" constant="4" id="A6L-Sk-XDM"/>
-                                                <constraint firstAttribute="bottom" secondItem="Jv3-Ot-8af" secondAttribute="bottom" constant="4" id="QZg-RA-Xsm"/>
-                                                <constraint firstItem="E68-TX-K2J" firstAttribute="leading" secondItem="Jv3-Ot-8af" secondAttribute="trailing" constant="8" id="Sb6-uD-1jE"/>
-                                                <constraint firstAttribute="bottom" secondItem="Co8-9h-Yqs" secondAttribute="bottom" constant="4" id="Ycv-OF-CYW"/>
-                                                <constraint firstItem="E68-TX-K2J" firstAttribute="width" secondItem="Co8-9h-Yqs" secondAttribute="width" id="dl7-OY-WSk"/>
-                                                <constraint firstItem="Jv3-Ot-8af" firstAttribute="top" secondItem="a4I-Kr-na8" secondAttribute="top" constant="4" id="o5c-eK-QyM"/>
-                                                <constraint firstItem="Jv3-Ot-8af" firstAttribute="width" secondItem="E68-TX-K2J" secondAttribute="width" multiplier="1.18333" id="o5x-n0-HLy"/>
-                                                <constraint firstAttribute="trailing" secondItem="Co8-9h-Yqs" secondAttribute="trailing" constant="8" id="wo5-0J-SpP"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="liQ-1Y-Tdr">
-                                        <rect key="frame" x="0.0" y="52" width="414" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="liQ-1Y-Tdr" id="9ZN-rc-EGP">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" name="text-primary"/>
-                                        <listContentConfiguration key="contentConfiguration" text="Mooncakes" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="KP2-w3-9t1">
-                                        <rect key="frame" x="0.0" y="122" width="414" height="63"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KP2-w3-9t1" id="mXj-Pn-rOO">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" name="text-tertiary"/>
-                                        <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 1" secondaryText="Common" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Cap-eh-A9z">
-                                        <rect key="frame" x="0.0" y="185" width="414" height="63"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Cap-eh-A9z" id="Blk-Bk-JZL">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" systemColor="systemGreenColor"/>
-                                        <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 2" secondaryText="Uncommon" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="jPe-yi-ca9">
-                                        <rect key="frame" x="0.0" y="248" width="414" height="63"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jPe-yi-ca9" id="Sql-vk-Z68">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 3" secondaryText="Rare" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="zTa-ai-tHo">
-                                        <rect key="frame" x="0.0" y="311" width="414" height="63"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zTa-ai-tHo" id="Yk6-rY-OB8">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" systemColor="systemPurpleColor"/>
-                                        <listContentConfiguration key="contentConfiguration" style="valueCell" text="Mooncake 4" secondaryText="Epic" image="checkmark.circle.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="pyU-Sy-Y1W">
-                                        <rect key="frame" x="0.0" y="374" width="414" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pyU-Sy-Y1W" id="DS3-cx-HXk">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" name="text-primary"/>
-                                        <listContentConfiguration key="contentConfiguration" text="Interpop" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="ddu-Jj-czq">
-                                        <rect key="frame" x="0.0" y="444" width="414" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ddu-Jj-czq" id="btd-nk-Ax6">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" name="text-primary"/>
-                                        <listContentConfiguration key="contentConfiguration" text="Dogami" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="70" id="BYg-C5-RJ9">
-                                        <rect key="frame" x="0.0" y="514" width="414" height="70"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="BYg-C5-RJ9" id="shv-nX-7zq">
-                                            <rect key="frame" x="0.0" y="0.0" width="383.5" height="70"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                        <color key="tintColor" name="text-primary"/>
-                                        <listContentConfiguration key="contentConfiguration" text="Pixel Potus" secondaryText="" image="xmark.app.fill" catalog="system" imageToTextPadding="12"/>
-                                    </tableViewCell>
-                                </cells>
-                            </tableViewSection>
-                        </sections>
-                        <connections>
-                            <outlet property="dataSource" destination="0NX-Ex-3Sa" id="oUo-eU-CU5"/>
-                            <outlet property="delegate" destination="0NX-Ex-3Sa" id="KVb-IZ-isa"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ey1-b5-55Y" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="624.63768115942037" y="1884.375"/>
+            <point key="canvasLocation" x="106" y="139"/>
         </scene>
     </scenes>
     <resources>
-        <image name="arrow.up.arrow.down" catalog="system" width="128" height="97"/>
-        <image name="checkmark.circle.fill" catalog="system" width="128" height="123"/>
-        <image name="dollarsign.circle" catalog="system" width="128" height="123"/>
-        <image name="kukai" width="80" height="80"/>
-        <image name="kukai-text-medium" width="247" height="100"/>
-        <image name="tezos-xtz-logo" width="193" height="237"/>
-        <image name="unknown" width="41" height="41"/>
-        <image name="xmark.app.fill" catalog="system" width="128" height="114"/>
-        <namedColor name="primary-button-background">
-            <color red="0.34509803921568627" green="0.3843137254901961" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="logo_kukai" width="293" height="80"/>
+        <namedColor name="BG2">
+            <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="primary-button-text">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="tertiary-button-background">
-            <color red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="text-primary">
-            <color red="0.10980392156862745" green="0.10980392156862745" blue="0.10980392156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="text-tertiary">
-            <color red="0.4392156862745098" green="0.4392156862745098" blue="0.4392156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGreenColor">
-            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="systemPurpleColor">
-            <color red="0.68627450980392157" green="0.32156862745098042" blue="0.87058823529411766" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
     </resources>
 </document>
