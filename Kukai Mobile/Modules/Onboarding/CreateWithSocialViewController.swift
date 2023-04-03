@@ -9,6 +9,8 @@ import UIKit
 
 class CreateWithSocialViewController: UIViewController {
 	
+	@IBOutlet var scrollView: UIScrollView!
+	@IBOutlet var topSectionContainer: UIView!
 	@IBOutlet var learnMoreButton: CustomisableButton!
 	@IBOutlet var appleButton: CustomisableButton!
 	@IBOutlet var googleButton: CustomisableButton!
@@ -37,6 +39,9 @@ class CreateWithSocialViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
+		
+		scrollView.addGestureRecognizer(UITapGestureRecognizer(target: emailTextField, action: #selector(resignFirstResponder)))
 		
 		socialOptions2.isHidden = true
 		socialOptions3.isHidden = true
@@ -49,6 +54,16 @@ class CreateWithSocialViewController: UIViewController {
 		viewMoreOptionsButton.configuration?.imagePlacement = .trailing
 		viewMoreOptionsButton.configuration?.imagePadding = 8
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		self.startListeningForKeyboard()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.stopListeningForKeyboard()
+	}
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
@@ -63,6 +78,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	
 	@IBAction func appleTapped(_ sender: Any) {
+		self.performSegue(withIdentifier: "done", sender: nil)
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
@@ -107,6 +123,40 @@ class CreateWithSocialViewController: UIViewController {
 		
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.view.layoutIfNeeded()
+		}
+	}
+}
+
+extension CreateWithSocialViewController {
+	
+	func startListeningForKeyboard() {
+		NotificationCenter.default.addObserver(self, selector: #selector(customKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.addObserver(self, selector: #selector(customLeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	func stopListeningForKeyboard() {
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+	}
+	
+	@objc func customKeyboardWillShow(notification: NSNotification) {
+		topSectionContainer.alpha = 0.2
+		
+		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
+			let whereKeyboardWillGoToo = ((self.scrollView.frame.height + self.view.safeAreaInsets.bottom) - keyboardSize.height)
+			let whereNeedsToBeDisplayed = (continueWIthEmailButton.convert(CGPoint(x: 0, y: 0), to: scrollView).y + continueWIthEmailButton.frame.height + 8).rounded(.up)
+			
+			if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
+				self.scrollView.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
+			}
+		}
+	}
+	
+	@objc func customLeyboardWillHide(notification: NSNotification) {
+		topSectionContainer.alpha = 1
+		
+		if let _ = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
+			self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
 		}
 	}
 }

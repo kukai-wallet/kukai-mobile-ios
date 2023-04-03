@@ -29,13 +29,16 @@ class CustomisableButton: UIButton {
 			
 			if let imageTint = customImageTint {
 				customImage = customImage.withTintColor(imageTint)
-			} else {
-				customImage = customImage.withTintColor(tintColor)
 			}
 			
 			imageView?.contentMode = .center
 			setImage(customImage, for: .normal)
 			didSetupCustomImage = true
 		}
+	}
+	
+	func updateCustomImage() {
+		didSetupCustomImage = false
+		setupUI()
 	}
 }

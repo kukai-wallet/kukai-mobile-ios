@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -384,9 +385,6 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="7lt-1J-wK2" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="ee2-kv-vUn"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6jO-JX-UY6">
                                 <rect key="frame" x="16" y="194" width="358" height="50"/>
@@ -402,9 +400,6 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="ycR-zh-ZMx" kind="show" id="dZj-dQ-1gU"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JRO-Hl-Ydx">
                                 <rect key="frame" x="16" y="260" width="358" height="50"/>
@@ -420,9 +415,6 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="q7e-0Z-dmG" kind="show" id="e3K-Lk-TLs"/>
-                                </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add another wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g8k-Bv-V5p">
                                 <rect key="frame" x="16" y="71" width="310" height="21"/>
@@ -444,9 +436,6 @@
                                         <real key="value" value="8"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="PaJ-78-3J2" kind="show" id="SHw-4k-hab"/>
-                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="YsN-2E-EeW"/>
@@ -476,95 +465,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p8i-cQ-x6h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2087" y="-2748"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="fQq-wD-r28">
-            <objects>
-                <navigationController id="ycR-zh-ZMx" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="ef4-Bd-vpv"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="XIw-fh-x07">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="AG4-Qj-9E7" kind="relationship" relationship="rootViewController" id="ynB-Cu-YRc"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8q2-2S-gt8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4210" y="-4910"/>
-        </scene>
-        <!--newWallet-->
-        <scene sceneID="j8B-03-Nww">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="newWallet" id="AG4-Qj-9E7" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="BMB-fr-WvK"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kQi-eO-hin" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4850" y="-4910"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="iLZ-Qh-Kgd">
-            <objects>
-                <navigationController id="q7e-0Z-dmG" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Axz-yQ-H5V"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Iva-fH-74b">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="w0M-hJ-fOV" kind="relationship" relationship="rootViewController" id="3cr-js-FHn"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="hbH-6s-P6E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4210" y="-4217"/>
-        </scene>
-        <!--importWallet-->
-        <scene sceneID="jqP-1k-LUf">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="importWallet" id="w0M-hJ-fOV" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="IBt-hw-qn0"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ttH-Yi-l4H" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4862" y="-4217"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="U6u-YY-2Rv">
-            <objects>
-                <navigationController id="PaJ-78-3J2" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="z5g-t7-wa8"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="JRP-IM-ZKI">
-                        <rect key="frame" x="0.0" y="0.0" width="390" height="56"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="bhA-ql-6fk" kind="relationship" relationship="rootViewController" id="dcM-Ow-t8x"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FMh-kf-ifP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4210" y="-3479"/>
-        </scene>
-        <!--importLedger-->
-        <scene sceneID="6By-yF-2yM">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="importLedger" id="bhA-ql-6fk" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="2Qo-dQ-9aE"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="004-6R-niu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4886" y="-3479"/>
-        </scene>
-        <!--GetStartedBottomSheet-->
-        <scene sceneID="b94-MQ-vwq">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="GetStartedBottomSheet" id="7lt-1J-wK2" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ua1-QC-XfV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3034" y="-4475"/>
         </scene>
         <!--Stake-->
         <scene sceneID="1yc-Lv-GBU">
