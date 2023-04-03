@@ -42,6 +42,8 @@
 		C01372B329B206FF0083E297 /* MenuHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01372B129B206FF0083E297 /* MenuHeaderCell.xib */; };
 		C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3A282956B9005F50B8 /* BeaconViewController.swift */; };
 		C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */; };
+		C015F33B29DAEF1700895009 /* CreateWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015F33A29DAEF1700895009 /* CreateWalletViewController.swift */; };
+		C015F33D29DAEF2600895009 /* AlreadyHaveWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C015F33C29DAEF2600895009 /* AlreadyHaveWalletViewController.swift */; };
 		C01A633F297842C100278689 /* TokenDetailsChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01A633E297842C100278689 /* TokenDetailsChartCell.xib */; };
 		C01A6341297844B500278689 /* TokenDetailsButtonsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01A6340297844B500278689 /* TokenDetailsButtonsCell.xib */; };
 		C01A6343297845D000278689 /* TokenDetailsBalanceAndBakerCell_baker.xib in Resources */ = {isa = PBXBuildFile; fileRef = C01A6342297845D000278689 /* TokenDetailsBalanceAndBakerCell_baker.xib */; };
@@ -353,6 +355,8 @@
 		C01372B129B206FF0083E297 /* MenuHeaderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuHeaderCell.xib; sourceTree = "<group>"; };
 		C015BB3A282956B9005F50B8 /* BeaconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewController.swift; sourceTree = "<group>"; };
 		C015BB3C282956C4005F50B8 /* BeaconViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconViewModel.swift; sourceTree = "<group>"; };
+		C015F33A29DAEF1700895009 /* CreateWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWalletViewController.swift; sourceTree = "<group>"; };
+		C015F33C29DAEF2600895009 /* AlreadyHaveWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlreadyHaveWalletViewController.swift; sourceTree = "<group>"; };
 		C01A633E297842C100278689 /* TokenDetailsChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenDetailsChartCell.xib; sourceTree = "<group>"; };
 		C01A6340297844B500278689 /* TokenDetailsButtonsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenDetailsButtonsCell.xib; sourceTree = "<group>"; };
 		C01A6342297845D000278689 /* TokenDetailsBalanceAndBakerCell_baker.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenDetailsBalanceAndBakerCell_baker.xib; sourceTree = "<group>"; };
@@ -717,6 +721,16 @@
 			path = MenuViewController;
 			sourceTree = "<group>";
 		};
+		C015F33929DAEEEC00895009 /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				C05240A82770E1210031B5D1 /* GetStartedViewController.swift */,
+				C0AC1D3F2771F585002F66C0 /* LedgerInfoViewController.swift */,
+				C0AC1D412771F5D4002F66C0 /* ImportChoiceViewController.swift */,
+			);
+			path = Old;
+			sourceTree = "<group>";
+		};
 		C0239B982886B90900E0C973 /* Defi */ = {
 			isa = PBXGroup;
 			children = (
@@ -796,12 +810,12 @@
 		C049B5A126A0494300F1C5E0 /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				C015F33929DAEEEC00895009 /* Old */,
 				C0E921EB270C8C5C00F3B0B9 /* Cells */,
 				C050365F271ED8E600E7A664 /* Onboarding.storyboard */,
 				C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */,
-				C05240A82770E1210031B5D1 /* GetStartedViewController.swift */,
-				C0AC1D3F2771F585002F66C0 /* LedgerInfoViewController.swift */,
-				C0AC1D412771F5D4002F66C0 /* ImportChoiceViewController.swift */,
+				C015F33A29DAEF1700895009 /* CreateWalletViewController.swift */,
+				C015F33C29DAEF2600895009 /* AlreadyHaveWalletViewController.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -1624,6 +1638,7 @@
 				C04E2862293F94A800DC4171 /* TokenDetailsButtonsCell.swift in Sources */,
 				C0E4EF3E294105E3007C69CA /* TokenDetailsMessageCell.swift in Sources */,
 				C0FAD1D62992992500FB813B /* SendCollectibleConfirmViewController.swift in Sources */,
+				C015F33B29DAEF1700895009 /* CreateWalletViewController.swift in Sources */,
 				C05D4E0A287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift in Sources */,
 				C0EA19CA29096DD200E6B40D /* CollectibleDetailNameCell.swift in Sources */,
 				C0082C0126A715C400DB160B /* NewWalletMnemonicViewController.swift in Sources */,
@@ -1694,6 +1709,7 @@
 				C0D01CF329AE4A82007A2468 /* WalletConnectService.swift in Sources */,
 				C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */,
 				C039C3BF298C107C00112500 /* FeeInfoViewController.swift in Sources */,
+				C015F33D29DAEF2600895009 /* AlreadyHaveWalletViewController.swift in Sources */,
 				C001841F288AF88B00887536 /* SwapConfirmViewController.swift in Sources */,
 				C015BB3B282956B9005F50B8 /* BeaconViewController.swift in Sources */,
 				C0B03645269EE2070071ACD0 /* SceneDelegate.swift in Sources */,

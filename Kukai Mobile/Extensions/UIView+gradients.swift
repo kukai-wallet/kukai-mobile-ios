@@ -121,6 +121,20 @@ extension UIView {
 			degress: cssDegreesToIOS(117.79))
 	}
 	
+	func addGradientButtonPrimaryBorder() -> CAGradientLayer {
+		return self.addGradientBorder(
+			withFrame: self.bounds,
+			colors: [
+				UIColor.colorNamed("BtnStrokeTer1-1").cgColor,
+				UIColor.colorNamed("BtnStrokeTer1-2").cgColor
+			],
+			locations: [0.20, 0.87],
+			degrees: cssDegreesToIOS(117.79),
+			lineWidth: 1,
+			corners: [.allCorners],
+			cornerRadius: 8)
+	}
+	
 	func addSliderButton(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,

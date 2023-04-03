@@ -39,6 +39,13 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		}
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.navigationItem.hidesBackButton = true
+		self.navigationItem.backButtonDisplayMode = .minimal
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		

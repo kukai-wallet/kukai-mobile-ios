@@ -12,18 +12,17 @@ class WelcomeViewController: UIViewController {
 	@IBOutlet var newWalletButton: CustomisableButton!
 	@IBOutlet var existingWalletButton: CustomisableButton!
 	
-	
 	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
 		let _ = self.view.addGradientBackgroundFull()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		self.navigationController?.setNavigationBarHidden(true, animated: false)
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
