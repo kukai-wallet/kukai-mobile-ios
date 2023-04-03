@@ -437,6 +437,8 @@ public class ThemeManager {
 				"BtnPrim4-2": UIColor("#24242D"),
 				"BtnStrokeTer1-1": UIColor("#626AED"),
 				"BtnStrokeTer1-2": UIColor("#862AFC"),
+				"BtnStrokeTer4-1": UIColor("#35363A"),
+				"BtnStrokeTer4-2": UIColor("#272529"),
 				
 				"gradBgFull-1": UIColor("#1B1C2B"),
 				"gradBgFull-2": UIColor("#0E0F17"),

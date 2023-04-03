@@ -9,7 +9,7 @@ import UIKit
 
 class CreateWithSocialViewController: UIViewController {
 	
-	@IBOutlet var scrollView: UIScrollView!
+	@IBOutlet var scrollView: AutoScrollView!
 	@IBOutlet var topSectionContainer: UIView!
 	@IBOutlet var learnMoreButton: CustomisableButton!
 	@IBOutlet var appleButton: CustomisableButton!
@@ -46,8 +46,11 @@ class CreateWithSocialViewController: UIViewController {
 		socialOptions2.isHidden = true
 		socialOptions3.isHidden = true
 		
+		appleButton.customButtonType = .primary
 		appleButton.configuration?.imagePadding = 8
+		googleButton.customButtonType = .tertiary
 		googleButton.configuration?.imagePadding = 8
+		continueWIthEmailButton.customButtonType = .secondary
 		
 		learnMoreButton.configuration?.imagePlacement = .trailing
 		learnMoreButton.configuration?.imagePadding = 8
@@ -57,22 +60,13 @@ class CreateWithSocialViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		self.startListeningForKeyboard()
+		self.scrollView.setupAutoScroll(focusView: continueWIthEmailButton, parentView: self.view)
+		self.scrollView.autoScrollDelegate = self
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
-		self.stopListeningForKeyboard()
-	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		appleGradient.removeFromSuperlayer()
-		appleGradient = appleButton.addGradientButtonPrimary(withFrame: appleButton.bounds)
-		
-		googleGradient.removeFromSuperlayer()
-		googleGradient = googleButton.addGradientButtonPrimaryBorder()
+		self.scrollView.stopAutoScroll()
 	}
 	
 	
@@ -82,6 +76,7 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
+		self.continueWIthEmailButton.isEnabled = !self.continueWIthEmailButton.isEnabled 
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
@@ -127,36 +122,15 @@ class CreateWithSocialViewController: UIViewController {
 	}
 }
 
-extension CreateWithSocialViewController {
+extension CreateWithSocialViewController: AutoScrollViewDelegate {
 	
-	func startListeningForKeyboard() {
-		NotificationCenter.default.addObserver(self, selector: #selector(customKeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.addObserver(self, selector: #selector(customLeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+	func keyboardWillShow() {
+		self.topSectionContainer.alpha = 0.2
+		self.topSectionContainer.isUserInteractionEnabled = false
 	}
 	
-	func stopListeningForKeyboard() {
-		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-		NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-	}
-	
-	@objc func customKeyboardWillShow(notification: NSNotification) {
-		topSectionContainer.alpha = 0.2
-		
-		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
-			let whereKeyboardWillGoToo = ((self.scrollView.frame.height + self.view.safeAreaInsets.bottom) - keyboardSize.height)
-			let whereNeedsToBeDisplayed = (continueWIthEmailButton.convert(CGPoint(x: 0, y: 0), to: scrollView).y + continueWIthEmailButton.frame.height + 8).rounded(.up)
-			
-			if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
-				self.scrollView.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
-			}
-		}
-	}
-	
-	@objc func customLeyboardWillHide(notification: NSNotification) {
-		topSectionContainer.alpha = 1
-		
-		if let _ = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
-			self.scrollView.contentOffset = CGPoint(x: 0, y: 0)
-		}
+	func keyboardWillHide() {
+		self.topSectionContainer.alpha = 1
+		self.topSectionContainer.isUserInteractionEnabled = true
 	}
 }

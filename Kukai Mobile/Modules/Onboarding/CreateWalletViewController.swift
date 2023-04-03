@@ -14,26 +14,16 @@ class CreateWalletViewController: UIViewController {
 	@IBOutlet var hdWalletButton: CustomisableButton!
 	@IBOutlet var hdLearnMoreButton: CustomisableButton!
 	
-	private var socialGradient = CAGradientLayer()
-	private var hdGradient = CAGradientLayer()
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		socialWalletButton.customButtonType = .primary
 		socialLearnMoreButton.configuration?.imagePlacement = .trailing
 		socialLearnMoreButton.configuration?.imagePadding = 8
+		
+		hdWalletButton.customButtonType = .tertiary
 		hdLearnMoreButton.configuration?.imagePlacement = .trailing
 		hdLearnMoreButton.configuration?.imagePadding = 8
     }
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		socialGradient.removeFromSuperlayer()
-		socialGradient = socialWalletButton.addGradientButtonPrimary(withFrame: socialWalletButton.bounds)
-		
-		hdGradient.removeFromSuperlayer()
-		hdGradient = hdWalletButton.addGradientButtonPrimaryBorder()
-	}
 }

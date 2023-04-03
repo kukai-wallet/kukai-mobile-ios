@@ -12,11 +12,11 @@ class WelcomeViewController: UIViewController {
 	@IBOutlet var newWalletButton: CustomisableButton!
 	@IBOutlet var existingWalletButton: CustomisableButton!
 	
-	private var gradient = CAGradientLayer()
-	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		newWalletButton.customButtonType = .primary
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -26,12 +26,5 @@ class WelcomeViewController: UIViewController {
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
 		DependencyManager.shared.setDefaultMainnetURLs()
-	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		gradient.removeFromSuperlayer()
-		gradient = newWalletButton.addGradientButtonPrimary(withFrame: newWalletButton.bounds)
 	}
 }

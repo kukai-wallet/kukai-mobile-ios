@@ -17,7 +17,15 @@ class WalletCreatedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		getStartedButton.customButtonType = .primary
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		self.navigationItem.hidesBackButton = true
+	}
 	
 	@IBAction func checkBoxButtonTapped(_ sender: Any) {
 		

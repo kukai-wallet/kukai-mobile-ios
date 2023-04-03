@@ -121,12 +121,37 @@ extension UIView {
 			degress: cssDegreesToIOS(117.79))
 	}
 	
-	func addGradientButtonPrimaryBorder() -> CAGradientLayer {
+	func addGradientButtonPrimaryDisabled(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor.colorNamed("BtnPrim4-1").cgColor,
+				UIColor.colorNamed("BtnPrim4-2").cgColor,
+			],
+			locations: [0.20, 0.87],
+			degress: cssDegreesToIOS(117.79))
+	}
+	
+	func addGradientButtonTertiaryBorder() -> CAGradientLayer {
 		return self.addGradientBorder(
 			withFrame: self.bounds,
 			colors: [
 				UIColor.colorNamed("BtnStrokeTer1-1").cgColor,
 				UIColor.colorNamed("BtnStrokeTer1-2").cgColor
+			],
+			locations: [0.20, 0.87],
+			degrees: cssDegreesToIOS(117.79),
+			lineWidth: 1,
+			corners: [.allCorners],
+			cornerRadius: 8)
+	}
+	
+	func addGradientButtonTertiaryDisabledBorder() -> CAGradientLayer {
+		return self.addGradientBorder(
+			withFrame: self.bounds,
+			colors: [
+				UIColor.colorNamed("BtnStrokeTer4-1").cgColor,
+				UIColor.colorNamed("BtnStrokeTer4-2").cgColor
 			],
 			locations: [0.20, 0.87],
 			degrees: cssDegreesToIOS(117.79),
