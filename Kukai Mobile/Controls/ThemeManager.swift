@@ -222,6 +222,7 @@ public class ThemeManager {
 				"StrokeToastNeutralDark": UIColor("#3C3D50"),
 				"BGActivityBatch": UIColor("#B7B9EA", alpha: 0.3),
 				"BGRecoveryTrans": UIColor("#C6C7D7", alpha: 0.65),
+				"BGSegPickerSel": UIColor("#4E5066"),
 				
 				// Media player
 				"playerKnob": UIColor("#FFFFFF"),
@@ -425,6 +426,7 @@ public class ThemeManager {
 				"StrokeToastNeutralDark": UIColor("#3C3D50"),
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
 				"BGRecoveryTrans": UIColor("#1C1D23", alpha: 0.65),
+				"BGSegPickerSel": UIColor("#4E5066"),
 				
 				
 				// Media player

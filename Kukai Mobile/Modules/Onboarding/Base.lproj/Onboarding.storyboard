@@ -1927,21 +1927,530 @@ for your Digital Assets</string>
         <!--Verify Recovery Phrase-->
         <scene sceneID="FkP-Qg-m8J">
             <objects>
-                <viewController id="mbp-JO-jAH" sceneMemberID="viewController">
+                <viewController id="mbp-JO-jAH" customClass="VerifyRecoveryPhraseViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="a8Y-jq-eWg">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select word #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rlL-M1-01d">
+                                <rect key="frame" x="16" y="80" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hUr-Be-gdV">
+                                <rect key="frame" x="16" y="113" width="343" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oe5-NG-O0G">
+                                        <rect key="frame" x="10" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection1ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="iIv-6u-TZd"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QLF-t5-4FO">
+                                        <rect key="frame" x="120.5" y="10" width="102" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="qDb-wz-rhP"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection1ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="H8H-15-hJR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0MH-nn-pXW">
+                                        <rect key="frame" x="230.5" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection1ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="u2J-3m-xg2"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a0M-S9-tZR">
+                                        <rect key="frame" x="116.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="10I-3t-PwL"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MUj-zY-U1n">
+                                        <rect key="frame" x="226.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="9db-Ht-6uc"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <constraints>
+                                    <constraint firstItem="0MH-nn-pXW" firstAttribute="leading" secondItem="QLF-t5-4FO" secondAttribute="trailing" constant="8" id="1Qg-n0-9pS"/>
+                                    <constraint firstItem="MUj-zY-U1n" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="4at-DQ-UnF"/>
+                                    <constraint firstItem="a0M-S9-tZR" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="4fM-UV-dpU"/>
+                                    <constraint firstItem="oe5-NG-O0G" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="86T-bs-EUm"/>
+                                    <constraint firstAttribute="bottom" secondItem="MUj-zY-U1n" secondAttribute="bottom" constant="10" id="Lqh-Nn-dsy"/>
+                                    <constraint firstItem="a0M-S9-tZR" firstAttribute="leading" secondItem="oe5-NG-O0G" secondAttribute="trailing" constant="4" id="MVC-oG-EuX"/>
+                                    <constraint firstItem="QLF-t5-4FO" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="MgZ-WB-Hsk"/>
+                                    <constraint firstAttribute="trailing" secondItem="0MH-nn-pXW" secondAttribute="trailing" constant="10" id="QNo-F8-0wb"/>
+                                    <constraint firstAttribute="bottom" secondItem="0MH-nn-pXW" secondAttribute="bottom" constant="10" id="QVl-Xe-naY"/>
+                                    <constraint firstItem="QLF-t5-4FO" firstAttribute="leading" secondItem="oe5-NG-O0G" secondAttribute="trailing" constant="8" id="Qfr-TX-jXg"/>
+                                    <constraint firstAttribute="bottom" secondItem="a0M-S9-tZR" secondAttribute="bottom" constant="10" id="TaS-7X-vHA"/>
+                                    <constraint firstItem="0MH-nn-pXW" firstAttribute="leading" secondItem="MUj-zY-U1n" secondAttribute="trailing" constant="3" id="Wk3-LC-s3y"/>
+                                    <constraint firstItem="oe5-NG-O0G" firstAttribute="leading" secondItem="hUr-Be-gdV" secondAttribute="leading" constant="10" id="Yjy-1y-t2R"/>
+                                    <constraint firstAttribute="bottom" secondItem="QLF-t5-4FO" secondAttribute="bottom" constant="10" id="aAz-YS-3RI"/>
+                                    <constraint firstItem="oe5-NG-O0G" firstAttribute="width" secondItem="0MH-nn-pXW" secondAttribute="width" id="c0j-sn-j55"/>
+                                    <constraint firstAttribute="bottom" secondItem="oe5-NG-O0G" secondAttribute="bottom" constant="10" id="eIW-gP-dGP"/>
+                                    <constraint firstItem="0MH-nn-pXW" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="pAE-5a-IuF"/>
+                                    <constraint firstItem="oe5-NG-O0G" firstAttribute="width" secondItem="QLF-t5-4FO" secondAttribute="width" id="yb8-qL-tYf"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select word #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cSu-Ka-ZXr">
+                                <rect key="frame" x="16" y="177" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sVS-p5-mit">
+                                <rect key="frame" x="16" y="210" width="343" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8sb-hv-pFc">
+                                        <rect key="frame" x="10" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection2ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="dqe-vd-yey"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qte-QZ-miC">
+                                        <rect key="frame" x="120.5" y="10" width="102" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="yfX-TX-99E"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection2ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="Uml-d3-jzQ"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6x0-x5-4rz">
+                                        <rect key="frame" x="230.5" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection2ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="RSa-pG-DMN"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mif-Ea-3xF">
+                                        <rect key="frame" x="116.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="y87-vc-DCm"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PbH-JW-SRE">
+                                        <rect key="frame" x="226.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="65I-NQ-Zg1"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <constraints>
+                                    <constraint firstItem="8sb-hv-pFc" firstAttribute="leading" secondItem="sVS-p5-mit" secondAttribute="leading" constant="10" id="3kT-eh-C4u"/>
+                                    <constraint firstItem="8sb-hv-pFc" firstAttribute="width" secondItem="Qte-QZ-miC" secondAttribute="width" id="6Nt-Qh-6fl"/>
+                                    <constraint firstAttribute="bottom" secondItem="8sb-hv-pFc" secondAttribute="bottom" constant="10" id="78S-rr-nwY"/>
+                                    <constraint firstItem="8sb-hv-pFc" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="top" constant="10" id="Bqx-st-JYy"/>
+                                    <constraint firstItem="6x0-x5-4rz" firstAttribute="leading" secondItem="Qte-QZ-miC" secondAttribute="trailing" constant="8" id="C6Y-mN-1Vq"/>
+                                    <constraint firstAttribute="trailing" secondItem="6x0-x5-4rz" secondAttribute="trailing" constant="10" id="Fou-yk-M8Y"/>
+                                    <constraint firstItem="Qte-QZ-miC" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="top" constant="10" id="HAY-28-pEP"/>
+                                    <constraint firstAttribute="bottom" secondItem="6x0-x5-4rz" secondAttribute="bottom" constant="10" id="I3o-qY-m2m"/>
+                                    <constraint firstItem="Mif-Ea-3xF" firstAttribute="leading" secondItem="8sb-hv-pFc" secondAttribute="trailing" constant="4" id="J0V-Ep-u3G"/>
+                                    <constraint firstAttribute="bottom" secondItem="PbH-JW-SRE" secondAttribute="bottom" constant="10" id="Lgr-kV-ylk"/>
+                                    <constraint firstItem="8sb-hv-pFc" firstAttribute="width" secondItem="6x0-x5-4rz" secondAttribute="width" id="Odr-Sa-khB"/>
+                                    <constraint firstAttribute="bottom" secondItem="Mif-Ea-3xF" secondAttribute="bottom" constant="10" id="PVg-tf-Hgc"/>
+                                    <constraint firstItem="6x0-x5-4rz" firstAttribute="leading" secondItem="PbH-JW-SRE" secondAttribute="trailing" constant="3" id="T1M-WC-lbq"/>
+                                    <constraint firstAttribute="bottom" secondItem="Qte-QZ-miC" secondAttribute="bottom" constant="10" id="To5-84-Jfm"/>
+                                    <constraint firstItem="Qte-QZ-miC" firstAttribute="leading" secondItem="8sb-hv-pFc" secondAttribute="trailing" constant="8" id="dR1-IJ-Ha6"/>
+                                    <constraint firstItem="PbH-JW-SRE" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="top" constant="10" id="f3S-f2-2gw"/>
+                                    <constraint firstItem="Mif-Ea-3xF" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="top" constant="10" id="psF-cF-h3m"/>
+                                    <constraint firstItem="6x0-x5-4rz" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="top" constant="10" id="qEP-IG-v5U"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select word #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j4I-Ao-Whx">
+                                <rect key="frame" x="16" y="274" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Gc-Ka-IJc">
+                                <rect key="frame" x="16" y="307" width="343" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pVA-bX-CRm">
+                                        <rect key="frame" x="10" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection3ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="HMI-nr-hmG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jCu-Qa-RiK">
+                                        <rect key="frame" x="120.5" y="10" width="102" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="BDn-HB-waU"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection3ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="MU0-mH-ZhM"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrI-2Q-eHA">
+                                        <rect key="frame" x="230.5" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection3ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="tgp-HR-AAB"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K9p-5h-JbO">
+                                        <rect key="frame" x="116.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="IPI-MD-rex"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1bc-91-hiL">
+                                        <rect key="frame" x="226.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="DYF-OP-V75"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <constraints>
+                                    <constraint firstItem="jCu-Qa-RiK" firstAttribute="leading" secondItem="pVA-bX-CRm" secondAttribute="trailing" constant="8" id="0HO-Z3-QhM"/>
+                                    <constraint firstItem="jCu-Qa-RiK" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="45j-Oc-pRz"/>
+                                    <constraint firstItem="1bc-91-hiL" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="4tt-cr-G7f"/>
+                                    <constraint firstItem="JrI-2Q-eHA" firstAttribute="leading" secondItem="jCu-Qa-RiK" secondAttribute="trailing" constant="8" id="51r-78-tTi"/>
+                                    <constraint firstAttribute="bottom" secondItem="JrI-2Q-eHA" secondAttribute="bottom" constant="10" id="79J-6C-3hR"/>
+                                    <constraint firstItem="pVA-bX-CRm" firstAttribute="width" secondItem="jCu-Qa-RiK" secondAttribute="width" id="AyY-La-nev"/>
+                                    <constraint firstItem="pVA-bX-CRm" firstAttribute="width" secondItem="JrI-2Q-eHA" secondAttribute="width" id="CFw-Hz-duV"/>
+                                    <constraint firstAttribute="trailing" secondItem="JrI-2Q-eHA" secondAttribute="trailing" constant="10" id="I6T-9i-ahm"/>
+                                    <constraint firstItem="pVA-bX-CRm" firstAttribute="leading" secondItem="9Gc-Ka-IJc" secondAttribute="leading" constant="10" id="KKr-Xf-k5b"/>
+                                    <constraint firstItem="JrI-2Q-eHA" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="LPv-fU-g7l"/>
+                                    <constraint firstAttribute="bottom" secondItem="1bc-91-hiL" secondAttribute="bottom" constant="10" id="Oqj-DX-c68"/>
+                                    <constraint firstAttribute="bottom" secondItem="jCu-Qa-RiK" secondAttribute="bottom" constant="10" id="QfW-F2-4UY"/>
+                                    <constraint firstItem="K9p-5h-JbO" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="Sfh-1j-KYQ"/>
+                                    <constraint firstAttribute="bottom" secondItem="K9p-5h-JbO" secondAttribute="bottom" constant="10" id="bRN-Wc-iA8"/>
+                                    <constraint firstItem="pVA-bX-CRm" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="cyP-6b-Dsw"/>
+                                    <constraint firstItem="JrI-2Q-eHA" firstAttribute="leading" secondItem="1bc-91-hiL" secondAttribute="trailing" constant="3" id="f6R-aq-DoL"/>
+                                    <constraint firstAttribute="bottom" secondItem="pVA-bX-CRm" secondAttribute="bottom" constant="10" id="g7j-qL-rjs"/>
+                                    <constraint firstItem="K9p-5h-JbO" firstAttribute="leading" secondItem="pVA-bX-CRm" secondAttribute="trailing" constant="4" id="r77-5N-Xv7"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select word #" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esT-pw-kuo">
+                                <rect key="frame" x="16" y="371" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DDG-oS-Fkr">
+                                <rect key="frame" x="16" y="404" width="343" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sRK-22-cWu">
+                                        <rect key="frame" x="10" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection4ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="BMl-Rk-ZiD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cf0-SY-LPa">
+                                        <rect key="frame" x="120.5" y="10" width="102" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="MCv-1n-9QM"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection4ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="Rvj-jZ-b0Q"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bir-Rh-B6v">
+                                        <rect key="frame" x="230.5" y="10" width="102.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="&lt;word&gt;">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="selection4ButtonTapped:" destination="mbp-JO-jAH" eventType="touchUpInside" id="Yck-Po-5ai"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cQh-9W-c9B">
+                                        <rect key="frame" x="116.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="Fhj-QF-O4d"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6g1-Iq-jAU">
+                                        <rect key="frame" x="226.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="Sr9-ej-dZX"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Bir-Rh-B6v" secondAttribute="bottom" constant="10" id="7dq-di-jUJ"/>
+                                    <constraint firstItem="sRK-22-cWu" firstAttribute="width" secondItem="Bir-Rh-B6v" secondAttribute="width" id="An4-ir-Cop"/>
+                                    <constraint firstAttribute="bottom" secondItem="cQh-9W-c9B" secondAttribute="bottom" constant="10" id="CO8-gt-Kf4"/>
+                                    <constraint firstItem="cf0-SY-LPa" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="top" constant="10" id="Cr3-5k-obH"/>
+                                    <constraint firstAttribute="bottom" secondItem="sRK-22-cWu" secondAttribute="bottom" constant="10" id="Cx0-CW-wD5"/>
+                                    <constraint firstAttribute="bottom" secondItem="cf0-SY-LPa" secondAttribute="bottom" constant="10" id="Dfh-QP-yz5"/>
+                                    <constraint firstItem="sRK-22-cWu" firstAttribute="leading" secondItem="DDG-oS-Fkr" secondAttribute="leading" constant="10" id="Dwx-Xr-Buy"/>
+                                    <constraint firstItem="cf0-SY-LPa" firstAttribute="leading" secondItem="sRK-22-cWu" secondAttribute="trailing" constant="8" id="Qdh-ut-ZMb"/>
+                                    <constraint firstItem="sRK-22-cWu" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="top" constant="10" id="WI2-qH-f0w"/>
+                                    <constraint firstItem="6g1-Iq-jAU" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="top" constant="10" id="Xpq-Ti-kRy"/>
+                                    <constraint firstAttribute="bottom" secondItem="6g1-Iq-jAU" secondAttribute="bottom" constant="10" id="aXS-bk-wg5"/>
+                                    <constraint firstItem="cQh-9W-c9B" firstAttribute="leading" secondItem="sRK-22-cWu" secondAttribute="trailing" constant="4" id="dIf-of-hwg"/>
+                                    <constraint firstItem="Bir-Rh-B6v" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="top" constant="10" id="f9T-9z-ZN6"/>
+                                    <constraint firstItem="Bir-Rh-B6v" firstAttribute="leading" secondItem="6g1-Iq-jAU" secondAttribute="trailing" constant="3" id="gVq-pM-AWI"/>
+                                    <constraint firstItem="cQh-9W-c9B" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="top" constant="10" id="ik7-0B-tJj"/>
+                                    <constraint firstAttribute="trailing" secondItem="Bir-Rh-B6v" secondAttribute="trailing" constant="10" id="ud5-VK-abq"/>
+                                    <constraint firstItem="sRK-22-cWu" firstAttribute="width" secondItem="cf0-SY-LPa" secondAttribute="width" id="y4A-Dw-esO"/>
+                                    <constraint firstItem="Bir-Rh-B6v" firstAttribute="leading" secondItem="cf0-SY-LPa" secondAttribute="trailing" constant="8" id="zVs-7Z-lGj"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please make sure your recovery phrase is written down correctly." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sv1-aU-V2v">
+                                <rect key="frame" x="16" y="468" width="343" height="34"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Vto-u7-Abz"/>
                         <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="DDG-oS-Fkr" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="1JF-yZ-uoY"/>
+                            <constraint firstItem="sv1-aU-V2v" firstAttribute="top" secondItem="DDG-oS-Fkr" secondAttribute="bottom" constant="16" id="AC5-qU-qEx"/>
+                            <constraint firstItem="cSu-Ka-ZXr" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="bottom" constant="16" id="BhG-pM-Uio"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="j4I-Ao-Whx" secondAttribute="trailing" constant="16" id="Dk4-gV-VW4"/>
+                            <constraint firstItem="esT-pw-kuo" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="DlM-G1-vO9"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="9Gc-Ka-IJc" secondAttribute="trailing" constant="16" id="EGp-SJ-7ry"/>
+                            <constraint firstItem="hUr-Be-gdV" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="FFE-zy-dPq"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="rlL-M1-01d" secondAttribute="trailing" constant="16" id="GNI-r6-0Dw"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="DDG-oS-Fkr" secondAttribute="trailing" constant="16" id="I0S-Ht-Jhy"/>
+                            <constraint firstItem="rlL-M1-01d" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="Ikp-Nf-aYz"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="cSu-Ka-ZXr" secondAttribute="trailing" constant="16" id="JKV-u8-dpN"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="sv1-aU-V2v" secondAttribute="trailing" constant="16" id="KZb-CE-EKp"/>
+                            <constraint firstItem="9Gc-Ka-IJc" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="Qne-6M-Dx4"/>
+                            <constraint firstItem="hUr-Be-gdV" firstAttribute="top" secondItem="rlL-M1-01d" secondAttribute="bottom" constant="16" id="RzW-SP-a4q"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="esT-pw-kuo" secondAttribute="trailing" constant="16" id="TcS-Ru-HXR"/>
+                            <constraint firstItem="DDG-oS-Fkr" firstAttribute="top" secondItem="esT-pw-kuo" secondAttribute="bottom" constant="16" id="UaD-yj-mxX"/>
+                            <constraint firstItem="j4I-Ao-Whx" firstAttribute="top" secondItem="sVS-p5-mit" secondAttribute="bottom" constant="16" id="WVx-PD-ojI"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="sVS-p5-mit" secondAttribute="trailing" constant="16" id="geL-bn-7vZ"/>
+                            <constraint firstItem="j4I-Ao-Whx" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="iZN-em-kCo"/>
+                            <constraint firstItem="cSu-Ka-ZXr" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="j40-9C-L2e"/>
+                            <constraint firstItem="sVS-p5-mit" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="kbA-Fm-xi5"/>
+                            <constraint firstItem="sv1-aU-V2v" firstAttribute="leading" secondItem="Vto-u7-Abz" secondAttribute="leading" constant="16" id="l7v-4Z-PjJ"/>
+                            <constraint firstItem="sVS-p5-mit" firstAttribute="top" secondItem="cSu-Ka-ZXr" secondAttribute="bottom" constant="16" id="lGn-Cw-K5I"/>
+                            <constraint firstItem="Vto-u7-Abz" firstAttribute="trailing" secondItem="hUr-Be-gdV" secondAttribute="trailing" constant="16" id="mbH-tQ-caE"/>
+                            <constraint firstItem="9Gc-Ka-IJc" firstAttribute="top" secondItem="j4I-Ao-Whx" secondAttribute="bottom" constant="16" id="p2r-xa-2Wi"/>
+                            <constraint firstItem="esT-pw-kuo" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="bottom" constant="16" id="pR4-zF-8Pa"/>
+                            <constraint firstItem="rlL-M1-01d" firstAttribute="top" secondItem="Vto-u7-Abz" secondAttribute="top" constant="16" id="ycd-EQ-yTP"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Verify Recovery Phrase" id="YfX-Ok-xk1"/>
                     <connections>
+                        <outlet property="selection1Button1" destination="oe5-NG-O0G" id="mjG-Sl-83z"/>
+                        <outlet property="selection1Button2" destination="QLF-t5-4FO" id="xKO-4T-7xq"/>
+                        <outlet property="selection1Button3" destination="0MH-nn-pXW" id="sM6-cd-bps"/>
+                        <outlet property="selection1SeperatorLeft" destination="a0M-S9-tZR" id="6f3-i4-FDm"/>
+                        <outlet property="selection1SeperatorRight" destination="MUj-zY-U1n" id="DKb-dz-PYT"/>
+                        <outlet property="selection2Button1" destination="8sb-hv-pFc" id="kpg-jg-9Uk"/>
+                        <outlet property="selection2Button2" destination="Qte-QZ-miC" id="cDi-gR-ACT"/>
+                        <outlet property="selection2Button3" destination="6x0-x5-4rz" id="u5t-gr-IbL"/>
+                        <outlet property="selection2SeperatorLeft" destination="Mif-Ea-3xF" id="C6R-Wv-cl9"/>
+                        <outlet property="selection2SeperatorRight" destination="PbH-JW-SRE" id="kQm-FR-Wov"/>
+                        <outlet property="selection3Button1" destination="pVA-bX-CRm" id="f2Q-p1-Lp7"/>
+                        <outlet property="selection3Button2" destination="jCu-Qa-RiK" id="cl9-86-dcR"/>
+                        <outlet property="selection3Button3" destination="JrI-2Q-eHA" id="C3Z-Aj-FTu"/>
+                        <outlet property="selection3SeperatorLeft" destination="K9p-5h-JbO" id="V4y-26-hBp"/>
+                        <outlet property="selection3SeperatorRight" destination="1bc-91-hiL" id="Ua1-q6-FTo"/>
+                        <outlet property="selection4Button1" destination="sRK-22-cWu" id="Wgu-RP-T1a"/>
+                        <outlet property="selection4Button2" destination="cf0-SY-LPa" id="P47-9M-Eeg"/>
+                        <outlet property="selection4Button3" destination="Bir-Rh-B6v" id="hz0-zL-CIl"/>
+                        <outlet property="selection4SeperatorLeft" destination="cQh-9W-c9B" id="Zah-Ps-2ye"/>
+                        <outlet property="selection4SeperatorRight" destination="6g1-Iq-jAU" id="oDc-SJ-vxw"/>
+                        <outlet property="selectionTitle1" destination="rlL-M1-01d" id="Ilo-i8-uNX"/>
+                        <outlet property="selectionTitle2" destination="cSu-Ka-ZXr" id="ljO-8M-klV"/>
+                        <outlet property="selectionTitle3" destination="j4I-Ao-Whx" id="4Hu-CJ-oHp"/>
+                        <outlet property="selectionTitle4" destination="esT-pw-kuo" id="USZ-PS-aGE"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="hb3-4s-783"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D27-CU-xmN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7359" y="259"/>
+            <point key="canvasLocation" x="-7359.1999999999998" y="258.62068965517244"/>
         </scene>
     </scenes>
     <designables>
@@ -2063,7 +2572,10 @@ for your Digital Assets</string>
             <color red="0.9179999828338623" green="0.62699997425079346" blue="0.046999998390674591" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGRecoveryTrans">
-            <color red="0.77647058823529413" green="0.7803921568627451" blue="0.84313725490196079" alpha="0.65000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.77647058823529413" green="0.7803921568627451" blue="0.84313725490196079" alpha="0.64999997615814209" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGSegPicker">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BtnSec1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
