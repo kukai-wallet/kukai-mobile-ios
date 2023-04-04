@@ -38,6 +38,9 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	@IBOutlet var selection4Button2: UIButton!
 	@IBOutlet var selection4Button3: UIButton!
 	
+	private var realWordIndexes: [Int] = []
+	private var selectedIndexes: [Int] = [-1, -1, -1, -1]
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -55,6 +58,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 				randomIndexes.append(random)
 			}
 		}
+		randomIndexes.sort(by: { $0 < $1 })
 		
 		selectionTitle1.text = (selectionTitle1.text ?? "") + "\(randomIndexes[0] + 1)"
 		selectionTitle2.text = (selectionTitle2.text ?? "") + "\(randomIndexes[1] + 1)"
@@ -71,6 +75,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func assign(realWord: String, toButtons: [UIButton], selectionIndex: Int) {
 		let realIndex = Int.random(in: 0..<3)
+		realWordIndexes.append(realIndex)
 		
 		for index in 0..<3 {
 			if let button = value(forKey: "selection\(selectionIndex)Button\(index+1)") as? UIButton {
@@ -96,92 +101,112 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		applySelectedStyle(toButton: sender)
 		
 		if sender == selection1Button1 {
+			selectedIndexes[0] = 0
 			applyNormalStyle(toButton: selection1Button2)
 			applyNormalStyle(toButton: selection1Button3)
 			selection1SeperatorLeft.isHidden = true
 			selection1SeperatorRight.isHidden = false
 			
 		} else if sender == selection1Button2 {
+			selectedIndexes[0] = 1
 			applyNormalStyle(toButton: selection1Button1)
 			applyNormalStyle(toButton: selection1Button3)
 			selection1SeperatorLeft.isHidden = true
 			selection1SeperatorRight.isHidden = true
 			
 		} else {
+			selectedIndexes[0] = 2
 			applyNormalStyle(toButton: selection1Button1)
 			applyNormalStyle(toButton: selection1Button2)
 			selection1SeperatorLeft.isHidden = false
 			selection1SeperatorRight.isHidden = true
 		}
+		
+		compareIndexesAndNavigate()
 	}
 	
 	@IBAction func selection2ButtonTapped(_ sender: UIButton) {
 		applySelectedStyle(toButton: sender)
 		
 		if sender == selection2Button1 {
+			selectedIndexes[1] = 0
 			applyNormalStyle(toButton: selection2Button2)
 			applyNormalStyle(toButton: selection2Button3)
 			selection2SeperatorLeft.isHidden = true
 			selection2SeperatorRight.isHidden = false
 			
 		} else if sender == selection2Button2 {
+			selectedIndexes[1] = 1
 			applyNormalStyle(toButton: selection2Button1)
 			applyNormalStyle(toButton: selection2Button3)
 			selection2SeperatorLeft.isHidden = true
 			selection2SeperatorRight.isHidden = true
 			
 		} else {
+			selectedIndexes[1] = 2
 			applyNormalStyle(toButton: selection2Button1)
 			applyNormalStyle(toButton: selection2Button2)
 			selection2SeperatorLeft.isHidden = false
 			selection2SeperatorRight.isHidden = true
 		}
+		
+		compareIndexesAndNavigate()
 	}
 	
 	@IBAction func selection3ButtonTapped(_ sender: UIButton) {
 		applySelectedStyle(toButton: sender)
 		
 		if sender == selection3Button1 {
+			selectedIndexes[2] = 0
 			applyNormalStyle(toButton: selection3Button2)
 			applyNormalStyle(toButton: selection3Button3)
 			selection3SeperatorLeft.isHidden = true
 			selection3SeperatorRight.isHidden = false
 			
 		} else if sender == selection3Button2 {
+			selectedIndexes[2] = 1
 			applyNormalStyle(toButton: selection3Button1)
 			applyNormalStyle(toButton: selection3Button3)
 			selection3SeperatorLeft.isHidden = true
 			selection3SeperatorRight.isHidden = true
 			
 		} else {
+			selectedIndexes[2] = 2
 			applyNormalStyle(toButton: selection3Button1)
 			applyNormalStyle(toButton: selection3Button2)
 			selection3SeperatorLeft.isHidden = false
 			selection3SeperatorRight.isHidden = true
 		}
+		
+		compareIndexesAndNavigate()
 	}
 	
 	@IBAction func selection4ButtonTapped(_ sender: UIButton) {
 		applySelectedStyle(toButton: sender)
 		
 		if sender == selection4Button1 {
+			selectedIndexes[3] = 0
 			applyNormalStyle(toButton: selection4Button2)
 			applyNormalStyle(toButton: selection4Button3)
 			selection4SeperatorLeft.isHidden = true
 			selection4SeperatorRight.isHidden = false
 			
 		} else if sender == selection4Button2 {
+			selectedIndexes[3] = 1
 			applyNormalStyle(toButton: selection4Button1)
 			applyNormalStyle(toButton: selection4Button3)
 			selection4SeperatorLeft.isHidden = true
 			selection4SeperatorRight.isHidden = true
 			
 		} else {
+			selectedIndexes[3] = 2
 			applyNormalStyle(toButton: selection4Button1)
 			applyNormalStyle(toButton: selection4Button2)
 			selection4SeperatorLeft.isHidden = false
 			selection4SeperatorRight.isHidden = true
 		}
+		
+		compareIndexesAndNavigate()
 	}
 	
 	private func applySelectedStyle(toButton button: UIButton) {
@@ -199,6 +224,12 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			if layer.shadowPath != nil {
 				layer.removeFromSuperlayer()
 			}
+		}
+	}
+	
+	private func compareIndexesAndNavigate() {
+		if realWordIndexes.contains(selectedIndexes) {
+			self.performSegue(withIdentifier: "done", sender: nil)
 		}
 	}
 }

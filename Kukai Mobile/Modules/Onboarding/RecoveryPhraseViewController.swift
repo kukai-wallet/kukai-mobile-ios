@@ -40,6 +40,7 @@ class RecoveryPhraseViewController: UIViewController {
 	@IBOutlet var viewSeedWordsButton: CustomisableButton!
 	@IBOutlet var nextButton: CustomisableButton!
 	
+	private var blurryImage: UIImage? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,16 +56,25 @@ class RecoveryPhraseViewController: UIViewController {
 				label.text = word
 			}
 		}
+    }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
 		// Hide the cover view, take screenshot, blur it, display it and cover again
 		seedWordCoverContainer.isHidden = true
 		let asImage = wordsContainer.asImage()
-		let blurryImage = asImage?.addBlur()
-		seedWordCoverImageView.image = blurryImage
+		blurryImage = asImage?.addBlur()
+		seedWordCoverContainer.isHidden = false
+	}
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		seedWordCoverImageView.image = blurryImage?.resizedImage(size: wordsContainer.frame.size)
 		seedWordCoverImageView.frame = wordsContainer.bounds
 		seedWordCoverImageTintView.frame = wordsContainer.bounds
-		seedWordCoverContainer.isHidden = false
-    }
+	}
 	
 	@IBAction func viewSeedWordsTapped(_ sender: Any) {
 		seedWordCoverContainer.isHidden = true
