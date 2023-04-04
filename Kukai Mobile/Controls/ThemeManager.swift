@@ -191,9 +191,10 @@ public class ThemeManager {
 				"BGAlert2": UIColor("#FF759E"),
 				"BGAlert4": UIColor("#D34C74"),
 				"BGAlert6": UIColor("#9F274B"),
-				"BGB-alt2": UIColor("#AF8D34"),
-				"BGB-alt4": UIColor("#CCAF64"),
-				"BGB-alt6": UIColor("#FFD66C"),
+				"BGB-alt0": UIColor("#FFE6B5"),
+				"BGB-alt2": UIColor("#FBC75F"),
+				"BGB-alt4": UIColor("#EAA00C"),
+				"BGB-alt6": UIColor("#EAA00C"),
 				"BGMenuContext": UIColor("#2D2E3F"),
 				"LineMenuContext": UIColor("#3C3D50"),
 				"BGInputs": UIColor("#2D2E3F"),
@@ -220,6 +221,7 @@ public class ThemeManager {
 				"BGToastNeutralDark": UIColor("#2D2E3F"),
 				"StrokeToastNeutralDark": UIColor("#3C3D50"),
 				"BGActivityBatch": UIColor("#B7B9EA", alpha: 0.3),
+				"BGRecoveryTrans": UIColor("#C6C7D7", alpha: 0.65),
 				
 				// Media player
 				"playerKnob": UIColor("#FFFFFF"),
@@ -392,9 +394,10 @@ public class ThemeManager {
 				"BGAlert2": UIColor("#9F274B"),
 				"BGAlert4": UIColor("#D34C74"),
 				"BGAlert6": UIColor("#FF759E"),
-				"BGB-alt2": UIColor("#AF8D34"),
-				"BGB-alt4": UIColor("#CCAF64"),
-				"BGB-alt6": UIColor("#FFD66C"),
+				"BGB-alt0": UIColor("#9C7205"),
+				"BGB-alt2": UIColor("#D69B03"),
+				"BGB-alt4": UIColor("#F9C848"),
+				"BGB-alt6": UIColor("#FFDB82"),
 				"BGMenuContext": UIColor("#2A2B3B"),
 				"LineMenuContext": UIColor("#3C3D50"),
 				"BGInputs": UIColor("#2D2E3F"),
@@ -421,6 +424,8 @@ public class ThemeManager {
 				"BGToastNeutralDark": UIColor("#2D2E3F"),
 				"StrokeToastNeutralDark": UIColor("#3C3D50"),
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
+				"BGRecoveryTrans": UIColor("#1C1D23", alpha: 0.65),
+				
 				
 				// Media player
 				"playerKnob": UIColor("#FFFFFF"),

@@ -66,4 +66,30 @@ extension UIImage {
 		
 		return tempArray
 	}
+	
+	func addBlur() -> UIImage? {
+		guard let ciImg = CIImage(image: self) else { return nil }
+		
+		if let cgImage = blurredImage(image: ciImg, radius: 10) {
+			return UIImage(cgImage: cgImage)
+		}
+		
+		return nil
+	}
+	
+	func blurredImage(image: CIImage, radius: CGFloat) -> CGImage? {
+		let coreImageContext = CIContext()
+		
+		let blurredImage = image
+			.clampedToExtent()
+			.applyingFilter(
+				"CIGaussianBlur",
+				parameters: [
+					kCIInputRadiusKey: radius,
+				]
+			)
+			.cropped(to: image.extent)
+		
+		return coreImageContext.createCGImage(blurredImage, from: blurredImage.extent)
+	}
 }
