@@ -61,11 +61,19 @@ class RecoveryPhraseViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+		
 		// Hide the cover view, take screenshot, blur it, display it and cover again
 		seedWordCoverContainer.isHidden = true
 		let asImage = wordsContainer.asImage()
 		blurryImage = asImage?.addBlur()
 		seedWordCoverContainer.isHidden = false
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -79,5 +87,9 @@ class RecoveryPhraseViewController: UIViewController {
 	@IBAction func viewSeedWordsTapped(_ sender: Any) {
 		seedWordCoverContainer.isHidden = true
 		nextButton.isEnabled = true
+	}
+	
+	@objc func screenshotTaken() {
+		self.performSegue(withIdentifier: "screenshotWarning", sender: nil)
 	}
 }
