@@ -9,9 +9,17 @@ import UIKit
 
 class AlreadyHaveWalletViewController: UIViewController {
 
-    override func viewDidLoad() {
+	@IBOutlet var socialWallet: CustomisableButton!
+	@IBOutlet var importButton: CustomisableButton!
+	@IBOutlet var ledgerButton: CustomisableButton!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
 		
 		let _ = self.view.addGradientBackgroundFull()
+		
+		socialWallet.customButtonType = .tertiary
+		importButton.customButtonType = .tertiary
+		ledgerButton.customButtonType = .tertiary
     }
 }

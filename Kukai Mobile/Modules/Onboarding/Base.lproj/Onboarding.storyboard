@@ -323,7 +323,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Nxp-We-ZOq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9698" y="-66"/>
+            <point key="canvasLocation" x="-9382" y="-853"/>
         </scene>
         <!--Recovery Phrase-->
         <scene sceneID="Zn6-Pm-Kgo">
@@ -1049,7 +1049,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GcI-LP-kzZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8490.3999999999996" y="258.62068965517244"/>
+            <point key="canvasLocation" x="-7490" y="-1641"/>
         </scene>
         <!--Create with Social-->
         <scene sceneID="cIQ-Pr-EuE">
@@ -1639,7 +1639,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TQq-Gk-e3a" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8490" y="-777"/>
+            <point key="canvasLocation" x="-7490" y="617"/>
         </scene>
         <!--Wallet Created View Controller-->
         <scene sceneID="QNY-Oc-1mq">
@@ -1767,7 +1767,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IA5-os-zSO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-5447" y="-266"/>
+            <point key="canvasLocation" x="-4025" y="617"/>
         </scene>
         <!--Face Id View Controller-->
         <scene sceneID="EoA-MV-Kw4">
@@ -1900,7 +1900,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbt-Ke-bWQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4332" y="-266"/>
+            <point key="canvasLocation" x="-2910" y="617"/>
         </scene>
         <!--Home-->
         <scene sceneID="BqK-IB-sUw">
@@ -1910,7 +1910,7 @@ for your Digital Assets</string>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="975-WW-Pxa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3504" y="-267"/>
+            <point key="canvasLocation" x="-2082" y="617"/>
         </scene>
         <!--Already Have a Wallet-->
         <scene sceneID="Y94-sZ-h7q">
@@ -1919,14 +1919,436 @@ for your Digital Assets</string>
                     <view key="view" contentMode="scaleToFill" id="1Ij-Lu-Tul">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaf-M6-tzZ">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photos" translatesAutoresizingMaskIntoConstraints="NO" id="alv-X6-5cy">
+                                        <rect key="frame" x="119" y="32" width="137" height="110"/>
+                                        <color key="tintColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="137" id="MbW-nY-uVh"/>
+                                            <constraint firstAttribute="height" constant="110" id="wo0-35-5b3"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ymw-EH-abR" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="95" y="166" width="185" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Zgm-Oz-4qX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Social Wallet">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="3EC-3V-hGn" kind="show" id="lKc-o7-U0k"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpv-S6-eiy">
+                                        <rect key="frame" x="24" y="238" width="327" height="34"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt8"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photos" translatesAutoresizingMaskIntoConstraints="NO" id="NwU-dd-tvH">
+                                        <rect key="frame" x="123.5" y="312" width="128" height="102"/>
+                                        <color key="tintColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="102" id="Y1F-vm-UQg"/>
+                                            <constraint firstAttribute="width" constant="128" id="d6L-qR-hCF"/>
+                                        </constraints>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sck-QM-21H" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="95" y="438" width="185" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="YXZ-ax-xty"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Import Wallet">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="eqC-Rn-fYp" kind="show" id="CMJ-gv-lfT"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glh-ec-2Fe">
+                                        <rect key="frame" x="24" y="510" width="327" height="34"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt8"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="acd-sP-PkP" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="95" y="588" width="185" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="ik6-5e-vep"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Connect Ledger">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="qpv-S6-eiy" firstAttribute="leading" secondItem="a7m-Vo-6fV" secondAttribute="leading" constant="24" id="1K6-AB-fyj"/>
+                                    <constraint firstItem="Ymw-EH-abR" firstAttribute="leading" secondItem="a7m-Vo-6fV" secondAttribute="leading" constant="95" id="1h6-UZ-H7K"/>
+                                    <constraint firstItem="alv-X6-5cy" firstAttribute="centerX" secondItem="iaf-M6-tzZ" secondAttribute="centerX" id="2p6-Ai-i6Z"/>
+                                    <constraint firstItem="P6w-pf-gvM" firstAttribute="trailing" secondItem="glh-ec-2Fe" secondAttribute="trailing" constant="24" id="3Vi-y2-t2f"/>
+                                    <constraint firstItem="alv-X6-5cy" firstAttribute="top" secondItem="P6w-pf-gvM" secondAttribute="top" constant="32" id="4C1-Mg-fwf"/>
+                                    <constraint firstItem="Sck-QM-21H" firstAttribute="leading" secondItem="a7m-Vo-6fV" secondAttribute="leading" constant="95" id="78p-Y5-yaf"/>
+                                    <constraint firstItem="Ymw-EH-abR" firstAttribute="leading" secondItem="P6w-pf-gvM" secondAttribute="leading" constant="95" id="8Jh-Xu-XCi"/>
+                                    <constraint firstItem="acd-sP-PkP" firstAttribute="top" secondItem="glh-ec-2Fe" secondAttribute="bottom" constant="44" id="9ra-6z-pjD"/>
+                                    <constraint firstItem="Sck-QM-21H" firstAttribute="top" secondItem="NwU-dd-tvH" secondAttribute="bottom" constant="24" id="FuE-8V-jg7"/>
+                                    <constraint firstItem="qpv-S6-eiy" firstAttribute="top" secondItem="Ymw-EH-abR" secondAttribute="bottom" constant="16" id="H1e-Fg-dzr"/>
+                                    <constraint firstItem="NwU-dd-tvH" firstAttribute="centerX" secondItem="iaf-M6-tzZ" secondAttribute="centerX" id="PUJ-YX-T4P"/>
+                                    <constraint firstItem="glh-ec-2Fe" firstAttribute="top" secondItem="Sck-QM-21H" secondAttribute="bottom" constant="16" id="WLE-RC-6za"/>
+                                    <constraint firstItem="P6w-pf-gvM" firstAttribute="trailing" secondItem="Ymw-EH-abR" secondAttribute="trailing" constant="95" id="XBF-jX-o9L"/>
+                                    <constraint firstItem="a7m-Vo-6fV" firstAttribute="trailing" secondItem="Ymw-EH-abR" secondAttribute="trailing" constant="95" id="Zg1-2y-rrD"/>
+                                    <constraint firstItem="NwU-dd-tvH" firstAttribute="top" secondItem="qpv-S6-eiy" secondAttribute="bottom" constant="40" id="aWb-Dt-KNJ"/>
+                                    <constraint firstItem="glh-ec-2Fe" firstAttribute="leading" secondItem="P6w-pf-gvM" secondAttribute="leading" constant="24" id="auL-zB-GjE"/>
+                                    <constraint firstItem="acd-sP-PkP" firstAttribute="leading" secondItem="a7m-Vo-6fV" secondAttribute="leading" constant="95" id="ciU-Ki-jmd"/>
+                                    <constraint firstItem="P6w-pf-gvM" firstAttribute="bottom" secondItem="acd-sP-PkP" secondAttribute="bottom" constant="24" id="j6s-t6-eqn"/>
+                                    <constraint firstItem="a7m-Vo-6fV" firstAttribute="trailing" secondItem="qpv-S6-eiy" secondAttribute="trailing" constant="24" id="k8d-M8-jpT"/>
+                                    <constraint firstItem="a7m-Vo-6fV" firstAttribute="trailing" secondItem="Sck-QM-21H" secondAttribute="trailing" constant="95" id="mIv-hv-48h"/>
+                                    <constraint firstItem="Ymw-EH-abR" firstAttribute="top" secondItem="alv-X6-5cy" secondAttribute="bottom" constant="24" id="tfe-BX-Bq7"/>
+                                    <constraint firstItem="a7m-Vo-6fV" firstAttribute="trailing" secondItem="acd-sP-PkP" secondAttribute="trailing" constant="95" id="yU4-4t-MGo"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="P6w-pf-gvM"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="a7m-Vo-6fV"/>
+                            </scrollView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="VeS-ww-A1c"/>
                         <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="iaf-M6-tzZ" firstAttribute="top" secondItem="VeS-ww-A1c" secondAttribute="top" id="8iC-go-xoD"/>
+                            <constraint firstItem="iaf-M6-tzZ" firstAttribute="bottom" secondItem="VeS-ww-A1c" secondAttribute="bottom" id="AG1-eK-imX"/>
+                            <constraint firstItem="iaf-M6-tzZ" firstAttribute="leading" secondItem="VeS-ww-A1c" secondAttribute="leading" id="Fhg-TB-BVq"/>
+                            <constraint firstItem="iaf-M6-tzZ" firstAttribute="trailing" secondItem="VeS-ww-A1c" secondAttribute="trailing" id="vm0-KU-Xt0"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Already Have a Wallet" id="ODZ-HK-kWh"/>
+                    <connections>
+                        <outlet property="importButton" destination="Sck-QM-21H" id="KkN-ro-3hJ"/>
+                        <outlet property="ledgerButton" destination="acd-sP-PkP" id="oOO-jk-ehE"/>
+                        <outlet property="socialWallet" destination="Ymw-EH-abR" id="44V-4F-5kU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LBc-oq-1So" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9698" y="2099"/>
+            <point key="canvasLocation" x="-9383.2000000000007" y="1877.8110944527737"/>
+        </scene>
+        <!--Import Wallet-->
+        <scene sceneID="TMY-kC-fvd">
+            <objects>
+                <viewController id="eqC-Rn-fYp" customClass="ImportWalletViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vbc-vv-ipw">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7i-BW-W2F" customClass="AutoScrollView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eB8-nJ-xzk">
+                                        <rect key="frame" x="16" y="16" width="343" height="154"/>
+                                        <color key="backgroundColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="154" id="2HT-Nr-lwM"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="mDs-84-ceh">
+                                        <rect key="frame" x="16" y="178" width="343" height="42"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is 12-24 words separated by single spaces." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bKL-Hk-QO9">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt8"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fbR-uh-yoe">
+                                                <rect key="frame" x="0.0" y="25" width="343" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="BGAlert4"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mM7-0X-VxZ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="16" y="236" width="343" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="34" id="ysn-p1-seh"/>
+                                        </constraints>
+                                        <color key="tintColor" name="TxtB6"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Advanced">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ChevronDown"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                <real key="value" value="18"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                <color key="value" name="TxtB6"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="advancedButtonTapped:" destination="eqC-Rn-fYp" eventType="touchUpInside" id="BWc-Lg-HLV"/>
+                                            <action selector="viewMoreOptionsTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="CmZ-4d-EZB"/>
+                                        </connections>
+                                    </button>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hmv-tG-gdu">
+                                        <rect key="frame" x="16" y="302" width="343" height="315.5"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="afp-Os-zD6" userLabel="sizing palceholder">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="1"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="Gy8-mP-adf"/>
+                                                </constraints>
+                                            </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5d7-tx-uDZ">
+                                                <rect key="frame" x="0.0" y="1" width="343" height="82.5"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertCautionColored" translatesAutoresizingMaskIntoConstraints="NO" id="fn0-eN-sCo">
+                                                        <rect key="frame" x="12" y="18" width="18" height="16"/>
+                                                        <color key="tintColor" name="BGB-alt6"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="16" id="HTM-jh-2Oe"/>
+                                                            <constraint firstAttribute="width" constant="18" id="tsO-KK-IXV"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Using an extra word will result in a different wallet that cannot be accessed via the Recovery Phrase alone" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0z7-Sn-b6u">
+                                                        <rect key="frame" x="42" y="16" width="285" height="50.5"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="Txt0"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <color key="backgroundColor" name="BGB-alt0"/>
+                                                <constraints>
+                                                    <constraint firstItem="0z7-Sn-b6u" firstAttribute="leading" secondItem="fn0-eN-sCo" secondAttribute="trailing" constant="12" id="LM7-lw-Sz5"/>
+                                                    <constraint firstItem="0z7-Sn-b6u" firstAttribute="top" secondItem="5d7-tx-uDZ" secondAttribute="top" constant="16" id="Qw2-r6-dQH"/>
+                                                    <constraint firstAttribute="bottom" secondItem="0z7-Sn-b6u" secondAttribute="bottom" constant="16" id="UPt-Op-ewY"/>
+                                                    <constraint firstItem="fn0-eN-sCo" firstAttribute="top" secondItem="5d7-tx-uDZ" secondAttribute="top" constant="18" id="Z47-lT-Qqb"/>
+                                                    <constraint firstAttribute="trailing" secondItem="0z7-Sn-b6u" secondAttribute="trailing" constant="16" id="ocM-Cf-I3f"/>
+                                                    <constraint firstItem="fn0-eN-sCo" firstAttribute="leading" secondItem="5d7-tx-uDZ" secondAttribute="leading" constant="12" id="x8s-b3-dRH"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="gY4-aG-45T">
+                                                <rect key="frame" x="0.0" y="83.5" width="343" height="116"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5lG-7q-0tV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="24"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="24" id="1Yf-uA-Pli"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add an extra word to your recovery phrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZS2-2t-zA0">
+                                                        <rect key="frame" x="0.0" y="32" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="Txt8"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Extra word (passphrase)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="bIm-xp-dm5" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="57" width="343" height="34"/>
+                                                        <color key="backgroundColor" name="BG4"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCL-3n-6ex">
+                                                        <rect key="frame" x="0.0" y="99" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="BGAlert4"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XjI-QQ-MR7">
+                                                <rect key="frame" x="0.0" y="199.5" width="343" height="116"/>
+                                                <subviews>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Xn4-yb-fch">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="24"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="24" id="MCB-kX-sWd"/>
+                                                        </constraints>
+                                                    </view>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter the matching wallet address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FCi-Ze-gIe">
+                                                        <rect key="frame" x="0.0" y="32" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="Txt8"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Wallet Address" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zN1-he-MJi" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="57" width="343" height="34"/>
+                                                        <color key="backgroundColor" name="BG4"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfJ-rw-6OW">
+                                                        <rect key="frame" x="0.0" y="99" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="BGAlert4"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yu1-Z5-sbU" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="57" y="630.5" width="261" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Lhh-uo-GYF"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Import">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import as Legacy Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJs-lP-kck">
+                                        <rect key="frame" x="32" y="734.5" width="230" height="17"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt6"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fMd-6F-U16">
+                                        <rect key="frame" x="294" y="727.5" width="51" height="31"/>
+                                    </switch>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="mM7-0X-VxZ" firstAttribute="top" secondItem="mDs-84-ceh" secondAttribute="bottom" constant="16" id="5Ia-C3-w4n"/>
+                                    <constraint firstItem="mDs-84-ceh" firstAttribute="leading" secondItem="eB8-nJ-xzk" secondAttribute="leading" id="8Pr-Qu-pmZ"/>
+                                    <constraint firstItem="Ok2-Ld-5qx" firstAttribute="trailing" secondItem="fMd-6F-U16" secondAttribute="trailing" constant="32" id="BAD-K1-4d3"/>
+                                    <constraint firstItem="eB8-nJ-xzk" firstAttribute="leading" secondItem="Ok2-Ld-5qx" secondAttribute="leading" constant="16" id="CgA-FH-5KI"/>
+                                    <constraint firstItem="7dt-9G-nRA" firstAttribute="bottom" secondItem="HJs-lP-kck" secondAttribute="bottom" constant="48" id="GUE-qh-RKC"/>
+                                    <constraint firstItem="Ok2-Ld-5qx" firstAttribute="trailing" secondItem="mM7-0X-VxZ" secondAttribute="trailing" constant="16" id="Hlk-UK-tha"/>
+                                    <constraint firstItem="yu1-Z5-sbU" firstAttribute="top" secondItem="hmv-tG-gdu" secondAttribute="bottom" constant="13" id="Jt6-qc-Ek7"/>
+                                    <constraint firstItem="eB8-nJ-xzk" firstAttribute="top" secondItem="7dt-9G-nRA" secondAttribute="top" constant="16" id="So7-wy-iRq"/>
+                                    <constraint firstItem="hmv-tG-gdu" firstAttribute="top" secondItem="mM7-0X-VxZ" secondAttribute="bottom" constant="32" id="Wnz-3d-aCS"/>
+                                    <constraint firstItem="yu1-Z5-sbU" firstAttribute="leading" secondItem="Ok2-Ld-5qx" secondAttribute="leading" constant="57" id="X9s-cH-veM"/>
+                                    <constraint firstItem="mM7-0X-VxZ" firstAttribute="leading" secondItem="Ok2-Ld-5qx" secondAttribute="leading" constant="16" id="Xm5-fI-fdK"/>
+                                    <constraint firstItem="HJs-lP-kck" firstAttribute="leading" secondItem="Ok2-Ld-5qx" secondAttribute="leading" constant="32" id="Ylg-Ie-dTi"/>
+                                    <constraint firstItem="Ok2-Ld-5qx" firstAttribute="trailing" secondItem="yu1-Z5-sbU" secondAttribute="trailing" constant="57" id="aqN-0k-2BU"/>
+                                    <constraint firstItem="mDs-84-ceh" firstAttribute="top" secondItem="eB8-nJ-xzk" secondAttribute="bottom" constant="8" id="fbs-7e-EGj"/>
+                                    <constraint firstAttribute="trailing" secondItem="hmv-tG-gdu" secondAttribute="trailing" constant="16" id="hJ9-EI-ygz"/>
+                                    <constraint firstItem="eB8-nJ-xzk" firstAttribute="leading" secondItem="7dt-9G-nRA" secondAttribute="leading" constant="16" id="hOF-qx-m9K"/>
+                                    <constraint firstItem="hmv-tG-gdu" firstAttribute="leading" secondItem="Ok2-Ld-5qx" secondAttribute="leading" constant="16" id="qUd-9T-RFh"/>
+                                    <constraint firstItem="Ok2-Ld-5qx" firstAttribute="trailing" secondItem="eB8-nJ-xzk" secondAttribute="trailing" constant="16" id="s0U-FB-tXD"/>
+                                    <constraint firstItem="fMd-6F-U16" firstAttribute="leading" secondItem="HJs-lP-kck" secondAttribute="trailing" constant="32" id="srC-sO-LIZ"/>
+                                    <constraint firstItem="HJs-lP-kck" firstAttribute="top" secondItem="yu1-Z5-sbU" secondAttribute="bottom" constant="48" id="srL-Pv-8fZ"/>
+                                    <constraint firstItem="mDs-84-ceh" firstAttribute="trailing" secondItem="eB8-nJ-xzk" secondAttribute="trailing" id="tq3-Mg-5X6"/>
+                                    <constraint firstItem="7dt-9G-nRA" firstAttribute="trailing" secondItem="eB8-nJ-xzk" secondAttribute="trailing" constant="16" id="xjS-Nb-ceV"/>
+                                    <constraint firstItem="fMd-6F-U16" firstAttribute="centerY" secondItem="HJs-lP-kck" secondAttribute="centerY" id="z6B-jX-IPo"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="7dt-9G-nRA"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="Ok2-Ld-5qx"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Cik-1x-02T"/>
+                        <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="E7i-BW-W2F" firstAttribute="leading" secondItem="Cik-1x-02T" secondAttribute="leading" id="E96-lw-RVR"/>
+                            <constraint firstItem="E7i-BW-W2F" firstAttribute="trailing" secondItem="Cik-1x-02T" secondAttribute="trailing" id="PZh-cZ-bfi"/>
+                            <constraint firstItem="E7i-BW-W2F" firstAttribute="bottom" secondItem="Cik-1x-02T" secondAttribute="bottom" id="RpP-l1-f34"/>
+                            <constraint firstItem="E7i-BW-W2F" firstAttribute="top" secondItem="Cik-1x-02T" secondAttribute="top" id="Uav-V3-dhC"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Import Wallet" id="103-Gk-UFC">
+                        <barButtonItem key="rightBarButtonItem" id="Jdc-Mw-eyH">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="ljI-gW-RKX" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="276" y="5.5" width="83" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnInfo_Outline_Dark"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="22"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="advancedButton" destination="mM7-0X-VxZ" id="3w3-Xu-6b2"/>
+                        <outlet property="advancedStackView" destination="hmv-tG-gdu" id="jmx-ed-i7j"/>
+                        <outlet property="extraWordErrorLabel" destination="GCL-3n-6ex" id="cjP-3V-U7H"/>
+                        <outlet property="extraWordStackView" destination="gY4-aG-45T" id="SuI-fi-9WI"/>
+                        <outlet property="extraWordTextField" destination="bIm-xp-dm5" id="jTQ-TJ-Ded"/>
+                        <outlet property="importButton" destination="yu1-Z5-sbU" id="hsG-Hu-lmo"/>
+                        <outlet property="legacyToggle" destination="fMd-6F-U16" id="scf-1R-bDl"/>
+                        <outlet property="scrollView" destination="E7i-BW-W2F" id="BHr-0C-s1Q"/>
+                        <outlet property="textView" destination="eB8-nJ-xzk" id="wP6-6u-WoY"/>
+                        <outlet property="textViewErrorLabel" destination="fbR-uh-yoe" id="I4p-9B-Wf3"/>
+                        <outlet property="walletAddressErrorLabel" destination="FfJ-rw-6OW" id="bsF-Sl-EGO"/>
+                        <outlet property="walletAddressStackView" destination="XjI-QQ-MR7" id="JLY-Ui-uD3"/>
+                        <outlet property="walletAddressTextField" destination="zN1-he-MJi" id="9KH-4y-avt"/>
+                        <outlet property="warningView" destination="5d7-tx-uDZ" id="VPm-kl-0qd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T8J-us-3ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-7490.3999999999996" y="1877.8110944527737"/>
         </scene>
         <!--Recovery Phrase Info View Controller-->
         <scene sceneID="HPq-uy-tCq">
@@ -2111,7 +2533,7 @@ Please store it carefully!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="j1Q-Ct-Eu5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8969" y="1048"/>
+            <point key="canvasLocation" x="-7966" y="-853"/>
         </scene>
         <!--Recovery Phrase Screenshot Warning View Controller-->
         <scene sceneID="i8E-m8-472">
@@ -2237,7 +2659,7 @@ Please store it carefully!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JSO-oj-GCv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8042.3999999999996" y="1047.5262368815593"/>
+            <point key="canvasLocation" x="-6970" y="-853"/>
         </scene>
         <!--Verify Recovery Phrase-->
         <scene sceneID="FkP-Qg-m8J">
@@ -2765,7 +3187,7 @@ Please store it carefully!</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D27-CU-xmN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7359.1999999999998" y="258.62068965517244"/>
+            <point key="canvasLocation" x="-6358" y="-1641"/>
         </scene>
     </scenes>
     <designables>
@@ -2796,6 +3218,9 @@ Please store it carefully!</string>
         <designable name="NYV-bI-MRH">
             <size key="intrinsicContentSize" width="77" height="38"/>
         </designable>
+        <designable name="Sck-QM-21H">
+            <size key="intrinsicContentSize" width="150.5" height="38"/>
+        </designable>
         <designable name="UlV-Fl-sF1">
             <size key="intrinsicContentSize" width="143" height="38"/>
         </designable>
@@ -2808,8 +3233,14 @@ Please store it carefully!</string>
         <designable name="XdZ-Fb-GOd">
             <size key="intrinsicContentSize" width="145" height="31"/>
         </designable>
+        <designable name="Ymw-EH-abR">
+            <size key="intrinsicContentSize" width="143" height="38"/>
+        </designable>
         <designable name="ZcX-hG-7A3">
             <size key="intrinsicContentSize" width="24" height="14"/>
+        </designable>
+        <designable name="acd-sP-PkP">
+            <size key="intrinsicContentSize" width="172.5" height="38"/>
         </designable>
         <designable name="b7a-YP-Xac">
             <size key="intrinsicContentSize" width="128" height="38"/>
@@ -2832,6 +3263,9 @@ Please store it carefully!</string>
         <designable name="kBV-Wl-oY1">
             <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
+        <designable name="mM7-0X-VxZ">
+            <size key="intrinsicContentSize" width="106" height="36"/>
+        </designable>
         <designable name="qIG-P5-Mvs">
             <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
@@ -2850,9 +3284,13 @@ Please store it carefully!</string>
         <designable name="y7X-1i-Vte">
             <size key="intrinsicContentSize" width="116.5" height="38"/>
         </designable>
+        <designable name="yu1-Z5-sbU">
+            <size key="intrinsicContentSize" width="87.5" height="38"/>
+        </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="hb3-4s-783"/>
+        <segue reference="Ura-gb-YOV"/>
+        <segue reference="lKc-o7-U0k"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertCautionColored" width="20" height="18"/>
@@ -2889,6 +3327,9 @@ Please store it carefully!</string>
         <namedColor name="BG6">
             <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BGAlert4">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BGB-alt0">
             <color red="1" green="0.90200001001358032" blue="0.70999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -2897,6 +3338,9 @@ Please store it carefully!</string>
         </namedColor>
         <namedColor name="BGB-alt6">
             <color red="0.9179999828338623" green="0.62699997425079346" blue="0.046999998390674591" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGB4">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGRecoveryTrans">
             <color red="0.77647058823529413" green="0.7803921568627451" blue="0.84313725490196079" alpha="0.64999997615814209" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2943,6 +3387,9 @@ Please store it carefully!</string>
         <namedColor name="TxtBtnSec1">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="labelColor">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

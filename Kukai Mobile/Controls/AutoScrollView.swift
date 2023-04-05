@@ -18,6 +18,19 @@ class AutoScrollView: UIScrollView {
 	public weak var viewToFocusOn: UIView? = nil
 	public weak var autoScrollDelegate: AutoScrollViewDelegate? = nil
 	
+	private var previousKeyboardHeight: CGFloat = 0
+	
+	func refocus() {
+		guard let parentView = parentView, let viewToFocusOn = viewToFocusOn else { return }
+		
+		let whereKeyboardWillGoToo = ((self.frame.height + parentView.safeAreaInsets.bottom) - previousKeyboardHeight)
+		let whereNeedsToBeDisplayed = (viewToFocusOn.convert(CGPoint(x: 0, y: 0), to: self).y + viewToFocusOn.frame.height + 8).rounded(.up)
+		
+		if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
+			self.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
+		}
+	}
+	
 	func setupAutoScroll(focusView: UIView, parentView: UIView) {
 		self.viewToFocusOn = focusView
 		self.parentView = parentView
@@ -32,17 +45,11 @@ class AutoScrollView: UIScrollView {
 	}
 	
 	@objc func customKeyboardWillShow(notification: NSNotification) {
-		guard let parentView = parentView, let viewToFocusOn = viewToFocusOn else { return }
-		
 		autoScrollDelegate?.keyboardWillShow()
 		
 		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
-			let whereKeyboardWillGoToo = ((self.frame.height + parentView.safeAreaInsets.bottom) - keyboardSize.height)
-			let whereNeedsToBeDisplayed = (viewToFocusOn.convert(CGPoint(x: 0, y: 0), to: self).y + viewToFocusOn.frame.height + 8).rounded(.up)
-			
-			if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
-				self.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
-			}
+			previousKeyboardHeight = keyboardSize.height
+			refocus()
 		}
 	}
 	
