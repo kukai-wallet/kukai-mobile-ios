@@ -233,7 +233,7 @@ for your Digital Assets</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qtx-l7-yNL" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="129.5" y="594" width="116.5" height="34"/>
+                                        <rect key="frame" x="132.5" y="594" width="110.5" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="tZa-DY-JRi"/>
                                         </constraints>
@@ -254,7 +254,7 @@ for your Digital Assets</string>
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfV-fK-RWc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="129.5" y="280" width="116.5" height="34"/>
+                                        <rect key="frame" x="132.5" y="280" width="110.5" height="34"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="34" id="2hY-sh-LTj"/>
                                         </constraints>
@@ -339,7 +339,7 @@ for your Digital Assets</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q6a-rm-egU">
                                         <rect key="frame" x="16" y="8" width="343" height="52"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="4Ed-La-Cav">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertCautionColored" translatesAutoresizingMaskIntoConstraints="NO" id="4Ed-La-Cav">
                                                 <rect key="frame" x="12" y="18" width="18" height="16"/>
                                                 <color key="tintColor" name="BGB-alt6"/>
                                                 <constraints>
@@ -977,8 +977,7 @@ for your Digital Assets</string>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="appleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="zwc-NV-Ix4"/>
-                                            <segue destination="mbp-JO-jAH" kind="show" id="Bpc-yh-2hm"/>
+                                            <action selector="nextButtonTapped:" destination="qyy-a1-UF5" eventType="touchUpInside" id="6e3-i2-elQ"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1045,6 +1044,7 @@ for your Digital Assets</string>
                         <outlet property="word9Label" destination="CMv-jW-hVY" id="dFj-oz-QkB"/>
                         <outlet property="wordsContainer" destination="MJ7-aM-PGC" id="IZ4-DR-AQz"/>
                         <segue destination="27b-Pj-sGd" kind="presentation" identifier="screenshotWarning" modalPresentationStyle="currentContext" modalTransitionStyle="crossDissolve" id="hES-aJ-tnV"/>
+                        <segue destination="mbp-JO-jAH" kind="show" identifier="verify" id="nhH-Fl-n3b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GcI-LP-kzZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1072,7 +1072,7 @@ for your Digital Assets</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EX4-MC-WXt" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="129.5" y="45" width="116.5" height="34"/>
+                                                <rect key="frame" x="132.5" y="45" width="110.5" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="xJV-2O-fg9"/>
                                                 </constraints>
@@ -1936,7 +1936,7 @@ for your Digital Assets</string>
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="mwF-r7-mzM">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertCautionColored" translatesAutoresizingMaskIntoConstraints="NO" id="mwF-r7-mzM">
                                 <rect key="frame" x="161" y="52" width="53" height="48"/>
                                 <color key="tintColor" name="BGB-alt4"/>
                                 <constraints>
@@ -2130,7 +2130,7 @@ Please store it carefully!</string>
                                         <color key="textColor" name="Txt2"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="uY9-PN-hT9">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertCautionColored" translatesAutoresizingMaskIntoConstraints="NO" id="uY9-PN-hT9">
                                         <rect key="frame" x="145" y="84" width="53" height="48"/>
                                         <color key="tintColor" name="BGB-alt4"/>
                                         <constraints>
@@ -2230,6 +2230,7 @@ Please store it carefully!</string>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="contentView" destination="X7O-p7-ufA" id="d6L-FZ-IZd"/>
                         <outlet property="gotItButton" destination="NYV-bI-MRH" id="lU3-AK-SlX"/>
                         <outlet property="learnMoreButton" destination="b7a-YP-Xac" id="Tbn-8q-bmq"/>
                     </connections>
@@ -2769,10 +2770,10 @@ Please store it carefully!</string>
     </scenes>
     <designables>
         <designable name="1VJ-Ye-1zl">
-            <size key="intrinsicContentSize" width="43" height="32"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="5t4-7b-ZSi">
-            <size key="intrinsicContentSize" width="208.5" height="38"/>
+            <size key="intrinsicContentSize" width="191.5" height="38"/>
         </designable>
         <designable name="6fl-a0-shb">
             <size key="intrinsicContentSize" width="142.5" height="38"/>
@@ -2781,16 +2782,16 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="71.5" height="38"/>
         </designable>
         <designable name="EX4-MC-WXt">
-            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
         </designable>
         <designable name="HYe-6w-BZ5">
-            <size key="intrinsicContentSize" width="44" height="29"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="J2v-BG-JDc">
-            <size key="intrinsicContentSize" width="44" height="30"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="Loj-qu-Rs8">
-            <size key="intrinsicContentSize" width="220.5" height="38"/>
+            <size key="intrinsicContentSize" width="203.5" height="38"/>
         </designable>
         <designable name="NYV-bI-MRH">
             <size key="intrinsicContentSize" width="77" height="38"/>
@@ -2805,10 +2806,10 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="227" height="38"/>
         </designable>
         <designable name="XdZ-Fb-GOd">
-            <size key="intrinsicContentSize" width="154" height="31"/>
+            <size key="intrinsicContentSize" width="145" height="31"/>
         </designable>
         <designable name="ZcX-hG-7A3">
-            <size key="intrinsicContentSize" width="43" height="33"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="b7a-YP-Xac">
             <size key="intrinsicContentSize" width="128" height="38"/>
@@ -2817,28 +2818,28 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="210.5" height="38"/>
         </designable>
         <designable name="c2S-hk-v1m">
-            <size key="intrinsicContentSize" width="24" height="24"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
         <designable name="hXk-sA-ymi">
-            <size key="intrinsicContentSize" width="40" height="30"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="hfV-fK-RWc">
-            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
         </designable>
         <designable name="kBV-Wl-oY1">
-            <size key="intrinsicContentSize" width="44" height="33"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="qIG-P5-Mvs">
-            <size key="intrinsicContentSize" width="41" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="qtx-l7-yNL">
-            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
         </designable>
         <designable name="r2f-ZX-fLU">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="rXX-Jd-YOc">
             <size key="intrinsicContentSize" width="69" height="38"/>
@@ -2854,7 +2855,7 @@ Please store it carefully!</string>
         <segue reference="hb3-4s-783"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="AlertKnockout" width="20" height="18"/>
+        <image name="AlertCautionColored" width="20" height="18"/>
         <image name="ArrowUp-right" width="128" height="128"/>
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>

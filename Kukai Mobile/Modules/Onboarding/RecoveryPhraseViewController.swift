@@ -41,6 +41,7 @@ class RecoveryPhraseViewController: UIViewController {
 	@IBOutlet var nextButton: CustomisableButton!
 	
 	private var blurryImage: UIImage? = nil
+	private var writtenItDown = false
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,10 +65,12 @@ class RecoveryPhraseViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 		
 		// Hide the cover view, take screenshot, blur it, display it and cover again
-		seedWordCoverContainer.isHidden = true
-		let asImage = wordsContainer.asImage()
-		blurryImage = asImage?.addBlur()
-		seedWordCoverContainer.isHidden = false
+		if !writtenItDown {
+			seedWordCoverContainer.isHidden = true
+			let asImage = wordsContainer.asImage()
+			blurryImage = asImage?.addBlur()
+			seedWordCoverContainer.isHidden = false
+		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -87,6 +90,22 @@ class RecoveryPhraseViewController: UIViewController {
 	@IBAction func viewSeedWordsTapped(_ sender: Any) {
 		seedWordCoverContainer.isHidden = true
 		nextButton.isEnabled = true
+	}
+	
+	@IBAction func nextButtonTapped(_ sender: Any) {
+		if writtenItDown {
+			self.performSegue(withIdentifier: "verify", sender: nil)
+			
+		} else {
+			let alert = UIAlertController(title: "Written the secret Recovery Phrase down?", message: "Without the secret recovery phrase you will not be able to access your key or any assets associated with it.", preferredStyle: .alert)
+			alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+			alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+				self?.writtenItDown = true
+				self?.performSegue(withIdentifier: "verify", sender: nil)
+			}))
+			
+			self.present(alert, animated: true)
+		}
 	}
 	
 	@objc func screenshotTaken() {

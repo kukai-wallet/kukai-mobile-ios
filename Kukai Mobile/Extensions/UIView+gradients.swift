@@ -99,6 +99,18 @@ extension UIView {
 			degress: cssDegreesToIOS(169.5))
 	}
 	
+	func addGradientBackgroundModal() -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: self.bounds,
+			colors: [
+				UIColor.colorNamed("gradModal-1").cgColor,
+				UIColor.colorNamed("gradModal-2").cgColor,
+				UIColor.colorNamed("gradModal-3").cgColor,
+			],
+			locations: [0.03, 0.50, 0.94],
+			degress: cssDegreesToIOS(172.5))
+	}
+	
 	func addGradientTabBar(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,

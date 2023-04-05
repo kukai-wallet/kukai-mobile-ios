@@ -9,8 +9,11 @@ import UIKit
 
 class RecoveryPhraseScreenshotWarningViewController: UIViewController {
 	
+	@IBOutlet var contentView: UIView!
 	@IBOutlet var gotItButton: CustomisableButton!
 	@IBOutlet var learnMoreButton: CustomisableButton!
+	
+	private var gradient = CAGradientLayer()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +21,13 @@ class RecoveryPhraseScreenshotWarningViewController: UIViewController {
 		gotItButton.customButtonType = .secondary
 		learnMoreButton.customButtonType = .primary
     }
+	
+	override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		gradient.removeFromSuperlayer()
+		gradient = contentView.addGradientBackgroundModal()
+	}
 	
 	@IBAction func gotItTapped(_ sender: Any) {
 		self.dismiss(animated: true)
