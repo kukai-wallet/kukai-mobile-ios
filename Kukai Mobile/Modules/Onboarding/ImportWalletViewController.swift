@@ -25,6 +25,8 @@ class ImportWalletViewController: UIViewController {
 	@IBOutlet var importButton: CustomisableButton!
 	@IBOutlet var legacyToggle: UISwitch!
 	
+	private var suggestionView: TextFieldSuggestionAccessoryView? = nil
+	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -41,6 +43,9 @@ class ImportWalletViewController: UIViewController {
 		textView.delegate = self
 		textView.text = "Enter Recovery Phrase"
 		textView.textColor = UIColor.colorNamed("Txt10")
+		suggestionView = TextFieldSuggestionAccessoryView(withSuggestions: MnemonicWordList_English)
+		suggestionView?.delegate = self
+		textView.inputAccessoryView = suggestionView
 		
 		extraWordTextField.validatorTextFieldDelegate = self
 		extraWordTextField.validator = NoWhiteSpaceStringValidator()
@@ -86,7 +91,10 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	private func validateTextView() {
-		let words = textView.text.components(separatedBy: " ")
+		var textViewText = textView.text ?? ""
+		textViewText = textViewText.trimmingCharacters(in: .whitespacesAndNewlines)
+		
+		let words = textViewText.components(separatedBy: " ")
 		if words.count >= 12, words.count <= 24, let _ = try? Mnemonic(seedPhrase: textView.text) {
 			importButton.isEnabled = true
 			return
@@ -121,6 +129,13 @@ extension ImportWalletViewController: UITextViewDelegate {
 		if text == "\n" {
 			textView.resignFirstResponder()
 			return false
+		}
+		
+		if let textViewString = textView.text, let swtRange = Range(range, in: textViewString) {
+			let fullString = textViewString.replacingCharacters(in: swtRange, with: text)
+			if let lastWord = fullString.components(separatedBy: " ").last {
+				suggestionView?.filterSuggestions(withInput: lastWord)
+			}
 		}
 		
 		return true
@@ -178,5 +193,28 @@ extension ImportWalletViewController: AutoScrollViewDelegate {
 	
 	func keyboardWillHide() {
 		
+	}
+}
+
+extension ImportWalletViewController: TextFieldSuggestionAccessoryViewDelegate {
+	
+	func didTapSuggestion(suggestion: String) {
+		guard let fullText = textView.text else {
+			textView.text = suggestion + " "
+			suggestionView?.filterSuggestions(withInput: nil)
+			return
+		}
+		
+		if fullText.last == " " {
+			textView.text += suggestion + " "
+			
+		} else {
+			var components = fullText.components(separatedBy: " ")
+			components[components.count-1] = suggestion
+			
+			textView.text = components.joined(separator: " ") + " "
+		}
+		
+		suggestionView?.filterSuggestions(withInput: nil)
 	}
 }

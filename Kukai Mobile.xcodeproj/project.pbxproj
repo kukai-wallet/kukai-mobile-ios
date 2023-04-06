@@ -85,6 +85,9 @@
 		C039C3BB298BD75600112500 /* BottomSheetVariableSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039C3BA298BD75600112500 /* BottomSheetVariableSegue.swift */; };
 		C039C3BD298BDB0000112500 /* MultiStateGradientButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039C3BC298BDB0000112500 /* MultiStateGradientButton.swift */; };
 		C039C3BF298C107C00112500 /* FeeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C039C3BE298C107C00112500 /* FeeInfoViewController.swift */; };
+		C0411B4729DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B4629DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift */; };
+		C0411B4E29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */; };
+		C0411B4F29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */; };
 		C046DF3E28328F200000FBA0 /* BeaconOperationApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046DF3D28328F200000FBA0 /* BeaconOperationApproveViewController.swift */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
@@ -408,6 +411,9 @@
 		C039C3BA298BD75600112500 /* BottomSheetVariableSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetVariableSegue.swift; sourceTree = "<group>"; };
 		C039C3BC298BDB0000112500 /* MultiStateGradientButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiStateGradientButton.swift; sourceTree = "<group>"; };
 		C039C3BE298C107C00112500 /* FeeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeeInfoViewController.swift; sourceTree = "<group>"; };
+		C0411B4629DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldSuggestionAccessoryView.swift; sourceTree = "<group>"; };
+		C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldSuggestionAccessoryViewCell.swift; sourceTree = "<group>"; };
+		C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldSuggestionAccessoryViewCell.xib; sourceTree = "<group>"; };
 		C046DF3D28328F200000FBA0 /* BeaconOperationApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconOperationApproveViewController.swift; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -785,6 +791,16 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		C0411B4529DEBF7F00778E1E /* TextFieldSuggestionAccessoryView */ = {
+			isa = PBXGroup;
+			children = (
+				C0411B4629DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift */,
+				C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */,
+				C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */,
+			);
+			path = TextFieldSuggestionAccessoryView;
+			sourceTree = "<group>";
+		};
 		C049B59F26A0492600F1C5E0 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
@@ -887,6 +903,7 @@
 		C06EA1A426A56C3F006029CF /* Controls */ = {
 			isa = PBXGroup;
 			children = (
+				C0411B4529DEBF7F00778E1E /* TextFieldSuggestionAccessoryView */,
 				C01372A729B206810083E297 /* MenuViewController */,
 				C0EF1BBF2892968000AA5DD4 /* SlideButton */,
 				C0A321D427C68BA300D7788B /* Validators */,
@@ -1527,6 +1544,7 @@
 				C0239B9A2886B92500E0C973 /* Defi.storyboard in Resources */,
 				C0EA19D729096E3200E6B40D /* CollectibleDetailSendCell.xib in Resources */,
 				C0B768B02947779A00EF893E /* CollectiblesListItemCell.xib in Resources */,
+				C0411B4F29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib in Resources */,
 				C01A6343297845D000278689 /* TokenDetailsBalanceAndBakerCell_baker.xib in Resources */,
 				C0678DDB27205FE300DEF1CB /* InfoPlist.strings in Resources */,
 				C005BA302822C46A00D8369D /* Profile.storyboard in Resources */,
@@ -1644,6 +1662,7 @@
 				C04E2864293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift in Sources */,
 				C01AE5DC28A26C44008F93E8 /* AddLiquidityConfirmViewController.swift in Sources */,
 				C0B8C8A129DC2AD200C8AFD5 /* FaceIdViewController.swift in Sources */,
+				C0411B4729DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
 				C0FBC88F292C12CE00B29921 /* HiddenTokensBalancesViewController.swift in Sources */,
 				C0AC1D3E2771E5AB002F66C0 /* BottomSheetLargeSegue.swift in Sources */,
@@ -1734,6 +1753,7 @@
 				C08E62EC29DB185F004D8DF0 /* CreateWithSocialViewController.swift in Sources */,
 				C00AE0072887017400184DF7 /* SwapTokenCell.swift in Sources */,
 				C049B5B326A07B0500F1C5E0 /* DirectAuthViewController.swift in Sources */,
+				C0411B4E29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift in Sources */,
 				C0D6C04329DDB93800D890ED /* ImportWalletViewController.swift in Sources */,
 				C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */,
 				C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */,
