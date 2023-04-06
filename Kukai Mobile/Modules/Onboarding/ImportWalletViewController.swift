@@ -243,7 +243,7 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		importButton.isEnabled = (doesTextViewPassValidation() && doesAdvancedOptionsPassValidtion())
+		importButton.isEnabled = (doesTextViewPassValidation() && doesAdvancedOptionsPassValidtion() && !(walletAddressTextField.text ?? "").isEmpty)
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
