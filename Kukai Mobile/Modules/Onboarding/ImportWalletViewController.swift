@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCryptoSwift
+import KukaiCoreSwift
 
 class ImportWalletViewController: UIViewController {
 	
@@ -91,18 +92,16 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	private func validateTextView() {
-		var textViewText = textView.text ?? ""
-		textViewText = textViewText.trimmingCharacters(in: .whitespacesAndNewlines)
+		let textViewValidation = doesTextViewPassValidation()
 		
-		let words = textViewText.components(separatedBy: " ")
-		if words.count >= 12, words.count <= 24, let _ = try? Mnemonic(seedPhrase: textView.text) {
+		if !textViewValidation {
+			textViewErrorLabel.text = "Invalid recovery phrase"
+			textViewErrorLabel.isHidden = false
+			importButton.isEnabled = false
+			
+		} else if textViewValidation && doesAdvancedOptionsPassValidtion() {
 			importButton.isEnabled = true
-			return
 		}
-		
-		textViewErrorLabel.text = "Invalid recovery phrase"
-		textViewErrorLabel.isHidden = false
-		importButton.isEnabled = false
 	}
 	
 	private func enableWalletAddressField(_ value: Bool) {
@@ -112,6 +111,77 @@ class ImportWalletViewController: UIViewController {
 		} else {
 			walletAddressStackView.alpha = 0.35
 			walletAddressTextField.isEnabled = false
+		}
+	}
+	
+	@IBAction func importTapped(_ sender: Any) {
+		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text) else {
+			self.alert(errorWithMessage: "Unable to create wallet from seed words. Please check and try again")
+			return
+		}
+		
+		var wallet: Wallet? = nil
+		if legacyToggle.isOn {
+			wallet = RegularWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+		} else {
+			wallet = HDWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+		}
+		
+		guard let wal = wallet else {
+			self.alert(errorWithMessage: "Unable to create wallet from details supplied. Please check and try again")
+			return
+		}
+		
+		
+		if (extraWordTextField.text ?? "").isEmpty {
+			conintue(withWallet: wal)
+			
+		} else if wal.address == walletAddressTextField.text {
+			conintue(withWallet: wal)
+			
+		} else {
+			self.alert(errorWithMessage: "Supplied wallet address, does not match wallet created. Please ensure you have entered the correct details")
+		}
+	}
+	
+	private func conintue(withWallet wallet: Wallet) {
+		let walletCache = WalletCacheService()
+		
+		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
+			self.performSegue(withIdentifier: "done", sender: self)
+		} else {
+			self.alert(withTitle: "Error", andMessage: "Unable to cache")
+		}
+	}
+	
+	private func doesTextViewPassValidation() -> Bool {
+		var textViewText = textView.text ?? ""
+		textViewText = textViewText.trimmingCharacters(in: .whitespacesAndNewlines)
+		
+		let words = textViewText.components(separatedBy: " ")
+		if words.count >= 12, words.count <= 24, let _ = try? Mnemonic(seedPhrase: textView.text) {
+			return true
+		}
+		
+		return false
+	}
+	
+	private func doesAdvancedOptionsPassValidtion() -> Bool {
+		if warningView.isHidden == true {
+			return true
+		} else {
+			
+			if extraWordTextField.isValid && walletAddressTextField.isValid {
+				return true
+				
+			} else if (extraWordTextField.text ?? "").isEmpty && (walletAddressTextField.text ?? "").isEmpty {
+				return true
+				
+			} else {
+				return false
+			}
 		}
 	}
 }
@@ -173,7 +243,7 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		
+		importButton.isEnabled = (doesTextViewPassValidation() && doesAdvancedOptionsPassValidtion())
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {

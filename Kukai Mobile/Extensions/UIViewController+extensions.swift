@@ -129,7 +129,7 @@ extension UIViewController {
 	// MARK: - UIAlertViewController Utils
 	
 	func alert(errorWithMessage message: String) {
-		alert(withTitle: "error", andMessage: message)
+		alert(withTitle: "Error", andMessage: message)
 	}
 	
 	func alert(withTitle title: String, andMessage message: String) {
