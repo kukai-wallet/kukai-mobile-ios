@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class CreateWithSocialViewController: UIViewController {
 	
@@ -28,7 +29,7 @@ class CreateWithSocialViewController: UIViewController {
 	@IBOutlet var socialOptions3: UIStackView!
 	@IBOutlet var githubButton: CustomisableButton!
 	
-	@IBOutlet var emailTextField: UITextField!
+	@IBOutlet var emailTextField: ValidatorTextField!
 	@IBOutlet var continueWIthEmailButton: CustomisableButton!
 	@IBOutlet var viewMoreOptionsButton: CustomisableButton!
 	
@@ -56,6 +57,9 @@ class CreateWithSocialViewController: UIViewController {
 		learnMoreButton.configuration?.imagePadding = 8
 		viewMoreOptionsButton.configuration?.imagePlacement = .trailing
 		viewMoreOptionsButton.configuration?.imagePadding = 8
+		
+		emailTextField.validator = EmailValidator()
+		emailTextField.validatorTextFieldDelegate = self
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -72,35 +76,61 @@ class CreateWithSocialViewController: UIViewController {
 	
 	
 	@IBAction func appleTapped(_ sender: Any) {
-		self.performSegue(withIdentifier: "done", sender: nil)
+		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
+		
+		self.showLoadingModal {
+			DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
+				self?.handleResult(result: result)
+			}
+		}
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
-		self.continueWIthEmailButton.isEnabled = !self.continueWIthEmailButton.isEnabled 
+		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
+			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			return
+		}
+		
+		self.showLoadingModal {
+			DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
+				self?.handleResult(result: result)
+			}
+		}
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func discordTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func twitchTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func lineTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func githubTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func continueWithEmailTapped(_ sender: Any) {
+		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func viewMoreOptionsTapped(_ sender: Any) {
@@ -120,6 +150,32 @@ class CreateWithSocialViewController: UIViewController {
 			self?.view.layoutIfNeeded()
 		}
 	}
+	
+	func handleResult(result: Result<TorusWallet, KukaiError>) {
+		self.hideLoadingModal { [weak self] in
+			switch result {
+				case .success(let wallet):
+					// Clear out any other wallets
+					let walletCache = WalletCacheService()
+					
+					// try to cache new one, and move on if successful
+					if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
+						
+						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+							self?.performSegue(withIdentifier: "done", sender: nil)
+						}
+						
+					} else {
+						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+					}
+					
+				case .failure(let error):
+					self?.alert(withTitle: "Error", andMessage: error.description)
+			}
+		}
+	}
 }
 
 extension CreateWithSocialViewController: AutoScrollViewDelegate {
@@ -132,5 +188,28 @@ extension CreateWithSocialViewController: AutoScrollViewDelegate {
 	func keyboardWillHide() {
 		self.topSectionContainer.alpha = 1
 		self.topSectionContainer.isUserInteractionEnabled = true
+	}
+}
+
+extension CreateWithSocialViewController: ValidatorTextFieldDelegate {
+	
+	func textFieldDidBeginEditing(_ textField: UITextField) {
+		
+	}
+	
+	func textFieldDidEndEditing(_ textField: UITextField) {
+		
+	}
+	
+	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		return true
+	}
+	
+	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		continueWIthEmailButton.isEnabled = validated
+	}
+	
+	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
+		
 	}
 }

@@ -101,8 +101,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return UIImage(systemName: "xmark.octagon")
 			case .facebook:
 				return UIImage(systemName: "xmark.octagon")
-			case .none:
-				return nil
+			default:
+				return UIImage(systemName: "xmark.octagon")
 		}
 	}
 	

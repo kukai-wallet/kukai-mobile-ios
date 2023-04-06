@@ -245,7 +245,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
-		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .small)
+		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .large)
 		
 		accountButton.setImage(media.image, for: .normal)
 		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
@@ -259,7 +259,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			let attrs2 = [NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 12), NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt10")]
 			
 			var topText = title
-			let approxPixelsPerCharacter: CGFloat = 10
+			let approxPixelsPerCharacter: CGFloat = 5
 			let maxCharacters = Int(accountButton.frame.width / approxPixelsPerCharacter)
 			
 			if topText.count > maxCharacters {

@@ -116,6 +116,7 @@ class SideMenuViewController: UIViewController {
 			
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			TransactionService.shared.resetState()
+			DependencyManager.shared.walletList = []
 			
 			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
 			UserDefaults.standard.removePersistentDomain(forName: domain)

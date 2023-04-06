@@ -20,12 +20,41 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	@IBOutlet weak var logoText: UILabel!
 	
 	private var runOnce = false
-	private let hasWallet = DependencyManager.shared.walletList.count > 0
+	private var hasWallet = DependencyManager.shared.walletList.count > 0
+	private let cloudKitService = CloudKitService()
+	private var dispatchGroup = DispatchGroup()
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		dispatchGroup = DispatchGroup()
+		dispatchGroup.enter() // cloud config to download
+		dispatchGroup.enter() // animation to finish
+		
+		// Check to see if we need to fetch torus verfier config
+		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
+			cloudKitService.fetchConfigItems { [weak self] error in
+				if let e = error {
+					self?.alert(errorWithMessage: "Unable to fetch config settings: \(e)")
+					
+				} else {
+					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
+				}
+				
+				self?.dispatchGroup.leave()
+			}
+		} else {
+			self.dispatchGroup.leave()
+		}
+		
+		// When everything done, perform transition
+		dispatchGroup.notify(queue: .main) { [weak self] in
+			self?.transition()
+		}
+		
+		
 		
 		if hasWallet {
 			logoTopConstraint.isActive = false
@@ -47,6 +76,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		hasWallet = DependencyManager.shared.walletList.count > 0
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 	}
@@ -57,13 +87,14 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		if !runOnce && !hasWallet {
 			animate()
 			
-		} else if hasWallet {
+		} else if !runOnce && hasWallet {
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-				self?.performSegue(withIdentifier: "home", sender: nil)
+				self?.dispatchGroup.leave()
 			}
-			
 		} else {
-			disolveTransition()
+			DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+				self?.transition()
+			}
 		}
 	}
 	
@@ -77,15 +108,20 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			self?.view.layoutIfNeeded()
 			
 		} completion: { [weak self] success in
-			self?.disolveTransition()
+			self?.dispatchGroup.leave()
 		}
 	}
 	
-	private func disolveTransition() {
+	private func transition() {
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
-		self.performSegue(withIdentifier: "onboarding", sender: nil)
+		if hasWallet {
+			self.performSegue(withIdentifier: "home", sender: nil)
+			
+		} else {
+			self.performSegue(withIdentifier: "onboarding", sender: nil)
+		}
 	}
 }

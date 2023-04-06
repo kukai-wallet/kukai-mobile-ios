@@ -88,6 +88,7 @@
 		C0411B4729DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B4629DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift */; };
 		C0411B4E29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */; };
 		C0411B4F29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */; };
+		C0411B5129DEFEE600778E1E /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B5029DEFEE600778E1E /* EmailValidator.swift */; };
 		C046DF3E28328F200000FBA0 /* BeaconOperationApproveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046DF3D28328F200000FBA0 /* BeaconOperationApproveViewController.swift */; };
 		C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */; };
 		C049B5AC26A0793E00F1C5E0 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */; };
@@ -414,6 +415,7 @@
 		C0411B4629DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldSuggestionAccessoryView.swift; sourceTree = "<group>"; };
 		C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldSuggestionAccessoryViewCell.swift; sourceTree = "<group>"; };
 		C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldSuggestionAccessoryViewCell.xib; sourceTree = "<group>"; };
+		C0411B5029DEFEE600778E1E /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
 		C046DF3D28328F200000FBA0 /* BeaconOperationApproveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeaconOperationApproveViewController.swift; sourceTree = "<group>"; };
 		C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		C049B5AB26A0793E00F1C5E0 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
@@ -1081,6 +1083,7 @@
 				C009F88E28197F1D007EA8A8 /* GmailValidator.swift */,
 				C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */,
 				C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */,
+				C0411B5029DEFEE600778E1E /* EmailValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1768,6 +1771,7 @@
 				C0EB2C70292E342700711DAC /* ChartView.swift in Sources */,
 				C0B08A39270DDED300075618 /* TransactionService.swift in Sources */,
 				C009F88B28195B9C007EA8A8 /* AddressTypeViewController.swift in Sources */,
+				C0411B5129DEFEE600778E1E /* EmailValidator.swift in Sources */,
 				C0D6A9362955C510002BE8DA /* AddressTypeCell.swift in Sources */,
 				C039C3BD298BDB0000112500 /* MultiStateGradientButton.swift in Sources */,
 				C006176A29DB33C8005A1330 /* WalletCreatedViewController.swift in Sources */,
@@ -2264,7 +2268,7 @@
 				BUNDLE_ID_SUFFIX = .beta;
 				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 101;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
@@ -2286,7 +2290,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dist App Store";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kukai Mobile Beta Prov Dist App Store";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Kukai Mobile Beta Prov Dev";
 				SWIFT_SUPPRESS_WARNINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

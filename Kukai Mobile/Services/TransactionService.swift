@@ -335,10 +335,10 @@ public class TransactionService {
 					case .medium:
 						imageSize = CGSize(width: 18, height: 18)
 					case .large:
-						imageSize = CGSize(width: 23, height: 23)
+						imageSize = CGSize(width: 18, height: 22)
 				}
 				
-				let image = UIImage(named: "Social_Apple")?.resizedImage(size: imageSize) ?? UIImage()
+				let image = UIImage(named: "Social_Apple")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("Txt2")) ?? UIImage()
 				return (image: image, title: "Apple account", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitter:
@@ -363,7 +363,7 @@ public class TransactionService {
 					case .medium:
 						imageSize = CGSize(width: 18, height: 18)
 					case .large:
-						imageSize = CGSize(width: 23, height: 23)
+						imageSize = CGSize(width: 22, height: 22)
 				}
 				
 				let image = UIImage(named: "Social_Google_color")?.resizedImage(size: imageSize) ?? UIImage()
@@ -395,6 +395,62 @@ public class TransactionService {
 				}
 				
 				let image = UIImage(named: "Social_Facebook_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .discord:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Discord_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .twitch:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Twitch_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .line:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_LineColor")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .github:
+				var imageSize = CGSize(width: 10, height: 10)
+				switch size {
+					case .small:
+						imageSize = CGSize(width: 16, height: 16)
+					case .medium:
+						imageSize = CGSize(width: 21, height: 21)
+					case .large:
+						imageSize = CGSize(width: 23, height: 23)
+				}
+				
+				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .none:
