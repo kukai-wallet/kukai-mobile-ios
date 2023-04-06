@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCryptoSwift
+import KukaiCoreSwift
 
 class VerifyRecoveryPhraseViewController: UIViewController {
 	
@@ -65,12 +66,19 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		selectionTitle3.text = (selectionTitle3.text ?? "") + "\(randomIndexes[2] + 1)"
 		selectionTitle4.text = (selectionTitle4.text ?? "") + "\(randomIndexes[3] + 1)"
 		
-		let words = ["word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8", "word9", "word10", "word11", "word12", "word13", "word14", "word15", "word16", "word17", "word18", "word19", "word20", "word21", "word22", "word23", "word24"]
 		
-		assign(realWord: words[randomIndexes[0]], toButtons: [selection1Button1, selection1Button2, selection1Button3], selectionIndex: 1)
-		assign(realWord: words[randomIndexes[1]], toButtons: [selection2Button1, selection2Button2, selection2Button3], selectionIndex: 2)
-		assign(realWord: words[randomIndexes[2]], toButtons: [selection3Button1, selection3Button2, selection3Button3], selectionIndex: 3)
-		assign(realWord: words[randomIndexes[3]], toButtons: [selection4Button1, selection4Button2, selection4Button3], selectionIndex: 4)
+		
+		let address = DependencyManager.shared.selectedWalletAddress
+		guard let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+			self.navigationController?.previousViewController()?.alert(errorWithMessage: "Unable to locate wallet information. Please try again")
+			self.navigationController?.popViewController(animated: true)
+			return
+		}
+		
+		assign(realWord: mnemonic.words[randomIndexes[0]], toButtons: [selection1Button1, selection1Button2, selection1Button3], selectionIndex: 1)
+		assign(realWord: mnemonic.words[randomIndexes[1]], toButtons: [selection2Button1, selection2Button2, selection2Button3], selectionIndex: 2)
+		assign(realWord: mnemonic.words[randomIndexes[2]], toButtons: [selection3Button1, selection3Button2, selection3Button3], selectionIndex: 3)
+		assign(realWord: mnemonic.words[randomIndexes[3]], toButtons: [selection4Button1, selection4Button2, selection4Button3], selectionIndex: 4)
 	}
 	
 	private func assign(realWord: String, toButtons: [UIButton], selectionIndex: Int) {

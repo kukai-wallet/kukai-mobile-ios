@@ -20,13 +20,18 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	@IBOutlet weak var logoText: UILabel!
 	
 	private var runOnce = false
+	private let hasWallet = DependencyManager.shared.walletList.count > 0
 	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		if !runOnce {
+		if hasWallet {
+			logoTopConstraint.isActive = false
+			logoCenterConstraint.isActive = true
+			
+		} else if !runOnce {
 			logoTopConstraint.isActive = false
 			logoCenterConstraint.isActive = true
 			
@@ -49,8 +54,13 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		if !runOnce {
+		if !runOnce && !hasWallet {
 			animate()
+			
+		} else if hasWallet {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+				self?.performSegue(withIdentifier: "home", sender: nil)
+			}
 			
 		} else {
 			disolveTransition()
@@ -76,10 +86,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
-		if DependencyManager.shared.walletList.count > 0 {
-			self.performSegue(withIdentifier: "home", sender: nil)
-		} else {
-			self.performSegue(withIdentifier: "onboarding", sender: nil)
-		}
+		self.performSegue(withIdentifier: "onboarding", sender: nil)
 	}
 }

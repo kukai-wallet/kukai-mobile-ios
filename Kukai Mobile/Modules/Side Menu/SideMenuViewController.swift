@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import KukaiCoreSwift
 
 class SideMenuViewController: UIViewController {
 
@@ -106,6 +107,27 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func swapTapped(_ sender: Any) {
+	}
+	
+	@IBAction func deleteAllTapped(_ sender: Any) {
+		let alert = UIAlertController(title: "Are you Sure?", message: "Are you sure you want to delete all your wallets? This in unrecoverable", preferredStyle: .alert)
+		alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
+			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+			
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			TransactionService.shared.resetState()
+			
+			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
+			UserDefaults.standard.removePersistentDomain(forName: domain)
+			
+			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
+			
+			self.closeTapped(sender)
+			self.homeTabBarController?.navigationController?.popToRootViewController(animated: true)
+		}))
+		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+		
+		self.present(alert, animated: true)
 	}
 }
 

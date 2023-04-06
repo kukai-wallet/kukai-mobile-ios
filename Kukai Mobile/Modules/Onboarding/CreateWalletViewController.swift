@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class CreateWalletViewController: UIViewController {
 	
@@ -26,4 +27,24 @@ class CreateWalletViewController: UIViewController {
 		hdLearnMoreButton.configuration?.imagePlacement = .trailing
 		hdLearnMoreButton.configuration?.imagePadding = 8
     }
+	
+	@IBAction func hdWalletTapped(_ sender: Any) {
+		
+		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: "") {
+			let walletCache = WalletCacheService()
+			
+			if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+				DependencyManager.shared.walletList = walletCache.readNonsensitive()
+				DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
+				self.performSegue(withIdentifier: "hdWallet", sender: self)
+			} else {
+				self.alert(withTitle: "Error", andMessage: "Unable to cache")
+			}
+		} else {
+			self.alert(withTitle: "Error", andMessage: "Unable to create wallet")
+		}
+		
+		
+		
+	}
 }

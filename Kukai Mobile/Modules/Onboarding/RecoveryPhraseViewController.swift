@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class RecoveryPhraseViewController: UIViewController {
 	
@@ -50,9 +51,14 @@ class RecoveryPhraseViewController: UIViewController {
 		viewSeedWordsButton.customButtonType = .primary
 		nextButton.customButtonType = .primary
 		
+		let address = DependencyManager.shared.selectedWalletAddress
+		guard let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+			self.navigationController?.previousViewController()?.alert(errorWithMessage: "Unable to locate wallet information. Please try again")
+			self.navigationController?.popViewController(animated: true)
+			return
+		}
 		
-		let words = ["word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8", "word9", "word10", "word11", "word12", "word13", "word14", "word15", "word16", "word17", "word18", "word19", "word20", "word21", "word22", "word23", "word24"]
-		for (index, word) in  words.enumerated() {
+		for (index, word) in mnemonic.words.enumerated() {
 			if let label = value(forKey: "word\(index+1)Label") as? UILabel {
 				label.text = word
 			}
