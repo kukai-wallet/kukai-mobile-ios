@@ -95,7 +95,7 @@ public class ThemeManager {
 				"TxtBtnSec1": UIColor("#F6F6FA"),
 				"TxtBtnSec2": UIColor("#FFFFFF"),
 				"TxtBtnSec3": UIColor("#FFFFFF"),
-				"TxtBtnSec4": UIColor("#FFFFFF"),
+				"TxtBtnSec4": UIColor("#6D6D6D"),
 				"TxtBtnSecSel1": UIColor("#F6F6FA"),
 				"TxtBtnTer1": UIColor("#F6F6FA"),
 				"TxtBtnTer2": UIColor("#FFFFFF"),
