@@ -55,6 +55,7 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 		collectionView.register(UINib(nibName: "TextFieldSuggestionAccessoryViewCell", bundle: nil), forCellWithReuseIdentifier: "TextFieldSuggestionAccessoryViewCell")
 		collectionView.dataSource = self
 		collectionView.delegate = self
+		collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
 		
 		self.addSubview(collectionView)
 		NSLayoutConstraint.activate([
@@ -84,6 +85,10 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 	
 	
 	// MARK: - CollectionView
+	
+	func numberOfSections(in collectionView: UICollectionView) -> Int {
+		return 1
+	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 		return self.filteredSuggestions.count

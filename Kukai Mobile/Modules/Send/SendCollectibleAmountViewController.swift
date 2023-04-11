@@ -82,8 +82,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		quantityTextField.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
 		
 		updateFees()
-		feeButton.configuration?.imagePlacement = .trailing
-		feeButton.configuration?.imagePadding = 6
 		feeButton.isEnabled = false
 		
 		reviewButton.isEnabled = false

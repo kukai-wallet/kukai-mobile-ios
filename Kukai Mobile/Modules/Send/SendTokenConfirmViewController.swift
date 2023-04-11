@@ -151,8 +151,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		// Fees
 		updateFees()
-		feeButton.configuration?.imagePlacement = .trailing
-		feeButton.configuration?.imagePadding = 6
 		
 		
 		// Ledger check

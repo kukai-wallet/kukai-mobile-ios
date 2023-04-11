@@ -43,8 +43,5 @@ class CreateWalletViewController: UIViewController {
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to create wallet")
 		}
-		
-		
-		
 	}
 }

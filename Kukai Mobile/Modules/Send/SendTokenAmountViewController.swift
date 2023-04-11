@@ -74,8 +74,6 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 		textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
 		
 		updateFees()
-		feeButton.configuration?.imagePlacement = .trailing
-		feeButton.configuration?.imagePadding = 6
 		feeButton.isEnabled = false
 		
 		reviewButton.isEnabled = false

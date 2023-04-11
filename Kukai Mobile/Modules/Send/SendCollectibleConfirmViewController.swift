@@ -72,8 +72,6 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		// Fees
 		updateFees()
-		feeButton.configuration?.imagePlacement = .trailing
-		feeButton.configuration?.imagePadding = 6
 		
 		
 		// Ledger check

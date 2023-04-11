@@ -73,6 +73,10 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	@IBAction func advancedButtonTapped(_ sender: Any) {
+		textView.resignFirstResponder()
+		extraWordTextField.resignFirstResponder()
+		walletAddressTextField.resignFirstResponder()
+		
 		if warningView.isHidden {
 			warningView.isHidden = false
 			extraWordStackView.isHidden = false
@@ -156,12 +160,12 @@ class ImportWalletViewController: UIViewController {
 		}
 	}
 	
-	private func doesTextViewPassValidation() -> Bool {
-		var textViewText = textView.text ?? ""
+	private func doesTextViewPassValidation(fullstring: String? = nil) -> Bool {
+		var textViewText = fullstring ?? textView.text ?? ""
 		textViewText = textViewText.trimmingCharacters(in: .whitespacesAndNewlines)
 		
 		let words = textViewText.components(separatedBy: " ")
-		if words.count >= 12, words.count <= 24, let _ = try? Mnemonic(seedPhrase: textView.text) {
+		if (words.count >= 12 && words.count <= 24), let _ = try? Mnemonic(seedPhrase: textViewText) {
 			return true
 		}
 		
@@ -206,6 +210,8 @@ extension ImportWalletViewController: UITextViewDelegate {
 			if let lastWord = fullString.components(separatedBy: " ").last {
 				suggestionView?.filterSuggestions(withInput: lastWord)
 			}
+			
+			importButton.isEnabled = doesTextViewPassValidation(fullstring: fullString)
 		}
 		
 		return true
@@ -236,14 +242,20 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 		if textField == extraWordTextField && (textField.text?.isEmpty ?? true) {
 			enableWalletAddressField(false)
 		}
+		
+		importButton.isEnabled = isEverythingValid()
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
-		return true
+		textField.text = ""
+		textField.resignFirstResponder()
+		importButton.isEnabled = isEverythingValid()
+		
+		return false
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		importButton.isEnabled = (doesTextViewPassValidation() && doesAdvancedOptionsPassValidtion() && !(walletAddressTextField.text ?? "").isEmpty)
+		importButton.isEnabled = isEverythingValid()
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
@@ -252,6 +264,13 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 			walletAddressErrorLabel.isHidden = false
 			walletAddressErrorLabel.text = "Invalid wallet address"
 		}
+	}
+	
+	private func isEverythingValid() -> Bool {
+		return (doesTextViewPassValidation() && doesAdvancedOptionsPassValidtion() && (
+					((extraWordTextField.text ?? "").isEmpty && (walletAddressTextField.text ?? "").isEmpty) ||
+					(!(extraWordTextField.text ?? "").isEmpty && !(walletAddressTextField.text ?? "").isEmpty)
+				))
 	}
 }
 
@@ -286,5 +305,6 @@ extension ImportWalletViewController: TextFieldSuggestionAccessoryViewDelegate {
 		}
 		
 		suggestionView?.filterSuggestions(withInput: nil)
+		importButton.isEnabled = doesTextViewPassValidation()
 	}
 }
