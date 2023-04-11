@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -26,15 +27,15 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="zx3-qd-Dv7">
-                        <rect key="frame" x="508" y="22" width="10" height="18"/>
+                        <rect key="frame" x="510" y="24" width="8" height="14"/>
                         <color key="tintColor" name="BGB4"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="10" id="UfK-Zh-7e7"/>
-                            <constraint firstAttribute="height" constant="18" id="p7v-wQ-Tyj"/>
+                            <constraint firstAttribute="width" constant="8" id="UfK-Zh-7e7"/>
+                            <constraint firstAttribute="height" constant="14" id="p7v-wQ-Tyj"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;count&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qyo-pg-gSi">
-                        <rect key="frame" x="438" y="21.666666666666664" width="62" height="18.666666666666664"/>
+                        <rect key="frame" x="436" y="21.666666666666664" width="62" height="18.666666666666664"/>
                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="16"/>
                         <color key="textColor" name="TxtB4"/>
                         <nil key="highlightedColor"/>
@@ -54,7 +55,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="so5-XY-TLc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="390" y="9" width="44" height="44"/>
+                        <rect key="frame" x="388" y="9" width="44" height="44"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="44" id="c6U-XF-E37"/>
                             <constraint firstAttribute="width" constant="44" id="pAo-II-yuo"/>
@@ -72,7 +73,7 @@
                         </userDefinedRuntimeAttributes>
                     </button>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeK-AU-ND0">
-                        <rect key="frame" x="57" y="21.666666666666664" width="317" height="18.666666666666664"/>
+                        <rect key="frame" x="57" y="21.666666666666664" width="315" height="18.666666666666664"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
@@ -89,7 +90,7 @@
                 <constraint firstItem="qeK-AU-ND0" firstAttribute="leading" secondItem="L9Q-gy-qLL" secondAttribute="trailing" constant="14" id="RcG-f8-Ihs"/>
                 <constraint firstItem="qyo-pg-gSi" firstAttribute="leading" secondItem="so5-XY-TLc" secondAttribute="trailing" constant="4" id="XXF-RL-dnL"/>
                 <constraint firstItem="so5-XY-TLc" firstAttribute="leading" secondItem="qeK-AU-ND0" secondAttribute="trailing" constant="16" id="YXG-vf-fN6"/>
-                <constraint firstItem="zx3-qd-Dv7" firstAttribute="leading" secondItem="qyo-pg-gSi" secondAttribute="trailing" constant="8" id="boc-q4-S9k"/>
+                <constraint firstItem="zx3-qd-Dv7" firstAttribute="leading" secondItem="qyo-pg-gSi" secondAttribute="trailing" constant="12" id="boc-q4-S9k"/>
                 <constraint firstItem="L9Q-gy-qLL" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="19" id="loy-9l-Ty1"/>
                 <constraint firstItem="qyo-pg-gSi" firstAttribute="centerY" secondItem="L9Q-gy-qLL" secondAttribute="centerY" id="mY6-Wj-S7d"/>
                 <constraint firstItem="L9Q-gy-qLL" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="19" id="ue0-pI-l9e"/>
@@ -107,7 +108,7 @@
     </objects>
     <designables>
         <designable name="so5-XY-TLc">
-            <size key="intrinsicContentSize" width="24" height="24"/>
+            <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
     </designables>
     <resources>

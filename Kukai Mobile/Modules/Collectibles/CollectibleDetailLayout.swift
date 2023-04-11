@@ -17,6 +17,7 @@ protocol CollectibleDetailLayoutDataDelegate: AnyObject {
 class CollectibleDetailLayout: UICollectionViewLayout {
 	
 	fileprivate var cellPadding: CGFloat = 4
+	fileprivate var columnPadding: CGFloat = 8
 	fileprivate var cache: [[UICollectionViewLayoutAttributes]] = [[], []]
 	fileprivate var contentHeight: CGFloat = 0
 	
@@ -105,12 +106,12 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			
 			
 			// if fits into smallest box (taking into account padding for horizontal gap between next cell), record attributes
-			if (requiredWidth + cellPadding) <= minimumCellWidth {
+			if (requiredWidth + columnPadding) <= minimumCellWidth {
 				cellSize = CGSize(width: minimumSize.width, height: minimumSize.height)
 			}
 			
 			// if fits into in more than 1 column, but less than max, record as min multiple
-			else if (requiredWidth + cellPadding) <= (contentWidth - minimumCellWidth) {
+			else if (requiredWidth + columnPadding) <= (contentWidth - minimumCellWidth) {
 				let multiple = (requiredWidth / minimumCellWidth).rounded(.up)
 				cellSize = CGSize(width: minimumCellWidth * multiple, height: minimumSize.height)
 			}
@@ -160,11 +161,11 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 				attributes.frame = frame
 				cache[1].append(attributes)
 				
-				xOffset = xOffset + item.width + cellPadding
+				xOffset = xOffset + item.width + columnPadding
 				cellIndex += 1
 			}
 			
-			yOffset += updatedSizes[0].height + cellPadding
+			yOffset += updatedSizes[0].height + columnPadding
 			startIndex += numberOfItems
 			
 		} while startIndex < cellSizes.count
@@ -192,7 +193,7 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 		
 		// If not an exact match, split the remaining space between the elements proportionally
 		var tempSizes = sizes
-		let toConsumeWidthMinusGaps = (toConsumeWidth - (cellPadding * CGFloat(sizes.count-1)))
+		let toConsumeWidthMinusGaps = (toConsumeWidth - (columnPadding * CGFloat(sizes.count-1)))
 		let remainingSpace = (toConsumeWidthMinusGaps - total)
 		// If inputs correspond to the correct number of columns, then we divide by columns. Its theres one or more missing columns, we divide by number of inputs so theres no missing piece
 		let demoninator = Int(total / minimumCellWidth) == numberOfColumns ? numberOfColumns : sizes.count

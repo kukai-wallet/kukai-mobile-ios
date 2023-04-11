@@ -25,8 +25,8 @@ class EditFeesViewController: UIViewController {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		let selectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2")]
-		let normalAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6")]
+		let selectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"), NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14)]
+		let normalAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6"), NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14)]
 		
 		segmentedButton.setTitleTextAttributes(normalAttributes, for: .normal)
 		segmentedButton.setTitleTextAttributes(selectedAttributes, for: .selected)
