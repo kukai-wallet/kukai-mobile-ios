@@ -77,6 +77,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		modalBackButton.imageWidth = 18
 		modalBackButton.imageHeight = 18
 		modalBackButton.customImage = UIImage(named: "Close") ?? UIImage()
+		modalBackButton.customImageTint = .colorNamed("BGB4")
 		modalBackButton.tintColor = .colorNamed("BGB4")
 		modalBackButton.translatesAutoresizingMaskIntoConstraints = false
 		modalBackButton.addTarget(self, action: #selector(back), for: .touchUpInside)

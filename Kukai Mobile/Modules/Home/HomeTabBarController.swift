@@ -19,6 +19,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
+	@IBOutlet weak var scanButton: UIButton!
 	
 	private var refreshType: BalanceService.RefreshType = .useCache
 	private var topRightMenu = MenuViewController()
@@ -74,7 +75,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
-		let accountButtonWidth = self.view.frame.width - (32 + 44 + 10) // 16 * 2 for left/right gutter, 44 for side menu button width, 10 for spacing in between
+		let accountButtonWidth = self.view.frame.width - (32 + 88 + 20) // 16 * 2 for left/right gutter, 88 for left/right buttons, 20 for 10px spacing in between
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: accountButtonWidth))
@@ -82,6 +83,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
 		sideMenuButton.addConstraint(NSLayoutConstraint(item: sideMenuButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+		
+		scanButton.addConstraint(NSLayoutConstraint(item: scanButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44))
+		scanButton.addConstraint(NSLayoutConstraint(item: scanButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -124,6 +128,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
+		gradientLayers.append( scanButton.addTitleButtonBorderGradient() )
+		gradientLayers.append( scanButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
@@ -170,6 +176,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
 			self?.sideMenuVc.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
 		}
+	}
+	
+	@IBAction func scanTapped(_ sender: Any) {
+		openScanner()
 	}
 	
 	public func openScanner() {

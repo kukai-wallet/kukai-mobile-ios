@@ -35,7 +35,7 @@
                             </button>
                         </barButtonItem>
                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="d7D-y1-ezY" customClass="AccountButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                            <rect key="frame" x="103.66666666666667" y="0.0" width="182.66666666666663" height="44"/>
+                            <rect key="frame" x="99.333333333333329" y="0.0" width="182.66666666666669" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" name="Roboto-Bold" family="Roboto" pointSize="14"/>
                             <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
@@ -66,6 +66,18 @@
                                 <segue destination="BvX-rK-NwU" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="hlP-u9-ahC"/>
                             </connections>
                         </button>
+                        <barButtonItem key="rightBarButtonItem" id="XN3-xB-UH4">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="l7c-5c-vdy">
+                                <rect key="frame" x="288" y="5.6666666666666679" width="86" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="tintColor" name="BG12"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Scan"/>
+                                <connections>
+                                    <action selector="scanTapped:" destination="B7V-6A-7eN" eventType="touchUpInside" id="OHD-ra-hTL"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="f31-ee-dpO">
@@ -75,6 +87,7 @@
                     </tabBar>
                     <connections>
                         <outlet property="accountButton" destination="d7D-y1-ezY" id="w0S-Gj-l3u"/>
+                        <outlet property="scanButton" destination="l7c-5c-vdy" id="J4x-RE-dCP"/>
                         <outlet property="sideMenuButton" destination="aMh-89-6he" id="fs6-uU-Fna"/>
                         <segue destination="rug-Ln-lg5" kind="show" identifier="stake" id="uPf-ps-1zJ"/>
                         <segue destination="l5u-SJ-P5f" kind="relationship" relationship="viewControllers" id="QNA-Jb-aDP"/>
@@ -557,6 +570,7 @@
     </scenes>
     <resources>
         <image name="Hamburger" width="22" height="16"/>
+        <image name="Scan" width="24" height="24"/>
         <image name="Social_Apple" width="25" height="30"/>
         <image name="arrow.turn.down.right" catalog="system" width="128" height="99"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
