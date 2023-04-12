@@ -95,7 +95,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSc-km-vdB">
-                                                    <rect key="frame" x="112" y="2" width="257" height="24"/>
+                                                    <rect key="frame" x="98" y="2" width="271" height="24"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
@@ -107,7 +107,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="4" width="80" height="20"/>
+                                                    <rect key="frame" x="16" y="-2" width="66" height="32"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -246,6 +246,108 @@
                                             <outlet property="priceChangeLabel" destination="oJ3-t4-MrW" id="pGj-bZ-tWC"/>
                                             <outlet property="symbolLabel" destination="obd-iN-h5Z" id="yDH-dY-3U5"/>
                                             <outlet property="valuelabel" destination="xGP-vD-NDI" id="0n1-tz-JLx"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingContainerCell" rowHeight="80" id="2KM-oc-IJC" customClass="LoadingContainerCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="267" width="393" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2KM-oc-IJC" id="Hdf-Mg-Mpn">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uiC-bo-7Gh">
+                                                    <rect key="frame" x="16" y="2" width="361" height="76"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingToken" translatesAutoresizingMaskIntoConstraints="NO" id="frd-NZ-bsi">
+                                                            <rect key="frame" x="14" y="14" width="48" height="48"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="48" id="3o7-Hc-7Vs"/>
+                                                                <constraint firstAttribute="height" constant="48" id="QTM-E8-xrQ"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="24"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </imageView>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IeI-3K-CmY" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="76" y="22" width="90" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="ltf-mw-Lhl"/>
+                                                                <constraint firstAttribute="height" constant="12" id="nYg-su-De8"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NdG-fD-kbq" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="255" y="22" width="90" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="NTC-S6-aRO"/>
+                                                                <constraint firstAttribute="height" constant="12" id="r8n-iw-4mB"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OVN-8W-rFe" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="285" y="44" width="60" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="60" id="LcQ-se-Rao"/>
+                                                                <constraint firstAttribute="height" constant="12" id="a2x-O7-ARx"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="top" secondItem="frd-NZ-bsi" secondAttribute="top" constant="8" id="8TI-QH-rJD"/>
+                                                        <constraint firstItem="OVN-8W-rFe" firstAttribute="top" secondItem="NdG-fD-kbq" secondAttribute="bottom" constant="10" id="8y4-0z-QZR"/>
+                                                        <constraint firstItem="frd-NZ-bsi" firstAttribute="top" secondItem="uiC-bo-7Gh" secondAttribute="top" constant="14" id="9yF-hf-ZsQ"/>
+                                                        <constraint firstItem="frd-NZ-bsi" firstAttribute="leading" secondItem="uiC-bo-7Gh" secondAttribute="leading" constant="14" id="DGj-Mx-Tz6"/>
+                                                        <constraint firstAttribute="trailing" secondItem="NdG-fD-kbq" secondAttribute="trailing" constant="16" id="NEr-Hr-4CC"/>
+                                                        <constraint firstAttribute="bottom" secondItem="frd-NZ-bsi" secondAttribute="bottom" constant="14" id="mjn-IR-ytl"/>
+                                                        <constraint firstItem="NdG-fD-kbq" firstAttribute="centerY" secondItem="IeI-3K-CmY" secondAttribute="centerY" id="pbn-Qt-cOo"/>
+                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="leading" secondItem="frd-NZ-bsi" secondAttribute="trailing" constant="14" id="vBX-c9-zVX"/>
+                                                        <constraint firstItem="OVN-8W-rFe" firstAttribute="trailing" secondItem="NdG-fD-kbq" secondAttribute="trailing" id="z9Y-Yl-2eo"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="uiC-bo-7Gh" firstAttribute="leading" secondItem="Hdf-Mg-Mpn" secondAttribute="leading" constant="16" id="Kk5-TH-wjI"/>
+                                                <constraint firstAttribute="trailing" secondItem="uiC-bo-7Gh" secondAttribute="trailing" constant="16" id="XUI-s5-jl8"/>
+                                                <constraint firstAttribute="bottom" secondItem="uiC-bo-7Gh" secondAttribute="bottom" constant="2" id="cER-VH-6KQ"/>
+                                                <constraint firstItem="uiC-bo-7Gh" firstAttribute="top" secondItem="Hdf-Mg-Mpn" secondAttribute="top" constant="2" id="jav-pf-QeZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="uiC-bo-7Gh" id="YMX-fv-6fP"/>
+                                            <outletCollection property="shimmerViews" destination="IeI-3K-CmY" collectionClass="NSMutableArray" id="MrM-xd-kbi"/>
+                                            <outletCollection property="shimmerViews" destination="NdG-fD-kbq" collectionClass="NSMutableArray" id="7ML-Zm-S4Q"/>
+                                            <outletCollection property="shimmerViews" destination="OVN-8W-rFe" collectionClass="NSMutableArray" id="kde-DR-wtU"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1066,10 +1168,10 @@
     </scenes>
     <designables>
         <designable name="405-zw-M1R">
-            <size key="intrinsicContentSize" width="28" height="22"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="80" height="20"/>
+            <size key="intrinsicContentSize" width="66" height="32"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
@@ -1086,11 +1188,15 @@
         <image name="HiddenOn" width="24" height="19"/>
         <image name="Lock" width="14" height="18"/>
         <image name="btnInfoKnockout" width="36" height="36"/>
+        <image name="missingToken" width="40" height="40"/>
         <namedColor name="BG10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG4">
+            <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

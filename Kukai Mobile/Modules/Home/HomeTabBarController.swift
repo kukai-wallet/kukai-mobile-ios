@@ -110,7 +110,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
 			self.refreshType = .refreshEverything
-			refresh()
+			refresh(showLoading: false)
 			
 		} else if DependencyManager.shared.balanceService.currencyChanged {
 			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway

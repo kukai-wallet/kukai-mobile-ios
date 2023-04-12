@@ -139,11 +139,13 @@
 		C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */; };
 		C06E0D6A287C71EA007A580B /* WalletConnectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D69287C71EA007A580B /* WalletConnectCell.swift */; };
 		C06EA1A626A56C6E006029CF /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */; };
+		C073C0DE29E6CADC0064FBEF /* LoadingContainerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C073C0DD29E6CADC0064FBEF /* LoadingContainerCell.swift */; };
 		C0742C53297ADC8E005D6DB0 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0742C52297ADC8E005D6DB0 /* MenuViewController.swift */; };
 		C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */; };
 		C07DE53828BCD80D00C32D42 /* SwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53728BCD80D00C32D42 /* SwapViewModel.swift */; };
 		C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53928BCFD2800C32D42 /* AddLiquidityViewModel.swift */; };
 		C07DE53C28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53B28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift */; };
+		C07EAF2E29E6E8B100066D4D /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07EAF2D29E6E8B100066D4D /* ShimmerView.swift */; };
 		C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */; };
 		C07FC40B27C539130056FA47 /* AddressChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */; };
 		C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40C27C539A40056FA47 /* SendToViewModel.swift */; };
@@ -478,11 +480,13 @@
 		C06E0D64287C3E66007A580B /* WalletConnectSignViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectSignViewController.swift; sourceTree = "<group>"; };
 		C06E0D69287C71EA007A580B /* WalletConnectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletConnectCell.swift; sourceTree = "<group>"; };
 		C06EA1A526A56C6E006029CF /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		C073C0DD29E6CADC0064FBEF /* LoadingContainerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingContainerCell.swift; sourceTree = "<group>"; };
 		C0742C52297ADC8E005D6DB0 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		C07AC26827D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinGeckoMarketDataResponse.swift; sourceTree = "<group>"; };
 		C07DE53728BCD80D00C32D42 /* SwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewModel.swift; sourceTree = "<group>"; };
 		C07DE53928BCFD2800C32D42 /* AddLiquidityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLiquidityViewModel.swift; sourceTree = "<group>"; };
 		C07DE53B28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLiquidityViewModel.swift; sourceTree = "<group>"; };
+		C07EAF2D29E6E8B100066D4D /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeadingCell.swift; sourceTree = "<group>"; };
 		C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressChoiceCell.swift; sourceTree = "<group>"; };
 		C07FC40C27C539A40056FA47 /* SendToViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToViewModel.swift; sourceTree = "<group>"; };
@@ -925,6 +929,8 @@
 				C0BB8BA0293F5E6200C0E1DD /* CustomisableButton.swift */,
 				C039C3BC298BDB0000112500 /* MultiStateGradientButton.swift */,
 				C00AD57829DB5BCD0030C8CC /* AutoScrollView.swift */,
+				C073C0DD29E6CADC0064FBEF /* LoadingContainerCell.swift */,
+				C07EAF2D29E6E8B100066D4D /* ShimmerView.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1665,6 +1671,7 @@
 				C04E2864293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift in Sources */,
 				C01AE5DC28A26C44008F93E8 /* AddLiquidityConfirmViewController.swift in Sources */,
 				C0B8C8A129DC2AD200C8AFD5 /* FaceIdViewController.swift in Sources */,
+				C073C0DE29E6CADC0064FBEF /* LoadingContainerCell.swift in Sources */,
 				C0411B4729DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
 				C0FBC88F292C12CE00B29921 /* HiddenTokensBalancesViewController.swift in Sources */,
@@ -1799,6 +1806,7 @@
 				C025891F292D1154000D59F6 /* HiddenTokenCell.swift in Sources */,
 				C0C3A7AB290BD1200030E39A /* CollectibleDetailOnSaleCell.swift in Sources */,
 				C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */,
+				C07EAF2E29E6E8B100066D4D /* ShimmerView.swift in Sources */,
 				C0EF1BC3289296CE00AA5DD4 /* SlideButton.swift in Sources */,
 				C0AC1D4427722EF3002F66C0 /* UIImage+extensions.swift in Sources */,
 				C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */,

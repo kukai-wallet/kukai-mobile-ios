@@ -54,7 +54,7 @@ extension UIImage {
 	}
 	
 	class func unknownToken() -> UIImage {
-		return UIImage(named: "unknown")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
+		return UIImage(named: "missingToken")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
 	
 	class func animationFrames(prefix: String, count: Int) -> [UIImage] {

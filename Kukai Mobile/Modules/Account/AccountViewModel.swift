@@ -99,8 +99,22 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let total = item as? TotalEstiamtedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " tez"
-				cell.valueLabel.text = total.value
+				
+				if total.tez.normalisedRepresentation == "-1" {
+					cell.balanceLabel.text = "--- tez"
+					cell.balanceLabel.textColor = .colorNamed("Txt14")
+					cell.valueLabel.text = ""
+					return cell
+					
+				} else {
+					cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " tez"
+					cell.balanceLabel.textColor = .colorNamed("Txt2")
+					cell.valueLabel.text = total.value
+					return cell
+				}
+				
+			} else if let _ = item as? LoadingContainerCellObject, let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingContainerCell", for: indexPath) as? LoadingContainerCell {
+				cell.setup()
 				return cell
 				
 			} else {
@@ -116,53 +130,69 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		// Build arrays of data
-		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
-		let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-		let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
-		
-		var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
-		
-		
-		// Group and srot favourites (and remove hidden)
-		tokensToDisplay = []
-		var nonFavourites: [Token] = []
-		
-		for token in DependencyManager.shared.balanceService.account.tokens {
-			guard !token.isHidden else {
-				continue
-			}
-			
-			if token.isFavourite {
-				tokensToDisplay.append(token)
-			} else {
-				nonFavourites.append(token)
-			}
-		}
-		
-		tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
-		tokensToDisplay.append(contentsOf: nonFavourites)
-		
-		section1Data.append(contentsOf: tokensToDisplay)
-		
-		
-		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
-		if isPresentedForSelectingToken {
-			snapshot.appendSections([0])
-			snapshot.appendItems(section1Data, toSection: 0)
-			
-		} else {
-			var data: [AnyHashable] = [balancesMenuVC]
-			if section1Data.count > 1 {
-				data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
-			}
-			
-			data.append(contentsOf: section1Data)
+		// If initial load, display shimmer views
+		if DependencyManager.shared.balanceService.lastFullRefreshDate == nil {
+			let data: [AnyHashable] = [
+				balancesMenuVC,
+				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
+				LoadingContainerCellObject(),
+				LoadingContainerCellObject(),
+				LoadingContainerCellObject()
+			]
 			
 			snapshot.appendSections([0])
 			snapshot.appendItems(data, toSection: 0)
+			
+		} else {
+			
+			// Else build arrays of acutal data
+			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
+			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
+			
+			
+			// Group and srot favourites (and remove hidden)
+			tokensToDisplay = []
+			var nonFavourites: [Token] = []
+			
+			for token in DependencyManager.shared.balanceService.account.tokens {
+				guard !token.isHidden else {
+					continue
+				}
+				
+				if token.isFavourite {
+					tokensToDisplay.append(token)
+				} else {
+					nonFavourites.append(token)
+				}
+			}
+			
+			tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
+			tokensToDisplay.append(contentsOf: nonFavourites)
+			
+			section1Data.append(contentsOf: tokensToDisplay)
+			
+			
+			// Build snapshot
+			if isPresentedForSelectingToken {
+				snapshot.appendSections([0])
+				snapshot.appendItems(section1Data, toSection: 0)
+				
+			} else {
+				var data: [AnyHashable] = [balancesMenuVC]
+				if section1Data.count > 1 {
+					data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
+				}
+				
+				data.append(contentsOf: section1Data)
+				
+				snapshot.appendSections([0])
+				snapshot.appendItems(data, toSection: 0)
+			}
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
