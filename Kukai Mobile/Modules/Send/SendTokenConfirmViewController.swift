@@ -98,7 +98,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			// TODO: add selected wallet to send data
 			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
 			let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
-			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .medium)
+			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
 			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
 				fromSocialAlias.text = media.title

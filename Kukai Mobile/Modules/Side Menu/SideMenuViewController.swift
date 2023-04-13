@@ -62,7 +62,7 @@ class SideMenuViewController: UIViewController {
 		viewModel.refresh(animate: true)
 		
 		let wallet = DependencyManager.shared.selectedWalletMetadata
-		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .medium)
+		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_22)
 		
 		if let subtitle = media.subtitle {
 			currentAccountRegularStackView.isHidden = true

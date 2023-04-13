@@ -47,10 +47,14 @@ public class TransactionService {
 		}
 	}
 	
-	public enum WalletIconSize {
-		case small
-		case medium
-		case large
+	public enum WalletIconSize: Int {
+		case size_12 = 12
+		case size_16 = 16
+		case size_20 = 20
+		case size_22 = 22
+		case size_24 = 24
+		case size_26 = 26
+		case size_30 = 30
 	}
 	
 	
@@ -292,35 +296,16 @@ public class TransactionService {
 	}
 	
 	public static func walletMedia(forWalletMetadata metadata: WalletMetadata, ofSize size: WalletIconSize) -> (image: UIImage, title: String, subtitle: String?) {
+		let imageSize = TransactionService.sizeForWalletIcon(walletIconSize: size)
 		
 		// Early exit if tezos domain
 		if metadata.hasTezosDomain() {
-			var imageSize = CGSize(width: 10, height: 10)
-			switch size {
-				case .small:
-					imageSize = CGSize(width: 16, height: 16)
-				case .medium:
-					imageSize = CGSize(width: 21, height: 21)
-				case .large:
-					imageSize = CGSize(width: 24, height: 24)
-			}
-			
 			let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
 			return (image: image, title: metadata.primaryTezosDomain() ?? "", subtitle: metadata.address.truncateTezosAddress())
 		}
 		
 		// Second Early exit if non-social wallet without domain
 		if metadata.type != .social {
-			var imageSize = CGSize(width: 10, height: 10)
-			switch size {
-				case .small:
-					imageSize = CGSize(width: 10, height: 14)
-				case .medium:
-					imageSize = CGSize(width: 14, height: 18)
-				case .large:
-					imageSize = CGSize(width: 17, height: 23)
-			}
-			
 			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
 			return (image: image, title: metadata.address.truncateTezosAddress(), subtitle: nil)
 		}
@@ -328,145 +313,50 @@ public class TransactionService {
 		// Iterate through social
 		switch metadata.socialType {
 			case .apple:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 14, height: 14)
-					case .medium:
-						imageSize = CGSize(width: 18, height: 18)
-					case .large:
-						imageSize = CGSize(width: 18, height: 22)
-				}
-				
 				let image = UIImage(named: "Social_Apple")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("Txt2")) ?? UIImage()
 				return (image: image, title: "Apple account", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitter:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 12)
-					case .medium:
-						imageSize = CGSize(width: 18, height: 14)
-					case .large:
-						imageSize = CGSize(width: 21, height: 16)
-				}
-				
 				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .google:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 14, height: 14)
-					case .medium:
-						imageSize = CGSize(width: 18, height: 18)
-					case .large:
-						imageSize = CGSize(width: 22, height: 22)
-				}
-				
 				let image = UIImage(named: "Social_Google_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .reddit:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_Reddit_Color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .facebook:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_Facebook_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .discord:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_Discord_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitch:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_Twitch_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .line:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_LineColor")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .github:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .none:
-				var imageSize = CGSize(width: 10, height: 10)
-				switch size {
-					case .small:
-						imageSize = CGSize(width: 16, height: 16)
-					case .medium:
-						imageSize = CGSize(width: 21, height: 21)
-					case .large:
-						imageSize = CGSize(width: 23, height: 23)
-				}
-				
 				let image = UIImage.unknownToken().resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.address.truncateTezosAddress(), subtitle: nil)
 		}
+	}
+	
+	public static func sizeForWalletIcon(walletIconSize: WalletIconSize) -> CGSize {
+		let raw = walletIconSize.rawValue
+		return CGSize(width: raw, height: raw)
 	}
 	
 	

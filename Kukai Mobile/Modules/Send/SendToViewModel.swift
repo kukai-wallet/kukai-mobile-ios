@@ -67,7 +67,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		walletObjs = []
 		
 		for wallet in wallets where wallet.address != address {
-			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .medium)
+			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_20)
 			if wallet.type == .social {
 				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 				

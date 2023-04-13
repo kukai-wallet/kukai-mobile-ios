@@ -255,7 +255,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public func updateAccountButton() {
 		let wallet = DependencyManager.shared.selectedWalletMetadata
-		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .large)
+		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_26)
 		
 		accountButton.setImage(media.image, for: .normal)
 		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
@@ -290,10 +290,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func refresh(showLoading: Bool = true) {
-	#if DEBUG
-		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-		return
-	#else
+	//#if DEBUG
+	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
+	//	return
+	//#else
 		let address = DependencyManager.shared.selectedWalletAddress
 		
 		if showLoading {
@@ -320,7 +320,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			}
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-	#endif
+	//#endif
 	}
 	
 	func sendButtonTapped() {

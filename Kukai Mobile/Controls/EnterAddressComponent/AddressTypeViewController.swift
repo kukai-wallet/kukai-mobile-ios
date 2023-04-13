@@ -72,7 +72,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .twitter, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 		}
 		
-		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .medium).image
+		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .size_22).image
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
