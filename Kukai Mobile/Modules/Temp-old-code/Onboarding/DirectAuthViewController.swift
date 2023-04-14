@@ -50,7 +50,7 @@ class DirectAuthViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		switch result {
+		/*switch result {
 			case .success(let wallet):
 				
 				// Clear out any other wallets
@@ -70,7 +70,7 @@ class DirectAuthViewController: UIViewController {
 				self.alert(withTitle: "Error", andMessage: error.description)
 		}
 		
-		self.hideLoadingModal(completion: nil)
+		self.hideLoadingModal(completion: nil)*/
 	}
 	
 	func handleSuccessNavigation() {

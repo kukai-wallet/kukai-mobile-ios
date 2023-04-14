@@ -117,14 +117,13 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	@objc func estimateFee() {
 		quantityTextField.resignFirstResponder()
 		
-		guard let destination = TransactionService.shared.sendData.destination else {
+		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
 			self.alert(errorWithMessage: "Can't find destination")
 			return
 		}
 		
 		
 		self.showLoadingModal(completion: nil)
-		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
 		if let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: quantityTextField.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: nft.decimalPlaces)

@@ -122,7 +122,7 @@ public class WalletConnectService {
 	@MainActor
 	public func respondWithAccounts() {
 		var accounts: [WalletConnectGetAccountObj] = []
-		for wallet in DependencyManager.shared.walletList {
+		for wallet in DependencyManager.shared.walletList.allMetadata() {
 			
 			let prefix = wallet.address.prefix(3).lowercased()
 			var algo = ""

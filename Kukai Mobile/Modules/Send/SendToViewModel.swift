@@ -66,6 +66,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let wallets = DependencyManager.shared.walletList
 		walletObjs = []
 		
+		/*
 		for wallet in wallets where wallet.address != address {
 			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_20)
 			if wallet.type == .social {
@@ -81,12 +82,12 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				walletObjs.append(WalletObj(icon: media.image, title: media.title, subtitle: media.subtitle, address: wallet.address))
 			}
 		}
-		
+		*/
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
-		if wallets.count > 1 {
+		if wallets.count() > 1 {
 			snapshot.appendSections([0, 1])
 			snapshot.appendItems([NoContacts()], toSection: 0)
 			snapshot.appendItems(walletObjs, toSection: 1)

@@ -204,7 +204,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		let address = DependencyManager.shared.selectedWalletAddress
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unable to locate current wallet")
+			return
+		}
+		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
 			guard let self = self else { return }
 			

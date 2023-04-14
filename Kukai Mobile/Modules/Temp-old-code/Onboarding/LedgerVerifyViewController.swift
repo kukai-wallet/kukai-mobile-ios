@@ -50,7 +50,7 @@ class LedgerVerifyViewController: UIViewController {
 	}
 	
 	func createWallet(address: String?, publicKey: String?) {
-		guard let add = address, let pk = publicKey, let uuid = LedgerService.shared.getConnectedDeviceUUID() else {
+		/*guard let add = address, let pk = publicKey, let uuid = LedgerService.shared.getConnectedDeviceUUID() else {
 			self.alert(errorWithMessage: "Unable to find all the required information, please try again")
 			LedgerService.shared.disconnectFromDevice()
 			self.navigationController?.popViewController(animated: true)
@@ -73,6 +73,6 @@ class LedgerVerifyViewController: UIViewController {
 			self.alert(errorWithMessage: "Unable to create Ledger wallet instance with supplied info, please try again")
 			LedgerService.shared.disconnectFromDevice()
 			self.navigationController?.popViewController(animated: true)
-		}
+		}*/
 	}
 }

@@ -94,7 +94,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		let walletAddress = DependencyManager.shared.selectedWalletAddress
+		guard let walletAddress = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unbale to locate current wallet")
+			return
+		}
+		
 		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: walletAddress, refreshType: self.forceRefresh ? .forceRefresh : .refreshIfCacheEmpty) { [weak self] error in
 			if let err = error {
 				self?.state = .failure(err, "Unable to fetch transactions")

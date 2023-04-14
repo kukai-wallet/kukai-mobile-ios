@@ -77,6 +77,7 @@ class RemoveLiquidityViewModel: ViewModel {
 			state = .loading
 		}
 		
+		/*
 		let walletAddress = DependencyManager.shared.selectedWalletAddress
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverythingIfStale) { [weak self] error in
 			if let err = error {
@@ -99,6 +100,7 @@ class RemoveLiquidityViewModel: ViewModel {
 			
 			completion()
 		}
+		*/
 	}
 	
 	func calculateReturn(fromInput: String?) {

@@ -366,7 +366,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	}
 	
 	func loadActivityData(completion: @escaping ((Result<[TzKTTransactionGroup], KukaiError>) -> Void)) {
-		let wallet = DependencyManager.shared.selectedWalletAddress
+		let wallet = DependencyManager.shared.selectedWalletAddress ?? ""
 		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
 			if let err = error {
 				completion(Result.failure(err))

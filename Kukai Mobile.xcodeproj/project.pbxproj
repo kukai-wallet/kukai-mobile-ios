@@ -145,6 +145,8 @@
 		C07DE53828BCD80D00C32D42 /* SwapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53728BCD80D00C32D42 /* SwapViewModel.swift */; };
 		C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53928BCFD2800C32D42 /* AddLiquidityViewModel.swift */; };
 		C07DE53C28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07DE53B28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift */; };
+		C07E283829E84BE000E8529A /* AccountsSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07E283729E84BE000E8529A /* AccountsSectionHeaderCell.swift */; };
+		C07E283A29E84C0E00E8529A /* AccountItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07E283929E84C0E00E8529A /* AccountItemCell.swift */; };
 		C07EAF2E29E6E8B100066D4D /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07EAF2D29E6E8B100066D4D /* ShimmerView.swift */; };
 		C07FC40927C538A90056FA47 /* ImageHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */; };
 		C07FC40B27C539130056FA47 /* AddressChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */; };
@@ -486,6 +488,8 @@
 		C07DE53728BCD80D00C32D42 /* SwapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapViewModel.swift; sourceTree = "<group>"; };
 		C07DE53928BCFD2800C32D42 /* AddLiquidityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLiquidityViewModel.swift; sourceTree = "<group>"; };
 		C07DE53B28BCFD3D00C32D42 /* RemoveLiquidityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLiquidityViewModel.swift; sourceTree = "<group>"; };
+		C07E283729E84BE000E8529A /* AccountsSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsSectionHeaderCell.swift; sourceTree = "<group>"; };
+		C07E283929E84C0E00E8529A /* AccountItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountItemCell.swift; sourceTree = "<group>"; };
 		C07EAF2D29E6E8B100066D4D /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		C07FC40827C538A90056FA47 /* ImageHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHeadingCell.swift; sourceTree = "<group>"; };
 		C07FC40A27C539130056FA47 /* AddressChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressChoiceCell.swift; sourceTree = "<group>"; };
@@ -938,6 +942,10 @@
 		C0729B7727BBC79E00C11E2C /* Temp-old-code */ = {
 			isa = PBXGroup;
 			children = (
+				C02D7CA927BEB0B7006A8E39 /* TitleSubtitleCell.swift */,
+				C05CBBA728228D4D00568DC9 /* AccountSocialCell.swift */,
+				C05CBBA928228D6F00568DC9 /* AccountBasicCell.swift */,
+				C05CBBAB28228D8100568DC9 /* AccountSubCell.swift */,
 				C046DF3D28328F200000FBA0 /* BeaconOperationApproveViewController.swift */,
 				C05D4E09287D715100E7ED17 /* WalletConnectOperationApproveViewController.swift */,
 				C005BA2E2822C44600D8369D /* Profile */,
@@ -1205,10 +1213,8 @@
 		C0B743B826AB220300377A9B /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				C02D7CA927BEB0B7006A8E39 /* TitleSubtitleCell.swift */,
-				C05CBBA728228D4D00568DC9 /* AccountSocialCell.swift */,
-				C05CBBA928228D6F00568DC9 /* AccountBasicCell.swift */,
-				C05CBBAB28228D8100568DC9 /* AccountSubCell.swift */,
+				C07E283729E84BE000E8529A /* AccountsSectionHeaderCell.swift */,
+				C07E283929E84C0E00E8529A /* AccountItemCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1740,6 +1746,7 @@
 				C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */,
 				C0F7113529DCBA0D00FA59E0 /* RecoveryPhraseInfoViewController.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
+				C07E283A29E84C0E00E8529A /* AccountItemCell.swift in Sources */,
 				C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */,
 				C0E2317D29897BB5007BC79D /* SendTokenConfirmViewController.swift in Sources */,
 				C01372AA29B206CD0083E297 /* MenuActionCell.swift in Sources */,
@@ -1795,6 +1802,7 @@
 				C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */,
 				C082BBC528941F1A002B1E42 /* AddLiquidityViewController.swift in Sources */,
 				C015BB3D282956C4005F50B8 /* BeaconViewModel.swift in Sources */,
+				C07E283829E84BE000E8529A /* AccountsSectionHeaderCell.swift in Sources */,
 				C0258921292D1166000D59F6 /* FavouriteTokenCell.swift in Sources */,
 				C0EA19DA29096E4600E6B40D /* CollectibleDetailDescriptionCell.swift in Sources */,
 				C0B08A33270DC25900075618 /* SendLedgerApproveViewController.swift in Sources */,

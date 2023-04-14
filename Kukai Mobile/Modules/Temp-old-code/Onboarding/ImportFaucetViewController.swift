@@ -96,7 +96,7 @@ class ImportFaucetViewController: UIViewController {
 	}
 	
 	func cahceWalletAndSegue(wallet: RegularWallet) {
-		let walletCache = WalletCacheService()
+		/*let walletCache = WalletCacheService()
 		
 		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
@@ -106,6 +106,6 @@ class ImportFaucetViewController: UIViewController {
 			
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to cache")
-		}
+		}*/
 	}
 }

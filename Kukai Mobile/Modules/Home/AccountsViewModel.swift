@@ -9,6 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
+/*
 struct WalletData: Hashable {
 	let type: WalletType
 	let authProvider: TorusAuthProvider?
@@ -18,9 +19,110 @@ struct WalletData: Hashable {
 	let isChild: Bool
 	let parentAddress: String?
 }
+*/
 
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+	
 	typealias SectionEnum = Int
+	typealias CellDataType = AnyHashable
+	
+	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
+	
+	func makeDataSource(withTableView tableView: UITableView) {
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			
+			if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+				cell.headingLabel.text = obj
+				return cell
+				
+			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
+				let walletMedia = TransactionService.walletMedia(forWalletMetadata: obj, ofSize: .size_22)
+				cell.iconView.image = walletMedia.image
+				cell.titleLabel.text = walletMedia.title
+				cell.subtitleLabel.text = walletMedia.subtitle
+				
+				if obj.address == DependencyManager.shared.selectedWalletAddress {
+					self?.selectedIndex = indexPath
+				}
+				
+				return cell
+				
+			} else {
+				return UITableViewCell()
+			}
+		})
+		
+		dataSource?.defaultRowAnimation = .fade
+	}
+	
+	func refresh(animate: Bool, successMessage: String? = nil) {
+		guard let ds = dataSource else {
+			return
+		}
+		
+		let wallets = DependencyManager.shared.walletList
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		
+		var sections: [Int] = []
+		var sectionData: [[AnyHashable]] = []
+		
+		// Social
+		if wallets.socialWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append(["Social Wallets"])
+		}
+		for metadata in wallets.socialWallets {
+			sectionData[sections.count-1].append(metadata)
+		}
+		
+		
+		// HD's
+		for (index, metadata) in wallets.hdWallets.enumerated() {
+			sections.append(sections.count)
+			sectionData.append(["HD Wallet \(index + 1)"])
+			
+			sectionData[sections.count-1].append(metadata)
+			
+			for childMetadata in metadata.children {
+				sectionData[sections.count-1].append(childMetadata)
+			}
+		}
+		
+		
+		// Linear
+		if wallets.linearWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append(["Legacy Wallets"])
+		}
+		for metadata in wallets.linearWallets {
+			sectionData[sections.count-1].append(metadata)
+		}
+		
+		
+		// Ledger
+		if wallets.ledgerWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append(["Ledger Wallets"])
+		}
+		for metadata in wallets.ledgerWallets {
+			sectionData[sections.count-1].append(metadata)
+		}
+		
+		snapshot.appendSections(sections)
+		for (index, data) in sectionData.enumerated() {
+			snapshot.appendItems(data, toSection: index)
+		}
+		
+		ds.apply(snapshot, animatingDifferences: animate)
+		self.state = .success(nil)
+	}
+	
+	
+	
+	
+	
+	/*typealias SectionEnum = Int
 	typealias CellDataType = WalletData
 	
 	var dataSource: UITableViewDiffableDataSource<Int, WalletData>? = nil
@@ -154,5 +256,5 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		)
 		
 		return UIMenu(title: "Actions", image: nil, identifier: nil, options: [], children: options)
-	}
+	}*/
 }

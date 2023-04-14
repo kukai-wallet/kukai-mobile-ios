@@ -103,13 +103,12 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 	@objc func estimateFee() {
 		textfield.resignFirstResponder()
 		
-		guard let destination = TransactionService.shared.sendData.destination else {
+		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
 			self.alert(errorWithMessage: "Can't find destination")
 			return
 		}
 		
 		self.showLoadingModal(completion: nil)
-		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
 		if let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)

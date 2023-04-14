@@ -16,6 +16,6 @@ class AddWalletViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
-		(self.presentingViewController as? AccountsViewController)?.refeshWallets()
+		//(self.presentingViewController as? AccountsViewController)?.refeshWallets()
 	}
 }

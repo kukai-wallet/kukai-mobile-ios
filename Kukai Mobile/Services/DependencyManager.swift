@@ -82,40 +82,46 @@ class DependencyManager {
 	
 	// Wallet info / helpers
 	
-	var walletList: [WalletMetadata] = WalletCacheService().readNonsensitive()
+	var walletList: WalletMetadataList = WalletCacheService().readNonsensitive()
 	
-	var selectedWalletIndex: WalletIndex {
+	private var _selectedWalletMetadata: WalletMetadata? = nil
+	var selectedWalletMetadata: WalletMetadata? {
 		set {
-			UserDefaults.standard.setValue(newValue.parent, forKey: "app.kukai.mobile.selected.wallet.parent")
-			UserDefaults.standard.setValue(newValue.child, forKey: "app.kukai.mobile.selected.wallet.child")
+			_selectedWalletMetadata = newValue
+			
+			let encoded = try? JSONEncoder().encode(newValue)
+			UserDefaults.standard.setValue(encoded, forKey: "app.kukai.mobile.selected.wallet")
 			walletDidChange = true
 		}
 		get {
-			let parent = UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet.parent")
-			let child = UserDefaults.standard.object(forKey: "app.kukai.mobile.selected.wallet.child") as? Int
-			return WalletIndex(parent: parent, child: child)
-		}
-	}
-	
-	var selectedWalletMetadata: WalletMetadata {
-		get {
-			if let childIndex = selectedWalletIndex.child {
-				return walletList[selectedWalletIndex.parent].children[childIndex]
-			} else {
-				return walletList[selectedWalletIndex.parent]
+			if let cached = _selectedWalletMetadata {
+				return cached
 			}
+			
+			if let encoded = UserDefaults.standard.object(forKey: "app.kukai.mobile.selected.wallet") as? Data {
+				let decoded = try? JSONDecoder().decode(WalletMetadata.self, from: encoded)
+				_selectedWalletMetadata = decoded
+				
+				return decoded
+			}
+			
+			return nil
 		}
 	}
 	
-	var selectedWalletAddress: String {
+	var selectedWalletAddress: String? {
 		get {
-			return selectedWalletMetadata.address
+			return selectedWalletMetadata?.address
 		}
 	}
 	
 	var selectedWallet: Wallet? {
 		get {
-			return WalletCacheService().fetchWallet(forAddress: selectedWalletMetadata.address)
+			if let address = selectedWalletAddress {
+				return WalletCacheService().fetchWallet(forAddress: address)
+			}
+			
+			return nil
 		}
 	}
 	

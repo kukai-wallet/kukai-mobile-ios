@@ -25,16 +25,18 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		let address = DependencyManager.shared.selectedWalletAddress
+		/*let address = DependencyManager.shared.selectedWalletAddress
 		guard let selectedPosition = TransactionService.shared.liquidityDetails.selectedPosition else {
 			self.state = .failure(KukaiError.unknown(withString: "Can't find wallet"), "Can't find wallet")
 			return
-		}
+		}*/
+		
 		
 		if !state.isLoading() {
 			state = .loading
 		}
 		
+		/*
 		DAppHelperService.Quipuswap.getPendingRewards(fromExchange: selectedPosition.exchange.address, forAddress: address, tzKTClient: DependencyManager.shared.tzktClient) { [weak self] result in
 			guard let res = try? result.get() else {
 				self?.state = .failure(result.getFailure(), "Couldn't get rewards info")
@@ -45,6 +47,7 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 			self?.withdrawEnabled = res > XTZAmount.zero()
 			self?.state = .success(successMessage)
 		}
+		*/
 	}
 	
 	func withdrawRewards() {

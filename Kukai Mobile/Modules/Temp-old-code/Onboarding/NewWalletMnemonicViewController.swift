@@ -21,6 +21,7 @@ class NewWalletMnemonicViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		/*
 		if let mnemonic = (WalletCacheService().fetchWallet(forAddress: DependencyManager.shared.selectedWalletAddress) as? HDWallet)?.mnemonic {
 			
 			let words = mnemonic.words
@@ -45,6 +46,7 @@ class NewWalletMnemonicViewController: UIViewController {
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to load mnemonic")
 		}
+		*/
 	}
 	
 	func updateLabel(inStackview stackview: UIStackView, atIndex index: Int, toText text: String) {

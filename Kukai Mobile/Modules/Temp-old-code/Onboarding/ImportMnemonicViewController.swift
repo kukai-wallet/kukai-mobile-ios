@@ -41,7 +41,7 @@ class ImportMnemonicViewController: UIViewController {
 	}
 	
 	@IBAction func importTapped(_ sender: Any) {
-		guard let seedPhrase = seedPhraseTextView.text, seedPhrase != "", let mnemonic = try? Mnemonic(seedPhrase: seedPhrase) else {
+		/*guard let seedPhrase = seedPhraseTextView.text, seedPhrase != "", let mnemonic = try? Mnemonic(seedPhrase: seedPhrase) else {
 			self.alert(withTitle: "Error", andMessage: "No seed")
 			return
 		}
@@ -68,7 +68,7 @@ class ImportMnemonicViewController: UIViewController {
 			
 		} else {
 			self.alert(withTitle: "Error", andMessage: "invalid wallet details supplied")
-		}
+		}*/
 	}
 	
 	func handleSuccessNavigation() {

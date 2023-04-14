@@ -11,6 +11,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
+        </array>
         <array key="Roboto-Bold.ttf">
             <string>Roboto-Bold</string>
         </array>
@@ -63,7 +69,7 @@
                                 <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                             </userDefinedRuntimeAttributes>
                             <connections>
-                                <segue destination="BvX-rK-NwU" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="hlP-u9-ahC"/>
+                                <segue destination="aUb-nN-c0H" kind="show" id="ih5-Nj-FyT"/>
                             </connections>
                         </button>
                         <barButtonItem key="rightBarButtonItem" id="XN3-xB-UH4">
@@ -327,7 +333,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NYT-4e-qf4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="911.59420289855075" y="-2748.2142857142858"/>
+            <point key="canvasLocation" x="1812" y="-3979"/>
         </scene>
         <!--Account-->
         <scene sceneID="74F-YN-StF">
@@ -477,7 +483,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p8i-cQ-x6h" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2087" y="-2748"/>
+            <point key="canvasLocation" x="2988" y="-3979"/>
         </scene>
         <!--Stake-->
         <scene sceneID="1yc-Lv-GBU">
@@ -488,6 +494,190 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOT-Rd-hYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-168" y="-2875"/>
+        </scene>
+        <!--Wallets-->
+        <scene sceneID="jFg-Wn-X5b">
+            <objects>
+                <viewController id="aUb-nN-c0H" customClass="AccountsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="g3k-Zd-dy4">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="khi-oB-WKv">
+                                <rect key="frame" x="0.0" y="91" width="390" height="719"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountsSectionHeaderCell" id="0pv-Y7-cl5" customClass="AccountsSectionHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="390" height="29"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="0pv-Y7-cl5" id="hGd-xL-cUi">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="29"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wallet" translatesAutoresizingMaskIntoConstraints="NO" id="PXs-b2-Gue">
+                                                    <rect key="frame" x="16" y="4" width="16" height="15"/>
+                                                    <color key="tintColor" name="Txt10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="6Rn-UI-hyW"/>
+                                                        <constraint firstAttribute="width" constant="16" id="gmI-J9-2M2"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxm-nU-LyP">
+                                                    <rect key="frame" x="40" y="2" width="334" height="19.333333333333332"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="PXs-b2-Gue" secondAttribute="bottom" constant="10" id="69p-TN-NoN"/>
+                                                <constraint firstItem="Fxm-nU-LyP" firstAttribute="leading" secondItem="PXs-b2-Gue" secondAttribute="trailing" constant="8" id="8Iy-5D-c0a"/>
+                                                <constraint firstItem="PXs-b2-Gue" firstAttribute="leading" secondItem="hGd-xL-cUi" secondAttribute="leading" constant="16" id="W97-gN-2Z6"/>
+                                                <constraint firstAttribute="trailing" secondItem="Fxm-nU-LyP" secondAttribute="trailing" constant="16" id="XmS-1f-UUR"/>
+                                                <constraint firstItem="Fxm-nU-LyP" firstAttribute="centerY" secondItem="PXs-b2-Gue" secondAttribute="centerY" id="cre-Ot-0c1"/>
+                                                <constraint firstItem="PXs-b2-Gue" firstAttribute="top" secondItem="hGd-xL-cUi" secondAttribute="top" constant="4" id="ukt-qc-DAb"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="headingLabel" destination="Fxm-nU-LyP" id="mWY-L4-sb5"/>
+                                            <outlet property="iconView" destination="PXs-b2-Gue" id="vUz-L4-DQ0"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountItemCell" rowHeight="71" id="KdA-VF-z7e" customClass="AccountItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="79" width="390" height="71"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KdA-VF-z7e" id="gIC-5C-VBy">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="71"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJa-so-iM1">
+                                                    <rect key="frame" x="16" y="2" width="358" height="67"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="5Ye-Sl-4hC">
+                                                            <rect key="frame" x="12" y="16" width="22" height="22"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="22" id="JsF-FC-M3v"/>
+                                                                <constraint firstAttribute="width" constant="22" id="Qfh-ad-6A0"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bCf-Ky-9Ha">
+                                                            <rect key="frame" x="44" y="16" width="246" height="35"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXR-AY-uAm">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="246" height="19.333333333333332"/>
+                                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                                                    <color key="textColor" name="Txt2"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqA-p2-tZv">
+                                                                    <rect key="frame" x="0.0" y="19.333333333333336" width="246" height="15.666666666666664"/>
+                                                                    <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="10"/>
+                                                                    <color key="textColor" name="Txt10"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnUnchecked" translatesAutoresizingMaskIntoConstraints="NO" id="0dy-VD-hhp">
+                                                            <rect key="frame" x="306" y="15.666666666666671" width="36" height="36"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="36" id="UJv-f1-n04"/>
+                                                                <constraint firstAttribute="height" constant="36" id="cWP-lk-qIB"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="bCf-Ky-9Ha" firstAttribute="top" secondItem="aJa-so-iM1" secondAttribute="top" constant="16" id="96W-LM-yJc"/>
+                                                        <constraint firstItem="0dy-VD-hhp" firstAttribute="centerY" secondItem="aJa-so-iM1" secondAttribute="centerY" id="FIo-SL-AWt"/>
+                                                        <constraint firstItem="5Ye-Sl-4hC" firstAttribute="leading" secondItem="aJa-so-iM1" secondAttribute="leading" constant="12" id="G9r-RV-SGz"/>
+                                                        <constraint firstItem="bCf-Ky-9Ha" firstAttribute="top" secondItem="5Ye-Sl-4hC" secondAttribute="top" id="IuC-ek-alP"/>
+                                                        <constraint firstAttribute="trailing" secondItem="0dy-VD-hhp" secondAttribute="trailing" constant="16" id="PUe-hj-Mpf"/>
+                                                        <constraint firstAttribute="bottom" secondItem="bCf-Ky-9Ha" secondAttribute="bottom" constant="16" id="fJ4-Xc-hav"/>
+                                                        <constraint firstItem="0dy-VD-hhp" firstAttribute="leading" secondItem="bCf-Ky-9Ha" secondAttribute="trailing" constant="16" id="iZs-aZ-BJe"/>
+                                                        <constraint firstItem="bCf-Ky-9Ha" firstAttribute="leading" secondItem="5Ye-Sl-4hC" secondAttribute="trailing" constant="10" id="kiF-pr-8yV"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="aJa-so-iM1" firstAttribute="leading" secondItem="gIC-5C-VBy" secondAttribute="leading" constant="16" id="KEJ-m8-6zx"/>
+                                                <constraint firstAttribute="bottom" secondItem="aJa-so-iM1" secondAttribute="bottom" constant="2" id="tar-Tg-huH"/>
+                                                <constraint firstAttribute="trailing" secondItem="aJa-so-iM1" secondAttribute="trailing" constant="16" id="uH6-Fu-Wtg"/>
+                                                <constraint firstItem="aJa-so-iM1" firstAttribute="top" secondItem="gIC-5C-VBy" secondAttribute="top" constant="2" id="yNu-Eq-awB"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="checkedImageView" destination="0dy-VD-hhp" id="ezY-rl-8uJ"/>
+                                            <outlet property="containerView" destination="aJa-so-iM1" id="wHG-pl-fWG"/>
+                                            <outlet property="iconView" destination="5Ye-Sl-4hC" id="yj5-r2-2u0"/>
+                                            <outlet property="subtitleLabel" destination="dqA-p2-tZv" id="ffy-cs-Esj"/>
+                                            <outlet property="titleLabel" destination="eXR-AY-uAm" id="DW3-VB-Yhz"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="l9t-oB-jdi"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="khi-oB-WKv" firstAttribute="leading" secondItem="l9t-oB-jdi" secondAttribute="leading" id="0Vz-p8-sDz"/>
+                            <constraint firstItem="khi-oB-WKv" firstAttribute="trailing" secondItem="l9t-oB-jdi" secondAttribute="trailing" id="1FR-PF-Mjo"/>
+                            <constraint firstItem="khi-oB-WKv" firstAttribute="top" secondItem="l9t-oB-jdi" secondAttribute="top" id="a82-jl-FEC"/>
+                            <constraint firstItem="l9t-oB-jdi" firstAttribute="bottom" secondItem="khi-oB-WKv" secondAttribute="bottom" id="gWP-da-gCK"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Wallets" id="O8A-eW-KuD">
+                        <rightBarButtonItems>
+                            <barButtonItem id="uQh-16-z7L">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="0Rb-3x-STy" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <rect key="frame" x="330" y="5.6666666666666679" width="44" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnAddKnockout"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                            <real key="value" value="22"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                            <real key="value" value="22"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                            <color key="value" name="BGB4"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem id="blu-IH-in9">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="BXZ-at-zJb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <rect key="frame" x="278" y="5.6666666666666679" width="44" height="33"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <state key="normal" title="Button"/>
+                                    <buttonConfiguration key="configuration" style="plain"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Edit"/>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                            <real key="value" value="24"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                            <color key="value" name="BGB4"/>
+                                        </userDefinedRuntimeAttribute>
+                                        <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                            <real key="value" value="24"/>
+                                        </userDefinedRuntimeAttribute>
+                                    </userDefinedRuntimeAttributes>
+                                </button>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="khi-oB-WKv" id="1gQ-4a-JuH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fuT-T2-w7f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="921.53846153846155" y="-2748.341232227488"/>
         </scene>
         <!--wallet-connect-pair-->
         <scene sceneID="byn-vW-3cp">
@@ -568,14 +758,29 @@
             <point key="canvasLocation" x="-165" y="-3073"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="0Rb-3x-STy">
+            <size key="intrinsicContentSize" width="46" height="36"/>
+        </designable>
+        <designable name="BXZ-at-zJb">
+            <size key="intrinsicContentSize" width="48" height="38"/>
+        </designable>
+    </designables>
     <resources>
+        <image name="Edit" width="24" height="24"/>
         <image name="Hamburger" width="22" height="16"/>
         <image name="Scan" width="24" height="24"/>
-        <image name="Social_Apple" width="25" height="30"/>
+        <image name="Social_Apple" width="30" height="30"/>
+        <image name="Wallet" width="22" height="18"/>
         <image name="arrow.turn.down.right" catalog="system" width="128" height="99"/>
+        <image name="btnAddKnockout" width="36" height="36"/>
+        <image name="btnUnchecked" width="36" height="36"/>
         <image name="tezos-xtz-logo" width="193" height="237"/>
         <namedColor name="BG12">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGB4">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

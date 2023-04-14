@@ -20,7 +20,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	@IBOutlet weak var logoText: UILabel!
 	
 	private var runOnce = false
-	private var hasWallet = DependencyManager.shared.walletList.count > 0
+	private var hasWallet = DependencyManager.shared.walletList.count() > 0
 	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()
 	
@@ -76,7 +76,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		hasWallet = DependencyManager.shared.walletList.count > 0
+		hasWallet = DependencyManager.shared.walletList.count() > 0
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 	}

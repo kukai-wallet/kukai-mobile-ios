@@ -88,7 +88,7 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 	// MARK: - Shared
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		self.hideLoadingModal { [weak self] in
+		/*self.hideLoadingModal { [weak self] in
 			switch result {
 				case .success(let wallet):
 					// Clear out any other wallets
@@ -110,7 +110,7 @@ class GetStartedViewController: UIViewController, UIPopoverPresentationControlle
 				case .failure(let error):
 					self?.alert(withTitle: "Error", andMessage: error.description)
 			}
-		}
+		}*/
 	}
 	
 	func handleSuccessNavigation() {

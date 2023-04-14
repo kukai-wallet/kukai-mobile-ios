@@ -97,7 +97,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			
 			// TODO: add selected wallet to send data
 			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
-			let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
+			guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
 			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
 			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
@@ -154,7 +154,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata.type != .ledger {
+		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -224,7 +224,8 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
+		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
+		
 		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
 		let destinationAlias = TransactionService.shared.sendData.destinationAlias
 		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()

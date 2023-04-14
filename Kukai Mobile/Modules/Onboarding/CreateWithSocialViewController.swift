@@ -161,7 +161,7 @@ class CreateWithSocialViewController: UIViewController {
 					// try to cache new one, and move on if successful
 					if walletCache.cache(wallet: wallet, childOfIndex: nil) {
 						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
+						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
 						
 						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
 							self?.performSegue(withIdentifier: "done", sender: nil)
