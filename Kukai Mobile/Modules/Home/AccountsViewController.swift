@@ -11,6 +11,10 @@ import KukaiCoreSwift
 
 class AccountsViewController: UIViewController {
 	
+	@IBOutlet var addButtonContainer: UIBarButtonItem!
+	@IBOutlet var editButtonContainer: UIBarButtonItem!
+	@IBOutlet var doneButtonContainer: UIBarButtonItem!
+	
 	@IBOutlet var tableView: UITableView!
 	
 	private let viewModel = AccountsViewModel()
@@ -23,6 +27,8 @@ class AccountsViewController: UIViewController {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
+		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -43,7 +49,19 @@ class AccountsViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
+	}
+	
+	@IBAction func editButtonTapped(_ sender: Any) {
+		self.tableView.isEditing = true
+		self.navigationItem.setRightBarButtonItems([doneButtonContainer], animated: false)
+	}
+	
+	@IBAction func doneButtonTapped(_ sender: Any) {
+		self.tableView.isEditing = false
+		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 	}
 }
 
@@ -57,18 +75,40 @@ extension AccountsViewController: UITableViewDelegate {
 		}
 		
 		if indexPath == viewModel.selectedIndex {
-			cell.setSelected(true, animated: false)
+			cell.setSelected(true, animated: true)
 			
 		} else {
-			cell.setSelected(false, animated: false)
+			cell.setSelected(false, animated: true)
 		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if indexPath.row == 0 { return }
+		
+		deselectCurrentSelection()
+		
+		viewModel.selectedIndex = indexPath
+		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+		
+		guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
+			return
+		}
+		
+		DependencyManager.shared.selectedWalletMetadata = metadata
+		self.navigationController?.popViewController(animated: true)
+	}
+	
+	private func deselectCurrentSelection() {
 		tableView.deselectRow(at: viewModel.selectedIndex, animated: true)
 		let previousCell = tableView.cellForRow(at: viewModel.selectedIndex)
 		previousCell?.setSelected(false, animated: true)
-		
-		viewModel.selectedIndex = indexPath
+	}
+	
+	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+		return .none
+	}
+	
+	func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+		return false
 	}
 }

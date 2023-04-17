@@ -7,15 +7,33 @@
 
 import UIKit
 
-class AddWalletViewController: UIViewController {
-
-    override func viewDidLoad() {
+class AddWalletViewController: UIViewController, BottomSheetCustomProtocol {
+	
+	var bottomSheetMaxHeight: CGFloat = 330
+	
+	@IBOutlet var createWalletButton: CustomisableButton!
+	@IBOutlet var existingWalletButton: CustomisableButton!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
+		createWalletButton.customButtonType = .primary
+		existingWalletButton.customButtonType = .secondary
     }
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
+	@IBAction func createTapped(_ sender: Any) {
+		let parent = (self.presentingViewController as? UINavigationController)?.viewControllers.last
 		
-		//(self.presentingViewController as? AccountsViewController)?.refeshWallets()
+		self.dismiss(animated: true) {
+			parent?.performSegue(withIdentifier: "create", sender: nil)
+		}
+	}
+	
+	@IBAction func existingTapped(_ sender: Any) {
+		let parent = (self.presentingViewController as? UINavigationController)?.viewControllers.last
+		
+		self.dismiss(animated: true) {
+			parent?.performSegue(withIdentifier: "existing", sender: nil)
+		}
 	}
 }

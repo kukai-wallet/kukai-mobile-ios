@@ -235,7 +235,12 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
-			self.performSegue(withIdentifier: "done", sender: nil)
+			let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+			if let vc = viewController {
+				self.navigationController?.popToViewController(vc, animated: true)
+			} else {
+				self.performSegue(withIdentifier: "done", sender: nil)
+			}
 		}
 	}
 }
