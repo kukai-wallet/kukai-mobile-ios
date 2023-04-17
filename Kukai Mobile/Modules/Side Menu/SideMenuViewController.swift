@@ -109,6 +109,7 @@ class SideMenuViewController: UIViewController {
 	@IBAction func swapTapped(_ sender: Any) {
 	}
 	
+	/*
 	@IBAction func deleteAllTapped(_ sender: Any) {
 		let alert = UIAlertController(title: "Are you Sure?", message: "Are you sure you want to delete all your wallets? This in unrecoverable", preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
@@ -130,6 +131,7 @@ class SideMenuViewController: UIViewController {
 		
 		self.present(alert, animated: true)
 	}
+	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {

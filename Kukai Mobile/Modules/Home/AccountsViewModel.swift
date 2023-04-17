@@ -9,13 +9,18 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
+protocol AccountsViewModelDelegate: AnyObject {
+	func allWalletsRemoved()
+}
+
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
+	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
+	public weak var delegate: AccountsViewModelDelegate? = nil
 	
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
@@ -59,6 +64,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		guard let ds = dataSource else {
 			return
 		}
+		
+		guard DependencyManager.shared.walletList.count() > 0 else {
+			delegate?.allWalletsRemoved()
+			return
+		}
+		
+	
+		selectedIndex = IndexPath(row: -1, section: -1)
 		
 		let wallets = DependencyManager.shared.walletList
 		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
@@ -119,7 +132,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
 		
-		
 		// Add it all
 		snapshot.appendSections(sections)
 		for (index, data) in sectionData.enumerated() {
@@ -127,10 +139,28 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
+		
+		
+		// If user removed the currently selected wallet
+		if selectedIndex.row == -1 {
+			selectedIndex = IndexPath(row: 1, section: 0)
+			DependencyManager.shared.selectedWalletMetadata = metadataFor(indexPath: selectedIndex)
+		}
+		
 		self.state = .success(nil)
 	}
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
 		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
+	}
+	
+	/// Deleting a child index requires a HD parent wallet index (for performance reasons). Return the index of the HD wallet, if relevant
+	func parentIndexForIndexPathIfRelevant(indexPath: IndexPath) -> Int? {
+		
+		if indexPath.row > 1, let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata, parentItem.type == .hd {
+			return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
+		}
+		
+		return nil
 	}
 }

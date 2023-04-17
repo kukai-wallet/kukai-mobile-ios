@@ -25,8 +25,11 @@ class AccountsViewController: UIViewController {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
+		viewModel.delegate = self
+		
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		tableView.allowsSelectionDuringEditing = true
 		
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
@@ -62,6 +65,28 @@ class AccountsViewController: UIViewController {
 	@IBAction func doneButtonTapped(_ sender: Any) {
 		self.tableView.isEditing = false
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
+		
+		if let cell = tableView.cellForRow(at: viewModel.selectedIndex) {
+			cell.setSelected(true, animated: false)
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let dest = segue.destination.presentationController as? UISheetPresentationController {
+			dest.delegate = self
+		}
+		
+		if let vc = segue.destination as? EditWalletViewController, let indexPath = sender as? IndexPath {
+			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
+			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+		}
+	}
+}
+
+extension AccountsViewController: AccountsViewModelDelegate {
+	
+	func allWalletsRemoved() {
+		self.navigationController?.popToRootViewController(animated: true)
 	}
 }
 
@@ -85,17 +110,22 @@ extension AccountsViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row == 0 { return }
 		
-		deselectCurrentSelection()
-		
-		viewModel.selectedIndex = indexPath
-		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-		
-		guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
-			return
+		if !tableView.isEditing {
+			deselectCurrentSelection()
+			
+			viewModel.selectedIndex = indexPath
+			tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+			
+			guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
+				return
+			}
+			
+			DependencyManager.shared.selectedWalletMetadata = metadata
+			self.navigationController?.popViewController(animated: true)
+			
+		} else {
+			self.performSegue(withIdentifier: "edit", sender: indexPath)
 		}
-		
-		DependencyManager.shared.selectedWalletMetadata = metadata
-		self.navigationController?.popViewController(animated: true)
 	}
 	
 	private func deselectCurrentSelection() {
@@ -110,5 +140,12 @@ extension AccountsViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
 		return false
+	}
+}
+
+extension AccountsViewController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		self.viewModel.refresh(animate: true)
 	}
 }
