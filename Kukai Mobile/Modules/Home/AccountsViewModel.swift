@@ -9,8 +9,14 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
-protocol AccountsViewModelDelegate: AnyObject {
+protocol AccountsViewModelDelegate: UIViewController {
 	func allWalletsRemoved()
+}
+
+struct AccountsHeaderObject: Hashable {
+	let id = UUID()
+	let header: String
+	let menu: MenuViewController?
 }
 
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -21,6 +27,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
+	
+	private var headers: [AccountsHeaderObject] = []
 	
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
@@ -40,8 +48,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
-				cell.headingLabel.text = obj
+			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+				cell.headingLabel.text = obj.header
+				cell.setup(menuVC: obj.menu)
+				
 				return cell
 				
 			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
@@ -83,7 +93,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["Social Wallets"])
+			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil)])
 		}
 		for (index, metadata) in wallets.socialWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -95,7 +105,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// HD's
 		for (index, metadata) in wallets.hdWallets.enumerated() {
 			sections.append(sections.count)
-			sectionData.append(["HD Wallet \(index + 1)"])
+			
+			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
+				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menuFor(walletMetadata: metadata, hdWalletIndex: index))])
+			}
 			
 			sectionData[sections.count-1].append(metadata)
 			
@@ -112,7 +125,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Linear
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["Legacy Wallets"])
+			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil)])
 		}
 		for (index, metadata) in wallets.linearWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -124,7 +137,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Ledger
 		if wallets.ledgerWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["Ledger Wallets"])
+			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil)])
 		}
 		for (index, metadata) in wallets.ledgerWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -162,5 +175,23 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return nil
+	}
+	
+	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
+		guard let vc = delegate else { return nil }
+		
+		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
+			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
+			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1),
+			   WalletCacheService().cache(wallet: newChild, childOfIndex: hdWalletIndex) {
+				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+				self?.refresh(animate: true)
+				
+			} else {
+				vc.alert(errorWithMessage: "Unable to add child")
+			}
+		}
+		
+		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
 	}
 }

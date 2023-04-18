@@ -27,6 +27,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	private var header: String? = nil
 	private weak var sourceVC: UIViewController? = nil
 	
+	/// Similar to default UIMenu control
 	convenience init(actions: [[UIAction]], header: String?, sourceViewController: UIViewController) {
 		self.init(style: .grouped)
 		self.actions = actions
@@ -34,6 +35,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 		self.sourceVC = sourceViewController
 	}
 	
+	/// Based off a UIMenu control, but functions like a radio button group, presenting user with a list of items to choose. i.e. filtering options
 	convenience init(choices: [MenuChoice], header: String?, sourceViewController: UIViewController) {
 		self.init(style: .grouped)
 		self.choices = choices
@@ -138,6 +140,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 			
 			cell.actionLabel.text = action.title
 			cell.iconView.image = action.image?.withTintColor(.colorNamed("BGB4"))
+			cell.iconView.tintColor = .colorNamed("BGB4")
 			return cell
 		}
 		

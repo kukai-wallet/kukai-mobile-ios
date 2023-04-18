@@ -29,8 +29,6 @@ class EditWalletViewController: UIViewController, BottomSheetCustomProtocol {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		print("Address: \(selectedWalletMetadata?.address) - parentIndex: \(selectedWalletParentIndex)")
-		
 		guard let selectedWalletMetadata = selectedWalletMetadata else { return }
 		let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_20)
 		if let subtitle = media.subtitle {
