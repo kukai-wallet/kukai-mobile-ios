@@ -218,7 +218,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			sendData
 		]
 		
-		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true {
+		// TODO: remove testnet check in future when remote serivce supports ghostnet
+		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true && DependencyManager.shared.currentNetworkType != .testnet {
 			data.append(stakingRewardLoadingData)
 		}
 		
@@ -256,7 +257,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 		}
 		
-		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true {
+		// TODO: remove testnet check in future when remote serivce supports ghostnet
+		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true && DependencyManager.shared.currentNetworkType != .testnet {
 			loadBakerData { [weak self] result in
 				guard let self = self else { return }
 				
@@ -269,7 +271,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 						ds.apply(self.currentSnapshot, animatingDifferences: true)
 						
 					case .failure(let error):
-						self.state = .failure(error, "Unable to get chart data")
+						self.state = .failure(error, "Unable to get baker data")
 				}
 			}
 		}

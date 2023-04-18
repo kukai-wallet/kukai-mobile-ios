@@ -50,17 +50,10 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		self.navigationController?.popToDetails()
 	}
 	
-	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return viewModel.heightForHeaderInSection(section, forTableView: tableView)
-	}
-	
-	func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-		return viewModel.viewForHeaderInSection(section, forTableView: tableView)
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
-		let walletObj = viewModel.walletObj(forIndexPath: indexPath)
+		
+		guard indexPath.row > 0, let walletObj = viewModel.walletObj(forIndexPath: indexPath) else { return }
 		
 		TransactionService.shared.currentTransactionType = .send
 		TransactionService.shared.sendData.destinationIcon = walletObj.icon
