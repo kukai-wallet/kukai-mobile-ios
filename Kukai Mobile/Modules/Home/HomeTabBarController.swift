@@ -225,27 +225,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func stopActivityAnimation(success: Bool) {
-		var tabBarItem: UITabBarItem? = nil
-		
-		for item in (self.tabBar.items ?? []) {
-			if item.title == "Activity" {
-				tabBarItem = item
-			}
-		}
-		
-		if success {
-			tabBarItem?.image = UIImage(named: "ActivityCompleted")
-			tabBarItem?.selectedImage = UIImage(named: "ActivityCompletedOn")
-		}
-		
 		activityAnimationImageView.stopAnimating()
 		activityAnimationImageView.isHidden = true
 		activityTabBarImageView?.isHidden = false
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-			tabBarItem?.image = UIImage(named: "Activity")
-			tabBarItem?.selectedImage = UIImage(named: "ActivityOn")
-		}
 	}
 	
 	public func updateAccountButton() {

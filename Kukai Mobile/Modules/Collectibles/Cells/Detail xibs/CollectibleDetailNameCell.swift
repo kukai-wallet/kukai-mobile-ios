@@ -18,12 +18,12 @@ protocol CollectibleDetailNameCellDelegate: AnyObject {
 class CollectibleDetailNameCell: UICollectionViewCell {
 
 	@IBOutlet weak var favouriteButton: UIButton!
+	@IBOutlet weak var showcaseButton: CustomisableButton!
 	@IBOutlet weak var shareButton: UIButton!
 	@IBOutlet weak var moreButton: UIButton!
 	@IBOutlet weak var nameLabel: UILabel!
 	@IBOutlet weak var websiteImageView: UIImageView!
 	@IBOutlet weak var websiteButton: UIButton!
-	@IBOutlet weak var showcaseLabel: UILabel!
 	
 	private var nft: NFT? = nil
 	private var isImage: Bool = false
@@ -48,12 +48,6 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		
 		favouriteButton.isSelected = isFavourited
 		menuVc = menuForMore(sourceViewController: menuSourceVc)
-		
-		if showcaseCount > 0 {
-			showcaseLabel.text = "Showcase (\(showcaseCount))"
-		} else {
-			showcaseLabel.isHidden = true
-		}
 	}
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
@@ -163,5 +157,9 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 	
 	@IBAction func shareTapped(_ sender: Any) {
 		self.delegate?.errorMessage(message: "Share sheet not ready yet")
+	}
+	
+	@IBAction func showcaseTapped(_ sender: Any) {
+		self.delegate?.errorMessage(message: "Showcase not ready yet")
 	}
 }
