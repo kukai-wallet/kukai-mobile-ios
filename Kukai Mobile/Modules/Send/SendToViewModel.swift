@@ -73,7 +73,6 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build arrays of data
 		let wallets = DependencyManager.shared.walletList
-		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let walletImage = UIImage(named: "Wallet")?.resizedImage(size: CGSize(width: 16, height: 15))?.withTintColor(.colorNamed("Txt10")) ?? UIImage()
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		

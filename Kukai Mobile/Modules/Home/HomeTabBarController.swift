@@ -10,8 +10,6 @@ import Combine
 import KukaiCoreSwift
 import WalletConnectSign
 import WalletConnectPairing
-//import BeaconCore
-//import BeaconBlockchainTezos
 import Combine
 import OSLog
 
@@ -103,9 +101,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		TransactionService.shared.resetState()
 		updateAccountButton()
-		
-		//BeaconService.shared.operationDelegate = self
-		//BeaconService.shared.startBeacon(completion: ({ _ in}))
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
@@ -396,95 +391,3 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
- extension HomeTabBarController: BeaconServiceOperationDelegate {
- 
- func operationRequest(requestingAppName: String, operationRequest: OperationTezosRequest) {
- /*guard operationRequest.network.type.rawValue == DependencyManager.shared.currentNetworkType.rawValue else {
-  self.alert(errorWithMessage: "Processing Beacon request, request is for a different network than the one currently selected on device. Please check the dApp and apps settings to match sure they match")
-  return
-  }
-  
-  guard let wallet = WalletCacheService().fetchWallet(address: operationRequest.sourceAddress) else {
-  self.alert(errorWithMessage: "Processing Beacon request, unable to locate wallet: \(operationRequest.sourceAddress)")
-  return
-  }
-  
-  self.showLoadingModal { [weak self] in
-  self?.processAndShow(withWallet: wallet, operationRequest: operationRequest)
-  }
-  */
- }
- 
- private func processAndShow(withWallet wallet: Wallet, operationRequest: OperationTezosRequest) {
- /*
-  // Map all beacon objects to kuaki objects, and apply some logic to avoid having to deal with cumbersome beacon enum structure
-  let convertedOps = BeaconService.process(operation: operationRequest, forWallet: wallet)
-  
-  DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
-  guard let estimatedOps = try? result.get() else {
-  self?.hideLoadingModal(completion: {
-  self?.alert(errorWithMessage: "Processing Beacon request, unable to estimate fees")
-  })
-  return
-  }
-  
-  self?.processTransactions(estimatedOperations: estimatedOps, operationRequest: operationRequest)
-  }
-  */
- }
- 
- private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], operationRequest: OperationTezosRequest) {
- /*TransactionService.shared.currentTransactionType = .beaconOperation
-  TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
-  TransactionService.shared.beaconOperationData.beaconRequest = operationRequest
-  
-  if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
-  
-  if transactionOperation.parameters == nil {
-  TransactionService.shared.beaconOperationData.operationType = .sendXTZ
-  
-  let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
-  TransactionService.shared.beaconOperationData.tokenToSend = Token.xtz(withAmount: xtzAmount)
-  
-  } else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
-  if token.isNFT {
-  TransactionService.shared.beaconOperationData.operationType = .sendNFT
-  TransactionService.shared.beaconOperationData.tokenToSend = token.token
-  
-  } else {
-  TransactionService.shared.beaconOperationData.operationType = .sendToken
-  TransactionService.shared.beaconOperationData.tokenToSend = token.token
-  }
-  
-  } else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
-  TransactionService.shared.beaconOperationData.operationType = .callSmartContract
-  TransactionService.shared.beaconOperationData.entrypointToCall = entrypoint
-  
-  } else {
-  TransactionService.shared.beaconOperationData.operationType = .unknown
-  }
-  
-  } else {
-  TransactionService.shared.beaconOperationData.operationType = .unknown
-  }
-  
-  self.hideLoadingModal(completion: { [weak self] in
-  self?.performSegue(withIdentifier: "beacon-approve", sender: nil)
-  })*/
- }
- }*/

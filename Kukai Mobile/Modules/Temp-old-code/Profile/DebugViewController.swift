@@ -81,22 +81,18 @@ class DebugViewController: UITableViewController {
 	
 	private func obliterateCache() {
 		self.alert(withTitle: "Really?", andMessage: "Clicking ok will attempt to delete everything stored by this app and return to the start. Are you sure?") { action in
-			BeaconService.shared.stopBeacon { [weak self] beaconStopped in
-				DispatchQueue.main.async {
-					DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-					
-					let _ = WalletCacheService().deleteAllCacheAndKeys()
-					self?.clearDocumentsDirectory()
-					TransactionService.shared.resetState()
-					
-					let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
-					UserDefaults.standard.removePersistentDomain(forName: domain)
-					
-					DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
-					
-					self?.navigationController?.popToRootViewController(animated: true)
-				}
-			}
+			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+			
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			self.clearDocumentsDirectory()
+			TransactionService.shared.resetState()
+			
+			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
+			UserDefaults.standard.removePersistentDomain(forName: domain)
+			
+			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
+			
+			self.navigationController?.popToRootViewController(animated: true)
 			
 		} cancelAction: { action in
 			// do nothing

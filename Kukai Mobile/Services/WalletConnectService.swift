@@ -177,7 +177,7 @@ public class WalletConnectService {
 		TransactionService.shared.walletConnectOperationData.requestParams = params
 		self.delegate?.processingIncomingOperations()
 		
-		// Map all beacon objects to kuaki objects
+		// Map all wallet connect objects to kuaki objects
 		let convertedOps = params.kukaiOperations()
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in

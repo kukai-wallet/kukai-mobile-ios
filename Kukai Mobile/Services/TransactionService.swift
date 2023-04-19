@@ -7,8 +7,6 @@
 
 import Foundation
 import KukaiCoreSwift
-//import BeaconCore
-//import BeaconBlockchainTezos
 import WalletConnectSign
 import UIKit
 import OSLog
@@ -22,9 +20,6 @@ public class TransactionService {
 		case exchange
 		case addLiquidity
 		case removeLiquidity
-		//case beaconApprove
-		//case beaconSign
-		//case beaconOperation
 		case none
 	}
 	
@@ -205,23 +200,6 @@ public class TransactionService {
 		var calculationResult: DexRemoveCalculationResult?
 	}
 	
-	/*
-	public struct BeaconApproveData {
-		var request: PermissionTezosRequest?
-	}
-	
-	public struct BeaconSignData {
-		var request: SignPayloadTezosRequest?
-		var humanReadableString: String?
-	}
-	
-	public struct BeaconOperationData {
-		var operationType: WalletConnectOperationType?
-		var tokenToSend: Token?
-		var entrypointToCall: String?
-		var beaconRequest: OperationTezosRequest?
-	}
-	*/
 	public struct WalletConnectOperationData {
 		var proposal: Session.Proposal?
 		var request: WalletConnectSign.Request?
@@ -242,9 +220,6 @@ public class TransactionService {
 	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
 	public var removeLiquidityData: RemoveLiquidityData
-	//public var beaconApproveData: BeaconApproveData
-	//public var beaconSignData: BeaconSignData
-	//public var beaconOperationData: BeaconOperationData
 	public var walletConnectOperationData: WalletConnectOperationData
 	
 	
@@ -257,9 +232,6 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
-		//self.beaconApproveData = BeaconApproveData(request: nil)
-		//self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
-		//self.beaconOperationData = BeaconOperationData( operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
 		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
 	}
 	
@@ -276,9 +248,6 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
-		//self.beaconApproveData = BeaconApproveData(request: nil)
-		//self.beaconSignData = BeaconSignData(request: nil, humanReadableString: nil)
-		//self.beaconOperationData = BeaconOperationData( operationType: nil, tokenToSend: nil, entrypointToCall: nil, beaconRequest: nil)
 		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
 	}
 	

@@ -107,7 +107,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menuFor(walletMetadata: metadata, hdWalletIndex: index))])
+				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menu)])
 			}
 			
 			sectionData[sections.count-1].append(metadata)
