@@ -99,6 +99,10 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// HD's
 		for (index, metadata) in wallets.hdWallets.enumerated() {
+			if metadata.address == selectedAddress && metadata.children.count == 0 {
+				continue
+			}
+			
 			sections.append(sections.count)
 			sectionData.append([SendHeaderObj(icon: walletImage, title: "HD Wallet \(index + 1)")])
 			
