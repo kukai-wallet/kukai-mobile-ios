@@ -38,12 +38,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 		self.nameLabel.text = proposal.proposer.name
 		
 		
-		if DependencyManager.shared.walletList.count == 1 {
-			accountLabel.text = DependencyManager.shared.selectedWalletAddress.truncateTezosAddress()
+		if DependencyManager.shared.walletList.count() == 1 {
+			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()
 			accountButtonContainer.isHidden = true
 		} else {
 			accountLabel.isHidden = true
-			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress.truncateTezosAddress(), for: .normal)
+			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress(), for: .normal)
 		}
 	}
 	
@@ -59,8 +59,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
-		let account = DependencyManager.shared.selectedWalletAddress
-		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
+		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal, let account = DependencyManager.shared.selectedWalletAddress else {
 			return
 		}
 		

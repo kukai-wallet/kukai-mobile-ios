@@ -51,8 +51,7 @@ class RecoveryPhraseViewController: UIViewController {
 		viewSeedWordsButton.customButtonType = .primary
 		nextButton.customButtonType = .primary
 		
-		let address = DependencyManager.shared.selectedWalletAddress
-		guard let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		guard let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
 			self.navigationController?.previousViewController()?.alert(errorWithMessage: "Unable to locate wallet information. Please try again")
 			self.navigationController?.popViewController(animated: true)
 			return

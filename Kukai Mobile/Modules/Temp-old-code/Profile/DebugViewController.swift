@@ -55,10 +55,8 @@ class DebugViewController: UITableViewController {
 		report += "Current Tezos Domains URL: \n" + DependencyManager.shared.currentTezosDomainsURL.absoluteString + " \n\n"
 		
 		report += "\n\n\nWallet: \n"
-		report += "Selected Wallet index parent: \n" + "\(DependencyManager.shared.selectedWalletIndex.parent)" + " \n\n"
-		report += "Selected Wallet index child: \n" + "\(DependencyManager.shared.selectedWalletIndex.child ?? -1)" + " \n\n"
-		report += "Selected Wallet address: \n" + (DependencyManager.shared.selectedWalletAddress) + " \n\n"
-		report += "Total wallet count: \n" + "\(wallets.count)" + " \n\n"
+		report += "Selected Wallet address: \n" + (DependencyManager.shared.selectedWalletAddress ?? "nil") + " \n\n"
+		report += "Total wallet count: \n" + "\(wallets.count())" + " \n\n"
 		
 		report += "\n\n\nBalances: \n"
 		report += "Has fetched initial data: \n" + "\(DependencyManager.shared.balanceService.hasFetchedInitialData)" + " \n\n"
@@ -83,22 +81,18 @@ class DebugViewController: UITableViewController {
 	
 	private func obliterateCache() {
 		self.alert(withTitle: "Really?", andMessage: "Clicking ok will attempt to delete everything stored by this app and return to the start. Are you sure?") { action in
-			BeaconService.shared.stopBeacon { [weak self] beaconStopped in
-				DispatchQueue.main.async {
-					DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-					
-					let _ = WalletCacheService().deleteAllCacheAndKeys()
-					self?.clearDocumentsDirectory()
-					TransactionService.shared.resetState()
-					
-					let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
-					UserDefaults.standard.removePersistentDomain(forName: domain)
-					
-					DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
-					
-					self?.navigationController?.popToRootViewController(animated: true)
-				}
-			}
+			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+			
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			self.clearDocumentsDirectory()
+			TransactionService.shared.resetState()
+			
+			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
+			UserDefaults.standard.removePersistentDomain(forName: domain)
+			
+			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
+			
+			self.navigationController?.popToRootViewController(animated: true)
 			
 		} cancelAction: { action in
 			// do nothing

@@ -9,39 +9,57 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
-struct WalletData: Hashable {
-	let type: WalletType
-	let authProvider: TorusAuthProvider?
-	let username: String?
-	let address: String
-	let selected: Bool
-	let isChild: Bool
-	let parentAddress: String?
+protocol AccountsViewModelDelegate: UIViewController {
+	func allWalletsRemoved()
+}
+
+struct AccountsHeaderObject: Hashable {
+	let id = UUID()
+	let header: String
+	let menu: MenuViewController?
 }
 
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
-	typealias SectionEnum = Int
-	typealias CellDataType = WalletData
 	
-	var dataSource: UITableViewDiffableDataSource<Int, WalletData>? = nil
+	typealias SectionEnum = Int
+	typealias CellDataType = AnyHashable
+	
+	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
+	public weak var delegate: AccountsViewModelDelegate? = nil
+	
+	private var headers: [AccountsHeaderObject] = []
+	
+	
+	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
+		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+			if indexPath.row == 0 {
+				return false
+			}
+			
+			return true
+		}
+		
+		override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+			return false
+		}
+	}
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if indexPath.row != 0, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSubCell", for: indexPath) as? AccountSubCell {
-				cell.setup(address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
-				cell.setBorder(item.selected)
+			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+				cell.headingLabel.text = obj.header
+				cell.setup(menuVC: obj.menu)
+				
 				return cell
 				
-			} else if item.type == .social, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountSocialCell", for: indexPath) as? AccountSocialCell {
-				cell.setup(image: self?.imageForAuthProvider(item.authProvider), username: item.username ?? "", address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
-				cell.setBorder(item.selected)
-				return cell
+			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
+				let walletMedia = TransactionService.walletMedia(forWalletMetadata: obj, ofSize: .size_22)
+				cell.iconView.image = walletMedia.image
+				cell.titleLabel.text = walletMedia.title
+				cell.subtitleLabel.text = walletMedia.subtitle
 				
-			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "AccountBasicCell", for: indexPath) as? AccountBasicCell {
-				cell.setup(address: item.address, menu: self?.menuFor(walletData: item, indexPath: indexPath))
-				cell.setBorder(item.selected)
 				return cell
 				
 			} else {
@@ -54,105 +72,126 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			state = .failure(KukaiError.internalApplicationError(error: ViewModelError.dataSourceNotCreated), "Unable to process data at this time")
 			return
 		}
 		
-		let selectedAddress = DependencyManager.shared.selectedWalletAddress
+		guard DependencyManager.shared.walletList.count() > 0 else {
+			delegate?.allWalletsRemoved()
+			return
+		}
+		
+	
+		selectedIndex = IndexPath(row: -1, section: -1)
 		
 		let wallets = DependencyManager.shared.walletList
-		var snapshot = NSDiffableDataSourceSnapshot<Int, WalletData>()
-		snapshot.appendSections(Array(0...wallets.count))
+		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
-		for (index, wallet) in wallets.enumerated() {
+		var sections: [Int] = []
+		var sectionData: [[AnyHashable]] = []
+		
+		// Social
+		if wallets.socialWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil)])
+		}
+		for (index, metadata) in wallets.socialWallets.enumerated() {
+			sectionData[sections.count-1].append(metadata)
 			
-			if wallet.type == .social {
-				let username = wallet.displayName
-				let data = WalletData(type: wallet.type, authProvider: wallet.socialType, username: username, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
-				snapshot.appendItems([data], toSection: index)
-				
-			} else if wallet.type == .hd {
-				var data: [WalletData] = [WalletData(type: wallet.type, authProvider: nil, username: nil, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)]
-				for child in wallet.children {
-					data.append(WalletData(type: .hd, authProvider: nil, username: nil, address: child.address, selected: child.address == selectedAddress, isChild: true, parentAddress: wallet.address))
-				}
-				snapshot.appendItems(data, toSection: index)
-				
-			} else {
-				let data = WalletData(type: wallet.type, authProvider: nil, username: nil, address: wallet.address, selected: wallet.address == selectedAddress, isChild: false, parentAddress: nil)
-				snapshot.appendItems([data], toSection: index)
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+		}
+		
+		
+		// HD's
+		for (index, metadata) in wallets.hdWallets.enumerated() {
+			sections.append(sections.count)
+			
+			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
+				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menu)])
 			}
+			
+			sectionData[sections.count-1].append(metadata)
+			
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				sectionData[sections.count-1].append(childMetadata)
+				
+				if childMetadata.address == currentAddress { selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1) }
+			}
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
+		}
+		
+		
+		// Linear
+		if wallets.linearWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil)])
+		}
+		for (index, metadata) in wallets.linearWallets.enumerated() {
+			sectionData[sections.count-1].append(metadata)
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+		}
+		
+		
+		// Ledger
+		if wallets.ledgerWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil)])
+		}
+		for (index, metadata) in wallets.ledgerWallets.enumerated() {
+			sectionData[sections.count-1].append(metadata)
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+		}
+		
+		// Add it all
+		snapshot.appendSections(sections)
+		for (index, data) in sectionData.enumerated() {
+			snapshot.appendItems(data, toSection: index)
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		
+		
+		// If user removed the currently selected wallet
+		if selectedIndex.row == -1 {
+			selectedIndex = IndexPath(row: 1, section: 0)
+			DependencyManager.shared.selectedWalletMetadata = metadataFor(indexPath: selectedIndex)
+		}
+		
 		self.state = .success(nil)
 	}
 	
-	func imageForAuthProvider(_ provider: TorusAuthProvider?) -> UIImage? {
-		switch provider {
-			case .apple:
-				return UIImage(systemName: "xmark.octagon")
-			case .twitter:
-				return UIImage(systemName: "xmark.octagon")
-			case .google:
-				return UIImage(systemName: "xmark.octagon")
-			case .reddit:
-				return UIImage(systemName: "xmark.octagon")
-			case .facebook:
-				return UIImage(systemName: "xmark.octagon")
-			default:
-				return UIImage(systemName: "xmark.octagon")
-		}
+	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
+		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
 	}
 	
-	func menuFor(walletData: WalletData, indexPath: IndexPath) -> UIMenu {
-		var options: [UIAction] = []
+	/// Deleting a child index requires a HD parent wallet index (for performance reasons). Return the index of the HD wallet, if relevant
+	func parentIndexForIndexPathIfRelevant(indexPath: IndexPath) -> Int? {
 		
-		if walletData.type == .hd && indexPath.row == 0 {
-			options.append(
-				UIAction(title: "Add Account", image: UIImage(systemName: "plus.square.on.square"), identifier: nil, handler: { [weak self] action in
-					guard let hdWallet = WalletCacheService().fetchWallet(forAddress: walletData.address) as? HDWallet else {
-						self?.state = .failure(KukaiError.unknown(), "Unable to add new wallet")
-						return
-					}
-					
-					let numberOfChildren = DependencyManager.shared.walletList[indexPath.section].children.count
-					if let child = hdWallet.createChild(accountIndex: numberOfChildren+1), WalletCacheService().cache(wallet: child, childOfIndex: indexPath.section) {
-						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-						self?.refresh(animate: true)
-						
-					} else {
-						self?.state = .failure(KukaiError.unknown(), "Unable to add new wallet")
-					}
-				})
-			)
+		if indexPath.row > 1, let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata, parentItem.type == .hd {
+			return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
 		}
 		
-		options.append(
-			UIAction(title: "Delete", image: UIImage(systemName: "delete.left.fill"), identifier: nil) { [weak self] action in
-				var deletingSelected = false
-				
-				if walletData.address == DependencyManager.shared.selectedWalletAddress {
-					deletingSelected = true
-				}
-				
-				if WalletCacheService().deleteWallet(withAddress: walletData.address, parentIndex: walletData.isChild ? indexPath.section : nil) {
-					DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-					
-					// If we are deleting selected, we need to select another wallet, but not if we deleted the last one
-					if deletingSelected && DependencyManager.shared.walletList.count > 0 {
-						DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: 0, child: nil)
-					}
-					
-					self?.refresh(animate: true)
-					
-				} else {
-					self?.state = .failure(KukaiError.unknown(), "Unable to delete wallet from cache")
-				}
-			}
-		)
+		return nil
+	}
+	
+	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
+		guard let vc = delegate else { return nil }
 		
-		return UIMenu(title: "Actions", image: nil, identifier: nil, options: [], children: options)
+		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
+			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
+			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1),
+			   WalletCacheService().cache(wallet: newChild, childOfIndex: hdWalletIndex) {
+				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+				self?.refresh(animate: true)
+				
+			} else {
+				vc.alert(errorWithMessage: "Unable to add child")
+			}
+		}
+		
+		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
 	}
 }

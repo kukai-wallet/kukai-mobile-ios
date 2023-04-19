@@ -61,7 +61,7 @@ class SideMenuViewController: UIViewController {
 		
 		viewModel.refresh(animate: true)
 		
-		let wallet = DependencyManager.shared.selectedWalletMetadata
+		guard let wallet = DependencyManager.shared.selectedWalletMetadata else { return }
 		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_22)
 		
 		if let subtitle = media.subtitle {
@@ -109,6 +109,7 @@ class SideMenuViewController: UIViewController {
 	@IBAction func swapTapped(_ sender: Any) {
 	}
 	
+	/*
 	@IBAction func deleteAllTapped(_ sender: Any) {
 		let alert = UIAlertController(title: "Are you Sure?", message: "Are you sure you want to delete all your wallets? This in unrecoverable", preferredStyle: .alert)
 		alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
@@ -116,7 +117,7 @@ class SideMenuViewController: UIViewController {
 			
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			TransactionService.shared.resetState()
-			DependencyManager.shared.walletList = []
+			DependencyManager.shared.walletList = WalletMetadataList(socialWallets: [], hdWallets: [], linearWallets: [], ledgerWallets: [])
 			
 			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
 			UserDefaults.standard.removePersistentDomain(forName: domain)
@@ -130,6 +131,7 @@ class SideMenuViewController: UIViewController {
 		
 		self.present(alert, animated: true)
 	}
+	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {

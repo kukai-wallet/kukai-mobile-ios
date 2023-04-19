@@ -61,7 +61,7 @@ class AddLiquidityViewModel: ViewModel {
 	}
 	
 	func refreshExchangeRates(completion: @escaping (() -> Void)) {
-		if !state.isLoading() {
+		/*if !state.isLoading() {
 			state = .loading
 		}
 		
@@ -88,7 +88,7 @@ class AddLiquidityViewModel: ViewModel {
 			}
 			
 			completion()
-		}
+		}*/
 	}
 	
 	func calculateReturn(input1: String?, input2: String?) {

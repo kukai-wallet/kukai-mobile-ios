@@ -75,7 +75,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata.type != .ledger {
+		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -131,9 +131,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		guard let nft = TransactionService.shared.sendData.chosenNFT else { return }
+		guard let nft = TransactionService.shared.sendData.chosenNFT, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
 		
-		let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata
 		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
 		let destinationAlias = TransactionService.shared.sendData.destinationAlias
 		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()

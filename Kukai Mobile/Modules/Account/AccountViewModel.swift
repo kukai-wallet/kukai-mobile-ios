@@ -133,7 +133,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
 		// If initial load, display shimmer views
-		if DependencyManager.shared.balanceService.lastFullRefreshDate == nil {
+		if DependencyManager.shared.balanceService.hasFetchedInitialData == false {
 			let data: [AnyHashable] = [
 				balancesMenuVC,
 				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
@@ -204,7 +204,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		let address = DependencyManager.shared.selectedWalletAddress
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unable to locate current wallet")
+			return
+		}
+		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
 			guard let self = self else { return }
 			
@@ -232,17 +236,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	static func setupAccountActivityListener() {
-	#if DEBUG
-		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-		return
-	#else
-		let wallet = DependencyManager.shared.selectedWalletAddress
+	//#if DEBUG
+	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
+	//	return
+	//#else
+		guard let wallet = DependencyManager.shared.selectedWalletAddress else { return }
 		if DependencyManager.shared.tzktClient.isListening {
 			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
 			
 		} else {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
 		}
-	#endif
+	//#endif
 	}
 }

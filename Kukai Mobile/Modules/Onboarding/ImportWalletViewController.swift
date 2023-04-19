@@ -153,8 +153,8 @@ class ImportWalletViewController: UIViewController {
 		
 		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
-			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
-			self.performSegue(withIdentifier: "done", sender: self)
+			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
+			self.navigate()
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to cache")
 		}
@@ -186,6 +186,15 @@ class ImportWalletViewController: UIViewController {
 			} else {
 				return false
 			}
+		}
+	}
+	
+	private func navigate() {
+		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		if let vc = viewController {
+			self.navigationController?.popToViewController(vc, animated: true)
+		} else {
+			self.performSegue(withIdentifier: "done", sender: nil)
 		}
 	}
 }

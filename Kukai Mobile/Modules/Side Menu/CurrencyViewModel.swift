@@ -92,23 +92,27 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
+		guard let walletAddress = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unable to locate current wallet")
+			return
+		}
+		
 		let code = code(forIndexPath: indexPath)
 		
-		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { error in
+		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { [weak self] error in
 			if let e = error {
-				self.state = .failure(KukaiError.unknown(), "Unable to change currency: \(e)")
+				self?.state = .failure(KukaiError.unknown(), "Unable to change currency: \(e)")
 				return
 			}
 			
-			let walletAddress = DependencyManager.shared.selectedWalletAddress
-			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { error in
+			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { [weak self] error in
 				if let e = error {
-					self.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
+					self?.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
 					return
 				}
 				
 				DependencyManager.shared.balanceService.currencyChanged = true
-				self.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
+				self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
 			}
 		}
 	}

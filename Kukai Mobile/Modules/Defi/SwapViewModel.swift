@@ -87,7 +87,7 @@ class SwapViewModel: ViewModel {
 		}
 		
 		print("about to query")
-		let walletAddress = DependencyManager.shared.selectedWalletAddress
+		/*let walletAddress = DependencyManager.shared.selectedWalletAddress
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverythingIfStale) { [weak self] error in
 			if let err = error {
 				self?.state = .failure(err, err.description)
@@ -110,7 +110,7 @@ class SwapViewModel: ViewModel {
 			}
 			
 			completion()
-		}
+		}*/
 	}
 	
 	func calculateReturn(fromInput: String?) {

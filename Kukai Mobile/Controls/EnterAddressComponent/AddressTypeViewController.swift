@@ -120,10 +120,10 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		}
 		
 		if indexPath == selectedIndex {
-			cell.setSelected(true, animated: true)
+			cell.setSelected(true, animated: false)
 			
 		} else {
-			cell.setSelected(false, animated: true)
+			cell.setSelected(false, animated: false)
 		}
 	}
 	

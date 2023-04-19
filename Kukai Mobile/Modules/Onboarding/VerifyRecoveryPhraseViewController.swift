@@ -67,9 +67,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		selectionTitle4.text = (selectionTitle4.text ?? "") + "\(randomIndexes[3] + 1)"
 		
 		
-		
-		let address = DependencyManager.shared.selectedWalletAddress
-		guard let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		guard let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
 			self.navigationController?.previousViewController()?.alert(errorWithMessage: "Unable to locate wallet information. Please try again")
 			self.navigationController?.popViewController(animated: true)
 			return
@@ -237,7 +235,12 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
-			self.performSegue(withIdentifier: "done", sender: nil)
+			let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+			if let vc = viewController {
+				self.navigationController?.popToViewController(vc, animated: true)
+			} else {
+				self.performSegue(withIdentifier: "done", sender: nil)
+			}
 		}
 	}
 }

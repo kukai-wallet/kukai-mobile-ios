@@ -51,7 +51,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func setup() {
-		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress)
+		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress ?? "")
 		textField.validatorTextFieldDelegate = self
 		
 		self.hideError(animate: false)
@@ -194,7 +194,7 @@ extension EnterAddressComponent: AddressTypeDelegate {
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Tezos Address", for: .normal)
 				textField.placeholder = "Enter Address"
-				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress)
+				textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress ?? "")
 				
 			case .tezosDomain:
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)

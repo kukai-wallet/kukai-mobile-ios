@@ -11,35 +11,41 @@ import KukaiCoreSwift
 
 class AccountsViewController: UIViewController {
 	
-	public let viewModel = AccountsViewModel()
-	private var cancellable: AnyCancellable?
+	@IBOutlet var addButtonContainer: UIBarButtonItem!
+	@IBOutlet var editButtonContainer: UIBarButtonItem!
+	@IBOutlet var doneButtonContainer: UIBarButtonItem!
 	
-	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet var tableView: UITableView!
+	
+	private let viewModel = AccountsViewModel()
+	private var cancellable: AnyCancellable?
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
-		// Setup data
 		viewModel.makeDataSource(withTableView: tableView)
+		viewModel.delegate = self
+		
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		tableView.allowsSelectionDuringEditing = true
+		
+		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
-			guard let self = self else { return }
-			
 			switch state {
 				case .loading:
+					//self?.showLoadingView(completion: nil)
 					let _ = ""
 					
-				case .success(_):
+				case .failure(_, let errorString):
+					//self?.hideLoadingView(completion: nil)
+					self?.alert(withTitle: "Error", andMessage: errorString)
 					
-					// Always seems to be an extra section, so 1 section left = no content
-					if self.viewModel.dataSource?.numberOfSections(in: self.tableView) == 1 {
-						self.closeAndBackToStart()
-					}
-					
-				case .failure(_, let message):
-					self.alert(withTitle: "Error", andMessage: message)
+				case .success:
+					//self?.hideLoadingView(completion: nil)
+					let _ = ""
 			}
 		}
 	}
@@ -47,41 +53,99 @@ class AccountsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		viewModel.refresh(animate: true)
+		deselectCurrentSelection()
+		viewModel.refresh(animate: false)
 	}
 	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
+	@IBAction func editButtonTapped(_ sender: Any) {
+		self.tableView.isEditing = true
+		self.navigationItem.setRightBarButtonItems([doneButtonContainer], animated: false)
 	}
 	
-	public func refeshWallets() {
-		viewModel.refresh(animate: true)
-	}
-	
-	func closeAndBackToStart() {
-		self.presentingViewController?.dismiss(animated: true)
-		let _ = WalletCacheService().deleteAllCacheAndKeys()
-		DependencyManager.shared.balanceService.deleteAllCachedData()
-		TransactionService.shared.resetState()
-		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+	@IBAction func doneButtonTapped(_ sender: Any) {
+		self.tableView.isEditing = false
+		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
-		(self.presentingViewController as? UINavigationController)?.popToRootViewController(animated: true)
+		if let cell = tableView.cellForRow(at: viewModel.selectedIndex) {
+			cell.setSelected(true, animated: false)
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let dest = segue.destination.presentationController as? UISheetPresentationController {
+			dest.delegate = self
+		}
+		
+		if let vc = segue.destination as? EditWalletViewController, let indexPath = sender as? IndexPath {
+			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
+			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+		}
+	}
+}
+
+extension AccountsViewController: AccountsViewModelDelegate {
+	
+	func allWalletsRemoved() {
+		self.navigationController?.popToRootViewController(animated: true)
 	}
 }
 
 extension AccountsViewController: UITableViewDelegate {
 	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedIndex = DependencyManager.shared.selectedWalletIndex
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
 		
-		// If we want to select the parent wallet, its WalletIndex(parent: x, child: nil)
-		// Selecting the first child, its WalletIndex(parent: x, child: 0)
-		// Because the parent is the first cell in each section, we need to add or subtract 1 from the indexPath.row when dealing with `selectedWalletIndex`
-		if indexPath.section != selectedIndex.parent || indexPath.row != (selectedIndex.child ?? -1) + 1 {
-			(tableView.cellForRow(at: indexPath) as? AccountBasicCell)?.setBorder(true)
-			
-			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: indexPath.section, child: (indexPath.row == 0 ? nil : indexPath.row-1))
-			self.presentingViewController?.dismiss(animated: true)
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
+		
+		if indexPath == viewModel.selectedIndex {
+			cell.setSelected(true, animated: true)
+			
+		} else {
+			cell.setSelected(false, animated: true)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if indexPath.row == 0 { return }
+		
+		if !tableView.isEditing {
+			deselectCurrentSelection()
+			
+			viewModel.selectedIndex = indexPath
+			tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+			
+			guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
+				return
+			}
+			
+			DependencyManager.shared.selectedWalletMetadata = metadata
+			self.navigationController?.popViewController(animated: true)
+			
+		} else {
+			self.performSegue(withIdentifier: "edit", sender: indexPath)
+		}
+	}
+	
+	private func deselectCurrentSelection() {
+		tableView.deselectRow(at: viewModel.selectedIndex, animated: true)
+		let previousCell = tableView.cellForRow(at: viewModel.selectedIndex)
+		previousCell?.setSelected(false, animated: true)
+	}
+	
+	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+		return .none
+	}
+	
+	func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+		return false
+	}
+}
+
+extension AccountsViewController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		self.viewModel.refresh(animate: true)
 	}
 }
