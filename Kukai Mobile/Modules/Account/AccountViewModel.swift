@@ -133,7 +133,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
 		// If initial load, display shimmer views
-		if DependencyManager.shared.balanceService.lastFullRefreshDate == nil {
+		if DependencyManager.shared.balanceService.hasFetchedInitialData == false {
 			let data: [AnyHashable] = [
 				balancesMenuVC,
 				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),

@@ -103,9 +103,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		updateAccountButton()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
-		if !DependencyManager.shared.balanceService.hasFetchedInitialData {
+		if !DependencyManager.shared.balanceService.hasFetchedInitialData && !DependencyManager.shared.balanceService.isFetchingData {
 			self.refreshType = .refreshEverything
-			refresh(showLoading: false)
+			refresh()
 			
 		} else if DependencyManager.shared.balanceService.currencyChanged {
 			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway
@@ -155,7 +155,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] _ in
 				self?.refreshType = .refreshEverything
-				self?.refresh(showLoading: false)
+				self?.refresh()
 			}.store(in: &bag)
 	}
 	
@@ -285,17 +285,13 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 	}
 	
-	func refresh(showLoading: Bool = true) {
+	func refresh() {
 	//#if DEBUG
 	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 	//	return
 	//#else
 		guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 		
-		if showLoading {
-			self.showLoadingModal()
-			self.updateLoadingModalStatusLabel(message: "Refreshing balances")
-		}
 		let wasActivityPending = DependencyManager.shared.activityService.pendingTransactionGroups.count > 0
 		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
@@ -310,10 +306,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self.stopActivityAnimation(success: true)
 			}
 			
-			if showLoading {
-				self.hideLoadingModal()
-				self.updateLoadingModalStatusLabel(message: "")
-			}
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
 	//#endif

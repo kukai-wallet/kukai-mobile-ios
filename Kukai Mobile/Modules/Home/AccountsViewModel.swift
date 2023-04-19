@@ -115,7 +115,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			for (childIndex, childMetadata) in metadata.children.enumerated() {
 				sectionData[sections.count-1].append(childMetadata)
 				
-				if childMetadata.address == currentAddress { selectedIndex = IndexPath(row: childIndex+1, section: sections.count-1) }
+				if childMetadata.address == currentAddress { selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1) }
 			}
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
