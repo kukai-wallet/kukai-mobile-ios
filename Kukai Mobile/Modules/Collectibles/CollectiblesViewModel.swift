@@ -71,6 +71,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		collectionView.register(UINib(nibName: "CollectiblesListGroupCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListGroupCell")
 		collectionView.register(UINib(nibName: "CollectiblesListItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesListItemCell")
 		collectionView.register(UINib(nibName: "CollectiblesSearchResultCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesSearchResultCell")
+		collectionView.register(UINib(nibName: "GhostnetWarningCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "GhostnetWarningCollectionViewCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
@@ -121,6 +122,8 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				
 				return cell
 				
+			} else if let _ = item as? GhostnetWarningCellObj {
+				return collectionView.dequeueReusableCell(withReuseIdentifier: "GhostnetWarningCollectionViewCell", for: indexPath)
 			}
 			
 			return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListGroupCell", for: indexPath)
@@ -160,7 +163,14 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 		
 		
 		// Build snapshot data
-		var hashableData: [[AnyHashable]] = [[moreMenu]]
+		var hashableData: [[AnyHashable]] = []
+		
+		if DependencyManager.shared.currentNetworkType == .testnet {
+			hashableData = [[GhostnetWarningCellObj(), moreMenu]]
+			
+		} else {
+			hashableData = [[moreMenu]]
+		}
 		
 		if favs.count > 0 {
 			hashableData.append([SpecialGroupData(imageName: "FavoritesOn", title: "Favourites", count: favs.count, isShowcase: false, nfts: favs)])

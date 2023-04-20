@@ -17,6 +17,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource

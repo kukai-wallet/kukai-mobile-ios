@@ -57,6 +57,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
 		tableView.register(UINib(nibName: "ActivityContractCallCell", bundle: nil), forCellReuseIdentifier: "ActivityContractCallCell")
 		tableView.register(UINib(nibName: "ActivitySubItemCell", bundle: nil), forCellReuseIdentifier: "ActivitySubItemCell")
+		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
@@ -82,7 +83,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else {
-				return UITableViewCell()
+				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
 			}
 		})
 		
@@ -122,9 +123,21 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		currentSnapshot.appendSections(Array(0..<self.groups.count+1))
 		
-		self.currentSnapshot.appendItems([MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())], toSection: 0)
+		
+		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
+		
+		if isTestnet {
+			currentSnapshot.appendSections(Array(0..<self.groups.count + 2))
+			self.currentSnapshot.appendItems([
+				GhostnetWarningCellObj(),
+				MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())
+			], toSection: 0)
+			
+		} else {
+			currentSnapshot.appendSections(Array(0..<self.groups.count + 1))
+			self.currentSnapshot.appendItems([MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())], toSection: 0)
+		}
 		
 		for (index, txGroup) in self.groups.enumerated() {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
@@ -138,6 +151,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		if groups[indexPath.section-1].transactions.count == 1 {
 			return
 		}
 		
