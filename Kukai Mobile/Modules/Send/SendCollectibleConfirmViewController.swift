@@ -29,11 +29,17 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
+	@IBOutlet weak var testnetWarningView: UIView!
 	
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		if DependencyManager.shared.currentNetworkType != .testnet {
+			testnetWarningView.isHidden = true
+		}
+		
 		
 		guard let token = TransactionService.shared.sendData.chosenNFT, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return

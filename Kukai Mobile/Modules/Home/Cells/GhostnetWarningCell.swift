@@ -7,7 +7,7 @@
 
 import UIKit
 
-public struct GhostnetWarningCellObj: Codable, Hashable {
+public struct GhostnetWarningCellObj: Hashable {
 	public let id = UUID()
 }
 

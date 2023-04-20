@@ -56,6 +56,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
+	@IBOutlet weak var testnetWarningView: UIView!
 	
 	private var didSend = false
 	
@@ -81,12 +82,15 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		if DependencyManager.shared.currentNetworkType != .testnet {
+			testnetWarningView.isHidden = true
+		}
+		
 		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
 		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
 		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return
 		}
-		
 		
 		// Handle wallet connect data
 		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
