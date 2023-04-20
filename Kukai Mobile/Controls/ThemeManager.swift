@@ -86,6 +86,7 @@ public class ThemeManager {
 				"TxtMenuTitleContext": UIColor("#86879C"),
 				"TxtQuantity": UIColor("#2D2E3F"),
 				"TxtSale": UIColor("#FFFFFF"),
+				"TxtTestState": UIColor("#FFFFFF"),
 				
 				// Button Text
 				"TxtBtnPrim1": UIColor("#FFFFFF"),
@@ -208,6 +209,7 @@ public class ThemeManager {
 				"BGLock": UIColor("#D5D6E8"),
 				"BGThumbNFT": UIColor("#292828", alpha: 0.5),
 				"BGSideMenu": UIColor("#23232B"),
+				"BGTestState": UIColor("#FF5D29"),
 				"BGInsets": UIColor("#14141D"),
 				"BGMenuInsets": UIColor("#2D2E3F"),
 				"BGMenu": UIColor("#22222E"),
@@ -289,6 +291,7 @@ public class ThemeManager {
 				"TxtMenuTitleContext": UIColor("#86879C"),
 				"TxtQuantity": UIColor("#2D2E3F"),
 				"TxtSale": UIColor("#FFFFFF"),
+				"TxtTestState": UIColor("#FFFFFF"),
 				
 				// Button Text
 				"TxtBtnPrim1": UIColor("#FFFFFF"),
@@ -412,6 +415,7 @@ public class ThemeManager {
 				"BGLock": UIColor("#D5D6E8"),
 				"BGThumbNFT": UIColor("#292828", alpha: 0.5),
 				"BGSideMenu": UIColor("#23232B"),
+				"BGTestState": UIColor("#FF5D29"),
 				"BGInsets": UIColor("#14141D"),
 				"BGMenuInsets": UIColor("#2D2E3F"),
 				"BGMenu": UIColor("#22222E"),

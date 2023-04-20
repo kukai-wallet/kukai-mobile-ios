@@ -20,17 +20,19 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashable
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	var discoverItems: [DiscoverItem] = []
 	
 	func makeDataSource(withTableView tableView: UITableView) {
+		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
+		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let discoverItem = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
 				cell.headingLabel.text = discoverItem.heading
 				cell.iconView.image = UIImage(named: discoverItem.imageName)
 				return cell
+				
 			} else {
-				return UITableViewCell()
+				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
 			}
 		})
 		
@@ -54,22 +56,34 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<Int, AnyHashable>) {
-		self.discoverItems = [
-			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-gap", url: "https://www.gap.com/nft/"),
-			DiscoverItem(heading: "COLLECTIBLES", imageName: "discover-mooncakes", url: "https://www.mooncakes.fun")
-		]
 		
-		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
-		snapshot.appendItems(self.discoverItems, toSection: 0)
+		
+		if DependencyManager.shared.currentNetworkType == .testnet {
+			snapshot.appendItems([
+				GhostnetWarningCellObj(),
+				DiscoverItem(heading: "The GAP", imageName: "missingThumb", url: "https://www.gap.com/nft/"),
+				DiscoverItem(heading: "Mooncakes", imageName: "missingThumb", url: "https://www.mooncakes.fun")
+			], toSection: 0)
+			
+		} else {
+			snapshot.appendItems([
+				DiscoverItem(heading: "The GAP", imageName: "missingThumb", url: "https://www.gap.com/nft/"),
+				DiscoverItem(heading: "Mooncakes", imageName: "missingThumb", url: "https://www.mooncakes.fun")
+			], toSection: 0)
+		}
+		
+		snapshot.appendItems([], toSection: 0)
 		
 		datasource.apply(snapshot, animatingDifferences: animate)
 	}
 	
 	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
-		if atIndexPath.section == 0, atIndexPath.row < discoverItems.count  {
-			return URL(string: discoverItems[atIndexPath.row].url)
+		
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		if let item = obj as? DiscoverItem {
+			return URL(string: item.url)
 		}
 	
 		return nil

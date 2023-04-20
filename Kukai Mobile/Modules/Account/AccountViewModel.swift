@@ -55,6 +55,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
 			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				cell.setup(menuVC: obj)
@@ -118,7 +119,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else {
-				return UITableViewCell()
+				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
 			}
 		})
 		
@@ -130,17 +131,26 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var data: [AnyHashable] = []
+		
+		if isTestnet {
+			data.append(GhostnetWarningCellObj())
+		}
 		
 		// If initial load, display shimmer views
 		if DependencyManager.shared.balanceService.hasFetchedInitialData == false {
-			let data: [AnyHashable] = [
+			
+			let hashableData: [AnyHashable] = [
 				balancesMenuVC,
 				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
 				LoadingContainerCellObject(),
 				LoadingContainerCellObject(),
 				LoadingContainerCellObject()
 			]
+			
+			data.append(contentsOf: hashableData)
 			
 			snapshot.appendSections([0])
 			snapshot.appendItems(data, toSection: 0)
@@ -152,7 +162,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			var section1Data: [AnyHashable] = [DependencyManager.shared.balanceService.account.xtzBalance]
+			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
 			
 			
 			// Group and srot favourites (and remove hidden)
@@ -174,21 +184,20 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
 			tokensToDisplay.append(contentsOf: nonFavourites)
 			
-			section1Data.append(contentsOf: tokensToDisplay)
+			data.append(contentsOf: tokensToDisplay)
 			
 			
 			// Build snapshot
 			if isPresentedForSelectingToken {
 				snapshot.appendSections([0])
-				snapshot.appendItems(section1Data, toSection: 0)
+				snapshot.appendItems(data, toSection: 0)
 				
 			} else {
-				var data: [AnyHashable] = [balancesMenuVC]
-				if section1Data.count > 1 {
-					data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
+				if tokensToDisplay.count > 0 {
+					data.insert(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString), at: isTestnet ? 1 : 0)
 				}
 				
-				data.append(contentsOf: section1Data)
+				data.insert(balancesMenuVC, at: isTestnet ? 1 : 0)
 				
 				snapshot.appendSections([0])
 				snapshot.appendItems(data, toSection: 0)
@@ -224,14 +233,16 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		if atIndexPath.row == 0 || (atIndexPath.row == 1 && tokensToDisplay.count > 0) {
-			return nil
-		}
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)
 		
-		if atIndexPath.row == 2 || (atIndexPath.row == 1 && tokensToDisplay.count == 0) {
+		if obj is XTZAmount {
 			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
+			
+		} else if obj is Token {
+			return obj as? Token
+			
 		} else {
-			return tokensToDisplay[atIndexPath.row - 3]
+			return nil
 		}
 	}
 	

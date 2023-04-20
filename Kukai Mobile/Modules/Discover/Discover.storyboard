@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Discover-->
         <scene sceneID="9Da-4s-rdi">
@@ -17,12 +22,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ADy-i4-Fft">
-                                <rect key="frame" x="0.0" y="59" width="393" height="710"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ADy-i4-Fft">
+                                <rect key="frame" x="0.0" y="61" width="393" height="708"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoverCell" rowHeight="140" id="JET-l6-oMh" customClass="DiscoverCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="140"/>
+                                        <rect key="frame" x="0.0" y="50" width="393" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JET-l6-oMh" id="aSK-0h-b52">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="140"/>
@@ -30,18 +35,18 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AK3-ya-dE0">
                                                     <rect key="frame" x="16" y="8" width="361" height="20"/>
-                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                                                    <color key="textColor" name="Grey1100"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                    <color key="textColor" name="Txt6"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W9t-aA-ixW">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="missingThumb" translatesAutoresizingMaskIntoConstraints="NO" id="W9t-aA-ixW">
                                                     <rect key="frame" x="16" y="32" width="361" height="100"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="100" id="gBg-gE-0hp"/>
                                                     </constraints>
                                                 </imageView>
                                             </subviews>
-                                            <color key="backgroundColor" name="background"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="AK3-ya-dE0" firstAttribute="top" secondItem="aSK-0h-b52" secondAttribute="top" constant="8" id="5Mn-Zm-BbE"/>
                                                 <constraint firstItem="AK3-ya-dE0" firstAttribute="leading" secondItem="aSK-0h-b52" secondAttribute="leading" constant="16" id="9Td-Ca-Ukp"/>
@@ -52,6 +57,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="W9t-aA-ixW" secondAttribute="trailing" constant="16" id="u8n-56-nmI"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="headingLabel" destination="AK3-ya-dE0" id="UO1-Cf-fGX"/>
                                             <outlet property="iconView" destination="W9t-aA-ixW" id="1cg-mD-bDz"/>
@@ -61,11 +67,11 @@
                             </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="xnx-a9-tVK"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="leading" secondItem="xnx-a9-tVK" secondAttribute="leading" id="3ag-I5-Xlm"/>
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="trailing" secondItem="xnx-a9-tVK" secondAttribute="trailing" id="aai-Rw-oyl"/>
-                            <constraint firstItem="ADy-i4-Fft" firstAttribute="top" secondItem="xnx-a9-tVK" secondAttribute="top" id="qfh-ZX-AJK"/>
+                            <constraint firstItem="ADy-i4-Fft" firstAttribute="top" secondItem="xnx-a9-tVK" secondAttribute="top" constant="2" id="qfh-ZX-AJK"/>
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="bottom" secondItem="xnx-a9-tVK" secondAttribute="bottom" id="tDD-df-FZF"/>
                         </constraints>
                     </view>
@@ -81,16 +87,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Discover" width="24" height="24"/>
-        <image name="DiscoverOn" width="24" height="24"/>
-        <namedColor name="Grey1100">
-            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
+        <image name="Discover" width="26" height="26"/>
+        <image name="DiscoverOn" width="26" height="26"/>
+        <image name="missingThumb" width="90" height="90"/>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="background">
-            <color red="0.32899999618530273" green="0.32400000095367432" blue="0.4779999852180481" alpha="0.33000001311302185" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
     </resources>
 </document>

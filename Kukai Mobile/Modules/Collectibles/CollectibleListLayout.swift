@@ -18,6 +18,7 @@ class CollectibleListLayout: UICollectionViewLayout {
 	static let specialGroupHeight: CGFloat = 64
 	static let groupHeight: CGFloat = 64
 	static let itemHeight: CGFloat = 94
+	static let ghostnetWarningHeight: CGFloat = 52
 	static let searchItemHeight: CGFloat = 88
 	
 	fileprivate let groupSpacing: CGFloat = 4
@@ -65,6 +66,9 @@ class CollectibleListLayout: UICollectionViewLayout {
 				if item is MenuViewController {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
 					
+				} else if item is GhostnetWarningCellObj {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.ghostnetWarningHeight)
+					
 				} else if item is SpecialGroupData {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.specialGroupHeight)
 					
@@ -98,6 +102,9 @@ class CollectibleListLayout: UICollectionViewLayout {
 				var frame = CGRect.zero
 				if item is MenuViewController {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.controlGroupHeight)
+					
+				} else if item is GhostnetWarningCellObj {
+					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.ghostnetWarningHeight)
 					
 				} else {
 					frame = CGRect(x: 0, y: yOffset, width: contentWidth, height: CollectibleListLayout.searchItemHeight)

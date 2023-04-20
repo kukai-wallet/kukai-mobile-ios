@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="GhostnetWarningCollectionViewCell" id="gTV-IL-0wX" customClass="GhostnetWarningCollectionViewCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="445" height="52"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="445" height="52"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="htz-yz-8Cw">
+                        <rect key="frame" x="0.0" y="8" width="445" height="36"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="GfV-Ua-S9N">
+                                <rect key="frame" x="129" y="8" width="20" height="20"/>
+                                <color key="tintColor" name="TxtTestState"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="bid-v9-5T5"/>
+                                    <constraint firstAttribute="width" constant="20" id="g1x-AF-FxS"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ghostnet   Test Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sca-pV-I49">
+                                <rect key="frame" x="157" y="10" width="131" height="16"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="TxtTestState"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BGTestState"/>
+                        <constraints>
+                            <constraint firstItem="GfV-Ua-S9N" firstAttribute="centerY" secondItem="Sca-pV-I49" secondAttribute="centerY" id="4Pk-7e-FKO"/>
+                            <constraint firstItem="Sca-pV-I49" firstAttribute="centerX" secondItem="htz-yz-8Cw" secondAttribute="centerX" id="ceV-1j-m6b"/>
+                            <constraint firstItem="Sca-pV-I49" firstAttribute="top" secondItem="htz-yz-8Cw" secondAttribute="top" constant="10" id="dTG-At-JQP"/>
+                            <constraint firstAttribute="height" constant="36" id="hlg-8c-utf"/>
+                            <constraint firstAttribute="bottom" secondItem="Sca-pV-I49" secondAttribute="bottom" constant="10" id="iAF-EY-ujB"/>
+                            <constraint firstItem="Sca-pV-I49" firstAttribute="leading" secondItem="GfV-Ua-S9N" secondAttribute="trailing" constant="8" id="pz3-9r-dTO"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="htz-yz-8Cw" secondAttribute="trailing" id="hp1-Fc-E1K"/>
+                <constraint firstItem="htz-yz-8Cw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="lLt-xL-eTn"/>
+                <constraint firstAttribute="bottom" secondItem="htz-yz-8Cw" secondAttribute="bottom" constant="8" id="oev-IR-mc7"/>
+                <constraint firstItem="htz-yz-8Cw" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="zGg-lC-LDq"/>
+            </constraints>
+            <size key="customSize" width="445" height="74"/>
+            <point key="canvasLocation" x="190" y="30"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="AlertKnockout" width="24" height="24"/>
+        <namedColor name="BGTestState">
+            <color red="1" green="0.36470588240000001" blue="0.16078431369999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtTestState">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
