@@ -175,6 +175,7 @@ class ImportWalletViewController: UIViewController {
 					let ghostnetRes = resultTuple.ghostnet?.data?.reverseRecord
 					let _ = DependencyManager.shared.walletList.set(mainnetDomain: mainnetRes, ghostnetDomain: ghostnetRes, forAddress: wallet.address)
 					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
 					
 					self?.navigate()
 				})

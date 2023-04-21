@@ -237,7 +237,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		accountButton.setImage(media.image, for: .normal)
 		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
-		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+		accountButton.titleLabel?.numberOfLines = (media.subtitle != nil) ? 2 : 1
 	}
 	
 	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {
