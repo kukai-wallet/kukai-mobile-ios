@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 import OSLog
 
 protocol AccountsViewModelDelegate: UIViewController {
@@ -29,6 +30,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	
 	private var headers: [AccountsHeaderObject] = []
+	private var bag = Set<AnyCancellable>()
 	
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
@@ -193,5 +195,40 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
+	}
+	
+	func pullToRefresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		let addresses = DependencyManager.shared.walletList.addresses()
+		DependencyManager.shared.tezosDomainsClient.getDomainsFor(addresses: addresses)
+			.sink(onError: { [weak self] error in
+				self?.state = .failure(error, "Error occurred detching tezos domains")
+				
+			}, onSuccess: { [weak self] result in
+				
+				/*
+				for address in result.keys {
+					if let reverseRecord = result[address]?.data?.reverseRecord {
+						let _ = DependencyManager.shared.walletList.set(domain: reverseRecord, forAddress: address)
+					}
+				}
+				
+				let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+				
+				// TODO: didn't reload sections, might need to call viewModel.reload
+				// TODO: home page not displaying domain
+				var snapshot = self?.dataSource?.snapshot()
+				snapshot?.reloadSections( self?.dataSource?.snapshot().sectionIdentifiers ?? [] )
+				if let snap = snapshot {
+					self?.dataSource?.apply(snap, animatingDifferences: true)
+				}
+				*/
+				
+				self?.state = .success(nil)
+				
+			}).store(in: &bag)
 	}
 }

@@ -63,8 +63,8 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if DependencyManager.shared.currentNetworkType == .testnet {
 			snapshot.appendItems([
 				GhostnetWarningCellObj(),
-				DiscoverItem(heading: "The GAP", imageName: "missingThumb", url: "https://www.gap.com/nft/"),
-				DiscoverItem(heading: "Mooncakes", imageName: "missingThumb", url: "https://www.mooncakes.fun")
+				DiscoverItem(heading: "WTZ - Ghostnet wrapped XTZ", imageName: "missingThumb", url: "https://ghostnet.wtz.io/"),
+				DiscoverItem(heading: "Quipuswap - Ghostnet DEX", imageName: "missingThumb", url: "https://ghostnet.quipuswap.com/")
 			], toSection: 0)
 			
 		} else {

@@ -266,11 +266,12 @@ public class TransactionService {
 	
 	public static func walletMedia(forWalletMetadata metadata: WalletMetadata, ofSize size: WalletIconSize) -> (image: UIImage, title: String, subtitle: String?) {
 		let imageSize = TransactionService.sizeForWalletIcon(walletIconSize: size)
+		let currentNetwork = DependencyManager.shared.currentNetworkType
 		
 		// Early exit if tezos domain
-		if metadata.hasTezosDomain() {
+		if metadata.hasDomain(onNetwork: currentNetwork) {
 			let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
-			return (image: image, title: metadata.primaryTezosDomain() ?? "", subtitle: metadata.address.truncateTezosAddress())
+			return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
 		}
 		
 		// Second Early exit if non-social wallet without domain

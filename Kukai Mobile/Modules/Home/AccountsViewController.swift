@@ -19,6 +19,7 @@ class AccountsViewController: UIViewController {
 	
 	private let viewModel = AccountsViewModel()
 	private var cancellable: AnyCancellable?
+	private var refreshControl = UIRefreshControl()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -31,6 +32,11 @@ class AccountsViewController: UIViewController {
 		tableView.delegate = self
 		tableView.allowsSelectionDuringEditing = true
 		
+		refreshControl.addAction(UIAction(handler: { [weak self] action in
+			self?.viewModel.pullToRefresh(animate: true)
+		}), for: .valueChanged)
+		tableView.refreshControl = refreshControl
+		
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
@@ -41,11 +47,12 @@ class AccountsViewController: UIViewController {
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
+					self?.refreshControl.endRefreshing()
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					let _ = ""
+					self?.refreshControl.endRefreshing()
 			}
 		}
 	}

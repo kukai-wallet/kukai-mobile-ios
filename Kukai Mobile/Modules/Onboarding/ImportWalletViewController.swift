@@ -8,6 +8,8 @@
 import UIKit
 import KukaiCryptoSwift
 import KukaiCoreSwift
+import Combine
+import OSLog
 
 class ImportWalletViewController: UIViewController {
 	
@@ -27,6 +29,7 @@ class ImportWalletViewController: UIViewController {
 	@IBOutlet var legacyToggle: UISwitch!
 	
 	private var suggestionView: TextFieldSuggestionAccessoryView? = nil
+	private var bag = Set<AnyCancellable>()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,14 +152,38 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	private func conintue(withWallet wallet: Wallet) {
-		let walletCache = WalletCacheService()
+		self.view.endEditing(true)
+		self.showLoadingModal()
+		self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking for tezos domain registrations")
 		
+		let walletCache = WalletCacheService()
 		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-			self.navigate()
+			
+			// Check for existing domains and add to walletMetadata
+			DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainFor(address: wallet.address)
+				.sink(onError: { [weak self] error in
+					
+					// Will fail if none exists, this is a likely occurence and not something the user needs to be aware of
+					// Silently move on, it can/will be checked again later in wallet management flow
+					self?.navigate()
+					
+				}, onSuccess: { [weak self] resultTuple in
+					
+					let mainnetRes = resultTuple.mainnet?.data?.reverseRecord
+					let ghostnetRes = resultTuple.ghostnet?.data?.reverseRecord
+					let _ = DependencyManager.shared.walletList.set(mainnetDomain: mainnetRes, ghostnetDomain: ghostnetRes, forAddress: wallet.address)
+					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					
+					self?.navigate()
+				})
+				.store(in: &bag)
+			
 		} else {
-			self.alert(withTitle: "Error", andMessage: "Unable to cache")
+			self.hideLoadingModal { [weak self] in
+				self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+			}
 		}
 	}
 	
@@ -190,11 +217,14 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	private func navigate() {
-		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
-		if let vc = viewController {
-			self.navigationController?.popToViewController(vc, animated: true)
-		} else {
-			self.performSegue(withIdentifier: "done", sender: nil)
+		self.hideLoadingModal { [weak self] in
+			let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+			if let vc = viewController {
+				self?.navigationController?.popToViewController(vc, animated: true)
+				
+			} else {
+				self?.performSegue(withIdentifier: "done", sender: nil)
+			}
 		}
 	}
 }
