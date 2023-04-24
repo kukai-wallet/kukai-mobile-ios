@@ -153,8 +153,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(data, toSection: index)
 		}
 		
-		ds.apply(snapshot, animatingDifferences: animate)
-		
+		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
+		ds.applySnapshotUsingReloadData(snapshot)
 		
 		// If user removed the currently selected wallet
 		if selectedIndex.row == -1 {
@@ -184,10 +184,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
-			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1),
-			   WalletCacheService().cache(wallet: newChild, childOfIndex: hdWalletIndex) {
-				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-				self?.refresh(animate: true)
+			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) {
+				
+				vc.showLoadingModal()
+				WalletManagementService.cacheNew(wallet: newChild, forChildIndex: hdWalletIndex) { [weak self] success in
+					if success {
+						self?.refresh(animate: true)
+						vc.hideLoadingModal()
+						
+					} else {
+						vc.hideLoadingModal {
+							vc.alert(withTitle: "Error", andMessage: "Unable to cache")
+						}
+					}
+				}
 				
 			} else {
 				vc.alert(errorWithMessage: "Unable to add child")

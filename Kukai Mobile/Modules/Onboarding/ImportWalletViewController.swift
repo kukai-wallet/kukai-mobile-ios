@@ -156,34 +156,14 @@ class ImportWalletViewController: UIViewController {
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking for tezos domain registrations")
 		
-		let walletCache = WalletCacheService()
-		if walletCache.cache(wallet: wallet, childOfIndex: nil) {
-			DependencyManager.shared.walletList = walletCache.readNonsensitive()
-			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-			
-			// Check for existing domains and add to walletMetadata
-			DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainFor(address: wallet.address)
-				.sink(onError: { [weak self] error in
-					
-					// Will fail if none exists, this is a likely occurence and not something the user needs to be aware of
-					// Silently move on, it can/will be checked again later in wallet management flow
-					self?.navigate()
-					
-				}, onSuccess: { [weak self] resultTuple in
-					
-					let mainnetRes = resultTuple.mainnet?.data?.reverseRecord
-					let ghostnetRes = resultTuple.ghostnet?.data?.reverseRecord
-					let _ = DependencyManager.shared.walletList.set(mainnetDomain: mainnetRes, ghostnetDomain: ghostnetRes, forAddress: wallet.address)
-					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
-					DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-					
-					self?.navigate()
-				})
-				.store(in: &bag)
-			
-		} else {
-			self.hideLoadingModal { [weak self] in
-				self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+		WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil) { [weak self] success in
+			if success {
+				self?.navigate()
+				
+			} else {
+				self?.hideLoadingModal { [weak self] in
+					self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+				}
 			}
 		}
 	}
