@@ -30,10 +30,10 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 	@IBOutlet weak var infoButton: CustomisableButton!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	
-	@IBOutlet weak var reviewButton: UIButton!
+	@IBOutlet weak var reviewButton: CustomisableButton!
 	
-	private var gradientLayer = CAGradientLayer()
 	private var selectedToken: Token? = nil
+	private var hasEstimated = false
 	
 	
 	
@@ -71,45 +71,42 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 		// Textfield
 		textfield.validatorTextFieldDelegate = self
 		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
-		textfield.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
+		textfield.addDoneToolbar(onDone: (target: self, action: #selector(resignAndOptionallyEstimate)))
 		
 		updateFees()
+		feeButton.customButtonType = .secondary
 		feeButton.isEnabled = false
 		
+		reviewButton.customButtonType = .primary
 		reviewButton.isEnabled = false
-		reviewButton.layer.opacity = 0.5
     }
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		self.navigationController?.popToDetails()
 	}
 	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		gradientLayer.removeFromSuperlayer()
-		gradientLayer = reviewButton.addGradientButtonPrimary(withFrame: reviewButton.bounds)
-	}
-	
 	@IBAction func maxButtonTapped(_ sender: UIButton) {
 		if let balance = balanceLabel.text {
 			textfield.text = balance
 			if textfield.revalidateTextfield() {
-				estimateFee()
+				resignAndOptionallyEstimate()
 			}
 		}
 	}
 	
-	@objc func estimateFee() {
+	@objc func resignAndOptionallyEstimate() {
 		textfield.resignFirstResponder()
 		
-		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
+		estimateFee()
+	}
+	
+	@objc func estimateFee(withText: String? = nil) {
+		guard !hasEstimated, let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
 			self.alert(errorWithMessage: "Can't find destination")
 			return
 		}
 		
-		self.showLoadingModal(completion: nil)
-		if let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
+		if let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: withText ?? textfield.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
 			let operations = OperationFactory.sendOperation(amount, of: token, from: selectedWalletMetadata.address, to: destination)
@@ -117,7 +114,6 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
-				self?.hideLoadingModal(completion: nil)
 				
 				switch estimationResult {
 					case .success(let estimatedOperations):
@@ -125,13 +121,12 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 						self?.feeValueLabel?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
 						self?.feeButton.isEnabled = true
 						self?.reviewButton.isEnabled = true
-						self?.reviewButton.layer.opacity = 1
+						self?.hasEstimated = true
 						
 					case .failure(let estimationError):
 						self?.alert(errorWithMessage: "\(estimationError)")
 						self?.feeButton.isEnabled = false
 						self?.reviewButton.isEnabled = false
-						self?.reviewButton.layer.opacity = 0.5
 				}
 			}
 		}
@@ -168,11 +163,18 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 				self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
 			}
 			
+			if !hasEstimated {
+				estimateFee(withText: text)
+			} else {
+				self.reviewButton.isEnabled = true
+			}
+			
 		} else if text != "" {
 			inputContainer.borderColor = .red
 			inputContainer.borderWidth = 1
 			
 			self.fiatValueLabel?.text = "0"
+			self.reviewButton.isEnabled = false
 		}
 	}
 	

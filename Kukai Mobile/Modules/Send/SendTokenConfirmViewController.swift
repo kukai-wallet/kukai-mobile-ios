@@ -154,6 +154,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		
 		// Fees
+		feeButton.customButtonType = .secondary
 		updateFees()
 		
 		

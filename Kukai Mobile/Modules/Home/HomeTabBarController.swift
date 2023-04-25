@@ -214,7 +214,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		activityTabBarImageView = activityImageView
 		
-		activitySubview.addSubview(activityAnimationImageView)
+		if activityAnimationImageView.superview == nil {
+			activitySubview.addSubview(activityAnimationImageView)
+		}
 		activityAnimationImageView.frame = activityImageView.frame
 		activityAnimationImageView.animationImages = activityAnimationFrames
 		activityAnimationImageView.animationDuration = 3

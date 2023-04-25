@@ -32,9 +32,8 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	
-	@IBOutlet weak var reviewButton: UIButton!
+	@IBOutlet weak var reviewButton: CustomisableButton!
 	
-	private var gradientLayer = CAGradientLayer()
 	private var selectedToken: NFT? = nil
 	
 	
@@ -82,10 +81,11 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		quantityTextField.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
 		
 		updateFees()
+		feeButton.customButtonType = .secondary
 		feeButton.isEnabled = false
 		
+		reviewButton.customButtonType = .primary
 		reviewButton.isEnabled = false
-		reviewButton.layer.opacity = 0.5
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -102,13 +102,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		self.navigationController?.popToDetails()
 	}
 	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		gradientLayer.removeFromSuperlayer()
-		gradientLayer = reviewButton.addGradientButtonPrimary(withFrame: reviewButton.bounds)
-	}
-	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.stopListeningForKeyboard()
@@ -122,8 +115,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 			return
 		}
 		
-		
-		self.showLoadingModal(completion: nil)
 		if let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: quantityTextField.text ?? "") {
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: nft.decimalPlaces)
@@ -132,7 +123,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
-				self?.hideLoadingModal(completion: nil)
 				
 				switch estimationResult {
 					case .success(let estimatedOperations):
@@ -140,13 +130,11 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 						self?.feeValueLabel?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
 						self?.feeButton.isEnabled = true
 						self?.reviewButton.isEnabled = true
-						self?.reviewButton.layer.opacity = 1
 						
 					case .failure(let estimationError):
 						self?.alert(errorWithMessage: "\(estimationError)")
 						self?.feeButton.isEnabled = false
 						self?.reviewButton.isEnabled = false
-						self?.reviewButton.layer.opacity = 0.5
 				}
 			}
 		}
