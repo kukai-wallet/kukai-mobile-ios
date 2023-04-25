@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
@@ -23,37 +23,37 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;choice&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a1b-bW-8Hb">
-                        <rect key="frame" x="64" y="15" width="192" height="22"/>
+                        <rect key="frame" x="56" y="11" width="200" height="22"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                         <color key="textColor" name="TxtMenuContext"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rWE-tb-AOC">
-                        <rect key="frame" x="272" y="10" width="32" height="32"/>
+                        <rect key="frame" x="272" y="6" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="32" id="K2t-d7-Ezz"/>
                             <constraint firstAttribute="height" constant="32" id="Ve2-Sy-ej0"/>
                         </constraints>
                     </imageView>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="USS-Rl-UlB">
-                        <rect key="frame" x="16" y="10" width="32" height="32"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="USS-Rl-UlB">
+                        <rect key="frame" x="16" y="10" width="24" height="24"/>
+                        <color key="tintColor" name="TxtMenuContext"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="32" id="auK-AJ-WT7"/>
-                            <constraint firstAttribute="height" constant="32" id="dDt-i5-Mcq"/>
+                            <constraint firstAttribute="width" constant="24" id="auK-AJ-WT7"/>
+                            <constraint firstAttribute="height" constant="24" id="dDt-i5-Mcq"/>
                         </constraints>
                     </imageView>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rWE-tb-AOC" secondAttribute="bottom" constant="10" id="11H-CF-8TL"/>
                     <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="USS-Rl-UlB" secondAttribute="bottom" constant="10" id="1uQ-BU-KCJ"/>
-                    <constraint firstItem="a1b-bW-8Hb" firstAttribute="centerY" secondItem="rWE-tb-AOC" secondAttribute="centerY" id="4Bc-m8-jNH"/>
+                    <constraint firstItem="a1b-bW-8Hb" firstAttribute="centerY" secondItem="USS-Rl-UlB" secondAttribute="centerY" id="3fA-gx-Igp"/>
+                    <constraint firstItem="rWE-tb-AOC" firstAttribute="centerY" secondItem="USS-Rl-UlB" secondAttribute="centerY" id="8rw-dz-oT5"/>
                     <constraint firstItem="USS-Rl-UlB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ALS-t8-vbG"/>
                     <constraint firstItem="a1b-bW-8Hb" firstAttribute="leading" secondItem="USS-Rl-UlB" secondAttribute="trailing" constant="16" id="Alp-8m-ak9"/>
                     <constraint firstAttribute="trailing" secondItem="rWE-tb-AOC" secondAttribute="trailing" constant="16" id="JHv-md-tjk"/>
                     <constraint firstItem="USS-Rl-UlB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Mob-Oo-jeR"/>
                     <constraint firstItem="rWE-tb-AOC" firstAttribute="leading" secondItem="a1b-bW-8Hb" secondAttribute="trailing" constant="16" id="QXH-e7-f67"/>
-                    <constraint firstItem="rWE-tb-AOC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="R99-w2-nzj"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
