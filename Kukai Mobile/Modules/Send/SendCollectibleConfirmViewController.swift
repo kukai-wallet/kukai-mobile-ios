@@ -77,6 +77,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Fees
+		feeButton.customButtonType = .secondary
 		updateFees()
 		
 		

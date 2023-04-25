@@ -152,37 +152,39 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		self.hideLoadingModal { [weak self] in
-			switch result {
-				case .success(let wallet):
-					// Clear out any other wallets
-					let walletCache = WalletCacheService()
-					
-					// try to cache new one, and move on if successful
-					if walletCache.cache(wallet: wallet, childOfIndex: nil) {
-						DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-						
-						DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-							self?.navigate()
-						}
+		
+		switch result {
+			case .success(let wallet):
+				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
+				
+				WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil) { [weak self] success in
+					if success {
+						self?.navigate()
 						
 					} else {
-						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+						self?.hideLoadingModal { [weak self] in
+							self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+						}
 					}
-					
-				case .failure(let error):
+				}
+				
+			case .failure(let error):
+				self.hideLoadingModal { [weak self] in
 					self?.alert(withTitle: "Error", andMessage: error.description)
-			}
+				}
 		}
 	}
 	
 	private func navigate() {
-		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
-		if let vc = viewController {
-			self.navigationController?.popToViewController(vc, animated: true)
-		} else {
-			self.performSegue(withIdentifier: "done", sender: nil)
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+			self?.hideLoadingModal { [weak self] in
+				let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+				if let vc = viewController {
+					self?.navigationController?.popToViewController(vc, animated: true)
+				} else {
+					self?.performSegue(withIdentifier: "done", sender: nil)
+				}
+			}
 		}
 	}
 }

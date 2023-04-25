@@ -20,8 +20,9 @@ class TokenDetailsButtonsCell: UITableViewCell {
 	
 	private var buttonData: TokenDetailsButtonData? = nil
 	private weak var delegate: TokenDetailsButtonsCellDelegate? = nil
+	private var menu: MenuViewController? = nil
 	
-	func setup(buttonData: TokenDetailsButtonData, moreMenu: UIMenu?, delegate: TokenDetailsButtonsCellDelegate?) {
+	func setup(buttonData: TokenDetailsButtonData, moreMenu: MenuViewController?, delegate: TokenDetailsButtonsCellDelegate?) {
 		self.buttonData = buttonData
 		self.delegate = delegate
 		
@@ -29,8 +30,7 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		
 		if buttonData.hasMoreButton, let menu = moreMenu {
 			moreButton.isHidden = false
-			moreButton.menu = menu
-			moreButton.showsMenuAsPrimaryAction = true
+			self.menu = menu
 			
 		} else {
 			moreButton.isHidden = true
@@ -49,5 +49,9 @@ class TokenDetailsButtonsCell: UITableViewCell {
 	
 	@IBAction func swapButtonTapped(_ sender: Any) {
 		delegate?.swapTapped()
+	}
+	
+	@IBAction func moreButtonTapped(_ sender: UIButton) {
+		menu?.display(attachedTo: sender)
 	}
 }

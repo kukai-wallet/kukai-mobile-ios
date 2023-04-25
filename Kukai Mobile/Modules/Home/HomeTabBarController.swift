@@ -214,7 +214,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		activityTabBarImageView = activityImageView
 		
-		activitySubview.addSubview(activityAnimationImageView)
+		if activityAnimationImageView.superview == nil {
+			activitySubview.addSubview(activityAnimationImageView)
+		}
 		activityAnimationImageView.frame = activityImageView.frame
 		activityAnimationImageView.animationImages = activityAnimationFrames
 		activityAnimationImageView.animationDuration = 3
@@ -237,7 +239,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		accountButton.setImage(media.image, for: .normal)
 		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
-		accountButton.titleLabel?.numberOfLines = wallet.type == .social ? 2 : 1
+		accountButton.titleLabel?.numberOfLines = (media.subtitle != nil) ? 2 : 1
 	}
 	
 	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {

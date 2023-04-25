@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 import OSLog
 
 protocol AccountsViewModelDelegate: UIViewController {
@@ -29,6 +30,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	
 	private var headers: [AccountsHeaderObject] = []
+	private var bag = Set<AnyCancellable>()
 	
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
@@ -151,8 +153,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(data, toSection: index)
 		}
 		
-		ds.apply(snapshot, animatingDifferences: animate)
-		
+		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
+		ds.applySnapshotUsingReloadData(snapshot)
 		
 		// If user removed the currently selected wallet
 		if selectedIndex.row == -1 {
@@ -182,10 +184,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
-			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1),
-			   WalletCacheService().cache(wallet: newChild, childOfIndex: hdWalletIndex) {
-				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-				self?.refresh(animate: true)
+			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) {
+				
+				vc.showLoadingModal()
+				WalletManagementService.cacheNew(wallet: newChild, forChildIndex: hdWalletIndex) { [weak self] success in
+					if success {
+						self?.refresh(animate: true)
+						vc.hideLoadingModal()
+						
+					} else {
+						vc.hideLoadingModal {
+							vc.alert(withTitle: "Error", andMessage: "Unable to cache")
+						}
+					}
+				}
 				
 			} else {
 				vc.alert(errorWithMessage: "Unable to add child")
@@ -193,5 +205,40 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
+	}
+	
+	func pullToRefresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		let addresses = DependencyManager.shared.walletList.addresses()
+		DependencyManager.shared.tezosDomainsClient.getDomainsFor(addresses: addresses)
+			.sink(onError: { [weak self] error in
+				self?.state = .failure(error, "Error occurred detching tezos domains")
+				
+			}, onSuccess: { [weak self] result in
+				
+				/*
+				for address in result.keys {
+					if let reverseRecord = result[address]?.data?.reverseRecord {
+						let _ = DependencyManager.shared.walletList.set(domain: reverseRecord, forAddress: address)
+					}
+				}
+				
+				let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+				
+				// TODO: didn't reload sections, might need to call viewModel.reload
+				// TODO: home page not displaying domain
+				var snapshot = self?.dataSource?.snapshot()
+				snapshot?.reloadSections( self?.dataSource?.snapshot().sectionIdentifiers ?? [] )
+				if let snap = snapshot {
+					self?.dataSource?.apply(snap, animatingDifferences: true)
+				}
+				*/
+				
+				self?.state = .success(nil)
+				
+			}).store(in: &bag)
 	}
 }

@@ -143,18 +143,6 @@ extension TokenDetailsViewController {
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		tableView.deselectRow(at: indexPath, animated: true)
-		
-		if viewModel.isIndexActivityViewMore(indexPath) {
-			let homeTabController = self.navigationController?.previousViewController() as? HomeTabBarController
-			homeTabController?.manuallySetSlectedTab(toIndex: 3)
-			self.navigationController?.popViewController(animated: true)
-		}
-	}
-	
-	
-	
 	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
 		guard headerAnimatorStarted == false else {
 			return
@@ -215,12 +203,12 @@ extension TokenDetailsViewController {
 
 extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	
-	func moreMenu() -> UIMenu {
+	func moreMenu() -> MenuViewController {
 		var actions: [UIAction] = []
 		
 		if viewModel.token?.isXTZ() == false {
 			actions.append(
-				UIAction(title: "Token Contract", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "Token Contract", image: UIImage(named: "Placeholder"), identifier: nil, handler: { [weak self] action in
 					self?.performSegue(withIdentifier: "tokenContract", sender: nil)
 				})
 			)
@@ -267,7 +255,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 		
 		if viewModel.buttonData?.canBeViewedOnline == true {
 			actions.append(
-				UIAction(title: "View on Blockchain", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
+				UIAction(title: "View on Blockchain", image: UIImage(named: "ArrowWeb"), identifier: nil, handler: { [weak self] action in
 					if let contract = self?.viewModel.token?.tokenContractAddress, let url = URL(string: "https://better-call.dev/mainnet/\(contract)") {
 						UIApplication.shared.open(url, completionHandler: nil)
 					}
@@ -275,7 +263,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 			)
 		}
 		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 	
 	func setBakerTapped() {

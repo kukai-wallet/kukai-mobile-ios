@@ -15,7 +15,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
 	public var forceRefresh = false
@@ -110,12 +109,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
 			self?.groups = full
-			self?.loadGroups()
+			self?.loadGroups(animate: animate)
 			self?.state = .success(nil)
 		}
 	}
 	
-	private func loadGroups() {
+	private func loadGroups(animate: Bool) {
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
@@ -143,9 +142,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
-		ds.apply(self.currentSnapshot, animatingDifferences: true)
-		
-		self.state = .success(nil)
+		ds.apply(self.currentSnapshot, animatingDifferences: animate)
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {

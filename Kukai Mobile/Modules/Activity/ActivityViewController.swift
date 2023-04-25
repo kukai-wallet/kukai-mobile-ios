@@ -34,6 +34,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 			switch state {
 				case .loading:
 					self?.showLoadingView(completion: nil)
+					let _ = ""
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingView(completion: nil)
@@ -47,7 +48,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		viewModel.refresh(animate: true)
+		viewModel.refresh(animate: false)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -70,10 +71,36 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		return 0.1
+		
+		if section == viewModel.expandedIndex?.section {
+			return 10
+			
+		} else {
+			return 0.1
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		return 0.1
+		
+		if section == viewModel.expandedIndex?.section {
+			return 10
+			
+		} else {
+			return 0.1
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+		
+		if section == viewModel.expandedIndex?.section {
+			let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 10))
+			view.backgroundColor = .colorNamed("BGActivityBatch")
+			return view
+			
+		} else {
+			let view = UIView()
+			view.backgroundColor = .clear
+			return view
+		}
 	}
 }

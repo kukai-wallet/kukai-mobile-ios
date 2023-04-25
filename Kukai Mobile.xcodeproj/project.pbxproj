@@ -175,6 +175,7 @@
 		C0A321D827C68C2B00D7788B /* NumberValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D727C68C2B00D7788B /* NumberValidator.swift */; };
 		C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */; };
 		C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */; };
+		C0A33B8F29F6BE3D00A53EAE /* WalletManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */; };
 		C0A4E04D29C0CA5F00644E16 /* EnvironmentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A4E04C29C0CA5F00644E16 /* EnvironmentService.swift */; };
 		C0A4E05029C0CF0700644E16 /* ghostnet-env.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A4E04E29C0CF0700644E16 /* ghostnet-env.json */; };
 		C0A4E05129C0CF0700644E16 /* mainnet-env.json in Resources */ = {isa = PBXBuildFile; fileRef = C0A4E04F29C0CF0700644E16 /* mainnet-env.json */; };
@@ -497,6 +498,7 @@
 		C0A321D727C68C2B00D7788B /* NumberValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumberValidator.swift; sourceTree = "<group>"; };
 		C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosAddressValidator.swift; sourceTree = "<group>"; };
 		C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAmountValidator.swift; sourceTree = "<group>"; };
+		C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagementService.swift; sourceTree = "<group>"; };
 		C0A4E04C29C0CA5F00644E16 /* EnvironmentService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnvironmentService.swift; sourceTree = "<group>"; };
 		C0A4E04E29C0CF0700644E16 /* ghostnet-env.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "ghostnet-env.json"; sourceTree = "<group>"; };
 		C0A4E04F29C0CF0700644E16 /* mainnet-env.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "mainnet-env.json"; sourceTree = "<group>"; };
@@ -668,6 +670,7 @@
 				C025891C292CD985000D59F6 /* TokenStateService.swift */,
 				C04B20A42930E1AF00C008CD /* ActivityService.swift */,
 				C0D01CF229AE4A82007A2468 /* WalletConnectService.swift */,
+				C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1549,6 +1552,7 @@
 				C0C7A0FE2955B8CF00ADCA51 /* NoContactsCell.swift in Sources */,
 				C0B860EF26AF0CA400BB7E6B /* UIImageView+extensions.swift in Sources */,
 				C09CEB4029C2125D00D95D69 /* ActivityToolbarCell.swift in Sources */,
+				C0A33B8F29F6BE3D00A53EAE /* WalletManagementService.swift in Sources */,
 				C0C7DFBD29BF707800F60E0C /* SideMenuOptionCell.swift in Sources */,
 				C0A321D627C68C0100D7788B /* Validator.swift in Sources */,
 				C0B768B92947991D00EF893E /* CollectibleListLayout.swift in Sources */,
@@ -2322,7 +2326,7 @@
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.1;
+				minimumVersion = 1.5.14;
 			};
 		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {

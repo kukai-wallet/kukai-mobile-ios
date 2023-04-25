@@ -14,7 +14,7 @@ protocol CollectibleListLayoutDelegate: AnyObject {
 
 class CollectibleListLayout: UICollectionViewLayout {
 	
-	static let controlGroupHeight: CGFloat = 50
+	static let controlGroupHeight: CGFloat = 54
 	static let specialGroupHeight: CGFloat = 64
 	static let groupHeight: CGFloat = 64
 	static let itemHeight: CGFloat = 94
