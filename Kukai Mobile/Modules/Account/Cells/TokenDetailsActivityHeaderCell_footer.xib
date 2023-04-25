@@ -3,56 +3,36 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Figtree-SemiBold.ttf">
-            <string>Figtree-SemiBold</string>
-        </array>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell_footer" rowHeight="69" id="8LJ-tL-4EO" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="69"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsActivityHeaderCell_footer" rowHeight="50" id="8LJ-tL-4EO" customClass="TokenDetailsActivityHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8LJ-tL-4EO" id="i7K-Ua-pcD">
-                <rect key="frame" x="0.0" y="0.0" width="393" height="69"/>
+                <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="WZK-ba-Bop">
-                        <rect key="frame" x="369" y="24.666666666666668" width="8" height="12.000000000000004"/>
-                        <color key="tintColor" name="TxtB6"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GPb-Dr-Vpb">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="12" id="29q-Tz-q1Z"/>
-                            <constraint firstAttribute="width" constant="8" id="Lbr-Dh-IH7"/>
+                            <constraint firstAttribute="height" constant="50" id="U6h-dg-fpb"/>
                         </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZrF-vU-d51">
-                        <rect key="frame" x="293" y="8" width="68" height="45"/>
-                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
-                        <color key="textColor" name="TxtB6"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="ZrF-vU-d51" secondAttribute="bottom" constant="16" id="4CG-cp-dsR"/>
-                    <constraint firstItem="WZK-ba-Bop" firstAttribute="leading" secondItem="ZrF-vU-d51" secondAttribute="trailing" constant="8" id="afl-Ar-LP0"/>
-                    <constraint firstAttribute="trailing" secondItem="WZK-ba-Bop" secondAttribute="trailing" constant="16" id="hNi-19-q58"/>
-                    <constraint firstItem="ZrF-vU-d51" firstAttribute="top" secondItem="i7K-Ua-pcD" secondAttribute="top" constant="8" id="qeG-ZQ-4FQ"/>
-                    <constraint firstItem="WZK-ba-Bop" firstAttribute="centerY" secondItem="ZrF-vU-d51" secondAttribute="centerY" id="v9f-r7-C96"/>
+                    <constraint firstItem="GPb-Dr-Vpb" firstAttribute="leading" secondItem="i7K-Ua-pcD" secondAttribute="leading" id="BV2-dB-i05"/>
+                    <constraint firstAttribute="trailing" secondItem="GPb-Dr-Vpb" secondAttribute="trailing" id="FmK-xf-pYm"/>
+                    <constraint firstItem="GPb-Dr-Vpb" firstAttribute="top" secondItem="i7K-Ua-pcD" secondAttribute="top" id="qcb-0C-fgI"/>
+                    <constraint firstAttribute="bottom" secondItem="GPb-Dr-Vpb" secondAttribute="bottom" id="vXB-OY-2Bm"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <point key="canvasLocation" x="-65" y="21"/>
+            <point key="canvasLocation" x="-66.412213740458014" y="14.084507042253522"/>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="ChevronRight" width="10" height="18"/>
-        <namedColor name="TxtB6">
-            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-    </resources>
 </document>

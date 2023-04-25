@@ -57,7 +57,7 @@ struct TokenDetailsMessageData: Hashable {
 
 
 @objc protocol TokenDetailsViewModelDelegate: AnyObject {
-	func moreMenu() -> UIMenu
+	func moreMenu() -> MenuViewController
 	func setBakerTapped()
 	func sendTapped()
 	func stakingRewardsInfoTapped()
@@ -515,16 +515,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func chartRangeChanged(to: TokenDetailsChartCellRange) {
 		currentChartRange = to
-	}
-	
-	func isIndexActivityViewMore(_ indexPath: IndexPath) -> Bool {
-		let item = currentSnapshot.itemIdentifiers[indexPath.row]
-		
-		if item is TokenDetailsActivityHeader {
-			return true
-		}
-		
-		return false
 	}
 	
 	func menuFor(transaction: TzKTTransactionGroup) -> UIMenu {

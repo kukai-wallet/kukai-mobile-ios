@@ -10,9 +10,6 @@
         <array key="Figtree-Bold.ttf">
             <string>Figtree-Bold</string>
         </array>
-        <array key="Figtree-SemiBold.ttf">
-            <string>Figtree-SemiBold</string>
-        </array>
     </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -25,35 +22,17 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Recent Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YX2-ro-0cR">
-                        <rect key="frame" x="16" y="24" width="176" height="36"/>
+                        <rect key="frame" x="16" y="24" width="361" height="36"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                         <color key="textColor" name="Txt2"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="phK-SH-syK">
-                        <rect key="frame" x="369" y="36" width="8" height="12"/>
-                        <color key="tintColor" name="TxtB6"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="8" id="6nr-mC-UOA"/>
-                            <constraint firstAttribute="height" constant="12" id="pCh-7V-8Rm"/>
-                        </constraints>
-                    </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="View More" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mJT-0n-NGv">
-                        <rect key="frame" x="293" y="33.666666666666664" width="68" height="17"/>
-                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
-                        <color key="textColor" name="TxtB6"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstAttribute="bottom" secondItem="YX2-ro-0cR" secondAttribute="bottom" constant="8" id="2r0-nr-P1q"/>
-                    <constraint firstItem="phK-SH-syK" firstAttribute="leading" secondItem="mJT-0n-NGv" secondAttribute="trailing" constant="8" id="3S2-sx-kM3"/>
-                    <constraint firstItem="mJT-0n-NGv" firstAttribute="centerY" secondItem="YX2-ro-0cR" secondAttribute="centerY" id="Dkb-d3-Mbt"/>
-                    <constraint firstAttribute="trailing" secondItem="phK-SH-syK" secondAttribute="trailing" constant="16" id="F6d-ad-NNX"/>
+                    <constraint firstAttribute="trailing" secondItem="YX2-ro-0cR" secondAttribute="trailing" constant="16" id="EBB-ga-N7q"/>
                     <constraint firstItem="YX2-ro-0cR" firstAttribute="top" secondItem="IZu-1p-bFH" secondAttribute="top" constant="24" id="PxN-NA-s2M"/>
-                    <constraint firstItem="phK-SH-syK" firstAttribute="centerY" secondItem="mJT-0n-NGv" secondAttribute="centerY" id="fsz-Du-zKk"/>
-                    <constraint firstItem="mJT-0n-NGv" firstAttribute="leading" secondItem="YX2-ro-0cR" secondAttribute="trailing" constant="101" id="ij4-uD-n8w"/>
                     <constraint firstItem="YX2-ro-0cR" firstAttribute="leading" secondItem="IZu-1p-bFH" secondAttribute="leading" constant="16" id="lWv-hO-kTk"/>
                 </constraints>
             </tableViewCellContentView>
@@ -62,12 +41,8 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="ChevronRight" width="10" height="18"/>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="TxtB6">
-            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
