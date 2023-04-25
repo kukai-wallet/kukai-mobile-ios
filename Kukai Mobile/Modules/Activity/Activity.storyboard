@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21678"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -27,18 +26,18 @@
                                 <rect key="frame" x="0.0" y="61" width="393" height="708"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityToolbarCell" id="Yv4-zB-yUu" customClass="ActivityToolbarCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="50"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityToolbarCell" rowHeight="54" id="Yv4-zB-yUu" customClass="ActivityToolbarCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="54"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yv4-zB-yUu" id="rVn-7c-5Cw">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="50"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-rv-rIR">
-                                                    <rect key="frame" x="16" y="4" width="361" height="34"/>
+                                                    <rect key="frame" x="16" y="10" width="361" height="32"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="RkK-od-saz" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="192" height="34"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="199" height="32"/>
                                                             <color key="backgroundColor" name="BG4"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
@@ -70,12 +69,12 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </textField>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="huX-jN-8oh">
-                                                            <rect key="frame" x="204" y="0.0" width="157" height="34"/>
+                                                            <rect key="frame" x="211" y="0.0" width="150" height="32"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qzb-Qa-2B5" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="34" height="32"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="height" constant="34" id="bO7-9g-brZ"/>
+                                                                        <constraint firstAttribute="height" constant="32" id="bO7-9g-brZ"/>
                                                                         <constraint firstAttribute="width" constant="34" id="hFi-Uc-4xF"/>
                                                                     </constraints>
                                                                     <color key="tintColor" name="BG12"/>
@@ -105,13 +104,13 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </button>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7iY-PB-Dt2">
-                                                                    <rect key="frame" x="50" y="0.0" width="107" height="34"/>
+                                                                    <rect key="frame" x="50" y="0.0" width="100" height="32"/>
                                                                     <subviews>
                                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-8a-Xcf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="102" height="34"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="100" height="32"/>
                                                                             <color key="backgroundColor" name="BtnSec1"/>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="height" constant="34" id="JLh-gC-5qC"/>
+                                                                                <constraint firstAttribute="height" constant="32" id="JLh-gC-5qC"/>
                                                                             </constraints>
                                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                                             <color key="tintColor" name="TxtBtnSec1"/>
@@ -132,13 +131,6 @@
                                                                                 </userDefinedRuntimeAttribute>
                                                                             </userDefinedRuntimeAttributes>
                                                                         </button>
-                                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g58-JJ-Q11">
-                                                                            <rect key="frame" x="102" y="0.0" width="5" height="34"/>
-                                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="width" constant="5" id="wnh-VF-28K"/>
-                                                                            </constraints>
-                                                                        </view>
                                                                     </subviews>
                                                                 </stackView>
                                                             </subviews>
@@ -150,7 +142,7 @@
                                             <constraints>
                                                 <constraint firstItem="OuE-rv-rIR" firstAttribute="leading" secondItem="rVn-7c-5Cw" secondAttribute="leading" constant="16" id="Br0-Th-EzT"/>
                                                 <constraint firstAttribute="trailing" secondItem="OuE-rv-rIR" secondAttribute="trailing" constant="16" id="IMm-f4-dHG"/>
-                                                <constraint firstItem="OuE-rv-rIR" firstAttribute="top" secondItem="rVn-7c-5Cw" secondAttribute="top" constant="4" id="UjK-PQ-vkd"/>
+                                                <constraint firstItem="OuE-rv-rIR" firstAttribute="top" secondItem="rVn-7c-5Cw" secondAttribute="top" constant="10" id="UjK-PQ-vkd"/>
                                                 <constraint firstAttribute="bottom" secondItem="OuE-rv-rIR" secondAttribute="bottom" constant="12" id="qI8-rL-ihw"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -181,13 +173,13 @@
     </scenes>
     <designables>
         <designable name="8Qq-8a-Xcf">
-            <size key="intrinsicContentSize" width="102" height="27"/>
+            <size key="intrinsicContentSize" width="100" height="26"/>
         </designable>
         <designable name="Qzb-Qa-2B5">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="42" height="32"/>
         </designable>
         <designable name="RkK-od-saz">
-            <size key="intrinsicContentSize" width="44.666666666666664" height="18.666666666666668"/>
+            <size key="intrinsicContentSize" width="74" height="18"/>
         </designable>
     </designables>
     <resources>
