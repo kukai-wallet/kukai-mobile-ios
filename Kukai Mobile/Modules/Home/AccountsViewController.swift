@@ -32,12 +32,10 @@ class AccountsViewController: UIViewController {
 		tableView.delegate = self
 		tableView.allowsSelectionDuringEditing = true
 		
-		/*
 		refreshControl.addAction(UIAction(handler: { [weak self] action in
 			self?.viewModel.pullToRefresh(animate: true)
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
-		*/
 		
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		

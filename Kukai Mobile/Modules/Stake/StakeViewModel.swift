@@ -16,7 +16,6 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashable
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-	private var bag = Set<AnyCancellable>()
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var sectionHeaders = ["CURRENT BAKER", "ENTER NEW BAKER ADDRESS", "OR, CHOOSE A PUBLIC BAKER"]
@@ -159,18 +158,20 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				completion(Result.success(string))
 				
 			case .tezosDomain:
-				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string).sink { error in
-					completion(Result.failure(error))
-					
-				} onSuccess: { response in
-					if let add = response.data?.domain.address {
-						completion(Result.success(add))
-						
-					} else {
-						completion(Result.failure(KukaiError.unknown()))
+				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string, completion: { result in
+					switch result {
+						case .success(let response):
+							if let add = response.data?.domain.address {
+								completion(Result.success(add))
+								
+							} else {
+								completion(Result.failure(KukaiError.unknown()))
+							}
+							
+						case .failure(let error):
+							completion(Result.failure(error))
 					}
-					
-				}.store(in: &bag)
+				})
 				
 			case .gmail:
 				handleTorus(verifier: .google, string: string, completion: completion)

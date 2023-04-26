@@ -16,16 +16,13 @@ public enum NativeSocketError: Error {
 public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDelegate {
 	
 	private var socket: URLSessionWebSocketTask? = nil
-	private let initURL: URL
+	private var initURL: URL
 	
 	public init(withURL url: URL) {
-		self.socket = URLSession.shared.webSocketTask(with: url)
+		self.initURL = url
 		self.isConnected = false
 		self.request = URLRequest(url: url)
-		self.initURL = url
 		super.init()
-		
-		self.socket?.delegate = self
 	}
 	
 	public func reconnect() {
@@ -47,13 +44,26 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	
 	public var onText: ((String) -> Void)?
 	
-	public var request: URLRequest
+	public var request: URLRequest {
+		didSet {
+			os_log("NativeSocket new request set", log: .default, type: .info)
+			
+			if let url = request.url {
+				self.socket = URLSession.shared.webSocketTask(with: url)
+				self.socket?.delegate = self
+				self.isConnected = false
+				self.initURL = url
+			}
+		}
+	}
 	
 	public func connect() {
+		os_log("NativeSocket connect func called", log: .default, type: .info)
 		socket?.resume()
 	}
 	
 	public func disconnect() {
+		os_log("NativeSocket disconnect func called", log: .default, type: .info)
 		socket?.cancel()
 	}
 	
@@ -112,8 +122,7 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 					// If its failing because the conneciton closed by itself, try to reconnect
 					let nsErr = error as NSError
 					if nsErr.code == 57 && nsErr.domain == "NSPOSIXErrorDomain" {
-						self?.disconnect()
-						self?.reconnect()
+						self?.isConnected = false
 					}
 					
 				case .success(let message):
