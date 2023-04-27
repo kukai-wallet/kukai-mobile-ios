@@ -105,6 +105,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailOnSaleCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? MediaContent, item.isImage {
+				print("MediaContent: width - \(item.width), height - \(item.height)")
+				
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? MediaContent, !item.isImage {
@@ -155,6 +157,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil, showcaseCount: 2)
 		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		
+		// self?.generateImageMediaContent(nft: self?.nft, mediaType: mediaType, quantity: quantityString, loadingThumbnailFirst: true, completion: completion)
+		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
 			guard let self = self else {
 				self?.state = .failure(KukaiError.unknown(withString: "Unable to return NFT data"), "Unable to return NFT data")
@@ -197,7 +201,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				let newURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: .small)
 				let isDualURL = (response.mediaContent.mediaURL2 != nil)
 				
-				MediaProxyService.cacheImage(url: newURL, cache: MediaProxyService.temporaryImageCache()) { [weak self] size in
+				MediaProxyService.cacheImage(url: newURL) { [weak self] size in
 					let mediaURL1 = isDualURL ? response.mediaContent.mediaURL : newURL
 					let mediaURL2 = isDualURL ? newURL : nil
 					let width = Double(size?.width ?? 300)
@@ -226,7 +230,11 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	func mediaContentForInitialLoad(forNFT nft: NFT?, quantityString: String?, completion: @escaping (( (mediaContent: MediaContent, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
 		self.mediaService.getMediaType(fromFormats: nft?.metadata?.formats ?? [], orURL: nil) { [weak self] result in
 			
-			let isCached = MediaProxyService.isCached(url: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), cache: MediaProxyService.temporaryImageCache())
+			print("Thumbnail: \(nft?.thumbnailURI)")
+			print("Display: \(nft?.displayURI)")
+			
+			
+			let isCached = MediaProxyService.isCached(url: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small))
 			var mediaType: MediaProxyService.AggregatedMediaType? = nil
 			
 			if case let .success(returnedMediaType) = result {
@@ -239,9 +247,20 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// Can't find data offline, and its not cached already
 			if mediaType == nil {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small), mediaURL2: nil, width: 300, height: 300, quantity: quantityString)
-				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
-				return
+				
+				// TODO: Here when we have thumbnail cached, we need to replace width / height with real dimensions
+				
+				let cacheURL = MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .icon)
+				MediaProxyService.sizeForImageIfCached(url: cacheURL) { size in
+					
+					print("cacheURL: \(cacheURL?.absoluteString)")
+					print("size: \(size)")
+					
+					let finalSize = (size ?? CGSize(width: 300, height: 300))
+					let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: cacheURL, mediaURL2: nil, width: finalSize.width, height: finalSize.height, quantity: quantityString)
+					completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+					return
+				}
 			}
 			
 			// if cached, Display full image
@@ -295,7 +314,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			let mediaType = MediaProxyService.typesContents(res) ?? .imageOnly
 			if mediaType == .imageOnly {
-				MediaProxyService.cacheImage(url: mediaURL, cache: MediaProxyService.temporaryImageCache()) { size in
+				MediaProxyService.cacheImage(url: mediaURL) { size in
 					let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: mediaURL, mediaURL2: nil, width: Double(size?.width ?? 300), height: Double(size?.height ?? 300), quantity: quantityString)
 					completion(mediaContent)
 					return
@@ -320,7 +339,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 								   completion: @escaping (( (mediaContent: MediaContent, needsToDownloadFullImage: Bool, needsMediaTypeVerification: Bool) ) -> Void)) {
 		
 		let cacheURL = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: .small) : MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
-		MediaProxyService.sizeForImageIfCached(url: cacheURL, fromCache: MediaProxyService.temporaryImageCache()) { size in
+		MediaProxyService.sizeForImageIfCached(url: cacheURL) { size in
+			
+			print("cacheURL 2: \(cacheURL?.absoluteString)")
+			print("size 2: \(size)")
 			
 			let finalSize = (size ?? CGSize(width: 300, height: 300))
 			if mediaType == .imageOnly {
@@ -451,7 +473,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			parsedCell.delegate = self.actionsDelegate
 			
 			if !layoutOnly {
-				MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+				MediaProxyService.load(url: obj.collectionIcon, to: parsedCell.websiteImageView, withCacheType: .temporary, fallback: UIImage())
 			}
 			
 			return parsedCell

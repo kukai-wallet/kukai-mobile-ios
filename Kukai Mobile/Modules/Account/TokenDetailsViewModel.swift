@@ -147,7 +147,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
 					
 					if let tokenURL = self.tokenIconURL {
-						MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+						MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 						
 					} else {
 						cell.tokenIcon.image = self.tokenIcon
@@ -183,7 +183,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				if let tokenURL = self.tokenIconURL {
-					MediaProxyService.load(url: tokenURL, to: cell.typeIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.typeIcon.frame.size)
+					MediaProxyService.load(url: tokenURL, to: cell.typeIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 					
 				} else {
 					cell.typeIcon.image = self.tokenIcon

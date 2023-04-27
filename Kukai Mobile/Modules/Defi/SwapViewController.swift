@@ -78,7 +78,7 @@ class SwapViewController: UIViewController {
 		if let img = viewModel.tokenFromIconImage {
 			tokenFromIcon.image = img
 		} else if let url = viewModel.tokenFromIconURL {
-			MediaProxyService.load(url: url, to: tokenFromIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenFromIcon.frame.size)
+			MediaProxyService.load(url: url, to: tokenFromIcon, withCacheType: .permanent, fallback: UIImage())
 		}
 		
 		tokenToButton.setTitle(viewModel.tokenToTitle, for: .normal)
@@ -88,7 +88,7 @@ class SwapViewController: UIViewController {
 		if let img = viewModel.tokenToIconImage {
 			tokenToIcon.image = img
 		} else if let url = viewModel.tokenToIconURL {
-			MediaProxyService.load(url: url, to: tokenToIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: tokenToIcon.frame.size)
+			MediaProxyService.load(url: url, to: tokenToIcon, withCacheType: .permanent, fallback: UIImage())
 		}
 		
 		exchangeRateLabel.text = viewModel.exchangeRateText

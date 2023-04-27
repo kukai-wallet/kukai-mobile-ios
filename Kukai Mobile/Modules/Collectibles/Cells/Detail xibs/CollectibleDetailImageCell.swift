@@ -35,7 +35,7 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 		
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {
-			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: nil)
+			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage())
 			
 			if let quantity = mediaContent.quantity {
 				quantityLabel.text = quantity

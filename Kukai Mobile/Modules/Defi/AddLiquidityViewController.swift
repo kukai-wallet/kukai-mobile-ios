@@ -87,7 +87,7 @@ class AddLiquidityViewController: UIViewController {
 		if let img = viewModel.token1IconImage {
 			token1Icon.image = img
 		} else if let url = viewModel.token1IconURL {
-			MediaProxyService.load(url: url, to: token1Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: token1Icon.frame.size)
+			MediaProxyService.load(url: url, to: token1Icon, withCacheType: .permanent, fallback: UIImage())
 		}
 		
 		token2Button.setTitle(viewModel.token2Title, for: .normal)
@@ -101,7 +101,7 @@ class AddLiquidityViewController: UIViewController {
 		if let img = viewModel.token2IconImage {
 			token2Icon.image = img
 		} else if let url = viewModel.token2IconURL {
-			MediaProxyService.load(url: url, to: token2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: token2Icon.frame.size)
+			MediaProxyService.load(url: url, to: token2Icon, withCacheType: .permanent, fallback: UIImage())
 		}
 		
 		addButton.isHidden = viewModel.isAddButtonHidden

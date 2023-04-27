@@ -95,7 +95,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		// Handle wallet connect data
 		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
 			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.connectedAppIcon.frame.size)
+				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			}
 			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
 			

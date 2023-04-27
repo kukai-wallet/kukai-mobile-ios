@@ -83,7 +83,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					symbol = " "
 				}
 				
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: imageSize)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))

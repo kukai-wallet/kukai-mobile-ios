@@ -57,7 +57,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		}
 		
 		feeValueLabel?.text = "0 tez"
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: collectibleImage.frame.size)
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 		
 		
 		

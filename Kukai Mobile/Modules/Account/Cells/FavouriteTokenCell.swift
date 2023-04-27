@@ -54,7 +54,7 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 								myReorderImage = myImage?.withRenderingMode(.alwaysTemplate)
 							}
 							imageView.image = self.myReorderImage
-							imageView.tintColor = UIColor.colorNamed("Grey1200")
+							imageView.tintColor = UIColor.colorNamed("BG8")
 							break
 						}
 					}

@@ -86,7 +86,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			UIAction(title: "Favourites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "favourites", sender: nil)
 			}),
-			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 17)), identifier: nil, handler: { [weak self] action in
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOff")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			}),
 		]

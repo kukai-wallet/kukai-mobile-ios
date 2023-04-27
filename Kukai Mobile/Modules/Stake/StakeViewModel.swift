@@ -28,7 +28,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			if sectionIdentifier == 0, let obj = item as? TzKTBaker, let cell = tableView.dequeueReusableCell(withIdentifier: "CurrentBakerCell", for: indexPath) as? CurrentBakerCell {
 				if let logo = obj.logo, let url = URL(string: logo) {
-					MediaProxyService.load(url: url, to: cell.bakerIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.bakerIcon.frame.size)
+					MediaProxyService.load(url: url, to: cell.bakerIcon, withCacheType: .temporary, fallback: UIImage())
 				}
 				
 				cell.bakerNameLabel.text = obj.name ?? obj.address
@@ -47,7 +47,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if sectionIdentifier == 2, let obj = item as? TzKTBaker, let cell = tableView.dequeueReusableCell(withIdentifier: "PublicBakerCell", for: indexPath) as? PublicBakerCell {
 				if let logo = obj.logo, let url = URL(string: logo) {
-					MediaProxyService.load(url: url, to: cell.bakerIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: cell.bakerIcon.frame.size)
+					MediaProxyService.load(url: url, to: cell.bakerIcon, withCacheType: .temporary, fallback: UIImage())
 				}
 				
 				cell.bakerNameLabel.text = obj.name ?? obj.address

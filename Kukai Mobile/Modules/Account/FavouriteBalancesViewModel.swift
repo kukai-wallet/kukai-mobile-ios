@@ -93,7 +93,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				
 			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
 				
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				cell.setup(isFav: obj.isFavourite, isLocked: false)

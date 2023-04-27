@@ -54,7 +54,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			let tokenIconURL = TzKTClient.avatarURL(forToken: position.exchange.token.address)
 			
 			cell.tokenIconLeft.image = UIImage.tezosToken()
-			MediaProxyService.load(url: tokenIconURL, to: cell.tokenIconRight, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: cell.tokenIconRight.frame.size)
+			MediaProxyService.load(url: tokenIconURL, to: cell.tokenIconRight, withCacheType: .permanent, fallback: UIImage())
 			
 			cell.pairLabel.text = "tez/\(position.exchange.token.symbol)"
 			cell.sourceLabel.text = position.exchange.name == .lb ? "Sirius Dex" : "Quipuswap"
