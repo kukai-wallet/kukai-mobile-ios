@@ -61,18 +61,6 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		
-		MediaProxyService.imageCache().removeImage(forKey: "https://static.tcinfra.net/media/small/ipfs/QmeaXkDRAKKAm52xUoiGsY91yi3xZrkwErKatv4SqApzu4") {
-			print("cleared")
-		}
-		
-		MediaProxyService.imageCache().removeImage(forKey: "https://static.tcinfra.net/media/small/ipfs/QmeX133ZNZShmyPEdkEwDGP9kogMp8fXeJKPeMQnyKcWvx") {
-			print("cleared")
-		}
-	}
-	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let vc = segue.destination as? TokenContractViewController {
 			vc.setup(tokenId: viewModel.nft?.tokenId.description ?? "0", contractAddress: viewModel.nft?.parentContract ?? "")
