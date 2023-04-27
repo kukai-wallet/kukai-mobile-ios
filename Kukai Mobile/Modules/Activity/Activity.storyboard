@@ -33,11 +33,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="54"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-rv-rIR">
+                                                <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="OuE-rv-rIR">
                                                     <rect key="frame" x="16" y="10" width="361" height="32"/>
                                                     <subviews>
                                                         <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="RkK-od-saz" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="197" height="32"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="204" height="32"/>
                                                             <color key="backgroundColor" name="BG4"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
@@ -68,8 +68,8 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </textField>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="huX-jN-8oh">
-                                                            <rect key="frame" x="209" y="0.0" width="152" height="32"/>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="huX-jN-8oh">
+                                                            <rect key="frame" x="212" y="0.0" width="149" height="32"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qzb-Qa-2B5" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="34" height="32"/>
@@ -103,36 +103,32 @@
                                                                         </userDefinedRuntimeAttribute>
                                                                     </userDefinedRuntimeAttributes>
                                                                 </button>
-                                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7iY-PB-Dt2">
-                                                                    <rect key="frame" x="50" y="0.0" width="102" height="32"/>
-                                                                    <subviews>
-                                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-8a-Xcf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="102" height="32"/>
-                                                                            <color key="backgroundColor" name="BtnSec1"/>
-                                                                            <constraints>
-                                                                                <constraint firstAttribute="height" constant="32" id="JLh-gC-5qC"/>
-                                                                            </constraints>
-                                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
-                                                                            <color key="tintColor" name="TxtBtnSec1"/>
-                                                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                                            <state key="normal" title="  View in Explorer  ">
-                                                                                <color key="titleColor" name="TxtBtnSec1"/>
-                                                                            </state>
-                                                                            <userDefinedRuntimeAttributes>
-                                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                                                    <color key="value" name="BtnStrokeSec1"/>
-                                                                                </userDefinedRuntimeAttribute>
-                                                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                                                    <real key="value" value="1"/>
-                                                                                </userDefinedRuntimeAttribute>
-                                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                                                    <real key="value" value="8"/>
-                                                                                </userDefinedRuntimeAttribute>
-                                                                            </userDefinedRuntimeAttributes>
-                                                                        </button>
-                                                                    </subviews>
-                                                                </stackView>
+                                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-8a-Xcf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                                    <rect key="frame" x="42" y="0.0" width="107" height="32"/>
+                                                                    <color key="backgroundColor" name="BtnSec1"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="height" constant="32" id="JLh-gC-5qC"/>
+                                                                    </constraints>
+                                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                                    <color key="tintColor" name="TxtBtnSec1"/>
+                                                                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                                    <state key="normal" title="View in Explorer">
+                                                                        <color key="titleColor" name="TxtBtnSec1"/>
+                                                                    </state>
+                                                                    <userDefinedRuntimeAttributes>
+                                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                            <color key="value" name="BtnStrokeSec1"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                            <real key="value" value="1"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                            <real key="value" value="8"/>
+                                                                        </userDefinedRuntimeAttribute>
+                                                                    </userDefinedRuntimeAttributes>
+                                                                </button>
                                                             </subviews>
                                                         </stackView>
                                                     </subviews>
@@ -173,7 +169,7 @@
     </scenes>
     <designables>
         <designable name="8Qq-8a-Xcf">
-            <size key="intrinsicContentSize" width="102" height="27"/>
+            <size key="intrinsicContentSize" width="107" height="15"/>
         </designable>
         <designable name="Qzb-Qa-2B5">
             <size key="intrinsicContentSize" width="42" height="32"/>
