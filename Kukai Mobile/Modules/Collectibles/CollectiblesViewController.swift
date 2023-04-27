@@ -114,7 +114,7 @@ class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
 			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.alert(errorWithMessage: "Alphabetical sort not functional yet")
 			})),
-			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(size: CGSize(width: 26, height: 20)), identifier: nil, handler: { [weak self] action in
+			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in
 				self?.alert(errorWithMessage: "CollectionGroupView sort not functional yet")
 			}))
 		]
