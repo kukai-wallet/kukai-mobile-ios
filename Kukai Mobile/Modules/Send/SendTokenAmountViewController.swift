@@ -97,11 +97,13 @@ class SendTokenAmountViewController: UIViewController, EditFeesViewControllerDel
 	@objc func resignAndOptionallyEstimate() {
 		textfield.resignFirstResponder()
 		
-		estimateFee()
+		if !hasEstimated {
+			estimateFee()
+		}
 	}
 	
 	@objc func estimateFee(withText: String? = nil) {
-		guard !hasEstimated, let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
+		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
 			self.alert(errorWithMessage: "Can't find destination")
 			return
 		}

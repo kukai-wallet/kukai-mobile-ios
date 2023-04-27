@@ -77,7 +77,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.iconView.image = UIImage.unknownToken()
 				}
 				
-				let imageSize = CGSize(width: cell.iconView.frame.width+2, height: cell.iconView.frame.height+2)
 				var symbol = token.symbol
 				if symbol == "" {
 					symbol = " "
