@@ -60,6 +60,8 @@ class AccountsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		print("inside viewWillAppear")
+		
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
 	}
@@ -88,6 +90,9 @@ class AccountsViewController: UIViewController {
 			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
 			
 		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
+			vc.selectedWalletMetadata = metadata
+			
+		} else if let vc = segue.destination as? RemoveWalletViewController, let metadata = sender as? WalletMetadata {
 			vc.selectedWalletMetadata = metadata
 		}
 	}

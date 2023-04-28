@@ -30,6 +30,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	
 	private var headers: [AccountsHeaderObject] = []
+	private var newWalletAutoSelected = false
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -151,13 +152,19 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(data, toSection: index)
 		}
 		
-		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
-		ds.applySnapshotUsingReloadData(snapshot)
-		
 		// If user removed the currently selected wallet
 		if selectedIndex.row == -1 {
 			selectedIndex = IndexPath(row: 1, section: 0)
+			newWalletAutoSelected = true
+		}
+		
+		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
+		ds.applySnapshotUsingReloadData(snapshot)
+		
+		// If we had to forcably set a wallet (due to edits / deletions), select the wallet
+		if newWalletAutoSelected {
 			DependencyManager.shared.selectedWalletMetadata = metadataFor(indexPath: selectedIndex)
+			newWalletAutoSelected = false
 		}
 		
 		self.state = .success(nil)
@@ -212,6 +219,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
 			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "remove", sender: meta)
+			}
 		}
 		
 		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)

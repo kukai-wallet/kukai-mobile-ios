@@ -123,13 +123,10 @@ class EditWalletViewController: UIViewController, BottomSheetCustomProtocol {
 	}
 	
 	@IBAction func deleteButtonTapped(_ sender: Any) {
-		guard let address = selectedWalletMetadata?.address else { return }
-		
-		if WalletCacheService().deleteWallet(withAddress: address, parentIndex: selectedWalletParentIndex) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-			self.dismissBottomSheet()
-		} else {
-			self.alert(errorWithMessage: "Unable to delete wallet")
+		if let vc = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? AccountsViewController {
+			self.dismiss(animated: true) { [weak self] in
+				vc.performSegue(withIdentifier: "remove", sender: self?.selectedWalletMetadata)
+			}
 		}
 	}
 }
