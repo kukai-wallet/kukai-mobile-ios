@@ -36,7 +36,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomProtocol {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		customNameTextField.validator = NoWhiteSpaceStringValidator()
+		customNameTextField.validator = FreeformValidator()
 		customNameTextField.validatorTextFieldDelegate = self
 		
 		customNameCancelButton.customButtonType = .secondary

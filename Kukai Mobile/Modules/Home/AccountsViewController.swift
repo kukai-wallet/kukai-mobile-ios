@@ -86,6 +86,9 @@ class AccountsViewController: UIViewController {
 		if let vc = segue.destination as? EditWalletViewController, let indexPath = sender as? IndexPath {
 			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
 			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+			
+		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
+			vc.selectedWalletMetadata = metadata
 		}
 	}
 }

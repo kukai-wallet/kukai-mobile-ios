@@ -107,7 +107,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menu)])
+				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu)])
 			}
 			
 			sectionData[sections.count-1].append(metadata)
@@ -180,6 +180,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
 		guard let vc = delegate else { return nil }
 		
+		let edit = UIAction(title: "Edit Name", image: UIImage(named: "Edit")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "rename", sender: meta)
+			}
+		}
+		
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
 			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) {
@@ -202,7 +210,11 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
+		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
+			
+		}
+		
+		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
 	}
 	
 	func pullToRefresh(animate: Bool) {
