@@ -60,6 +60,9 @@ class CustomisableButton: UIButton {
 		switch self.customButtonType {
 			case .primary:
 				
+				setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
+				setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
+				
 				if isEnabled {
 					gradientLayer = self.addGradientButtonPrimary(withFrame: self.bounds)
 					
@@ -68,6 +71,7 @@ class CustomisableButton: UIButton {
 				}
 				
 			case .secondary:
+				self.borderWidth = 1
 				
 				if isEnabled {
 					self.borderColor = UIColor.colorNamed("BtnStrokeSec1")

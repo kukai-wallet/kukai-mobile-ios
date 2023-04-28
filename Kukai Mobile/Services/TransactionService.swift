@@ -277,7 +277,7 @@ public class TransactionService {
 		// Second Early exit if non-social wallet without domain
 		if metadata.type != .social {
 			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
-			return (image: image, title: metadata.address.truncateTezosAddress(), subtitle: nil)
+			return (image: image, title: metadata.walletNickname ?? metadata.address.truncateTezosAddress(), subtitle: nil)
 		}
 		
 		// Iterate through social
@@ -288,35 +288,35 @@ public class TransactionService {
 				
 			case .twitter:
 				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .google:
 				let image = UIImage(named: "Social_Google_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .reddit:
 				let image = UIImage(named: "Social_Reddit_Color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .facebook:
 				let image = UIImage(named: "Social_Facebook_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .discord:
 				let image = UIImage(named: "Social_Discord_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitch:
 				let image = UIImage(named: "Social_Twitch_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .line:
 				let image = UIImage(named: "Social_LineColor")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .github:
 				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.displayName ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .none:
 				let image = UIImage.unknownToken().resizedImage(size: imageSize) ?? UIImage()

@@ -113,7 +113,7 @@ class SlideButton: UIView {
 			
 			let centerOfTouchedButtonView = locationInView.x - (buttonView.frame.width/2)
 			let progressViewEndDestination = ((buttonView.frame.width / 2) + (padding * 2))
-			let progressPercentage = (centerOfTouchedButtonView / containerView.frame.width)
+			//let progressPercentage = (centerOfTouchedButtonView / containerView.frame.width)
 			
 			if gestureRecognizer.state == .changed {
 				if centerOfTouchedButtonView > padding && centerOfTouchedButtonView <= containerView.frame.width - (buttonView.frame.width + padding) {
