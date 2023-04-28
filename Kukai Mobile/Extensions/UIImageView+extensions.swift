@@ -29,7 +29,7 @@ extension UIImageView {
 		if token.isXTZ() {
 			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
 		} else {
-			MediaProxyService.load(url: token.thumbnailURL, to: self, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.frame.size)
+			MediaProxyService.load(url: token.thumbnailURL, to: self, withCacheType: .permanent, fallback: UIImage.unknownToken())
 		}
 	}
 }

@@ -27,6 +27,7 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 		
 		textView.backgroundColor = .clear
 		textView.attributedText = attributedtext
+		textView.linkTextAttributes = [.foregroundColor: UIColor.colorNamed("TxtLink")]
 		textView.textContainerInset = UIEdgeInsets.zero
 		textView.textContainer.lineFragmentPadding = 0
 	}

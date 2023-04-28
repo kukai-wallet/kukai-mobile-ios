@@ -16,8 +16,11 @@ class EditFeesViewController: UIViewController {
 	
 	@IBOutlet weak var segmentedButton: UISegmentedControl!
 	@IBOutlet weak var gasLimitTextField: ValidatorTextField!
+	@IBOutlet weak var gasErrorLabel: UILabel!
 	@IBOutlet weak var feeTextField: ValidatorTextField!
+	@IBOutlet weak var feeErrorLabel: UILabel!
 	@IBOutlet weak var storageLimitTextField: ValidatorTextField!
+	@IBOutlet weak var storageErrorLabel: UILabel!
 	@IBOutlet weak var maxStorageCostLbl: UILabel!
 	private var infoIndex = 0
 	
@@ -30,12 +33,26 @@ class EditFeesViewController: UIViewController {
 		
 		segmentedButton.setTitleTextAttributes(normalAttributes, for: .normal)
 		segmentedButton.setTitleTextAttributes(selectedAttributes, for: .selected)
+		
+		feeErrorLabel.isHidden = true
+		gasErrorLabel.isHidden = true
+		storageErrorLabel.isHidden = true
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		refreshUI()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		// If selected custom, and theres an error or the user never changed any of the fields, revert back to normal
+		if segmentedButton.selectedSegmentIndex == 2 && (!feeTextField.isValid || !gasLimitTextField.isValid || !storageLimitTextField.isValid) {
+			segmentedButton.selectedSegmentIndex = 0
+			updateTransaction()
+		}
 	}
 	
 	func refreshUI() {
@@ -47,14 +64,17 @@ class EditFeesViewController: UIViewController {
 		gasLimitTextField.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: 1_040_000, decimalPlaces: 1), decimalPlaces: 1)
 		gasLimitTextField.validatorTextFieldDelegate = self
 		gasLimitTextField.addDoneToolbar()
+		let _ = gasLimitTextField.revalidateTextfield()
 		
 		storageLimitTextField.validator = TokenAmountValidator(balanceLimit: TokenAmount(fromNormalisedAmount: 60_000, decimalPlaces: 0), decimalPlaces: 0)
 		storageLimitTextField.validatorTextFieldDelegate = self
 		storageLimitTextField.addDoneToolbar()
+		let _ = storageLimitTextField.revalidateTextfield()
 		
 		feeTextField.validator = TokenAmountValidator(balanceLimit: xtzBalance, decimalPlaces: 6)
 		feeTextField.validatorTextFieldDelegate = self
 		feeTextField.addDoneToolbar()
+		let _ = feeTextField.revalidateTextfield()
 	}
 	
 	@IBAction func segmentedButtonTapped(_ sender: Any) {
@@ -78,13 +98,20 @@ class EditFeesViewController: UIViewController {
 	
 	func recordFee() {
 		if segmentedButton.selectedSegmentIndex == 2 {
-			let xtzAmount = XTZAmount(fromNormalisedAmount: feeTextField.text ?? "0", decimalPlaces: 6)
-			let gasLimit = Int(gasLimitTextField.text ?? "0")
-			let storageLimit = Int(storageLimitTextField.text ?? "0")
-			
-			TransactionService.shared.currentOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+			if feeTextField.isValid && gasLimitTextField.isValid && storageLimitTextField.isValid {
+				let xtzAmount = XTZAmount(fromNormalisedAmount: feeTextField.text ?? "0", decimalPlaces: 6)
+				let gasLimit = Int(gasLimitTextField.text ?? "0")
+				let storageLimit = Int(storageLimitTextField.text ?? "0")
+				
+				TransactionService.shared.currentOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+				updateTransaction()
+			}
 		}
 		
+		updateTransaction()
+	}
+	
+	func updateTransaction() {
 		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
 		
 		// Check if a previous bototm sheet is displaying a transaction, and update its fee
@@ -157,9 +184,25 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if !validated {
-			textfield.backgroundColor = .red
+			if textfield == feeTextField {
+				feeErrorLabel.isHidden = false
+				
+			} else if textfield == gasLimitTextField {
+				gasErrorLabel.isHidden = false
+				
+			} else if textfield == storageLimitTextField {
+				storageErrorLabel.isHidden = false
+			}
 		} else {
-			textfield.backgroundColor = .white
+			if textfield == feeTextField {
+				feeErrorLabel.isHidden = true
+				
+			} else if textfield == gasLimitTextField {
+				gasErrorLabel.isHidden = true
+				
+			} else if textfield == storageLimitTextField {
+				storageErrorLabel.isHidden = true
+			}
 		}
 	}
 	

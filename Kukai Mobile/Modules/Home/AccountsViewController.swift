@@ -32,12 +32,10 @@ class AccountsViewController: UIViewController {
 		tableView.delegate = self
 		tableView.allowsSelectionDuringEditing = true
 		
-		/*
 		refreshControl.addAction(UIAction(handler: { [weak self] action in
 			self?.viewModel.pullToRefresh(animate: true)
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
-		*/
 		
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
@@ -61,6 +59,8 @@ class AccountsViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		print("inside viewWillAppear")
 		
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
@@ -88,6 +88,12 @@ class AccountsViewController: UIViewController {
 		if let vc = segue.destination as? EditWalletViewController, let indexPath = sender as? IndexPath {
 			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
 			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+			
+		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
+			vc.selectedWalletMetadata = metadata
+			
+		} else if let vc = segue.destination as? RemoveWalletViewController, let metadata = sender as? WalletMetadata {
+			vc.selectedWalletMetadata = metadata
 		}
 	}
 }

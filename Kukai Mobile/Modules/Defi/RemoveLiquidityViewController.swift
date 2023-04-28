@@ -84,8 +84,8 @@ class RemoveLiquidityViewController: UIViewController {
 		}
 		
 		if let url = viewModel.lpToken2IconURL {
-			MediaProxyService.load(url: url, to: lpToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: lpToken2Icon.frame.size)
-			MediaProxyService.load(url: url, to: outputToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: outputToken2Icon.frame.size)
+			MediaProxyService.load(url: url, to: lpToken2Icon, withCacheType: .permanent, fallback: UIImage())
+			MediaProxyService.load(url: url, to: outputToken2Icon, withCacheType: .permanent, fallback: UIImage())
 		}
 		
 		outputToken1Button.setTitle(viewModel.outputToken1Title, for: .normal)

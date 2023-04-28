@@ -95,7 +95,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		// Handle wallet connect data
 		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
 			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.connectedAppIcon.frame.size)
+				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			}
 			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
 			
@@ -177,10 +177,10 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 			return
 		}
 		
-		self.showLoadingModal(completion: nil)
+		//self.showLoadingModal(completion: nil)
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
-			self?.slideButton.markComplete(withText: "Confirmed!")
+			self?.slideButton.markComplete(withText: "Complete")
 			
 			self?.hideLoadingModal(completion: { [weak self] in
 				switch sendResult {

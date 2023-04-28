@@ -86,7 +86,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			])
 			
 			
-			MediaProxyService.temporaryImageCache().retrieveImage(forKey: audioImageURL.absoluteString, options: []) { [weak self] result in
+			MediaProxyService.imageCache().retrieveImage(forKey: audioImageURL.absoluteString, options: []) { [weak self] result in
 				guard let res = try? result.get() else {
 					return
 				}

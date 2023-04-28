@@ -70,7 +70,7 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		}
 		
 		feeValueLabel?.text = "0 tez"
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: .small), to: collectibleImage, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: collectibleImage.frame.size)
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 		collectibleName.text = selectedToken?.name ?? ""
 		
 		

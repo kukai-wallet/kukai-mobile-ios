@@ -93,7 +93,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				if let index = self?.contractAliasesAddressShorthand.firstIndex(of: obj.tokenContractAddress ?? "") {
 					cell.iconView.image = UIImage(named: self?.contractAliases[index].thumbnailUrl ?? "") ?? UIImage()
 				} else {
-					MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+					MediaProxyService.load(url: obj.thumbnailURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				}
 				
 				if let alias = obj.name {
@@ -108,7 +108,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				
 			} else if let obj = item as? NFT, self?.isSearching == false, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesListItemCell", for: indexPath) as? CollectiblesListItemCell {
 				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
-				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.setup(title: obj.name, balance: obj.balance)
 				cell.subTitleLabel.text = obj.parentAlias ?? obj.parentContract
 				
@@ -116,7 +116,7 @@ class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandle
 				
 			} else if let obj = item as? NFT, self?.isSearching == true, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchResultCell", for: indexPath) as? CollectiblesSearchResultCell {
 				let mediaURL = MediaProxyService.thumbnailURL(forNFT: obj)
-				MediaProxyService.load(url: mediaURL, to: cell.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.iconView.frame.size)
+				MediaProxyService.load(url: mediaURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.setup(title: obj.name, balance: obj.balance)
 				cell.subTitleLabel.text = obj.parentAlias ?? obj.parentContract
 				

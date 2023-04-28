@@ -53,23 +53,23 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	}
 	
 	static func imageFor(addressType: AddressType) -> UIImage {
-		var tempMetadata = WalletMetadata(address: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+		var tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 		
 		switch addressType {
 			case .tezosAddress:
-				tempMetadata = WalletMetadata(address: "", type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .tezosDomain:
-				tempMetadata = WalletMetadata(address: "", displayName: "", mainnetDomains: [], ghostnetDomains: [], type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, mainnetDomains: [], ghostnetDomains: [], type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .gmail:
-				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .google, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .google, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .reddit:
-				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .reddit, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .reddit, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .twitter:
-				tempMetadata = WalletMetadata(address: "", displayName: "", socialType: .twitter, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .twitter, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
 		}
 		
 		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .size_22).image

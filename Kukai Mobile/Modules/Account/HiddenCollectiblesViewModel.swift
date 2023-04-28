@@ -48,7 +48,7 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 			
 			if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
 				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: .icon)
-				MediaProxyService.load(url: url, to: cell.tokenIcon, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: cell.tokenIcon.frame.size)
+				MediaProxyService.load(url: url, to: cell.tokenIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.name
 				cell.balanceLabel.text = obj.parentAlias ?? obj.parentContract
 				

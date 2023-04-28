@@ -45,7 +45,7 @@ class AddLiquidityConfirmViewController: UIViewController {
 		token1BalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
 		
 		let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
-		MediaProxyService.load(url: tokenIconURL, to: token2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: token2Icon.frame.size)
+		MediaProxyService.load(url: tokenIconURL, to: token2Icon, withCacheType: .permanent, fallback: UIImage())
 		
 		token2Label.text = exchange.token.symbol
 		token2AmountLabel.text = TransactionService.shared.addLiquidityData.token2?.normalisedRepresentation ?? ""

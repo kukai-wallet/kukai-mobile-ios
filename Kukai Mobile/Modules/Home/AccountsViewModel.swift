@@ -30,8 +30,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	
 	private var headers: [AccountsHeaderObject] = []
-	private var bag = Set<AnyCancellable>()
-	
+	private var newWalletAutoSelected = false
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -109,7 +108,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: "HD Wallet \(index + 1)", menu: menu)])
+				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu)])
 			}
 			
 			sectionData[sections.count-1].append(metadata)
@@ -153,13 +152,19 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems(data, toSection: index)
 		}
 		
-		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
-		ds.applySnapshotUsingReloadData(snapshot)
-		
 		// If user removed the currently selected wallet
 		if selectedIndex.row == -1 {
 			selectedIndex = IndexPath(row: 1, section: 0)
+			newWalletAutoSelected = true
+		}
+		
+		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
+		ds.applySnapshotUsingReloadData(snapshot)
+		
+		// If we had to forcably set a wallet (due to edits / deletions), select the wallet
+		if newWalletAutoSelected {
 			DependencyManager.shared.selectedWalletMetadata = metadataFor(indexPath: selectedIndex)
+			newWalletAutoSelected = false
 		}
 		
 		self.state = .success(nil)
@@ -181,6 +186,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
 		guard let vc = delegate else { return nil }
+		
+		let edit = UIAction(title: "Edit Name", image: UIImage(named: "Edit")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "rename", sender: meta)
+			}
+		}
 		
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
@@ -204,7 +217,15 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		return MenuViewController(actions: [[addAccount]], header: "HD Wallet \(hdWalletIndex+1)", sourceViewController: vc)
+		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "remove", sender: meta)
+			}
+		}
+		
+		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
 	}
 	
 	func pullToRefresh(animate: Bool) {
@@ -213,32 +234,25 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let addresses = DependencyManager.shared.walletList.addresses()
-		DependencyManager.shared.tezosDomainsClient.getDomainsFor(addresses: addresses)
-			.sink(onError: { [weak self] error in
-				self?.state = .failure(error, "Error occurred detching tezos domains")
-				
-			}, onSuccess: { [weak self] result in
-				
-				/*
-				for address in result.keys {
-					if let reverseRecord = result[address]?.data?.reverseRecord {
-						let _ = DependencyManager.shared.walletList.set(domain: reverseRecord, forAddress: address)
+		DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainsFor(addresses: addresses) { [weak self] result in
+			switch result {
+				case .success(let response):
+					
+					for address in response.keys {
+						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response[address]?.mainnet, ghostnetDomain: response[address]?.ghostnet, forAddress: address)
 					}
-				}
-				
-				let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
-				
-				// TODO: didn't reload sections, might need to call viewModel.reload
-				// TODO: home page not displaying domain
-				var snapshot = self?.dataSource?.snapshot()
-				snapshot?.reloadSections( self?.dataSource?.snapshot().sectionIdentifiers ?? [] )
-				if let snap = snapshot {
-					self?.dataSource?.apply(snap, animatingDifferences: true)
-				}
-				*/
-				
-				self?.state = .success(nil)
-				
-			}).store(in: &bag)
+					
+					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					if let currentAddress = DependencyManager.shared.selectedWalletAddress {
+						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: currentAddress)
+					}
+					
+					self?.refresh(animate: true)
+					self?.state = .success(nil)
+					
+				case .failure(let error):
+					self?.state = .failure(error, "Error occurred detching tezos domains")
+			}
+		}
 	}
 }

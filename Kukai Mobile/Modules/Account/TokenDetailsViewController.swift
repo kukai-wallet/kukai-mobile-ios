@@ -84,7 +84,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	func loadRealData() {
 		if let tokenURL = viewModel.tokenIconURL {
-			MediaProxyService.load(url: tokenURL, to: headerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: headerIcon.frame.size)
+			MediaProxyService.load(url: tokenURL, to: headerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 		} else {
 			headerIcon.image = viewModel.tokenIcon

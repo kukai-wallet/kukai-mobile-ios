@@ -32,7 +32,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 	
 	func setup(data: AggregateRewardInformation) {
 		if let previousReward = data.previousReward {
-			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: lastBakerIcon.frame.size)
+			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
@@ -45,7 +45,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			lastCycle.text = previousReward.cycle.description
 			
 		} else if let previousReward = data.estimatedPreviousReward {
-			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: lastBakerIcon.frame.size)
+			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
@@ -67,7 +67,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 		}
 		
 		if let nextReward = data.estimatedNextReward {
-			MediaProxyService.load(url: nextReward.bakerLogo, to: nextBakerIcon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage.unknownToken(), downSampleSize: nextBakerIcon.frame.size)
+			MediaProxyService.load(url: nextReward.bakerLogo, to: nextBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			let percentage = Decimal(nextReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
 			

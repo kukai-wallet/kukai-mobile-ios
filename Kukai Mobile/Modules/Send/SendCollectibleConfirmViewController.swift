@@ -57,7 +57,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		}
 		
 		feeValueLabel?.text = "0 tez"
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage(), downSampleSize: collectibleImage.frame.size)
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 		
 		
 		
@@ -107,7 +107,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		self.showLoadingModal(completion: nil)
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
-			self?.slideButton.markComplete(withText: "Confirmed!")
+			self?.slideButton.markComplete(withText: "Complete")
 			
 			self?.hideLoadingModal(completion: { [weak self] in
 				switch sendResult {

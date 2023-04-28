@@ -110,7 +110,7 @@ struct ChartView: View {
 			ZStack(alignment: .topLeading) {
 				GeometryReader { geo in
 					
-					let widthOfString = doubleFormatter(integration.maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
+					let widthOfString = doubleFormatter(integration.maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
 					let boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
 					
 					VStack(alignment: .trailing) {
@@ -132,7 +132,7 @@ struct ChartView: View {
 			ZStack(alignment: .topLeading) {
 				GeometryReader { geo in
 					
-					let widthOfString = doubleFormatter(integration.minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 10))
+					let widthOfString = doubleFormatter(integration.minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
 					let boxOffset = max(4, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
 					
 					VStack(alignment: .trailing) {
@@ -245,10 +245,10 @@ struct TokenDetailsChartView_Previews: PreviewProvider {
 			.init(value: 1.0824332458790638, date: Date()),
 			.init(value: 1.0806859563659879, date: Date().addingTimeInterval(10000)),
 			.init(value: 1.0806711006253034, date: Date().addingTimeInterval(20000)),
-			.init(value: 1.0830491365529251, date: Date().addingTimeInterval(30000)),
-			.init(value: 1.0795723536365875, date: Date().addingTimeInterval(40000)),
-			.init(value: 1.0791162896315143, date: Date().addingTimeInterval(50000)),
-			.init(value: 1.0765211160416603, date: Date().addingTimeInterval(60000))
+			.init(value: 1.0795723536365875, date: Date().addingTimeInterval(30000)),
+			.init(value: 1.0791162896315143, date: Date().addingTimeInterval(40000)),
+			.init(value: 1.0765211160416603, date: Date().addingTimeInterval(50000)),
+			.init(value: 100000.0830491365529251, date: Date().addingTimeInterval(60000))
 		]
 		
 		let tempData2: [ChartViewDataPoint] = [

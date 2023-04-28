@@ -25,13 +25,15 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	private var isMultiChoice = false
 	private var oldIndexPathSlectionIndex: IndexPath = IndexPath(row: 0, section: 0)
 	private var header: String? = nil
+	private var alertStyleIndexes: [IndexPath]? = nil
 	private weak var sourceVC: UIViewController? = nil
 	
 	/// Similar to default UIMenu control
-	convenience init(actions: [[UIAction]], header: String?, sourceViewController: UIViewController) {
+	convenience init(actions: [[UIAction]], header: String?, alertStyleIndexes: [IndexPath]? = nil, sourceViewController: UIViewController) {
 		self.init(style: .grouped)
 		self.actions = actions
 		self.header = header
+		self.alertStyleIndexes = alertStyleIndexes
 		self.sourceVC = sourceViewController
 	}
 	
@@ -139,8 +141,16 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 			let action = self.actions[indexPath.section][actionIndex]
 			
 			cell.actionLabel.text = action.title
-			cell.iconView.image = action.image?.withTintColor(.colorNamed("BGB4"))
-			cell.iconView.tintColor = .colorNamed("BGB4")
+			
+			if let alertIndexes = self.alertStyleIndexes, alertIndexes.contains(where: { $0.section == indexPath.section && $0.row == actionIndex }) {
+				cell.actionLabel.textColor = .colorNamed("TxtAlert4")
+				cell.iconView.image = action.image?.withTintColor(.colorNamed("TxtAlert4"))
+				cell.iconView.tintColor = .colorNamed("TxtAlert4")
+				
+			} else {
+				cell.iconView.image = action.image?.withTintColor(.colorNamed("BGB4"))
+				cell.iconView.tintColor = .colorNamed("BGB4")
+			}
 			return cell
 		}
 		

@@ -113,13 +113,14 @@ class SlideButton: UIView {
 			
 			let centerOfTouchedButtonView = locationInView.x - (buttonView.frame.width/2)
 			let progressViewEndDestination = ((buttonView.frame.width / 2) + (padding * 2))
-			let progressPercentage = (centerOfTouchedButtonView / containerView.frame.width)
+			//let progressPercentage = (centerOfTouchedButtonView / containerView.frame.width)
 			
 			if gestureRecognizer.state == .changed {
 				if centerOfTouchedButtonView > padding && centerOfTouchedButtonView <= containerView.frame.width - (buttonView.frame.width + padding) {
 					buttonViewLeadingConstraint.constant = centerOfTouchedButtonView
-					progressViewTrailingConstraint.constant = progressViewEndDestination * (progressPercentage > 1 ? 1 : progressPercentage)
+					//progressViewTrailingConstraint.constant = progressViewEndDestination * (progressPercentage > 1 ? 1 : progressPercentage)
 				}
+				 
 				
 				let diff = 100.0 - touchedView.frame.origin.x
 				label?.alpha = diff / 100
@@ -129,6 +130,7 @@ class SlideButton: UIView {
 			} else if gestureRecognizer.state == .ended {
 				if (centerOfTouchedButtonView + (buttonView.frame.width/2)) >= (containerView.frame.width - padding) {
 					
+					progressViewTrailingConstraint.constant = progressViewEndDestination
 					activityIndicator.isHidden = false
 					activityIndicator.startAnimating()
 					

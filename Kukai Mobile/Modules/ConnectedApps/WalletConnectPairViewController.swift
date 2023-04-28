@@ -33,7 +33,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 		}
 		
 		if let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-			MediaProxyService.load(url: iconUrl, to: self.iconView, fromCache: MediaProxyService.temporaryImageCache(), fallback: UIImage.unknownToken(), downSampleSize: self.iconView.frame.size)
+			MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		}
 		self.nameLabel.text = proposal.proposer.name
 		

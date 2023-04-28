@@ -49,7 +49,7 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		
 		
 		lpToken1Icon.image = UIImage.tezosToken()
-		MediaProxyService.load(url: tokenIconURL, to: lpToken2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: lpToken2Icon.frame.size)
+		MediaProxyService.load(url: tokenIconURL, to: lpToken2Icon, withCacheType: .permanent, fallback: UIImage())
 		lpTokenLabel.text = "XTZ/\(position.exchange.token.symbol)"
 		lpTokenAmountLabel.text = TransactionService.shared.removeLiquidityData.tokenAmount?.normalisedRepresentation ?? "0"
 		lpTokenBalanceLabel.text = position.tokenAmount().normalisedRepresentation
@@ -61,7 +61,7 @@ class RemoveLiquidityConfirmViewController: UIViewController {
 		token1BalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
 		
 		
-		MediaProxyService.load(url: tokenIconURL, to: token2Icon, fromCache: MediaProxyService.permanentImageCache(), fallback: UIImage(), downSampleSize: token2Icon.frame.size)
+		MediaProxyService.load(url: tokenIconURL, to: token2Icon, withCacheType: .permanent, fallback: UIImage())
 		token2Label.text = position.exchange.token.symbol
 		token2AmountLabel.text = TransactionService.shared.removeLiquidityData.calculationResult?.expectedToken.normalisedRepresentation ?? ""
 		token2BalanceLabel.text = "Balance: \(tokenBalanceString) \(position.exchange.token.symbol)"
