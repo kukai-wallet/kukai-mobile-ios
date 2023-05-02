@@ -71,14 +71,14 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build arrays of data
 		let wallets = DependencyManager.shared.walletList
-		let walletImage = UIImage(named: "Wallet")?.resizedImage(size: CGSize(width: 16, height: 15))?.withTintColor(.colorNamed("Txt10")) ?? UIImage()
+		let walletImage = UIImage(named: "Wallet") ?? UIImage()
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
 		var sections: [Int] = []
 		var sectionData: [[AnyHashable]] = []
 		
 		
-		let contactsHeaderImage = UIImage(named: "Contacts")?.resizedImage(size: CGSize(width: 16, height: 11))?.withTintColor(.colorNamed("Txt10")) ?? UIImage()
+		let contactsHeaderImage = UIImage(named: "Contacts") ?? UIImage()
 		let contactsHeader = SendHeaderObj(icon: contactsHeaderImage, title: "Contacts")
 		sections.append(sections.count)
 		sectionData.append([contactsHeader, NoContacts()])

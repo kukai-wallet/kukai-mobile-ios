@@ -23,19 +23,23 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		tableView.contentInsetAdjustmentBehavior = .never
+		tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0.1, height: 0.1))
 		enterAddressComponent.delegate = self
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingView(completion: nil)
+					//self?.showLoadingView(completion: nil)
+					let _ = ""
 					
 				case .failure(_, let errorString):
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
+					let _ = ""
 			}
 		}
 	}

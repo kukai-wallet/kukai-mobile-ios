@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import KukaiCoreSwift
 
-class SendCollectibleAmountViewController: UIViewController, EditFeesViewControllerDelegate {
+class SendCollectibleAmountViewController: UIViewController {
 	
 	@IBOutlet weak var scrollView: UIScrollView!
 	@IBOutlet weak var toStackViewSocial: UIStackView!
@@ -23,20 +23,16 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	@IBOutlet weak var collectibleImage: UIImageView!
 	@IBOutlet weak var collectibleName: UILabel!
 	
+	@IBOutlet weak var quantityStackView: UIStackView!
 	@IBOutlet weak var quantityContainer: UIView!
 	@IBOutlet weak var quantityMinusButton: CustomisableButton!
 	@IBOutlet weak var quantityTextField: ValidatorTextField!
 	@IBOutlet weak var quantityPlusButton: CustomisableButton!
 	@IBOutlet weak var maxButton: UIButton!
 	
-	@IBOutlet weak var feeValueLabel: UILabel!
-	@IBOutlet weak var feeButton: CustomisableButton!
-	
 	@IBOutlet weak var reviewButton: CustomisableButton!
 	
 	private var selectedToken: NFT? = nil
-	
-	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -63,13 +59,12 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		
 		// Token data
 		if token.balance == 1 {
-			maxButton.isHidden = true
+			quantityStackView.isHidden = true
 		} else {
 			let amountDisplay = token.balance > 100 ? "99+" : token.balance.description
 			maxButton.setTitle("Max \(amountDisplay)", for: .normal)
 		}
 		
-		feeValueLabel?.text = "0 tez"
 		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 		collectibleName.text = selectedToken?.name ?? ""
 		
@@ -78,14 +73,9 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		quantityTextField.text = TransactionService.shared.sendData.chosenAmount?.normalisedRepresentation ?? "1"
 		quantityTextField.validatorTextFieldDelegate = self
 		quantityTextField.validator = NumberValidator(min: 1, max: token.balance, decimalPlaces: 0)
-		quantityTextField.addDoneToolbar(onDone: (target: self, action: #selector(estimateFee)))
-		
-		updateFees()
-		feeButton.customButtonType = .secondary
-		feeButton.isEnabled = false
+		quantityTextField.addDoneToolbar()
 		
 		reviewButton.customButtonType = .primary
-		reviewButton.isEnabled = false
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -95,7 +85,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		estimateFee()
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
@@ -107,7 +96,11 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		self.stopListeningForKeyboard()
 	}
 	
-	@objc func estimateFee() {
+	@IBAction func reviewButtonTapped(_ sender: Any) {
+		estimateFeeAndNavigate()
+	}
+	
+	func estimateFeeAndNavigate() {
 		quantityTextField.resignFirstResponder()
 		
 		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
@@ -116,6 +109,7 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		}
 		
 		if let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: quantityTextField.text ?? "") {
+			self.showLoadingModal()
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: nft.decimalPlaces)
 			let operations = OperationFactory.sendOperation(textDecimal, ofNft: nft, from: selectedWalletMetadata.address, to: destination)
@@ -127,24 +121,18 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 				switch estimationResult {
 					case .success(let estimatedOperations):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
-						self?.feeValueLabel?.text = estimatedOperations.map({ $0.operationFees.allFees() }).reduce(XTZAmount.zero(), +).normalisedRepresentation + " XTZ"
-						self?.feeButton.isEnabled = true
-						self?.reviewButton.isEnabled = true
+						
+						self?.hideLoadingModal(completion: { [weak self] in
+							self?.performSegue(withIdentifier: "confirm", sender: nil)
+						})
 						
 					case .failure(let estimationError):
-						self?.alert(errorWithMessage: "\(estimationError)")
-						self?.feeButton.isEnabled = false
-						self?.reviewButton.isEnabled = false
+						self?.hideLoadingModal(completion: { [weak self] in
+							self?.alert(errorWithMessage: "\(estimationError)")
+						})
 				}
 			}
 		}
-	}
-	
-	func updateFees() {
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
-		
-		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
-		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 	
 	@IBAction func minusTapped(_ sender: Any) {
@@ -159,7 +147,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		TransactionService.shared.sendData.chosenAmount = (amount - TokenAmount(fromNormalisedAmount: 1, decimalPlaces: nft.decimalPlaces))
 		quantityTextField.text = TransactionService.shared.sendData.chosenAmount?.normalisedRepresentation
 		let _ = quantityTextField.revalidateTextfield()
-		estimateFee()
 	}
 	
 	@IBAction func plusTapped(_ sender: Any) {
@@ -174,7 +161,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		TransactionService.shared.sendData.chosenAmount = (amount + TokenAmount(fromNormalisedAmount: 1, decimalPlaces: nft.decimalPlaces))
 		quantityTextField.text = TransactionService.shared.sendData.chosenAmount?.normalisedRepresentation
 		let _ = quantityTextField.revalidateTextfield()
-		estimateFee()
 	}
 	
 	@IBAction func maxTapped(_ sender: Any) {
@@ -189,7 +175,6 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: nft.balance, decimalPlaces: nft.decimalPlaces)
 		quantityTextField.text = TransactionService.shared.sendData.chosenAmount?.normalisedRepresentation
 		let _ = quantityTextField.revalidateTextfield()
-		estimateFee()
 	}
 }
 
@@ -238,7 +223,7 @@ extension SendCollectibleAmountViewController {
 	@objc func customKeyboardWillShow(notification: NSNotification) {
 		if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue, let duration = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double), duration != 0 {
 			let whereKeyboardWillGoToo = ((self.scrollView.frame.height + self.view.safeAreaInsets.bottom) - keyboardSize.height)
-			let whereNeedsToBeDisplayed = (feeButton.convert(CGPoint(x: 0, y: 0), to: scrollView).y + feeButton.frame.height + 8).rounded(.up)
+			let whereNeedsToBeDisplayed = (reviewButton.convert(CGPoint(x: 0, y: 0), to: scrollView).y + reviewButton.frame.height + 8).rounded(.up)
 			
 			if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
 				self.scrollView.contentOffset = CGPoint(x: 0, y: (whereNeedsToBeDisplayed - whereKeyboardWillGoToo))
