@@ -23,6 +23,7 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 	@IBOutlet weak var collectibleImage: UIImageView!
 	@IBOutlet weak var collectibleName: UILabel!
 	
+	@IBOutlet weak var quantityStackView: UIStackView!
 	@IBOutlet weak var quantityContainer: UIView!
 	@IBOutlet weak var quantityMinusButton: CustomisableButton!
 	@IBOutlet weak var quantityTextField: ValidatorTextField!
@@ -63,7 +64,7 @@ class SendCollectibleAmountViewController: UIViewController, EditFeesViewControl
 		
 		// Token data
 		if token.balance == 1 {
-			maxButton.isHidden = true
+			quantityStackView.isHidden = true
 		} else {
 			let amountDisplay = token.balance > 100 ? "99+" : token.balance.description
 			maxButton.setTitle("Max \(amountDisplay)", for: .normal)
