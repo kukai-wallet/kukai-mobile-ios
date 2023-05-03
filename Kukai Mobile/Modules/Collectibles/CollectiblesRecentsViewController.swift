@@ -1,5 +1,5 @@
 //
-//  CollectiblesViewController.swift
+//  CollectiblesRecentsViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 03/05/2023.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectiblesViewController: UIViewController {
+class CollectiblesRecentsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 class CollectiblesListItemCell: UICollectionViewCell {
 
 	@IBOutlet weak var iconView: UIImageView!
@@ -39,3 +40,4 @@ class CollectiblesListItemCell: UICollectionViewCell {
 		}
 	}
 }
+*/

@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 class CollectiblesSearchResultCell: UICollectionViewCell {
 	
 	@IBOutlet weak var iconView: UIImageView!
@@ -28,3 +29,4 @@ class CollectiblesSearchResultCell: UICollectionViewCell {
 		}
 	}
 }
+*/

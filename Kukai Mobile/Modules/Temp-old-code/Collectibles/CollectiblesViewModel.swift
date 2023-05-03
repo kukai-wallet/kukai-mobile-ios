@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 18/02/2022.
 //
 
+/*
 import UIKit
 import KukaiCoreSwift
 import Combine
@@ -387,3 +388,4 @@ extension CollectiblesViewModel: CollectibleListLayoutDelegate {
 		return normalSnapshot
 	}
 }
+*/

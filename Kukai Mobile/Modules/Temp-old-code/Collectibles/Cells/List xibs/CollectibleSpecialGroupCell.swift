@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 12/12/2022.
 //
 
+/*
 import UIKit
 
 protocol ExpandableCell {
@@ -48,3 +49,4 @@ class CollectibleSpecialGroupCell: UICollectionViewCell, ExpandableCell {
 		chevronView.rotateBack(duration: 0.3)
 	}
 }
+*/

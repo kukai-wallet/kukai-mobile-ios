@@ -7,6 +7,7 @@
 
 import UIKit
 
+/*
 class CollectiblesListGroupCell: UICollectionViewCell, ExpandableCell {
 
 	@IBOutlet weak var iconView: UIImageView!
@@ -40,3 +41,4 @@ class CollectiblesListGroupCell: UICollectionViewCell, ExpandableCell {
 		chevronView.rotateBack(duration: 0.3)
 	}
 }
+*/

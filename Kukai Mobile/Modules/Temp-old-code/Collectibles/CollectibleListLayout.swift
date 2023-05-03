@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 12/12/2022.
 //
 
+/*
 import UIKit
 import KukaiCoreSwift
 
@@ -153,3 +154,4 @@ class CollectibleListLayout: UICollectionViewLayout {
 		self.prepare()
 	}
 }
+*/
