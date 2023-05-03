@@ -1,5 +1,5 @@
 //
-//  CollectiblesViewController.swift
+//  CollectiblesViewControllerOld.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 18/02/2022.
@@ -10,7 +10,7 @@ import UIKit
 import Combine
 import KukaiCoreSwift
 
-class CollectiblesViewController: UIViewController, UICollectionViewDelegate {
+class CollectiblesViewControllerOld: UIViewController, UICollectionViewDelegate {
 	
 	@IBOutlet weak var collectionView: UICollectionView!
 	@IBOutlet weak var collectionViewTopConstraint: NSLayoutConstraint!

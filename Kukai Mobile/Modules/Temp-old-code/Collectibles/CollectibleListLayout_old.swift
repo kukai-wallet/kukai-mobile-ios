@@ -1,5 +1,5 @@
 //
-//  CollectibleListLayout.swift
+//  CollectibleListLayoutOld.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 12/12/2022.
@@ -13,7 +13,7 @@ protocol CollectibleListLayoutDelegate: AnyObject {
 	func data() -> NSDiffableDataSourceSnapshot<Int, AnyHashable>
 }
 
-class CollectibleListLayout: UICollectionViewLayout {
+class CollectibleListLayoutOld: UICollectionViewLayout {
 	
 	static let controlGroupHeight: CGFloat = 54
 	static let specialGroupHeight: CGFloat = 64

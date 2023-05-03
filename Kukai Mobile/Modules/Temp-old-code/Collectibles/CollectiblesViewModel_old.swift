@@ -1,5 +1,5 @@
 //
-//  CollectiblesViewModel.swift
+//  CollectiblesViewModelOld.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 18/02/2022.
@@ -20,7 +20,7 @@ struct SpecialGroupData: Hashable {
 }
 
 
-class CollectiblesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
+class CollectiblesViewModelOld: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable

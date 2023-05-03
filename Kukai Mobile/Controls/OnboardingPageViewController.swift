@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol OnboardingPageViewControllerDelegate: AnyObject {
+	func didMove(toIndex index: Int)
+}
+
 /// A wrapper around the UIPageViewController that takes in a collection of viewControllers via an `IBInspectable`, and implements all the standard scroll logic and UIPageControl
 /// to create an onboarding / intro / explanitory section in the app, to visually explain a topic or collection of topics to the user.
 class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
@@ -19,6 +23,10 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	comma separated string containing any number of UIViewController storyboard ids, used to init UIViewControllers to act as pages in the page view controller
 	*/
 	@IBInspectable var commaSeperatedStoryboardIds: String = ""
+	
+	@IBInspectable var showPageControl: Bool = true
+	
+	public weak var pageDelegate: OnboardingPageViewControllerDelegate? = nil
 	
 	required init?(coder: NSCoder) {
 		super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -59,6 +67,10 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 		
 		self.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
 		self.pageControl?.currentPage = startIndex
+		
+		if !showPageControl {
+			pageControl?.isHidden = true
+		}
 	}
 	
 	func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -91,6 +103,7 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 		}
 		
 		pageControl?.currentPage = viewControllerIndex
+		pageDelegate?.didMove(toIndex: viewControllerIndex)
 	}
 	
 	@objc func pageControlTapped() {
