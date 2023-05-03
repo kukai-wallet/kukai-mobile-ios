@@ -201,28 +201,38 @@
             </objects>
             <point key="canvasLocation" x="-1245" y="-967"/>
         </scene>
-        <!--View Controller-->
+        <!--Collectibles Collections View Controller-->
         <scene sceneID="0Uo-EM-X4O">
             <objects>
-                <viewController storyboardIdentifier="collectibles-collections" id="8WH-Bk-dbW" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-collections" id="8WH-Bk-dbW" customClass="CollectiblesCollectionsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fl1-Gf-tDh">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Collections" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MJO-J3-if1">
-                                <rect key="frame" x="152.66666666666666" y="411.66666666666669" width="85" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tYI-6U-HjA">
+                                <rect key="frame" x="0.0" y="47" width="390" height="763"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WlE-ll-Hvf">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="dqQ-qf-x7w"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="MJO-J3-if1" firstAttribute="centerY" secondItem="fl1-Gf-tDh" secondAttribute="centerY" id="KYJ-FI-Ows"/>
-                            <constraint firstItem="MJO-J3-if1" firstAttribute="centerX" secondItem="fl1-Gf-tDh" secondAttribute="centerX" id="hge-c9-FV6"/>
+                            <constraint firstItem="tYI-6U-HjA" firstAttribute="top" secondItem="dqQ-qf-x7w" secondAttribute="top" id="331-LT-MR1"/>
+                            <constraint firstItem="dqQ-qf-x7w" firstAttribute="trailing" secondItem="tYI-6U-HjA" secondAttribute="trailing" id="izg-cR-9iH"/>
+                            <constraint firstItem="tYI-6U-HjA" firstAttribute="leading" secondItem="dqQ-qf-x7w" secondAttribute="leading" id="sNn-E1-W7X"/>
+                            <constraint firstItem="dqQ-qf-x7w" firstAttribute="bottom" secondItem="tYI-6U-HjA" secondAttribute="bottom" id="vAI-JA-VP0"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="tYI-6U-HjA" id="J3R-oz-bYv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qGS-db-6eZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
