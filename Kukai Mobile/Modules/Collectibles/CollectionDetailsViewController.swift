@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 
-class CollectionDetailsViewController: UIViewController, UICollectionViewDelegate {
+class CollectionDetailsViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
 	
 	@IBOutlet weak var navBarMiddleView: UIView!
 	@IBOutlet weak var navBarMiddleImage: UIImageView!
@@ -65,10 +65,17 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		navBarMiddleImage.image = UIImage.unknownToken()
+		navBarMiddleImage.image = externalImage ?? UIImage.unknownToken() // TODO: if no external image use selected token
+		navBarMiddleLabel.text = externalName ?? selectedToken?.name
 		navBarMiddleView.transform = .init(translationX: 0, y: 44)
 		
 		viewModel.refresh(animate: false)
+	}
+	
+	func scrollViewDidScroll(_ scrollView: UIScrollView) {
+		let padding: CGFloat = 70
+		let adjustedOffset = (scrollView.contentOffset.y - padding)
+		navBarMiddleView.transform = .init(translationX: 0, y: max(0, (44 - adjustedOffset)))
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: Any) {
