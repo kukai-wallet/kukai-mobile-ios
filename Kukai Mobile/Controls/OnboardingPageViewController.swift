@@ -9,6 +9,7 @@ import UIKit
 
 protocol OnboardingPageViewControllerDelegate: AnyObject {
 	func didMove(toIndex index: Int)
+	func willMoveToParent()
 }
 
 /// A wrapper around the UIPageViewController that takes in a collection of viewControllers via an `IBInspectable`, and implements all the standard scroll logic and UIPageControl
@@ -60,6 +61,10 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 				NSLayoutConstraint(item: pc, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottomMargin, multiplier: 1, constant: 0)
 			])
 		}
+	}
+	
+	override func willMove(toParent parent: UIViewController?) {
+		pageDelegate?.willMoveToParent()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

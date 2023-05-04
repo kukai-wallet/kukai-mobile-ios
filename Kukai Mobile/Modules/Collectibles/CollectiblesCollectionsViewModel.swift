@@ -81,7 +81,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				if let index = self?.contractAliasesAddressShorthand.firstIndex(of: obj.tokenContractAddress ?? "") {
 					let image = UIImage(named: self?.contractAliases[index].thumbnailUrl ?? "") ?? UIImage()
-					cell.setup(iconImage: image, title: title, imageURLs: urls, totalCount: totalCount)
+					let name = self?.contractAliases[index].name ?? title
+					cell.setup(iconImage: image, title: name, imageURLs: urls, totalCount: totalCount)
 					
 				} else {
 					cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
@@ -161,6 +162,24 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	func endSearching() {
 		searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		dataSource?.apply(normalSnapshot, animatingDifferences: true)
+	}
+	
+	func token(forIndexPath indexPath: IndexPath) -> (token: Token, image: UIImage?, name: String?)? {
+		
+		if let t = dataSource?.itemIdentifier(for: indexPath) as? Token {
+			if let index = self.contractAliasesAddressShorthand.firstIndex(of: t.tokenContractAddress ?? "") {
+				let image = UIImage(named: self.contractAliases[index].thumbnailUrl) ?? UIImage()
+				let name = self.contractAliases[index].name
+				
+				// TODO: remove when we have server
+				return (token: t, image: image, name: name)
+				
+			} else {
+				return (token: t, image: nil, name: nil)
+			}
+		}
+		
+		return nil
 	}
 }
 

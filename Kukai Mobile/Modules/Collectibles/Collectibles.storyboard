@@ -135,6 +135,9 @@
                                                         <color key="value" name="BGB4"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="moreButtonTapped:" destination="HUx-IO-KJi" eventType="touchUpInside" id="RhD-xQ-dnb"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k8R-0a-xh3">
                                                 <rect key="frame" x="354" y="0.0" width="4" height="38"/>
@@ -168,8 +171,8 @@
                         <outlet property="ghostnetStackview" destination="IIR-aA-UNT" id="tdA-G4-MeH"/>
                         <outlet property="moreButton" destination="3EA-cA-JgY" id="u3h-hL-bB0"/>
                         <outlet property="segmentedControl" destination="Tv3-wX-gsp" id="RgR-H1-YKV"/>
-                        <segue destination="xby-4c-wEc" kind="show" identifier="details" id="5fJ-eQ-pen"/>
                         <segue destination="eX5-KQ-xN3" kind="show" identifier="hidden" id="9bV-Vc-NrM"/>
+                        <segue destination="iSe-WY-CUb" kind="show" identifier="collection" id="WOE-zb-wMK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QQP-0f-rCh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -214,7 +217,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWj-Sf-i5j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1246.1538461538462" y="-1420.3791469194312"/>
+            <point key="canvasLocation" x="-29" y="-1420"/>
         </scene>
         <!--Send-->
         <scene sceneID="SJr-kZ-cHn">
@@ -224,7 +227,104 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mLE-dO-OC1" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-428" y="-1420"/>
+            <point key="canvasLocation" x="788" y="-1420"/>
+        </scene>
+        <!--Collection Details View Controller-->
+        <scene sceneID="1nF-VT-bSv">
+            <objects>
+                <viewController id="iSe-WY-CUb" customClass="CollectionDetailsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jZd-Ui-5Pv">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wNl-Zt-aHg">
+                                <rect key="frame" x="0.0" y="91" width="390" height="753"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Xyb-du-L70">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="TMp-Td-9RO"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="wNl-Zt-aHg" secondAttribute="bottom" id="NTD-hY-FGe"/>
+                            <constraint firstItem="wNl-Zt-aHg" firstAttribute="trailing" secondItem="TMp-Td-9RO" secondAttribute="trailing" id="Rhj-Rs-8W0"/>
+                            <constraint firstItem="wNl-Zt-aHg" firstAttribute="leading" secondItem="TMp-Td-9RO" secondAttribute="leading" id="fV6-Bo-wux"/>
+                            <constraint firstItem="wNl-Zt-aHg" firstAttribute="top" secondItem="TMp-Td-9RO" secondAttribute="top" id="wcY-zY-wJQ"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="69f-XP-tSx">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="oi7-33-zYM">
+                            <rect key="frame" x="195" y="22" width="0.0" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NYT-oe-KSy">
+                                    <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="28" id="Pkj-yd-th4"/>
+                                        <constraint firstAttribute="width" constant="28" id="xA9-mx-Xtm"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;collectionName&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JXC-fk-mDo">
+                                    <rect key="frame" x="36" y="0.0" width="171.33333333333334" height="24"/>
+                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                    <color key="textColor" name="Txt2"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="NYT-oe-KSy" firstAttribute="leading" secondItem="oi7-33-zYM" secondAttribute="leading" id="3ir-B6-zPQ"/>
+                                <constraint firstItem="NYT-oe-KSy" firstAttribute="top" secondItem="oi7-33-zYM" secondAttribute="top" id="CLh-NP-6FR"/>
+                                <constraint firstItem="JXC-fk-mDo" firstAttribute="leading" secondItem="NYT-oe-KSy" secondAttribute="trailing" constant="8" id="EEG-Eb-ai6"/>
+                                <constraint firstItem="JXC-fk-mDo" firstAttribute="top" secondItem="oi7-33-zYM" secondAttribute="top" id="K6o-MB-K3Q"/>
+                                <constraint firstAttribute="bottom" secondItem="NYT-oe-KSy" secondAttribute="bottom" id="NrR-Az-emE"/>
+                                <constraint firstAttribute="trailing" secondItem="JXC-fk-mDo" secondAttribute="trailing" id="RLA-LO-a9T"/>
+                                <constraint firstAttribute="bottom" secondItem="JXC-fk-mDo" secondAttribute="bottom" id="f79-a5-AKh"/>
+                            </constraints>
+                        </view>
+                        <barButtonItem key="rightBarButtonItem" id="FS0-ss-Mn0">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="RJp-GD-j8b" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="336" y="3" width="38" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Ellipses"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="moreButtonTapped:" destination="iSe-WY-CUb" eventType="touchUpInside" id="R2w-zg-PdT"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="collectionView" destination="wNl-Zt-aHg" id="W4B-lx-5jq"/>
+                        <outlet property="moreButton" destination="RJp-GD-j8b" id="0Q4-Xz-vho"/>
+                        <outlet property="navBarMiddleImage" destination="NYT-oe-KSy" id="hrS-g7-Ho6"/>
+                        <outlet property="navBarMiddleLabel" destination="JXC-fk-mDo" id="1R2-HI-DIe"/>
+                        <outlet property="navBarMiddleView" destination="oi7-33-zYM" id="Du2-1t-JcS"/>
+                        <segue destination="xby-4c-wEc" kind="show" identifier="detail" id="8vO-of-Vbp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cXd-ac-cUz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1112.3076923076924" y="-1420.3791469194312"/>
         </scene>
         <!--hidden-->
         <scene sceneID="I5V-Lz-HLk">
@@ -234,7 +334,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JDv-6Y-EP7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1775" y="-1243"/>
+            <point key="canvasLocation" x="-1718" y="-1233"/>
         </scene>
         <!--tokenContract-->
         <scene sceneID="EyJ-5b-lqy">
@@ -242,7 +342,7 @@
                 <viewControllerPlaceholder storyboardName="Account" referencedIdentifier="tokenContract" id="JdE-iM-nJZ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DP4-2g-RIA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1245" y="-967"/>
+            <point key="canvasLocation" x="-28" y="-968"/>
         </scene>
         <!--Collectibles Collections View Controller-->
         <scene sceneID="0Uo-EM-X4O">
@@ -351,6 +451,9 @@
     </scenes>
     <designables>
         <designable name="3EA-cA-JgY">
+            <size key="intrinsicContentSize" width="44" height="34"/>
+        </designable>
+        <designable name="RJp-GD-j8b">
             <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
     </designables>

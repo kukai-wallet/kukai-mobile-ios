@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-Medium.ttf">
+            <string>Figtree-Medium</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectiblesCollectionHeaderMediumCell" id="gTV-IL-0wX" customClass="CollectiblesCollectionHeaderMediumCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="337" height="192"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="337" height="192"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NnZ-X7-O3v">
+                        <rect key="frame" x="138.66666666666666" y="8" width="60" height="60"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="60" id="KJM-az-Y7g"/>
+                            <constraint firstAttribute="width" constant="60" id="NGz-ra-Dzr"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;collectionName&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jQT-Cg-2UO">
+                        <rect key="frame" x="16" y="80" width="305" height="57.333333333333343"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                        <color key="textColor" name="Txt2"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rhb-WC-hLa">
+                        <rect key="frame" x="110" y="161.33333333333334" width="117" height="14.666666666666657"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="created by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfv-ZW-LHN">
+                                <rect key="frame" x="0.0" y="0.0" width="58" height="14.666666666666666"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;creator&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0fl-UI-O4d">
+                                <rect key="frame" x="62" y="0.0" width="55" height="14.666666666666666"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="0fl-UI-O4d" secondAttribute="trailing" id="3G2-lJ-LTz"/>
+                            <constraint firstAttribute="bottom" secondItem="0fl-UI-O4d" secondAttribute="bottom" id="GUE-De-J4c"/>
+                            <constraint firstItem="0fl-UI-O4d" firstAttribute="top" secondItem="rhb-WC-hLa" secondAttribute="top" id="KVE-Pd-FaK"/>
+                            <constraint firstItem="0fl-UI-O4d" firstAttribute="leading" secondItem="tfv-ZW-LHN" secondAttribute="trailing" constant="4" id="bXP-qe-nzF"/>
+                            <constraint firstItem="tfv-ZW-LHN" firstAttribute="leading" secondItem="rhb-WC-hLa" secondAttribute="leading" id="wBI-D7-VA7"/>
+                            <constraint firstItem="tfv-ZW-LHN" firstAttribute="top" secondItem="rhb-WC-hLa" secondAttribute="top" id="wNu-zS-rIN"/>
+                            <constraint firstAttribute="bottom" secondItem="tfv-ZW-LHN" secondAttribute="bottom" id="ycQ-MF-O8c"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="NnZ-X7-O3v" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="2HO-uA-YpA"/>
+                <constraint firstItem="rhb-WC-hLa" firstAttribute="top" secondItem="jQT-Cg-2UO" secondAttribute="bottom" constant="24" id="4aH-BG-2eS"/>
+                <constraint firstItem="NnZ-X7-O3v" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="G72-zR-rbZ"/>
+                <constraint firstItem="jQT-Cg-2UO" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="GDF-hP-T2r"/>
+                <constraint firstItem="rhb-WC-hLa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="16" id="Gjv-4s-aT4"/>
+                <constraint firstItem="rhb-WC-hLa" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="QJ5-Bs-ZCB"/>
+                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="rhb-WC-hLa" secondAttribute="trailing" constant="16" id="WGR-Ub-0AM"/>
+                <constraint firstAttribute="bottom" secondItem="rhb-WC-hLa" secondAttribute="bottom" constant="16" id="bBE-QN-kCE"/>
+                <constraint firstAttribute="trailing" secondItem="jQT-Cg-2UO" secondAttribute="trailing" constant="16" id="dcX-WC-6jj"/>
+                <constraint firstItem="jQT-Cg-2UO" firstAttribute="top" secondItem="NnZ-X7-O3v" secondAttribute="bottom" constant="12" id="qzx-9Y-w8L"/>
+            </constraints>
+            <size key="customSize" width="337" height="192"/>
+            <connections>
+                <outlet property="creatorLabel" destination="0fl-UI-O4d" id="0g2-x9-m2o"/>
+                <outlet property="iconView" destination="NnZ-X7-O3v" id="H5v-J3-xTQ"/>
+                <outlet property="titleLabel" destination="jQT-Cg-2UO" id="bd4-i4-NyU"/>
+            </connections>
+            <point key="canvasLocation" x="145.80152671755724" y="70.422535211267615"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt8">
+            <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -9,12 +9,14 @@ import UIKit
 import Combine
 import KukaiCoreSwift
 
-class CollectiblesCollectionsViewController: UIViewController, UICollectionViewDelegate {
+class CollectiblesCollectionsViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesCollectionsViewModel()
 	private var cancellable: AnyCancellable?
+	
+	public weak var delegate: UIViewController? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,9 +77,9 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		}
 	}
 	
-	/*
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		if viewModel.shouldOpenCloseForIndexPathTap(indexPath) {
+		/*
+		 if viewModel.shouldOpenCloseForIndexPathTap(indexPath) {
 			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
 			
 		} else if let nft = viewModel.nft(atIndexPath: indexPath) {
@@ -85,8 +87,15 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 			TransactionService.shared.sendData.chosenNFT = nft
 			self.performSegue(withIdentifier: "details", sender: self)
 		}
+		*/
+		
+		if indexPath.row == 0 {
+			return
+			
+		} else if let obj = viewModel.token(forIndexPath: indexPath) {
+			delegate?.performSegue(withIdentifier: "collection", sender: obj)
+		}
 	}
-	*/
 	
 	func sortMenu() -> MenuViewController {
 		let choices: [MenuChoice] = [

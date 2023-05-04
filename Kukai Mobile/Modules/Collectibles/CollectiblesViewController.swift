@@ -6,6 +6,11 @@
 //
 
 import UIKit
+import KukaiCoreSwift
+
+protocol CollectiblesViewControllerChild {
+	var delegate: UIViewController? { get set }
+}
 
 class CollectiblesViewController: UIViewController {
 
@@ -39,7 +44,28 @@ class CollectiblesViewController: UIViewController {
 		if segue.identifier == "pageControl", let page = segue.destination as? OnboardingPageViewController {
 			pageController = page
 			pageController?.pageDelegate = self
+			
+		} else if let obj = sender as? (token: Token, image: UIImage?, name: String?), let vc = segue.destination as? CollectionDetailsViewController {
+			vc.selectedToken = obj.token
+			
+			// TODO: remove when we have server
+			vc.externalImage = obj.image
+			vc.externalName = obj.name
 		}
+	}
+	
+	@IBAction func moreButtonTapped(_ sender: UIButton) {
+		moreMenu().display(attachedTo: sender)
+	}
+	
+	private func moreMenu() -> MenuViewController {
+		let actions: [UIAction] = [
+			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
+				self?.performSegue(withIdentifier: "hidden", sender: nil)
+			})
+		]
+		
+		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
 	}
 }
 
@@ -47,5 +73,12 @@ extension CollectiblesViewController: OnboardingPageViewControllerDelegate {
 	
 	func didMove(toIndex index: Int) {
 		segmentedControl.selectedSegmentIndex = index
+	}
+	
+	func willMoveToParent() {
+		for (index, _) in (pageController?.items ?? []).enumerated() {
+			var vc = (pageController?.items[index] as? CollectiblesViewControllerChild)
+			vc?.delegate = self
+		}
 	}
 }
