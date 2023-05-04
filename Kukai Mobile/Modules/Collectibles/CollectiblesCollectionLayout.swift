@@ -14,10 +14,10 @@ protocol CollectiblesCollectionLayoutDelegate: AnyObject {
 
 class CollectiblesCollectionLayout: UICollectionViewLayout {
 	
-	static let controlGroupHeight: CGFloat = 40
+	static let controlGroupHeight: CGFloat = 32
 	static let collectionItemHeight: CGFloat = 104
 	
-	fileprivate let controlSpacing: CGFloat = 10
+	fileprivate let controlSpacing: CGFloat = 20
 	fileprivate let groupSpacing: CGFloat = 4
 	
 	fileprivate var cache: [[UICollectionViewLayoutAttributes]] = [[]]

@@ -17,18 +17,23 @@ extension UISegmentedControl {
 		
 		let dividerImage = UIImage.getColoredRectImageWith(color: UIColor.clear.cgColor, andSize: CGSize(width: 1.0, height: self.bounds.size.height))
 		self.setDividerImage(dividerImage, forLeftSegmentState: .selected, rightSegmentState: .normal, barMetrics: .default)
+	}
+	
+	func setFonts(selectedFont: UIFont, selectedColor: UIColor, defaultFont: UIFont, defaultColor: UIColor) {
 		self.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
+			NSAttributedString.Key.foregroundColor: defaultColor,
+			NSAttributedString.Key.font: defaultFont
 		], for: .normal)
 		self.setTitleTextAttributes([
-			NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"),
-			NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)
+			NSAttributedString.Key.foregroundColor: selectedColor,
+			NSAttributedString.Key.font: selectedFont
 		], for: .selected)
 	}
 	
 	func addUnderlineForSelectedSegment() {
 		removeBorder()
+		setFonts(selectedFont: UIFont.custom(ofType: .bold, andSize: 16), selectedColor: UIColor.colorNamed("Txt2"), defaultFont: UIFont.custom(ofType: .bold, andSize: 16), defaultColor: UIColor.colorNamed("TxtB6"))
+		
 		let underlineWidth: CGFloat = self.bounds.size.width / CGFloat(self.numberOfSegments)
 		let underlineHeight: CGFloat = 2.0
 		let underlineXPosition = CGFloat(selectedSegmentIndex * Int(underlineWidth))

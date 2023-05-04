@@ -9,7 +9,7 @@ import UIKit
 
 class CollectiblesViewController: UIViewController {
 
-	@IBOutlet weak var ghostnetWarningView: UIView!
+	@IBOutlet weak var ghostnetStackview: UIStackView!
 	@IBOutlet weak var segmentedControl: UISegmentedControl!
 	@IBOutlet weak var moreButton: CustomisableButton!
 	@IBOutlet weak var containerView: UIView!
@@ -20,14 +20,18 @@ class CollectiblesViewController: UIViewController {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		segmentedControl.addUnderlineForSelectedSegment()
+		segmentedControl.removeBorder()
+		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 14), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 14), defaultColor: UIColor.colorNamed("Txt2"))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		if DependencyManager.shared.currentNetworkType != .testnet {
-			ghostnetWarningView.isHidden = true
+			ghostnetStackview.isHidden = true
+			
+		} else {
+			ghostnetStackview.isHidden = false
 		}
 	}
 	
@@ -43,6 +47,5 @@ extension CollectiblesViewController: OnboardingPageViewControllerDelegate {
 	
 	func didMove(toIndex index: Int) {
 		segmentedControl.selectedSegmentIndex = index
-		segmentedControl.changeUnderlinePosition()
 	}
 }
