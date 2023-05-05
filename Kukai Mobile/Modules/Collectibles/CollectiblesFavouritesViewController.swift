@@ -8,12 +8,14 @@
 import UIKit
 import Combine
 
-class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDelegate {
+class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesFavouritesViewModel()
 	private var cancellable: AnyCancellable?
+	
+	public weak var delegate: UIViewController? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +61,7 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 			
 			let section = NSCollectionLayoutSection (group: group)
 			section.interGroupSpacing = 24
-			section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+			section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16)
 			return section
 		}
 		
@@ -70,7 +72,7 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if let obj = viewModel.nft(forIndexPath: indexPath) {
 			TransactionService.shared.sendData.chosenNFT = obj
-			self.performSegue(withIdentifier: "detail", sender: obj)
+			delegate?.performSegue(withIdentifier: "detail", sender: obj)
 		}
 	}
 }

@@ -17,7 +17,7 @@ protocol CollectibleDetailNameCellDelegate: AnyObject {
 
 class CollectibleDetailNameCell: UICollectionViewCell {
 
-	@IBOutlet weak var favouriteButton: UIButton!
+	@IBOutlet weak var favouriteButton: CustomisableButton!
 	@IBOutlet weak var showcaseButton: CustomisableButton!
 	@IBOutlet weak var shareButton: UIButton!
 	@IBOutlet weak var moreButton: UIButton!
@@ -46,7 +46,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		self.isFavouritedNft = isFavourited
 		self.isHiddenNft = isHidden
 		
-		favouriteButton.isSelected = isFavourited
+		
+		favouriteButton.customImage = (isFavourited ? .init(named: "FavoritesOn") ?? UIImage() : .init(named: "FavoritesOff") ?? UIImage())
 		menuVc = menuForMore(sourceViewController: menuSourceVc)
 	}
 	
@@ -137,6 +138,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = false
 				isFavouritedNft = false
+				favouriteButton.customImage = .init(named: "FavoritesOff") ?? UIImage()
+				favouriteButton.updateCustomImage()
 				
 			} else {
 				self.delegate?.errorMessage(message: "Unable to unfavourite collectible")
@@ -148,6 +151,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = true
 				isFavouritedNft = true
+				favouriteButton.customImage = .init(named: "FavoritesOn") ?? UIImage()
+				favouriteButton.updateCustomImage()
 				
 			} else {
 				self.delegate?.errorMessage(message: "Unable to favourite collectible")

@@ -441,32 +441,42 @@
             </objects>
             <point key="canvasLocation" x="-2380" y="-114.45497630331754"/>
         </scene>
-        <!--View Controller-->
+        <!--Collectibles Recents View Controller-->
         <scene sceneID="mca-Al-7vz">
             <objects>
-                <viewController storyboardIdentifier="collectibles-recents" id="Erl-fO-mrP" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-recents" id="Erl-fO-mrP" customClass="CollectiblesRecentsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zyw-jf-2vT">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Recents" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="spt-7H-koz">
-                                <rect key="frame" x="164.33333333333334" y="411.66666666666669" width="61.666666666666657" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Uq-bS-7Y5">
+                                <rect key="frame" x="0.0" y="47" width="390" height="797"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xbt-lQ-NJx">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="XnK-bC-kbO"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="spt-7H-koz" firstAttribute="centerY" secondItem="zyw-jf-2vT" secondAttribute="centerY" id="FRZ-Rh-XT6"/>
-                            <constraint firstItem="spt-7H-koz" firstAttribute="centerX" secondItem="zyw-jf-2vT" secondAttribute="centerX" id="ab0-bL-XLN"/>
+                            <constraint firstAttribute="bottom" secondItem="5Uq-bS-7Y5" secondAttribute="bottom" id="Ad1-ey-5uL"/>
+                            <constraint firstItem="5Uq-bS-7Y5" firstAttribute="top" secondItem="XnK-bC-kbO" secondAttribute="top" id="Lsq-vL-nv3"/>
+                            <constraint firstItem="5Uq-bS-7Y5" firstAttribute="leading" secondItem="XnK-bC-kbO" secondAttribute="leading" id="dab-H9-6nd"/>
+                            <constraint firstItem="5Uq-bS-7Y5" firstAttribute="trailing" secondItem="XnK-bC-kbO" secondAttribute="trailing" id="u1A-Sv-WLA"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="5Uq-bS-7Y5" id="o9P-QJ-2LD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3oh-EE-pFK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1557" y="-114"/>
+            <point key="canvasLocation" x="-1558.4615384615383" y="-114.45497630331754"/>
         </scene>
     </scenes>
     <designables>

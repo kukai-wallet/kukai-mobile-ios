@@ -73,7 +73,7 @@ public class BalanceService {
 					return
 				}
 				
-				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
+				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, recentNFTs: res.recentNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
 				
 				self?.account = newAccount
 				self?.dispatchGroupBalances.leave()
@@ -102,7 +102,7 @@ public class BalanceService {
 					return
 				}
 				
-				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
+				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, recentNFTs: res.recentNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
 				
 				self?.account = newAccount
 				self?.dispatchGroupBalances.leave()
