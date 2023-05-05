@@ -326,7 +326,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func signRequested() {
-		// self.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+			self.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
+		}
 	}
 	
 	public func processingIncomingOperations() {
@@ -343,7 +345,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 					self?.performSegue(withIdentifier: "wallet-connect-send-nft", sender: nil)
 					
 				case .contractCall:
-					self?.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
+					self?.performSegue(withIdentifier: "wallet-connect-contract", sender: nil)
 			}
 		}
 	}

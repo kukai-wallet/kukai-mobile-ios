@@ -17,16 +17,17 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 	@IBOutlet weak var accountLabel: UILabel!
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var accountButtonContainer: UIView!
-	@IBOutlet weak var rejectButton: UIButton!
-	@IBOutlet weak var connectButton: UIButton!
-	
-	private var connectGradient = CAGradientLayer()
+	@IBOutlet weak var rejectButton: CustomisableButton!
+	@IBOutlet weak var connectButton: CustomisableButton!
 	
 	var bottomSheetMaxHeight: CGFloat = 450
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		connectButton.customButtonType = .primary
+		rejectButton.customButtonType = .secondary
 		
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			return
@@ -45,13 +46,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 			accountLabel.isHidden = true
 			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress(), for: .normal)
 		}
-	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		connectGradient.removeFromSuperlayer()
-		connectGradient = connectButton.addGradientButtonPrimary(withFrame: connectButton.bounds)
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {

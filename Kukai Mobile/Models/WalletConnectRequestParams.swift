@@ -14,7 +14,7 @@ import OSLog
 struct WalletConnectRequestParams: Codable {
 	
 	let account: String
-	let operations: [[String: String]]
+	let operations: [[String: AnyCodable]]
 	
 	func kukaiOperations() -> [KukaiCoreSwift.Operation] {
 		var parsedOps: [KukaiCoreSwift.Operation] = []
@@ -22,7 +22,7 @@ struct WalletConnectRequestParams: Codable {
 		for dict in operations {
 			
 			// Extract Wallet Connect Operation JSON as Data
-			guard let opJson = try? JSONEncoder().encode(dict), let kind = dict["kind"] else {
+			guard let opJson = try? JSONEncoder().encode(dict), let kind = dict["kind"]?.value as? String else {
 				continue
 			}
 			

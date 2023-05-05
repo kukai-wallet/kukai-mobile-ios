@@ -13,24 +13,41 @@ import Combine
 import Sodium
 import OSLog
 
-class WalletConnectSignViewController: UIViewController {
+class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtocol {
 	
-	@IBOutlet weak var payloadLabel: UILabel!
+	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var payloadTextView: UITextView!
+	@IBOutlet weak var nameLabel: UILabel!
+	@IBOutlet weak var rejectButton: CustomisableButton!
+	@IBOutlet weak var signButton: CustomisableButton!
 	
 	private var stringToSign: String = ""
 	private var accountToSign: String = ""
 	private var bag = Set<AnyCancellable>()
 	
+	var bottomSheetMaxHeight: CGFloat = 500
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		guard let request = TransactionService.shared.walletConnectOperationData.request, let params = try? request.params.get([String: String].self), let expression = params["expression"], let account = params["account"] else {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
+				MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			}
+			self.nameLabel.text = session.peer.name
+		}
+		
+		
+		guard let request = TransactionService.shared.walletConnectOperationData.request, let params = try? request.params.get([String: String].self), let expression = params["payload"], let account = params["account"] else {
 			return
 		}
 		
+		signButton.customButtonType = .primary
+		rejectButton.customButtonType = .secondary
+		
 		stringToSign = expression
 		accountToSign = account
-		payloadLabel.text = expression.humanReadableStringFromMichelson()
+		payloadTextView.text = expression.humanReadableStringFromMichelson()
 	}
 	
 	@MainActor
@@ -46,7 +63,7 @@ class WalletConnectSignViewController: UIViewController {
 		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: signature)))
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["signature": signature])))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})

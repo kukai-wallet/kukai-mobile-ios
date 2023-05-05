@@ -61,7 +61,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendSections([0])
 		snapshot.appendItems(sessions, toSection: 0)
 		
-		ds.apply(snapshot, animatingDifferences: animate)
+		ds.applySnapshotUsingReloadData(snapshot)
 		
 		// Return success
 		self.state = .success(nil)

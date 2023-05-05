@@ -73,6 +73,8 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 			if let e = err {
 				os_log("NativeSocket sending error: %@", log: .default, type: .info, "\(e)")
 				
+			} else {
+				os_log("NativeSocket sent: %@", log: .default, type: .info, string)
 			}
 			
 			if let comp = completion {

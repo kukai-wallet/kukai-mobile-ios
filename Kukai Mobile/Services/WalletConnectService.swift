@@ -121,22 +121,6 @@ public class WalletConnectService {
 	
 	@MainActor
 	public func respondWithAccounts() {
-		var accounts: [WalletConnectGetAccountObj] = []
-		for wallet in DependencyManager.shared.walletList.allMetadata() {
-			
-			let prefix = wallet.address.prefix(3).lowercased()
-			var algo = ""
-			if prefix == "tz1" {
-				algo = "ed25519"
-			} else if prefix == "tz2" {
-				algo = "secp256k1"
-			} else {
-				algo = "unknown"
-			}
-			
-			accounts.append(WalletConnectGetAccountObj(algo: algo, address: wallet.address, pubkey: wallet.bas58EncodedPublicKey))
-		}
-		
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
 			self.delegate?.error(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
@@ -146,7 +130,41 @@ public class WalletConnectService {
 		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: accounts)))
+				/*
+				// list all accounts
+				var accounts: [WalletConnectGetAccountObj] = []
+				for wallet in DependencyManager.shared.walletList.allMetadata() {
+					
+					let prefix = wallet.address.prefix(3).lowercased()
+					var algo = ""
+					if prefix == "tz1" {
+						algo = "ed25519"
+					} else if prefix == "tz2" {
+						algo = "secp256k1"
+					} else {
+						algo = "unknown"
+					}
+					
+					accounts.append(WalletConnectGetAccountObj(algo: algo, address: wallet.address, pubkey: wallet.bas58EncodedPublicKey))
+				}
+				
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(accounts)))
+				*/
+				
+				// List current account
+				let currentAccount = DependencyManager.shared.selectedWalletMetadata
+				let prefix = currentAccount?.address.prefix(3).lowercased() ?? ""
+				var algo = ""
+				if prefix == "tz1" {
+					algo = "ed25519"
+				} else if prefix == "tz2" {
+					algo = "secp256k1"
+				} else {
+					algo = "unknown"
+				}
+				
+				let obj = WalletConnectGetAccountObj(algo: algo, address: currentAccount?.address ?? "", pubkey: currentAccount?.bas58EncodedPublicKey ?? "")
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
 				
 			} catch {
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
@@ -193,6 +211,9 @@ public class WalletConnectService {
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		
+		self.delegate?.processedOperations(ofType: .contractCall)
+		
+		/*
 		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
 			
 			if transactionOperation.parameters == nil {
@@ -235,5 +256,6 @@ public class WalletConnectService {
 		} else {
 			self.delegate?.processedOperations(ofType: .sendToken)
 		}
+		*/
 	}
 }
