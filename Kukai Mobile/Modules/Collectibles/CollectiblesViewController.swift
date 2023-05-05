@@ -54,6 +54,10 @@ class CollectiblesViewController: UIViewController {
 		}
 	}
 	
+	@IBAction func segmentedControlTapped(_ sender: Any) {
+		pageController?.scrollTo(index: segmentedControl.selectedSegmentIndex)
+	}
+	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {
 		moreMenu().display(attachedTo: sender)
 	}

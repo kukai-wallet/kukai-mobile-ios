@@ -107,6 +107,9 @@
                                                 </segments>
                                                 <color key="tintColor" name="Txt2"/>
                                                 <color key="selectedSegmentTintColor" name="Txt8"/>
+                                                <connections>
+                                                    <action selector="segmentedControlTapped:" destination="HUx-IO-KJi" eventType="valueChanged" id="GMJ-Hx-hfJ"/>
+                                                </connections>
                                             </segmentedControl>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="By9-6d-T4W">
                                                 <rect key="frame" x="308" y="0.0" width="8" height="38"/>
@@ -173,6 +176,7 @@
                         <outlet property="segmentedControl" destination="Tv3-wX-gsp" id="RgR-H1-YKV"/>
                         <segue destination="eX5-KQ-xN3" kind="show" identifier="hidden" id="9bV-Vc-NrM"/>
                         <segue destination="iSe-WY-CUb" kind="show" identifier="collection" id="WOE-zb-wMK"/>
+                        <segue destination="xby-4c-wEc" kind="show" identifier="detail" id="qYR-8Y-gaw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QQP-0f-rCh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -330,7 +334,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cXd-ac-cUz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1112.3076923076924" y="-1420.3791469194312"/>
+            <point key="canvasLocation" x="-1183" y="-1799"/>
         </scene>
         <!--hidden-->
         <scene sceneID="I5V-Lz-HLk">
@@ -340,7 +344,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JDv-6Y-EP7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1718" y="-1233"/>
+            <point key="canvasLocation" x="-1728" y="-1213"/>
         </scene>
         <!--tokenContract-->
         <scene sceneID="EyJ-5b-lqy">
@@ -400,32 +404,42 @@
             </objects>
             <point key="canvasLocation" x="-2378" y="-730"/>
         </scene>
-        <!--View Controller-->
+        <!--Collectibles Favourites View Controller-->
         <scene sceneID="F3l-bL-Ugw">
             <objects>
-                <viewController storyboardIdentifier="collectibles-favourites" id="6QN-xi-IAO" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-favourites" id="6QN-xi-IAO" customClass="CollectiblesFavouritesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OFj-Et-owQ">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favourites" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRH-Jx-oiA">
-                                <rect key="frame" x="155.66666666666666" y="411.66666666666669" width="79" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Imd-xj-jLo">
+                                <rect key="frame" x="0.0" y="47" width="390" height="797"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e8M-YR-gjb">
+                                    <size key="itemSize" width="128" height="128"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells/>
+                            </collectionView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hPr-g8-CpR"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="NRH-Jx-oiA" firstAttribute="centerX" secondItem="OFj-Et-owQ" secondAttribute="centerX" id="k20-qs-IEU"/>
-                            <constraint firstItem="NRH-Jx-oiA" firstAttribute="centerY" secondItem="OFj-Et-owQ" secondAttribute="centerY" id="tDf-Rk-mPu"/>
+                            <constraint firstAttribute="bottom" secondItem="Imd-xj-jLo" secondAttribute="bottom" id="8e4-H8-82A"/>
+                            <constraint firstItem="Imd-xj-jLo" firstAttribute="trailing" secondItem="hPr-g8-CpR" secondAttribute="trailing" id="Iki-Jz-qYS"/>
+                            <constraint firstItem="Imd-xj-jLo" firstAttribute="top" secondItem="hPr-g8-CpR" secondAttribute="top" id="W0o-ly-KXx"/>
+                            <constraint firstItem="Imd-xj-jLo" firstAttribute="leading" secondItem="hPr-g8-CpR" secondAttribute="leading" id="zP2-m5-MvT"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="collectionView" destination="Imd-xj-jLo" id="yxH-cY-hhS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HcC-nj-zNn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2380" y="-114"/>
+            <point key="canvasLocation" x="-2380" y="-114.45497630331754"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="mca-Al-7vz">
@@ -463,6 +477,9 @@
             <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
     </designables>
+    <inferredMetricsTieBreakers>
+        <segue reference="qYR-8Y-gaw"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="Collectibles" width="26" height="26"/>

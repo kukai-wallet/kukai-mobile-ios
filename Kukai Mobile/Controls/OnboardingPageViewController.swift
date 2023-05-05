@@ -112,13 +112,16 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	}
 	
 	@objc func pageControlTapped() {
+		scrollTo(index: pageControl?.currentPage ?? 0)
+	}
+	
+	public func scrollTo(index: Int) {
 		guard let currentVc = self.viewControllers?.first, let viewControllerIndex = items.firstIndex(of: currentVc) else {
 			return
 		}
 		
-		let vc = items[pageControl?.currentPage ?? 0]
-		let isForward = viewControllerIndex < (pageControl?.currentPage ?? 0)
-		
+		let vc = items[index]
+		let isForward = viewControllerIndex < index
 		self.setViewControllers([vc], direction: isForward ? .forward : .reverse, animated: true, completion: nil)
 	}
 }
