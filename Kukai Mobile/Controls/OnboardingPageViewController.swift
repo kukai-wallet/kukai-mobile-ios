@@ -61,6 +61,14 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 				NSLayoutConstraint(item: pc, attribute: .bottom, relatedBy: .equal, toItem: self.view, attribute: .bottomMargin, multiplier: 1, constant: 0)
 			])
 		}
+		
+		
+		self.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
+		self.pageControl?.currentPage = startIndex
+		
+		if !showPageControl {
+			pageControl?.isHidden = true
+		}
 	}
 	
 	override func willMove(toParent parent: UIViewController?) {
@@ -69,13 +77,6 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		self.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
-		self.pageControl?.currentPage = startIndex
-		
-		if !showPageControl {
-			pageControl?.isHidden = true
-		}
 	}
 	
 	func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

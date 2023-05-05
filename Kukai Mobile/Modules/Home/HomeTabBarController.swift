@@ -270,10 +270,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func refresh() {
-	#if DEBUG
-		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-		return
-	#else
+	//#if DEBUG
+	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
+	//	return
+	//#else
 		guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 		
 		let wasActivityPending = DependencyManager.shared.activityService.pendingTransactionGroups.count > 0
@@ -292,7 +292,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}
-	#endif
+	//#endif
 	}
 	
 	func sendButtonTapped() {

@@ -81,7 +81,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		}
 		*/
 		
-		if indexPath.row == 0 {
+		if indexPath.section == 0 {
 			return
 			
 		} else if let obj = viewModel.token(forIndexPath: indexPath) {
