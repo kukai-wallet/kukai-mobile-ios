@@ -22,7 +22,6 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	private let contractAliasesAddressShorthand = DependencyManager.shared.environmentService.mainnetEnv.contractAliases.map({ $0.address[0] })
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
-	var layout: UICollectionViewLayout = UICollectionViewFlowLayout()
 	var isVisible = false
 	var isSearching = false
 	var sortMenu: MenuViewController? = nil
@@ -102,12 +101,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			return
 		}
 		
-		let l = CollectiblesCollectionLayout()
-		l.delegate = self
-		layout = l
-		
 		// Build snapshot data
-		var hashableData: [AnyHashable] = [sortMenu]
+		var hashableData: [AnyHashable] = []
 		
 		// Add non hidden groups
 		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
@@ -120,8 +115,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		normalSnapshot.appendSections([0])
-		normalSnapshot.appendItems(hashableData, toSection: 0)
+		normalSnapshot.appendSections([0, 1])
+		normalSnapshot.appendItems([sortMenu], toSection: 0)
+		normalSnapshot.appendItems(hashableData, toSection: 1)
 		
 		ds.apply(normalSnapshot)
 		
@@ -180,17 +176,5 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		return nil
-	}
-}
-
-extension CollectiblesCollectionsViewModel: CollectiblesCollectionLayoutDelegate {
-	
-	func data() -> NSDiffableDataSourceSnapshot<SectionEnum, CellDataType> {
-		
-		if isSearching {
-			return searchSnapshot
-		}
-		
-		return normalSnapshot
 	}
 }

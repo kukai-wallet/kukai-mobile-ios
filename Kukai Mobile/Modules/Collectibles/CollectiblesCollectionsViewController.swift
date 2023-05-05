@@ -27,8 +27,8 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
+		collectionView.collectionViewLayout = createLayout()
 		
-		self.setup()
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
@@ -41,7 +41,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					self?.setup()
+					let _ = ""
 			}
 		}
     }
@@ -59,14 +59,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		super.viewWillDisappear(animated)
 		viewModel.isVisible = false
 	}
-	
-	func setup() {
-		if self.collectionView.collectionViewLayout is CollectiblesCollectionLayout { return }
-		
-		self.collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-		self.collectionView.collectionViewLayout = viewModel.layout
-	}
-	
 	
 	
 	// MARK: - CollectionView
@@ -111,6 +103,38 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		]
 		
 		return MenuViewController(choices: choices, header: "Sort Tokens", sourceViewController: self)
+	}
+	
+	private func createLayout() -> UICollectionViewLayout {
+		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+			
+			if sectionIndex == 0 {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+				return section
+				
+			} else {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.interGroupSpacing = 4
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16)
+				return section
+			}
+		}
+		
+		let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+		return layout
 	}
 }
 
