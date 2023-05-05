@@ -60,14 +60,22 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 					let _ = ""
 			}
 		}
+		
+		
+		// Setup UI
+		if let image = externalImage {
+			navBarMiddleImage.image = image
+			
+		} else {
+			MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		}
+		
+		navBarMiddleLabel.text = externalName ?? selectedToken?.name
+		navBarMiddleView.transform = .init(translationX: 0, y: 44)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		navBarMiddleImage.image = externalImage ?? UIImage.unknownToken() // TODO: if no external image use selected token
-		navBarMiddleLabel.text = externalName ?? selectedToken?.name
-		navBarMiddleView.transform = .init(translationX: 0, y: 44)
 		
 		viewModel.refresh(animate: false)
 	}
@@ -118,38 +126,12 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		
-	}
-}
-
-
-
-/*
-extension CollectionDetailsViewController: UICollectionViewDelegateFlowLayout {
-	
-	/*
-	private func prepareSection0(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {
-		var yOffset = sectionOffset
-		
-		for cellIndex in 0 ..< collectionView.numberOfItems(inSection: 0) {
-			let indexPath = IndexPath(row: cellIndex, section: 0)
-			guard let contentView = delegate?.configuredCell(forIndexPath: indexPath).contentView else {
-				continue
-			}
+		if indexPath.section == 0 {
+			return
 			
-			let requiredSize = contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
-			let frame = CGRect(x: 0, y: yOffset, width: requiredSize.width, height: requiredSize.height.rounded(.up))
-			let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-			attributes.frame = frame
-			cache[0].append(attributes)
-			
-			yOffset += requiredSize.height + cellPadding
+		} else if let obj = viewModel.nft(forIndexPath: indexPath) {
+			TransactionService.shared.sendData.chosenNFT = obj
+			self.performSegue(withIdentifier: "detail", sender: obj)
 		}
-		
-		return yOffset
 	}
-	*/
-	
-	
 }
-*/

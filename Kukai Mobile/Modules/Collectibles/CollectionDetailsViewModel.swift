@@ -95,4 +95,12 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		// Return success
 		self.state = .success(nil)
 	}
+	
+	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
+		if let nft = dataSource?.itemIdentifier(for: indexPath) as? NFT {
+			return nft
+		}
+		
+		return nil
+	}
 }
