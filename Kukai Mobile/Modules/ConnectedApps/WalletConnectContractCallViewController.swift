@@ -60,7 +60,7 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["transactionHash": opHash]))) // TODO: later will be changed too   "operations_hash"
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["hash": opHash])))
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})

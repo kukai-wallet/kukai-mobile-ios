@@ -9,6 +9,7 @@ import UIKit
 import WalletConnectSign
 import WalletConnectUtils
 import KukaiCoreSwift
+import KukaiCryptoSwift
 import Combine
 import Sodium
 import OSLog
@@ -128,7 +129,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 				return
 			}
 			
-			self?.respondOnSign(signature: signature.toHexString())
+			let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
+			self?.respondOnSign(signature: updatedSignature)
 		}
 	}
 	
