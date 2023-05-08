@@ -359,12 +359,32 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			
 			if let m = message {
 				self?.alert(errorWithMessage: m)
+				self?.respondOnReject(withMessage: m)
 				
 			} else if let e = error {
 				self?.alert(errorWithMessage: "\(e)")
+				self?.respondOnReject(withMessage: "An error occurred on the wallet")
 				
 			} else {
 				self?.alert(errorWithMessage: "Unknown Wallet Connect error occured")
+				self?.respondOnReject(withMessage: "Unknown error occurred")
+			}
+		}
+	}
+	
+	@MainActor
+	private func respondOnReject(withMessage: String) {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			return
+		}
+		
+		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
+			} catch {
+				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 			}
 		}
 	}
