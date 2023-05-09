@@ -107,8 +107,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			
 			if let subTitle = titleText.subtitle {
 				subTitleLabel.text = subTitle
+				iconView.customCornerRadius = 6
 			} else {
 				subTitleLabel.isHidden = true
+				iconView.customCornerRadius = 16
 			}
 			
 			iconView.addTokenIcon(token: data.primaryToken)
@@ -172,8 +174,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			
 			if let subTitle = titleText.subtitle {
 				subTitleLabel.text = subTitle
+				iconView.customCornerRadius = 6
 			} else {
 				subTitleLabel.isHidden = true
+				iconView.customCornerRadius = 16
 			} 
 			
 			iconView.addTokenIcon(token: data.primaryToken)
