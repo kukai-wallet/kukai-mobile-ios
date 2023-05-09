@@ -44,7 +44,8 @@ class WalletCreatedViewController: UIViewController {
 	
 	@IBAction func getStartedTapped(_ sender: Any) {
 		if CurrentDevice.biometricType() == .none {
-			self.performSegue(withIdentifier: "password", sender: nil)
+			//self.performSegue(withIdentifier: "password", sender: nil)
+			self.alert(errorWithMessage: "Biometrics are not enabled on this device. Please enable FaceID / TouchID")
 		} else {
 			self.performSegue(withIdentifier: "biometric", sender: nil)
 		}

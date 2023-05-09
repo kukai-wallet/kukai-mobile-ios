@@ -1763,7 +1763,6 @@ for your Digital Assets</string>
                     <connections>
                         <outlet property="checkboxButton" destination="c2S-hk-v1m" id="x0z-79-kk8"/>
                         <outlet property="getStartedButton" destination="t5e-gN-uNl" id="C3f-gy-Ur2"/>
-                        <segue destination="bld-4r-par" kind="show" identifier="password" id="coq-aW-Kjc"/>
                         <segue destination="oPP-HT-01f" kind="show" identifier="biometric" id="6kS-fG-wyK"/>
                     </connections>
                 </viewController>
@@ -1913,35 +1912,34 @@ for your Digital Assets</string>
                         <outlet property="nextButton" destination="rXX-Jd-YOc" id="8qw-zP-0e6"/>
                         <outlet property="toggle" destination="75D-Uf-Nij" id="qBa-sm-1rh"/>
                         <segue destination="hND-lY-eEF" kind="show" identifier="home" id="FF9-Oi-fDw"/>
-                        <segue destination="bld-4r-par" kind="show" identifier="password" id="ET8-Jw-nSc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbt-Ke-bWQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2898" y="903"/>
+            <point key="canvasLocation" x="-1838" y="617"/>
         </scene>
         <!--Create Password View Controller-->
         <scene sceneID="UND-Pd-40n">
             <objects>
-                <viewController id="bld-4r-par" customClass="CreatePasswordViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="pincode" id="bld-4r-par" customClass="CreatePasswordViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="n0r-Ie-PeK">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a password to use instead of FaceID / TouchID" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0br-Wh-3xS">
-                                <rect key="frame" x="16" y="100" width="343" height="17"/>
+                                <rect key="frame" x="16" y="56" width="343" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odm-Eb-RlG">
-                                <rect key="frame" x="16" y="129" width="343" height="17"/>
+                                <rect key="frame" x="16" y="85" width="343" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt8"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F52-SB-4oY" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="45" y="361" width="285" height="56"/>
+                                <rect key="frame" x="45" y="317" width="285" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="Aj3-gB-uDS"/>
                                 </constraints>
@@ -1965,19 +1963,19 @@ for your Digital Assets</string>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pS-Jt-jbg">
-                                <rect key="frame" x="16" y="52" width="343" height="36"/>
+                                <rect key="frame" x="16" y="8" width="343" height="36"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error message&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBL-CC-2bi">
-                                <rect key="frame" x="16" y="204" width="343" height="17"/>
+                                <rect key="frame" x="16" y="160" width="343" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="BGAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bj2-Ii-2jB">
-                                <rect key="frame" x="16" y="154" width="343" height="42"/>
+                                <rect key="frame" x="16" y="110" width="343" height="42"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wqt-uR-Jl3" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="287" height="42"/>
@@ -2017,19 +2015,19 @@ for your Digital Assets</string>
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="niP-Q4-wqO">
-                                <rect key="frame" x="16" y="245" width="343" height="17"/>
+                                <rect key="frame" x="16" y="201" width="343" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt8"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error message&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u70-5N-8nk">
-                                <rect key="frame" x="16" y="320" width="343" height="17"/>
+                                <rect key="frame" x="16" y="276" width="343" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="BGAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIc-xg-e2o">
-                                <rect key="frame" x="16" y="270" width="343" height="42"/>
+                                <rect key="frame" x="16" y="226" width="343" height="42"/>
                                 <subviews>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zpN-h1-2sg" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="8" y="0.0" width="287" height="42"/>
@@ -2110,12 +2108,11 @@ for your Digital Assets</string>
                         <outlet property="enterPasswordErrorMessage" destination="pBL-CC-2bi" id="DXJ-uj-L84"/>
                         <outlet property="enterPasswordField" destination="wqt-uR-Jl3" id="Hku-Yr-fgL"/>
                         <outlet property="nextButton" destination="F52-SB-4oY" id="b5R-4s-HZX"/>
-                        <segue destination="hND-lY-eEF" kind="show" identifier="home" id="FlY-ne-SOm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="smy-PP-GSR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1167" y="151"/>
+            <point key="canvasLocation" x="-2916" y="167"/>
         </scene>
         <!--Home-->
         <scene sceneID="BqK-IB-sUw">
@@ -2125,7 +2122,7 @@ for your Digital Assets</string>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="975-WW-Pxa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1168" y="904"/>
+            <point key="canvasLocation" x="-1142" y="616"/>
         </scene>
         <!--Already Have a Wallet-->
         <scene sceneID="Y94-sZ-h7q">
@@ -3554,8 +3551,6 @@ Please store it carefully!</string>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="FlY-ne-SOm"/>
-        <segue reference="ET8-Jw-nSc"/>
         <segue reference="hb3-4s-783"/>
         <segue reference="lKc-o7-U0k"/>
     </inferredMetricsTieBreakers>

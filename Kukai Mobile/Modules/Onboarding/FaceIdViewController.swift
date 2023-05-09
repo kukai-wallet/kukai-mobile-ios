@@ -37,7 +37,7 @@ class FaceIdViewController: UIViewController {
 	}
 	
 	@IBAction func toggleChanged(_ sender: Any) {
-		createPasswordWarning.isHidden = toggle.isOn
+		//createPasswordWarning.isHidden = toggle.isOn
 	}
 	
 	@IBAction func nextTapped(_ sender: Any) {
@@ -45,7 +45,8 @@ class FaceIdViewController: UIViewController {
 			biometricAndHome()
 			
 		} else {
-			self.performSegue(withIdentifier: "password", sender: self)
+			self.alert(errorWithMessage: "For this internal build, biometrics are mandatory")
+			//self.performSegue(withIdentifier: "password", sender: self)
 		}
 	}
 	
