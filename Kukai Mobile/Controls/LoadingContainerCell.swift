@@ -14,13 +14,14 @@ public struct LoadingContainerCellObject: Hashable {
 class LoadingContainerCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var iconShimmerView: ShimmerView!
 	@IBOutlet var shimmerViews: [ShimmerView]!
 	
 	var gradientLayer = CAGradientLayer()
 	
 	public func setup() {
+		iconShimmerView.startAnimating()
 		for view in shimmerViews {
-			//view.setup(color: .colorNamed("BG4"), duration: 1)
 			view.startAnimating()
 		}
 	}

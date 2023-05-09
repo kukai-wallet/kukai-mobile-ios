@@ -257,20 +257,6 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uiC-bo-7Gh">
                                                     <rect key="frame" x="16" y="2" width="361" height="76"/>
                                                     <subviews>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="frd-NZ-bsi">
-                                                            <rect key="frame" x="14" y="14" width="48" height="48"/>
-                                                            <color key="backgroundColor" name="BG4"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="48" id="3o7-Hc-7Vs"/>
-                                                                <constraint firstAttribute="height" constant="48" id="QTM-E8-xrQ"/>
-                                                            </constraints>
-                                                            <userDefinedRuntimeAttributes>
-                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                                    <real key="value" value="24"/>
-                                                                </userDefinedRuntimeAttribute>
-                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                            </userDefinedRuntimeAttributes>
-                                                        </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IeI-3K-CmY" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
                                                             <rect key="frame" x="76" y="22" width="90" height="12"/>
                                                             <color key="backgroundColor" name="BG4"/>
@@ -313,16 +299,30 @@
                                                                 </userDefinedRuntimeAttribute>
                                                             </userDefinedRuntimeAttributes>
                                                         </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NKD-XZ-ssq" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="14" y="14" width="48" height="48"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="48" id="32y-zO-FxI"/>
+                                                                <constraint firstAttribute="height" constant="48" id="rDu-dI-TIh"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="24"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
                                                     </subviews>
                                                     <constraints>
-                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="top" secondItem="frd-NZ-bsi" secondAttribute="top" constant="8" id="8TI-QH-rJD"/>
                                                         <constraint firstItem="OVN-8W-rFe" firstAttribute="top" secondItem="NdG-fD-kbq" secondAttribute="bottom" constant="10" id="8y4-0z-QZR"/>
-                                                        <constraint firstItem="frd-NZ-bsi" firstAttribute="top" secondItem="uiC-bo-7Gh" secondAttribute="top" constant="14" id="9yF-hf-ZsQ"/>
-                                                        <constraint firstItem="frd-NZ-bsi" firstAttribute="leading" secondItem="uiC-bo-7Gh" secondAttribute="leading" constant="14" id="DGj-Mx-Tz6"/>
+                                                        <constraint firstItem="NKD-XZ-ssq" firstAttribute="top" secondItem="uiC-bo-7Gh" secondAttribute="top" constant="14" id="E5f-Ye-ElP"/>
+                                                        <constraint firstAttribute="bottom" secondItem="NKD-XZ-ssq" secondAttribute="bottom" constant="14" id="J5y-xj-hJJ"/>
                                                         <constraint firstAttribute="trailing" secondItem="NdG-fD-kbq" secondAttribute="trailing" constant="16" id="NEr-Hr-4CC"/>
-                                                        <constraint firstAttribute="bottom" secondItem="frd-NZ-bsi" secondAttribute="bottom" constant="14" id="mjn-IR-ytl"/>
+                                                        <constraint firstItem="NKD-XZ-ssq" firstAttribute="leading" secondItem="uiC-bo-7Gh" secondAttribute="leading" constant="14" id="VE6-pf-eHF"/>
+                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="top" secondItem="NKD-XZ-ssq" secondAttribute="top" constant="8" id="gmK-3r-8o5"/>
                                                         <constraint firstItem="NdG-fD-kbq" firstAttribute="centerY" secondItem="IeI-3K-CmY" secondAttribute="centerY" id="pbn-Qt-cOo"/>
-                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="leading" secondItem="frd-NZ-bsi" secondAttribute="trailing" constant="14" id="vBX-c9-zVX"/>
+                                                        <constraint firstItem="IeI-3K-CmY" firstAttribute="leading" secondItem="NKD-XZ-ssq" secondAttribute="trailing" constant="14" id="vcN-tU-m7E"/>
                                                         <constraint firstItem="OVN-8W-rFe" firstAttribute="trailing" secondItem="NdG-fD-kbq" secondAttribute="trailing" id="z9Y-Yl-2eo"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -344,6 +344,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="containerView" destination="uiC-bo-7Gh" id="YMX-fv-6fP"/>
+                                            <outlet property="iconShimmerView" destination="NKD-XZ-ssq" id="kW0-Jx-sao"/>
                                             <outletCollection property="shimmerViews" destination="IeI-3K-CmY" collectionClass="NSMutableArray" id="MrM-xd-kbi"/>
                                             <outletCollection property="shimmerViews" destination="NdG-fD-kbq" collectionClass="NSMutableArray" id="7ML-Zm-S4Q"/>
                                             <outletCollection property="shimmerViews" destination="OVN-8W-rFe" collectionClass="NSMutableArray" id="kde-DR-wtU"/>
