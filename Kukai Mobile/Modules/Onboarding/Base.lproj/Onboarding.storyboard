@@ -1705,7 +1705,7 @@ for your Digital Assets</string>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="appleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="nJv-i2-vEU"/>
-                                    <segue destination="oPP-HT-01f" kind="show" id="s8u-hg-Fns"/>
+                                    <action selector="getStartedTapped:" destination="RNR-mr-nd3" eventType="touchUpInside" id="zUC-q9-7rN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c2S-hk-v1m" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -1763,6 +1763,7 @@ for your Digital Assets</string>
                     <connections>
                         <outlet property="checkboxButton" destination="c2S-hk-v1m" id="x0z-79-kk8"/>
                         <outlet property="getStartedButton" destination="t5e-gN-uNl" id="C3f-gy-Ur2"/>
+                        <segue destination="oPP-HT-01f" kind="show" identifier="biometric" id="6kS-fG-wyK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IA5-os-zSO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1833,6 +1834,9 @@ for your Digital Assets</string>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75D-Uf-Nij">
                                         <rect key="frame" x="262" y="16.5" width="51" height="31"/>
+                                        <connections>
+                                            <action selector="toggleChanged:" destination="oPP-HT-01f" eventType="valueChanged" id="JTX-AG-rLp"/>
+                                        </connections>
                                     </switch>
                                 </subviews>
                                 <color key="backgroundColor" name="BG3"/>
@@ -1876,11 +1880,19 @@ for your Digital Assets</string>
                                     <action selector="nextTapped:" destination="oPP-HT-01f" eventType="touchUpInside" id="crH-Hv-Pkv"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you do not use Face ID you will need to create a Password to access your wallet." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YLN-BQ-VcV">
+                                <rect key="frame" x="24" y="500.5" width="327" height="34"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="TxtB-alt4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hMp-rT-yrU"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="hMp-rT-yrU" firstAttribute="trailing" secondItem="c6K-wg-8hR" secondAttribute="trailing" constant="24" id="2jN-Ks-WNh"/>
+                            <constraint firstItem="YLN-BQ-VcV" firstAttribute="leading" secondItem="c6K-wg-8hR" secondAttribute="leading" id="3we-cV-tHw"/>
+                            <constraint firstItem="YLN-BQ-VcV" firstAttribute="trailing" secondItem="c6K-wg-8hR" secondAttribute="trailing" id="4PK-1X-4iI"/>
                             <constraint firstItem="ec3-ZW-Tu6" firstAttribute="centerY" secondItem="hMp-rT-yrU" secondAttribute="centerY" constant="-50" id="6wa-g9-Sr2"/>
                             <constraint firstItem="6gY-nR-UMM" firstAttribute="leading" secondItem="hMp-rT-yrU" secondAttribute="leading" constant="50" id="D0w-YI-1sc"/>
                             <constraint firstItem="hMp-rT-yrU" firstAttribute="bottom" secondItem="rXX-Jd-YOc" secondAttribute="bottom" constant="24" id="LEc-cb-Bri"/>
@@ -1888,11 +1900,15 @@ for your Digital Assets</string>
                             <constraint firstItem="c6K-wg-8hR" firstAttribute="top" secondItem="4Fh-e3-WVY" secondAttribute="bottom" constant="32" id="hvF-Gj-Vb6"/>
                             <constraint firstItem="c6K-wg-8hR" firstAttribute="leading" secondItem="hMp-rT-yrU" secondAttribute="leading" constant="24" id="omf-8l-qhI"/>
                             <constraint firstItem="hMp-rT-yrU" firstAttribute="trailing" secondItem="rXX-Jd-YOc" secondAttribute="trailing" constant="45" id="pZr-4K-mId"/>
+                            <constraint firstItem="YLN-BQ-VcV" firstAttribute="top" secondItem="c6K-wg-8hR" secondAttribute="bottom" constant="4" id="r2t-ki-7jI"/>
                             <constraint firstItem="6gY-nR-UMM" firstAttribute="trailing" secondItem="hMp-rT-yrU" secondAttribute="trailing" constant="-50" id="uLs-ui-pBo"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Mab-7C-9lc"/>
                     <connections>
+                        <outlet property="biometricImage" destination="YXX-dT-Ad9" id="8KA-Zl-nMZ"/>
+                        <outlet property="biometricLabel" destination="dL1-a7-cL2" id="Mw6-Mo-MgF"/>
+                        <outlet property="createPasswordWarning" destination="YLN-BQ-VcV" id="tqY-1Q-dI4"/>
                         <outlet property="nextButton" destination="rXX-Jd-YOc" id="8qw-zP-0e6"/>
                         <outlet property="toggle" destination="75D-Uf-Nij" id="qBa-sm-1rh"/>
                         <segue destination="hND-lY-eEF" kind="show" identifier="home" id="FF9-Oi-fDw"/>
@@ -1900,7 +1916,203 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbt-Ke-bWQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2910" y="617"/>
+            <point key="canvasLocation" x="-1838" y="617"/>
+        </scene>
+        <!--Create Password View Controller-->
+        <scene sceneID="UND-Pd-40n">
+            <objects>
+                <viewController storyboardIdentifier="pincode" id="bld-4r-par" customClass="CreatePasswordViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="n0r-Ie-PeK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a password to use instead of FaceID / TouchID" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0br-Wh-3xS">
+                                <rect key="frame" x="16" y="56" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="odm-Eb-RlG">
+                                <rect key="frame" x="16" y="85" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F52-SB-4oY" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="45" y="317" width="285" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="Aj3-gB-uDS"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="tintColor" name="TxtBtnPrim1"/>
+                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Send" image="ArrowUp-right"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Next">
+                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="appleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="Lgq-Qe-OJV"/>
+                                    <action selector="nextButtonTapped:" destination="bld-4r-par" eventType="touchUpInside" id="MJf-YU-f3S"/>
+                                    <action selector="nextTapped:" destination="oPP-HT-01f" eventType="touchUpInside" id="BcO-tc-l7W"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a Password" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6pS-Jt-jbg">
+                                <rect key="frame" x="16" y="8" width="343" height="36"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error message&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBL-CC-2bi">
+                                <rect key="frame" x="16" y="160" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="BGAlert4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bj2-Ii-2jB">
+                                <rect key="frame" x="16" y="110" width="343" height="42"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wqt-uR-Jl3" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="0.0" width="287" height="42"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Adq-NS-uzy">
+                                        <rect key="frame" x="303" y="0.0" width="40" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="4g0-r7-l8Q"/>
+                                        </constraints>
+                                        <color key="tintColor" name="BGB4"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="HiddenOff"/>
+                                        <state key="selected" image="HiddenOn"/>
+                                        <connections>
+                                            <action selector="enterPasswordButtonTapped:" destination="bld-4r-par" eventType="touchUpInside" id="mZQ-Dv-aoV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" name="BG4"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Adq-NS-uzy" secondAttribute="trailing" id="5GH-lk-NCi"/>
+                                    <constraint firstAttribute="height" constant="42" id="AKE-Ea-qs6"/>
+                                    <constraint firstItem="wqt-uR-Jl3" firstAttribute="top" secondItem="bj2-Ii-2jB" secondAttribute="top" id="BM4-mX-lTh"/>
+                                    <constraint firstAttribute="bottom" secondItem="wqt-uR-Jl3" secondAttribute="bottom" id="FRR-A0-yg7"/>
+                                    <constraint firstAttribute="bottom" secondItem="Adq-NS-uzy" secondAttribute="bottom" id="aux-bg-m2R"/>
+                                    <constraint firstItem="wqt-uR-Jl3" firstAttribute="leading" secondItem="bj2-Ii-2jB" secondAttribute="leading" constant="8" id="daX-hJ-HlM"/>
+                                    <constraint firstItem="Adq-NS-uzy" firstAttribute="top" secondItem="bj2-Ii-2jB" secondAttribute="top" id="mRO-iR-7NM"/>
+                                    <constraint firstItem="Adq-NS-uzy" firstAttribute="leading" secondItem="wqt-uR-Jl3" secondAttribute="trailing" constant="8" id="pgK-xA-ZSe"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="niP-Q4-wqO">
+                                <rect key="frame" x="16" y="201" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error message&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u70-5N-8nk">
+                                <rect key="frame" x="16" y="276" width="343" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="BGAlert4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIc-xg-e2o">
+                                <rect key="frame" x="16" y="226" width="343" height="42"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zpN-h1-2sg" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="8" y="0.0" width="287" height="42"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="numberPad" secureTextEntry="YES" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XV9-Wt-SRK">
+                                        <rect key="frame" x="303" y="0.0" width="40" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="5eJ-ef-FeI"/>
+                                        </constraints>
+                                        <color key="tintColor" name="BGB4"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" image="HiddenOff"/>
+                                        <state key="selected" image="HiddenOn"/>
+                                        <connections>
+                                            <action selector="confirmPasswordButtonTapped:" destination="bld-4r-par" eventType="touchUpInside" id="wOY-iI-1yo"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" name="BG4"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="XV9-Wt-SRK" secondAttribute="bottom" id="2JY-Nu-KAu"/>
+                                    <constraint firstAttribute="height" constant="42" id="4QW-Gl-x1y"/>
+                                    <constraint firstItem="zpN-h1-2sg" firstAttribute="top" secondItem="aIc-xg-e2o" secondAttribute="top" id="4fP-dR-BMr"/>
+                                    <constraint firstItem="zpN-h1-2sg" firstAttribute="leading" secondItem="aIc-xg-e2o" secondAttribute="leading" constant="8" id="Rjr-Yp-sIM"/>
+                                    <constraint firstAttribute="trailing" secondItem="XV9-Wt-SRK" secondAttribute="trailing" id="YBZ-9Q-sz0"/>
+                                    <constraint firstItem="XV9-Wt-SRK" firstAttribute="top" secondItem="aIc-xg-e2o" secondAttribute="top" id="o4z-hI-N2A"/>
+                                    <constraint firstItem="XV9-Wt-SRK" firstAttribute="leading" secondItem="zpN-h1-2sg" secondAttribute="trailing" constant="8" id="z4E-3I-EvM"/>
+                                    <constraint firstAttribute="bottom" secondItem="zpN-h1-2sg" secondAttribute="bottom" id="zrm-N9-IoM"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="w5S-60-e9z"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="0br-Wh-3xS" firstAttribute="top" secondItem="6pS-Jt-jbg" secondAttribute="bottom" constant="12" id="52J-fL-MWH"/>
+                            <constraint firstItem="pBL-CC-2bi" firstAttribute="trailing" secondItem="odm-Eb-RlG" secondAttribute="trailing" id="CGS-T1-Lpf"/>
+                            <constraint firstItem="pBL-CC-2bi" firstAttribute="leading" secondItem="odm-Eb-RlG" secondAttribute="leading" id="Cfh-2e-2sU"/>
+                            <constraint firstItem="6pS-Jt-jbg" firstAttribute="leading" secondItem="w5S-60-e9z" secondAttribute="leading" constant="16" id="K7v-lq-kTj"/>
+                            <constraint firstItem="u70-5N-8nk" firstAttribute="trailing" secondItem="niP-Q4-wqO" secondAttribute="trailing" id="Kda-4Q-jKf"/>
+                            <constraint firstItem="u70-5N-8nk" firstAttribute="leading" secondItem="niP-Q4-wqO" secondAttribute="leading" id="QOa-kc-nR1"/>
+                            <constraint firstItem="F52-SB-4oY" firstAttribute="leading" secondItem="w5S-60-e9z" secondAttribute="leading" constant="45" id="QYo-qv-pao"/>
+                            <constraint firstItem="odm-Eb-RlG" firstAttribute="top" secondItem="0br-Wh-3xS" secondAttribute="bottom" constant="12" id="Rej-fK-1kY"/>
+                            <constraint firstItem="w5S-60-e9z" firstAttribute="trailing" secondItem="F52-SB-4oY" secondAttribute="trailing" constant="45" id="Rfv-Dc-t3l"/>
+                            <constraint firstItem="bj2-Ii-2jB" firstAttribute="trailing" secondItem="odm-Eb-RlG" secondAttribute="trailing" id="SQP-J1-zc1"/>
+                            <constraint firstItem="niP-Q4-wqO" firstAttribute="trailing" secondItem="0br-Wh-3xS" secondAttribute="trailing" id="T3T-pM-eoN"/>
+                            <constraint firstItem="bj2-Ii-2jB" firstAttribute="top" secondItem="odm-Eb-RlG" secondAttribute="bottom" constant="8" id="WTC-d5-DWv"/>
+                            <constraint firstItem="odm-Eb-RlG" firstAttribute="leading" secondItem="0br-Wh-3xS" secondAttribute="leading" id="XRb-17-ngH"/>
+                            <constraint firstItem="0br-Wh-3xS" firstAttribute="trailing" secondItem="6pS-Jt-jbg" secondAttribute="trailing" id="ZmA-ko-s6P"/>
+                            <constraint firstItem="aIc-xg-e2o" firstAttribute="leading" secondItem="niP-Q4-wqO" secondAttribute="leading" id="cPO-e2-iFg"/>
+                            <constraint firstItem="niP-Q4-wqO" firstAttribute="leading" secondItem="0br-Wh-3xS" secondAttribute="leading" id="cl0-UB-iVd"/>
+                            <constraint firstItem="0br-Wh-3xS" firstAttribute="leading" secondItem="6pS-Jt-jbg" secondAttribute="leading" id="i4v-X3-G4d"/>
+                            <constraint firstItem="niP-Q4-wqO" firstAttribute="top" secondItem="pBL-CC-2bi" secondAttribute="bottom" constant="24" id="mGG-qq-7bU"/>
+                            <constraint firstItem="u70-5N-8nk" firstAttribute="top" secondItem="aIc-xg-e2o" secondAttribute="bottom" constant="8" id="ouK-L1-VnH"/>
+                            <constraint firstItem="odm-Eb-RlG" firstAttribute="trailing" secondItem="0br-Wh-3xS" secondAttribute="trailing" id="rCe-Ee-gdB"/>
+                            <constraint firstItem="F52-SB-4oY" firstAttribute="top" secondItem="u70-5N-8nk" secondAttribute="bottom" constant="24" id="rpg-Gs-Tyw"/>
+                            <constraint firstItem="aIc-xg-e2o" firstAttribute="trailing" secondItem="niP-Q4-wqO" secondAttribute="trailing" id="sCx-yI-vFB"/>
+                            <constraint firstItem="bj2-Ii-2jB" firstAttribute="leading" secondItem="odm-Eb-RlG" secondAttribute="leading" id="tdH-qN-OJx"/>
+                            <constraint firstItem="6pS-Jt-jbg" firstAttribute="top" secondItem="w5S-60-e9z" secondAttribute="top" constant="8" id="tpk-gs-oSd"/>
+                            <constraint firstItem="aIc-xg-e2o" firstAttribute="top" secondItem="niP-Q4-wqO" secondAttribute="bottom" constant="8" id="vm1-LJ-xX4"/>
+                            <constraint firstItem="w5S-60-e9z" firstAttribute="trailing" secondItem="6pS-Jt-jbg" secondAttribute="trailing" constant="16" id="y9M-Xq-ybM"/>
+                            <constraint firstItem="pBL-CC-2bi" firstAttribute="top" secondItem="bj2-Ii-2jB" secondAttribute="bottom" constant="8" id="yxY-do-h48"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="QYv-tR-1oi"/>
+                    <connections>
+                        <outlet property="confirmPasswordButton" destination="XV9-Wt-SRK" id="wmC-GC-nSR"/>
+                        <outlet property="confirmPasswordErrorMessage" destination="u70-5N-8nk" id="5ue-P2-mtV"/>
+                        <outlet property="confirmPasswordField" destination="zpN-h1-2sg" id="01A-DS-sC2"/>
+                        <outlet property="enterPasswordButton" destination="Adq-NS-uzy" id="x9h-ts-pW9"/>
+                        <outlet property="enterPasswordErrorMessage" destination="pBL-CC-2bi" id="DXJ-uj-L84"/>
+                        <outlet property="enterPasswordField" destination="wqt-uR-Jl3" id="Hku-Yr-fgL"/>
+                        <outlet property="nextButton" destination="F52-SB-4oY" id="b5R-4s-HZX"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="smy-PP-GSR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2916" y="167"/>
         </scene>
         <!--Home-->
         <scene sceneID="BqK-IB-sUw">
@@ -1910,7 +2122,7 @@ for your Digital Assets</string>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="975-WW-Pxa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2082" y="617"/>
+            <point key="canvasLocation" x="-1142" y="616"/>
         </scene>
         <!--Already Have a Wallet-->
         <scene sceneID="Y94-sZ-h7q">
@@ -2411,7 +2623,7 @@ for your Digital Assets</string>
                                 <rect key="frame" x="16" y="192" width="22" height="22"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Akw-Ql-lzs">
-                                        <rect key="frame" x="8.5" y="4" width="5" height="14"/>
+                                        <rect key="frame" x="8.5" y="4" width="5.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt14"/>
                                         <nil key="highlightedColor"/>
@@ -2788,7 +3000,7 @@ Please store it carefully!</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstItem="0MH-nn-pXW" firstAttribute="leading" secondItem="QLF-t5-4FO" secondAttribute="trailing" constant="8" id="1Qg-n0-9pS"/>
                                     <constraint firstItem="MUj-zY-U1n" firstAttribute="top" secondItem="hUr-Be-gdV" secondAttribute="top" constant="10" id="4at-DQ-UnF"/>
@@ -2900,7 +3112,7 @@ Please store it carefully!</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstItem="8sb-hv-pFc" firstAttribute="leading" secondItem="sVS-p5-mit" secondAttribute="leading" constant="10" id="3kT-eh-C4u"/>
                                     <constraint firstItem="8sb-hv-pFc" firstAttribute="width" secondItem="Qte-QZ-miC" secondAttribute="width" id="6Nt-Qh-6fl"/>
@@ -3012,7 +3224,7 @@ Please store it carefully!</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstItem="jCu-Qa-RiK" firstAttribute="leading" secondItem="pVA-bX-CRm" secondAttribute="trailing" constant="8" id="0HO-Z3-QhM"/>
                                     <constraint firstItem="jCu-Qa-RiK" firstAttribute="top" secondItem="9Gc-Ka-IJc" secondAttribute="top" constant="10" id="45j-Oc-pRz"/>
@@ -3124,7 +3336,7 @@ Please store it carefully!</string>
                                         </constraints>
                                     </view>
                                 </subviews>
-                                <color key="backgroundColor" name="BGSegPicker"/>
+                                <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="Bir-Rh-B6v" secondAttribute="bottom" constant="10" id="7dq-di-jUJ"/>
                                     <constraint firstItem="sRK-22-cWu" firstAttribute="width" secondItem="Bir-Rh-B6v" secondAttribute="width" id="An4-ir-Cop"/>
@@ -3241,6 +3453,9 @@ Please store it carefully!</string>
         <designable name="EX4-MC-WXt">
             <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
+        <designable name="F52-SB-4oY">
+            <size key="intrinsicContentSize" width="69" height="38"/>
+        </designable>
         <designable name="HYe-6w-BZ5">
             <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
@@ -3336,7 +3551,7 @@ Please store it carefully!</string>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="Ura-gb-YOV"/>
+        <segue reference="hb3-4s-783"/>
         <segue reference="lKc-o7-U0k"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -3344,6 +3559,7 @@ Please store it carefully!</string>
         <image name="ArrowUp-right" width="128" height="128"/>
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>
+        <image name="HiddenOff" width="24" height="24"/>
         <image name="HiddenOn" width="24" height="24"/>
         <image name="Photos" width="24" height="24"/>
         <image name="Social_Apple" width="30" height="30"/>
@@ -3392,9 +3608,6 @@ Please store it carefully!</string>
         <namedColor name="BGRecoveryTrans">
             <color red="0.77647058823529413" green="0.7803921568627451" blue="0.84313725490196079" alpha="0.64999997615814209" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="BGSegPicker">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="BtnSec1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -3410,6 +3623,9 @@ Please store it carefully!</string>
         <namedColor name="Txt0">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt14">
             <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -3424,6 +3640,9 @@ Please store it carefully!</string>
         </namedColor>
         <namedColor name="TxtB-alt2">
             <color red="0.68235294117647061" green="0.55294117647058827" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB-alt4">
+            <color red="0.80000001192092896" green="0.68599998950958252" blue="0.3919999897480011" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

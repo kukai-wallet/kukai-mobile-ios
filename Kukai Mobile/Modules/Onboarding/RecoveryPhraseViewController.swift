@@ -43,6 +43,7 @@ class RecoveryPhraseViewController: UIViewController {
 	
 	private var blurryImage: UIImage? = nil
 	private var writtenItDown = false
+	private var presentedCopyAlert = false
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,9 +93,33 @@ class RecoveryPhraseViewController: UIViewController {
 		seedWordCoverImageTintView.frame = wordsContainer.bounds
 	}
 	
+	@objc func longPressOnWordContainer() {
+		if presentedCopyAlert {
+			return
+		} else {
+			presentedCopyAlert = true
+		}
+		
+		self.alert(withTitle: "Copy?", andMessage: "Do you want to copy the recovery phrase? This phrase gives anyone access to your wallet and funds, copying it to your system clipboard may expose these words to other apps", okText: "I understand, copy",
+				   okAction: { [weak self] action in
+			
+			if let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic {
+				UIPasteboard.general.string = mnemonic.words.joined(separator: " ")
+			}
+			
+			self?.presentedCopyAlert = false
+			
+		}, cancelText: "cancel", cancelAction: { [weak self] action in
+			self?.presentedCopyAlert = false
+		})
+	}
+	
 	@IBAction func viewSeedWordsTapped(_ sender: Any) {
 		seedWordCoverContainer.isHidden = true
 		nextButton.isEnabled = true
+		
+		wordsContainer.isUserInteractionEnabled = true
+		wordsContainer.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.longPressOnWordContainer)))
 	}
 	
 	@IBAction func nextButtonTapped(_ sender: Any) {

@@ -6,44 +6,59 @@
 //
 
 import UIKit
+import LocalAuthentication
 import OSLog
 
 class LoginViewController: UIViewController {
-
-	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		activityIndicator.startAnimating()
-		
-		
-		
 		// When integrate pin / face id, move this call to after successful
 		reestablishConnectionsAfterLogin()
 		
+		validateBiometric()
+	}
+	
+	private func validateBiometric() {
+		let context = LAContext()
+		var error: NSError?
 		
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-			guard let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate else {
-				os_log("Can't get scene delegate", log: .default, type: .debug)
-				return
-			}
+		if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+			let reason = "To allow access to app"
 			
-			sceneDelegate.hidePrivacyProtectionWindow()
+			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
+				[weak self] success, authenticationError in
+				
+				DispatchQueue.main.async {
+					if success {
+						self?.returnToApp()
+						
+					} else {
+						self?.alert(errorWithMessage: "Unable to verify biometrics")
+					}
+				}
+			}
+		} else {
+			self.alert(errorWithMessage: "No biometrics enabled, please enable and try again")
 		}
+	}
+	
+	private func returnToApp() {
+		guard let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate else {
+			os_log("Can't get scene delegate", log: .default, type: .debug)
+			return
+		}
+		
+		sceneDelegate.hidePrivacyProtectionWindow()
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
-		
-		activityIndicator.stopAnimating()
 	}
 	
 	

@@ -15,6 +15,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
 	@IBOutlet weak var accountLabel: UILabel!
+	@IBOutlet weak var singleAccountContainer: UIView!
+	@IBOutlet weak var multiAccountTitle: UILabel!
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var accountButtonContainer: UIView!
 	@IBOutlet weak var rejectButton: CustomisableButton!
@@ -41,9 +43,10 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 		
 		if DependencyManager.shared.walletList.count() == 1 {
 			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()
+			multiAccountTitle.isHidden = true
 			accountButtonContainer.isHidden = true
 		} else {
-			accountLabel.isHidden = true
+			singleAccountContainer.isHidden = true
 			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress(), for: .normal)
 		}
 	}
