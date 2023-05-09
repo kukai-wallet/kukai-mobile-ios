@@ -26,7 +26,7 @@ public class ThemeManager {
 	public weak var delegate: ThemeManagerDelegate? = nil
 	
 	private var themes: [String: ThemeData] = [:]
-	private var selectedTheme: String = UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? (UITraitCollection.current.userInterfaceStyle == .light ? "Light" : "Dark")
+	private var selectedTheme: String = UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? "Dark"
 	
 	private init() {}
 	
