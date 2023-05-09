@@ -209,19 +209,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			return lhs.frame.origin.x < rhs.frame.origin.x
 		}
 		
-		let activitySubview = sorted[sorted.count-2]
-		guard let activityImageView = activitySubview.subviews.first as? UIImageView else { return }
-		
-		activityTabBarImageView = activityImageView
-		
 		if activityAnimationImageView.superview == nil {
+			let activitySubview = sorted[sorted.count-2]
+			guard let activityImageView = activitySubview.subviews.first as? UIImageView else { return }
+			activityTabBarImageView = activityImageView
 			activitySubview.addSubview(activityAnimationImageView)
 		}
-		activityAnimationImageView.frame = activityImageView.frame
+		
+		activityAnimationImageView.frame = activityTabBarImageView?.frame ?? CGRect(x: 0, y: 0, width: 30, height: 30)
 		activityAnimationImageView.animationImages = activityAnimationFrames
 		activityAnimationImageView.animationDuration = 3
 		
-		activityImageView.isHidden = true
+		activityTabBarImageView?.isHidden = true
 		activityAnimationImageView.isHidden = false
 		activityAnimationImageView.startAnimating()
 	}
