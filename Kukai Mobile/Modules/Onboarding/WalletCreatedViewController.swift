@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class WalletCreatedViewController: UIViewController {
 	
@@ -39,5 +40,13 @@ class WalletCreatedViewController: UIViewController {
 		checkboxButton.updateCustomImage()
 		isSelected = !isSelected
 		getStartedButton.isEnabled = isSelected
+	}
+	
+	@IBAction func getStartedTapped(_ sender: Any) {
+		if CurrentDevice.biometricType() == .none {
+			self.performSegue(withIdentifier: "password", sender: nil)
+		} else {
+			self.performSegue(withIdentifier: "biometric", sender: nil)
+		}
 	}
 }

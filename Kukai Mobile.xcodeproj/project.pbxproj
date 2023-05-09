@@ -175,6 +175,12 @@
 		C08E62EC29DB185F004D8DF0 /* CreateWithSocialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08E62EB29DB185F004D8DF0 /* CreateWithSocialViewController.swift */; };
 		C08F690F273ABB9E00CCB6E3 /* SwapTokenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */; };
 		C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */; };
+		C095367B2A0A8235001B20C4 /* CreatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C095367A2A0A8235001B20C4 /* CreatePasswordViewController.swift */; };
+		C095367D2A0A9284001B20C4 /* SecureLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C095367C2A0A9284001B20C4 /* SecureLoginService.swift */; };
+		C095367F2A0A933A001B20C4 /* KeychainWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C095367E2A0A933A001B20C4 /* KeychainWrapper.swift */; };
+		C09536812A0A94E4001B20C4 /* LengthValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09536802A0A94E4001B20C4 /* LengthValidator.swift */; };
+		C09536832A0A9587001B20C4 /* ConfirmationValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09536822A0A9587001B20C4 /* ConfirmationValidator.swift */; };
+		C09536852A0A976C001B20C4 /* KeychainItemAccessibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09536842A0A976C001B20C4 /* KeychainItemAccessibility.swift */; };
 		C09635D127CE3CF80095EDBF /* UINavigationController+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */; };
 		C097C02628F84CD300FB2FC8 /* Collectibles.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */; };
 		C09860AA27C3C24E00F888AF /* SendToViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860A927C3C24E00F888AF /* SendToViewController.swift */; };
@@ -520,6 +526,12 @@
 		C08E62EB29DB185F004D8DF0 /* CreateWithSocialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateWithSocialViewController.swift; sourceTree = "<group>"; };
 		C08F690E273ABB9E00CCB6E3 /* SwapTokenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewController.swift; sourceTree = "<group>"; };
 		C08F6912273ABD7300CCB6E3 /* SwapTokenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwapTokenViewModel.swift; sourceTree = "<group>"; };
+		C095367A2A0A8235001B20C4 /* CreatePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePasswordViewController.swift; sourceTree = "<group>"; };
+		C095367C2A0A9284001B20C4 /* SecureLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLoginService.swift; sourceTree = "<group>"; };
+		C095367E2A0A933A001B20C4 /* KeychainWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainWrapper.swift; sourceTree = "<group>"; };
+		C09536802A0A94E4001B20C4 /* LengthValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LengthValidator.swift; sourceTree = "<group>"; };
+		C09536822A0A9587001B20C4 /* ConfirmationValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmationValidator.swift; sourceTree = "<group>"; };
+		C09536842A0A976C001B20C4 /* KeychainItemAccessibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainItemAccessibility.swift; sourceTree = "<group>"; };
 		C09635D027CE3CF80095EDBF /* UINavigationController+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+extensions.swift"; sourceTree = "<group>"; };
 		C097C02528F84CD300FB2FC8 /* Collectibles.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Collectibles.storyboard; sourceTree = "<group>"; };
 		C09860A927C3C24E00F888AF /* SendToViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendToViewController.swift; sourceTree = "<group>"; };
@@ -747,6 +759,9 @@
 				C04B20A42930E1AF00C008CD /* ActivityService.swift */,
 				C0D01CF229AE4A82007A2468 /* WalletConnectService.swift */,
 				C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */,
+				C095367C2A0A9284001B20C4 /* SecureLoginService.swift */,
+				C095367E2A0A933A001B20C4 /* KeychainWrapper.swift */,
+				C09536842A0A976C001B20C4 /* KeychainItemAccessibility.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -887,6 +902,7 @@
 				C08E62EB29DB185F004D8DF0 /* CreateWithSocialViewController.swift */,
 				C006176929DB33C8005A1330 /* WalletCreatedViewController.swift */,
 				C0B8C8A029DC2AD200C8AFD5 /* FaceIdViewController.swift */,
+				C095367A2A0A8235001B20C4 /* CreatePasswordViewController.swift */,
 				C0B8C8A229DC355400C8AFD5 /* RecoveryPhraseViewController.swift */,
 				C0F7113429DCBA0D00FA59E0 /* RecoveryPhraseInfoViewController.swift */,
 				C0ED746029DC6F0700A85A15 /* VerifyRecoveryPhraseViewController.swift */,
@@ -1127,6 +1143,8 @@
 				C009F89028197F47007EA8A8 /* NoWhiteSpaceStringValidator.swift */,
 				C0CB6AC22948ED4300E7B4DF /* FreeformValidator.swift */,
 				C0411B5029DEFEE600778E1E /* EmailValidator.swift */,
+				C09536802A0A94E4001B20C4 /* LengthValidator.swift */,
+				C09536822A0A9587001B20C4 /* ConfirmationValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1713,6 +1731,7 @@
 				C001D5A82A027EA10089EC7A /* CollectiblesFavouritesViewController.swift in Sources */,
 				C01AE5DC28A26C44008F93E8 /* AddLiquidityConfirmViewController.swift in Sources */,
 				C0B8C8A129DC2AD200C8AFD5 /* FaceIdViewController.swift in Sources */,
+				C095367B2A0A8235001B20C4 /* CreatePasswordViewController.swift in Sources */,
 				C073C0DE29E6CADC0064FBEF /* LoadingContainerCell.swift in Sources */,
 				C0411B4729DEBFAD00778E1E /* TextFieldSuggestionAccessoryView.swift in Sources */,
 				C0B03643269EE2070071ACD0 /* AppDelegate.swift in Sources */,
@@ -1724,6 +1743,7 @@
 				C025891D292CD985000D59F6 /* TokenStateService.swift in Sources */,
 				C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */,
 				C0BF19A32938FB490044D942 /* TokenContractViewController.swift in Sources */,
+				C09536812A0A94E4001B20C4 /* LengthValidator.swift in Sources */,
 				C0A19B4828857301000291A0 /* String+extensions.swift in Sources */,
 				C000FA522A02A08600A59861 /* CollectiblesCollectionCell.swift in Sources */,
 				C08B0B1D292D1EFC008B42A5 /* EmptyTableViewCell.swift in Sources */,
@@ -1735,6 +1755,7 @@
 				C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */,
 				C04E2862293F94A800DC4171 /* TokenDetailsButtonsCell.swift in Sources */,
 				C001D5AA2A027EB40089EC7A /* CollectiblesRecentsViewController.swift in Sources */,
+				C09536832A0A9587001B20C4 /* ConfirmationValidator.swift in Sources */,
 				C0E4EF3E294105E3007C69CA /* TokenDetailsMessageCell.swift in Sources */,
 				C0FAD1D62992992500FB813B /* SendCollectibleConfirmViewController.swift in Sources */,
 				C0D190102A0506D8002B5DB8 /* CollectiblesCollectionLargeCell.swift in Sources */,
@@ -1752,6 +1773,7 @@
 				C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */,
 				C08C973F2908192A00249959 /* UICollectionViewCell+extensions.swift in Sources */,
 				C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */,
+				C09536852A0A976C001B20C4 /* KeychainItemAccessibility.swift in Sources */,
 				C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */,
 				C0EA19C029096D9400E6B40D /* CollectibleDetailImageCell.swift in Sources */,
 				C08694E627BD1D94000A4909 /* AccountViewModel.swift in Sources */,
@@ -1764,8 +1786,10 @@
 				C0E921EF270C8C9A00F3B0B9 /* LedgerVerifyViewController.swift in Sources */,
 				C0EA19DE29096E5900E6B40D /* CollectibleDetailAttributeHeaderCell.swift in Sources */,
 				C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */,
+				C095367F2A0A933A001B20C4 /* KeychainWrapper.swift in Sources */,
 				C0C7DFBA29BF37FF00F60E0C /* SideMenuViewController.swift in Sources */,
 				C0081FD827D8FE3700F7FEFF /* ActivityViewModel.swift in Sources */,
+				C095367D2A0A9284001B20C4 /* SecureLoginService.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
 				C08C974129081F3D00249959 /* CollectibleDetailLayout.swift in Sources */,
 				C005BA322822D3DC00D8369D /* AddWalletViewController.swift in Sources */,
