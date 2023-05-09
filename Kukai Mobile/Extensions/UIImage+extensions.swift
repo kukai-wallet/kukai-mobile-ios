@@ -57,6 +57,10 @@ extension UIImage {
 		return UIImage(named: "missingToken")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
 	
+	class func unknownThumb() -> UIImage {
+		return UIImage(named: "missingGroup")?.resizedImage(size: CGSize(width: 54, height: 54)) ?? UIImage()
+	}
+	
 	class func animationFrames(prefix: String, count: Int) -> [UIImage] {
 		var tempArray: [UIImage] = []
 		
