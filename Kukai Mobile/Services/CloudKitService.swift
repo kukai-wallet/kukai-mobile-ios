@@ -58,7 +58,7 @@ public class CloudKitService {
 			// Required: loginType, loginProvider, verifierName, redirectURL
 			// Optional: aggregateVerifierName, clientId
 			if let loginType = SubVerifierType(rawValue: type), let loginProvider = LoginProviders(rawValue: provider), let verifierName = config["verifierName"], let redirectURL = config["redirectURL"] {
-				let details = SubVerifierDetails(loginType: loginType, loginProvider: loginProvider, clientId: config["clientId"] ?? "", verifierName: verifierName, redirectURL: redirectURL)
+				let details = SubVerifierDetails(loginType: loginType, loginProvider: loginProvider, clientId: config["clientId"] ?? "", verifier: verifierName, redirectURL: redirectURL)
 				let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
 				verifiers[authProvider] = wrapper
 				
@@ -73,7 +73,7 @@ public class CloudKitService {
 					let details = SubVerifierDetails(loginType: loginType,
 													 loginProvider: loginProvider,
 													 clientId: config["clientId"] ?? "",
-													 verifierName: verifierName,
+													 verifier: verifierName,
 													 redirectURL: redirectURL,
 													 browserRedirectURL: config["browserRedirectURL"],
 													 jwtParams: ["domain": jwtDomain])
@@ -84,7 +84,7 @@ public class CloudKitService {
 					let details = SubVerifierDetails(loginType: loginType,
 													 loginProvider: loginProvider,
 													 clientId: config["clientId"] ?? "",
-													 verifierName: verifierName,
+													 verifier: verifierName,
 													 redirectURL: redirectURL,
 													 browserRedirectURL: config["browserRedirectURL"])
 					let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
