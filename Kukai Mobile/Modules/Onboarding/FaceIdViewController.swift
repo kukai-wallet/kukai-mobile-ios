@@ -62,8 +62,8 @@ class FaceIdViewController: UIViewController {
 				
 				DispatchQueue.main.async { [weak self] in
 					if success {
-						SecureLoginService.setBiometricEnabled(true)
-						SecureLoginService.setCompletedOnboarding(true)
+						StorageService.setBiometricEnabled(true)
+						StorageService.setCompletedOnboarding(true)
 						self?.performSegue(withIdentifier: "home", sender: nil)
 						
 					} else {

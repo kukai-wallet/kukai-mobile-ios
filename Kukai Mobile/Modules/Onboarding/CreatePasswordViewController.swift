@@ -43,9 +43,9 @@ class CreatePasswordViewController: UIViewController {
 	}
 	
 	@IBAction func nextButtonTapped(_ sender: Any) {
-		SecureLoginService.setPasswordEnabled(true)
-		SecureLoginService.setPassword(enterPasswordField.text ?? "")
-		SecureLoginService.setCompletedOnboarding(true)
+		StorageService.setPasswordEnabled(true)
+		StorageService.setPassword(enterPasswordField.text ?? "")
+		StorageService.setCompletedOnboarding(true)
 		self.performSegue(withIdentifier: "home", sender: nil)
 	}
 }

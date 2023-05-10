@@ -10,6 +10,8 @@ import KukaiCoreSwift
 
 protocol CollectiblesViewControllerChild {
 	var delegate: UIViewController? { get set }
+	
+	func needsRefreshFromParent()
 }
 
 class CollectiblesViewController: UIViewController {
@@ -51,6 +53,9 @@ class CollectiblesViewController: UIViewController {
 			// TODO: remove when we have server
 			vc.externalImage = obj.image
 			vc.externalName = obj.name
+			
+		} else if let obj = sender as? NFT {
+			TransactionService.shared.sendData.chosenNFT = obj
 		}
 	}
 	
@@ -63,13 +68,24 @@ class CollectiblesViewController: UIViewController {
 	}
 	
 	private func moreMenu() -> MenuViewController {
-		let actions: [UIAction] = [
+		let isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+		
+		let actionGroup1: [UIAction] = [
 			UIAction(title: "View Hidden Tokens", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
 				self?.performSegue(withIdentifier: "hidden", sender: nil)
 			})
 		]
 		
-		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
+		let actionGroup2: [UIAction] = [
+			UIAction(title: isGroupMode ? "Ungroup Collections" : "Group Collections", image: UIImage(named: "LargeIcons"), identifier: nil, handler: { [weak self] action in
+				let currentValue = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+				UserDefaults.standard.set(!currentValue, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+				
+				(self?.pageController?.items[0] as? CollectiblesViewControllerChild)?.needsRefreshFromParent()
+			})
+		]
+		
+		return MenuViewController(actions: [actionGroup1, actionGroup2], header: nil, sourceViewController: self)
 	}
 }
 

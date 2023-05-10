@@ -137,7 +137,7 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 			return cell
 			
 		} else if let cell = tableView.dequeueReusableCell(withIdentifier: "MenuActionCell", for: indexPath) as? MenuActionCell {
-			let actionIndex = (header == nil && indexPath.section == 0) ? indexPath.row : indexPath.row - 1
+			let actionIndex = (header != nil && indexPath.section == 0) ? indexPath.row - 1 : indexPath.row
 			let action = self.actions[indexPath.section][actionIndex]
 			
 			cell.actionLabel.text = action.title
@@ -188,12 +188,12 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 			
 			oldIndexPathSlectionIndex = indexPath
 			
-			let choiceIndex = (header == nil) ? indexPath.row : indexPath.row - 1
+			let choiceIndex = (header != nil) ? indexPath.row - 1 : indexPath.row
 			let choice = self.choices[choiceIndex]
 			choice.action.performWithSender(nil, target: nil)
 			
 		} else {
-			let actionIndex = (header == nil && indexPath.section == 0) ? indexPath.row : indexPath.row - 1
+			let actionIndex = (header != nil && indexPath.section == 0) ? indexPath.row - 1 : indexPath.row
 			let action = self.actions[indexPath.section][actionIndex]
 			action.performWithSender(nil, target: nil)
 		}

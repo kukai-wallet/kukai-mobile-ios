@@ -25,6 +25,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var isVisible = false
 	var isSearching = false
 	var sortMenu: MenuViewController? = nil
+	var isGroupMode = false
+	var itemCount = 0
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -55,6 +57,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
 		collectionView.register(UINib(nibName: "CollectiblesSearchCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesSearchCell")
 		collectionView.register(UINib(nibName: "CollectiblesCollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionCell")
+		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
+		collectionView.register(UINib(nibName: "CollectiblesCollectionSinglePageCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionSinglePageCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
@@ -62,6 +66,22 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				cell.searchBar.validator = FreeformValidator()
 				cell.searchBar.validatorTextFieldDelegate = self?.validatorTextfieldDelegate
 				cell.setup(sortMenu: sortMenu)
+				return cell
+				
+			} else if (self?.itemCount ?? 0) <= 1, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
+				let url = MediaProxyService.displayURL(forNFT: obj)
+				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				cell.titleLabel.text = obj.name
+				cell.subTitleLabel.text = obj.parentAlias ?? ""
+				
+				return cell
+				
+			} else if self?.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
+				let url = MediaProxyService.displayURL(forNFT: obj)
+				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				cell.titleLabel.text = obj.name
+				cell.subTitleLabel.text = obj.parentAlias ?? ""
+					
 				return cell
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
@@ -90,6 +110,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 			}
 			
+			
 			return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath)
 		})
 	}
@@ -103,14 +124,22 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		
 		// Build snapshot data
 		var hashableData: [AnyHashable] = []
+		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 		
 		// Add non hidden groups
-		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-			guard !nftGroup.isHidden else {
-				continue
+		if isGroupMode {
+			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+				guard !nftGroup.isHidden else { continue }
+				hashableData.append(nftGroup)
 			}
 			
-			hashableData.append(nftGroup)
+		} else {
+			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+				guard !nftGroup.isHidden else { continue }
+				
+				let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden })
+				hashableData.append(contentsOf: nonHiddenNFTs ?? [])
+			}
 		}
 		
 		// Build snapshot
@@ -118,6 +147,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		normalSnapshot.appendSections([0, 1])
 		normalSnapshot.appendItems([sortMenu], toSection: 0)
 		normalSnapshot.appendItems(hashableData, toSection: 1)
+		itemCount = hashableData.count
 		
 		ds.apply(normalSnapshot)
 		
@@ -161,7 +191,6 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func token(forIndexPath indexPath: IndexPath) -> (token: Token, image: UIImage?, name: String?)? {
-		
 		if let t = dataSource?.itemIdentifier(for: indexPath) as? Token {
 			if let index = self.contractAliasesAddressShorthand.firstIndex(of: t.tokenContractAddress ?? "") {
 				let image = UIImage(named: self.contractAliases[index].thumbnailUrl) ?? UIImage()
@@ -176,5 +205,119 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		return nil
+	}
+	
+	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
+		return dataSource?.itemIdentifier(for: indexPath) as? NFT
+	}
+	
+	func layout() -> UICollectionViewLayout {
+		if isGroupMode {
+			return createGroupLayout()
+			
+		} else if itemCount <= 1 {
+			return createSingleLayout()
+			
+		} else {
+			return createColumnLayout()
+		}
+	}
+	
+	private func createSingleLayout() -> UICollectionViewLayout {
+		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+			
+			if sectionIndex == 0 {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+				return section
+				
+			} else {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.90))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.90))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.interGroupSpacing = 4
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16)
+				return section
+			}
+		}
+		
+		let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+		return layout
+	}
+	
+	private func createColumnLayout() -> UICollectionViewLayout {
+		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+			
+			if sectionIndex == 0 {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+				return section
+				
+			} else {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(252))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(252))
+				let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
+				
+				group.interItemSpacing = .fixed(18)
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.interGroupSpacing = 24
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16)
+				return section
+			}
+		}
+		
+		let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+		return layout
+	}
+	
+	private func createGroupLayout() -> UICollectionViewLayout {
+		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+			
+			if sectionIndex == 0 {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
+				return section
+				
+			} else {
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
+				let item = NSCollectionLayoutItem(layoutSize: itemSize)
+				
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
+				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+				
+				let section = NSCollectionLayoutSection (group: group)
+				section.interGroupSpacing = 4
+				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16)
+				return section
+			}
+		}
+		
+		let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
+		return layout
 	}
 }

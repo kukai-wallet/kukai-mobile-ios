@@ -117,7 +117,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
-		let didCompleteOnboarding = SecureLoginService.didCompleteOnboarding()
+		let didCompleteOnboarding = StorageService.didCompleteOnboarding()
 		
 		if hasWallet && didCompleteOnboarding {
 			self.performSegue(withIdentifier: "home", sender: nil)

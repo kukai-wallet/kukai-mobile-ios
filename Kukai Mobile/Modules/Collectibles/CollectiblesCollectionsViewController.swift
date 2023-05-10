@@ -15,6 +15,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	private let viewModel = CollectiblesCollectionsViewModel()
 	private var cancellable: AnyCancellable?
+	private var refreshingFromParent = false
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -27,13 +28,12 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
-		collectionView.collectionViewLayout = createLayout()
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					//self?.showLoadingView(completion: nil)
-					print("loading")
+					let _ = ""
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
@@ -41,7 +41,12 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					let _ = ""
+					self?.collectionView.collectionViewLayout = self?.viewModel.layout() ?? UICollectionViewFlowLayout()
+					
+					if self?.refreshingFromParent == true {
+						self?.collectionView.contentOffset = CGPoint(x: 0, y: 0)
+						self?.refreshingFromParent = false
+					}
 			}
 		}
     }
@@ -60,6 +65,11 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		viewModel.isVisible = false
 	}
 	
+	func needsRefreshFromParent() {
+		refreshingFromParent = true
+		viewModel.refresh(animate: true)
+	}
+	
 	
 	// MARK: - CollectionView
 	
@@ -70,22 +80,14 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		/*
-		 if viewModel.shouldOpenCloseForIndexPathTap(indexPath) {
-			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
-			
-		} else if let nft = viewModel.nft(atIndexPath: indexPath) {
-			TransactionService.shared.sendData.chosenToken = nil
-			TransactionService.shared.sendData.chosenNFT = nft
-			self.performSegue(withIdentifier: "details", sender: self)
-		}
-		*/
-		
 		if indexPath.section == 0 {
 			return
 			
-		} else if let obj = viewModel.token(forIndexPath: indexPath) {
+		} else if viewModel.isGroupMode, let obj = viewModel.token(forIndexPath: indexPath) {
 			delegate?.performSegue(withIdentifier: "collection", sender: obj)
+			
+		} else if !viewModel.isGroupMode, let obj = viewModel.nft(forIndexPath: indexPath) {
+			delegate?.performSegue(withIdentifier: "detail", sender: obj)
 		}
 	}
 	
@@ -103,38 +105,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		]
 		
 		return MenuViewController(choices: choices, header: "Sort Tokens", sourceViewController: self)
-	}
-	
-	private func createLayout() -> UICollectionViewLayout {
-		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-			
-			if sectionIndex == 0 {
-				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
-				let item = NSCollectionLayoutItem(layoutSize: itemSize)
-				
-				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(32))
-				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-				
-				let section = NSCollectionLayoutSection (group: group)
-				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 20, trailing: 16)
-				return section
-				
-			} else {
-				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
-				let item = NSCollectionLayoutItem(layoutSize: itemSize)
-				
-				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(104))
-				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-				
-				let section = NSCollectionLayoutSection (group: group)
-				section.interGroupSpacing = 4
-				section.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 16, bottom: 24, trailing: 16)
-				return section
-			}
-		}
-		
-		let layout = UICollectionViewCompositionalLayout(sectionProvider: sectionProvider)
-		return layout
 	}
 }
 

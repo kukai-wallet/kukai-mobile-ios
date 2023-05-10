@@ -106,7 +106,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 				return section
 				
 			} else {
-				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.48), heightDimension: .estimated(204))
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(204))
 				let item = NSCollectionLayoutItem(layoutSize: itemSize)
 				
 				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(204))
