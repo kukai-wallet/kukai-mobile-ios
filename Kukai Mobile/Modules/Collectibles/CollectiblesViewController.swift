@@ -40,6 +40,9 @@ class CollectiblesViewController: UIViewController {
 		} else {
 			ghostnetStackview.isHidden = false
 		}
+		
+		let isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+		self.segmentedControl.setTitle(isGroupMode ? "Collections" : "All", forSegmentAt: 0)
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,6 +84,7 @@ class CollectiblesViewController: UIViewController {
 				let currentValue = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 				UserDefaults.standard.set(!currentValue, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 				
+				self?.segmentedControl.setTitle(isGroupMode ? "All" : "Collections", forSegmentAt: 0)
 				(self?.pageController?.items[0] as? CollectiblesViewControllerChild)?.needsRefreshFromParent()
 			})
 		]
