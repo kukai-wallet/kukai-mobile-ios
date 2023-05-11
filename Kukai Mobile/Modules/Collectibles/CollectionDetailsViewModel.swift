@@ -65,7 +65,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionItemLargeWithTextCell", for: indexPath) as? CollectiblesCollectionItemLargeWithTextCell {
 				let url = MediaProxyService.displayURL(forNFT: obj)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				cell.titleLabel.text = obj.name
+				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
+				cell.setup(title: obj.name, quantity: balance)
 				
 				return cell
 			}

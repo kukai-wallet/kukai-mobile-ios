@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="485" height="32"/>
                         <subviews>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="435" height="32"/>
+                                <rect key="frame" x="0.0" y="0.0" width="485" height="32"/>
                                 <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="32" id="mHu-gk-jOL"/>
@@ -60,15 +60,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GZl-ov-iPQ">
-                                <rect key="frame" x="435" y="0.0" width="8" height="32"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="8" id="vHT-w2-TzQ"/>
-                                </constraints>
-                            </view>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrW-xZ-m9g" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="443" y="0.0" width="34" height="32"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrW-xZ-m9g" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="34" height="32"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="34" id="AhP-Qi-elG"/>
@@ -93,13 +86,6 @@
                                     <action selector="sortTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="f2o-Wc-6h8"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7V9-BD-GNt">
-                                <rect key="frame" x="477" y="0.0" width="8" height="32"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="8" id="XZ4-bl-A8b"/>
-                                </constraints>
-                            </view>
                         </subviews>
                     </stackView>
                 </subviews>

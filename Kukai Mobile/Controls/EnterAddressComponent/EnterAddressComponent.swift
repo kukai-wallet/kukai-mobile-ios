@@ -181,6 +181,7 @@ extension EnterAddressComponent: ScanViewControllerDelegate {
 	func scannedQRCode(code: String) {
 		self.textField.text = code
 		let _ = self.textField.revalidateTextfield()
+		doneOrReturnTapped(isValid: self.textField.isValid, textfield: self.textField, forText: code)
 	}
 }
 

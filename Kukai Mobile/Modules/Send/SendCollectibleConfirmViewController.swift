@@ -12,6 +12,8 @@ import OSLog
 class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet weak var collectibleImage: UIImageView!
+	@IBOutlet weak var collectibleImageQuantityView: UIView!
+	@IBOutlet weak var collectibleImageQuantityLabel: UILabel!
 	@IBOutlet weak var collectibleNameLabel: UILabel!
 	@IBOutlet weak var quantityStackView: UIStackView!
 	@IBOutlet weak var collectibleQuantityLabel: UILabel!
@@ -51,9 +53,11 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		let quantityString = amount.normalisedRepresentation
 		if quantityString == "1" {
 			quantityStackView.isHidden = true
+			collectibleImageQuantityView.isHidden = true
 		} else {
 			quantityStackView.isHidden = false
 			collectibleQuantityLabel.text = quantityString
+			collectibleImageQuantityLabel.text = "x\(quantityString)"
 		}
 		
 		feeValueLabel?.text = "0 tez"
