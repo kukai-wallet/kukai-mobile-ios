@@ -61,7 +61,7 @@ public class ThemeManager {
 		// It only works for things using appearence proxy, it doesn't reload our colors.
 		// So we call the delegate to notifiy the app that the theme has changed, let the app resetup appearence proxies (because they cache the color object, not the name)
 		// then reload the views, so that the new appearence is picked up.
-		// APp will need to reload its content (likely by popping to root)
+		// App will need to reload its content (likely by popping to root)
 		let window = UIApplication.shared.currentWindow
 		for view in window?.subviews ?? [] {
 			view.removeFromSuperview()
