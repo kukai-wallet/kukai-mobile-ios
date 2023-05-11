@@ -72,6 +72,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			}
 			
 			imageView = UIImageView(frame: placeholderView.bounds)
+			imageView?.contentMode = .scaleAspectFit
 			guard let audioImageView = imageView else {
 				return
 			}
