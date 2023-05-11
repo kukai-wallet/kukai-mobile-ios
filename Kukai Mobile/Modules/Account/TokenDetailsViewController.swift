@@ -155,9 +155,10 @@ extension TokenDetailsViewController {
 		self.headerIconWidthConstraint.constant = 28
 		self.headerIconHeightConstraint.constant = 28
 		
-		
 		// Setup property animator
 		headerAnimator = UIViewPropertyAnimator(duration: 3, curve: .easeOut, animations: { [weak self] in
+			
+			self?.headerIcon.customCornerRadius = (self?.headerIconWidthConstraint.constant ?? 28) / 2
 			
 			// Refresh consttraints
 			self?.view.layoutIfNeeded()

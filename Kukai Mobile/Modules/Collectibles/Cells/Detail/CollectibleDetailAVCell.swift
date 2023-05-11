@@ -54,6 +54,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		
 		// Quantity
 		if let quantity = mediaContent.quantity {
+			quantityView.isHidden = false
 			quantityLabel.text = quantity
 			quantityView.layer.zPosition = 100
 			
