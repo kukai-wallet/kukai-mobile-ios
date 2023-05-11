@@ -44,7 +44,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 					cell.iconView.image = obj.image
 					
 				} else {
-					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				}
 				
 				cell.titleLabel.text = obj.title
@@ -55,7 +55,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 					cell.iconView.image = obj.image
 					
 				} else {
-					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				}
 				
 				cell.titleLabel.text = obj.title
@@ -64,7 +64,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 				
 			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionItemLargeWithTextCell", for: indexPath) as? CollectiblesCollectionItemLargeWithTextCell {
 				let url = MediaProxyService.displayURL(forNFT: obj)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				cell.titleLabel.text = obj.name
 				
 				return cell
@@ -82,7 +82,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		}
 		
 		// Build snapshot data
-		let headerData: [AnyHashable] = [ CollectionDetailsHeaderObj(image: externalImage, url: selectedToken?.thumbnailURL, title: externalName ?? selectedToken?.name ?? "", creator: nil) ]
+		let title = (externalName ?? selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
+		let headerData: [AnyHashable] = [ CollectionDetailsHeaderObj(image: externalImage, url: selectedToken?.thumbnailURL, title: title, creator: nil) ]
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()

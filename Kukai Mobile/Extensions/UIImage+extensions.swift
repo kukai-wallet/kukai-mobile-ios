@@ -58,6 +58,10 @@ extension UIImage {
 	}
 	
 	class func unknownThumb() -> UIImage {
+		return UIImage(named: "missingThumb")?.resizedImage(size: CGSize(width: 54, height: 54)) ?? UIImage()
+	}
+	
+	class func unknownGroup() -> UIImage {
 		return UIImage(named: "missingGroup")?.resizedImage(size: CGSize(width: 54, height: 54)) ?? UIImage()
 	}
 	

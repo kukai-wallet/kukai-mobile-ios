@@ -215,6 +215,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private func setupAirPlay() {
 		airPlayButton.frame = airPlayPlaceholderView.frame
 		airPlayButton.tintColor = .colorNamed("playerIconSlider")
+		airPlayButton.activeTintColor = .colorNamed("playerIconSlider")
 		airPlayButton.translatesAutoresizingMaskIntoConstraints = false
 		airPlayPlaceholderView.addSubview(airPlayButton)
 		
