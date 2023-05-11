@@ -12,7 +12,7 @@ import Combine
 class WalletManagementService {
 	
 	/// Cache a new wallet, run tezos domains checks, and update records in DependencyManager correctly
-	public static func cacheNew(wallet: Wallet, forChildIndex: Int?, completion: @escaping ((Bool) -> Void)) {
+	public static func cacheNew(wallet: Wallet, forChildIndex: Int?, markSelected: Bool, completion: @escaping ((Bool) -> Void)) {
 		let walletCache = WalletCacheService()
 		
 		if walletCache.cache(wallet: wallet, childOfIndex: forChildIndex) {
@@ -24,13 +24,18 @@ class WalletManagementService {
 					case .success(let response):
 						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response.mainnet, ghostnetDomain: response.ghostnet, forAddress: wallet.address)
 						let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
-						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
+						
+						if markSelected {
+							DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
+						}
 						
 					case .failure(_):
 						
-						// Will fail if none exists, this is a likely occurence and not something the user needs to be aware of
-						// Silently move on, it can/will be checked again later in wallet management flow
-						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
+						if markSelected {
+							// Will fail if none exists, this is a likely occurence and not something the user needs to be aware of
+							// Silently move on, it can/will be checked again later in wallet management flow
+							DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
+						}
 				}
 				
 				completion(true)

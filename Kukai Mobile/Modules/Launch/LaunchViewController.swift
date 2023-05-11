@@ -120,7 +120,10 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		let didCompleteOnboarding = StorageService.didCompleteOnboarding()
 		
 		if hasWallet && didCompleteOnboarding {
-			self.performSegue(withIdentifier: "home", sender: nil)
+			if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
+				sceneDelgate.showPrivacyProtectionWindow()
+				self.performSegue(withIdentifier: "home", sender: nil)
+			}
 			
 		} else if hasWallet && !didCompleteOnboarding {
 			let _ = WalletCacheService().deleteAllCacheAndKeys()

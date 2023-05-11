@@ -72,6 +72,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			}
 			
 			imageView = UIImageView(frame: placeholderView.bounds)
+			imageView?.contentMode = .scaleAspectFit
 			guard let audioImageView = imageView else {
 				return
 			}
@@ -215,6 +216,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private func setupAirPlay() {
 		airPlayButton.frame = airPlayPlaceholderView.frame
 		airPlayButton.tintColor = .colorNamed("playerIconSlider")
+		airPlayButton.activeTintColor = .colorNamed("playerIconSlider")
 		airPlayButton.translatesAutoresizingMaskIntoConstraints = false
 		airPlayPlaceholderView.addSubview(airPlayButton)
 		

@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -21,7 +22,11 @@ class LoginViewController: UIViewController {
 		// When integrate pin / face id, move this call to after successful
 		reestablishConnectionsAfterLogin()
 		
-		validateBiometric()
+		if DependencyManager.shared.walletList.count() > 0 {
+			validateBiometric()
+		} else {
+			self.returnToApp()
+		}
 	}
 	
 	private func validateBiometric() {

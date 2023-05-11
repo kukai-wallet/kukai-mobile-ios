@@ -11,6 +11,7 @@ class PreLoginViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
     }
 	
 	override func viewDidAppear(_ animated: Bool) {

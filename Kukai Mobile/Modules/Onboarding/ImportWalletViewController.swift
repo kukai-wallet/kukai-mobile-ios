@@ -47,6 +47,7 @@ class ImportWalletViewController: UIViewController {
 		textView.delegate = self
 		textView.text = "Enter Recovery Phrase"
 		textView.textColor = UIColor.colorNamed("Txt10")
+		textView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
 		suggestionView = TextFieldSuggestionAccessoryView(withSuggestions: MnemonicWordList_English)
 		suggestionView?.delegate = self
 		textView.inputAccessoryView = suggestionView
@@ -156,7 +157,7 @@ class ImportWalletViewController: UIViewController {
 		self.showLoadingModal()
 		self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking for tezos domain registrations")
 		
-		WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil) { [weak self] success in
+		WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil, markSelected: true) { [weak self] success in
 			if success {
 				self?.navigate()
 				

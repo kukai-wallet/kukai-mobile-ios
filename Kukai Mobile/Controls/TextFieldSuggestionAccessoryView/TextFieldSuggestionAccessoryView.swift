@@ -21,7 +21,7 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 	
 	public init(withSuggestions: [String]) {
 		self.suggestions = withSuggestions
-		self.filteredSuggestions = withSuggestions
+		self.filteredSuggestions = []
 		
 		let tempFrame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50)
 		let flowLayout = UICollectionViewFlowLayout()
@@ -67,8 +67,8 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 	}
 	
 	public func filterSuggestions(withInput: String?) {
-		guard let input = withInput else {
-			filteredSuggestions = suggestions
+		guard let input = withInput, input != "" else {
+			filteredSuggestions = []
 			collectionView.reloadData()
 			return
 		}

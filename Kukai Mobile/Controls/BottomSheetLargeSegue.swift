@@ -24,11 +24,12 @@ public class BottomSheetLargeSegue: UIStoryboardSegue {
 		
 		source.present(destination, animated: true)
 		
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-			UIView.animate(withDuration: 0.3, delay: 0) {
-				dest.containerView?.backgroundColor = UIColor("#000000", alpha: 0.75)
-			}
-		})
+		if source.presentationController == nil {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+				UIView.animate(withDuration: 0.3, delay: 0) {
+					dest.containerView?.backgroundColor = UIColor("#000000", alpha: 0.75)
+				}
+			})
+		}
 	}
 }

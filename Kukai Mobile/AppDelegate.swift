@@ -14,6 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		setupTheme()
+		StorageService.runCleanupChecks()
 		
 		// Setup Sentry, but with Anonymous events
 		SentrySDK.start { options in

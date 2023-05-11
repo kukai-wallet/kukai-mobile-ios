@@ -60,8 +60,6 @@ class AccountsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		print("inside viewWillAppear")
-		
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
 	}
