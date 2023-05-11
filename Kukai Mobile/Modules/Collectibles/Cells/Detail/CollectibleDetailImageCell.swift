@@ -38,6 +38,7 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage())
 			
 			if let quantity = mediaContent.quantity {
+				quantityView.isHidden = false
 				quantityLabel.text = quantity
 				
 			} else {

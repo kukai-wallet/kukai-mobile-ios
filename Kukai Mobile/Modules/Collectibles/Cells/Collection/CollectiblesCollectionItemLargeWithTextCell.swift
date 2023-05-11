@@ -17,6 +17,7 @@ class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell {
 	func setup(title: String, quantity: String?) {
 		titleLabel.text = title
 		if let quantity = quantity {
+			quantityView.isHidden = false
 			quantityLabel.text = quantity
 			
 		} else {
