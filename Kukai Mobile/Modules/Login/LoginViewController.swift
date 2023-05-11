@@ -13,6 +13,7 @@ class LoginViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -7,6 +7,11 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="T7W-Tb-M9P">
@@ -32,18 +37,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="NPC-mj-OG1">
-                                <rect key="frame" x="60.5" y="408" width="293" height="80"/>
+                                <rect key="frame" x="60.5" y="368" width="293" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="80" id="MWX-2I-BuJ"/>
                                     <constraint firstAttribute="width" constant="293" id="iXX-ck-IdT"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4u6-1w-4Vx">
+                                <rect key="frame" x="16" y="464" width="382" height="48"/>
+                                <string key="text">A Secure Home
+for your Digital Assets</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
-                            <constraint firstItem="NPC-mj-OG1" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="7lK-KX-rQH"/>
+                            <constraint firstItem="4u6-1w-4Vx" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="2HP-XM-s3Z"/>
+                            <constraint firstItem="NPC-mj-OG1" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" constant="-40" id="7lK-KX-rQH"/>
                             <constraint firstItem="NPC-mj-OG1" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="A86-wf-CgH"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="4u6-1w-4Vx" secondAttribute="trailing" constant="16" id="DhZ-rz-ch9"/>
+                            <constraint firstItem="4u6-1w-4Vx" firstAttribute="top" secondItem="NPC-mj-OG1" secondAttribute="bottom" constant="16" id="dag-9K-GKg"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="BIo-S1-wxv"/>
@@ -64,18 +80,29 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="wb0-QQ-L7Q">
-                                <rect key="frame" x="60.5" y="408" width="293" height="80"/>
+                                <rect key="frame" x="60.5" y="368" width="293" height="80"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="293" id="7Zj-Q7-upT"/>
                                     <constraint firstAttribute="height" constant="80" id="T6p-hE-ZBv"/>
                                 </constraints>
                             </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oIT-oy-PrJ">
+                                <rect key="frame" x="16" y="464" width="382" height="48"/>
+                                <string key="text">A Secure Home
+for your Digital Assets</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZqB-3W-TcA"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
-                            <constraint firstItem="wb0-QQ-L7Q" firstAttribute="centerY" secondItem="u9M-Lq-H2Y" secondAttribute="centerY" id="U2f-ZU-bUx"/>
+                            <constraint firstItem="oIT-oy-PrJ" firstAttribute="leading" secondItem="ZqB-3W-TcA" secondAttribute="leading" constant="16" id="IbM-mA-AuR"/>
+                            <constraint firstItem="wb0-QQ-L7Q" firstAttribute="centerY" secondItem="u9M-Lq-H2Y" secondAttribute="centerY" constant="-40" id="U2f-ZU-bUx"/>
+                            <constraint firstItem="ZqB-3W-TcA" firstAttribute="trailing" secondItem="oIT-oy-PrJ" secondAttribute="trailing" constant="16" id="co3-dq-bSZ"/>
                             <constraint firstItem="wb0-QQ-L7Q" firstAttribute="centerX" secondItem="u9M-Lq-H2Y" secondAttribute="centerX" id="oD0-2Y-6Km"/>
+                            <constraint firstItem="oIT-oy-PrJ" firstAttribute="top" secondItem="wb0-QQ-L7Q" secondAttribute="bottom" constant="16" id="uRF-R0-LWX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="XHZ-7g-1zu"/>
@@ -89,6 +116,9 @@
         <image name="logo_kukai" width="293" height="80"/>
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
