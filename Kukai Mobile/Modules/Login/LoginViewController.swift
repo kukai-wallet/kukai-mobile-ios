@@ -22,7 +22,7 @@ class LoginViewController: UIViewController {
 		// When integrate pin / face id, move this call to after successful
 		reestablishConnectionsAfterLogin()
 		
-		if DependencyManager.shared.walletList.count() > 0 {
+		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
 		} else {
 			self.returnToApp()
@@ -54,7 +54,7 @@ class LoginViewController: UIViewController {
 	}
 	
 	private func returnToApp() {
-		guard let sceneDelegate = self.view.window?.windowScene?.delegate as? SceneDelegate else {
+		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
 			os_log("Can't get scene delegate", log: .default, type: .debug)
 			return
 		}
