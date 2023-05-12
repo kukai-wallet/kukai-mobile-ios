@@ -55,10 +55,10 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 	
 	private func createLayout() -> UICollectionViewLayout {
 		let sectionProvider = { (sectionIndex: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
-			let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(252))
+			let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(220))
 			let item = NSCollectionLayoutItem(layoutSize: itemSize)
 			
-			let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(252))
+			let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(220))
 			let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
 			
 			group.interItemSpacing = .fixed(18)

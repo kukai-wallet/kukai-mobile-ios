@@ -15,7 +15,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	private let viewModel = CollectiblesCollectionsViewModel()
 	private var cancellable: AnyCancellable?
-	private var refreshingFromParent = false
+	private var refreshingFromParent = true
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -41,11 +41,11 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					self?.collectionView.collectionViewLayout = self?.viewModel.layout() ?? UICollectionViewFlowLayout()
-					
-					if self?.refreshingFromParent == true {
+					if self?.refreshingFromParent == true || self?.viewModel.needsLayoutChange == true {
+						self?.collectionView.collectionViewLayout = self?.viewModel.layout() ?? UICollectionViewFlowLayout()
 						self?.collectionView.contentOffset = CGPoint(x: 0, y: 0)
 						self?.refreshingFromParent = false
+						self?.viewModel.needsLayoutChange = false
 					}
 			}
 		}

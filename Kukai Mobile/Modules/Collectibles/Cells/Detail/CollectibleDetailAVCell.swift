@@ -22,6 +22,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	@IBOutlet weak var endTimeLabel: UILabel!
 	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
 	@IBOutlet weak var scrubberActivityView: UIActivityIndicatorView!
+	@IBOutlet var aspectRatioConstraint: NSLayoutConstraint!
 	
 	private var imageView: UIImageView? = nil
 	private var avPlayer: AVPlayer? = nil
@@ -46,6 +47,12 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		self.setup = true
 		self.avPlayer = player
 		self.showScrubberLoading()
+		
+		// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
+		if mediaContent.width > mediaContent.height {
+			self.aspectRatioConstraint.isActive = false
+			placeholderView.widthAnchor.constraint(equalTo: placeholderView.heightAnchor, multiplier: mediaContent.width/mediaContent.height).isActive = true
+		}
 		
 		// Load image if not only perfroming collectionview layout logic
 		if layoutOnly {

@@ -28,7 +28,7 @@ class CollectiblesViewController: UIViewController {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		segmentedControl.removeBorder()
-		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 14), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 14), defaultColor: UIColor.colorNamed("Txt2"))
+		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 16), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 16), defaultColor: UIColor.colorNamed("Txt2"))
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

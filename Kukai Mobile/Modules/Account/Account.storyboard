@@ -34,34 +34,34 @@
                                 <rect key="frame" x="0.0" y="2" width="393" height="713"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="85" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="85"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="58" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c9F-pE-jDL" id="rMO-1e-A9t">
-                                            <rect key="frame" x="0.0" y="0.0" width="393" height="85"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="58"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Balances" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KCV-5M-EmO">
-                                                    <rect key="frame" x="16" y="34.666666666666664" width="74" height="21"/>
+                                                    <rect key="frame" x="16" y="18" width="74" height="21"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="405-zw-M1R" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="333" y="8" width="44" height="74"/>
+                                                    <rect key="frame" x="335" y="2" width="38" height="53"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="30" id="2rC-yS-jQf"/>
-                                                        <constraint firstAttribute="width" constant="44" id="QmZ-rA-6fo"/>
+                                                        <constraint firstAttribute="height" constant="38" id="2rC-yS-jQf"/>
+                                                        <constraint firstAttribute="width" constant="38" id="QmZ-rA-6fo"/>
                                                     </constraints>
                                                     <color key="tintColor" name="BGB4"/>
                                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Ellipses"/>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                                            <real key="value" value="28"/>
+                                                            <real key="value" value="26"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                                            <real key="value" value="28"/>
+                                                            <real key="value" value="26"/>
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
                                                             <color key="value" name="BGB4"/>
@@ -74,11 +74,11 @@
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="405-zw-M1R" firstAttribute="top" secondItem="rMO-1e-A9t" secondAttribute="top" constant="8" id="HAe-GG-wxS"/>
+                                                <constraint firstItem="405-zw-M1R" firstAttribute="top" secondItem="rMO-1e-A9t" secondAttribute="top" constant="2" id="HAe-GG-wxS"/>
                                                 <constraint firstItem="405-zw-M1R" firstAttribute="centerY" secondItem="KCV-5M-EmO" secondAttribute="centerY" id="QSL-E2-YCC"/>
                                                 <constraint firstItem="KCV-5M-EmO" firstAttribute="leading" secondItem="rMO-1e-A9t" secondAttribute="leading" constant="16" id="SjB-rZ-saK"/>
                                                 <constraint firstAttribute="bottom" secondItem="405-zw-M1R" secondAttribute="bottom" constant="3" id="VGa-Eq-7hs"/>
-                                                <constraint firstAttribute="trailing" secondItem="405-zw-M1R" secondAttribute="trailing" constant="16" id="b5p-OV-ckd"/>
+                                                <constraint firstAttribute="trailing" secondItem="405-zw-M1R" secondAttribute="trailing" constant="20" id="b5p-OV-ckd"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -87,7 +87,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="EstimatedTotalCell" rowHeight="52" id="fLd-MK-ZQo" customClass="EstimatedTotalCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="135" width="393" height="52"/>
+                                        <rect key="frame" x="0.0" y="108" width="393" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fLd-MK-ZQo" id="fZ4-yB-WXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="52"/>
@@ -100,13 +100,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2w-kh-15K">
-                                                    <rect key="frame" x="318" y="26" width="51" height="22"/>
+                                                    <rect key="frame" x="319" y="26" width="50" height="22"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="4" width="80" height="20"/>
+                                                    <rect key="frame" x="16" y="4.6666666666666679" width="80" height="19"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -147,7 +147,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceCell" rowHeight="80" id="Kcw-mz-qlU" customClass="TokenBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="187" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="160" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kcw-mz-qlU" id="LLJ-Pv-DUc">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -171,19 +171,19 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obd-iN-h5Z">
-                                                            <rect key="frame" x="76" y="16" width="82.333333333333314" height="21"/>
+                                                            <rect key="frame" x="76" y="16" width="80" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="5kd-E0-i9d">
-                                                            <rect key="frame" x="174.33333333333337" y="16" width="170.66666666666663" height="21"/>
+                                                            <rect key="frame" x="172" y="16" width="173" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGP-vD-NDI">
-                                                            <rect key="frame" x="206.33333333333337" y="40" width="138.66666666666663" height="17"/>
+                                                            <rect key="frame" x="203.66666666666663" y="40" width="141.33333333333337" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
@@ -196,7 +196,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;priceChange&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJ3-t4-MrW">
-                                                            <rect key="frame" x="91" y="37" width="99.333333333333314" height="20"/>
+                                                            <rect key="frame" x="91" y="37" width="96.666666666666686" height="20"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="TxtGood4"/>
                                                             <nil key="highlightedColor"/>
@@ -248,7 +248,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingContainerCell" rowHeight="80" id="2KM-oc-IJC" customClass="LoadingContainerCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="267" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="240" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2KM-oc-IJC" id="Hdf-Mg-Mpn">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -1175,10 +1175,10 @@
     </scenes>
     <designables>
         <designable name="405-zw-M1R">
-            <size key="intrinsicContentSize" width="28" height="28"/>
+            <size key="intrinsicContentSize" width="26" height="26"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="80" height="20"/>
+            <size key="intrinsicContentSize" width="80" height="19"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
