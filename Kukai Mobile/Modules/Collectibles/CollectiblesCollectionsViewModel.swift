@@ -87,8 +87,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			} else if self?.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let url = MediaProxyService.displayURL(forNFT: obj)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				cell.titleLabel.text = obj.name
-				cell.subTitleLabel.text = obj.parentAlias ?? ""
+				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
+				cell.setup(title: obj.name, quantity: balance)
 					
 				return cell
 				
@@ -297,10 +297,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return section
 				
 			} else {
-				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(252))
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .estimated(220))
 				let item = NSCollectionLayoutItem(layoutSize: itemSize)
 				
-				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(252))
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(220))
 				let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, repeatingSubitem: item, count: 2)
 				
 				group.interItemSpacing = .fixed(18)

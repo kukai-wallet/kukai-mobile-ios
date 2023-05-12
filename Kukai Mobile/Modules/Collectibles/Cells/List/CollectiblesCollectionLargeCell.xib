@@ -8,8 +8,8 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="Figtree-Medium.ttf">
-            <string>Figtree-Medium</string>
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
         </array>
         <array key="Figtree-SemiBold.ttf">
             <string>Figtree-SemiBold</string>
@@ -37,48 +37,73 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOp-PW-4mh">
-                        <rect key="frame" x="0.0" y="213" width="203" height="19.333333333333343"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VOp-PW-4mh">
+                        <rect key="frame" x="0.0" y="213" width="203" height="39"/>
+                        <string key="text">&lt;title&gt;
+&lt;title&gt; </string>
                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hg5-ib-HbU">
-                        <rect key="frame" x="0.0" y="236.33333333333334" width="203" height="15.666666666666657"/>
-                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
-                        <color key="textColor" name="Txt10"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e2V-l9-jBN">
+                        <rect key="frame" x="8" y="169" width="85.666666666666671" height="26"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hDC-z7-6Dx">
+                                <rect key="frame" x="4" y="4" width="77.666666666666671" height="18"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="15"/>
+                                <color key="textColor" name="TxtQuantity"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BGQunatity"/>
+                        <constraints>
+                            <constraint firstItem="hDC-z7-6Dx" firstAttribute="leading" secondItem="e2V-l9-jBN" secondAttribute="leading" constant="4" id="AVi-i0-MGW"/>
+                            <constraint firstAttribute="trailing" secondItem="hDC-z7-6Dx" secondAttribute="trailing" constant="4" id="Bxg-Eu-mYZ"/>
+                            <constraint firstAttribute="height" constant="26" id="bj1-MC-3oH"/>
+                            <constraint firstItem="hDC-z7-6Dx" firstAttribute="top" secondItem="e2V-l9-jBN" secondAttribute="top" constant="4" id="nWl-tx-mdw"/>
+                            <constraint firstAttribute="bottom" secondItem="hDC-z7-6Dx" secondAttribute="bottom" constant="4" id="naG-F6-ija"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="13"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
-                <constraint firstItem="hg5-ib-HbU" firstAttribute="top" secondItem="VOp-PW-4mh" secondAttribute="bottom" constant="4" id="D09-Az-Aov"/>
+                <constraint firstItem="e2V-l9-jBN" firstAttribute="bottom" secondItem="hwS-Ye-VvH" secondAttribute="bottom" constant="-8" id="5EL-OL-5Fr"/>
+                <constraint firstItem="e2V-l9-jBN" firstAttribute="leading" secondItem="hwS-Ye-VvH" secondAttribute="leading" constant="8" id="QPw-ZU-GWi"/>
                 <constraint firstItem="VOp-PW-4mh" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="QWo-aq-yEz"/>
                 <constraint firstItem="VOp-PW-4mh" firstAttribute="top" secondItem="hwS-Ye-VvH" secondAttribute="bottom" constant="10" id="STI-nf-tHp"/>
-                <constraint firstItem="hg5-ib-HbU" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ah8-Tm-tuk"/>
+                <constraint firstAttribute="bottom" secondItem="VOp-PW-4mh" secondAttribute="bottom" id="VcG-yZ-mZe"/>
                 <constraint firstAttribute="trailing" secondItem="hwS-Ye-VvH" secondAttribute="trailing" id="h0g-FN-3FK"/>
-                <constraint firstAttribute="bottom" secondItem="hg5-ib-HbU" secondAttribute="bottom" id="j9n-oh-S80"/>
                 <constraint firstItem="hwS-Ye-VvH" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="p4q-A7-P1c"/>
-                <constraint firstAttribute="trailing" secondItem="hg5-ib-HbU" secondAttribute="trailing" id="rh7-23-CH6"/>
                 <constraint firstAttribute="trailing" secondItem="VOp-PW-4mh" secondAttribute="trailing" id="rrz-rz-3WK"/>
                 <constraint firstItem="hwS-Ye-VvH" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="vz0-1W-tZU"/>
             </constraints>
-            <size key="customSize" width="203" height="261"/>
+            <size key="customSize" width="203" height="252"/>
             <connections>
                 <outlet property="iconView" destination="hwS-Ye-VvH" id="2hm-ch-82h"/>
-                <outlet property="subTitleLabel" destination="hg5-ib-HbU" id="kFC-BF-idq"/>
+                <outlet property="quantityLabel" destination="hDC-z7-6Dx" id="Vqt-RZ-RCI"/>
+                <outlet property="quantityView" destination="e2V-l9-jBN" id="ZH7-FQ-jc2"/>
                 <outlet property="titleLabel" destination="VOp-PW-4mh" id="2oz-rW-U8I"/>
             </connections>
-            <point key="canvasLocation" x="255.72519083969465" y="94.718309859154928"/>
+            <point key="canvasLocation" x="255.72519083969465" y="91.197183098591552"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <namedColor name="Txt10">
-            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="BGQunatity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtQuantity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
 </document>
