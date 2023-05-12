@@ -22,11 +22,15 @@ class LoginViewController: UIViewController {
 		// When integrate pin / face id, move this call to after successful
 		reestablishConnectionsAfterLogin()
 		
+		#if DEBUG
+		self.returnToApp()
+		#else
 		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
 		} else {
 			self.returnToApp()
 		}
+		#endif
 	}
 	
 	private func validateBiometric() {
