@@ -123,8 +123,11 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	@IBAction func importTapped(_ sender: Any) {
-		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text) else {
-			self.alert(errorWithMessage: "Unable to create wallet from seed words. Please check and try again")
+		textView.resignFirstResponder()
+		
+		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text), mnemonic.isValid() else {
+			textViewErrorLabel.text = "Invalid recovery phrase"
+			textViewErrorLabel.isHidden = false
 			return
 		}
 		
@@ -218,6 +221,8 @@ extension ImportWalletViewController: UITextViewDelegate {
 			textView.text = nil
 			textView.textColor = UIColor.colorNamed("Txt6")
 		}
+		
+		textViewErrorLabel.isHidden = true
 	}
 	
 	func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
