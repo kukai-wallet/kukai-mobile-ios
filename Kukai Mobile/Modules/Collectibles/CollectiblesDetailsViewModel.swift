@@ -270,9 +270,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// if image + audio, and we have the image cached, Load display image and stream audio
 			else if mediaType == .imageAndAudio, isCached {
-				let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small), width: 0, height: 0, quantity: quantityString)
-				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
-				return
+				let imageURL = MediaProxyService.url(fromUri: nft?.displayURI, ofFormat: .small)
+				MediaProxyService.sizeForImageIfCached(url: imageURL) { size in
+					let finalSize = (size ?? CGSize(width: 300, height: 300))
+					let mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: MediaProxyService.url(fromUri: nft?.artifactURI, ofFormat: .raw), mediaURL2: imageURL, width: finalSize.width, height: finalSize.height, quantity: quantityString)
+					completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: false))
+					return
+				}
 			}
 			
 			// if image + audio but we don't have the image image cached, Load thumbnail image, then download full image and stream audio

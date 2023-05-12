@@ -121,7 +121,7 @@
                 <constraint firstItem="Gnv-Au-EcP" firstAttribute="trailing" secondItem="kC8-mQ-rG0" secondAttribute="trailing" constant="-16" id="LhY-8X-Gg7"/>
                 <constraint firstItem="2Ug-l3-7rn" firstAttribute="centerY" secondItem="73D-pt-ZBl" secondAttribute="centerY" id="WQ7-oN-fCy"/>
                 <constraint firstItem="73D-pt-ZBl" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="16" id="a5t-d3-BA8"/>
-                <constraint firstAttribute="bottom" secondItem="73D-pt-ZBl" secondAttribute="bottom" constant="24" id="aqJ-y7-9Sb"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="73D-pt-ZBl" secondAttribute="bottom" priority="999" constant="24" id="aqJ-y7-9Sb"/>
                 <constraint firstItem="kC8-mQ-rG0" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ei4-4O-HhS"/>
                 <constraint firstItem="Trj-n0-yRV" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="wPi-Ru-RCn" secondAttribute="trailing" constant="8" id="fS0-L9-3iG"/>
                 <constraint firstItem="Trj-n0-yRV" firstAttribute="top" secondItem="2Ug-l3-7rn" secondAttribute="bottom" id="h8w-Yr-ghu"/>
@@ -136,6 +136,7 @@
             <size key="customSize" width="394" height="390"/>
             <connections>
                 <outlet property="airPlayPlaceholderView" destination="Gnv-Au-EcP" id="hym-V6-rlL"/>
+                <outlet property="aspectRatioConstraint" destination="kzq-hd-e8B" id="zGs-Mt-wZE"/>
                 <outlet property="endTimeLabel" destination="Trj-n0-yRV" id="XqY-N1-zPj"/>
                 <outlet property="mediaActivityView" destination="fVZ-ec-hFZ" id="NA9-DB-vuw"/>
                 <outlet property="placeholderView" destination="kC8-mQ-rG0" id="YQS-x0-twW"/>
