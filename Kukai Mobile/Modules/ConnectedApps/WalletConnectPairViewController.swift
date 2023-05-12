@@ -39,7 +39,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 			MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		}
 		self.nameLabel.text = proposal.proposer.name
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
+		print("viewWillAppear")
 		
 		if DependencyManager.shared.walletList.count() == 1 {
 			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()

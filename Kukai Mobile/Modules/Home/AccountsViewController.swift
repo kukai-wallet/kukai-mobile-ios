@@ -21,9 +21,16 @@ class AccountsViewController: UIViewController {
 	private var cancellable: AnyCancellable?
 	private var refreshControl = UIRefreshControl()
 	
+	public weak var bottomSheetContainer: UIViewController? = nil
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		
+		if self.presentationController == nil {
+			let _ = self.view.addGradientBackgroundFull()
+		} else {
+			view.backgroundColor = .clear
+		}
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		viewModel.delegate = self
@@ -134,7 +141,14 @@ extension AccountsViewController: UITableViewDelegate {
 			}
 			
 			DependencyManager.shared.selectedWalletMetadata = metadata
-			self.navigationController?.popViewController(animated: true)
+			
+			if let container = bottomSheetContainer {
+				container.presentingViewController?.viewWillAppear(true)
+				container.dismissBottomSheet()
+				
+			} else {
+				self.navigationController?.popViewController(animated: true)
+			}
 			
 		} else {
 			self.performSegue(withIdentifier: "edit", sender: indexPath)

@@ -155,6 +155,9 @@
                                                 <buttonConfiguration key="configuration" style="plain" title="&lt;account&gt;">
                                                     <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                 </buttonConfiguration>
+                                                <connections>
+                                                    <segue destination="K74-M3-Ege" kind="custom" identifier="accounts" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="dG5-Qd-nEw"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" name="BG4"/>
@@ -270,6 +273,55 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="04U-Q5-Ujf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="354.96183206106866" y="-556.33802816901414"/>
+        </scene>
+        <!--Accounts Container View Controller-->
+        <scene sceneID="z4O-MX-FxG">
+            <objects>
+                <viewController id="K74-M3-Ege" customClass="AccountsContainerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Np7-XG-y2F">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f0C-ea-AGx">
+                                <rect key="frame" x="16" y="95" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hC4-9E-fYu">
+                                <rect key="frame" x="0.0" y="161" width="393" height="691"/>
+                                <connections>
+                                    <segue destination="wvg-Dj-dj0" kind="embed" identifier="embed" id="qRr-Ea-fek"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="9IN-l6-CsK"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="f0C-ea-AGx" firstAttribute="top" secondItem="9IN-l6-CsK" secondAttribute="top" constant="36" id="1EE-oF-33X"/>
+                            <constraint firstItem="f0C-ea-AGx" firstAttribute="leading" secondItem="9IN-l6-CsK" secondAttribute="leading" constant="16" id="1Pp-93-mlv"/>
+                            <constraint firstItem="9IN-l6-CsK" firstAttribute="trailing" secondItem="f0C-ea-AGx" secondAttribute="trailing" constant="16" id="fR2-CA-NXB"/>
+                            <constraint firstItem="hC4-9E-fYu" firstAttribute="trailing" secondItem="9IN-l6-CsK" secondAttribute="trailing" id="lk1-ru-8YU"/>
+                            <constraint firstAttribute="bottom" secondItem="hC4-9E-fYu" secondAttribute="bottom" id="m84-LH-sxR"/>
+                            <constraint firstItem="hC4-9E-fYu" firstAttribute="top" secondItem="f0C-ea-AGx" secondAttribute="bottom" constant="42" id="o91-al-wbS"/>
+                            <constraint firstItem="hC4-9E-fYu" firstAttribute="leading" secondItem="9IN-l6-CsK" secondAttribute="leading" id="qT0-bx-lsd"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="hC4-9E-fYu" id="qZy-ji-cM7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H6V-MV-8yL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1591.6030534351144" y="-556.33802816901414"/>
+        </scene>
+        <!--accounts-->
+        <scene sceneID="0t7-be-MgL">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Home" referencedIdentifier="accounts" id="wvg-Dj-dj0" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="yNq-n5-R1S" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2345" y="-556"/>
         </scene>
         <!--Wallet Connect Sign View Controller-->
         <scene sceneID="j6y-ix-S5s">
@@ -606,16 +658,16 @@
     </scenes>
     <designables>
         <designable name="7KU-xB-1SM">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="8Xe-wK-lVw">
             <size key="intrinsicContentSize" width="60" height="36"/>
         </designable>
         <designable name="ACg-Aj-YI0">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="Koa-2H-bS5">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="L9O-2f-Mur">
             <size key="intrinsicContentSize" width="60" height="36"/>
@@ -662,6 +714,9 @@
         </namedColor>
         <systemColor name="labelColor">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
     </resources>
 </document>
