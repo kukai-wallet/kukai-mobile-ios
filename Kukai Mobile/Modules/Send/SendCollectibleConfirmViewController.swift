@@ -11,6 +11,26 @@ import OSLog
 
 class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
+	@IBOutlet var scrollView: UIScrollView!
+	
+	// Connected app
+	@IBOutlet weak var connectedAppLabel: UILabel!
+	@IBOutlet weak var connectedAppIcon: UIImageView!
+	@IBOutlet weak var connectedAppNameLabel: UILabel!
+	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
+	
+	// From
+	@IBOutlet weak var fromContainer: UIView!
+	
+	@IBOutlet weak var fromStackViewSocial: UIStackView!
+	@IBOutlet weak var fromSocialIcon: UIImageView!
+	@IBOutlet weak var fromSocialAlias: UILabel!
+	@IBOutlet weak var fromSocialAddress: UILabel!
+	
+	@IBOutlet weak var fromStackViewRegular: UIStackView!
+	@IBOutlet weak var fromRegularAddress: UILabel!
+	
+	// Send
 	@IBOutlet weak var collectibleImage: UIImageView!
 	@IBOutlet weak var collectibleImageQuantityView: UIView!
 	@IBOutlet weak var collectibleImageQuantityLabel: UILabel!
@@ -28,6 +48,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
+	@IBOutlet weak var slideErrorStackView: UIStackView!
 	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
@@ -42,9 +63,36 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			testnetWarningView.isHidden = true
 		}
 		
-		
 		guard let token = TransactionService.shared.sendData.chosenNFT, let amount = TransactionService.shared.sendData.chosenAmount else {
 			return
+		}
+		
+		
+		// Handle wallet connect data
+		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
+			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
+				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			}
+			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
+			
+			// TODO: add selected wallet to send data
+			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
+			guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
+			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
+			if let subtitle = media.subtitle {
+				fromStackViewRegular.isHidden = true
+				fromSocialAlias.text = media.title
+				fromSocialIcon.image = media.image
+				fromSocialAddress.text = subtitle
+			} else {
+				fromStackViewSocial.isHidden = true
+				fromRegularAddress.text = media.title
+			}
+			
+		} else {
+			connectedAppMetadataStackView.isHidden = true
+			connectedAppLabel.isHidden = true
+			fromContainer.isHidden = true
 		}
 		
 		
@@ -93,6 +141,11 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		// Error / warning check (TBD)
 		errorLabel.isHidden = true
+		
+		
+		if ledgerWarningLabel.isHidden && errorLabel.isHidden {
+			slideErrorStackView.isHidden = true
+		}
 		
 		slideButton.delegate = self
     }
@@ -167,5 +220,22 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
 		os_log("Recorded pending transaction: %@", "\(result)")
+	}
+}
+
+extension SendCollectibleConfirmViewController: BottomSheetCustomCalculateProtocol {
+	
+	func bottomSheetHeight() -> CGFloat {
+		viewDidLoad()
+		
+		scrollView.setNeedsLayout()
+		view.setNeedsLayout()
+		scrollView.layoutIfNeeded()
+		view.layoutIfNeeded()
+		
+		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		height += (scrollView.contentSize.height - 24)
+		
+		return height
 	}
 }
