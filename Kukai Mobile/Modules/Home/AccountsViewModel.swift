@@ -34,10 +34,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-			if indexPath.row == 0 {
-				return false
-			}
-			
 			return true
 		}
 		
