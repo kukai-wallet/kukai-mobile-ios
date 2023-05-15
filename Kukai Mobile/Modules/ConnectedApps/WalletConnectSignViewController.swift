@@ -14,13 +14,12 @@ import Combine
 import Sodium
 import OSLog
 
-class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtocol, SlideButtonDelegate {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
 	@IBOutlet weak var nameLabel: UILabel!
-	@IBOutlet weak var rejectButton: CustomisableButton!
-	@IBOutlet weak var signButton: CustomisableButton!
+	@IBOutlet var slideButton: SlideButton!
 	
 	private var stringToSign: String = ""
 	private var accountToSign: String = ""
@@ -43,12 +42,12 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 			return
 		}
 		
-		signButton.customButtonType = .primary
-		rejectButton.customButtonType = .secondary
-		
 		stringToSign = expression
 		accountToSign = account
 		payloadTextView.text = expression.humanReadableStringFromMichelson()
+		payloadTextView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
+		
+		slideButton.delegate = self
 	}
 	
 	@MainActor
@@ -65,6 +64,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["signature": signature])))
+				self.slideButton.markComplete(withText: "Complete")
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -105,7 +105,12 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 		}
 	}
 	
-	@IBAction func signTapped(_ sender: Any) {
+	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.showLoadingView()
+		respondOnReject()
+	}
+	
+	func didCompleteSlide() {
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
 			self.alert(errorWithMessage: "Can't find requested wallet: \(accountToSign)")
 			return
@@ -122,20 +127,24 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 		
 		
 		// Sign and continue
-		self.showLoadingModal()
-		wallet.sign(stringToSign) { [weak self] result in
-			guard let signature = try? result.get() else {
-				self?.alert(errorWithMessage: "Unable to sign with wallet: \(result.getFailure())")
-				return
+		self.showLoadingModal { [weak self] in
+			var str = self?.stringToSign ?? ""
+			if str.prefix(2) == "0x" {
+				let strIndex = str.index(str.startIndex, offsetBy: 2)
+				str = String(str[strIndex...])
 			}
 			
-			let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
-			self?.respondOnSign(signature: updatedSignature)
+			wallet.sign(str, isOperation: false) { [weak self] result in
+				guard let signature = try? result.get() else {
+					self?.hideLoadingModal(completion: { [weak self] in
+						self?.alert(errorWithMessage: "Unable to sign with wallet: \(result.getFailure())")
+					})
+					return
+				}
+				
+				let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
+				self?.respondOnSign(signature: updatedSignature)
+			}
 		}
-	}
-	
-	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingView()
-		respondOnReject()
 	}
 }

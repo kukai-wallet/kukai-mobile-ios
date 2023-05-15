@@ -97,6 +97,7 @@ class SendCollectibleAmountViewController: UIViewController {
 	}
 	
 	@IBAction func reviewButtonTapped(_ sender: Any) {
+		self.quantityTextField.resignFirstResponder()
 		estimateFeeAndNavigate()
 	}
 	

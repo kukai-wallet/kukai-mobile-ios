@@ -87,6 +87,7 @@ class SendTokenAmountViewController: UIViewController {
 	}
 	
 	@IBAction func reviewButtonTapped(_ sender: Any) {
+		self.textfield.resignFirstResponder()
 		estimateFeeAndNavigate()
 	}
 	
