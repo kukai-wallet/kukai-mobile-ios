@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!

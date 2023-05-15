@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AddWalletViewController: UIViewController, BottomSheetCustomProtocol {
+class AddWalletViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	var bottomSheetMaxHeight: CGFloat = 330
 	

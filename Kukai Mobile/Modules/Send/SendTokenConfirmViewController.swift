@@ -10,7 +10,9 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, BottomSheetCustomProtocol, EditFeesViewControllerDelegate {
+class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+	
+	@IBOutlet var scrollView: UIScrollView!
 	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
@@ -53,30 +55,13 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
+	@IBOutlet weak var slideErrorStackView: UIStackView!
 	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
 	private var didSend = false
-	
-	var bottomSheetMaxHeight: CGFloat = 475
-	
-	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-		
-		if TransactionService.shared.walletConnectOperationData.proposal != nil {
-			bottomSheetMaxHeight += 100
-		}
-	}
-	
-	required init?(coder: NSCoder) {
-		super.init(coder: coder)
-		
-		if TransactionService.shared.walletConnectOperationData.proposal != nil {
-			bottomSheetMaxHeight += 100
-		}
-	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -166,6 +151,11 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 		
 		// Error / warning check (TBD)
 		errorLabel.isHidden = true
+		
+		
+		if ledgerWarningLabel.isHidden && errorLabel.isHidden {
+			slideErrorStackView.isHidden = true
+		}
 		
 		slideButton.delegate = self
 	}
@@ -312,5 +302,22 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Bot
 				self.dismissAndReturn()
 			}
 		}
+	}
+}
+
+extension SendTokenConfirmViewController: BottomSheetCustomCalculateProtocol {
+	
+	func bottomSheetHeight() -> CGFloat {
+		viewDidLoad()
+		
+		scrollView.setNeedsLayout()
+		view.setNeedsLayout()
+		scrollView.layoutIfNeeded()
+		view.layoutIfNeeded()
+		
+		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		height += (scrollView.contentSize.height - 24)
+		
+		return height
 	}
 }

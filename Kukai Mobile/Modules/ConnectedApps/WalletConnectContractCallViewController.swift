@@ -13,7 +13,7 @@ import Combine
 import Sodium
 import OSLog
 
-class WalletConnectContractCallViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectContractCallViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
