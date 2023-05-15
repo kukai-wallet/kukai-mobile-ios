@@ -26,7 +26,7 @@ class AccountsViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if self.presentationController == nil {
+		if !self.isModal {
 			let _ = self.view.addGradientBackgroundFull()
 		} else {
 			view.backgroundColor = .clear
@@ -73,11 +73,15 @@ class AccountsViewController: UIViewController {
 	
 	@IBAction func editButtonTapped(_ sender: Any) {
 		self.tableView.isEditing = true
+		self.navigationItem.title = "Edit Accounts"
+		self.navigationItem.hidesBackButton = true
 		self.navigationItem.setRightBarButtonItems([doneButtonContainer], animated: false)
 	}
 	
 	@IBAction func doneButtonTapped(_ sender: Any) {
 		self.tableView.isEditing = false
+		self.navigationItem.title = "Wallets"
+		self.navigationItem.hidesBackButton = false
 		self.navigationItem.setRightBarButtonItems([addButtonContainer, editButtonContainer], animated: false)
 		
 		if let cell = tableView.cellForRow(at: viewModel.selectedIndex) {

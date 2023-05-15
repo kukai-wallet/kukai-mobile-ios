@@ -71,6 +71,12 @@ class SendTokenAmountViewController: UIViewController {
 		reviewButton.isEnabled = false
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		textfield.becomeFirstResponder()
+	}
+	
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		self.navigationController?.popToDetails()
 	}
@@ -79,10 +85,7 @@ class SendTokenAmountViewController: UIViewController {
 		if let balance = balanceLabel.text {
 			textfield.text = balance
 			maxWarningLabel.isHidden = false
-			
-			if textfield.revalidateTextfield() {
-				textfield.resignFirstResponder()
-			}
+			let _ = textfield.revalidateTextfield()
 		}
 	}
 	
