@@ -50,6 +50,10 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 		slideButton.delegate = self
 	}
 	
+	@IBAction func copyButtonTapped(_ sender: Any) {
+		UIPasteboard.general.string = payloadTextView.text
+	}
+	
 	@MainActor
 	private func respondOnSign(signature: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
