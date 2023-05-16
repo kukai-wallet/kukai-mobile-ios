@@ -94,8 +94,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		os_log("Attempting to handle Wallet Connect pairing", log: .default, type: .info)
 		let wcUri = url.absoluteString.deletingPrefix("https://walletconnect.com/wc?uri=")
+		guard let uri = WalletConnectURI(string: wcUri) else { return }
+		
 		Task(priority: .high) {
-			try! await Pair.instance.pair(uri: WalletConnectURI(string: wcUri)!)
+			try? await Pair.instance.pair(uri: uri)
 		}
 	}
 }
