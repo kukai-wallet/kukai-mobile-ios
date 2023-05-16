@@ -14,7 +14,7 @@ import Combine
 import Sodium
 import OSLog
 
-class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtocol, SlideButtonDelegate {
+class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedProtocol, SlideButtonDelegate {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
@@ -79,6 +79,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -106,11 +108,12 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomProtoc
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		self.showLoadingView()
 		respondOnReject()
 	}
 	

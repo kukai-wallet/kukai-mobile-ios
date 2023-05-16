@@ -13,6 +13,7 @@ import MediaPlayer
 class CollectibleDetailAVCell: UICollectionViewCell {
 
 	@IBOutlet weak var placeholderView: UIView!
+	@IBOutlet var mediaIconView: UIView!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var playPauseButton: UIButton!
@@ -21,7 +22,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	@IBOutlet weak var startTimeLabel: UILabel!
 	@IBOutlet weak var endTimeLabel: UILabel!
 	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
-	@IBOutlet weak var scrubberActivityView: UIActivityIndicatorView!
 	@IBOutlet var aspectRatioConstraint: NSLayoutConstraint!
 	
 	private var imageView: UIImageView? = nil
@@ -200,9 +200,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func showScrubberLoading() {
-		scrubberActivityView.isHidden = false
-		scrubberActivityView.startAnimating()
-		
 		playPauseButton.isHidden = true
 		scrubber.isHidden = true
 		airPlayPlaceholderView.isHidden = true
@@ -211,9 +208,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func hideScrubberLoading() {
-		scrubberActivityView.stopAnimating()
-		scrubberActivityView.isHidden = true
-		
 		playPauseButton.isHidden = false
 		scrubber.isHidden = false
 		airPlayPlaceholderView.isHidden = false

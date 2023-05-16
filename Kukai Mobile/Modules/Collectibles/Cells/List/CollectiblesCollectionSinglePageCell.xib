@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -40,6 +41,33 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </imageView>
+                    <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TgC-ei-dnj">
+                        <rect key="frame" x="408" y="13" width="18" height="18"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-Ej-ePW">
+                                <rect key="frame" x="5.6666666666666856" y="3.6666666666666679" width="7" height="11"/>
+                                <color key="tintColor" name="BG8"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="7" id="6ub-R6-YKE"/>
+                                    <constraint firstAttribute="height" constant="9" id="fed-fp-UfM"/>
+                                </constraints>
+                                <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" name="BGMediaOval"/>
+                        <constraints>
+                            <constraint firstItem="Ul6-Ej-ePW" firstAttribute="centerX" secondItem="TgC-ei-dnj" secondAttribute="centerX" id="4YH-RK-iJI"/>
+                            <constraint firstAttribute="width" constant="18" id="9Kz-b0-l8M"/>
+                            <constraint firstItem="Ul6-Ej-ePW" firstAttribute="centerY" secondItem="TgC-ei-dnj" secondAttribute="centerY" id="eG5-5w-JhN"/>
+                            <constraint firstAttribute="height" constant="18" id="isw-dk-s3L"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="9"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CLc-br-ch2">
                         <rect key="frame" x="0.0" y="450" width="440" height="19.333333333333314"/>
                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
@@ -89,6 +117,8 @@
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2l1-Nr-YMm" secondAttribute="bottom" priority="999" constant="14" id="ARp-Y0-m1K"/>
                 <constraint firstItem="zEV-zt-kYJ" firstAttribute="top" secondItem="kzA-mR-sv6" secondAttribute="top" id="QEp-iL-OrB"/>
                 <constraint firstItem="2l1-Nr-YMm" firstAttribute="leading" secondItem="kzA-mR-sv6" secondAttribute="leading" constant="100" id="VMa-VA-Gdx"/>
+                <constraint firstAttribute="trailing" secondItem="TgC-ei-dnj" secondAttribute="trailing" constant="14" id="hWL-IS-66i"/>
+                <constraint firstItem="TgC-ei-dnj" firstAttribute="top" secondItem="kzA-mR-sv6" secondAttribute="top" constant="13" id="k0K-DN-vtz"/>
                 <constraint firstItem="CLc-br-ch2" firstAttribute="leading" secondItem="kzA-mR-sv6" secondAttribute="leading" id="kJB-AA-FKz"/>
                 <constraint firstItem="Z6d-66-68a" firstAttribute="top" secondItem="CLc-br-ch2" secondAttribute="bottom" constant="4" id="unp-sD-k61"/>
                 <constraint firstAttribute="trailing" secondItem="CLc-br-ch2" secondAttribute="trailing" id="vC4-0G-rec"/>
@@ -99,6 +129,7 @@
             <connections>
                 <outlet property="buttonView" destination="2l1-Nr-YMm" id="me9-Rq-rfv"/>
                 <outlet property="iconView" destination="zEV-zt-kYJ" id="5ts-QQ-Mw4"/>
+                <outlet property="mediaIconView" destination="TgC-ei-dnj" id="T8x-AS-ftK"/>
                 <outlet property="subTitleLabel" destination="Z6d-66-68a" id="OWs-8b-yWe"/>
                 <outlet property="titleLabel" destination="CLc-br-ch2" id="Ng4-91-1Gc"/>
             </connections>
@@ -106,6 +137,13 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
+        <namedColor name="BG8">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGMediaOval">
+            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

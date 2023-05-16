@@ -7,8 +7,12 @@
 
 import UIKit
 
-public protocol BottomSheetCustomProtocol {
+public protocol BottomSheetCustomFixedProtocol {
 	var bottomSheetMaxHeight: CGFloat { get }
+}
+
+public protocol BottomSheetCustomCalculateProtocol {
+	func bottomSheetHeight() -> CGFloat
 }
 
 public class BottomSheetCustomSegue: UIStoryboardSegue {
@@ -18,7 +22,15 @@ public class BottomSheetCustomSegue: UIStoryboardSegue {
 			return
 		}
 		
-		if let value = (destination as? BottomSheetCustomProtocol)?.bottomSheetMaxHeight {
+		if let des = destination as? BottomSheetCustomCalculateProtocol {
+			let height = des.bottomSheetHeight()
+			let customId = UISheetPresentationController.Detent.Identifier("variable")
+			let customDetent = UISheetPresentationController.Detent.custom(identifier: customId) { context in
+				return height
+			}
+			dest.detents = [customDetent]
+			
+		} else if let value = (destination as? BottomSheetCustomFixedProtocol)?.bottomSheetMaxHeight {
 			let customId = UISheetPresentationController.Detent.Identifier("variable")
 			let customDetent = UISheetPresentationController.Detent.custom(identifier: customId) { context in
 				return value

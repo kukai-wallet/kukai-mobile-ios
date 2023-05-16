@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
@@ -35,16 +35,11 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 			return
 		}
 		
-		if let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-			MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
-		}
 		self.nameLabel.text = proposal.proposer.name
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		print("viewWillAppear")
 		
 		if DependencyManager.shared.walletList.count() == 1 {
 			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()
@@ -56,7 +51,16 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 		}
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let proposal = TransactionService.shared.walletConnectOperationData.proposal, let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
+			MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		}
+	}
+	
 	@IBAction func closeButtonTapped(_ sender: Any) {
+		TransactionService.shared.resetState()
 		self.dismissBottomSheet()
 	}
 	
@@ -101,6 +105,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 					self?.alert(errorWithMessage: "Error: \(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -129,6 +135,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomProtoc
 					self?.alert(errorWithMessage: "Error: \(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 }

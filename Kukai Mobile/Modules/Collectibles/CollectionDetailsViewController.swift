@@ -76,7 +76,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
 		viewModel.refresh(animate: false)
 	}
 	

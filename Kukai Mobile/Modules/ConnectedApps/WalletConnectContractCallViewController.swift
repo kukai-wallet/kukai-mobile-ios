@@ -13,7 +13,7 @@ import Combine
 import Sodium
 import OSLog
 
-class WalletConnectContractCallViewController: UIViewController, BottomSheetCustomProtocol {
+class WalletConnectContractCallViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
@@ -71,6 +71,8 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -98,6 +100,8 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -122,7 +126,6 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingView()
 		respondOnReject()
 	}
 }

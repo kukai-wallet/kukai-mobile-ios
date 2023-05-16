@@ -266,10 +266,11 @@ public class ThemeManager {
 				"BGLock": UIColor("#EEEFFF"),
 				"BGThumbNFT": UIColor("#E4E8F3", alpha: 0.5),
 				"BGFullNFT": UIColor("#CBCFD9", alpha: 0.5),
+				"BGSideMenu": UIColor("#FAFAFC"),
 				"BGTestState": UIColor("#FF5D29"),
 				"BGRecoveryTrans": UIColor("#C6C7D7", alpha: 0.65),
 				"BGActivityBatch": UIColor("#B7B9EA", alpha: 0.3),
-				"BGSideMenu": UIColor("#FAFAFC"),
+				"BGMediaOval": UIColor("#000000"),
 			],
 			darkColors: [
 				
@@ -466,10 +467,11 @@ public class ThemeManager {
 				"BGLock": UIColor("#D5D6E8"),
 				"BGThumbNFT": UIColor("#292828", alpha: 0.5),
 				"BGFullNFT": UIColor("#414040", alpha: 0.5),
+				"BGSideMenu": UIColor("#23232B"),
 				"BGTestState": UIColor("#FF5D29"),
 				"BGRecoveryTrans": UIColor("#1C1D23", alpha: 0.65),
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
-				"BGSideMenu": UIColor("#23232B"),
+				"BGMediaOval": UIColor("#000000"),
 			],
 			others: [
 				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [

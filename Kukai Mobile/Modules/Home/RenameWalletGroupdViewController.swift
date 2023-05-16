@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomProtocol {
+class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var customNameTextField: ValidatorTextField!
 	@IBOutlet weak var cancelButton: CustomisableButton!

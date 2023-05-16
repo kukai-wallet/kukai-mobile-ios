@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class EditWalletViewController: UIViewController, BottomSheetCustomProtocol {
+class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var deleteButton: UIButton!
 	@IBOutlet var socialStackView: UIStackView!

@@ -20,6 +20,7 @@ public class TransactionService {
 		case exchange
 		case addLiquidity
 		case removeLiquidity
+		case contractCall
 		case none
 	}
 	

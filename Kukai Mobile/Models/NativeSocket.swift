@@ -58,13 +58,21 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	}
 	
 	public func connect() {
-		os_log("NativeSocket connect func called", log: .default, type: .info)
-		socket?.resume()
+		if socket != nil {
+			os_log("NativeSocket connect func called", log: .default, type: .info)
+			socket?.resume()
+			
+		} else {
+			os_log("NativeSocket connect func called, triggering reconnect", log: .default, type: .info)
+			reconnect()
+		}
 	}
 	
 	public func disconnect() {
 		os_log("NativeSocket disconnect func called", log: .default, type: .info)
+		isConnected = false
 		socket?.cancel()
+		socket = nil
 	}
 	
 	public func write(string: String, completion: (() -> Void)?) {
@@ -86,6 +94,7 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 	
 	
 	// MARK: - URLSessionWebSocketDelegate
+	
 	
 	public func urlSession(_ session: URLSession, webSocketTask: URLSessionWebSocketTask, didOpenWithProtocol protocol: String?) {
 		isConnected = true
