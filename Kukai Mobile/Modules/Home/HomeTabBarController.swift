@@ -53,6 +53,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				DependencyManager.shared.activityService.deleteCache()
 				AccountViewModel.setupAccountActivityListener()
 				
+				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .refreshEverything
 				self?.refresh()
 			}.store(in: &bag)
@@ -64,6 +65,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				DependencyManager.shared.activityService.deleteCache()
 				AccountViewModel.setupAccountActivityListener()
 				
+				self?.stopActivityAnimation(success: false)
 				self?.updateAccountButton()
 				self?.refreshType = .refreshAccountOnly
 				self?.refresh()

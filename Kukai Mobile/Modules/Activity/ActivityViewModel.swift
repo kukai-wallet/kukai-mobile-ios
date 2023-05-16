@@ -94,24 +94,27 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
+		/*
 		guard let walletAddress = DependencyManager.shared.selectedWalletAddress else {
 			state = .failure(.unknown(), "Unbale to locate current wallet")
 			return
 		}
+		
 		
 		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: walletAddress, refreshType: self.forceRefresh ? .forceRefresh : .refreshIfCacheEmpty) { [weak self] error in
 			if let err = error {
 				self?.state = .failure(err, "Unable to fetch transactions")
 				return
 			}
-			
+		*/
+		
 			var full = DependencyManager.shared.activityService.pendingTransactionGroups
 			full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
-			self?.groups = full
-			self?.loadGroups(animate: animate)
-			self?.state = .success(nil)
-		}
+			self.groups = full
+			self.loadGroups(animate: animate)
+			self.state = .success(nil)
+		//}
 	}
 	
 	private func loadGroups(animate: Bool) {
@@ -142,7 +145,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
-		ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		if self.forceRefresh {
+			ds.applySnapshotUsingReloadData(self.currentSnapshot)
+		} else {
+			ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		}
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
