@@ -68,6 +68,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
+		TransactionService.shared.resetState()
 		TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
 		TransactionService.shared.sendData.chosenNFT = nil
 		self.performSegue(withIdentifier: "details", sender: self)

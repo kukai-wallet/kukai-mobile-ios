@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectSign
 import OSLog
 
 class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
@@ -54,6 +55,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var didSend = false
+	private var connectedAppURL: URL? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,11 +72,11 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Handle wallet connect data
-		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
-			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
+				connectedAppURL = iconUrl
 			}
-			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
+			self.connectedAppNameLabel.text = session.peer.name
 			
 			// TODO: add selected wallet to send data
 			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
@@ -150,6 +153,22 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		slideButton.delegate = self
     }
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let connectedAppURL = connectedAppURL {
+			MediaProxyService.load(url: connectedAppURL, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		}
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didSend && TransactionService.shared.walletConnectOperationData.request != nil {
+			walletConnectRespondOnReject()
+		}
+	}
+	
 	@IBAction func closeTapped(_ sender: Any) {
 		self.dismissBottomSheet()
 	}
@@ -171,8 +190,14 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 					case .success(let opHash):
 						os_log("Sent: %@", log: .default, type: .default,  opHash)
 						
-						self?.dismissAndReturn()
+						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
+						if TransactionService.shared.walletConnectOperationData.request != nil {
+							self?.walletConnectRespondOnSign(opHash: opHash)
+							
+						} else {
+							self?.dismissAndReturn()
+						}
 						
 					case .failure(let sendError):
 						self?.alert(errorWithMessage: sendError.description)
@@ -190,6 +215,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func dismissAndReturn() {
+		TransactionService.shared.resetState()
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
@@ -220,6 +246,52 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
 		os_log("Recorded pending transaction: %@", "\(result)")
+	}
+	
+	@MainActor
+	private func walletConnectRespondOnSign(opHash: String) {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
+			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.dismissAndReturn()
+			return
+		}
+		
+		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
+				self.dismissAndReturn()
+				
+			} catch {
+				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.dismissAndReturn()
+			}
+		}
+	}
+	
+	@MainActor
+	private func walletConnectRespondOnReject() {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.dismissAndReturn()
+			return
+		}
+		
+		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
+				self.dismissAndReturn()
+				
+			} catch {
+				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.dismissAndReturn()
+			}
+		}
 	}
 }
 

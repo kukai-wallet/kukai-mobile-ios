@@ -79,6 +79,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -106,11 +108,12 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		self.showLoadingView()
 		respondOnReject()
 	}
 	

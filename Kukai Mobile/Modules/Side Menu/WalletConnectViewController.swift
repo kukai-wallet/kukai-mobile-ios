@@ -27,14 +27,16 @@ class WalletConnectViewController: UIViewController {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingView(completion: nil)
+					//self?.showLoadingView(completion: nil)
+					let _ = ""
 					
 				case .failure(_, let errorString):
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
+					let _ = ""
 			}
 		}
 	}

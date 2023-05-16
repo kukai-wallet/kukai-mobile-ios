@@ -71,6 +71,8 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -98,6 +100,8 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 	
@@ -122,7 +126,6 @@ class WalletConnectContractCallViewController: UIViewController, BottomSheetCust
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingView()
 		respondOnReject()
 	}
 }

@@ -385,6 +385,8 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 			}
+			
+			TransactionService.shared.resetState()
 		}
 	}
 }

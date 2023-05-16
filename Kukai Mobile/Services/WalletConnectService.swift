@@ -62,6 +62,7 @@ public class WalletConnectService {
 			.sink { [weak self] sessionRequest in
 				os_log("WC sessionRequestPublisher", log: .default, type: .info)
 				
+				TransactionService.shared.resetState()
 				TransactionService.shared.walletConnectOperationData.request = sessionRequest
 				
 				if sessionRequest.method == "tezos_send" {
@@ -210,52 +211,49 @@ public class WalletConnectService {
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
+		let operations = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()
 		
-		self.delegate?.processedOperations(ofType: .contractCall)
 		
-		/*
-		if estimatedOps.first is KukaiCoreSwift.OperationTransaction, let transactionOperation = estimatedOps.first as? KukaiCoreSwift.OperationTransaction {
+		if OperationFactory.Extractor.isContractCall(operations: operations) {
+			TransactionService.shared.currentTransactionType = .contractCall
+			mainThreadProcessedOperations(ofType: .contractCall)
 			
-			if transactionOperation.parameters == nil {
-				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
-				let amount = Token.xtz(withAmount: xtzAmount)
-				
-				TransactionService.shared.currentTransactionType = .send
-				TransactionService.shared.sendData.chosenToken = amount
-				TransactionService.shared.sendData.chosenAmount = xtzAmount
-				TransactionService.shared.sendData.destination = transactionOperation.destination
-				
-			} else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint == "transfer", let token = DependencyManager.shared.balanceService.token(forAddress: transactionOperation.destination) {
-				if token.isNFT {
-					// TransactionService.shared.sendData.chosenNFT = token.token.n
-				} else {
-					TransactionService.shared.sendData.chosenToken = token.token
-				}
-				TransactionService.shared.currentTransactionType = .send
-				//TransactionService.shared.sendData.chosenAmount = xtzAmount
-				TransactionService.shared.sendData.destination = transactionOperation.destination
-				
-			}/* else if let entrypoint = transactionOperation.parameters?["entrypoint"] as? String, entrypoint != "transfer" {
-			  TransactionService.shared.walletConnectOperationData.operationType = .callSmartContract
-			  TransactionService.shared.walletConnectOperationData.entrypointToCall = entrypoint
-			  
-			  } else {
-			  TransactionService.shared.walletConnectOperationData.operationType = .unknown
-			  }*/
+		} else if OperationFactory.Extractor.isTezTransfer(operations: operations), let transactionOperation = operations.first as? OperationTransaction {
+			let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+			let amount = Token.xtz(withAmount: xtzAmount)
 			
-			// TODO: need NFT + contract call processing here
+			TransactionService.shared.currentTransactionType = .send
+			TransactionService.shared.sendData.chosenToken = amount
+			TransactionService.shared.sendData.chosenAmount = xtzAmount
+			TransactionService.shared.sendData.destination = transactionOperation.destination
+			mainThreadProcessedOperations(ofType: .sendToken)
 			
+			
+		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()),
+				  let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
+			
+			TransactionService.shared.currentTransactionType = .send
+			TransactionService.shared.sendData.destination = result.destination
+			TransactionService.shared.sendData.chosenAmount = TokenAmount(fromRpcAmount: result.rpcAmount, decimalPlaces: token.token.decimalPlaces)
+			
+			if token.isNFT, let nft = (token.token.nfts ?? []).first(where: { $0.tokenId == result.tokenId }) {
+				TransactionService.shared.sendData.chosenNFT = nft
+				
+			} else {
+				TransactionService.shared.sendData.chosenToken = token.token
+			}
+			
+			mainThreadProcessedOperations(ofType: .sendToken)
 			
 		} else {
-			TransactionService.shared.currentTransactionType = .none
+			TransactionService.shared.currentTransactionType = .contractCall
+			mainThreadProcessedOperations(ofType: .contractCall)
 		}
-		
-		if TransactionService.shared.currentTransactionType == .send, TransactionService.shared.sendData.chosenToken == nil {
-			self.delegate?.processedOperations(ofType: .sendNft)
-			
-		} else {
-			self.delegate?.processedOperations(ofType: .sendToken)
+	}
+	
+	private func mainThreadProcessedOperations(ofType type: WalletConnectOperationType) {
+		DispatchQueue.main.async {
+			self.delegate?.processedOperations(ofType: type)
 		}
-		*/
 	}
 }

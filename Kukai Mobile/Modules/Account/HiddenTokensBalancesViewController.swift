@@ -56,6 +56,7 @@ class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate 
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
+		TransactionService.shared.resetState()
 		TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
 		TransactionService.shared.sendData.chosenNFT = nil
 		(self.parent as? HiddenTokensMainViewController)?.openTokenDetails()

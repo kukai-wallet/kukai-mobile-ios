@@ -62,6 +62,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	@IBOutlet weak var testnetWarningView: UIView!
 	
 	private var didSend = false
+	private var connectedAppURL: URL? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -78,11 +79,11 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 		
 		// Handle wallet connect data
-		if let walletConnectProposal = TransactionService.shared.walletConnectOperationData.proposal {
-			if let iconString = walletConnectProposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-				MediaProxyService.load(url: iconUrl, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
+				connectedAppURL = iconUrl
 			}
-			self.connectedAppNameLabel.text = walletConnectProposal.proposer.name
+			self.connectedAppNameLabel.text = session.peer.name
 			
 			// TODO: add selected wallet to send data
 			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
@@ -160,6 +161,22 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		slideButton.delegate = self
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let connectedAppURL = connectedAppURL {
+			MediaProxyService.load(url: connectedAppURL, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		}
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didSend && TransactionService.shared.walletConnectOperationData.request != nil {
+			walletConnectRespondOnReject()
+		}
+	}
+	
 	func didCompleteSlide() {
 		guard let wallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to find wallet")
@@ -179,7 +196,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if TransactionService.shared.walletConnectOperationData.proposal != nil {
+						if TransactionService.shared.walletConnectOperationData.request != nil {
 							self?.walletConnectRespondOnSign(opHash: opHash)
 							
 						} else {
@@ -201,19 +218,12 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		
-		if !didSend && TransactionService.shared.walletConnectOperationData.proposal != nil {
-			walletConnectRespondOnReject()
-		}
-	}
-	
 	@IBAction func closeTapped(_ sender: Any) {
 		self.dismissBottomSheet()
 	}
 	
 	func dismissAndReturn() {
+		TransactionService.shared.resetState()
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}

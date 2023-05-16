@@ -342,9 +342,9 @@ public class BalanceService {
 		estimatedTotalXtz = XTZAmount.zero()
 	}
 	
-	func token(forAddress address: String) -> (token: Token, isNFT: Bool)? {
+	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {
 		for token in account.tokens {
-			if token.tokenContractAddress == address {
+			if token.tokenContractAddress == address, (token.tokenId ?? (andTokenId ?? 0)) == (andTokenId ?? 0) {
 				return (token: token, isNFT: false)
 			}
 		}
