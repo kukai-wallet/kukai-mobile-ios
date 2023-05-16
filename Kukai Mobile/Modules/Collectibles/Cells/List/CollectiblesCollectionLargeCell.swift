@@ -13,8 +13,9 @@ class CollectiblesCollectionLargeCell: UICollectionViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet var quantityView: UIView!
 	@IBOutlet var quantityLabel: UILabel!
+	@IBOutlet var mediaIconView: UIView!
 	
-	func setup(title: String, quantity: String?) {
+	func setup(title: String, quantity: String?, isRichMedia: Bool) {
 		titleLabel.text = title
 		if let quantity = quantity {
 			quantityView.isHidden = false
@@ -22,6 +23,12 @@ class CollectiblesCollectionLargeCell: UICollectionViewCell {
 			
 		} else {
 			quantityView.isHidden = true
+		}
+		
+		if isRichMedia {
+			mediaIconView.isHidden = false
+		} else {
+			mediaIconView.isHidden = true
 		}
 	}
 }

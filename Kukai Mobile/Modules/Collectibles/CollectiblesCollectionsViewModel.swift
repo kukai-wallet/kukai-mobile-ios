@@ -82,13 +82,22 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				cell.titleLabel.text = obj.name
 				cell.subTitleLabel.text = obj.parentAlias ?? ""
 				
+				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
+				let type = MediaProxyService.typesContents(types)
+				cell.mediaIconView.isHidden = (type == .imageOnly)
+				
 				return cell
 				
 			} else if self?.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let url = MediaProxyService.displayURL(forNFT: obj)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
-				cell.setup(title: obj.name, quantity: balance)
+				
+				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
+				let type = MediaProxyService.typesContents(types)
+				let isRichMedia = (type != .imageOnly && type != nil)
+				
+				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
 					
 				return cell
 				
