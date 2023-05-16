@@ -75,18 +75,24 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
 		let supportedEvents: [String] = []
 		
-		proposal.requiredNamespaces.forEach {
-			let caip2Namespace = $0.key
-			let proposalNamespace = $0.value
-			
-			if let chains = proposalNamespace.chains {
-				let accounts = Set(chains.compactMap { Account("\($0.absoluteString):\(account)") })
-				let sessionNamespace = SessionNamespace(accounts: accounts, methods: proposalNamespace.methods.filter({ supportedMethods.contains([$0]) }), events: proposalNamespace.events.filter({ supportedEvents.contains([$0]) }))
-				sessionNamespaces[caip2Namespace] = sessionNamespace
-			}
-		}
+		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods.filter({ supportedMethods.contains([$0]) })
+		let approvedMethods = requiredMethods?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedMethods.contains([$0]) }) ?? [] )
 		
-		approve(proposalId: proposal.id, namespaces: sessionNamespaces)
+		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events.filter({ supportedEvents.contains([$0]) })
+		let approvedEvents = requiredEvents?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? [] )
+		
+		
+		let network = DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
+		if let wcAccount = Account("tezos:\(network):\(account)") {
+			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
+			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
+			sessionNamespaces["tezos"] = sessionNamespace
+			
+			approve(proposalId: proposal.id, namespaces: sessionNamespaces)
+			
+		} else {
+			reject(proposalId: proposal.id, reason: .userRejectedChains)
+		}
 	}
 	
 	@MainActor
