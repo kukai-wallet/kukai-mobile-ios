@@ -112,6 +112,13 @@ public class TransactionService {
 			self.fastOperationsAndFees = increase(operations: operationCopy, feesTo: increasedFee, gasLimitTo: increasedGas, storageLimitTo: nil)
 		}
 		
+		/// When trying to send max XTZ, we need to work out the fee first and subtract. Afterwards we need to update the sotred operations
+		public func updateXTZAmount(to newAmount: TokenAmount) {
+			(normalOperationsAndFees.last as? OperationTransaction)?.amount = newAmount.rpcRepresentation
+			(fastOperationsAndFees.last as? OperationTransaction)?.amount = newAmount.rpcRepresentation
+			(customOperationsAndFees.last as? OperationTransaction)?.amount = newAmount.rpcRepresentation
+		}
+		
 		/// KukaiCoreSwift.Operation are classes passed by reference. Making changes to them will make changes to every reference. They are small but complex classes with a complex fee structure + business logic.
 		/// Use this to create a quick and hacky copy. Chosing this method as the user will be presented with 3 choices for fees. Rahter than calculating, recalculating, reverting etc, on a complex fee structure, KIFS (Keep It Fucking Simple).
 		/// Just create 3 static copies and let users switch/view between the ones they want, avoiding excessively complex business logic

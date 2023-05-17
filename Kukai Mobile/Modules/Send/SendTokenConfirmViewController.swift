@@ -72,11 +72,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			testnetWarningView.isHidden = true
 		}
 		
-		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
-		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
-		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
-			return
-		}
 		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
@@ -106,22 +101,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 		
 		// Amount view configuration
-		let amountText = amount.normalisedRepresentation
-		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
-			// small display
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-			
-		} else {
-			// large display
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-		}
+		updateAmountDisplay()
 		
 		
 		// Destination view configuration
@@ -211,11 +191,45 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 	}
 	
+	func updateAmountDisplay() {
+		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
+		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
+		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
+			return
+		}
+		
+		let amountText = amount.normalisedRepresentation
+		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
+			// small display
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.addTokenIcon(token: token)
+			smallDisplayAmount.text = amountText + token.symbol
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			
+		} else {
+			// large display
+			smallDisplayStackView.isHidden = true
+			largeDisplayIcon.addTokenIcon(token: token)
+			largeDisplayAmount.text = amountText
+			largeDisplaySymbol.text = token.symbol
+			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+		}
+	}
+	
 	func updateFees() {
 		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
+		
+		// Sum of send amount + fee is greater than balance, need to adjust send amount
+		if let token = TransactionService.shared.sendData.chosenToken, token.isXTZ(), let amount = TransactionService.shared.sendData.chosenAmount, amount + fee >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
+			let updatedValue = ((token.balance - oneMutez) - fee)
+			TransactionService.shared.sendData.chosenAmount = updatedValue
+			TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
+			updateAmountDisplay()
+		}
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
