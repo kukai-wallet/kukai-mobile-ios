@@ -107,6 +107,7 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func swapTapped(_ sender: Any) {
+		
 	}
 	
 	/*
