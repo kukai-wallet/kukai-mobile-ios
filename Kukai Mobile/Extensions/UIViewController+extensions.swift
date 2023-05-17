@@ -101,6 +101,7 @@ extension UIViewController {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 			UIViewController.activityIndicator.stopAnimating()
 			UIViewController.loadingModal.dismiss(animated: true, completion: completion)
+			UIViewController.loadingModalStatusLabel.text = ""
 		}
 	}
 	

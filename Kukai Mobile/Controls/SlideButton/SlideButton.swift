@@ -157,6 +157,7 @@ class SlideButton: UIView {
 	func resetSlider() {
 		label.text = self.textDefault
 		activityIndicator.stopAnimating()
+		isComplete = false
 		
 		buttonViewLeadingConstraint.constant = 8
 		progressViewTrailingConstraint.constant = 0

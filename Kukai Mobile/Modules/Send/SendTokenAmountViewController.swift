@@ -82,11 +82,14 @@ class SendTokenAmountViewController: UIViewController {
 	}
 	
 	@IBAction func maxButtonTapped(_ sender: UIButton) {
-		if let balance = balanceLabel.text {
-			textfield.text = balance
-			maxWarningLabel.isHidden = false
-			let _ = textfield.revalidateTextfield()
+		if let selectedToken = selectedToken, selectedToken.isXTZ(), let oneMutez = XTZAmount(fromRpcAmount: "1") {
+			textfield.text = (selectedToken.balance - oneMutez).normalisedRepresentation
+		} else {
+			textfield.text = selectedToken?.balance.normalisedRepresentation ?? ""
 		}
+		
+		maxWarningLabel.isHidden = false
+		let _ = textfield.revalidateTextfield()
 	}
 	
 	@IBAction func reviewButtonTapped(_ sender: Any) {
