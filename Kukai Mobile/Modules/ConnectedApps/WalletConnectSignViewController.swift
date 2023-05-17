@@ -11,7 +11,6 @@ import WalletConnectUtils
 import KukaiCoreSwift
 import KukaiCryptoSwift
 import Combine
-import Sodium
 import OSLog
 
 class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedProtocol, SlideButtonDelegate {
