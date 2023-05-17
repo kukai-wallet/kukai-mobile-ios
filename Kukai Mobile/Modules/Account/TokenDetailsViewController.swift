@@ -160,7 +160,7 @@ extension TokenDetailsViewController {
 			
 			self?.headerIcon.customCornerRadius = (self?.headerIconWidthConstraint.constant ?? 28) / 2
 			
-			// Refresh consttraints
+			// Refresh constraints
 			self?.view.layoutIfNeeded()
 			
 			// Alpha the rest
@@ -171,6 +171,7 @@ extension TokenDetailsViewController {
 		
 		headerAnimator.startAnimation()
 		headerAnimator.pauseAnimation()
+		headerAnimator.pausesOnCompletion = true
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
