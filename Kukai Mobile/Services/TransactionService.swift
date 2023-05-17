@@ -208,6 +208,14 @@ public class TransactionService {
 		var calculationResult: DexRemoveCalculationResult?
 	}
 	
+	public struct ContractCallData {
+		var chosenToken: Token?
+		var chosenAmount: TokenAmount?
+		var contractAddress: String?
+		var operationCount: Int?
+		var mainEntrypoint: String?
+	}
+	
 	public struct WalletConnectOperationData {
 		var proposal: Session.Proposal?
 		var request: WalletConnectSign.Request?
@@ -228,6 +236,7 @@ public class TransactionService {
 	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
 	public var removeLiquidityData: RemoveLiquidityData
+	public var contractCallData: ContractCallData
 	public var walletConnectOperationData: WalletConnectOperationData
 	
 	
@@ -240,6 +249,7 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
+		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
 		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
 	}
 	
@@ -256,6 +266,7 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
+		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
 		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
 	}
 	

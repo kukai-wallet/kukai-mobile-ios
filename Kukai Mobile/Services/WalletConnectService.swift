@@ -213,9 +213,10 @@ public class WalletConnectService {
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		let operations = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()
 		
-		
-		if OperationFactory.Extractor.isContractCall(operations: operations) {
+		if let contractDetails = OperationFactory.Extractor.isContractCall(operations: operations) {
+			let totalXTZ = OperationFactory.Extractor.totalXTZAmountForContractCall(operations: operations)
 			TransactionService.shared.currentTransactionType = .contractCall
+			TransactionService.shared.contractCallData = TransactionService.ContractCallData(chosenToken: Token.xtz(), chosenAmount: totalXTZ, contractAddress: contractDetails.address, operationCount: operations.count, mainEntrypoint: contractDetails.entrypoint)
 			mainThreadProcessedOperations(ofType: .contractCall)
 			
 		} else if OperationFactory.Extractor.isTezTransfer(operations: operations), let transactionOperation = operations.first as? OperationTransaction {
