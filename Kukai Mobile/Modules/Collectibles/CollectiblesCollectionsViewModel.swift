@@ -84,7 +84,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
 				let type = MediaProxyService.typesContents(types)
-				cell.mediaIconView.isHidden = (type == .imageOnly)
+				cell.mediaIconView.isHidden = (type == .imageOnly || type == nil)
 				
 				return cell
 				
