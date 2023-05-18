@@ -31,7 +31,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			.dropFirst()
 			.sink { [weak self] _ in
 				if self?.dataSource != nil {
-					self?.refresh(animate: true)
+					self?.refresh(animate: false)
 				}
 			}
 		
@@ -79,7 +79,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	
 	// MARK: - Functions
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = MoveableDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = MoveableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let amount = item as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
@@ -87,6 +87,11 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 					cell.symbolLabel.text = "Tezos"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setup(isFav: true, isLocked: true)
+					
+					if self?.isEditing == true {
+						cell.favIconStackview.isHidden = true
+						cell.layoutIfNeeded()
+					}
 					
 					return cell
 				}
@@ -115,7 +120,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			return
 		}
 		
-		// Group and srot favourites (and remove hidden)
+		// Group and sort favourites (and remove hidden)
 		tokensToDisplay = []
 		var nonFavourites: [Token] = []
 		
