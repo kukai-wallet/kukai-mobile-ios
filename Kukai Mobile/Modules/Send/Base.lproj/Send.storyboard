@@ -344,6 +344,12 @@
                     <view key="view" contentMode="scaleToFill" id="ILF-gD-rsC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <userGuides>
+                            <userLayoutGuide location="294" affinity="minY"/>
+                            <userLayoutGuide location="316" affinity="minY"/>
+                            <userLayoutGuide location="339" affinity="minY"/>
+                            <userLayoutGuide location="330" affinity="minY"/>
+                        </userGuides>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SVi-Qe-w6k">
                                 <rect key="frame" x="16" y="111" width="361" height="114"/>
@@ -520,22 +526,22 @@
                                         </userDefinedRuntimeAttributes>
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;fiat&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2N-Q5-cfC">
-                                        <rect key="frame" x="66" y="52" width="180" height="17"/>
+                                        <rect key="frame" x="66" y="49.666666666666686" width="180" height="17"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt10"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="mas-gj-c3T">
-                                        <rect key="frame" x="254" y="8" width="99" height="61"/>
+                                        <rect key="frame" x="254" y="11" width="99" height="56"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;token&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNu-VS-btW">
-                                                <rect key="frame" x="0.0" y="0.0" width="99" height="41"/>
-                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="99" height="36"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
                                                 <color key="textColor" name="Txt14"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cfp-Ge-Xha">
-                                                <rect key="frame" x="0.0" y="43" width="99" height="18"/>
+                                                <rect key="frame" x="0.0" y="38" width="99" height="18"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="smp-Df-pJn">
                                                         <rect key="frame" x="0.0" y="0.0" width="60" height="18"/>
@@ -578,7 +584,6 @@
                                 <constraints>
                                     <constraint firstItem="J2N-Q5-cfC" firstAttribute="trailing" secondItem="sga-th-pVd" secondAttribute="trailing" id="0MX-x6-WCr"/>
                                     <constraint firstItem="sga-th-pVd" firstAttribute="top" secondItem="ZlC-bh-Tlt" secondAttribute="top" constant="-4" id="3CX-MG-YFk"/>
-                                    <constraint firstItem="eNu-VS-btW" firstAttribute="height" secondItem="sga-th-pVd" secondAttribute="height" multiplier="1.20588" id="4wa-3D-hI0"/>
                                     <constraint firstItem="ZlC-bh-Tlt" firstAttribute="top" secondItem="TpE-Zq-dZk" secondAttribute="top" constant="16" id="6m8-kO-gms"/>
                                     <constraint firstItem="ZlC-bh-Tlt" firstAttribute="leading" secondItem="TpE-Zq-dZk" secondAttribute="leading" constant="12" id="AyD-3X-aiE"/>
                                     <constraint firstItem="sga-th-pVd" firstAttribute="leading" secondItem="ZlC-bh-Tlt" secondAttribute="trailing" constant="8" id="CHM-IY-vcL"/>
@@ -586,8 +591,8 @@
                                     <constraint firstAttribute="bottom" secondItem="ZlC-bh-Tlt" secondAttribute="bottom" constant="16" id="ICd-Dv-MkX"/>
                                     <constraint firstItem="J2N-Q5-cfC" firstAttribute="leading" secondItem="sga-th-pVd" secondAttribute="leading" id="KWw-JY-FRU"/>
                                     <constraint firstItem="mas-gj-c3T" firstAttribute="leading" secondItem="sga-th-pVd" secondAttribute="trailing" constant="8" id="Nv4-Vp-OMd"/>
-                                    <constraint firstItem="J2N-Q5-cfC" firstAttribute="bottom" secondItem="308-Jb-JPh" secondAttribute="bottom" id="q1r-UY-eCm"/>
-                                    <constraint firstItem="mas-gj-c3T" firstAttribute="top" secondItem="sga-th-pVd" secondAttribute="top" constant="-4" id="rAs-U9-q55"/>
+                                    <constraint firstItem="mas-gj-c3T" firstAttribute="top" secondItem="sga-th-pVd" secondAttribute="top" constant="-1" id="h7m-Ym-lOb"/>
+                                    <constraint firstItem="J2N-Q5-cfC" firstAttribute="centerY" secondItem="308-Jb-JPh" secondAttribute="centerY" id="wGx-m6-0Yj"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
@@ -3079,7 +3084,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(batch)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AeG-bt-ZRq">
-                                                                        <rect key="frame" x="152.33333333333334" y="15.333333333333368" width="53" height="19.333333333333332"/>
+                                                                        <rect key="frame" x="152.33333333333334" y="15.333333333333369" width="53" height="19.333333333333329"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                                         <color key="textColor" name="Txt10"/>
                                                                         <nil key="highlightedColor"/>
@@ -3099,7 +3104,7 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;contract&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ORN-nd-f75">
-                                                                        <rect key="frame" x="64.666666666666657" y="15.333333333333368" width="83.666666666666657" height="19.333333333333332"/>
+                                                                        <rect key="frame" x="64.666666666666657" y="15.333333333333369" width="83.666666666666657" height="19.333333333333329"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                         <color key="textColor" name="Txt2"/>
                                                                         <nil key="highlightedColor"/>
@@ -3145,7 +3150,7 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;contract&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8zW-pk-GbR">
-                                                                        <rect key="frame" x="120.66666666666666" y="15.333333333333254" width="83.666666666666657" height="19.333333333333339"/>
+                                                                        <rect key="frame" x="120.66666666666666" y="15.333333333333256" width="83.666666666666657" height="19.333333333333329"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                         <color key="textColor" name="Txt2"/>
                                                                         <nil key="highlightedColor"/>
