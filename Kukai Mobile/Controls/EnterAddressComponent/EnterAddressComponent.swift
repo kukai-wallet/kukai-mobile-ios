@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import KukaiCoreSwift
+import CustomAuth
 
 public protocol EnterAddressComponentDelegate: AnyObject {
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType)
+}
+
+public struct FindAddressResponse {
+	let alias: String
+	let address: String
+	let icon: UIImage
 }
 
 public class EnterAddressComponent: UIView {
@@ -84,6 +92,68 @@ public class EnterAddressComponent: UIView {
 	@IBAction func sendButtonTapped(_ sender: Any) {
 		self.delegate?.validatedInput(entered: textField.text ?? "", validAddress: true, ofType: currentSelectedType)
 	}
+	
+	
+	
+	// MARK: - External Helpers
+	
+	public func findAddress(forText text: String, completion: @escaping ((Result<FindAddressResponse, KukaiError>) -> Void)) {
+		self.convertStringToAddress(string: text, type: currentSelectedType) { [weak self] result in
+			guard let res = try? result.get() else {
+				completion(Result.failure(result.getFailure()))
+				return
+			}
+			
+			let image = AddressTypeViewController.imageFor(addressType: self?.currentSelectedType ?? .tezosAddress)
+			completion( Result.success(FindAddressResponse(alias: text, address: res, icon: image)) )
+		}
+	}
+	
+	public func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+		switch type {
+			case .tezosAddress:
+				completion(Result.success(string))
+				
+			case .tezosDomain:
+				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string, completion: { result in
+					switch result {
+						case .success(let response):
+							if let add = response.data?.domain.address {
+								completion(Result.success(add))
+								
+							} else {
+								completion(Result.failure(KukaiError.unknown()))
+							}
+							
+						case .failure(let error):
+							completion(Result.failure(error))
+					}
+				})
+				
+			case .gmail:
+				handleTorus(verifier: .google, string: string, completion: completion)
+				
+			case .reddit:
+				handleTorus(verifier: .reddit, string: string, completion: completion)
+				
+			case .twitter:
+				handleTorus(verifier: .twitter, string: string, completion: completion)
+		}
+	}
+	
+	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
+			let error = KukaiError.unknown(withString: "No \(verifier.rawValue) verifier details found")
+			completion(Result.failure(error))
+			return
+		}
+		
+		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string, completion: completion)
+	}
+	
+	
+	
+	
 	
 	
 	

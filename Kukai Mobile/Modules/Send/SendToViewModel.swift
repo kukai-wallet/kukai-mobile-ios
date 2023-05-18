@@ -152,46 +152,4 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		return dataSource?.itemIdentifier(for: indexPath) as? WalletObj
 	}
-	
-	func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
-		switch type {
-			case .tezosAddress:
-				completion(Result.success(string))
-				
-			case .tezosDomain:
-				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string, completion: { result in
-					switch result {
-						case .success(let response):
-							if let add = response.data?.domain.address {
-								completion(Result.success(add))
-								
-							} else {
-								completion(Result.failure(KukaiError.unknown()))
-							}
-							
-						case .failure(let error):
-							completion(Result.failure(error))
-					}
-				})
-				
-			case .gmail:
-				handleTorus(verifier: .google, string: string, completion: completion)
-				
-			case .reddit:
-				handleTorus(verifier: .reddit, string: string, completion: completion)
-				
-			case .twitter:
-				handleTorus(verifier: .twitter, string: string, completion: completion)
-		}
-	}
-	
-	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
-		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
-			let error = KukaiError.unknown(withString: "No \(verifier.rawValue) verifier details found")
-			completion(Result.failure(error))
-			return
-		}
-		
-		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string, completion: completion)
-	}
 }

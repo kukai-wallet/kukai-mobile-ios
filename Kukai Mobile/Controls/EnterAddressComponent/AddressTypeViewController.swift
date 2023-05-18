@@ -60,7 +60,8 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .tezosDomain:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, mainnetDomains: [], ghostnetDomains: [], type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
+				let fakeRecord = TezosDomainsReverseRecord(id: "123", address: "123", owner: "123", expiresAtUtc: "123", domain: TezosDomainsDomain(name: "123", address: "123"))
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, mainnetDomains: [fakeRecord], ghostnetDomains: [fakeRecord], type: .regular, children: [], isChild: false, bas58EncodedPublicKey: "")
 				
 			case .gmail:
 				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .google, type: .social, children: [], isChild: false, bas58EncodedPublicKey: "")
