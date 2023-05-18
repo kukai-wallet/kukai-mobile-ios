@@ -14,7 +14,7 @@ protocol TokenDetailsButtonsCellDelegate: AnyObject {
 
 class TokenDetailsButtonsCell: UITableViewCell {
 	
-	@IBOutlet weak var favouriteButton: UIButton!
+	@IBOutlet weak var favouriteButton: CustomisableButton!
 	@IBOutlet weak var swapButton: CustomisableButton!
 	@IBOutlet weak var moreButton: UIButton!
 	
@@ -26,7 +26,8 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		self.buttonData = buttonData
 		self.delegate = delegate
 		
-		favouriteButton.setImage( buttonData.isFavourited ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff") , for: .normal)
+		favouriteButton.customImage = (buttonData.isFavourited ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff")) ?? UIImage()
+		favouriteButton.updateCustomImage()
 		
 		if buttonData.hasMoreButton, let menu = moreMenu {
 			moreButton.isHidden = false
@@ -43,7 +44,8 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		}
 		
 		if let result = delegate?.favouriteTapped(){
-			favouriteButton.setImage( result ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff") , for: .normal)
+			favouriteButton.customImage = (result ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff")) ?? UIImage()
+			favouriteButton.updateCustomImage()
 		}
 	}
 	
