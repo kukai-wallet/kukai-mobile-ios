@@ -108,12 +108,13 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		*/
 		
-			var full = DependencyManager.shared.activityService.pendingTransactionGroups
-			full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
+		let currentAddress = DependencyManager.shared.selectedWalletAddress
+		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
+		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
-			self.groups = full
-			self.loadGroups(animate: animate)
-			self.state = .success(nil)
+		self.groups = full
+		self.loadGroups(animate: animate)
+		self.state = .success(nil)
 		//}
 	}
 	

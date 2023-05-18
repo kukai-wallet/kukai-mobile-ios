@@ -30,6 +30,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+	private var activityAnimationInProgress = false
 	
 	
 	public override func viewDidLoad() {
@@ -206,6 +207,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func startActivityAnimation() {
+		activityAnimationInProgress = true
 		
 		let sorted = self.tabBar.subviews.sorted { lhs, rhs in
 			return lhs.frame.origin.x < rhs.frame.origin.x
@@ -228,9 +230,17 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func stopActivityAnimation(success: Bool) {
+		activityAnimationInProgress = false
+		
 		activityAnimationImageView.stopAnimating()
 		activityAnimationImageView.isHidden = true
 		activityTabBarImageView?.isHidden = false
+	}
+	
+	func stopActivityAnimationIfNecessary() {
+		if self.activityAnimationInProgress && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
+			self.stopActivityAnimation(success: true)
+		}
 	}
 	
 	public func updateAccountButton() {
@@ -277,8 +287,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	//#else
 		guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 		
-		let wasActivityPending = DependencyManager.shared.activityService.pendingTransactionGroups.count > 0
-		
 		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
 			guard let self = self else { return }
 			
@@ -287,9 +295,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self.alert(errorWithMessage: e.description)
 			}
 			
-			if wasActivityPending && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
-				self.stopActivityAnimation(success: true)
-			}
+			self.stopActivityAnimationIfNecessary()
 			
 			DependencyManager.shared.balanceService.currencyChanged = false
 		}

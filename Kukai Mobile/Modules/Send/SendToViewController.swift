@@ -107,7 +107,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	func findAddressThenNavigate(text: String, type: AddressType) {
 		self.showLoadingModal()
 		
-		self.viewModel.convertStringToAddress(string: text, type: type) { [weak self] result in
+		enterAddressComponent.findAddress(forText: text) { [weak self] result in
 			self?.hideLoadingModal()
 			
 			guard let res = try? result.get() else {
@@ -117,9 +117,9 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 				return
 			}
 			
-			TransactionService.shared.sendData.destinationAlias = text
-			TransactionService.shared.sendData.destination = res
-			TransactionService.shared.sendData.destinationIcon = UIImage(systemName: "xmark.octagon")
+			TransactionService.shared.sendData.destinationAlias = res.alias
+			TransactionService.shared.sendData.destination = res.address
+			TransactionService.shared.sendData.destinationIcon = res.icon
 			
 			self?.navigate()
 		}

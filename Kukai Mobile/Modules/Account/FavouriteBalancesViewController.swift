@@ -25,6 +25,9 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		tableView.sectionHeaderTopPadding = 0
+		tableView.sectionHeaderHeight = 0
+		tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0.1, height: 0.1))
 		sectionFooterSpacer.backgroundColor = .clear
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
@@ -93,7 +96,7 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		cell.layoutIfNeeded()
 		
 		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+			c.addGradientBackground(withFrame: c.bounds, toView: c)
 		}
 	}
 	

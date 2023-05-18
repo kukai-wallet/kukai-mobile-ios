@@ -130,9 +130,12 @@ class SlideButton: UIView {
 			} else if gestureRecognizer.state == .ended {
 				if (centerOfTouchedButtonView + (buttonView.frame.width/2)) >= (containerView.frame.width - padding) {
 					
-					progressViewTrailingConstraint.constant = progressViewEndDestination
 					activityIndicator.isHidden = false
 					activityIndicator.startAnimating()
+					
+					buttonViewLeadingConstraint.constant = containerView.frame.width - (buttonView.frame.width + padding)
+					progressCoverView?.alpha = 1
+					progressViewTrailingConstraint.constant = progressViewEndDestination
 					
 					delegate?.didCompleteSlide()
 					

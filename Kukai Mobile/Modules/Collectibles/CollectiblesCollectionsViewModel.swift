@@ -166,7 +166,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		normalSnapshot.appendItems(hashableData, toSection: 1)
 		itemCount = hashableData.count
 		
-		ds.apply(normalSnapshot)
+		//ds.apply(normalSnapshot)
+		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		let currentLayoutType = getLayoutType()
 		if currentLayoutType != previousLayout {

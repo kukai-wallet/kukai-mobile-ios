@@ -44,6 +44,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
+					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 					//self?.hideLoadingView(completion: nil)
 			}
 		}
@@ -64,14 +65,12 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		if indexPath.row == 0 {
-			return
+		if let token = viewModel.token(atIndexPath: indexPath) {
+			TransactionService.shared.resetState()
+			TransactionService.shared.sendData.chosenToken = token
+			TransactionService.shared.sendData.chosenNFT = nil
+			self.performSegue(withIdentifier: "details", sender: self)
 		}
-		
-		TransactionService.shared.resetState()
-		TransactionService.shared.sendData.chosenToken = viewModel.token(atIndexPath: indexPath)
-		TransactionService.shared.sendData.chosenNFT = nil
-		self.performSegue(withIdentifier: "details", sender: self)
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

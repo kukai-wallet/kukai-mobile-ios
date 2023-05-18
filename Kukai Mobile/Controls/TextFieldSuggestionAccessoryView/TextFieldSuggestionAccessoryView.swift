@@ -29,6 +29,7 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 		flowLayout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
 		
 		collectionView = UICollectionView(frame: tempFrame, collectionViewLayout: flowLayout)
+		collectionView.backgroundColor = .colorNamed("BG3")
 		
 		super.init(frame: tempFrame)
 		

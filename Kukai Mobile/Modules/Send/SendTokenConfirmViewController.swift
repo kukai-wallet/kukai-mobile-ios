@@ -164,8 +164,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			return
 		}
 		
-		//self.showLoadingModal(completion: nil)
-		
 		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
