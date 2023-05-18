@@ -85,56 +85,66 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Social
-		if wallets.socialWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Social Wallets")])
-		}
+		var walletsToAdd: [WalletObj] = []
 		for metadata in wallets.socialWallets where metadata.address != selectedAddress {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-			sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+		}
+		if walletsToAdd.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([SendHeaderObj(icon: walletImage, title: "Social Wallets")])
+			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 		}
 		
 		
 		// HD's
 		for (index, metadata) in wallets.hdWallets.enumerated() {
+			walletsToAdd = []
 			if metadata.address == selectedAddress && metadata.children.count == 0 {
 				continue
 			}
 			
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "HD Wallet \(index + 1)")])
-			
 			if metadata.address != selectedAddress {
 				let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-				sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+				walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
 			}
 			
 			for childMetadata in metadata.children where childMetadata.address != selectedAddress {
 				let childWalletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
-				sectionData[sections.count-1].append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
+				walletsToAdd.append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
+			}
+			
+			if walletsToAdd.count > 0 {
+				sections.append(sections.count)
+				sectionData.append([SendHeaderObj(icon: walletImage, title: "HD Wallet \(index + 1)")])
+				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 			}
 		}
 		
 		
 		// Linear
-		if wallets.linearWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Legacy Wallets")])
-		}
+		walletsToAdd = []
 		for metadata in wallets.linearWallets where metadata.address != selectedAddress {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-			sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+		}
+		if walletsToAdd.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([SendHeaderObj(icon: walletImage, title: "Legacy Wallets")])
+			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 		}
 		
 		
 		// Ledger
-		if wallets.ledgerWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Ledger Wallets")])
-		}
+		walletsToAdd = []
 		for metadata in wallets.ledgerWallets where metadata.address != selectedAddress {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-			sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+		}
+		if walletsToAdd.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([SendHeaderObj(icon: walletImage, title: "Ledger Wallets")])
+			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 		}
 		
 		// Add it all

@@ -26,6 +26,7 @@ class SendTokenAmountViewController: UIViewController {
 	@IBOutlet weak var fiatValueLabel: UILabel?
 	@IBOutlet weak var maxButton: UIButton!
 	
+	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var maxWarningLabel: UILabel!
 	@IBOutlet weak var reviewButton: CustomisableButton!
 	
@@ -57,7 +58,7 @@ class SendTokenAmountViewController: UIViewController {
 		// Token data
 		balanceLabel.text = token.balance.normalisedRepresentation
 		symbolLabel.text = token.symbol
-		fiatValueLabel?.text = " "
+		fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 		tokenIcon.addTokenIcon(token: token)
 		
 		
@@ -66,6 +67,7 @@ class SendTokenAmountViewController: UIViewController {
 		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
 		
+		errorLabel.isHidden = true
 		maxWarningLabel.isHidden = true
 		reviewButton.customButtonType = .primary
 		reviewButton.isEnabled = false
@@ -146,22 +148,23 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		if validated {
-			inputContainer.borderColor = .clear
-			inputContainer.borderWidth = 0
-			
-			if let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: text) {
-				self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
-			}
-			
+		guard let token = TransactionService.shared.sendData.chosenToken else {
+			return
+		}
+		
+		if validated, let textDecimal = Decimal(string: text) {
+			errorLabel.isHidden = true
+			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
 			self.reviewButton.isEnabled = true
 			
 		} else if text != "" {
-			inputContainer.borderColor = .red
-			inputContainer.borderWidth = 1
-			
-			self.fiatValueLabel?.text = "0"
+			errorLabel.isHidden = false
+			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 			self.reviewButton.isEnabled = false
+			
+		} else {
+			errorLabel.isHidden = true
+			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 		}
 	}
 	
