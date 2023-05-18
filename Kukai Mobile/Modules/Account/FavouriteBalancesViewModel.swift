@@ -34,8 +34,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 					self?.refresh(animate: false)
 				}
 			}
-		
-		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {

@@ -32,8 +32,6 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.refresh(animate: true)
 				}
 			}
-		
-		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {

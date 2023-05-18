@@ -256,7 +256,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 																				   primaryToken: nil)
 		*/
 		
-		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		//(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
 		//os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	

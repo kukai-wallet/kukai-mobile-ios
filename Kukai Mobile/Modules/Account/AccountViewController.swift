@@ -44,6 +44,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
+					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 					//self?.hideLoadingView(completion: nil)
 			}
 		}

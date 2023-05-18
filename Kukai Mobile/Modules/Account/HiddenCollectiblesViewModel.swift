@@ -32,8 +32,6 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 					self?.refresh(animate: true)
 				}
 			}
-		
-		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
