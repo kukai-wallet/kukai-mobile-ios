@@ -222,7 +222,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
-		if let token = TransactionService.shared.sendData.chosenToken, token.isXTZ(), let amount = TransactionService.shared.sendData.chosenAmount, amount + fee >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
+		if let token = TransactionService.shared.sendData.chosenToken, token.isXTZ(), let amount = TransactionService.shared.sendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			TransactionService.shared.sendData.chosenAmount = updatedValue
 			TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)

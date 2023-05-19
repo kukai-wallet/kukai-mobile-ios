@@ -205,11 +205,11 @@ public class WalletConnectService {
 				return
 			}
 			
-			self?.processTransactions(estimatedOperations: estimatedOps)
+			self?.processTransactions(estimatedOperations: estimatedOps, forWallet: wallet)
 		}
 	}
 	
-	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation]) {
+	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], forWallet: Wallet) {
 		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
 		let operations = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()
 		
@@ -220,15 +220,18 @@ public class WalletConnectService {
 			mainThreadProcessedOperations(ofType: .contractCall)
 			
 		} else if OperationFactory.Extractor.isTezTransfer(operations: operations), let transactionOperation = operations.first as? OperationTransaction {
-			let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
-			let amount = Token.xtz(withAmount: xtzAmount)
 			
-			TransactionService.shared.currentTransactionType = .send
-			TransactionService.shared.sendData.chosenToken = amount
-			TransactionService.shared.sendData.chosenAmount = xtzAmount
-			TransactionService.shared.sendData.destination = transactionOperation.destination
-			mainThreadProcessedOperations(ofType: .sendToken)
-			
+			DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
+				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
+				let accountBalance = (try? res.get()) ?? xtzAmount
+				let selectedToken = Token.xtz(withAmount: accountBalance)
+				
+				TransactionService.shared.currentTransactionType = .send
+				TransactionService.shared.sendData.chosenToken = selectedToken
+				TransactionService.shared.sendData.chosenAmount = xtzAmount
+				TransactionService.shared.sendData.destination = transactionOperation.destination
+				self?.mainThreadProcessedOperations(ofType: .sendToken)
+			}
 			
 		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()),
 				  let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
