@@ -58,6 +58,9 @@ class ImportWalletViewController: UIViewController {
 		enableWalletAddressField(false)
 		walletAddressTextField.validatorTextFieldDelegate = self
 		walletAddressTextField.validator = TezosAddressValidator(ownAddress: "")
+		
+		let tap = UITapGestureRecognizer(target: self, action: #selector(ImportWalletViewController.resignAll))
+		view.addGestureRecognizer(tap)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -110,6 +113,12 @@ class ImportWalletViewController: UIViewController {
 		} else if textViewValidation && doesAdvancedOptionsPassValidtion() {
 			importButton.isEnabled = true
 		}
+	}
+	
+	@objc private func resignAll() {
+		textView.resignFirstResponder()
+		extraWordTextField.resignFirstResponder()
+		walletAddressTextField.resignFirstResponder()
 	}
 	
 	private func enableWalletAddressField(_ value: Bool) {
@@ -217,6 +226,9 @@ class ImportWalletViewController: UIViewController {
 extension ImportWalletViewController: UITextViewDelegate {
 	
 	func textViewDidBeginEditing(_ textView: UITextView) {
+		scrollView.viewToFocusOn = nil
+		scrollView.contentOffset = CGPoint(x: 0, y: 0)
+		
 		if textView.text == "Enter Recovery Phrase" {
 			textView.text = nil
 			textView.textColor = UIColor.colorNamed("Txt6")
