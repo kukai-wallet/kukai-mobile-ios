@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import WalletConnectSign
 
-struct SessionObj: Hashable {
+struct PairObj: Hashable {
 	let name: String
 	let url: String
 	let topic: String
@@ -23,15 +23,13 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var peersSelected = true
 	
-	private var sessions: [SessionObj] = []
-	
-	
+	private var pairs: [PairObj] = []
 	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self, let obj = item as? SessionObj,  let cell = tableView.dequeueReusableCell(withIdentifier: "WalletConnectCell", for: indexPath) as? WalletConnectCell else { return UITableViewCell() }
+			guard let self = self, let obj = item as? PairObj,  let cell = tableView.dequeueReusableCell(withIdentifier: "WalletConnectCell", for: indexPath) as? WalletConnectCell else { return UITableViewCell() }
 			
 			cell.nameLbl.text = obj.name
 			cell.serverLbl.text = obj.url
@@ -51,15 +49,15 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Get data
-		self.sessions = Sign.instance.getSessions().map { session -> SessionObj in
-			return SessionObj(name: session.peer.name, url: session.peer.url, topic: session.topic)
-		}
+		pairs = Pair.instance.getPairings().map({ pair -> PairObj in
+			return PairObj(name: pair.peer?.name ?? "", url: pair.peer?.url ?? "", topic: pair.topic)
+		})
 		
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
-		snapshot.appendItems(sessions, toSection: 0)
+		snapshot.appendItems(pairs, toSection: 0)
 		
 		ds.applySnapshotUsingReloadData(snapshot)
 		
@@ -71,7 +69,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public func deleteAll() {
 		self.state = .loading
 		
-		for (index, _) in sessions.enumerated() {
+		for (index, _) in pairs.enumerated() {
 			deleteTapped(forRow: index)
 		}
 		
@@ -85,10 +83,15 @@ extension WalletConnectViewModel: WalletConnectCellProtocol {
 	func deleteTapped(forRow: Int) {
 		self.state = .loading
 		
-		let item = sessions[forRow]
+		let item = pairs[forRow]
 		Task {
 			do {
-				try await Sign.instance.disconnect(topic: item.topic)
+				try await Pair.instance.disconnect(topic: item.topic)
+				
+				for session in Sign.instance.getSessions().filter({ $0.pairingTopic == item.topic }) {
+					try await Sign.instance.disconnect(topic: session.topic)
+				}
+				
 				DispatchQueue.main.async { [weak self] in
 					self?.refresh(animate: true)
 				}
