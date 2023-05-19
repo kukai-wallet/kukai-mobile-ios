@@ -119,17 +119,6 @@ public class TransactionService {
 			(customOperationsAndFees.last as? OperationTransaction)?.amount = newAmount.rpcRepresentation
 		}
 		
-		/// KukaiCoreSwift.Operation are classes passed by reference. Making changes to them will make changes to every reference. They are small but complex classes with a complex fee structure + business logic.
-		/// Use this to create a quick and hacky copy. Chosing this method as the user will be presented with 3 choices for fees. Rahter than calculating, recalculating, reverting etc, on a complex fee structure, KIFS (Keep It Fucking Simple).
-		/// Just create 3 static copies and let users switch/view between the ones they want, avoiding excessively complex business logic
-		public static func makeCopyOf(operations: [KukaiCoreSwift.Operation]) -> [KukaiCoreSwift.Operation]? {
-			guard let opJson = try? JSONEncoder().encode(operations), let opsCopy = try? JSONDecoder().decode([KukaiCoreSwift.Operation].self, from: opJson) else {
-				return nil
-			}
-			
-			return opsCopy
-		}
-		
 		public mutating func setCustomFeesTo(feesTo: XTZAmount?, gasLimitTo: Int?, storageLimitTo: Int?) {
 			customOperationsAndFees = increase(operations: self.customOperationsAndFees, feesTo: feesTo, gasLimitTo: gasLimitTo, storageLimitTo: storageLimitTo)
 		}
@@ -356,7 +345,7 @@ public class TransactionService {
 		}
 		
 		var ops: [KukaiCoreSwift.Operation] = []
-		for jsonObj in jsonArray {
+		for (index, jsonObj) in jsonArray.enumerated() {
 			guard let kind = OperationKind(rawValue: (jsonObj["kind"] as? String) ?? ""), let jsonObjAsData = try? JSONSerialization.data(withJSONObject: jsonObj, options: .fragmentsAllowed) else {
 				os_log("Unable to parse operation of kind: %@", log: .default, type: .error, (jsonObj["kind"] as? String) ?? "")
 				continue
@@ -391,6 +380,7 @@ public class TransactionService {
 			}
 			
 			if let tempOp = tempOp {
+				tempOp.operationFees = operations[index].operationFees
 				ops.append(tempOp)
 			} else {
 				os_log("Unable to parse operation: %@", log: .default, type: .error, String(data: jsonObjAsData, encoding: .utf8) ?? "")
