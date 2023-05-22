@@ -235,7 +235,6 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		/*
 		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
 		
 		let destinationAddress = TransactionService.shared.contractCallData.contractAddress ?? ""
@@ -243,7 +242,12 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
+		let contractOp = OperationFactory.Extractor.firstContractCallOperation(operations: currentOps)
+		
+		let entrypoint = (contractOp?.parameters?["entrypoint"] as? String) ?? ""
+		let parameterValueDict = contractOp?.parameters?["value"] as? [String: String] ?? [:]
+		let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
+		let parameters: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
 		
 		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
 																				   type: .transaction,
@@ -254,10 +258,9 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 																				   xtzAmount: amount,
 																				   parameters: parameters,
 																				   primaryToken: nil)
-		*/
 		
-		//(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
-		//os_log("Recorded pending transaction: %@", "\(addPendingResult)")
+		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	
 	@MainActor

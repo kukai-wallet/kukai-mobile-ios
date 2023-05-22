@@ -95,7 +95,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				
 			} else {
 				toLabel.isHidden = true
-				destinationLabel.text = data.transactions[0].target?.address ?? ""
+				destinationLabel.text = data.transactions[0].target?.address.truncateTezosAddress() ?? ""
 			}
 			
 		} else if data.groupType == .send || data.groupType == .receive {
@@ -152,7 +152,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				
 			} else {
 				toLabel.isHidden = true
-				destinationLabel.text = data.target?.address ?? ""
+				destinationLabel.text = data.target?.address.truncateTezosAddress() ?? ""
 			}
 			
 		} else if data.subType == .reveal {

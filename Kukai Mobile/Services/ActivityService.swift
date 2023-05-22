@@ -93,10 +93,12 @@ public class ActivityService {
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, destinationAddress: String, destinationAlias: String?, xtzAmount: TokenAmount, parameters: [String: String]?, primaryToken: Token?) -> Bool {
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
-		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
+		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
+		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
 			pendingTransactionGroups.insert(group, at: 0)
+			DependencyManager.shared.accountBalancesDidUpdate = true
 			return DiskService.write(encodable: pendingTransactionGroups, toFileName: ActivityService.pendingCachedFileName)
 		}
 		

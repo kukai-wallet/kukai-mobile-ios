@@ -14,7 +14,13 @@ protocol EditFeesViewControllerDelegate {
 
 class EditFeesViewController: UIViewController {
 	
-	@IBOutlet weak var segmentedButton: UISegmentedControl!
+	@IBOutlet weak var customSegmetnedContainer: UIView!
+	@IBOutlet weak var normalButton: UIButton!
+	@IBOutlet weak var fastButton: UIButton!
+	@IBOutlet weak var customButton: UIButton!
+	@IBOutlet weak var selectionSeperatorLeft: UIView!
+	@IBOutlet weak var selectionSeperatorRight: UIView!
+	
 	@IBOutlet weak var gasLimitTextField: ValidatorTextField!
 	@IBOutlet weak var gasErrorLabel: UILabel!
 	@IBOutlet weak var feeTextField: ValidatorTextField!
@@ -22,17 +28,13 @@ class EditFeesViewController: UIViewController {
 	@IBOutlet weak var storageLimitTextField: ValidatorTextField!
 	@IBOutlet weak var storageErrorLabel: UILabel!
 	@IBOutlet weak var maxStorageCostLbl: UILabel!
+	
 	private var infoIndex = 0
+	private var selectedSegmentIndex = 0
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
-		
-		let selectedAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"), NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)]
-		let normalAttributes = [NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtB6"), NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 16)]
-		
-		segmentedButton.setTitleTextAttributes(normalAttributes, for: .normal)
-		segmentedButton.setTitleTextAttributes(selectedAttributes, for: .selected)
 		
 		feeErrorLabel.isHidden = true
 		gasErrorLabel.isHidden = true
@@ -49,15 +51,21 @@ class EditFeesViewController: UIViewController {
 		super.viewWillDisappear(animated)
 		
 		// If selected custom, and theres an error or the user never changed any of the fields, revert back to normal
-		if segmentedButton.selectedSegmentIndex == 2 && (!feeTextField.isValid || !gasLimitTextField.isValid || !storageLimitTextField.isValid) {
-			segmentedButton.selectedSegmentIndex = 0
+		if selectedSegmentIndex == 2 && (!feeTextField.isValid || !gasLimitTextField.isValid || !storageLimitTextField.isValid) {
+			selectedSegmentIndex = 0
 			updateTransaction()
 		}
 	}
 	
 	func refreshUI() {
-		segmentedButton.selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
-		segmentedButtonTapped(self.segmentedButton as Any)
+		selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
+		if selectedSegmentIndex == 0 {
+			normalButtonTapped(normalButton)
+		} else if selectedSegmentIndex == 1 {
+			fastButtonTapped(fastButton)
+		} else {
+			customButtonTapped(customButton)
+		}
 		
 		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
 		
@@ -77,18 +85,6 @@ class EditFeesViewController: UIViewController {
 		let _ = feeTextField.revalidateTextfield()
 	}
 	
-	@IBAction func segmentedButtonTapped(_ sender: Any) {
-		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
-		updateFeeDisplay()
-		recordFee()
-		
-		if segmentedButton.selectedSegmentIndex != 2 {
-			disableAllFields()
-		} else {
-			enableAllFields()
-		}
-	}
-	
 	func updateFeeDisplay() {
 		gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
 		storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
@@ -97,7 +93,7 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func recordFee() {
-		if segmentedButton.selectedSegmentIndex == 2 {
+		if selectedSegmentIndex == 2 {
 			if feeTextField.isValid && gasLimitTextField.isValid && storageLimitTextField.isValid {
 				let xtzAmount = XTZAmount(fromNormalisedAmount: feeTextField.text ?? "0", decimalPlaces: 6)
 				let gasLimit = Int(gasLimitTextField.text ?? "0")
@@ -112,7 +108,7 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func updateTransaction() {
-		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: segmentedButton.selectedSegmentIndex) ?? .normal
+		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
 		
 		// Check if a previous bototm sheet is displaying a transaction, and update its fee
 		if let parentVC = self.presentingViewController as? EditFeesViewControllerDelegate {
@@ -145,6 +141,68 @@ class EditFeesViewController: UIViewController {
 		storageLimitTextField.alpha = 1
 	}
 	
+	func segmentedButtonTapped() {
+		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		updateFeeDisplay()
+		recordFee()
+		
+		if selectedSegmentIndex != 2 {
+			disableAllFields()
+		} else {
+			enableAllFields()
+		}
+	}
+	
+	@IBAction func normalButtonTapped(_ sender: UIButton) {
+		selectedSegmentIndex = 0
+		applySelectedStyle(toButton: sender)
+		applyNormalStyle(toButton: fastButton)
+		applyNormalStyle(toButton: customButton)
+		selectionSeperatorLeft.isHidden = true
+		selectionSeperatorRight.isHidden = false
+		
+		segmentedButtonTapped()
+	}
+	
+	@IBAction func fastButtonTapped(_ sender: UIButton) {
+		selectedSegmentIndex = 1
+		applySelectedStyle(toButton: sender)
+		applyNormalStyle(toButton: normalButton)
+		applyNormalStyle(toButton: customButton)
+		selectionSeperatorLeft.isHidden = true
+		selectionSeperatorRight.isHidden = true
+		
+		segmentedButtonTapped()
+	}
+	
+	@IBAction func customButtonTapped(_ sender: UIButton) {
+		selectedSegmentIndex = 2
+		applySelectedStyle(toButton: sender)
+		applyNormalStyle(toButton: normalButton)
+		applyNormalStyle(toButton: fastButton)
+		selectionSeperatorLeft.isHidden = false
+		selectionSeperatorRight.isHidden = true
+		
+		segmentedButtonTapped()
+	}
+	
+	private func applySelectedStyle(toButton button: UIButton) {
+		button.backgroundColor = .colorNamed("BG6")
+		button.isSelected = true
+		button.addShadow(color: .black.withAlphaComponent(0.04), opacity: 1, offset: CGSize(width: 0, height: 3), radius: 1)
+		button.addShadow(color: .black.withAlphaComponent(0.12), opacity: 1, offset: CGSize(width: 0, height: 3), radius: 8)
+	}
+	
+	private func applyNormalStyle(toButton button: UIButton) {
+		button.backgroundColor = .clear
+		button.isSelected = false
+		
+		for layer in button.layer.sublayers ?? [] {
+			if layer.shadowPath != nil {
+				layer.removeFromSuperlayer()
+			}
+		}
+	}
 	
 	@IBAction func feeInfoTapped(_ sender: Any) {
 		infoIndex = 1
