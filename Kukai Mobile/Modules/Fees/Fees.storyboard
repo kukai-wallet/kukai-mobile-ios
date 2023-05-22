@@ -25,22 +25,112 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="jps-w9-yw5">
-                                <rect key="frame" x="20" y="80" width="374" height="49"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wep-Y0-Dk6">
+                                <rect key="frame" x="16" y="80" width="382" height="48"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wkE-LT-dE6">
+                                        <rect key="frame" x="10" y="10" width="115.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Normal">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="normalButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="BhE-Yl-1Si"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IXA-QN-ffU">
+                                        <rect key="frame" x="133.5" y="10" width="115" height="28"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="SR0-c6-OD8"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Fast">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="fastButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="lKN-S9-XAG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ojb-p4-uhC">
+                                        <rect key="frame" x="256.5" y="10" width="115.5" height="28"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Custom">
+                                            <color key="titleColor" name="TxtB6"/>
+                                        </state>
+                                        <state key="selected">
+                                            <color key="titleColor" name="Txt2"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="7"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="customButtonTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="9Kj-ld-LS7"/>
+                                        </connections>
+                                    </button>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nVe-3g-Wdv">
+                                        <rect key="frame" x="129.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="8fF-2d-Pv7"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yTG-6E-ehO">
+                                        <rect key="frame" x="252.5" y="10" width="1" height="28"/>
+                                        <color key="backgroundColor" name="BG6"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="1" id="trs-XH-fRT"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
                                 <color key="backgroundColor" name="BG4"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="7aq-YW-3yN"/>
+                                    <constraint firstAttribute="trailing" secondItem="ojb-p4-uhC" secondAttribute="trailing" constant="10" id="5Yc-qD-3vA"/>
+                                    <constraint firstAttribute="bottom" secondItem="nVe-3g-Wdv" secondAttribute="bottom" constant="10" id="AK9-zb-7yi"/>
+                                    <constraint firstItem="nVe-3g-Wdv" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="top" constant="10" id="D7I-es-DUH"/>
+                                    <constraint firstItem="IXA-QN-ffU" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="top" constant="10" id="DMU-zh-D9n"/>
+                                    <constraint firstItem="IXA-QN-ffU" firstAttribute="leading" secondItem="wkE-LT-dE6" secondAttribute="trailing" constant="8" id="Eus-0l-c2E"/>
+                                    <constraint firstItem="nVe-3g-Wdv" firstAttribute="leading" secondItem="wkE-LT-dE6" secondAttribute="trailing" constant="4" id="HIU-kD-pi1"/>
+                                    <constraint firstItem="wkE-LT-dE6" firstAttribute="leading" secondItem="Wep-Y0-Dk6" secondAttribute="leading" constant="10" id="OKQ-Kd-pK3"/>
+                                    <constraint firstItem="ojb-p4-uhC" firstAttribute="leading" secondItem="yTG-6E-ehO" secondAttribute="trailing" constant="3" id="QZj-Hc-oeY"/>
+                                    <constraint firstAttribute="bottom" secondItem="yTG-6E-ehO" secondAttribute="bottom" constant="10" id="TIo-vj-8tJ"/>
+                                    <constraint firstItem="yTG-6E-ehO" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="top" constant="10" id="X9H-M8-m1C"/>
+                                    <constraint firstItem="ojb-p4-uhC" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="top" constant="10" id="aEY-ls-w8u"/>
+                                    <constraint firstItem="wkE-LT-dE6" firstAttribute="width" secondItem="ojb-p4-uhC" secondAttribute="width" id="bnu-nE-oqk"/>
+                                    <constraint firstItem="wkE-LT-dE6" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="top" constant="10" id="jxf-Yz-nu5"/>
+                                    <constraint firstAttribute="bottom" secondItem="IXA-QN-ffU" secondAttribute="bottom" constant="10" id="mCJ-QG-3gz"/>
+                                    <constraint firstItem="wkE-LT-dE6" firstAttribute="width" secondItem="IXA-QN-ffU" secondAttribute="width" id="oVH-Cv-dCY"/>
+                                    <constraint firstAttribute="bottom" secondItem="ojb-p4-uhC" secondAttribute="bottom" constant="10" id="qUH-7c-4PL"/>
+                                    <constraint firstItem="ojb-p4-uhC" firstAttribute="leading" secondItem="IXA-QN-ffU" secondAttribute="trailing" constant="8" id="w6D-th-ziv"/>
+                                    <constraint firstAttribute="bottom" secondItem="wkE-LT-dE6" secondAttribute="bottom" constant="10" id="zT2-FL-ctj"/>
                                 </constraints>
-                                <segments>
-                                    <segment title="Normal"/>
-                                    <segment title="Fast"/>
-                                    <segment title="Custom"/>
-                                </segments>
-                                <color key="selectedSegmentTintColor" name="BG6"/>
-                                <connections>
-                                    <action selector="segmentedButtonTapped:" destination="Y6W-OH-hqX" eventType="valueChanged" id="sNX-t8-dtP"/>
-                                </connections>
-                            </segmentedControl>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="253" y="221" width="145" height="26"/>
                                 <color key="backgroundColor" name="BG4"/>
@@ -161,19 +251,37 @@
                                     <action selector="storageInfoTapped:" destination="Y6W-OH-hqX" eventType="touchUpInside" id="cr9-P5-UdG"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;feeError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgU-kb-d9w">
+                                <rect key="frame" x="16" y="190" width="382" height="15"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="TxtAlert4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;gasError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8J-NQ-nrc">
+                                <rect key="frame" x="16" y="251" width="382" height="15"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="TxtAlert4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;storageError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9f-DD-FOo">
+                                <rect key="frame" x="215" y="312" width="183" height="15"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="TxtAlert4"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rnn-3H-Rsw">
-                                <rect key="frame" x="98" y="351" width="218" height="17"/>
+                                <rect key="frame" x="16" y="311.5" width="183" height="14.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qit-Eg-Wvz">
-                                        <rect key="frame" x="0.0" y="0.0" width="115.5" height="17"/>
-                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
-                                        <color key="textColor" name="Txt10"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="96.5" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="Txt12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;maxStorage&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om3-MQ-wmM">
-                                        <rect key="frame" x="121.5" y="0.0" width="96.5" height="17"/>
-                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
-                                        <color key="textColor" name="Txt2"/>
+                                        <rect key="frame" x="102.5" y="0.0" width="80.5" height="14.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="Txt10"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -188,71 +296,56 @@
                                     <constraint firstAttribute="bottom" secondItem="qit-Eg-Wvz" secondAttribute="bottom" id="v4l-TU-Q9K"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;feeError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgU-kb-d9w">
-                                <rect key="frame" x="16" y="190" width="382" height="15"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
-                                <color key="textColor" name="TxtAlert4"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;gasError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8J-NQ-nrc">
-                                <rect key="frame" x="16" y="251" width="382" height="15"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
-                                <color key="textColor" name="TxtAlert4"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;storageError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9f-DD-FOo">
-                                <rect key="frame" x="16" y="312" width="382" height="15"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
-                                <color key="textColor" name="TxtAlert4"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="67P-1Z-wq0" firstAttribute="leading" secondItem="Jyl-eL-Wbd" secondAttribute="trailing" constant="32" id="1u3-3Y-OeF"/>
+                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="leading" secondItem="RY5-dt-g9M" secondAttribute="leading" id="3Ek-O1-E6u"/>
                             <constraint firstItem="67P-1Z-wq0" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" multiplier="0.35" id="3En-jM-P26"/>
-                            <constraint firstItem="jps-w9-yw5" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="20" id="7eN-yK-zSU"/>
                             <constraint firstItem="pfX-zJ-QUN" firstAttribute="top" secondItem="bgU-kb-d9w" secondAttribute="bottom" constant="16" id="8o7-1b-FDq"/>
+                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="Wep-Y0-Dk6" secondAttribute="trailing" constant="16" id="A33-zq-LjS"/>
+                            <constraint firstItem="Wep-Y0-Dk6" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="C1l-Zo-zMQ"/>
                             <constraint firstItem="bgU-kb-d9w" firstAttribute="leading" secondItem="Jyl-eL-Wbd" secondAttribute="leading" id="CnB-Fl-f9M"/>
+                            <constraint firstItem="K9f-DD-FOo" firstAttribute="leading" secondItem="Rnn-3H-Rsw" secondAttribute="trailing" constant="16" id="CnZ-DR-1ta"/>
                             <constraint firstItem="xbO-bZ-r3K" firstAttribute="top" secondItem="h8J-NQ-nrc" secondAttribute="bottom" constant="16" id="EAy-ZA-o5Y"/>
                             <constraint firstItem="h8J-NQ-nrc" firstAttribute="trailing" secondItem="pfX-zJ-QUN" secondAttribute="trailing" id="EmV-ZR-JDt"/>
                             <constraint firstItem="bgU-kb-d9w" firstAttribute="trailing" secondItem="67P-1Z-wq0" secondAttribute="trailing" id="EuL-2z-xy7"/>
-                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="top" secondItem="K9f-DD-FOo" secondAttribute="bottom" constant="24" id="FJH-cG-5JB"/>
                             <constraint firstItem="xbO-bZ-r3K" firstAttribute="leading" secondItem="RY5-dt-g9M" secondAttribute="trailing" constant="32" id="FT9-NG-Jqk"/>
                             <constraint firstItem="h8J-NQ-nrc" firstAttribute="leading" secondItem="TlC-dR-JTf" secondAttribute="leading" id="G80-2K-m1u"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="jps-w9-yw5" secondAttribute="trailing" constant="20" id="G8G-ER-bpD"/>
-                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="centerX" secondItem="vDu-zF-Fre" secondAttribute="centerX" id="JxY-eh-2QA"/>
                             <constraint firstItem="TlC-dR-JTf" firstAttribute="centerY" secondItem="pfX-zJ-QUN" secondAttribute="centerY" id="NHD-0r-aeG"/>
-                            <constraint firstItem="jps-w9-yw5" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="32" id="P24-t4-mDp"/>
-                            <constraint firstItem="67P-1Z-wq0" firstAttribute="top" secondItem="jps-w9-yw5" secondAttribute="bottom" constant="32" id="VIl-NP-WK4"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="67P-1Z-wq0" secondAttribute="trailing" constant="16" id="WJG-cG-56J"/>
                             <constraint firstItem="RY5-dt-g9M" firstAttribute="centerY" secondItem="xbO-bZ-r3K" secondAttribute="centerY" id="YBP-u0-Ikd"/>
                             <constraint firstItem="K9f-DD-FOo" firstAttribute="top" secondItem="xbO-bZ-r3K" secondAttribute="bottom" constant="4" id="c3H-d1-TbE"/>
                             <constraint firstItem="K9f-DD-FOo" firstAttribute="trailing" secondItem="xbO-bZ-r3K" secondAttribute="trailing" id="cJE-A0-wio"/>
                             <constraint firstItem="RY5-dt-g9M" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="gTE-pQ-kCg"/>
+                            <constraint firstItem="Wep-Y0-Dk6" firstAttribute="top" secondItem="vDu-zF-Fre" secondAttribute="top" constant="32" id="gwz-4m-uzD"/>
+                            <constraint firstItem="67P-1Z-wq0" firstAttribute="top" secondItem="Wep-Y0-Dk6" secondAttribute="bottom" constant="32" id="hJE-uY-pqe"/>
                             <constraint firstItem="xbO-bZ-r3K" firstAttribute="leading" secondItem="67P-1Z-wq0" secondAttribute="leading" id="hRa-8T-faN"/>
-                            <constraint firstItem="K9f-DD-FOo" firstAttribute="leading" secondItem="RY5-dt-g9M" secondAttribute="leading" id="iRh-wG-ucJ"/>
                             <constraint firstItem="TlC-dR-JTf" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="jE4-Fi-Fb3"/>
                             <constraint firstItem="h8J-NQ-nrc" firstAttribute="top" secondItem="pfX-zJ-QUN" secondAttribute="bottom" constant="4" id="jEl-MY-Omw"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="pfX-zJ-QUN" secondAttribute="trailing" constant="16" id="kiU-dH-t8j"/>
                             <constraint firstItem="bgU-kb-d9w" firstAttribute="top" secondItem="67P-1Z-wq0" secondAttribute="bottom" constant="4" id="mza-Fs-dH4"/>
                             <constraint firstItem="Jyl-eL-Wbd" firstAttribute="centerY" secondItem="67P-1Z-wq0" secondAttribute="centerY" id="nP5-Rv-Kc9"/>
-                            <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Rnn-3H-Rsw" secondAttribute="trailing" constant="16" id="opK-jM-B4N"/>
-                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="pnR-vS-CJY"/>
                             <constraint firstItem="pfX-zJ-QUN" firstAttribute="leading" secondItem="67P-1Z-wq0" secondAttribute="leading" id="sfl-z8-55I"/>
+                            <constraint firstItem="Rnn-3H-Rsw" firstAttribute="top" secondItem="RY5-dt-g9M" secondAttribute="bottom" constant="8" id="stS-v0-iVa"/>
                             <constraint firstItem="Jyl-eL-Wbd" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" constant="16" id="stX-Se-G1y"/>
                             <constraint firstItem="pfX-zJ-QUN" firstAttribute="leading" secondItem="TlC-dR-JTf" secondAttribute="trailing" constant="32" id="vPI-rc-mkJ"/>
                             <constraint firstItem="vDu-zF-Fre" firstAttribute="trailing" secondItem="xbO-bZ-r3K" secondAttribute="trailing" constant="16" id="zg6-gq-R91"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="customButton" destination="ojb-p4-uhC" id="KSI-lu-Evb"/>
+                        <outlet property="customSegmetnedContainer" destination="Wep-Y0-Dk6" id="ExO-3Q-NQb"/>
+                        <outlet property="fastButton" destination="IXA-QN-ffU" id="YCw-W5-yW6"/>
                         <outlet property="feeErrorLabel" destination="bgU-kb-d9w" id="LWb-9u-E1o"/>
                         <outlet property="feeTextField" destination="67P-1Z-wq0" id="Kc8-Uc-G2c"/>
                         <outlet property="gasErrorLabel" destination="h8J-NQ-nrc" id="xdd-RN-Tn5"/>
                         <outlet property="gasLimitTextField" destination="pfX-zJ-QUN" id="GRc-bO-dec"/>
                         <outlet property="maxStorageCostLbl" destination="om3-MQ-wmM" id="Jr3-M5-NPd"/>
-                        <outlet property="segmentedButton" destination="jps-w9-yw5" id="Sgj-9b-SxQ"/>
+                        <outlet property="normalButton" destination="wkE-LT-dE6" id="TNF-0y-Osz"/>
+                        <outlet property="selectionSeperatorLeft" destination="nVe-3g-Wdv" id="QJn-0i-RqR"/>
+                        <outlet property="selectionSeperatorRight" destination="yTG-6E-ehO" id="n29-4F-z2R"/>
                         <outlet property="storageErrorLabel" destination="K9f-DD-FOo" id="VkH-Iu-k5l"/>
                         <outlet property="storageLimitTextField" destination="xbO-bZ-r3K" id="DWM-rN-yu7"/>
                         <segue destination="wYb-DZ-McV" kind="custom" identifier="feeInfo" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="ecG-V7-O5p"/>
@@ -515,11 +608,17 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtAlert4">
             <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB6">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
