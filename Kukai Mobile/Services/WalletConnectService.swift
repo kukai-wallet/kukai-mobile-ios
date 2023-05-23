@@ -63,19 +63,19 @@ public class WalletConnectService {
 				os_log("WC sessionRequestPublisher", log: .default, type: .info)
 				
 				TransactionService.shared.resetState()
-				TransactionService.shared.walletConnectOperationData.request = sessionRequest
+				TransactionService.shared.walletConnectOperationData.request = sessionRequest.request
 				
-				if sessionRequest.method == "tezos_send" {
+				if sessionRequest.request.method == "tezos_send" {
 					self?.processWalletConnectRequest()
 					
-				} else if sessionRequest.method == "tezos_sign" {
+				} else if sessionRequest.request.method == "tezos_sign" {
 					self?.delegate?.signRequested()
 					
-				} else if sessionRequest.method == "tezos_getAccounts" {
+				} else if sessionRequest.request.method == "tezos_getAccounts" {
 					self?.delegate?.provideAccountList()
 					
 				} else {
-					self?.delegate?.error(message: "Unsupported WC method: \(sessionRequest.method)", error: nil)
+					self?.delegate?.error(message: "Unsupported WC method: \(sessionRequest.request.method)", error: nil)
 				}
 				
 			}.store(in: &bag)
@@ -84,7 +84,7 @@ public class WalletConnectService {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
 				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
-				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal
+				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal.proposal
 				self?.delegate?.pairRequested()
 			}.store(in: &bag)
 		

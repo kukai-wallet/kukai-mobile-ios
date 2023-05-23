@@ -31,6 +31,7 @@
 		C008B9BA2965D2CA00B17D96 /* CollectibleDetailAVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C008B9B82965D2CA00B17D96 /* CollectibleDetailAVCell.swift */; };
 		C008B9BB2965D2CA00B17D96 /* CollectibleDetailAVCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C008B9B92965D2CA00B17D96 /* CollectibleDetailAVCell.xib */; };
 		C009308F28CB3DC500763885 /* StakeHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009308E28CB3DC500763885 /* StakeHeadingCell.swift */; };
+		C009CD832A1CD7C600CFB88C /* Data+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009CD822A1CD7C600CFB88C /* Data+extensions.swift */; };
 		C009F88B28195B9C007EA8A8 /* AddressTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88A28195B9C007EA8A8 /* AddressTypeViewController.swift */; };
 		C009F88D28197F07007EA8A8 /* TezosDomainValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */; };
 		C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C009F88E28197F1D007EA8A8 /* GmailValidator.swift */; };
@@ -372,6 +373,7 @@
 		C008B9B82965D2CA00B17D96 /* CollectibleDetailAVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectibleDetailAVCell.swift; sourceTree = "<group>"; };
 		C008B9B92965D2CA00B17D96 /* CollectibleDetailAVCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectibleDetailAVCell.xib; sourceTree = "<group>"; };
 		C009308E28CB3DC500763885 /* StakeHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakeHeadingCell.swift; sourceTree = "<group>"; };
+		C009CD822A1CD7C600CFB88C /* Data+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+extensions.swift"; sourceTree = "<group>"; };
 		C009F88A28195B9C007EA8A8 /* AddressTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressTypeViewController.swift; sourceTree = "<group>"; };
 		C009F88C28197F07007EA8A8 /* TezosDomainValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosDomainValidator.swift; sourceTree = "<group>"; };
 		C009F88E28197F1D007EA8A8 /* GmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GmailValidator.swift; sourceTree = "<group>"; };
@@ -945,6 +947,7 @@
 				C0FBC896292C16FF00B29921 /* UISegmentedControl+extensions.swift */,
 				C06683FE296726C000FBAA7B /* CMTime+extensions.swift */,
 				C0A2623929D2FCDC00F26C36 /* Array+extensions.swift */,
+				C009CD822A1CD7C600CFB88C /* Data+extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1739,6 +1742,7 @@
 				C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */,
 				C04E2864293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift in Sources */,
 				C001D5A82A027EA10089EC7A /* CollectiblesFavouritesViewController.swift in Sources */,
+				C009CD832A1CD7C600CFB88C /* Data+extensions.swift in Sources */,
 				C01AE5DC28A26C44008F93E8 /* AddLiquidityConfirmViewController.swift in Sources */,
 				C0B8C8A129DC2AD200C8AFD5 /* FaceIdViewController.swift in Sources */,
 				C095367B2A0A8235001B20C4 /* CreatePasswordViewController.swift in Sources */,
@@ -2482,7 +2486,7 @@
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.14;
+				minimumVersion = 1.6.4;
 			};
 		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
