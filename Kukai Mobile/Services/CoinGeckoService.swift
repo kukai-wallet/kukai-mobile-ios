@@ -53,13 +53,13 @@ public class CoinGeckoService {
 		}
 		
 		// Request from API, no more frequently than once per minute, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.minute.rawValue, forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.minute.rawValue, forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self.selectedCurrencyRatePerXTZ = response.price()
+			self?.selectedCurrencyRatePerXTZ = response.price()
 			completion(Result.success(response.price()))
 		}
 	}
@@ -71,13 +71,13 @@ public class CoinGeckoService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self.exchangeRates = response
+			self?.exchangeRates = response
 			completion(Result.success(response))
 		}
 	}

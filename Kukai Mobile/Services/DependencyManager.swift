@@ -31,7 +31,6 @@ class DependencyManager {
 	
 	
 	// Kukai Core clients and properties
-	var environmentService: EnvironmentService
 	var tezosClientConfig: TezosNodeClientConfig
 	var tezosNodeClient: TezosNodeClient
 	var tzktClient: TzKTClient
@@ -42,6 +41,7 @@ class DependencyManager {
 	var activityService: ActivityService
 	var coinGeckoService: CoinGeckoService
 	var tezosDomainsClient: TezosDomainsClient
+	var exploreService: ExploreService
 	
 	
 	// Properties and helpers
@@ -156,7 +156,6 @@ class DependencyManager {
 		
 		// Can't call self until all properties init'd, or made optional and nil'd. We need this setup logic accessible outside of the init,
 		// To avoid code duplication, we setup the properties with default values and then call the shared func
-		environmentService = EnvironmentService()
 		tezosClientConfig = TezosNodeClientConfig(withDefaultsForNetworkType: .mainnet)
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
@@ -167,6 +166,7 @@ class DependencyManager {
 		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
 		
 		updateKukaiCoreClients()
 	}
@@ -201,7 +201,6 @@ class DependencyManager {
 			networkType: currentNetworkType
 		)
 		
-		environmentService = EnvironmentService()
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
@@ -210,6 +209,7 @@ class DependencyManager {
 		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
 		
 		if !supressUpdateNotification {
 			networkDidChange = true
