@@ -188,7 +188,7 @@ public class BalanceService {
 				}
 				
 				self.updateEstimatedTotal()
-				self.updateTokenStates() // Will write account to disak as well, no need to call again
+				self.updateTokenStates() // Will write account to disk as well, no need to call again
 				self.hasFetchedInitialData = true
 				self.isFetchingData = false
 				DependencyManager.shared.accountBalancesDidUpdate = true
