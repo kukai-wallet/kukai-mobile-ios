@@ -24,8 +24,6 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var accountDataRefreshedCancellable: AnyCancellable?
-	private let contractAliases = DependencyManager.shared.environmentService.mainnetEnv.contractAliases
-	private let contractAliasesAddressShorthand = DependencyManager.shared.environmentService.mainnetEnv.contractAliases.map({ $0.address[0] })
 	private var previousLayout: LayoutType = .single
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
@@ -114,15 +112,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				let urls = nfts.map({ MediaProxyService.thumbnailURL(forNFT: $0) })
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
-				
-				if let index = self?.contractAliasesAddressShorthand.firstIndex(of: obj.tokenContractAddress ?? "") {
-					let image = UIImage(named: self?.contractAliases[index].thumbnailUrl ?? "") ?? UIImage()
-					let name = self?.contractAliases[index].name ?? title
-					cell.setup(iconImage: image, title: name, imageURLs: urls, totalCount: totalCount)
-					
-				} else {
-					cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
-				}
+				cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
 				
 				return cell
 			}
@@ -214,18 +204,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		dataSource?.apply(normalSnapshot, animatingDifferences: true)
 	}
 	
-	func token(forIndexPath indexPath: IndexPath) -> (token: Token, image: UIImage?, name: String?)? {
+	func token(forIndexPath indexPath: IndexPath) -> Token? {
 		if let t = dataSource?.itemIdentifier(for: indexPath) as? Token {
-			if let index = self.contractAliasesAddressShorthand.firstIndex(of: t.tokenContractAddress ?? "") {
-				let image = UIImage(named: self.contractAliases[index].thumbnailUrl) ?? UIImage()
-				let name = self.contractAliases[index].name
-				
-				// TODO: remove when we have server
-				return (token: t, image: image, name: name)
-				
-			} else {
-				return (token: t, image: nil, name: nil)
-			}
+			return t
 		}
 		
 		return nil

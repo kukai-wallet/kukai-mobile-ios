@@ -52,6 +52,7 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
+		dispatchGroupBalances.enter()
 		
 		if refreshType == .useCache,
 		   let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
@@ -67,15 +68,13 @@ public class BalanceService {
 				  let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
 			
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get(), let updatedNFTs = self?.orderGroupAndAliasNFTs(tokens: res.nfts) else {
+				guard let res = try? result.get() else {
 					error = result.getFailure()
 					self?.dispatchGroupBalances.leave()
 					return
 				}
 				
-				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, recentNFTs: res.recentNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
-				
-				self?.account = newAccount
+				self?.account = res
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -96,15 +95,13 @@ public class BalanceService {
 		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get(), let updatedNFTs = self?.orderGroupAndAliasNFTs(tokens: res.nfts) else {
+				guard let res = try? result.get() else {
 					error = result.getFailure()
 					self?.dispatchGroupBalances.leave()
 					return
 				}
 				
-				let newAccount = Account(walletAddress: res.walletAddress, xtzBalance: res.xtzBalance, tokens: res.tokens, nfts: updatedNFTs, recentNFTs: res.recentNFTs, liquidityTokens: res.liquidityTokens, delegate: res.delegate, delegationLevel: res.delegationLevel)
-				
-				self?.account = newAccount
+				self?.account = res
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -137,6 +134,11 @@ public class BalanceService {
 		} else {
 			self.dispatchGroupBalances.leave()
 			self.dispatchGroupBalances.leave()
+		}
+		
+		// Make sure we have the latest explore data
+		DependencyManager.shared.exploreService.fetchExploreItems { [weak self] result in
+			self?.dispatchGroupBalances.leave()
 		}
 		
 		// Get latest Tezos USD price
@@ -177,61 +179,123 @@ public class BalanceService {
 		
 		
 		// When everything fetched, process data
-		dispatchGroupBalances.notify(queue: .main) { [weak self] in
+		dispatchGroupBalances.notify(queue: .global(qos: .background)) { [weak self] in
 			if let err = error {
-				completion(err)
+				DispatchQueue.main.async { completion(err) }
 				
 			} else {
 				guard let self = self else {
-					completion(KukaiError.unknown())
+					DispatchQueue.main.async { completion(KukaiError.unknown()) }
 					return
 				}
 				
+				// TODO:
+				// need to re-write and implement `self.updateTokenStates()`
+				// likely can drop all the calls to dex calculation service in here and just rely on the midPrice
+				
+				
+				// Make modifications, group, create sum totals on background
 				self.updateEstimatedTotal()
-				self.updateTokenStates() // Will write account to disk as well, no need to call again
-				self.hasFetchedInitialData = true
-				self.isFetchingData = false
-				DependencyManager.shared.accountBalancesDidUpdate = true
+				//self.updateTokenStates() // Will write account to disk as well, no need to call again
 				
-				let _ = DiskService.write(encodable: self.exchangeData, toFileName: BalanceService.cacheFilenameExchangeData)
-				
-				completion(nil)
+				self.orderGroupAndAliasNFTs {
+					let _ = DiskService.write(encodable: self.exchangeData, toFileName: BalanceService.cacheFilenameExchangeData)
+					
+					// Respond on main when everything done
+					DispatchQueue.main.async {
+						self.hasFetchedInitialData = true
+						self.isFetchingData = false
+						DependencyManager.shared.accountBalancesDidUpdate = true
+						completion(nil)
+					}
+				}
 			}
 		}
 	}
 	
-	private func orderGroupAndAliasNFTs(tokens: [Token]) -> [Token] {
-		let contractAliases = DependencyManager.shared.environmentService.mainnetEnv.contractAliases
-		var updatedTokens: [Token] = []
-		var leftOverTokens = tokens
+	private func orderGroupAndAliasNFTs(completion: @escaping (() -> Void)) {
+		var modifiedNFTs: [UUID: (token: Token, sortIndex: Int)] = [:]
+		var unmodifiedNFTs: [Token] = []
 		
-		// Loop through known contracts
-		for contractAlias in contractAliases {
+		for token in self.account.nfts {
 			
-			// Create dummy object for each
-			updatedTokens.append(Token(name: contractAlias.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: nil, tokenContractAddress: contractAlias.address[0], tokenId: 0, nfts: []))
-			
-			// Loop through tokens to see if any of them should be in group
-			var indexesToRemove: [Int] = []
-			for (index, token) in leftOverTokens.enumerated() {
-				if contractAlias.address.contains(where: { $0 == (token.tokenContractAddress ?? "") }) {
-					updatedTokens.last?.nfts?.append(contentsOf: token.nfts ?? [])
-					indexesToRemove.append(index)
-				}
+			// Custom logic, search for teia links
+			var address = token.tokenContractAddress ?? ""
+			if address == "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton" && token.mintingTool == "https://teia.art/mint" {
+				address += "@teia"
 			}
-			if indexesToRemove.count > 0 {
-				leftOverTokens.remove(atOffsets: IndexSet(indexesToRemove))
+			
+			// If there is no special logic for this token, add it in the order it came down in, and move on
+			guard let exploreItem = DependencyManager.shared.exploreService.item(forAddress: address) else {
+				unmodifiedNFTs.append(token)
+				continue
+			}
+			
+			
+			// If there is special logic, we will create a new `Token` object and store it in `modifiedNFTs`
+			// If the token already exists, we will append the nft contents of `Token` to the object and drop the token we got from tzkt
+			if modifiedNFTs[exploreItem.primaryKey] != nil {
+				modifiedNFTs[exploreItem.primaryKey]?.token.nfts?.append(contentsOf: token.nfts ?? [])
+				
+			} else {
+				// TODO: need API updated in order to be able to get `thumbnailURL`
+				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: nil, tokenContractAddress: exploreItem.address[0], tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
+				modifiedNFTs[exploreItem.primaryKey] = (token: newToken, sortIndex: exploreItem.sortIndex)
 			}
 		}
 		
+		// Then we convert `modifiedNFTs` into an array and sort it based on sortIndex
+		// Lastly writing it back to `self.account` with the `unmodifiedNFTs`
+		var modifiedArray = Array(modifiedNFTs.values)
+		modifiedArray = modifiedArray.sorted { lhs, rhs in
+			lhs.sortIndex < rhs.sortIndex
+		}
 		
-		// Loop over updatedTokens to remove any empty contractAlias
-		updatedTokens = updatedTokens.filter({ ($0.nfts ?? []).count > 0 })
 		
-		// Add left over tokens
-		updatedTokens.append(contentsOf: leftOverTokens)
+		// Ultimately we need data from OBJKT.com for the `unmodifiedNFTs`. Make a list of which ever ones don't exist, and bulk fetch them
+		let addresses = unmodifiedNFTs.compactMap({ $0.tokenContractAddress })
+		let unresolved = DependencyManager.shared.objktClient.unresolvedCollections(addresses: addresses)
+		DependencyManager.shared.objktClient.resolveCollectionsAll(addresses: unresolved) { [weak self] _ in
+			
+			let newlyModified = self?.updateTokensWithObjktData(unmodifiedTokens: unmodifiedNFTs) ?? []
+			
+			var newNFTs = modifiedArray.map({ $0.token })
+			newNFTs.append(contentsOf: newlyModified)
+			
+			let newAccount = Account(walletAddress: self?.account.walletAddress ?? "",
+									 xtzBalance: self?.account.xtzBalance ?? .zero(),
+									 tokens: self?.account.tokens ?? [],
+									 nfts: newNFTs,
+									 recentNFTs: self?.account.recentNFTs ?? [],
+									 liquidityTokens: self?.account.liquidityTokens ?? [],
+									 delegate: self?.account.delegate,
+									 delegationLevel: self?.account.delegationLevel ?? 1)
+			
+			self?.account = newAccount
+			
+			completion()
+		}
+	}
+	
+	private func updateTokensWithObjktData(unmodifiedTokens: [Token]) -> [Token] {
+		var newTokens: [Token] = []
 		
-		return updatedTokens
+		for token in unmodifiedTokens {
+			if let address = token.tokenContractAddress, let objktData = DependencyManager.shared.objktClient.collections[address] {
+				var url: URL? = nil
+				if let logo = objktData.logo {
+					url = MediaProxyService.url(fromUri: URL(string: logo), ofFormat: .icon)
+				}
+				
+				let token = Token(name: objktData.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: token.balance, thumbnailURL: url, tokenContractAddress: address, tokenId: token.tokenId, nfts: token.nfts, mintingTool: token.mintingTool)
+				newTokens.append(token)
+				
+			} else {
+				newTokens.append(token)
+			}
+		}
+		
+		return newTokens
 	}
 	
 	private func updateEstimatedTotal() {

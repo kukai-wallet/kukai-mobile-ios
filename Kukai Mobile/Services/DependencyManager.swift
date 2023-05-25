@@ -23,11 +23,13 @@ class DependencyManager {
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
+	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
 	static let defaultNodeURL_testnet = URL(string: "https://rpc.ghostnet.teztnets.xyz")!
 	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
+	static let defaultObjktURL_testnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
 	
 	// Kukai Core clients and properties
@@ -37,6 +39,7 @@ class DependencyManager {
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
 	var dipDupClient: DipDupClient
+	var objktClient: ObjktClient
 	var balanceService: BalanceService
 	var activityService: ActivityService
 	var coinGeckoService: CoinGeckoService
@@ -71,6 +74,11 @@ class DependencyManager {
 	var currentTezosDomainsURL: URL {
 		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tezos-domains.url") }
 		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tezos-domains.url") ?? "") ?? DependencyManager.defaultTezosDomainsURL_mainnet }
+	}
+	
+	var currentObjktURL: URL {
+		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.objkt.url") }
+		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.objkt.url") ?? "") ?? DependencyManager.defaultObjktURL_mainnet }
 	}
 	
 	var currentNetworkType: TezosNodeClientConfig.NetworkType {
@@ -160,6 +168,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
 		balanceService = BalanceService()
@@ -176,6 +185,7 @@ class DependencyManager {
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
+		currentObjktURL = DependencyManager.defaultObjktURL_mainnet
 		currentNetworkType = .mainnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
@@ -186,6 +196,7 @@ class DependencyManager {
 		currentTzktURL = DependencyManager.defaultTzktURL_testnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
+		currentObjktURL = DependencyManager.defaultObjktURL_testnet
 		currentNetworkType = .testnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
@@ -197,6 +208,7 @@ class DependencyManager {
 			tzktURL: currentTzktURL,
 			betterCallDevURL: currentBcdURL,
 			tezosDomainsURL: currentTezosDomainsURL,
+			objktApiURL: currentObjktURL,
 			urlSession: sharedSession,
 			networkType: currentNetworkType
 		)
@@ -204,6 +216,7 @@ class DependencyManager {
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		balanceService = BalanceService()
 		activityService = ActivityService()
