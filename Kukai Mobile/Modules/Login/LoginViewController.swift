@@ -72,6 +72,8 @@ class LoginViewController: UIViewController {
 	
 	
 	private func reestablishConnectionsAfterLogin() {
-		AccountViewModel.setupAccountActivityListener()
+		if !DependencyManager.shared.tzktClient.isListening {
+			AccountViewModel.setupAccountActivityListener()
+		}
 	}
 }

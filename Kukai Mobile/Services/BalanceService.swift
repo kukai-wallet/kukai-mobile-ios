@@ -7,6 +7,8 @@
 
 import Foundation
 import KukaiCoreSwift
+import Combine
+import OSLog
 
 public class BalanceService {
 	
@@ -30,8 +32,10 @@ public class BalanceService {
 	@Published var isFetchingData: Bool = false
 	
 	private var dispatchGroupBalances = DispatchGroup()
+	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
+	private var bag_refreshAll = Set<AnyCancellable>()
 	
 	private static func accountCacheFilename(withAddress address: String?) -> String {
 		return BalanceService.cacheFilenameAccount + (address ?? "")
@@ -46,7 +50,62 @@ public class BalanceService {
 		}
 	}
 	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
+	public func refresh(addresses: [String], selectedAddress: String, completion: @escaping ((KukaiError?) -> Void)) {
+		self.hasFetchedInitialData = false
+		
+		var futures: [Deferred<Future<Bool, KukaiError>>] = []
+		for address in addresses {
+			let isSelected = (selectedAddress == address)
+			futures.append(fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelected, refreshType: .refreshEverything))
+		}
+		
+		// Convert futures into sequential array
+		guard let concatenatedPublishers = futures.concatenatePublishers() else {
+			os_log("balanceService - unable to create concatenatedPublishers", type: .error)
+			return
+		}
+		
+		// Get the result of the concatenated publisher, whether it be successful payload, or error
+		concatenatedPublishers
+			.last()
+			.convertToResult()
+			.sink { concatenatedResult in
+				guard let _ = try? concatenatedResult.get() else {
+					let error = (try? concatenatedResult.getError()) ?? KukaiError.unknown()
+					os_log("balanceService - refresh all - received error: %@", type: .debug, "\(error)")
+					
+					self.hasFetchedInitialData = true
+					completion(error)
+					return
+				}
+				
+				self.hasFetchedInitialData = true
+				completion(nil)
+			}
+			.store(in: &self.bag_refreshAll)
+	}
+	
+	public func fetchAllBalancesTokensAndPrices(forAddress address: String, isSelectedAccount: Bool, refreshType: RefreshType) -> Deferred<Future<Bool, KukaiError>> {
+		return Deferred {
+			Future<Bool, KukaiError> { [weak self] promise in
+				guard let self = self else {
+					os_log("balanceService - fetch all future - can't find self", type: .error)
+					promise(.failure(KukaiError.unknown()))
+					return
+				}
+				
+				self.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelectedAccount, refreshType: refreshType) { error in
+					if let e = error {
+						promise(.failure(e))
+					} else {
+						promise(.success(true))
+					}
+				}
+			}
+		}
+	}
+	
+	public func fetchAllBalancesTokensAndPrices(forAddress address: String, isSelectedAccount: Bool, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
 		
 		isFetchingData = true
 		
@@ -61,7 +120,7 @@ public class BalanceService {
 		if refreshType == .useCache {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
-			self.account = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
+			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 			self.dispatchGroupBalances.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
@@ -76,7 +135,7 @@ public class BalanceService {
 					return
 				}
 				
-				self?.account = res
+				self?.currentlyRefreshingAccount = res
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -95,6 +154,7 @@ public class BalanceService {
 			self.dispatchGroupBalances.leave()
 			
 		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
+			
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -103,7 +163,7 @@ public class BalanceService {
 					return
 				}
 				
-				self?.account = res
+				self?.currentlyRefreshingAccount = res
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -197,10 +257,11 @@ public class BalanceService {
 				}
 				
 				// TODO:
-				// change tzkt listener to listen for all accounts at once and update on a per account basis
-				// stop killing + reconnecting tzkt on account switch
 				// trigger full refresh on imported account for first time
 				// need to re-write and implement `self.updateTokenStates()`
+				// activityService is probably caching globally, need to update to per account
+				// refresh exchange data similar to requestIf, may get called many times but only needs to update once every few mins max
+				// Check if there should be a .useCache override for stale data
 				
 				
 				// Make modifications, group, create sum totals on background
@@ -213,8 +274,13 @@ public class BalanceService {
 					DispatchQueue.main.async {
 						self.hasFetchedInitialData = true
 						self.isFetchingData = false
-						let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
-						DependencyManager.shared.accountBalancesDidUpdate = true
+						let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+						
+						if isSelectedAccount {
+							self.account = self.currentlyRefreshingAccount
+						}
+						
+						self.currentlyRefreshingAccount = Account(walletAddress: "")
 						completion(nil)
 					}
 				}
@@ -232,7 +298,7 @@ public class BalanceService {
 		var modifiedNFTs: [UUID: (token: Token, sortIndex: Int)] = [:]
 		var unmodifiedNFTs: [Token] = []
 		
-		for token in self.account.nfts {
+		for token in self.currentlyRefreshingAccount.nfts {
 			
 			// Custom logic, search for teia links
 			var address = token.tokenContractAddress ?? ""
@@ -277,16 +343,16 @@ public class BalanceService {
 			var newNFTs = modifiedArray.map({ $0.token })
 			newNFTs.append(contentsOf: newlyModified)
 			
-			let newAccount = Account(walletAddress: self?.account.walletAddress ?? "",
-									 xtzBalance: self?.account.xtzBalance ?? .zero(),
-									 tokens: self?.account.tokens ?? [],
+			let newAccount = Account(walletAddress: self?.currentlyRefreshingAccount.walletAddress ?? "",
+									 xtzBalance: self?.currentlyRefreshingAccount.xtzBalance ?? .zero(),
+									 tokens: self?.currentlyRefreshingAccount.tokens ?? [],
 									 nfts: newNFTs,
-									 recentNFTs: self?.account.recentNFTs ?? [],
-									 liquidityTokens: self?.account.liquidityTokens ?? [],
-									 delegate: self?.account.delegate,
-									 delegationLevel: self?.account.delegationLevel ?? 1)
+									 recentNFTs: self?.currentlyRefreshingAccount.recentNFTs ?? [],
+									 liquidityTokens: self?.currentlyRefreshingAccount.liquidityTokens ?? [],
+									 delegate: self?.currentlyRefreshingAccount.delegate,
+									 delegationLevel: self?.currentlyRefreshingAccount.delegationLevel ?? 1)
 			
-			self?.account = newAccount
+			self?.currentlyRefreshingAccount = newAccount
 			
 			completion()
 		}
@@ -316,14 +382,14 @@ public class BalanceService {
 	private func updateEstimatedTotal() {
 		var estimatedTotal: XTZAmount = .zero()
 		
-		for token in self.account.tokens {
+		for token in self.currentlyRefreshingAccount.tokens {
 			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
 			estimatedTotal += dexRate.xtzValue
 			
 			self.tokenValueAndRate[token.id] = dexRate
 		}
 		
-		self.estimatedTotalXtz = self.account.xtzBalance + estimatedTotal
+		self.estimatedTotalXtz = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
 	}
 	
 	func updateTokenStates() {
@@ -436,13 +502,13 @@ public class BalanceService {
 	}
 	
 	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {
-		for token in account.tokens {
+		for token in currentlyRefreshingAccount.tokens {
 			if token.tokenContractAddress == address, (token.tokenId ?? (andTokenId ?? 0)) == (andTokenId ?? 0) {
 				return (token: token, isNFT: false)
 			}
 		}
 		
-		for nftGroup in account.nfts {
+		for nftGroup in currentlyRefreshingAccount.nfts {
 			if nftGroup.tokenContractAddress == address {
 				return (token: nftGroup, isNFT: true)
 			}

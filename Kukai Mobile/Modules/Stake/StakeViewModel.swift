@@ -214,7 +214,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return
 				}
 				
-				DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: selectedWallet.address, refreshType: .refreshAccountOnly) { error in
+				DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: selectedWallet.address, isSelectedAccount: true, refreshType: .refreshAccountOnly) { error in
 					if let e = error {
 						completion(Result.failure(e))
 					} else {

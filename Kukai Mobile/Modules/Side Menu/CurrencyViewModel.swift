@@ -105,6 +105,8 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
+			// TODO: may be double refreshing here
+			/*
 			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { [weak self] error in
 				if let e = error {
 					self?.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
@@ -114,6 +116,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				DependencyManager.shared.balanceService.currencyChanged = true
 				self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
 			}
+			*/
 		}
 	}
 }

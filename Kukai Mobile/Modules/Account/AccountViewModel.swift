@@ -217,7 +217,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: .refreshEverything) { [weak self] error in
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: true, refreshType: .refreshEverything) { [weak self] error in
 			guard let self = self else { return }
 			
 			if let e = error {
@@ -250,12 +250,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 	//	return
 	//#else
-		guard let wallet = DependencyManager.shared.selectedWalletAddress else { return }
+		let allWallets = DependencyManager.shared.walletList.addresses()
 		if DependencyManager.shared.tzktClient.isListening {
-			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(address: wallet)
+			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(addresses: allWallets)
 			
 		} else {
-			DependencyManager.shared.tzktClient.listenForAccountChanges(address: wallet)
+			DependencyManager.shared.tzktClient.listenForAccountChanges(addresses: allWallets)
 		}
 	//#endif
 	}

@@ -50,28 +50,20 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				// TODO: re-assess
-				//self?.setupTzKTAccountListener()
-				//DependencyManager.shared.activityService.deleteCache()
-				//AccountViewModel.setupAccountActivityListener()
+				DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 				
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .refreshEverything
-				self?.refresh()
+				self?.refreshAllWallets()
 			}.store(in: &bag)
 		
 		DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				// TODO: re-assess
-				//DependencyManager.shared.balanceService.deleteAccountCachcedData()
-				//DependencyManager.shared.activityService.deleteCache()
-				AccountViewModel.setupAccountActivityListener()
-				
 				self?.stopActivityAnimation(success: false)
 				self?.updateAccountButton()
 				self?.refreshType = .useCache
-				self?.refresh()
+				self?.refresh(address: nil)
 			}.store(in: &bag)
 		
 		setupTzKTAccountListener()
@@ -110,12 +102,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData && !DependencyManager.shared.balanceService.isFetchingData {
 			self.refreshType = .refreshEverything
-			refresh()
+			refresh(address: nil)
 			
 		} else if DependencyManager.shared.balanceService.currencyChanged {
 			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway
 			self.refreshType = .useCache
-			refresh()
+			refreshAllWallets()
 		}
 	}
 	
@@ -158,9 +150,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	func setupTzKTAccountListener() {
 		DependencyManager.shared.tzktClient.$accountDidChange
 			.dropFirst()
-			.sink { [weak self] _ in
+			.sink { [weak self] address in
 				self?.refreshType = .refreshEverything
-				self?.refresh()
+				self?.refresh(address: address)
 			}.store(in: &bag)
 	}
 	
@@ -282,14 +274,20 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 	}
 	
-	func refresh() {
+	func refresh(address: String?) {
 	//#if DEBUG
 	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
 	//	return
 	//#else
-		guard let address = DependencyManager.shared.selectedWalletAddress else { return }
+		var addressToRefresh = address
+		if addressToRefresh == nil {
+			addressToRefresh = DependencyManager.shared.selectedWalletAddress
+		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, refreshType: refreshType) { [weak self] error in
+		guard let address = addressToRefresh else { return }
+		
+		let isSelected = (address == DependencyManager.shared.selectedWalletAddress)
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelected, refreshType: refreshType) { [weak self] error in
 			guard let self = self else { return }
 			
 			self.refreshType = .useCache
@@ -300,8 +298,25 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			self.stopActivityAnimationIfNecessary()
 			
 			DependencyManager.shared.balanceService.currencyChanged = false
+			DependencyManager.shared.accountBalancesDidUpdate = true
 		}
 	//#endif
+	}
+	
+	func refreshAllWallets() {
+		let addresses = DependencyManager.shared.walletList.addresses()
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		
+		DependencyManager.shared.balanceService.refresh(addresses: addresses, selectedAddress: selectedAddress) { [weak self] error in
+			if let err = error {
+				self?.alert(errorWithMessage: "\(err)")
+			}
+			
+			DependencyManager.shared.accountBalancesDidUpdate = true
+			if !DependencyManager.shared.tzktClient.isListening {
+				AccountViewModel.setupAccountActivityListener()
+			}
+		}
 	}
 	
 	func sendButtonTapped() {
