@@ -63,8 +63,11 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				return
 			}
 			
-			if TokenStateService.shared.moveFavourite(tokenIndex: sourceIndexPath.section-1, toIndex: destinationIndexPath.section-1) {
-				DependencyManager.shared.balanceService.updateTokenStates()
+			if let address = DependencyManager.shared.selectedWalletAddress,
+			   let token = (itemIdentifier(for: sourceIndexPath) as? Token),
+			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section-1) {
+				
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				
 			} else {
@@ -134,7 +137,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			}
 		}
 		
-		tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
+		tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
 		favouriteCount = tokensToDisplay.count
 		
 		// Only add non-favourites if we aren't editing
@@ -165,11 +168,12 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		}
 		
 		let token = tokensToDisplay[atIndexPath.section-1]
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
 		
-		if TokenStateService.shared.isFavourite(token: token).isFavourite {
-			if TokenStateService.shared.removeFavourite(token: token) {
+		if TokenStateService.shared.isFavourite(forAddress: address, token: token) != nil {
+			if TokenStateService.shared.removeFavourite(forAddress: address, token: token) {
 				cell.setup(isFav: false, isLocked: false)
-				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount -= 1
 				
@@ -178,9 +182,9 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			}
 			
 		} else {
-			if TokenStateService.shared.addFavourite(token: token) {
+			if TokenStateService.shared.addFavourite(forAddress: address, token: token) {
 				cell.setup(isFav: true, isLocked: false)
-				DependencyManager.shared.balanceService.updateTokenStates()
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount += 1
 				

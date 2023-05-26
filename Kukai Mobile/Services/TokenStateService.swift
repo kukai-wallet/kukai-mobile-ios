@@ -11,25 +11,24 @@ import KukaiCoreSwift
 /// Managing and persisting states like hidden, favourite, watchlist etc for tokens/collectibles/defi-pools
 public class TokenStateService {
 	
-	public struct TokenStateItem: Codable, Hashable {
-		let address: String
-		let id: Decimal?
-	}
-	
 	private static let hiddenBalancesFilename = "token-state-hidden-balance"
 	private static let hiddenCollectiblesFilename = "token-state-hidden-collecitble"
 	private static let favouriteBalancesFilename = "token-state-fav-balance"
 	private static let favouriteCollectiblesFilename = "token-state-fav-collecitble"
 	
+	public typealias HiddenType = [String: [String: Bool]]		// { <address>: { "<contract>:<tokenId>": Bool } }
+	public typealias FavouriteType = [String: [String: Int]]	// { <address>: { "<contract>:<tokenId>": <sortIndex> } }
+	
+	public var hiddenBalances: HiddenType = [:]
+	public var hiddenCollectibles: HiddenType = [:]
+	public var favouriteBalances: FavouriteType = [:]
+	public var favouriteCollectibles: FavouriteType = [:]
+	
 	public static let shared = TokenStateService()
 	
-	public var hiddenBalances: [TokenStateItem] = []
-	public var hiddenCollectibles: [TokenStateItem] = []
-	public var favouriteBalances: [TokenStateItem] = []
-	public var favouriteCollectibles: [TokenStateItem] = []
+	
 	
 	private init() {
-		//DiskService.delete(fileName: TokenStateService.hiddenBalancesFilename)
 		readAllCaches()
 	}
 	
@@ -37,36 +36,58 @@ public class TokenStateService {
 	
 	// MARK: Add
 	
-	public func addHidden(token: Token) -> Bool {
-		if !isHidden(token: token) {
-			hiddenBalances.append(stateItem(fromToken: token))
+	public func addBlankHiddenBalanceIfNeeded(forAddress address: String) {
+		if hiddenBalances[address] == nil { hiddenBalances[address] = [:] }
+	}
+	
+	public func addBlankHiddenCollectibleIfNeeded(forAddress address: String) {
+		if hiddenCollectibles[address] == nil { hiddenCollectibles[address] = [:] }
+	}
+	
+	public func addBlankFavouriteBalanceIfNeeded(forAddress address: String) {
+		if favouriteBalances[address] == nil { favouriteBalances[address] = [:] }
+	}
+	
+	public func addBlankFavouriteCollectibleIfNeeded(forAddress address: String) {
+		if favouriteCollectibles[address] == nil { favouriteCollectibles[address] = [:] }
+	}
+	
+	public func addHidden(forAddress address: String, token: Token) -> Bool {
+		if !isHidden(forAddress: address, token: token) {
+			addBlankHiddenBalanceIfNeeded(forAddress: address)
+			hiddenBalances[address]?[balanceId(from: token)] = true
 			return writeHiddenBalances()
 		}
 		
 		return false
 	}
 	
-	public func addHidden(nft: NFT) -> Bool {
-		if !isHidden(nft: nft) {
-			hiddenCollectibles.append(stateItem(fromCollectible: nft))
+	public func addHidden(forAddress address: String, nft: NFT) -> Bool {
+		if !isHidden(forAddress: address, nft: nft) {
+			addBlankHiddenCollectibleIfNeeded(forAddress: address)
+			hiddenCollectibles[address]?[nftId(from: nft)] = true
 			return writeHiddenCollectibles()
 		}
 		
 		return false
 	}
 	
-	public func addFavourite(token: Token) -> Bool {
-		if !isFavourite(token: token).isFavourite {
-			favouriteBalances.append(stateItem(fromToken: token))
+	public func addFavourite(forAddress address: String, token: Token) -> Bool {
+		if isFavourite(forAddress: address, token: token) == nil {
+			let count = favouriteBalances[address]?.count ?? -1
+			addBlankFavouriteBalanceIfNeeded(forAddress: address)
+			favouriteBalances[address]?[balanceId(from: token)] = count + 1
 			return writeFavouriteBalances()
 		}
 		
 		return false
 	}
 	
-	public func addFavourite(nft: NFT) -> Bool {
-		if !isFavourite(nft: nft) {
-			favouriteCollectibles.append(stateItem(fromCollectible: nft))
+	public func addFavourite(forAddress address: String, nft: NFT) -> Bool {
+		if isFavourite(forAddress: address, nft: nft) == nil {
+			let count = favouriteCollectibles[address]?.count ?? -1
+			addBlankFavouriteCollectibleIfNeeded(forAddress: address)
+			favouriteCollectibles[address]?[nftId(from: nft)] = count + 1
 			return writeFavouriteCollectibles()
 		}
 		
@@ -77,103 +98,101 @@ public class TokenStateService {
 	
 	// MARK: Helpers
 	
-	public func isHidden(token: Token) -> Bool {
-		return hiddenBalances.contains { item in
-			return item.address == token.tokenContractAddress && item.id == token.tokenId
-		}
+	public func balanceId(from token: Token) -> String {
+		return (token.tokenContractAddress ?? "") + (token.tokenId ?? 0).description
 	}
 	
-	public func isHidden(nft: NFT) -> Bool {
-		return hiddenCollectibles.contains { item in
-			item.address == nft.parentContract && item.id == nft.tokenId
-		}
+	public func nftId(from nft: NFT) -> String {
+		return nft.parentContract + nft.tokenId.description
 	}
 	
-	public func isFavourite(token: Token) -> (isFavourite: Bool, sortIndex: Int) {
-		let stateItem = stateItem(fromToken: token)
-		if let index = favouriteBalances.firstIndex(of: stateItem) {
-			return (isFavourite: true, sortIndex: index)
-		}
-		
-		return (isFavourite: false, sortIndex: 0)
+	public func isHidden(forAddress address: String, token: Token) -> Bool {
+		return hiddenBalances[address]?[balanceId(from: token)] ?? false
 	}
 	
-	public func isFavourite(nft: NFT) -> Bool {
-		return favouriteCollectibles.contains { item in
-			item.address == nft.parentContract && item.id == nft.tokenId
-		}
+	public func isHidden(forAddress address: String, nft: NFT) -> Bool {
+		return hiddenCollectibles[address]?[nftId(from: nft)] ?? false
 	}
 	
-	public func stateItem(fromToken token: Token) -> TokenStateItem {
-		return TokenStateItem(address: token.tokenContractAddress ?? "", id: token.tokenId)
+	public func isFavourite(forAddress address: String, token: Token) -> Int? {
+		return favouriteBalances[address]?[balanceId(from: token)] ?? nil
 	}
 	
-	public func stateItem(fromCollectible nft: NFT) -> TokenStateItem {
-		return TokenStateItem(address: nft.parentContract, id: nft.tokenId)
+	public func isFavourite(forAddress address: String, nft: NFT) -> Int? {
+		return favouriteCollectibles[address]?[nftId(from: nft)] ?? nil
 	}
 	
 	
 	
 	// MARK: Remove
 	
-	public func removeHidden(token: Token) -> Bool {
-		let stateItem = stateItem(fromToken: token)
-		if let index = hiddenBalances.firstIndex(of: stateItem) {
-			hiddenBalances.remove(at: index)
-			return writeHiddenBalances()
-		}
-		
-		return false
+	public func removeHidden(forAddress address: String, token: Token) -> Bool {
+		hiddenBalances[address]?.removeValue(forKey: balanceId(from: token))
+		return writeHiddenBalances()
 	}
 	
-	public func removeHidden(nft: NFT) -> Bool {
-		let stateItem = stateItem(fromCollectible: nft)
-		if let index = hiddenCollectibles.firstIndex(of: stateItem) {
-			hiddenCollectibles.remove(at: index)
-			return writeHiddenCollectibles()
-		}
-		
-		return false
+	public func removeHidden(forAddress address: String, nft: NFT) -> Bool {
+		hiddenCollectibles[address]?.removeValue(forKey: nftId(from: nft))
+		return writeHiddenCollectibles()
 	}
 	
-	public func removeFavourite(token: Token) -> Bool {
-		let stateItem = stateItem(fromToken: token)
-		if let index = favouriteBalances.firstIndex(of: stateItem) {
-			favouriteBalances.remove(at: index)
-			return writeFavouriteBalances()
-		}
-		
-		return false
+	public func removeFavourite(forAddress address: String, token: Token) -> Bool {
+		favouriteBalances[address]?.removeValue(forKey: balanceId(from: token))
+		return writeFavouriteBalances()
 	}
 	
-	public func removeFavourite(nft: NFT) -> Bool {
-		let stateItem = stateItem(fromCollectible: nft)
-		if let index = favouriteCollectibles.firstIndex(of: stateItem) {
-			favouriteCollectibles.remove(at: index)
-			return writeFavouriteCollectibles()
-		}
-		
-		return false
+	public func removeFavourite(forAddress address: String, nft: NFT) -> Bool {
+		favouriteCollectibles[address]?.removeValue(forKey: nftId(from: nft))
+		return writeFavouriteCollectibles()
 	}
 	
 	
 	
 	// MARK: Reorder
 	
-	public func moveFavourite(tokenIndex fromIndex: Int, toIndex: Int) -> Bool {
-		favouriteBalances.move(fromOffsets: IndexSet([fromIndex]), toOffset: toIndex)
+	public func moveFavouriteBalance(forAddress address: String, forToken token: Token, toIndex: Int) -> Bool {
+		var account = favouriteBalances[address] ?? [:]
+		let tokenId = balanceId(from: token)
+		account[tokenId] = toIndex
+		
+		print("token: \(token.symbol), moved to: \(toIndex)")
+		
+		for key in account.keys {
+			print("for key: \(key)")
+			print("isMovedKey: \(key != tokenId)")
+			
+			if key != tokenId, (account[key] ?? 1) >= toIndex {
+				print("moving")
+				account[key] = ((account[key] ?? 1) + 1)
+			}
+		}
+		
+		favouriteBalances[address] = account
 		return writeFavouriteBalances()
 	}
 	
+	public func moveFavouriteCollectible(forAddress address: String, forNft nft: NFT, toIndex: Int) -> Bool {
+		var account = favouriteCollectibles[address] ?? [:]
+		account[nftId(from: nft)] = toIndex
+		
+		for key in account.keys {
+			if (account[key] ?? 1) >= toIndex {
+				account[key] = ((account[key] ?? 1) + 1)
+			}
+		}
+		
+		favouriteCollectibles[address] = account
+		return writeHiddenCollectibles()
+	}
 	
 	
 	// MARK: Private funcs
 	
 	private func readAllCaches() {
-		self.hiddenBalances = DiskService.read(type: [TokenStateItem].self, fromFileName: TokenStateService.hiddenBalancesFilename) ?? []
-		self.hiddenCollectibles = DiskService.read(type: [TokenStateItem].self, fromFileName: TokenStateService.hiddenCollectiblesFilename) ?? []
-		self.favouriteBalances = DiskService.read(type: [TokenStateItem].self, fromFileName: TokenStateService.favouriteBalancesFilename) ?? []
-		self.favouriteCollectibles = DiskService.read(type: [TokenStateItem].self, fromFileName: TokenStateService.favouriteCollectiblesFilename) ?? []
+		self.hiddenBalances = DiskService.read(type: HiddenType.self, fromFileName: TokenStateService.hiddenBalancesFilename) ?? [:]
+		self.hiddenCollectibles = DiskService.read(type: HiddenType.self, fromFileName: TokenStateService.hiddenCollectiblesFilename) ?? [:]
+		self.favouriteBalances = DiskService.read(type: FavouriteType.self, fromFileName: TokenStateService.favouriteBalancesFilename) ?? [:]
+		self.favouriteCollectibles = DiskService.read(type: FavouriteType.self, fromFileName: TokenStateService.favouriteCollectiblesFilename) ?? [:]
 	}
 	
 	private func writeHiddenBalances() -> Bool {

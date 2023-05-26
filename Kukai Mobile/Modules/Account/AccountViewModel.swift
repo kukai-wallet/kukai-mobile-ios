@@ -180,7 +180,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 			}
 			
-			tokensToDisplay = tokensToDisplay.sorted(by: { $0.favouriteSortIndex < $1.favouriteSortIndex})
+			tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
 			tokensToDisplay.append(contentsOf: nonFavourites)
 			
 			data.append(contentsOf: tokensToDisplay)

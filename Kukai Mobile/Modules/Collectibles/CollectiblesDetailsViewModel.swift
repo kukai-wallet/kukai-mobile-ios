@@ -140,8 +140,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		reusableAttributeSizingCell?.valueLabel.text = "b"
 		reusableAttributeSizingCell?.percentLabel.text = "c"
 		
-		isFavourited = TokenStateService.shared.isFavourite(nft: nft)
-		isHidden = TokenStateService.shared.isHidden(nft: nft)
+		isFavourited = nft.isFavourite
+		isHidden = nft.isHidden
 		
 		
 		// Build snapshot

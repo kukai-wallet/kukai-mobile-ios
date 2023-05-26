@@ -334,8 +334,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let fiatPerToken = tokenValueAndRate.marketRate
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			let isFav = TokenStateService.shared.isFavourite(token: token).isFavourite
-			let isHidden = TokenStateService.shared.isHidden(token: token)
+			let isFav = token.isFavourite
+			let isHidden = token.isHidden
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 			

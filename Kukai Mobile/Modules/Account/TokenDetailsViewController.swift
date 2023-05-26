@@ -225,8 +225,9 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							return
 						}
 						
-						if TokenStateService.shared.removeHidden(token: token) {
-							DependencyManager.shared.balanceService.updateTokenStates()
+						let address = DependencyManager.shared.selectedWalletAddress ?? ""
+						if TokenStateService.shared.removeHidden(forAddress: address, token: token) {
+							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 							DependencyManager.shared.accountBalancesDidUpdate = true
 							self?.dismiss(animated: true)
 						} else {
@@ -242,8 +243,9 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							return
 						}
 						
-						if TokenStateService.shared.addHidden(token: token) {
-							DependencyManager.shared.balanceService.updateTokenStates()
+						let address = DependencyManager.shared.selectedWalletAddress ?? ""
+						if TokenStateService.shared.addHidden(forAddress: address, token: token) {
+							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 							DependencyManager.shared.accountBalancesDidUpdate = true
 							self?.dismiss(animated: true)
 							
@@ -297,9 +299,10 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 			return nil
 		}
 		
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
 		if viewModel.buttonData?.isFavourited == true {
-			if TokenStateService.shared.removeFavourite(token: token) {
-				DependencyManager.shared.balanceService.updateTokenStates()
+			if TokenStateService.shared.removeFavourite(forAddress: address, token: token) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				viewModel.buttonData?.isFavourited = false
 				return false
@@ -309,8 +312,8 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 			}
 			
 		} else {
-			if TokenStateService.shared.addFavourite(token: token) {
-				DependencyManager.shared.balanceService.updateTokenStates()
+			if TokenStateService.shared.addFavourite(forAddress: address, token: token) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				viewModel.buttonData?.isFavourited = true
 				return true

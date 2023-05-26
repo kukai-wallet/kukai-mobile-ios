@@ -94,8 +94,9 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 						return
 					}
 					
-					if TokenStateService.shared.removeHidden(nft: nft) {
-						DependencyManager.shared.balanceService.updateTokenStates()
+					let address = DependencyManager.shared.selectedWalletAddress ?? ""
+					if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
+						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 						DependencyManager.shared.accountBalancesDidUpdate = true
 						self?.delegate?.shouldDismiss()
 						
@@ -111,8 +112,9 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 						return
 					}
 					
-					if TokenStateService.shared.addHidden(nft: nft) {
-						DependencyManager.shared.balanceService.updateTokenStates()
+					let address = DependencyManager.shared.selectedWalletAddress ?? ""
+					if TokenStateService.shared.addHidden(forAddress: address, nft: nft) {
+						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 						DependencyManager.shared.accountBalancesDidUpdate = true
 						self?.delegate?.shouldDismiss()
 						
@@ -132,9 +134,11 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			return
 		}
 		
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
+		
 		if isFavouritedNft {
-			if TokenStateService.shared.removeFavourite(nft: nft) {
-				DependencyManager.shared.balanceService.updateTokenStates()
+			if TokenStateService.shared.removeFavourite(forAddress: address, nft: nft) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = false
 				isFavouritedNft = false
@@ -146,8 +150,8 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			}
 			
 		} else {
-			if TokenStateService.shared.addFavourite(nft: nft) {
-				DependencyManager.shared.balanceService.updateTokenStates()
+			if TokenStateService.shared.addFavourite(forAddress: address, nft: nft) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = true
 				isFavouritedNft = true

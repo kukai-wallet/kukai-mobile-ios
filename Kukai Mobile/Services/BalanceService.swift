@@ -261,8 +261,7 @@ public class BalanceService {
 				
 				// Make modifications, group, create sum totals on background
 				self.updateEstimatedTotal()
-				//self.updateTokenStates() // Will write account to disk as well, no need to call again
-				
+				self.updateTokenStates(forAddress: address)
 				self.orderGroupAndAliasNFTs {
 					
 					// Respond on main when everything done
@@ -408,38 +407,42 @@ public class BalanceService {
 		self.estimatedTotalXtz = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
 	}
 	
-	func updateTokenStates() {
+	func updateTokenStates(forAddress address: String, selectedAccount: Bool = false) {
+		let hiddenBalances = TokenStateService.shared.hiddenBalances[address]
+		let hiddenCollectibles = TokenStateService.shared.hiddenCollectibles[address]
+		let favouriteBalances = TokenStateService.shared.favouriteBalances[address]
+		let favouriteCollectibles = TokenStateService.shared.favouriteCollectibles[address]
 		
-		/*
-		for token in self.account.tokens {
-			let favObj = TokenStateService.shared.isFavourite(token: token)
-			token.isHidden = TokenStateService.shared.isHidden(token: token)
-			token.isFavourite = favObj.isFavourite
-			token.favouriteSortIndex = favObj.sortIndex
+		for token in (selectedAccount ? self.account.tokens : self.currentlyRefreshingAccount.tokens) {
+			let tokenId = TokenStateService.shared.balanceId(from: token)
+			token.isHidden = hiddenBalances?[tokenId] ?? false
+			token.favouriteSortIndex = favouriteBalances?[tokenId]
 		}
 		
-		for nftGroup in self.account.nfts {
+		for nftGroup in (selectedAccount ? self.account.nfts : self.currentlyRefreshingAccount.nfts) {
 			
 			var hiddenCount = 0
 			for nftIndex in 0..<(nftGroup.nfts ?? []).count {
 				
 				if let nft = nftGroup.nfts?[nftIndex] {
+					let nftId = TokenStateService.shared.nftId(from: nft)
+					let isHidden = hiddenCollectibles?[nftId] ?? false
 					
-					let isHidden = TokenStateService.shared.isHidden(nft: nft)
 					hiddenCount += (isHidden ? 1 : 0)
 					
 					nftGroup.nfts?[nftIndex].isHidden = isHidden
-					nftGroup.nfts?[nftIndex].isFavourite = TokenStateService.shared.isFavourite(nft: nft)
+					nftGroup.nfts?[nftIndex].favouriteSortIndex = favouriteCollectibles?[nftId]
 				}
 			}
 			
 			if hiddenCount == nftGroup.nfts?.count {
-				nftGroup.isHidden = true 
+				nftGroup.isHidden = true
 			}
 		}
 		
-		let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
-		*/
+		if selectedAccount {
+			let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+		}
 	}
 	
 	func isEverythingStale() -> Bool {
