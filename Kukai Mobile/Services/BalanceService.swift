@@ -28,6 +28,7 @@ public class BalanceService {
 	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
 	public var lastFullRefreshDate: Date? = nil
+	public var lastExchangeDataRefreshDate: Date? = nil
 	
 	@Published var isFetchingData: Bool = false
 	
@@ -167,18 +168,10 @@ public class BalanceService {
 				self?.dispatchGroupBalances.leave()
 			}
 			
+			
 			// Get all exchange rate data from DipDup
-			DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
-				guard let res = try? result.get() else {
-					error = result.getFailure()
-					self?.dispatchGroupBalances.leave()
-					return
-				}
-				
-				self?.exchangeData = res
-				let _ = DiskService.write(encodable: res, toFileName: BalanceService.cacheFilenameExchangeData)
-				self?.dispatchGroupBalances.leave()
-			}
+			fetchExchangeDataIfStale()
+			
 			
 			// Get latest transactions
 			dispatchGroupBalances.enter()
@@ -257,11 +250,13 @@ public class BalanceService {
 				}
 				
 				// TODO:
-				// trigger full refresh on imported account for first time
 				// need to re-write and implement `self.updateTokenStates()`
 				// activityService is probably caching globally, need to update to per account
-				// refresh exchange data similar to requestIf, may get called many times but only needs to update once every few mins max
 				// Check if there should be a .useCache override for stale data
+				// cache ghostnet? by appending ghostnet to end of address
+				// make sure OBJKT ghostnet queries aren't going out
+				// update refresh if stale to track per account
+				// trigger full refresh on imported account for first time
 				
 				
 				// Make modifications, group, create sum totals on background
@@ -285,6 +280,27 @@ public class BalanceService {
 					}
 				}
 			}
+		}
+	}
+	
+	private func fetchExchangeDataIfStale() {
+		// If we've checked for excahnge data less than 10 minutes ago, ignore
+		if (lastExchangeDataRefreshDate != nil && (lastExchangeDataRefreshDate ?? Date()).timeIntervalSince(Date()) < 60*10) {
+			loadCachedExchangeDataIfNotLoaded()
+			self.dispatchGroupBalances.leave()
+			return
+		}
+		
+		DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
+			guard let res = try? result.get() else {
+				self?.dispatchGroupBalances.leave()
+				return
+			}
+			
+			self?.lastExchangeDataRefreshDate = Date()
+			self?.exchangeData = res
+			let _ = DiskService.write(encodable: res, toFileName: BalanceService.cacheFilenameExchangeData)
+			self?.dispatchGroupBalances.leave()
 		}
 	}
 	

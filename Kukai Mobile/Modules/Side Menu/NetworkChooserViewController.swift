@@ -39,5 +39,7 @@ class NetworkChooserViewController: UIViewController {
 		} else {
 			DependencyManager.shared.setDefaultTestnetURLs()
 		}
+		
+		self.navigationController?.popViewController(animated: true)
 	}
 }
