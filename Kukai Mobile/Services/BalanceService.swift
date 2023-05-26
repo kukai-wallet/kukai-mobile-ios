@@ -58,20 +58,16 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		
-		if refreshType == .useCache,
-		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
-			
-			// When switching accounts, there may be a situation where the account data is missing. In that case, we should display an empty account, otherwise it will continue to display the old one
+		if refreshType == .useCache {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
 			self.account = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 			self.dispatchGroupBalances.leave()
 			
-			self.exchangeData = exchangeData
+			loadCachedExchangeDataIfNotLoaded()
 			self.dispatchGroupBalances.leave()
 			
-		} else if refreshType == .refreshAccountOnly,
-				  let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+		} else if refreshType == .refreshAccountOnly {
 			
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -95,7 +91,7 @@ public class BalanceService {
 				self?.dispatchGroupBalances.leave()
 			}
 			
-			self.exchangeData = exchangeData
+			loadCachedExchangeDataIfNotLoaded()
 			self.dispatchGroupBalances.leave()
 			
 		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
@@ -120,6 +116,7 @@ public class BalanceService {
 				}
 				
 				self?.exchangeData = res
+				let _ = DiskService.write(encodable: res, toFileName: BalanceService.cacheFilenameExchangeData)
 				self?.dispatchGroupBalances.leave()
 			}
 			
@@ -200,8 +197,10 @@ public class BalanceService {
 				}
 				
 				// TODO:
+				// change tzkt listener to listen for all accounts at once and update on a per account basis
+				// stop killing + reconnecting tzkt on account switch
+				// trigger full refresh on imported account for first time
 				// need to re-write and implement `self.updateTokenStates()`
-				// likely can drop all the calls to dex calculation service in here and just rely on the midPrice
 				
 				
 				// Make modifications, group, create sum totals on background
@@ -209,7 +208,6 @@ public class BalanceService {
 				//self.updateTokenStates() // Will write account to disk as well, no need to call again
 				
 				self.orderGroupAndAliasNFTs {
-					let _ = DiskService.write(encodable: self.exchangeData, toFileName: BalanceService.cacheFilenameExchangeData)
 					
 					// Respond on main when everything done
 					DispatchQueue.main.async {
@@ -221,6 +219,12 @@ public class BalanceService {
 					}
 				}
 			}
+		}
+	}
+	
+	private func loadCachedExchangeDataIfNotLoaded() {
+		if self.exchangeData.count == 0, let cachedData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+			self.exchangeData = cachedData
 		}
 	}
 	
