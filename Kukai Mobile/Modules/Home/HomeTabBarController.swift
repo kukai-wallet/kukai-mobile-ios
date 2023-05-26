@@ -43,16 +43,17 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		
 		// Load any initial data so we can draw UI immediately without lag
-		DependencyManager.shared.balanceService.loadCache()
+		DependencyManager.shared.balanceService.loadCache(address: DependencyManager.shared.selectedWalletAddress)
 		
 		
 		// Setup state listeners that need to be active once the tabview is present. Individual screens will respond as needed
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				self?.setupTzKTAccountListener()
-				DependencyManager.shared.activityService.deleteCache()
-				AccountViewModel.setupAccountActivityListener()
+				// TODO: re-assess
+				//self?.setupTzKTAccountListener()
+				//DependencyManager.shared.activityService.deleteCache()
+				//AccountViewModel.setupAccountActivityListener()
 				
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .refreshEverything
@@ -62,13 +63,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				DependencyManager.shared.balanceService.deleteAccountCachcedData()
-				DependencyManager.shared.activityService.deleteCache()
+				// TODO: re-assess
+				//DependencyManager.shared.balanceService.deleteAccountCachcedData()
+				//DependencyManager.shared.activityService.deleteCache()
 				AccountViewModel.setupAccountActivityListener()
 				
 				self?.stopActivityAnimation(success: false)
 				self?.updateAccountButton()
-				self?.refreshType = .refreshAccountOnly
+				self?.refreshType = .useCache
 				self?.refresh()
 			}.store(in: &bag)
 		

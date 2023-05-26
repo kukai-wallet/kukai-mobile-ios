@@ -30,11 +30,15 @@ public class BalanceService {
 	@Published var isFetchingData: Bool = false
 	
 	private var dispatchGroupBalances = DispatchGroup()
-	private static let cacheFilenameAccount = "balance-service-account"
+	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	
-	public func loadCache() {
-		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
+	private static func accountCacheFilename(withAddress address: String?) -> String {
+		return BalanceService.cacheFilenameAccount + (address ?? "")
+	}
+	
+	public func loadCache(address: String?) {
+		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)),
 		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
 			self.account = account
 			self.exchangeData = exchangeData
@@ -55,10 +59,12 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		
 		if refreshType == .useCache,
-		   let account = DiskService.read(type: Account.self, fromFileName: BalanceService.cacheFilenameAccount),
 		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
 			
-			self.account = account
+			// When switching accounts, there may be a situation where the account data is missing. In that case, we should display an empty account, otherwise it will continue to display the old one
+			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
+			
+			self.account = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 			self.dispatchGroupBalances.leave()
 			
 			self.exchangeData = exchangeData
@@ -136,6 +142,10 @@ public class BalanceService {
 			self.dispatchGroupBalances.leave()
 		}
 		
+		
+		
+		
+		
 		// Make sure we have the latest explore data
 		DependencyManager.shared.exploreService.fetchExploreItems { [weak self] result in
 			self?.dispatchGroupBalances.leave()
@@ -205,6 +215,7 @@ public class BalanceService {
 					DispatchQueue.main.async {
 						self.hasFetchedInitialData = true
 						self.isFetchingData = false
+						let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
 						DependencyManager.shared.accountBalancesDidUpdate = true
 						completion(nil)
 					}
@@ -302,7 +313,7 @@ public class BalanceService {
 		var estimatedTotal: XTZAmount = .zero()
 		
 		for token in self.account.tokens {
-			let dexRate = self.dexRate(forToken: token)
+			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
 			estimatedTotal += dexRate.xtzValue
 			
 			self.tokenValueAndRate[token.id] = dexRate
@@ -313,6 +324,7 @@ public class BalanceService {
 	
 	func updateTokenStates() {
 		
+		/*
 		for token in self.account.tokens {
 			let favObj = TokenStateService.shared.isFavourite(token: token)
 			token.isHidden = TokenStateService.shared.isHidden(token: token)
@@ -340,11 +352,23 @@ public class BalanceService {
 			}
 		}
 		
-		let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.cacheFilenameAccount)
+		let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+		*/
 	}
 	
 	func isEverythingStale() -> Bool {
 		return (lastFullRefreshDate == nil || (lastFullRefreshDate ?? Date()).timeIntervalSince(Date()) > 120)
+	}
+	
+	func midPrice(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
+		guard let quipuOrFirst = exchangeDataForToken(token) else {
+			return (xtzValue: .zero(), marketRate: 0)
+		}
+		
+		let decimal = Decimal(string: quipuOrFirst.midPrice) ?? 0
+		let amount = XTZAmount(fromNormalisedAmount: token.balance * decimal)
+		
+		return (xtzValue: amount, marketRate: decimal)
 	}
 	
 	func dexRate(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
@@ -386,15 +410,16 @@ public class BalanceService {
 		return DependencyManager.shared.coinGeckoService.format(decimal: amount, numberStyle: .currency, maximumFractionDigits: 2)
 	}
 	
-	func deleteAccountCachcedData() {
-		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameAccount)
+	func deleteAccountCachcedData(forAddress address: String) {
+		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
 		account = Account(walletAddress: "")
 		
 		hasFetchedInitialData = false
 	}
 	
 	func deleteAllCachedData() {
-		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameAccount)
+		let allAccounts = DiskService.allFileNamesWith(prefix: BalanceService.cacheFilenameAccount)
+		let _ = DiskService.delete(fileNames: allAccounts)
 		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
 		
 		hasFetchedInitialData = false
