@@ -14,9 +14,9 @@ public class BalanceService {
 	
 	public enum RefreshType {
 		case useCache
+		case useCacheIfNotStale
 		case refreshAccountOnly
 		case refreshEverything
-		case refreshEverythingIfStale
 	}
 	
 	public var hasFetchedInitialData = false
@@ -27,7 +27,7 @@ public class BalanceService {
 	
 	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
-	public var lastFullRefreshDate: Date? = nil
+	public var lastFullRefreshDates: [String: Date] = [:]
 	public var lastExchangeDataRefreshDate: Date? = nil
 	
 	@Published var isFetchingData: Bool = false
@@ -36,10 +36,35 @@ public class BalanceService {
 	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
+	private static let cacheLastRefreshDates = "balance-service-refresh-dates"
 	private var bag_refreshAll = Set<AnyCancellable>()
 	
+	
+	
+	
+	
+	// MARK: - Init
+	
+	init() {
+		lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
+	}
+	
+	
+	
+	
+	
+	// MARK: - Cache
+	
+	private static func addressCacheKey(forAddress address: String) -> String {
+		if DependencyManager.shared.currentNetworkType == .testnet {
+			return address + "-ghostnet"
+		}
+		
+		return address
+	}
+	
 	private static func accountCacheFilename(withAddress address: String?) -> String {
-		return BalanceService.cacheFilenameAccount + (address ?? "")
+		return BalanceService.cacheFilenameAccount + addressCacheKey(forAddress: address ?? "")
 	}
 	
 	public func loadCache(address: String?) {
@@ -50,6 +75,55 @@ public class BalanceService {
 			self.updateEstimatedTotal()
 		}
 	}
+	
+	public func isCacheStale(forAddress address: String) -> Bool {
+		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
+		if let date = lastFullRefreshDates[addressCacheKey] {
+			return date.timeIntervalSince(Date()) > 540 // 5 minutes
+		}
+		
+		return true
+	}
+	
+	public func updateCacheDate(forAddress address: String) {
+		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
+		lastFullRefreshDates[addressCacheKey] = Date()
+		let _ = DiskService.write(encodable: lastFullRefreshDates, toFileName: BalanceService.cacheLastRefreshDates)
+	}
+	
+	private func loadCachedExchangeDataIfNotLoaded() {
+		if self.exchangeData.count == 0, let cachedData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+			self.exchangeData = cachedData
+		}
+	}
+	
+	func deleteAccountCachcedData(forAddress address: String) {
+		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
+		account = Account(walletAddress: "")
+		
+		hasFetchedInitialData = false
+	}
+	
+	func deleteAllCachedData() {
+		let allAccounts = DiskService.allFileNamesWith(prefix: BalanceService.cacheFilenameAccount)
+		let _ = DiskService.delete(fileNames: allAccounts)
+		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
+		let _ = DiskService.delete(fileName: BalanceService.cacheLastRefreshDates)
+		
+		hasFetchedInitialData = false
+		
+		account = Account(walletAddress: "")
+		exchangeData = []
+		
+		tokenValueAndRate = [:]
+		estimatedTotalXtz = XTZAmount.zero()
+	}
+	
+	
+	
+	
+	
+	// MARK: - Refresh
 	
 	public func refresh(addresses: [String], selectedAddress: String, completion: @escaping ((KukaiError?) -> Void)) {
 		self.hasFetchedInitialData = false
@@ -118,7 +192,7 @@ public class BalanceService {
 		dispatchGroupBalances.enter()
 		dispatchGroupBalances.enter()
 		
-		if refreshType == .useCache {
+		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
 			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
@@ -154,7 +228,7 @@ public class BalanceService {
 			loadCachedExchangeDataIfNotLoaded()
 			self.dispatchGroupBalances.leave()
 			
-		} else if refreshType == .refreshEverything || (refreshType == .refreshEverythingIfStale && isEverythingStale()) {
+		} else {
 			
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
@@ -185,11 +259,7 @@ public class BalanceService {
 				self?.dispatchGroupBalances.leave()
 			}
 			
-			lastFullRefreshDate = Date()
-			
-		} else {
-			self.dispatchGroupBalances.leave()
-			self.dispatchGroupBalances.leave()
+			updateCacheDate(forAddress: address)
 		}
 		
 		
@@ -250,13 +320,7 @@ public class BalanceService {
 				}
 				
 				// TODO:
-				// need to re-write and implement `self.updateTokenStates()`
 				// activityService is probably caching globally, need to update to per account
-				// Check if there should be a .useCache override for stale data
-				// cache ghostnet? by appending ghostnet to end of address
-				// make sure OBJKT ghostnet queries aren't going out
-				// update refresh if stale to track per account
-				// trigger full refresh on imported account for first time
 				
 				
 				// Make modifications, group, create sum totals on background
@@ -300,12 +364,6 @@ public class BalanceService {
 			self?.exchangeData = res
 			let _ = DiskService.write(encodable: res, toFileName: BalanceService.cacheFilenameExchangeData)
 			self?.dispatchGroupBalances.leave()
-		}
-	}
-	
-	private func loadCachedExchangeDataIfNotLoaded() {
-		if self.exchangeData.count == 0, let cachedData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
-			self.exchangeData = cachedData
 		}
 	}
 	
@@ -445,9 +503,11 @@ public class BalanceService {
 		}
 	}
 	
-	func isEverythingStale() -> Bool {
-		return (lastFullRefreshDate == nil || (lastFullRefreshDate ?? Date()).timeIntervalSince(Date()) > 120)
-	}
+	
+	
+	
+	
+	// MARK: - Rates and prices
 	
 	func midPrice(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
 		guard let quipuOrFirst = exchangeDataForToken(token) else {
@@ -497,27 +557,6 @@ public class BalanceService {
 	func fiatAmountDisplayString(forToken: Token, ofAmount: TokenAmount) -> String {
 		let amount = fiatAmount(forToken: forToken, ofAmount: ofAmount)
 		return DependencyManager.shared.coinGeckoService.format(decimal: amount, numberStyle: .currency, maximumFractionDigits: 2)
-	}
-	
-	func deleteAccountCachcedData(forAddress address: String) {
-		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
-		account = Account(walletAddress: "")
-		
-		hasFetchedInitialData = false
-	}
-	
-	func deleteAllCachedData() {
-		let allAccounts = DiskService.allFileNamesWith(prefix: BalanceService.cacheFilenameAccount)
-		let _ = DiskService.delete(fileNames: allAccounts)
-		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
-		
-		hasFetchedInitialData = false
-		
-		account = Account(walletAddress: "")
-		exchangeData = []
-		
-		tokenValueAndRate = [:]
-		estimatedTotalXtz = XTZAmount.zero()
 	}
 	
 	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {

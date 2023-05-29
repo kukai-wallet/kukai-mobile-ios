@@ -203,6 +203,8 @@ class DependencyManager {
 	}
 	
 	func updateKukaiCoreClients(supressUpdateNotification: Bool = false) {
+		tzktClient.stopListeningForAccountChanges()
+		
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
 			primaryNodeURL: currentNodeURL,
 			tzktURL: currentTzktURL,

@@ -50,19 +50,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+				AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
 				
 				self?.stopActivityAnimation(success: false)
-				self?.refreshType = .refreshEverything
-				self?.refreshAllWallets()
+				self?.refreshType = .useCacheIfNotStale
+				self?.refresh(address: nil)
 			}.store(in: &bag)
 		
 		DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
 				self?.stopActivityAnimation(success: false)
-				self?.updateAccountButton()
-				self?.refreshType = .useCache
+				self?.refreshType = .useCacheIfNotStale
 				self?.refresh(address: nil)
 			}.store(in: &bag)
 		
@@ -101,7 +100,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		if !DependencyManager.shared.balanceService.hasFetchedInitialData && !DependencyManager.shared.balanceService.isFetchingData {
-			self.refreshType = .refreshEverything
+			self.refreshType = .useCacheIfNotStale
 			refresh(address: nil)
 			
 		} else if DependencyManager.shared.balanceService.currencyChanged {
@@ -150,9 +149,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	func setupTzKTAccountListener() {
 		DependencyManager.shared.tzktClient.$accountDidChange
 			.dropFirst()
-			.sink { [weak self] address in
+			.sink { [weak self] addresses in
 				self?.refreshType = .refreshEverything
-				self?.refresh(address: address)
+				self?.refreshWallets(addresses: addresses)
 			}.store(in: &bag)
 	}
 	
@@ -303,8 +302,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	//#endif
 	}
 	
-	func refreshAllWallets() {
-		let addresses = DependencyManager.shared.walletList.addresses()
+	func refreshWallets(addresses: [String]) {
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		
 		DependencyManager.shared.balanceService.refresh(addresses: addresses, selectedAddress: selectedAddress) { [weak self] error in
@@ -313,10 +311,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			}
 			
 			DependencyManager.shared.accountBalancesDidUpdate = true
-			if !DependencyManager.shared.tzktClient.isListening {
-				AccountViewModel.setupAccountActivityListener()
-			}
 		}
+	}
+	
+	func refreshAllWallets() {
+		let addresses = DependencyManager.shared.walletList.addresses()
+		refreshWallets(addresses: addresses)
 	}
 	
 	func sendButtonTapped() {
