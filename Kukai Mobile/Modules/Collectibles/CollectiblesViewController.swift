@@ -50,12 +50,8 @@ class CollectiblesViewController: UIViewController {
 			pageController = page
 			pageController?.pageDelegate = self
 			
-		} else if let obj = sender as? (token: Token, image: UIImage?, name: String?), let vc = segue.destination as? CollectionDetailsViewController {
-			vc.selectedToken = obj.token
-			
-			// TODO: remove when we have server
-			vc.externalImage = obj.image
-			vc.externalName = obj.name
+		} else if let obj = sender as? Token, let vc = segue.destination as? CollectionDetailsViewController {
+			vc.selectedToken = obj
 			
 		} else if let obj = sender as? NFT {
 			TransactionService.shared.sendData.chosenNFT = obj

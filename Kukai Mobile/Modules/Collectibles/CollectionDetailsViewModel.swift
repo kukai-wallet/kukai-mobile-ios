@@ -11,7 +11,6 @@ import Combine
 import OSLog
 
 struct CollectionDetailsHeaderObj: Hashable {
-	let image: UIImage?
 	let url: URL?
 	let title: String
 	let creator: String?
@@ -27,8 +26,6 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	
 	public var selectedToken: Token? = nil
-	public var externalImage: UIImage? = nil
-	public var externalName: String? = nil
 	
 	// MARK: - CollectionView Setup
 	
@@ -40,23 +37,13 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
 			if let obj = item as? CollectionDetailsHeaderObj, obj.creator == nil, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderSmallCell", for: indexPath) as? CollectiblesCollectionHeaderSmallCell {
-				if obj.image != nil {
-					cell.iconView.image = obj.image
-					
-				} else {
-					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				}
+				MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				
 				cell.titleLabel.text = obj.title
 				return cell
 				
 			} else if let obj = item as? CollectionDetailsHeaderObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderMediumCell", for: indexPath) as? CollectiblesCollectionHeaderMediumCell {
-				if obj.image != nil {
-					cell.iconView.image = obj.image
-					
-				} else {
-					MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				}
+				MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				
 				cell.titleLabel.text = obj.title
 				cell.creatorLabel.text = obj.creator
@@ -88,8 +75,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		}
 		
 		// Build snapshot data
-		let title = (externalName ?? selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
-		let headerData: [AnyHashable] = [ CollectionDetailsHeaderObj(image: externalImage, url: selectedToken?.thumbnailURL, title: title, creator: nil) ]
+		let title = (selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
+		let headerData: [AnyHashable] = [ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: nil) ]
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()

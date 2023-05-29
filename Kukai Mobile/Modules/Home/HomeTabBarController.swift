@@ -274,10 +274,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func refresh(address: String?) {
-	//#if DEBUG
-	//	// Avoid excessive loading / spinning while running on simulator. Using Cache and manual pull to refresh is nearly always sufficient and quicker. Can be commented out if need to test
-	//	return
-	//#else
 		var addressToRefresh = address
 		if addressToRefresh == nil {
 			addressToRefresh = DependencyManager.shared.selectedWalletAddress
@@ -299,7 +295,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			DependencyManager.shared.balanceService.currencyChanged = false
 			DependencyManager.shared.accountBalancesDidUpdate = true
 		}
-	//#endif
 	}
 	
 	func refreshWallets(addresses: [String]) {

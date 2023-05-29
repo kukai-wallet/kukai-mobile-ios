@@ -22,8 +22,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	private var cancellable: AnyCancellable?
 	
 	public var selectedToken: Token? = nil
-	public var externalImage: UIImage? = nil
-	public var externalName: String? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,8 +36,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		viewModel.selectedToken = selectedToken
-		viewModel.externalName = externalName
-		viewModel.externalImage = externalImage
 		
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
@@ -63,14 +59,8 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		
 		
 		// Setup UI
-		if let image = externalImage {
-			navBarMiddleImage.image = image
-			
-		} else {
-			MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
-		}
-		
-		navBarMiddleLabel.text = externalName ?? selectedToken?.name
+		MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		navBarMiddleLabel.text = selectedToken?.name ?? ""
 		navBarMiddleView.transform = .init(translationX: 0, y: 44)
     }
 	
