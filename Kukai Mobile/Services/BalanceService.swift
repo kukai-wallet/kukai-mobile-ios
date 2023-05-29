@@ -392,8 +392,7 @@ public class BalanceService {
 				modifiedNFTs[exploreItem.primaryKey]?.token.nfts?.append(contentsOf: token.nfts ?? [])
 				
 			} else {
-				// TODO: need API updated in order to be able to get `thumbnailURL`
-				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: nil, tokenContractAddress: exploreItem.address[0], tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
+				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: exploreItem.thumbnailImageUrl, tokenContractAddress: exploreItem.contractAddresses[0], tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
 				modifiedNFTs[exploreItem.primaryKey] = (token: newToken, sortIndex: exploreItem.sortIndex)
 			}
 		}
