@@ -506,7 +506,11 @@ public class ThemeManager {
 	}
 	
 	public func updateSystemInterfaceStyle() {
-		UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = self.themes[self.selectedTheme]?.interfaceStyle ?? UITraitCollection.current.userInterfaceStyle
+		UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = currentInterfaceStyle()
+	}
+	
+	public func currentInterfaceStyle() -> UIUserInterfaceStyle {
+		return self.themes[self.selectedTheme]?.interfaceStyle ?? UITraitCollection.current.userInterfaceStyle
 	}
 }
 

@@ -276,6 +276,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["hash": opHash])))
+				try? await Sign.instance.extend(topic: request.topic)
 				self.dismissAndReturn()
 				
 			} catch {
@@ -299,6 +300,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
+				try? await Sign.instance.extend(topic: request.topic)
 				self.dismissAndReturn()
 				
 			} catch {

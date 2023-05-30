@@ -157,7 +157,7 @@ class CreateWithSocialViewController: UIViewController {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
 				
-				WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil, markSelected: true) { [weak self] success in
+				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
 					if success {
 						self?.navigate()
 						
