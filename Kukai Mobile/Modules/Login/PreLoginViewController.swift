@@ -11,6 +11,7 @@ class PreLoginViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		self.navigationController?.overrideUserInterfaceStyle = ThemeManager.shared.currentInterfaceStyle()
 		let _ = self.view.addGradientBackgroundFull()
     }
 	
