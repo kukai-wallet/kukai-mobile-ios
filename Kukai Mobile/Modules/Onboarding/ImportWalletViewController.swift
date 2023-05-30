@@ -167,15 +167,32 @@ class ImportWalletViewController: UIViewController {
 	private func conintue(withWallet wallet: Wallet) {
 		self.view.endEditing(true)
 		self.showLoadingModal()
-		self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking for tezos domain registrations")
 		
-		WalletManagementService.cacheNew(wallet: wallet, forChildIndex: nil, markSelected: true) { [weak self] success in
-			if success {
-				self?.navigate()
-				
-			} else {
-				self?.hideLoadingModal { [weak self] in
-					self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+		
+		if wallet is HDWallet, let hd = wallet as? HDWallet {
+			self.updateLoadingModalStatusLabel(message: "Importing Wallet, and scanning for accounts")
+			
+			Task {
+				if await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd) {
+					self.navigate()
+					
+				} else {
+					self.hideLoadingModal { [weak self] in
+						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+					}
+				}
+			}
+			
+		} else {
+			self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking tezos domain registrations")
+			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
+				if success {
+					self?.navigate()
+					
+				} else {
+					self?.hideLoadingModal { [weak self] in
+						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+					}
 				}
 			}
 		}

@@ -196,7 +196,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) {
 				
 				vc.showLoadingModal()
-				WalletManagementService.cacheNew(wallet: newChild, forChildIndex: hdWalletIndex, markSelected: false) { [weak self] success in
+				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
 					if success {
 						self?.refresh(animate: true)
 						vc.hideLoadingModal()
