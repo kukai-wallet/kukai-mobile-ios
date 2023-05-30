@@ -99,7 +99,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		updateAccountButton()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
-		if !DependencyManager.shared.balanceService.hasFetchedInitialData && !DependencyManager.shared.balanceService.isFetchingData {
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && !DependencyManager.shared.balanceService.isFetchingData {
 			self.refreshType = .useCacheIfNotStale
 			refresh(address: nil)
 			

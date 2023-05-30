@@ -19,7 +19,6 @@ public class BalanceService {
 		case refreshEverything
 	}
 	
-	public var hasFetchedInitialData = false
 	public var currencyChanged = false
 	
 	public var account = Account(walletAddress: "")
@@ -67,6 +66,11 @@ public class BalanceService {
 		return BalanceService.cacheFilenameAccount + addressCacheKey(forAddress: address ?? "")
 	}
 	
+	public func hasFetchedInitialData(forAddress address: String) -> Bool {
+		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
+		return lastFullRefreshDates[addressCacheKey] != nil
+	}
+	
 	public func loadCache(address: String?) {
 		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)),
 		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
@@ -101,7 +105,8 @@ public class BalanceService {
 		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
 		account = Account(walletAddress: "")
 		
-		hasFetchedInitialData = false
+		let accountKey = BalanceService.addressCacheKey(forAddress: address)
+		lastFullRefreshDates[accountKey] = nil
 	}
 	
 	func deleteAllCachedData() {
@@ -110,7 +115,7 @@ public class BalanceService {
 		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
 		let _ = DiskService.delete(fileName: BalanceService.cacheLastRefreshDates)
 		
-		hasFetchedInitialData = false
+		lastFullRefreshDates = [:]
 		
 		account = Account(walletAddress: "")
 		exchangeData = []
@@ -126,8 +131,6 @@ public class BalanceService {
 	// MARK: - Refresh
 	
 	public func refresh(addresses: [String], selectedAddress: String, completion: @escaping ((KukaiError?) -> Void)) {
-		self.hasFetchedInitialData = false
-		
 		var futures: [Deferred<Future<Bool, KukaiError>>] = []
 		for address in addresses {
 			let isSelected = (selectedAddress == address)
@@ -149,12 +152,10 @@ public class BalanceService {
 					let error = (try? concatenatedResult.getError()) ?? KukaiError.unknown()
 					os_log("balanceService - refresh all - received error: %@", type: .debug, "\(error)")
 					
-					self.hasFetchedInitialData = true
 					completion(error)
 					return
 				}
 				
-				self.hasFetchedInitialData = true
 				completion(nil)
 			}
 			.store(in: &self.bag_refreshAll)
@@ -183,6 +184,7 @@ public class BalanceService {
 	public func fetchAllBalancesTokensAndPrices(forAddress address: String, isSelectedAccount: Bool, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
 		
 		isFetchingData = true
+		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 		
 		var error: KukaiError? = nil
 		dispatchGroupBalances.enter()
@@ -330,7 +332,6 @@ public class BalanceService {
 					
 					// Respond on main when everything done
 					DispatchQueue.main.async {
-						self.hasFetchedInitialData = true
 						self.isFetchingData = false
 						let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
 						

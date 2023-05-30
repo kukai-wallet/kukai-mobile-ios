@@ -139,7 +139,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// If initial load, display shimmer views
-		if DependencyManager.shared.balanceService.hasFetchedInitialData == false {
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) || DependencyManager.shared.balanceService.isFetchingData {
 			
 			let hashableData: [AnyHashable] = [
 				balancesMenuVC,
