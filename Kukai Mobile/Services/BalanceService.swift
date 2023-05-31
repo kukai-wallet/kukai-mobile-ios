@@ -77,6 +77,7 @@ public class BalanceService {
 			
 			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
 			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
+			DependencyManager.shared.activityService.loadCache()
 			
 			self.currentlyRefreshingAccount = account
 			self.exchangeData = exchangeData
