@@ -54,8 +54,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
-		tableView.register(UINib(nibName: "ActivityContractCallCell", bundle: nil), forCellReuseIdentifier: "ActivityContractCallCell")
-		tableView.register(UINib(nibName: "ActivitySubItemCell", bundle: nil), forCellReuseIdentifier: "ActivitySubItemCell")
+		tableView.register(UINib(nibName: "ActivityItemContractCell", bundle: nil), forCellReuseIdentifier: "ActivityItemContractCell")
+		tableView.register(UINib(nibName: "ActivityItemBatchCell", bundle: nil), forCellReuseIdentifier: "ActivityItemBatchCell")
 		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
@@ -64,7 +64,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemBatchCell", for: indexPath) as? ActivityItemBatchCell {
 				cell.setup(data: obj)
 				
 				if self.expandedIndex == indexPath {
@@ -74,6 +74,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.setClosed()
 				}
 				
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, obj.groupType == .contractCall, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemContractCell", for: indexPath) as? ActivityItemContractCell {
+				cell.setup(data: obj.transactions[0])
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+				cell.setup(data: obj)
 				return cell
 				
 			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
@@ -189,7 +197,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setOpen()
 		}
 		
@@ -199,25 +207,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setClosed()
 		}
 		
 		let group = self.groups[indexPath.section - 1]
 		
 		currentSnapshot.deleteItems(group.transactions)
-	}
-	
-	private func titleTextFor(token: Token, transaction: TzKTTransaction? = nil) -> String {
-		if token.isXTZ() {
-			return token.balance.normalisedRepresentation + " XTZ"
-			
-		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) {
-			token.balance.decimalPlaces = exchangeData.token.decimals
-			return token.balance.normalisedRepresentation + " \(exchangeData.token.symbol)"
-			
-		} else {
-			return token.balance.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
-		}
 	}
 }

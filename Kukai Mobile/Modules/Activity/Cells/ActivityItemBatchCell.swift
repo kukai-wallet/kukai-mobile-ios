@@ -17,7 +17,7 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var appNameLabel: UILabel!
 	
 	@IBOutlet weak var confirmedLabel: UILabel!
-	@IBOutlet weak var confrimedIcon: UIImageView!
+	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
 	@IBOutlet weak var invisibleRightButton: UIButton!
@@ -52,12 +52,12 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 		if value {
 			timeLabel.isHidden = false
 			confirmedLabel.isHidden = true
-			confrimedIcon.isHidden = true
+			confirmedIcon.isHidden = true
 			
 		} else {
 			timeLabel.isHidden = true
 			confirmedLabel.isHidden = false
-			confrimedIcon.isHidden = false
+			confirmedIcon.isHidden = false
 		}
 	}
 	

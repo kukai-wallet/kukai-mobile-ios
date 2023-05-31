@@ -14,15 +14,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityItemCell" rowHeight="120" id="VHf-nR-jpu" customClass="ActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="483" height="114"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityItemCell" rowHeight="100" id="VHf-nR-jpu" customClass="ActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="483" height="100"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VHf-nR-jpu" id="smR-TM-RlC">
-                <rect key="frame" x="0.0" y="0.0" width="483" height="114"/>
+                <rect key="frame" x="0.0" y="0.0" width="483" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nn-gA-TSY">
-                        <rect key="frame" x="16" y="2" width="451" height="100"/>
+                        <rect key="frame" x="16" y="2" width="451" height="14"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REs-fD-NQd">
                                 <rect key="frame" x="10" y="10" width="40" height="40"/>
@@ -108,7 +108,7 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-LI-1ta">
-                                <rect key="frame" x="381" y="0.0" width="70" height="100"/>
+                                <rect key="frame" x="381" y="0.0" width="70" height="14"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="ztN-1q-1ol"/>
@@ -120,7 +120,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
-                                <rect key="frame" x="320.66666666666669" y="78" width="120.33333333333331" height="12"/>
+                                <rect key="frame" x="320.66666666666669" y="-8" width="120.33333333333331" height="12"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-6G-spS">
                                         <rect key="frame" x="0.0" y="0.0" width="59.666666666666664" height="12"/>
@@ -180,6 +180,7 @@
                     <constraint firstAttribute="trailing" secondItem="3nn-gA-TSY" secondAttribute="trailing" constant="16" id="fVf-eV-aUU"/>
                     <constraint firstItem="3nn-gA-TSY" firstAttribute="leading" secondItem="smR-TM-RlC" secondAttribute="leading" constant="16" id="lVZ-sS-oKC"/>
                     <constraint firstItem="3nn-gA-TSY" firstAttribute="top" secondItem="smR-TM-RlC" secondAttribute="top" constant="2" id="neU-ZK-wPK"/>
+                    <constraint firstAttribute="bottom" secondItem="3nn-gA-TSY" secondAttribute="bottom" id="x4B-T7-wQC"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -190,8 +191,6 @@
                 <outlet property="destinationIcon" destination="IRV-TS-X6f" id="Pi1-V4-FuJ"/>
                 <outlet property="destinationIconStackView" destination="gBZ-as-9TO" id="g8q-NH-Xjm"/>
                 <outlet property="destinationLabel" destination="qIp-2X-KmI" id="zON-sK-m4K"/>
-                <outlet property="destinationStackView" destination="09k-6q-ogO" id="PQs-Ck-wU5"/>
-                <outlet property="ellipsesImage" destination="kvQ-ug-G3P" id="p7m-PT-hVl"/>
                 <outlet property="iconView" destination="REs-fD-NQd" id="15Q-4H-a9T"/>
                 <outlet property="invisibleRightButton" destination="2aZ-LI-1ta" id="Zm2-J6-bXf"/>
                 <outlet property="timeLabel" destination="N6Q-9u-1aj" id="T3w-uC-HPE"/>
