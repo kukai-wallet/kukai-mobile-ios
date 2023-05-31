@@ -58,6 +58,11 @@ public class RequestIfService {
 		}
 	}
 	
+	public func lastCache<T: Codable>(forKey key: String, responseType: T.Type) -> T? {
+		let lastObj = DiskService.read(type: StorageObject<T>.self, fromFileName: key)
+		return lastObj?.storedData
+	}
+	
 	public func delete(key: String) -> Bool {
 		return DiskService.delete(fileName: key)
 	}

@@ -64,6 +64,11 @@ public class CoinGeckoService {
 		}
 	}
 	
+	public func loadLastTezosPrice() {
+		let cache = self.requestIfService.lastCache(forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self)
+		self.selectedCurrencyRatePerXTZ = cache?.price() ?? 0
+	}
+	
 	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, KukaiError>) -> Void)) {
 		guard let url = URL(string: coinGeckoExchangeRatesURL) else {
 			completion(Result.failure(KukaiError.unknown()))
@@ -80,6 +85,10 @@ public class CoinGeckoService {
 			self?.exchangeRates = response
 			completion(Result.success(response))
 		}
+	}
+	
+	public func loadLastExchangeRates() {
+		self.exchangeRates = self.requestIfService.lastCache(forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self)
 	}
 	
 	public func fetchChartData(forURL: String, withKey: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {

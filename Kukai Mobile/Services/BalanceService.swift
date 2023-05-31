@@ -74,9 +74,15 @@ public class BalanceService {
 	public func loadCache(address: String?) {
 		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)),
 		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
-			self.account = account
+			
+			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
+			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
+			
+			self.currentlyRefreshingAccount = account
 			self.exchangeData = exchangeData
 			self.updateEstimatedTotal()
+			
+			self.account = self.currentlyRefreshingAccount
 		}
 	}
 	
