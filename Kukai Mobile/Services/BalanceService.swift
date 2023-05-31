@@ -336,6 +336,15 @@ public class BalanceService {
 				self.updateTokenStates(forAddress: address)
 				self.orderGroupAndAliasNFTs {
 					
+					// If we haven't set Collections groupMode flag before, check it now that we have data to consider best option
+					if !StorageService.hasUserDefaultKeyBeenSet(key: StorageService.settingsKeys.collectiblesGroupModeEnabled) {
+						if self.currentlyRefreshingAccount.nfts.count > 2 && self.currentlyRefreshingAccount.nfts.map({ $0.nfts?.count ?? 0 }).reduce(0, +) > 10 {
+							UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+						} else {
+							UserDefaults.standard.set(false, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+						}
+					}
+					
 					// Respond on main when everything done
 					DispatchQueue.main.async {
 						self.isFetchingData = false
