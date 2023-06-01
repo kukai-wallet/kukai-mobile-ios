@@ -368,7 +368,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	}
 	
 	func loadActivityData(completion: @escaping ((Result<[TzKTTransactionGroup], KukaiError>) -> Void)) {
-		let wallet = DependencyManager.shared.selectedWalletAddress ?? ""
+		// TODO: update
+		/*let wallet = DependencyManager.shared.selectedWalletAddress ?? ""
 		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
 			if let err = error {
 				completion(Result.failure(err))
@@ -382,7 +383,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 			
 			completion(Result.failure(KukaiError.unknown(withString: "Can't find token for activity")))
-		}
+		}*/
+		
+		completion(Result.success([]))
 	}
 	
 	

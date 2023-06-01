@@ -54,7 +54,7 @@ public class BalanceService {
 	
 	// MARK: - Cache
 	
-	private static func addressCacheKey(forAddress address: String) -> String {
+	public static func addressCacheKey(forAddress address: String) -> String {
 		if DependencyManager.shared.currentNetworkType == .testnet {
 			return address + "-ghostnet"
 		}
@@ -77,7 +77,7 @@ public class BalanceService {
 			
 			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
 			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
-			DependencyManager.shared.activityService.loadCache()
+			DependencyManager.shared.activityService.loadCache(address: address)
 			
 			self.currentlyRefreshingAccount = account
 			self.exchangeData = exchangeData
@@ -208,6 +208,7 @@ public class BalanceService {
 			self.dispatchGroupBalances.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
+			DependencyManager.shared.activityService.loadCache(address: address)
 			self.dispatchGroupBalances.leave()
 			
 		} else if refreshType == .refreshAccountOnly {
@@ -224,7 +225,7 @@ public class BalanceService {
 			}
 			
 			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
 				if let e = err {
 					error = e
 					self?.dispatchGroupBalances.leave()
@@ -232,9 +233,10 @@ public class BalanceService {
 				}
 				
 				self?.dispatchGroupBalances.leave()
-			}
+			})
 			
 			loadCachedExchangeDataIfNotLoaded()
+			DependencyManager.shared.activityService.loadCache(address: address)
 			self.dispatchGroupBalances.leave()
 			
 		} else {
@@ -258,7 +260,7 @@ public class BalanceService {
 			
 			// Get latest transactions
 			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
 				if let e = err {
 					error = e
 					self?.dispatchGroupBalances.leave()
@@ -266,7 +268,7 @@ public class BalanceService {
 				}
 				
 				self?.dispatchGroupBalances.leave()
-			}
+			})
 			
 			updateCacheDate(forAddress: address)
 		}
@@ -327,10 +329,6 @@ public class BalanceService {
 					DispatchQueue.main.async { completion(KukaiError.unknown()) }
 					return
 				}
-				
-				// TODO:
-				// activityService is probably caching globally, need to update to per account
-				
 				
 				// Make modifications, group, create sum totals on background
 				self.updateEstimatedTotal()

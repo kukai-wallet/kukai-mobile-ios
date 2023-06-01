@@ -14,7 +14,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	
 	private let viewModel = ActivityViewModel()
 	private var cancellable: AnyCancellable?
-	//private var refreshControl = UIRefreshControl()
+	private var refreshControl = UIRefreshControl()
 	private var firstLoad = true
 	
 	override func viewDidLoad() {
@@ -25,37 +25,35 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		/*
 		refreshControl.addAction(UIAction(handler: { [weak self] action in
-			self?.viewModel.forceRefresh = true
-			self?.viewModel.refresh(animate: true)
+			self?.viewModel.pullToRefresh(animate: true)
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
-		*/
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					//self?.showLoadingView(completion: nil)
 					let _ = ""
 					
 				case .failure(_, let errorString):
-					//self?.hideLoadingView(completion: nil)
+					self?.refreshControl.endRefreshing()
 					self?.alert(withTitle: "Error", andMessage: errorString)
 					
 				case .success:
-					//self?.refreshControl.endRefreshing()
-					//self?.hideLoadingView(completion: nil)
-					let _ = ""
+					self?.refreshControl.endRefreshing()
+					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 			}
 		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		//if firstLoad {
-		//	firstLoad = false
-			viewModel.refresh(animate: false)
-		//}
+		viewModel.isVisible = true
+		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

@@ -17,7 +17,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
-	public var forceRefresh = false
+	public var isVisible = false
 	public var menuVc: MenuViewController? = nil
 	
 	public var expandedIndex: IndexPath? = nil
@@ -37,8 +37,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
 			.dropFirst()
 			.sink { [weak self] _ in
-				if self?.dataSource != nil {
-					self?.forceRefresh = true
+				if self?.dataSource != nil && self?.isVisible == true {
 					self?.refresh(animate: true)
 				}
 			}
@@ -102,20 +101,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		/*
-		guard let walletAddress = DependencyManager.shared.selectedWalletAddress else {
-			state = .failure(.unknown(), "Unbale to locate current wallet")
-			return
-		}
-		
-		
-		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: walletAddress, refreshType: self.forceRefresh ? .forceRefresh : .refreshIfCacheEmpty) { [weak self] error in
-			if let err = error {
-				self?.state = .failure(err, "Unable to fetch transactions")
-				return
-			}
-		*/
-		
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
@@ -123,7 +108,30 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.groups = full
 		self.loadGroups(animate: animate)
 		self.state = .success(nil)
-		//}
+	}
+	
+	func pullToRefresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unable to locate current wallet")
+			return
+		}
+		
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: true, refreshType: .refreshEverything) { [weak self] error in
+			guard let self = self else { return }
+			
+			if let e = error {
+				self.state = .failure(e, "Unable to fetch data")
+			}
+			
+			self.refresh(animate: animate)
+			
+			// Return success
+			self.state = .success(nil)
+		}
 	}
 	
 	private func loadGroups(animate: Bool) {
@@ -154,11 +162,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
-		if self.forceRefresh {
-			ds.applySnapshotUsingReloadData(self.currentSnapshot)
-		} else {
+		//if self.forceRefresh {
+		//	ds.applySnapshotUsingReloadData(self.currentSnapshot)
+		//} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
-		}
+		//}
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
