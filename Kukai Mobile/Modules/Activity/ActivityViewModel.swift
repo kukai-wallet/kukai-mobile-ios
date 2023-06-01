@@ -162,11 +162,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
-		//if self.forceRefresh {
-		//	ds.applySnapshotUsingReloadData(self.currentSnapshot)
-		//} else {
-			ds.apply(self.currentSnapshot, animatingDifferences: animate)
-		//}
+		ds.apply(self.currentSnapshot, animatingDifferences: animate)
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
