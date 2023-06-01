@@ -104,8 +104,11 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			return "Unknown Token"
 		}
 		
-		if token.tokenType == .nonfungible {
+		if token.tokenType == .nonfungible && (token.balance.toNormalisedDecimal() ?? 0) > 1 {
 			return "(\(token.balance.normalisedRepresentation)) \(token.name ?? "")"
+			
+		} else if token.tokenType == .nonfungible {
+			return token.name ?? ""
 			
 		} else {
 			return "\(token.balance.normalisedRepresentation) \(token.symbol)"

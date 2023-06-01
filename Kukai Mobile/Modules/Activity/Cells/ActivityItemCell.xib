@@ -15,14 +15,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityItemCell" rowHeight="100" id="VHf-nR-jpu" customClass="ActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="483" height="100"/>
+            <rect key="frame" x="0.0" y="0.0" width="483" height="104"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VHf-nR-jpu" id="smR-TM-RlC">
-                <rect key="frame" x="0.0" y="0.0" width="483" height="100"/>
+                <rect key="frame" x="0.0" y="0.0" width="483" height="104"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nn-gA-TSY">
-                        <rect key="frame" x="16" y="2" width="451" height="14"/>
+                        <rect key="frame" x="16" y="2" width="451" height="100"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REs-fD-NQd">
                                 <rect key="frame" x="10" y="10" width="40" height="40"/>
@@ -108,7 +108,7 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-LI-1ta">
-                                <rect key="frame" x="381" y="0.0" width="70" height="14"/>
+                                <rect key="frame" x="381" y="0.0" width="70" height="100"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="70" id="ztN-1q-1ol"/>
@@ -120,7 +120,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
-                                <rect key="frame" x="320.66666666666669" y="-8" width="120.33333333333331" height="12"/>
+                                <rect key="frame" x="320.66666666666669" y="78" width="120.33333333333331" height="12"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirmed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-6G-spS">
                                         <rect key="frame" x="0.0" y="0.0" width="59.666666666666664" height="12"/>
@@ -158,12 +158,12 @@
                             <constraint firstItem="REs-fD-NQd" firstAttribute="top" secondItem="3nn-gA-TSY" secondAttribute="top" constant="10" id="Oxf-zl-5Ui"/>
                             <constraint firstItem="P7q-6s-SWO" firstAttribute="centerY" secondItem="pnA-HH-brD" secondAttribute="centerY" id="T4a-Uz-3KF"/>
                             <constraint firstItem="KpP-S4-rR7" firstAttribute="trailing" secondItem="kvQ-ug-G3P" secondAttribute="trailing" id="VXe-Ls-jux"/>
-                            <constraint firstAttribute="bottom" secondItem="2aZ-LI-1ta" secondAttribute="bottom" id="d8H-fi-pm0"/>
+                            <constraint firstAttribute="bottom" secondItem="2aZ-LI-1ta" secondAttribute="bottom" id="dLf-rm-SzK"/>
                             <constraint firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" constant="10" id="dPC-n1-Iiu"/>
                             <constraint firstItem="2aZ-LI-1ta" firstAttribute="top" secondItem="3nn-gA-TSY" secondAttribute="top" id="eje-4V-Jth"/>
+                            <constraint firstAttribute="bottom" secondItem="REs-fD-NQd" secondAttribute="bottom" constant="50" id="gsX-de-L0Z"/>
                             <constraint firstItem="09k-6q-ogO" firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" id="hjN-xB-HfE"/>
-                            <constraint firstAttribute="bottom" secondItem="REs-fD-NQd" secondAttribute="bottom" constant="50" id="kzL-7e-wiO"/>
-                            <constraint firstAttribute="bottom" secondItem="KpP-S4-rR7" secondAttribute="bottom" constant="10" id="lAy-e9-dap"/>
+                            <constraint firstAttribute="bottom" secondItem="KpP-S4-rR7" secondAttribute="bottom" constant="10" id="lPX-zT-ZeB"/>
                             <constraint firstItem="09k-6q-ogO" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="leading" id="rjz-go-8Nm"/>
                             <constraint firstItem="P7q-6s-SWO" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="trailing" constant="4" id="zeB-Ta-ziR"/>
                         </constraints>
@@ -180,7 +180,7 @@
                     <constraint firstAttribute="trailing" secondItem="3nn-gA-TSY" secondAttribute="trailing" constant="16" id="fVf-eV-aUU"/>
                     <constraint firstItem="3nn-gA-TSY" firstAttribute="leading" secondItem="smR-TM-RlC" secondAttribute="leading" constant="16" id="lVZ-sS-oKC"/>
                     <constraint firstItem="3nn-gA-TSY" firstAttribute="top" secondItem="smR-TM-RlC" secondAttribute="top" constant="2" id="neU-ZK-wPK"/>
-                    <constraint firstAttribute="bottom" secondItem="3nn-gA-TSY" secondAttribute="bottom" id="x4B-T7-wQC"/>
+                    <constraint firstAttribute="bottom" secondItem="3nn-gA-TSY" secondAttribute="bottom" constant="2" id="x4B-T7-wQC"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

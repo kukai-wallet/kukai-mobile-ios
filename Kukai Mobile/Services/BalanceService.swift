@@ -90,7 +90,7 @@ public class BalanceService {
 	public func isCacheStale(forAddress address: String) -> Bool {
 		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
 		if let date = lastFullRefreshDates[addressCacheKey] {
-			return date.timeIntervalSince(Date()) > 540 // 5 minutes
+			return Date().timeIntervalSince(date) > 540 // 5 minutes
 		}
 		
 		return true
