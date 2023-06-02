@@ -238,6 +238,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
 			if let vc = viewController {
 				self.navigationController?.popToViewController(vc, animated: true)
+				AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
 			} else {
 				self.performSegue(withIdentifier: "done", sender: nil)
 			}
