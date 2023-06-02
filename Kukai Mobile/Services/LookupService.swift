@@ -95,6 +95,12 @@ public class LookupService {
 		} else if let record = subRecord[.google] {
 			return LookupResponse(displayText: record.displayText, type: .google, iconName: "Social_Google_color")
 			
+		} else if let record = subRecord[.reddit] {
+			return LookupResponse(displayText: record.displayText, type: .reddit, iconName: "Social_Reddit_Color")
+			
+		} else if let record = subRecord[.twitter] {
+			return LookupResponse(displayText: record.displayText, type: .twitter, iconName: "Social_Twitter_color")
+			
 		} else {
 			return LookupResponse(displayText: address, type: .address, iconName: "Social_TZ_1color")
 		}

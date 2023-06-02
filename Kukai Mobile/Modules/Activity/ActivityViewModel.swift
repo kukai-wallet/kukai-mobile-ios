@@ -17,12 +17,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
+	public var forceReload = false
 	public var isVisible = false
 	public var menuVc: MenuViewController? = nil
 	
 	public var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var groups: [TzKTTransactionGroup] = []
+	private var previousAddress: String = ""
 	
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	private var selectedWalletAddress = DependencyManager.shared.selectedWalletAddress
@@ -102,6 +104,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
+		if previousAddress != currentAddress {
+			forceReload = true
+			previousAddress = currentAddress ?? ""
+		}
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
@@ -162,7 +168,13 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
 		}
 		
-		ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		if forceReload {
+			ds.applySnapshotUsingReloadData(self.currentSnapshot)
+			self.forceReload = false
+			
+		} else {
+			ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		}
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
