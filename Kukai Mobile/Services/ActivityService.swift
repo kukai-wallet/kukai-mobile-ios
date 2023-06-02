@@ -74,7 +74,7 @@ public class ActivityService {
 		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { [weak self] transactions in
 			let groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: address)
 			
-			self?.checkAndUpdatePendingTransactions(forAddress: address, isSelectedAccount: isSelectedAccount)
+			self?.checkAndUpdatePendingTransactions(forAddress: address, isSelectedAccount: isSelectedAccount, comparedToGroups: groups)
 			let _ = DiskService.write(encodable: groups, toFileName: ActivityService.transactionsCacheFilename(withAddress: address))
 			
 			if isSelectedAccount {
@@ -119,7 +119,7 @@ public class ActivityService {
 		return false
 	}
 	
-	public func checkAndUpdatePendingTransactions(forAddress address: String, isSelectedAccount: Bool) {
+	public func checkAndUpdatePendingTransactions(forAddress address: String, isSelectedAccount: Bool, comparedToGroups: [TzKTTransactionGroup]) {
 		let now = Date()
 		var indexesToRemove: [Int] = []
 		
@@ -133,7 +133,7 @@ public class ActivityService {
 				continue
 			}
 			
-			for group in transactionGroups {
+			for group in comparedToGroups {
 				if pendingGroup.hash == group.hash {
 					indexesToRemove.append(index)
 					break
@@ -142,17 +142,16 @@ public class ActivityService {
 		}
 		
 		if indexesToRemove.count > 0 {
-			os_log("Removing %i pending transactions", indexesToRemove.count)
 			pending.remove(atOffsets: IndexSet(indexesToRemove))
 			let _ = DiskService.write(encodable: pending, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address))
 			
 			if isSelectedAccount {
 				pendingTransactionGroups = pending
 			}
+			os_log("Pending transactions checked, removing index: \(indexesToRemove)")
 			
-			return
+		} else {
+			os_log("Pending transactions checked, none to remove")
 		}
-		
-		os_log("Pending transactions checked, none to remove")
 	}
 }

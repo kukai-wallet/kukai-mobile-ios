@@ -62,8 +62,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		}
 		
 		// Destination
-		destinationIconStackView.isHidden = true
-		destinationLabel.text = destinationFrom(data)
+		destinationFrom(data)
 		
 		
 		// Send or receive differences
@@ -115,11 +114,29 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		}
 	}
 	
-	private func destinationFrom(_ tx: TzKTTransaction) -> String {
+	private func destinationFrom(_ tx: TzKTTransaction) {
 		if tx.subType == .send {
-			return tx.target?.alias ?? tx.target?.address.truncateTezosAddress() ?? ""
+			let record = LookupService.shared.lookupFor(address: tx.target?.address ?? "")
+			if record.type == .address {
+				destinationIconStackView.isHidden = true
+				destinationLabel.text = tx.target?.alias ?? record.displayText.truncateTezosAddress()
+				
+			} else {
+				destinationIconStackView.isHidden = false
+				destinationLabel.text = record.displayText
+				destinationIcon.image = UIImage(named: record.iconName)
+			}
 		} else {
-			return tx.sender.alias ?? tx.sender.address.truncateTezosAddress()
+			let record = LookupService.shared.lookupFor(address: tx.sender.address)
+			if record.type == .address {
+				destinationIconStackView.isHidden = true
+				destinationLabel.text = tx.sender.alias ?? record.displayText.truncateTezosAddress()
+				
+			} else {
+				destinationIconStackView.isHidden = false
+				destinationLabel.text = record.displayText
+				destinationIcon.image = UIImage(named: record.iconName)
+			}
 		}
 	}
 }

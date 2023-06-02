@@ -59,7 +59,7 @@ class DebugViewController: UITableViewController {
 		report += "Total wallet count: \n" + "\(wallets.count())" + " \n\n"
 		
 		report += "\n\n\nBalances: \n"
-		report += "Has fetched initial data: \n" + "\(DependencyManager.shared.balanceService.hasFetchedInitialData)" + " \n\n"
+		report += "Has fetched initial data: \n" + "\(String(describing: DependencyManager.shared.balanceService.hasFetchedInitialData))" + " \n\n"
 		report += "Has currency changed: \n" + "\(DependencyManager.shared.balanceService.currencyChanged)" + " \n\n"
 		report += "Wallet address to fetch: \n" + "\(DependencyManager.shared.balanceService.account.walletAddress)" + " \n\n"
 		report += "XTZ Balance: \n" + "\(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation)" + " \n\n"

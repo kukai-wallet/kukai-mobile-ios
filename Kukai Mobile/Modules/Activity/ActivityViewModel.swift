@@ -60,7 +60,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
 			
-			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
+			if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemBatchCell", for: indexPath) as? ActivityItemBatchCell {
@@ -150,12 +150,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.appendSections(Array(0..<self.groups.count + 2))
 			self.currentSnapshot.appendItems([
 				GhostnetWarningCellObj(),
-				MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())
+				"Activity"
 			], toSection: 0)
 			
 		} else {
 			currentSnapshot.appendSections(Array(0..<self.groups.count + 1))
-			self.currentSnapshot.appendItems([MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())], toSection: 0)
+			self.currentSnapshot.appendItems(["Activity"], toSection: 0)
 		}
 		
 		for (index, txGroup) in self.groups.enumerated() {

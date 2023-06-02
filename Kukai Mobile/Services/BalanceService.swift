@@ -240,7 +240,6 @@ public class BalanceService {
 			self.dispatchGroupBalances.leave()
 			
 		} else {
-			
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -267,7 +266,14 @@ public class BalanceService {
 					return
 				}
 				
-				self?.dispatchGroupBalances.leave()
+				// Perform lookups on all unique destinations
+				let allDestinations = DependencyManager.shared.activityService.transactionGroups.compactMap({ $0.transactions.first?.target?.address })
+				let uniqueDestinations = Array(Set(allDestinations))
+				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
+				
+				LookupService.shared.resolveAddresses(unresolvedDestinations) {
+					self?.dispatchGroupBalances.leave()
+				}
 			})
 			
 			updateCacheDate(forAddress: address)
