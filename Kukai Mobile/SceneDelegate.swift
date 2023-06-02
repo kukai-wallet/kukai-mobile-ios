@@ -8,6 +8,7 @@
 import UIKit
 import CustomAuth
 import WalletConnectPairing
+import KukaiCoreSwift
 import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -37,6 +38,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
+		
+		// Remove any old assets to avoid clogging up users device too much
+		MediaProxyService.clearExpiredImages()
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {

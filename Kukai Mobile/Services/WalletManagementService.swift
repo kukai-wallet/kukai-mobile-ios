@@ -18,12 +18,39 @@ class WalletManagementService {
 		if walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
 			
+			if wallet.type == .social, let tWallet = wallet as? TorusWallet {
+				
+				var lookupType: LookupType = .address
+				switch tWallet.authProvider {
+					case .google:
+						lookupType = .google
+						
+					case .reddit:
+						lookupType = .reddit
+					
+					case .twitter:
+						lookupType = .twitter
+						
+					default:
+						lookupType = .address
+				}
+				
+				if lookupType != .address {
+					LookupService.shared.add(displayText: tWallet.socialUsername ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: true)
+					LookupService.shared.add(displayText: tWallet.socialUsername ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: false)
+				}
+			}
+			
+			
 			// Check for existing domains and add to walletMetadata
 			DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainFor(address: wallet.address, completion: { result in
 				switch result {
 					case .success(let response):
 						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response.mainnet, ghostnetDomain: response.ghostnet, forAddress: wallet.address)
 						let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+						
+						LookupService.shared.add(displayText: response.mainnet?.domain.name ?? "", forType: .tezosDomain, forAddress: wallet.address, isMainnet: true)
+						LookupService.shared.add(displayText: response.ghostnet?.domain.name ?? "", forType: .tezosDomain, forAddress: wallet.address, isMainnet: false)
 						
 						if markSelected {
 							DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
@@ -38,6 +65,7 @@ class WalletManagementService {
 						}
 				}
 				
+				LookupService.shared.cacheRecords()
 				completion(true)
 			})
 			

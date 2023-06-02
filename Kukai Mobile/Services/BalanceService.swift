@@ -54,7 +54,7 @@ public class BalanceService {
 	
 	// MARK: - Cache
 	
-	private static func addressCacheKey(forAddress address: String) -> String {
+	public static func addressCacheKey(forAddress address: String) -> String {
 		if DependencyManager.shared.currentNetworkType == .testnet {
 			return address + "-ghostnet"
 		}
@@ -74,16 +74,23 @@ public class BalanceService {
 	public func loadCache(address: String?) {
 		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)),
 		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
-			self.account = account
+			
+			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
+			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
+			DependencyManager.shared.activityService.loadCache(address: address)
+			
+			self.currentlyRefreshingAccount = account
 			self.exchangeData = exchangeData
 			self.updateEstimatedTotal()
+			
+			self.account = self.currentlyRefreshingAccount
 		}
 	}
 	
 	public func isCacheStale(forAddress address: String) -> Bool {
 		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
 		if let date = lastFullRefreshDates[addressCacheKey] {
-			return date.timeIntervalSince(Date()) > 540 // 5 minutes
+			return Date().timeIntervalSince(date) > 540 // 5 minutes
 		}
 		
 		return true
@@ -201,6 +208,7 @@ public class BalanceService {
 			self.dispatchGroupBalances.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
+			DependencyManager.shared.activityService.loadCache(address: address)
 			self.dispatchGroupBalances.leave()
 			
 		} else if refreshType == .refreshAccountOnly {
@@ -217,7 +225,7 @@ public class BalanceService {
 			}
 			
 			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
 				if let e = err {
 					error = e
 					self?.dispatchGroupBalances.leave()
@@ -225,13 +233,13 @@ public class BalanceService {
 				}
 				
 				self?.dispatchGroupBalances.leave()
-			}
+			})
 			
 			loadCachedExchangeDataIfNotLoaded()
+			DependencyManager.shared.activityService.loadCache(address: address)
 			self.dispatchGroupBalances.leave()
 			
 		} else {
-			
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -251,15 +259,22 @@ public class BalanceService {
 			
 			// Get latest transactions
 			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, refreshType: .forceRefresh) { [weak self] err in
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
 				if let e = err {
 					error = e
 					self?.dispatchGroupBalances.leave()
 					return
 				}
 				
-				self?.dispatchGroupBalances.leave()
-			}
+				// Perform lookups on all unique destinations
+				let allDestinations = DependencyManager.shared.activityService.transactionGroups.compactMap({ $0.transactions.first?.target?.address })
+				let uniqueDestinations = Array(Set(allDestinations))
+				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
+				
+				LookupService.shared.resolveAddresses(unresolvedDestinations) {
+					self?.dispatchGroupBalances.leave()
+				}
+			})
 			
 			updateCacheDate(forAddress: address)
 		}
@@ -321,14 +336,19 @@ public class BalanceService {
 					return
 				}
 				
-				// TODO:
-				// activityService is probably caching globally, need to update to per account
-				
-				
 				// Make modifications, group, create sum totals on background
 				self.updateEstimatedTotal()
 				self.updateTokenStates(forAddress: address)
 				self.orderGroupAndAliasNFTs {
+					
+					// If we haven't set Collections groupMode flag before, check it now that we have data to consider best option
+					if !StorageService.hasUserDefaultKeyBeenSet(key: StorageService.settingsKeys.collectiblesGroupModeEnabled) {
+						if self.currentlyRefreshingAccount.nfts.count > 2 && self.currentlyRefreshingAccount.nfts.map({ $0.nfts?.count ?? 0 }).reduce(0, +) > 10 {
+							UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+						} else {
+							UserDefaults.standard.set(false, forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+						}
+					}
 					
 					// Respond on main when everything done
 					DispatchQueue.main.async {

@@ -99,7 +99,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var stakingRewardLoadingData = LoadingData()
 	var stakingRewardData: AggregateRewardInformation? = nil
 	var activityHeaderData = TokenDetailsActivityHeader(header: true)
-	var activityLoadingData = LoadingData()
 	var activityFooterData = TokenDetailsActivityHeader(header: false)
 	var activityItems: [TzKTTransactionGroup] = []
 	var noItemsData = TokenDetailsMessageData(message: "No items avaialble at this time, check again later")
@@ -182,19 +181,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
-				if let tokenURL = self.tokenIconURL {
-					MediaProxyService.load(url: tokenURL, to: cell.typeIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
-					
-				} else {
-					cell.typeIcon.image = self.tokenIcon
-				}
-				
-				// TODO: re-enable
-				//cell.moreButton.menu = self.menuFor(transaction: obj)
-				//cell.moreButton.showsMenuAsPrimaryAction = true
 				cell.setup(data: obj)
 				return cell
-				
 			}
 			
 			return UITableViewCell()
@@ -223,8 +211,19 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			data.append(stakingRewardLoadingData)
 		}
 		
-		let initialActivitySection: [AnyHashable] = [activityHeaderData, activityLoadingData]
-		data.append(contentsOf: initialActivitySection)
+		
+		
+		// Activity data gets loaded as part of token balances
+		var activitySection: [AnyHashable] = [activityHeaderData]
+		self.activityItems = DependencyManager.shared.activityService.filterSendReceive(forToken: token, count: 5)
+		if activityItems.count == 0 {
+			activitySection.append(self.noItemsData)
+			
+		} else {
+			activitySection.append(contentsOf: activityItems)
+			activitySection.append(self.activityFooterData)
+		}
+		data.append(contentsOf: activitySection)
 		
 		
 		
@@ -273,31 +272,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					case .failure(let error):
 						self.state = .failure(error, "Unable to get baker data")
 				}
-			}
-		}
-		
-		loadActivityData { [weak self] result in
-			guard let self = self else { return }
-			
-			switch result {
-				case .success(let data):
-					self.currentSnapshot.deleteItems([self.activityLoadingData])
-					self.activityItems = data
-					
-					if data.count == 0 {
-						self.currentSnapshot.insertItems([self.noItemsData], afterItem: self.activityHeaderData)
-						
-					} else {
-						var dataToAdd: [AnyHashable] = data
-						dataToAdd.append(self.activityFooterData)
-						
-						self.currentSnapshot.insertItems(dataToAdd, afterItem: self.activityHeaderData)
-					}
-					
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
-					
-				case .failure(let error):
-					self.state = .failure(error, "Unable to get chart data")
 			}
 		}
 	}
@@ -364,24 +338,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					completion(Result.failure(result.getFailure()))
 				}
 			}
-		}
-	}
-	
-	func loadActivityData(completion: @escaping ((Result<[TzKTTransactionGroup], KukaiError>) -> Void)) {
-		let wallet = DependencyManager.shared.selectedWalletAddress ?? ""
-		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: wallet, refreshType: .refreshIfCacheEmpty) { [weak self] error in
-			if let err = error {
-				completion(Result.failure(err))
-				return
-			}
-			
-			if let t = self?.token {
-				let items = DependencyManager.shared.activityService.filterSendReceive(forToken: t, count: 5)
-				completion(Result.success(items))
-				return
-			}
-			
-			completion(Result.failure(KukaiError.unknown(withString: "Can't find token for activity")))
 		}
 	}
 	

@@ -98,6 +98,10 @@ public class StorageService {
 		return nil
 	}
 	
+	public static func hasUserDefaultKeyBeenSet(key: String) -> Bool {
+		return UserDefaults.standard.object(forKey: key) != nil
+	}
+	
 	
 	
 	// Store these in userdefaults to act as a gatekeeper to keychain data

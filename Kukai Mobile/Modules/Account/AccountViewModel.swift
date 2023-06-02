@@ -73,16 +73,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				if cell.iconView.image == nil {
-					cell.iconView.image = UIImage.unknownToken()
-				}
-				
 				var symbol = token.symbol
 				if symbol == "" {
 					symbol = " "
 				}
 				
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken())
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { _ in
+					cell.iconView.backgroundColor = .white
+				}
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))

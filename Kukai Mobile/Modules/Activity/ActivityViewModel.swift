@@ -17,12 +17,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
-	public var forceRefresh = false
+	public var forceReload = false
+	public var isVisible = false
 	public var menuVc: MenuViewController? = nil
 	
 	public var expandedIndex: IndexPath? = nil
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	private var groups: [TzKTTransactionGroup] = []
+	private var previousAddress: String = ""
 	
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	private var selectedWalletAddress = DependencyManager.shared.selectedWalletAddress
@@ -37,8 +39,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
 			.dropFirst()
 			.sink { [weak self] _ in
-				if self?.dataSource != nil {
-					self?.forceRefresh = true
+				if self?.dataSource != nil && self?.isVisible == true {
 					self?.refresh(animate: true)
 				}
 			}
@@ -54,17 +55,18 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
-		tableView.register(UINib(nibName: "ActivityContractCallCell", bundle: nil), forCellReuseIdentifier: "ActivityContractCallCell")
-		tableView.register(UINib(nibName: "ActivitySubItemCell", bundle: nil), forCellReuseIdentifier: "ActivitySubItemCell")
+		tableView.register(UINib(nibName: "ActivityItemContractCell", bundle: nil), forCellReuseIdentifier: "ActivityItemContractCell")
+		tableView.register(UINib(nibName: "ActivityItemBatchCell", bundle: nil), forCellReuseIdentifier: "ActivityItemBatchCell")
 		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
 			
-			if let _ = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
+			if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
+				cell.backgroundColor = .clear
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemBatchCell", for: indexPath) as? ActivityItemBatchCell {
 				cell.setup(data: obj)
 				
 				if self.expandedIndex == indexPath {
@@ -76,13 +78,33 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
+			} else if let obj = item as? TzKTTransactionGroup, obj.groupType == .contractCall, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemContractCell", for: indexPath) as? ActivityItemContractCell {
+				cell.setup(data: obj.transactions[0])
+				cell.backgroundColor = .clear
+				return cell
+				
+			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+				cell.setup(data: obj)
+				cell.backgroundColor = .clear
+				return cell
+				
 			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
 				cell.backgroundColor = .colorNamed("BGActivityBatch")
 				return cell
 				
+			} else if let _ = item as? LoadingContainerCellObject, let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingContainerCell", for: indexPath) as? LoadingContainerCell {
+				cell.setup()
+				cell.backgroundColor = .clear
+				return cell
+				
+			} else if let _ = item as? Int {
+				return tableView.dequeueReusableCell(withIdentifier: "BatchBottomPadding", for: indexPath)
+				
 			} else {
-				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
+				cell.backgroundColor = .clear
+				return cell
 			}
 		})
 		
@@ -94,28 +116,42 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		/*
-		guard let walletAddress = DependencyManager.shared.selectedWalletAddress else {
-			state = .failure(.unknown(), "Unbale to locate current wallet")
-			return
-		}
-		
-		
-		DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: walletAddress, refreshType: self.forceRefresh ? .forceRefresh : .refreshIfCacheEmpty) { [weak self] error in
-			if let err = error {
-				self?.state = .failure(err, "Unable to fetch transactions")
-				return
-			}
-		*/
-		
+		self.expandedIndex = nil
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
+		if previousAddress != currentAddress {
+			forceReload = true
+			previousAddress = currentAddress ?? ""
+		}
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
 		self.groups = full
 		self.loadGroups(animate: animate)
 		self.state = .success(nil)
-		//}
+	}
+	
+	func pullToRefresh(animate: Bool) {
+		if !state.isLoading() {
+			state = .loading
+		}
+		
+		guard let address = DependencyManager.shared.selectedWalletAddress else {
+			state = .failure(.unknown(), "Unable to locate current wallet")
+			return
+		}
+		
+		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: true, refreshType: .refreshEverything) { [weak self] error in
+			guard let self = self else { return }
+			
+			if let e = error {
+				self.state = .failure(e, "Unable to fetch data")
+			}
+			
+			self.refresh(animate: animate)
+			
+			// Return success
+			self.state = .success(nil)
+		}
 	}
 	
 	private func loadGroups(animate: Bool) {
@@ -125,29 +161,43 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build snapshot
-		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		
-		
 		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
+		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var data: [[AnyHashable]] = [[]]
 		
 		if isTestnet {
-			currentSnapshot.appendSections(Array(0..<self.groups.count + 2))
-			self.currentSnapshot.appendItems([
-				GhostnetWarningCellObj(),
-				MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())
-			], toSection: 0)
+			data[0] = [GhostnetWarningCellObj(), "Activity"]
+		} else {
+			data[0] = ["Activity"]
+		}
+		
+		
+		// If needs shimmers
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) || DependencyManager.shared.balanceService.isFetchingData {
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			
 		} else {
-			currentSnapshot.appendSections(Array(0..<self.groups.count + 1))
-			self.currentSnapshot.appendItems([MenuViewController(actions: [], header: nil, sourceViewController: UIViewController())], toSection: 0)
+			for txGroup in self.groups {
+				data.append(contentsOf: [[txGroup]])
+			}
 		}
 		
-		for (index, txGroup) in self.groups.enumerated() {
-			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
+		
+		// Apply to snapshot
+		currentSnapshot.appendSections(Array(0..<data.count))
+		for (index, array) in data.enumerated() {
+			currentSnapshot.appendItems(array, toSection: index)
 		}
 		
-		if self.forceRefresh {
+		
+		// Load
+		if forceReload {
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
+			self.forceReload = false
+			
 		} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
 		}
@@ -181,43 +231,34 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	public func isUnconfirmed(indexPath: IndexPath) -> Bool {
-		if indexPath.section == 0 {
-			return false
+		if let item = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup {
+			return (item.transactions.first?.status ?? .applied) == .unconfirmed
 		}
 		
-		return (self.groups[indexPath.section - 1].transactions.first?.status ?? .applied) == .unconfirmed
+		return false
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setOpen()
 		}
 		
-		let group = self.groups[indexPath.section - 1]
+		let parent = self.groups[indexPath.section - 1]
+		var items: [AnyHashable] = parent.transactions
+		items.append(1) // add bottom batch padding cell, as for some reason viewForFooterInSection is not being called on insert, but is on delete
 		
-		currentSnapshot.insertItems(group.transactions, afterItem: group)
+		currentSnapshot.insertItems(items, afterItem: parent)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemCell {
+		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setClosed()
 		}
 		
-		let group = self.groups[indexPath.section - 1]
+		let parent = self.groups[indexPath.section - 1]
+		var items: [AnyHashable] = parent.transactions
+		items.append(1)
 		
-		currentSnapshot.deleteItems(group.transactions)
-	}
-	
-	private func titleTextFor(token: Token, transaction: TzKTTransaction? = nil) -> String {
-		if token.isXTZ() {
-			return token.balance.normalisedRepresentation + " XTZ"
-			
-		} else if let exchangeData = DependencyManager.shared.balanceService.exchangeDataForToken(token) {
-			token.balance.decimalPlaces = exchangeData.token.decimals
-			return token.balance.normalisedRepresentation + " \(exchangeData.token.symbol)"
-			
-		} else {
-			return token.balance.normalisedRepresentation + " \(transaction?.target?.alias ?? "Token")"
-		}
+		currentSnapshot.deleteItems(items)
 	}
 }
