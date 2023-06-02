@@ -76,36 +76,16 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-		
-		if section == viewModel.expandedIndex?.section {
-			return 10
-			
-		} else {
-			return 0.1
-		}
+		return 0.1
 	}
 	
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-		
-		if section == viewModel.expandedIndex?.section {
-			return 10
-			
-		} else {
-			return 0.1
-		}
+		return 0.1
 	}
 	
 	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-		
-		if section == viewModel.expandedIndex?.section {
-			let view = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.width, height: 10))
-			view.backgroundColor = .colorNamed("BGActivityBatch")
-			return view
-			
-		} else {
-			let view = UIView()
-			view.backgroundColor = .clear
-			return view
-		}
+		let view = UIView()
+		view.backgroundColor = .clear
+		return view
 	}
 }

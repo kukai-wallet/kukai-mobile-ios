@@ -39,7 +39,7 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 		}
 		
 		// Title and destination
-		batchCountLabel.text = "Batch (\(data.transactions.count)"
+		batchCountLabel.text = "Batch (\(data.transactions.count)) - "
 		batchTypeLabel.text = batchString(from: data)
 		appNameLabel.text = data.transactions[0].target?.alias ?? data.transactions[0].target?.address.truncateTezosAddress()
 	}

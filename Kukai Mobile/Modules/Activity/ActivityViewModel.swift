@@ -63,6 +63,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			guard let self = self else { return UITableViewCell() }
 			
 			if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityToolbarCell", for: indexPath) as? ActivityToolbarCell {
+				cell.backgroundColor = .clear
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, obj.transactions.count > 1, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemBatchCell", for: indexPath) as? ActivityItemBatchCell {
@@ -79,10 +80,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let obj = item as? TzKTTransactionGroup, obj.groupType == .contractCall, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemContractCell", for: indexPath) as? ActivityItemContractCell {
 				cell.setup(data: obj.transactions[0])
+				cell.backgroundColor = .clear
 				return cell
 				
 			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
+				cell.backgroundColor = .clear
 				return cell
 				
 			} else if let obj = item as? TzKTTransaction, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
@@ -90,8 +93,18 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.backgroundColor = .colorNamed("BGActivityBatch")
 				return cell
 				
+			} else if let _ = item as? LoadingContainerCellObject, let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingContainerCell", for: indexPath) as? LoadingContainerCell {
+				cell.setup()
+				cell.backgroundColor = .clear
+				return cell
+				
+			} else if let _ = item as? Int {
+				return tableView.dequeueReusableCell(withIdentifier: "BatchBottomPadding", for: indexPath)
+				
 			} else {
-				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
+				let cell = tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
+				cell.backgroundColor = .clear
+				return cell
 			}
 		})
 		
@@ -103,6 +116,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
+		self.expandedIndex = nil
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
 		if previousAddress != currentAddress {
 			forceReload = true
@@ -147,27 +161,39 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build snapshot
-		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		
-		
 		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
+		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var data: [[AnyHashable]] = [[]]
 		
 		if isTestnet {
-			currentSnapshot.appendSections(Array(0..<self.groups.count + 2))
-			self.currentSnapshot.appendItems([
-				GhostnetWarningCellObj(),
-				"Activity"
-			], toSection: 0)
+			data[0] = [GhostnetWarningCellObj(), "Activity"]
+		} else {
+			data[0] = ["Activity"]
+		}
+		
+		
+		// If needs shimmers
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) || DependencyManager.shared.balanceService.isFetchingData {
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
+			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			
 		} else {
-			currentSnapshot.appendSections(Array(0..<self.groups.count + 1))
-			self.currentSnapshot.appendItems(["Activity"], toSection: 0)
+			for txGroup in self.groups {
+				data.append(contentsOf: [[txGroup]])
+			}
 		}
 		
-		for (index, txGroup) in self.groups.enumerated() {
-			self.currentSnapshot.appendItems([txGroup], toSection: index+1)
+		
+		// Apply to snapshot
+		currentSnapshot.appendSections(Array(0..<data.count))
+		for (index, array) in data.enumerated() {
+			currentSnapshot.appendItems(array, toSection: index)
 		}
 		
+		
+		// Load
 		if forceReload {
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
 			self.forceReload = false
@@ -205,11 +231,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	public func isUnconfirmed(indexPath: IndexPath) -> Bool {
-		if indexPath.section == 0 {
-			return false
+		if let item = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup {
+			return (item.transactions.first?.status ?? .applied) == .unconfirmed
 		}
 		
-		return (self.groups[indexPath.section - 1].transactions.first?.status ?? .applied) == .unconfirmed
+		return false
 	}
 	
 	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
@@ -217,9 +243,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setOpen()
 		}
 		
-		let group = self.groups[indexPath.section - 1]
+		let parent = self.groups[indexPath.section - 1]
+		var items: [AnyHashable] = parent.transactions
+		items.append(1) // add bottom batch padding cell, as for some reason viewForFooterInSection is not being called on insert, but is on delete
 		
-		currentSnapshot.insertItems(group.transactions, afterItem: group)
+		currentSnapshot.insertItems(items, afterItem: parent)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
@@ -227,8 +255,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.setClosed()
 		}
 		
-		let group = self.groups[indexPath.section - 1]
+		let parent = self.groups[indexPath.section - 1]
+		var items: [AnyHashable] = parent.transactions
+		items.append(1)
 		
-		currentSnapshot.deleteItems(group.transactions)
+		currentSnapshot.deleteItems(items)
 	}
 }
