@@ -31,12 +31,19 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 		
 		// Time or confirmed
 		let timeSinceNow = (data.transactions[0].date ?? Date()).timeIntervalSince(Date())
-		if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
+		if data.transactions[0].status == .unconfirmed {
+			hasTime(true)
+			timeLabel.text = "UNCONFIRMED"
+			
+		} else if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
 			hasTime(false)
+			
 		} else {
 			hasTime(true)
 			timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
 		}
+		
+		
 		
 		// Title and destination
 		batchCountLabel.text = "Batch (\(data.transactions.count)) - "
