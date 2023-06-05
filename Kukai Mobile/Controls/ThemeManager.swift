@@ -8,14 +8,12 @@
 import UIKit
 import os.log
 
-public protocol ThemeManagerDelegate: AnyObject {
-	func themeDidChange(to: String)
-}
-
 /**
  A simple class to hold onto a collection of theme colors and persist the users choice to UserDefaults
  */
 public class ThemeManager {
+	
+	@Published public var themeDidChange: Bool = false
 	
 	public struct ThemeData {
 		let interfaceStyle: UIUserInterfaceStyle
@@ -23,7 +21,6 @@ public class ThemeManager {
 	}
 	
 	public static let shared = ThemeManager()
-	public weak var delegate: ThemeManagerDelegate? = nil
 	
 	private var themes: [String: ThemeData] = [:]
 	private var selectedTheme: String = UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? "Dark"
@@ -55,7 +52,7 @@ public class ThemeManager {
 		selectedTheme = theme
 		updateSystemInterfaceStyle()
 		
-		self.delegate?.themeDidChange(to: theme)
+		self.themeDidChange = true
 		
 		// Deleting and re-adding all views on the screen is an old "trick" to get colors to refresh.
 		// It only works for things using appearence proxy, it doesn't reload our colors.
@@ -473,18 +470,7 @@ public class ThemeManager {
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
 				"BGMediaOval": UIColor("#000000"),
 			],
-			others: [
-				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [
-					"background": UIColor("#E41D1F"),
-					"image-border": UIColor("#E41D1F"),
-					"modal-background": UIColor("#FFFFFF")
-				]),
-				"Blue": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [
-					"background": UIColor("#0F2DE4"),
-					"image-border": UIColor("#0F2DE4"),
-					"modal-background": UIColor("#FFFFFF")
-				]),
-			])
+			others: [:])
 	}
 	
 	public func setup(lightColors: [String: UIColor], darkColors: [String: UIColor], others: [String: ThemeData]) {

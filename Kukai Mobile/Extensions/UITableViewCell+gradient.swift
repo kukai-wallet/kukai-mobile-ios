@@ -16,6 +16,10 @@ protocol UITableViewCellGradient {
 	func addGradientBackground(withFrame: CGRect, toView: UIView)
 }
 
+protocol UITableViewCellThemeUpdated: UITableViewCell {
+	func themeUpdated()
+}
+
 extension UITableViewCell: UITableViewCellGradient {
 	
 	func addGradientBackground(withFrame: CGRect, toView: UIView) {

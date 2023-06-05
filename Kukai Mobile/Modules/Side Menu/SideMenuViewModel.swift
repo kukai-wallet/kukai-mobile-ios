@@ -66,19 +66,18 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func segue(forIndexPath: IndexPath) -> String? {
+	func segue(forIndexPath: IndexPath) -> (segue: String, collapseAndNavigate: Bool)? {
 		if forIndexPath.row == 0 {
-			return "side-menu-wallet-connect"
+			return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
 			
 		} else if forIndexPath.row == 1 {
-			return "side-menu-theme"
+			return (segue: "theme", collapseAndNavigate: false)
 			
 		} else if forIndexPath.row == 2 {
-			return "side-menu-currency"
+			return (segue: "side-menu-currency", collapseAndNavigate: true)
 			
 		} else if forIndexPath.row == 3 {
-			return "side-menu-network"
-			
+			return (segue: "side-menu-network", collapseAndNavigate: true)
 		}
 		
 		return nil

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
+class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellThemeUpdated {
 
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
@@ -36,5 +36,13 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
 			priceChangeIcon.tintColor = UIColor.colorNamed("Txt10")
 			priceChangeLabel.textColor = UIColor.colorNamed("Txt10")
 		}
+	}
+	
+	func themeUpdated() {
+		symbolLabel.textColor = .colorNamed("Txt2")
+		balanceLabel.textColor = .colorNamed("Txt2")
+		valuelabel.textColor = .colorNamed("Txt10")
+		
+		self.addGradientBackground(withFrame: self.containerView.bounds, toView: self.containerView)
 	}
 }

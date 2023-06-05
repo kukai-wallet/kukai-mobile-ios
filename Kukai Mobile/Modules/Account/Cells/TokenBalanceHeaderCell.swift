@@ -7,9 +7,11 @@
 
 import UIKit
 
-class TokenBalanceHeaderCell: UITableViewCell {
+class TokenBalanceHeaderCell: UITableViewCell, UITableViewCellThemeUpdated {
 	
+	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var moreButton: UIButton!
+	
 	private var menu: MenuViewController? = nil
 	
 	override func awakeFromNib() {
@@ -22,5 +24,9 @@ class TokenBalanceHeaderCell: UITableViewCell {
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
 		menu?.display(attachedTo: sender)
+	}
+	
+	func themeUpdated() {
+		titleLabel.textColor = .colorNamed("Txt2")
 	}
 }

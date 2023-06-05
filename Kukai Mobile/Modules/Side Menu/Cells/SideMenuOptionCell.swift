@@ -7,10 +7,14 @@
 
 import UIKit
 
-class SideMenuOptionCell: UITableViewCell {
+class SideMenuOptionCell: UITableViewCell, UITableViewCellThemeUpdated {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	
+	public func themeUpdated() {
+		titleLabel.textColor = .colorNamed("Txt6")
+		subtitleLabel.textColor = .colorNamed("Txt10")
+	}
 }

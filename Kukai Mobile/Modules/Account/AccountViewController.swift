@@ -13,14 +13,15 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = AccountViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	private var refreshControl = UIRefreshControl()
 	
 	private var coingeckservice: CoinGeckoService? = nil
+	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.makeDataSource(withTableView: tableView)
@@ -32,7 +33,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					let _ = ""
@@ -45,7 +46,18 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 					self?.refreshControl.endRefreshing()
 					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				
+				self?.gradient.removeFromSuperlayer()
+				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
+				
+				self?.tableView.visibleCells.forEach({ ($0 as? UITableViewCellThemeUpdated)?.themeUpdated() })
+				
+			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

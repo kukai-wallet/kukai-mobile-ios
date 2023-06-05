@@ -10,7 +10,7 @@ import Sentry
 import os.log
 
 @main
-class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		setupTheme()
@@ -52,13 +52,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, ThemeManagerDelegate {
 	
 	func setupTheme() {
 		ThemeManager.shared.setup()
-		ThemeManager.shared.delegate = self
 		
 		// Global appearenace proxy styles
-		setAppearenceProxies()
-	}
-	
-	func themeDidChange(to: String) {
 		setAppearenceProxies()
 	}
 	

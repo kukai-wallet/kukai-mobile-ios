@@ -13,6 +13,7 @@ class SideMenuViewController: UIViewController {
 
 	@IBOutlet weak var scanButton: CustomisableButton!
 	
+	@IBOutlet weak var currentAccountContainer: UIView!
 	@IBOutlet weak var currentAccountAliasStackView: UIStackView!
 	@IBOutlet weak var aliasIcon: UIImageView!
 	@IBOutlet weak var aliasTitle: UILabel!
@@ -22,10 +23,12 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var regularIcon: UIImageView!
 	@IBOutlet weak var regularTitle: UILabel!
 	
+	@IBOutlet var buttonLabels: [UILabel]!
+	
 	@IBOutlet weak var tableView: UITableView!
 	
 	public let viewModel = SideMenuViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
 	public weak var homeTabBarController: HomeTabBarController? = nil
 	
@@ -40,7 +43,7 @@ class SideMenuViewController: UIViewController {
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			guard let self = self else { return }
 			
 			switch state {
@@ -53,7 +56,27 @@ class SideMenuViewController: UIViewController {
 				case .failure(_, let message):
 					self.alert(withTitle: "Error", andMessage: message)
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				
+				self?.view.backgroundColor = .colorNamed("BGSideMenu")
+				self?.scanButton.tintColor = .colorNamed("Txt0")
+				
+				self?.aliasTitle.textColor = .colorNamed("Txt2")
+				self?.aliasSubtitle.textColor = .colorNamed("Txt10")
+				self?.regularTitle.textColor = .colorNamed("Txt2")
+				
+				self?.buttonLabels.forEach({ $0.textColor = .colorNamed("TxtBtnSec1") })
+				
+				self?.currentAccountContainer.backgroundColor = .colorNamed("BG2")
+				
+				self?.tableView.visibleCells.forEach({ ($0 as? UITableViewCellThemeUpdated)?.themeUpdated() })
+				
+				
+			}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -138,9 +161,18 @@ class SideMenuViewController: UIViewController {
 extension SideMenuViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		if let segue = viewModel.segue(forIndexPath: indexPath) {
+		tableView.deselectRow(at: indexPath, animated: true)
+		
+		guard let segueDetails = viewModel.segue(forIndexPath: indexPath) else {
+			return
+		}
+		
+		if segueDetails.collapseAndNavigate {
 			self.closeTapped(self)
-			homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+			homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+			
+		} else {
+			homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
 		}
 	}
 }

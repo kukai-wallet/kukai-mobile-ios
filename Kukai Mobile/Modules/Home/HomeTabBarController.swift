@@ -25,7 +25,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
-	private let sideMenuVc: SideMenuViewController = UIStoryboard(name: "SideMenu", bundle: nil).instantiateInitialViewController() ?? SideMenuViewController()
+	private var sideMenuVc: SideMenuViewController? = nil
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
@@ -38,7 +38,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.setupAppearence()
 		self.delegate = self
 		
-		sideMenuVc.homeTabBarController = self
 		activityAnimationFrames = UIImage.animationFrames(prefix: "ActivityAni", count: 90)
 		
 		
@@ -63,6 +62,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
 				self?.refresh(address: nil)
+			}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { _ in
+				(UIApplication.shared.delegate as? AppDelegate)?.setAppearenceProxies()
 			}.store(in: &bag)
 		
 		setupTzKTAccountListener()
@@ -161,12 +166,19 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			return
 		}
 		
+		sideMenuVc?.view.removeFromSuperview()
+		sideMenuVc = nil
+		
+		sideMenuVc = UIStoryboard(name: "SideMenu", bundle: nil).instantiateInitialViewController() ?? SideMenuViewController()
+		sideMenuVc?.homeTabBarController = self
+		
+		
 		let sideMenuWidth = currentWindow.bounds.width - 16
-		self.sideMenuVc.view.frame = CGRect(x: sideMenuWidth * -1, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
-		currentWindow.addSubview(sideMenuVc.view)
+		self.sideMenuVc?.view.frame = CGRect(x: sideMenuWidth * -1, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+		currentWindow.addSubview(sideMenuVc?.view ?? UIView())
 		
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-			self?.sideMenuVc.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+			self?.sideMenuVc?.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
 		}
 	}
 	
