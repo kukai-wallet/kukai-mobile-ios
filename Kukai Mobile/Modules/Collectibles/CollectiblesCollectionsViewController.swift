@@ -14,7 +14,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesCollectionsViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	private var refreshingFromParent = true
 	
 	public weak var delegate: UIViewController? = nil
@@ -29,7 +29,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					//self?.showLoadingView(completion: nil)
@@ -48,7 +48,14 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 						self?.viewModel.needsLayoutChange = false
 					}
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.collectionView.reloadData()
+				
+			}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -10,11 +10,13 @@ import UIKit
 public class ThemePickerViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
 	@IBOutlet weak var tableView: UITableView!
+	
 	private var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
+	private var gradient = CAGradientLayer()
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		let currentTitle = ThemeManager.shared.currentTheme()
 		let selectedRow = ThemeManager.shared.availableThemes().firstIndex(of: currentTitle) ?? 0
@@ -55,6 +57,11 @@ public class ThemePickerViewController: UIViewController, UITableViewDelegate, U
 		
 		let selectedCell = self.tableView.cellForRow(at: indexPath) as? ThemeChoiceCell
 		ThemeManager.shared.setTheme(selectedCell?.themeLabel?.text ?? "Light")
+		
+		// Update all components before dismissing so it s not jarring
+		gradient.removeFromSuperlayer()
+		gradient = self.view.addGradientBackgroundFull()
+		tableView.reloadData()
 		
 		self.dismissBottomSheet()
 	}

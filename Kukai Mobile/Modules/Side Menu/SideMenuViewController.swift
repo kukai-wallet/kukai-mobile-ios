@@ -61,20 +61,7 @@ class SideMenuViewController: UIViewController {
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				
-				self?.view.backgroundColor = .colorNamed("BGSideMenu")
-				self?.scanButton.tintColor = .colorNamed("Txt0")
-				
-				self?.aliasTitle.textColor = .colorNamed("Txt2")
-				self?.aliasSubtitle.textColor = .colorNamed("Txt10")
-				self?.regularTitle.textColor = .colorNamed("Txt2")
-				
-				self?.buttonLabels.forEach({ $0.textColor = .colorNamed("TxtBtnSec1") })
-				
-				self?.currentAccountContainer.backgroundColor = .colorNamed("BG2")
-				
-				self?.tableView.visibleCells.forEach({ ($0 as? UITableViewCellThemeUpdated)?.themeUpdated() })
-				
+				self?.tableView.reloadData()
 				
 			}.store(in: &bag)
     }

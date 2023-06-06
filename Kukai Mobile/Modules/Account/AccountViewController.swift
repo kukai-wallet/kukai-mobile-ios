@@ -51,11 +51,9 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				
 				self?.gradient.removeFromSuperlayer()
 				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				
-				self?.tableView.visibleCells.forEach({ ($0 as? UITableViewCellThemeUpdated)?.themeUpdated() })
+				self?.tableView.reloadData()
 				
 			}.store(in: &bag)
 	}

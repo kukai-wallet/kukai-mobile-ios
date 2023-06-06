@@ -22,7 +22,7 @@ public class ThemeManager {
 	
 	public static let shared = ThemeManager()
 	
-	private var themes: [String: ThemeData] = [:]
+	public var themes: [String: ThemeData] = [:]
 	private var selectedTheme: String = UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? "Dark"
 	
 	private init() {}
@@ -482,15 +482,6 @@ public class ThemeManager {
 		UIColor.swizzleNamedColorInitToAddTheme()
 	}
 	
-	public func color(named: String) -> UIColor? {
-		if let color = self.themes[self.selectedTheme]?.namedColors[named] {
-			return color
-		}
-		
-		os_log("Unable to find color: %@, for Theme: %@", log: .default, type: .error, named, selectedTheme)
-		return nil
-	}
-	
 	public func updateSystemInterfaceStyle() {
 		UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = currentInterfaceStyle()
 	}
@@ -552,10 +543,22 @@ private extension UIColor {
 	}
 	
 	@objc func theme_color(named name: String) -> UIColor? {
-		return ThemeManager.shared.color(named: name)
+		return UIColor { _ in
+			let dark = ThemeManager.shared.themes["Dark"]?.namedColors[name] ?? .purple
+			let light = ThemeManager.shared.themes["Light"]?.namedColors[name] ?? .purple
+			
+			// Although the callback passes in a trait collection, there are several situations where it always returns the system setting as oppose to the overrided setting
+			// Couldn't find the solution, instead just ignore and use the one we are tracking
+			// Colors will auto update, but custom views like background gradents will need to be redrawn, and tableviews called reloadData
+			return ThemeManager.shared.currentInterfaceStyle() == .dark ? dark : light
+		}
 	}
 	
 	@objc func theme_color(named name: String, inBundle: Bundle, compatibleWithTraitCollection: UITraitCollection) -> UIColor? {
-		return ThemeManager.shared.color(named: name)
+		return UIColor { _ in
+			let dark = ThemeManager.shared.themes["Dark"]?.namedColors[name] ?? .purple
+			let light = ThemeManager.shared.themes["Light"]?.namedColors[name] ?? .purple
+			return ThemeManager.shared.currentInterfaceStyle() == .dark ? dark : light
+		}
 	}
 }

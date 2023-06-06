@@ -7,7 +7,7 @@
 
 import UIKit
 
-class EstimatedTotalCell: UITableViewCell, UITableViewCellThemeUpdated {
+class EstimatedTotalCell: UITableViewCell {
 
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var valueLabel: UILabel!
@@ -15,11 +15,5 @@ class EstimatedTotalCell: UITableViewCell, UITableViewCellThemeUpdated {
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
-	}
-	
-	func themeUpdated() {
-		balanceLabel.textColor = .colorNamed("Txt2")
-		valueLabel.textColor = .colorNamed("Txt10")
-		totalEstButton.tintColor = .colorNamed("Txt10")
 	}
 }

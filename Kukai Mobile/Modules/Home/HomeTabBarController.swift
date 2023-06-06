@@ -68,16 +68,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] _ in
 				(UIApplication.shared.delegate as? AppDelegate)?.setAppearenceProxies()
-				
-				self?.highlightedGradient.removeFromSuperlayer()
-				self?.highlightedGradient = CAGradientLayer()
-				
-				self?.sideMenuButton.tintColor = .colorNamed("BG12")
-				self?.scanButton.tintColor = .colorNamed("BG12")
-				
-				self?.setupAppearence()
-				self?.updateAccountButton()
-				self?.viewDidLayoutSubviews()
+				self?.view.setNeedsDisplay()
 			}.store(in: &bag)
 		
 		setupTzKTAccountListener()
