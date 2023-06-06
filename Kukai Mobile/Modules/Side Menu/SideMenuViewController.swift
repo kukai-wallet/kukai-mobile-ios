@@ -128,6 +128,7 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func showQRTapped(_ sender: Any) {
+		homeTabBarController?.performSegue(withIdentifier: "side-menu-show-qr", sender: nil)
 	}
 	
 	@IBAction func swapTapped(_ sender: Any) {

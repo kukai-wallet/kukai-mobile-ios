@@ -125,6 +125,8 @@
 		C053A57729EFFBA800FE1EC0 /* TitleSubtitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C053A57629EFFBA800FE1EC0 /* TitleSubtitleCell.swift */; };
 		C055EF1A2A2F77F10031CB5F /* NetworkChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF192A2F77F00031CB5F /* NetworkChoiceCell.swift */; };
 		C055EF1C2A2F85B60031CB5F /* CurrencyChoiceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */; };
+		C055EF1E2A2F95310031CB5F /* ShowQRViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */; };
+		C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */ = {isa = PBXBuildFile; productRef = C055EF202A2F95ED0031CB5F /* QRCode */; };
 		C05848A8280EF5CC007933CA /* ThemePickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */; };
 		C05B0A2F2A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B0A2D2A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.swift */; };
 		C05B0A302A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C05B0A2E2A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.xib */; };
@@ -468,6 +470,7 @@
 		C053A57629EFFBA800FE1EC0 /* TitleSubtitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleSubtitleCell.swift; sourceTree = "<group>"; };
 		C055EF192A2F77F00031CB5F /* NetworkChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChoiceCell.swift; sourceTree = "<group>"; };
 		C055EF1B2A2F85B60031CB5F /* CurrencyChoiceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyChoiceCell.swift; sourceTree = "<group>"; };
+		C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShowQRViewController.swift; sourceTree = "<group>"; };
 		C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemePickerViewController.swift; sourceTree = "<group>"; };
 		C05B0A2D2A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesCollectionHeaderSmallCell.swift; sourceTree = "<group>"; };
 		C05B0A2E2A03F9E3005AA803 /* CollectiblesCollectionHeaderSmallCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CollectiblesCollectionHeaderSmallCell.xib; sourceTree = "<group>"; };
@@ -689,6 +692,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */,
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
 				C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
@@ -1326,6 +1330,7 @@
 				C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */,
 				C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */,
 				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
+				C055EF1D2A2F95310031CB5F /* ShowQRViewController.swift */,
 			);
 			path = "Side Menu";
 			sourceTree = "<group>";
@@ -1465,6 +1470,7 @@
 				C0BBD2A426A9A7980097B63A /* Sentry */,
 				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
 				C06E0D5C287C365F007A580B /* WalletConnect */,
+				C055EF202A2F95ED0031CB5F /* QRCode */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -1543,6 +1549,7 @@
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
 				C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
+				C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -1816,6 +1823,7 @@
 				C0F7113529DCBA0D00FA59E0 /* RecoveryPhraseInfoViewController.swift in Sources */,
 				C0082C0826A7278000DB160B /* HomeTabBarController.swift in Sources */,
 				C07E283A29E84C0E00E8529A /* AccountItemCell.swift in Sources */,
+				C055EF1E2A2F95310031CB5F /* ShowQRViewController.swift in Sources */,
 				C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */,
 				C0E2317D29897BB5007BC79D /* SendTokenConfirmViewController.swift in Sources */,
 				C01372AA29B206CD0083E297 /* MenuActionCell.swift in Sources */,
@@ -2481,6 +2489,14 @@
 				kind = branch;
 			};
 		};
+		C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WalletConnect/QRCode";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 14.3.1;
+			};
+		};
 		C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
@@ -2504,6 +2520,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
 			productName = KukaiCoreSwift;
+		};
+		C055EF202A2F95ED0031CB5F /* QRCode */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */;
+			productName = QRCode;
 		};
 		C06E0D5C287C365F007A580B /* WalletConnect */ = {
 			isa = XCSwiftPackageProductDependency;
