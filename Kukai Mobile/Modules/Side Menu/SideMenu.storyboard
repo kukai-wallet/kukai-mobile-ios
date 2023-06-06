@@ -50,7 +50,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iM6-NV-SVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="297.33333333333331" y="63" width="79.666666666666686" height="36"/>
+                                <rect key="frame" x="321.33333333333331" y="63" width="55.666666666666686" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="oRt-ll-jgQ"/>
@@ -461,6 +461,55 @@
             </objects>
             <point key="canvasLocation" x="1076" y="798"/>
         </scene>
+        <!--ShowQR View Controller-->
+        <scene sceneID="IZw-fR-KeK">
+            <objects>
+                <viewController storyboardIdentifier="show_qr" id="3dX-B7-5wO" customClass="ShowQRViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="62t-oA-rcZ">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive Address" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GKP-JB-95F">
+                                <rect key="frame" x="16" y="91" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your account QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdP-t4-k2y">
+                                <rect key="frame" x="16" y="131" width="361" height="20"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g8u-6O-KBs">
+                                <rect key="frame" x="116.66666666666669" y="175" width="160" height="160"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="160" id="VcL-PY-CGC"/>
+                                    <constraint firstAttribute="height" constant="160" id="v13-IC-DS5"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="uAj-Kq-HRO"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="g8u-6O-KBs" firstAttribute="centerX" secondItem="uAj-Kq-HRO" secondAttribute="centerX" id="28v-KF-K21"/>
+                            <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="GKP-JB-95F" secondAttribute="trailing" constant="16" id="91J-NW-0h4"/>
+                            <constraint firstItem="g8u-6O-KBs" firstAttribute="top" secondItem="HdP-t4-k2y" secondAttribute="bottom" constant="24" id="Hnl-2x-CKq"/>
+                            <constraint firstItem="HdP-t4-k2y" firstAttribute="top" secondItem="GKP-JB-95F" secondAttribute="bottom" constant="16" id="IeY-kN-yB2"/>
+                            <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="HdP-t4-k2y" secondAttribute="trailing" constant="16" id="XPR-sH-uyN"/>
+                            <constraint firstItem="HdP-t4-k2y" firstAttribute="leading" secondItem="uAj-Kq-HRO" secondAttribute="leading" constant="16" id="hso-fv-qM2"/>
+                            <constraint firstItem="GKP-JB-95F" firstAttribute="leading" secondItem="62t-oA-rcZ" secondAttribute="leading" constant="16" id="rdU-ah-JET"/>
+                            <constraint firstItem="GKP-JB-95F" firstAttribute="top" secondItem="uAj-Kq-HRO" secondAttribute="top" constant="32" id="yfh-gf-FcH"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="qrCodeImageView" destination="g8u-6O-KBs" id="TZp-Dp-sZp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AZI-Ii-uPO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-926" y="798"/>
+        </scene>
         <!--Theme Picker View Controller-->
         <scene sceneID="eBF-xk-x4F">
             <objects>
@@ -858,18 +907,21 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ULk-B3-fqb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3384" y="1627"/>
+            <point key="canvasLocation" x="3360" y="1627"/>
         </scene>
     </scenes>
     <designables>
         <designable name="FDu-I5-fEA">
-            <size key="intrinsicContentSize" width="97.666666666666671" height="31"/>
+            <size key="intrinsicContentSize" width="83.666666666666671" height="31"/>
+        </designable>
+        <designable name="Itg-aH-eLT">
+            <size key="intrinsicContentSize" width="58.666666666666664" height="31"/>
         </designable>
         <designable name="Nzm-zE-JrN">
-            <size key="intrinsicContentSize" width="46" height="36"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="iM6-NV-SVb">
-            <size key="intrinsicContentSize" width="79.666666666666671" height="38"/>
+            <size key="intrinsicContentSize" width="55.666666666666664" height="31"/>
         </designable>
     </designables>
     <resources>
@@ -900,6 +952,9 @@
         </namedColor>
         <namedColor name="Txt6">
             <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt8">
+            <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtBtnSec1">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
