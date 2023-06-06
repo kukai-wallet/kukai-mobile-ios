@@ -21,6 +21,8 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias CellDataType = AnyHashable
 	
 	public static let didChangeCurrencyMessage = "changed"
+	public var isLoading = false
+	public var selectedIndex: IndexPath = IndexPath(row: -1, section: 0)
 	
 	private let coinGeckoService = DependencyManager.shared.coinGeckoService
 	private let popularKeys = ["usd", "eur", "gbp", "jpy", "rub", "inr", "btc", "eth"]
@@ -33,10 +35,15 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
-			if let currency = item as? CurrencyObj, let cell = tableView.dequeueReusableCell(withIdentifier: "TitleSubtitleCell", for: indexPath) as? TitleSubtitleCell {
-				cell.titleLabel.text = currency.code
-				cell.subTitleLabel.text = currency.name
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			if let currency = item as? CurrencyObj, let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyChoiceCell", for: indexPath) as? CurrencyChoiceCell {
+				cell.codeLabel.text = currency.code
+				cell.nameLabel.text = currency.name
+				
+				if DependencyManager.shared.coinGeckoService.selectedCurrency == currency.code.lowercased() {
+					self?.selectedIndex = indexPath
+				}
+				
 				return cell
 				
 			} else {
@@ -105,9 +112,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			// TODO: may be double refreshing here
-			/*
-			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, refreshType: .refreshEverything) { [weak self] error in
+			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, isSelectedAccount: true, refreshType: .refreshEverything, completion: { [weak self] error in
 				if let e = error {
 					self?.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
 					return
@@ -115,8 +120,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				DependencyManager.shared.balanceService.currencyChanged = true
 				self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
-			}
-			*/
+			})
 		}
 	}
 }
