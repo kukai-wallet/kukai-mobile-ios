@@ -46,7 +46,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
 		let selectedTheme = ThemeManager.shared.currentTheme()
-		let selectedNetwork = DependencyManager.shared.currentNetworkType.rawValue
+		let selectedNetwork = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
@@ -78,7 +78,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return (segue: "side-menu-currency", collapseAndNavigate: true)
 			
 		} else if forIndexPath.row == 3 {
-			return (segue: "side-menu-network", collapseAndNavigate: true)
+			return (segue: "side-menu-network", collapseAndNavigate: false)
 		}
 		
 		return nil

@@ -1,16 +1,17 @@
 //
-//  ThemeChoiceCell.swift
+//  NetworkChoiceCell.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 05/06/2023.
+//  Created by Simon Mcloughlin on 06/06/2023.
 //
 
 import UIKit
 
-class ThemeChoiceCell: UITableViewCell, UITableViewCellContainerView {
+class NetworkChoiceCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
-	@IBOutlet weak var themeLabel: UILabel!
+	@IBOutlet weak var networkLabel: UILabel!
+	@IBOutlet weak var descriptionLabel: UILabel!
 	@IBOutlet weak var checkedImage: UIImageView!
 	
 	var gradientLayer = CAGradientLayer()

@@ -71,7 +71,12 @@ class SideMenuViewController: UIViewController {
 			.dropFirst()
 			.sink { [weak self] _ in
 				self?.tableView.reloadData()
-				
+			}.store(in: &bag)
+		
+		DependencyManager.shared.$networkDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
     }
 	

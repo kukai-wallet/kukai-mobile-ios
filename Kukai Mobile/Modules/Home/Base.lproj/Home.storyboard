@@ -107,10 +107,10 @@
                         <segue destination="TIR-Qd-Mky" kind="relationship" relationship="viewControllers" id="9Hz-0m-X40"/>
                         <segue destination="Thj-8Y-lSQ" kind="show" identifier="side-menu-wallet-connect" id="ru4-xg-n5x"/>
                         <segue destination="ItM-db-Hb6" kind="show" identifier="side-menu-currency" id="IHW-dh-XAr"/>
-                        <segue destination="fCs-nt-4bZ" kind="show" identifier="side-menu-network" id="pv2-XV-0DA"/>
                         <segue destination="x5O-gF-kn4" kind="custom" identifier="wallet-connect-sign" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="81X-tM-ax1"/>
                         <segue destination="2yu-Z9-dT9" kind="custom" identifier="wallet-connect-contract" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b1M-i3-0pZ"/>
                         <segue destination="2RW-iN-awh" kind="custom" identifier="theme" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Rde-C9-IN6"/>
+                        <segue destination="fCs-nt-4bZ" kind="custom" identifier="side-menu-network" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Jw3-79-lQf"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -195,13 +195,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxm-nU-LyP">
-                                                    <rect key="frame" x="40.000000000000007" y="18.333333333333329" width="76.666666666666686" height="18.666666666666671"/>
+                                                    <rect key="frame" x="39.999999999999993" y="18" width="79.333333333333314" height="19.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEg-Fn-9q8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="116.66666666666669" y="18.333333333333329" width="50" height="18.666666666666671"/>
+                                                    <rect key="frame" x="119.33333333333331" y="18" width="50" height="19.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="NPg-Hh-oA7"/>
                                                     </constraints>
@@ -264,13 +264,13 @@
                                                             <rect key="frame" x="44" y="16" width="246" height="35"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXR-AY-uAm">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="246" height="18.666666666666668"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="246" height="19.333333333333332"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                     <color key="textColor" name="Txt2"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqA-p2-tZv">
-                                                                    <rect key="frame" x="0.0" y="18.666666666666664" width="246" height="16.333333333333336"/>
+                                                                    <rect key="frame" x="0.0" y="19.333333333333336" width="246" height="15.666666666666664"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="10"/>
                                                                     <color key="textColor" name="Txt10"/>
                                                                     <nil key="highlightedColor"/>
@@ -587,7 +587,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNW-DA-rih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-157" y="-3029"/>
+            <point key="canvasLocation" x="-157" y="-3072"/>
         </scene>
         <!--existing-->
         <scene sceneID="WYi-fI-sbH">
@@ -1266,7 +1266,7 @@
                 <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="theme" id="2RW-iN-awh" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="a6c-2I-f8X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-165" y="-2951"/>
+            <point key="canvasLocation" x="-165" y="-3033"/>
         </scene>
     </scenes>
     <designables>

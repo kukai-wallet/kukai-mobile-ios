@@ -412,7 +412,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vLm-Y6-XUD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1227" y="798"/>
+            <point key="canvasLocation" x="2076" y="798"/>
         </scene>
         <!--Choose Network-->
         <scene sceneID="ZvH-8Z-hVf">
@@ -422,48 +422,99 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="CNi-rt-cFX">
-                                <rect key="frame" x="24" y="83" width="345" height="32"/>
-                                <segments>
-                                    <segment title="Mainnet"/>
-                                    <segment title="Ghostnet"/>
-                                </segments>
-                                <connections>
-                                    <action selector="networkConfigChanged:" destination="fhg-2r-jif" eventType="valueChanged" id="z0C-B2-upg"/>
-                                </connections>
-                            </segmentedControl>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lHK-8g-3zW">
-                                <rect key="frame" x="24" y="138" width="345" height="223.33333333333337"/>
-                                <string key="text">Mainnet:
-Live network with real XTZ and Tokens with real value
-
-Ghostnet:
-A Beta network running the latest Tezos mainnet protocol, with fake XTZ and fake tokens with no monetary value.
-Mainly used by developers to experiment / test. Or members of the public when testing a dApp in Beta.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Network" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGg-gT-ycb">
+                                <rect key="frame" x="16" y="91" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="31m-Sc-p5w">
+                                <rect key="frame" x="0.0" y="139" width="393" height="679"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="NetworkChoiceCell" rowHeight="71" id="4o2-23-JXj" customClass="NetworkChoiceCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="71"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4o2-23-JXj" id="9Zi-sK-wob">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="71"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fan-hX-CFO">
+                                                    <rect key="frame" x="16" y="2" width="361" height="67"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnUnchecked" translatesAutoresizingMaskIntoConstraints="NO" id="aBf-kU-33e">
+                                                            <rect key="frame" x="309" y="15.666666666666671" width="36" height="36"/>
+                                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="36" id="ZPy-7L-mWH"/>
+                                                                <constraint firstAttribute="height" constant="36" id="hcF-aS-c3M"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;network&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y5o-6k-XuW">
+                                                            <rect key="frame" x="16" y="10" width="277" height="22"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                                            <color key="textColor" name="Txt2"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;description&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYy-eA-GIr">
+                                                            <rect key="frame" x="16" y="36" width="277" height="21"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Txt10"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="MYy-eA-GIr" secondAttribute="bottom" constant="10" id="5Zf-6T-Uhe"/>
+                                                        <constraint firstItem="y5o-6k-XuW" firstAttribute="top" secondItem="Fan-hX-CFO" secondAttribute="top" constant="10" id="76G-Xs-bcV"/>
+                                                        <constraint firstItem="MYy-eA-GIr" firstAttribute="trailing" secondItem="y5o-6k-XuW" secondAttribute="trailing" id="HA9-zP-6fI"/>
+                                                        <constraint firstItem="MYy-eA-GIr" firstAttribute="top" secondItem="y5o-6k-XuW" secondAttribute="bottom" constant="4" id="JN5-HT-MLb"/>
+                                                        <constraint firstItem="aBf-kU-33e" firstAttribute="leading" secondItem="y5o-6k-XuW" secondAttribute="trailing" constant="16" id="Q4b-wt-EmF"/>
+                                                        <constraint firstAttribute="trailing" secondItem="aBf-kU-33e" secondAttribute="trailing" constant="16" id="d0v-uA-Lbp"/>
+                                                        <constraint firstItem="y5o-6k-XuW" firstAttribute="leading" secondItem="Fan-hX-CFO" secondAttribute="leading" constant="16" id="dqZ-y4-GdM"/>
+                                                        <constraint firstItem="MYy-eA-GIr" firstAttribute="leading" secondItem="y5o-6k-XuW" secondAttribute="leading" id="swJ-6f-BfZ"/>
+                                                        <constraint firstItem="aBf-kU-33e" firstAttribute="centerY" secondItem="Fan-hX-CFO" secondAttribute="centerY" id="uBN-gQ-Xxf"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Fan-hX-CFO" secondAttribute="trailing" constant="16" id="5md-uF-9mR"/>
+                                                <constraint firstItem="Fan-hX-CFO" firstAttribute="leading" secondItem="9Zi-sK-wob" secondAttribute="leading" constant="16" id="OLX-xR-XJw"/>
+                                                <constraint firstAttribute="bottom" secondItem="Fan-hX-CFO" secondAttribute="bottom" constant="2" id="XcF-Hq-3Db"/>
+                                                <constraint firstItem="Fan-hX-CFO" firstAttribute="top" secondItem="9Zi-sK-wob" secondAttribute="top" constant="2" id="ovw-xq-CH4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="checkedImage" destination="aBf-kU-33e" id="Lyh-fj-eC5"/>
+                                            <outlet property="containerView" destination="Fan-hX-CFO" id="0VU-VM-Q0u"/>
+                                            <outlet property="descriptionLabel" destination="MYy-eA-GIr" id="b45-Ey-MV8"/>
+                                            <outlet property="networkLabel" destination="y5o-6k-XuW" id="ob9-AJ-ZAc"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="jyV-Yk-I3S"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="CNi-rt-cFX" firstAttribute="leading" secondItem="jyV-Yk-I3S" secondAttribute="leading" constant="24" id="1A7-H9-5WU"/>
-                            <constraint firstItem="lHK-8g-3zW" firstAttribute="trailing" secondItem="CNi-rt-cFX" secondAttribute="trailing" id="8uO-Vv-5k0"/>
-                            <constraint firstItem="lHK-8g-3zW" firstAttribute="leading" secondItem="CNi-rt-cFX" secondAttribute="leading" id="HFB-tk-Bd5"/>
-                            <constraint firstItem="lHK-8g-3zW" firstAttribute="top" secondItem="CNi-rt-cFX" secondAttribute="bottom" constant="24" id="c7t-WS-OkL"/>
-                            <constraint firstItem="jyV-Yk-I3S" firstAttribute="trailing" secondItem="CNi-rt-cFX" secondAttribute="trailing" constant="24" id="e6Z-zR-rbM"/>
-                            <constraint firstItem="CNi-rt-cFX" firstAttribute="top" secondItem="jyV-Yk-I3S" secondAttribute="top" constant="24" id="tub-dH-Gsb"/>
+                            <constraint firstItem="31m-Sc-p5w" firstAttribute="leading" secondItem="Mlr-yc-Md3" secondAttribute="leading" id="8Tj-L3-FSb"/>
+                            <constraint firstItem="31m-Sc-p5w" firstAttribute="top" secondItem="NGg-gT-ycb" secondAttribute="bottom" constant="24" id="auq-gJ-Pyr"/>
+                            <constraint firstAttribute="trailing" secondItem="NGg-gT-ycb" secondAttribute="trailing" constant="16" id="c6g-81-KAc"/>
+                            <constraint firstItem="NGg-gT-ycb" firstAttribute="leading" secondItem="jyV-Yk-I3S" secondAttribute="leading" constant="16" id="jmS-bI-2pl"/>
+                            <constraint firstItem="jyV-Yk-I3S" firstAttribute="bottom" secondItem="31m-Sc-p5w" secondAttribute="bottom" id="tcm-qx-uNw"/>
+                            <constraint firstItem="NGg-gT-ycb" firstAttribute="top" secondItem="jyV-Yk-I3S" secondAttribute="top" constant="32" id="vjh-yl-vLZ"/>
+                            <constraint firstItem="jyV-Yk-I3S" firstAttribute="trailing" secondItem="31m-Sc-p5w" secondAttribute="trailing" id="ziU-er-ZRp"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Choose Network" id="UcX-5L-wtZ"/>
                     <connections>
-                        <outlet property="networkChoiceControl" destination="CNi-rt-cFX" id="3RP-Lm-yaQ"/>
+                        <outlet property="tableView" destination="31m-Sc-p5w" id="HM1-hO-iLp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cU4-sa-yg7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2247" y="803"/>
+            <point key="canvasLocation" x="1076" y="798"/>
         </scene>
         <!--Theme Picker View Controller-->
         <scene sceneID="eBF-xk-x4F">
@@ -642,7 +693,7 @@ Mainly used by developers to experiment / test. Or members of the public when te
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EXQ-VS-dzU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3384" y="803"/>
+            <point key="canvasLocation" x="3360" y="798"/>
         </scene>
         <!--Wallet Connect Approve View Controller-->
         <scene sceneID="RBS-LM-JxD">
