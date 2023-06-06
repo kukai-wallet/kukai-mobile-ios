@@ -8,14 +8,12 @@
 import UIKit
 import os.log
 
-public protocol ThemeManagerDelegate: AnyObject {
-	func themeDidChange(to: String)
-}
-
 /**
  A simple class to hold onto a collection of theme colors and persist the users choice to UserDefaults
  */
 public class ThemeManager {
+	
+	@Published public var themeDidChange: Bool = false
 	
 	public struct ThemeData {
 		let interfaceStyle: UIUserInterfaceStyle
@@ -23,9 +21,8 @@ public class ThemeManager {
 	}
 	
 	public static let shared = ThemeManager()
-	public weak var delegate: ThemeManagerDelegate? = nil
 	
-	private var themes: [String: ThemeData] = [:]
+	public var themes: [String: ThemeData] = [:]
 	private var selectedTheme: String = UserDefaults.standard.string(forKey: "app.kukai.mobile.theme") ?? "Dark"
 	
 	private init() {}
@@ -55,7 +52,7 @@ public class ThemeManager {
 		selectedTheme = theme
 		updateSystemInterfaceStyle()
 		
-		self.delegate?.themeDidChange(to: theme)
+		self.themeDidChange = true
 		
 		// Deleting and re-adding all views on the screen is an old "trick" to get colors to refresh.
 		// It only works for things using appearence proxy, it doesn't reload our colors.
@@ -473,18 +470,7 @@ public class ThemeManager {
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
 				"BGMediaOval": UIColor("#000000"),
 			],
-			others: [
-				"Red": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [
-					"background": UIColor("#E41D1F"),
-					"image-border": UIColor("#E41D1F"),
-					"modal-background": UIColor("#FFFFFF")
-				]),
-				"Blue": ThemeManager.ThemeData(interfaceStyle: .light, namedColors: [
-					"background": UIColor("#0F2DE4"),
-					"image-border": UIColor("#0F2DE4"),
-					"modal-background": UIColor("#FFFFFF")
-				]),
-			])
+			others: [:])
 	}
 	
 	public func setup(lightColors: [String: UIColor], darkColors: [String: UIColor], others: [String: ThemeData]) {
@@ -494,15 +480,6 @@ public class ThemeManager {
 		
 		// Swizzle after colors created to avoid issues during setup
 		UIColor.swizzleNamedColorInitToAddTheme()
-	}
-	
-	public func color(named: String) -> UIColor? {
-		if let color = self.themes[self.selectedTheme]?.namedColors[named] {
-			return color
-		}
-		
-		os_log("Unable to find color: %@, for Theme: %@", log: .default, type: .error, named, selectedTheme)
-		return nil
 	}
 	
 	public func updateSystemInterfaceStyle() {
@@ -566,10 +543,22 @@ private extension UIColor {
 	}
 	
 	@objc func theme_color(named name: String) -> UIColor? {
-		return ThemeManager.shared.color(named: name)
+		return UIColor { _ in
+			let dark = ThemeManager.shared.themes["Dark"]?.namedColors[name] ?? .purple
+			let light = ThemeManager.shared.themes["Light"]?.namedColors[name] ?? .purple
+			
+			// Although the callback passes in a trait collection, there are several situations where it always returns the system setting as oppose to the overrided setting
+			// Couldn't find the solution, instead just ignore and use the one we are tracking
+			// Colors will auto update, but custom views like background gradents will need to be redrawn, and tableviews called reloadData
+			return ThemeManager.shared.currentInterfaceStyle() == .dark ? dark : light
+		}
 	}
 	
 	@objc func theme_color(named name: String, inBundle: Bundle, compatibleWithTraitCollection: UITraitCollection) -> UIColor? {
-		return ThemeManager.shared.color(named: name)
+		return UIColor { _ in
+			let dark = ThemeManager.shared.themes["Dark"]?.namedColors[name] ?? .purple
+			let light = ThemeManager.shared.themes["Light"]?.namedColors[name] ?? .purple
+			return ThemeManager.shared.currentInterfaceStyle() == .dark ? dark : light
+		}
 	}
 }

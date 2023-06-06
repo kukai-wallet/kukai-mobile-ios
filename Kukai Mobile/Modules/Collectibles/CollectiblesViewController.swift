@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 protocol CollectiblesViewControllerChild {
 	var delegate: UIViewController? { get set }
@@ -22,13 +23,24 @@ class CollectiblesViewController: UIViewController {
 	@IBOutlet weak var containerView: UIView!
 	
 	private var pageController: OnboardingPageViewController? = nil
+	private var bag = [AnyCancellable]()
+	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		segmentedControl.removeBorder()
 		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 16), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 16), defaultColor: UIColor.colorNamed("Txt2"))
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.gradient.removeFromSuperlayer()
+				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
+				self?.view.setNeedsDisplay()
+				
+			}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

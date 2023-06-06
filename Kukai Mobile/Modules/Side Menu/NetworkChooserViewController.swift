@@ -8,38 +8,82 @@
 import UIKit
 import KukaiCoreSwift
 
-class NetworkChooserViewController: UIViewController {
-
-	@IBOutlet weak var networkChoiceControl: UISegmentedControl!
+class NetworkChooserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+	
+	@IBOutlet weak var tableView: UITableView!
+	
+	private var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
+		
+		tableView.delegate = self
+		tableView.dataSource = self
+		
+		let index = DependencyManager.shared.currentNetworkType == .mainnet ? 0 : 1
+		selectedIndex = IndexPath(row: index, section: 0)
     }
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		networkChoiceControl.selectedSegmentIndex = DependencyManager.shared.currentNetworkType == .mainnet ? 0 : 1
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
 	}
 	
-	@IBAction func closeButtonTapped(_ sender: Any) {
-		self.dismiss(animated: true, completion: nil)
-		
-		// Tell host VC to trigger any content loading again after network state changed
-		if let parentNav = self.presentingViewController as? UINavigationController, let vcUnderModal = parentNav.viewControllers.last {
-			vcUnderModal.viewWillAppear(false)
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return 2
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		guard let cell = tableView.dequeueReusableCell(withIdentifier: "NetworkChoiceCell", for: indexPath) as? NetworkChoiceCell else {
+			return UITableViewCell()
 		}
+		
+		if indexPath.row == 0 {
+			cell.networkLabel.text = "Mainnet"
+			cell.descriptionLabel.text = "Live network with real XTZ and Tokens with real values"
+			
+		} else {
+			cell.networkLabel.text = "Ghostnet"
+			cell.descriptionLabel.text = "A Beta Network running the lastest Tezos mainnet protocol, with fake XTZ and fake tokens with no monetary value. Mainly use by developers of the public when testing a dApp in Beta"
+		}
+		
+		return cell
 	}
 	
-	@IBAction func networkConfigChanged(_ sender: Any) {
-		DependencyManager.shared.tezosNodeClient.networkVersion = nil
+	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		deselectCurrentSelection()
 		
-		if networkChoiceControl.selectedSegmentIndex == 0 {
+		selectedIndex = indexPath
+		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
+		
+		DependencyManager.shared.tezosNodeClient.networkVersion = nil
+		if indexPath.row == 0 {
 			DependencyManager.shared.setDefaultMainnetURLs()
 		} else {
 			DependencyManager.shared.setDefaultTestnetURLs()
 		}
 		
-		self.navigationController?.popViewController(animated: true)
+		self.dismissBottomSheet()
+	}
+	
+	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+		}
+		
+		if indexPath == selectedIndex {
+			cell.setSelected(true, animated: true)
+			
+		} else {
+			cell.setSelected(false, animated: true)
+		}
+	}
+	
+	private func deselectCurrentSelection() {
+		tableView.deselectRow(at: selectedIndex, animated: true)
+		let previousCell = tableView.cellForRow(at: selectedIndex)
+		previousCell?.setSelected(false, animated: true)
 	}
 }

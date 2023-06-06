@@ -107,10 +107,10 @@
                         <segue destination="TIR-Qd-Mky" kind="relationship" relationship="viewControllers" id="9Hz-0m-X40"/>
                         <segue destination="Thj-8Y-lSQ" kind="show" identifier="side-menu-wallet-connect" id="ru4-xg-n5x"/>
                         <segue destination="ItM-db-Hb6" kind="show" identifier="side-menu-currency" id="IHW-dh-XAr"/>
-                        <segue destination="VmY-1Z-Zfq" kind="show" identifier="side-menu-theme" id="HMK-mp-FuU"/>
-                        <segue destination="fCs-nt-4bZ" kind="show" identifier="side-menu-network" id="pv2-XV-0DA"/>
                         <segue destination="x5O-gF-kn4" kind="custom" identifier="wallet-connect-sign" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="81X-tM-ax1"/>
                         <segue destination="2yu-Z9-dT9" kind="custom" identifier="wallet-connect-contract" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b1M-i3-0pZ"/>
+                        <segue destination="2RW-iN-awh" kind="custom" identifier="theme" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Rde-C9-IN6"/>
+                        <segue destination="fCs-nt-4bZ" kind="custom" identifier="side-menu-network" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Jw3-79-lQf"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -587,17 +587,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sNW-DA-rih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-157" y="-3029"/>
-        </scene>
-        <!--theme-->
-        <scene sceneID="6nT-J2-Oy2">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="theme" id="VmY-1Z-Zfq" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="9u8-sx-FBH"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="E7o-l0-aif" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-165" y="-3073"/>
+            <point key="canvasLocation" x="-157" y="-3072"/>
         </scene>
         <!--existing-->
         <scene sceneID="WYi-fI-sbH">
@@ -1269,6 +1259,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Am9-Gf-Oma" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2493.8461538461538" y="-1981.2796208530806"/>
+        </scene>
+        <!--theme-->
+        <scene sceneID="iMN-jM-q2C">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="theme" id="2RW-iN-awh" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a6c-2I-f8X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-165" y="-3033"/>
         </scene>
     </scenes>
     <designables>

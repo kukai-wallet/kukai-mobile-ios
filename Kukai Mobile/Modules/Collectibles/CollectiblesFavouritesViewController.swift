@@ -13,7 +13,7 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 	@IBOutlet weak var collectionView: UICollectionView!
 	
 	private let viewModel = CollectiblesFavouritesViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -26,7 +26,7 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 		collectionView.delegate = self
 		collectionView.collectionViewLayout = createLayout()
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					//self?.showLoadingView(completion: nil)
@@ -40,7 +40,14 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 					//self?.hideLoadingView(completion: nil)
 					let _ = ""
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.collectionView.reloadData()
+				
+			}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

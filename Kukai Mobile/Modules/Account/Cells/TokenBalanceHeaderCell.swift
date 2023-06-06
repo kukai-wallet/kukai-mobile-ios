@@ -9,7 +9,9 @@ import UIKit
 
 class TokenBalanceHeaderCell: UITableViewCell {
 	
+	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var moreButton: UIButton!
+	
 	private var menu: MenuViewController? = nil
 	
 	override func awakeFromNib() {

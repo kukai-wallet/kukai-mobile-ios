@@ -13,13 +13,14 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = ActivityViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	private var refreshControl = UIRefreshControl()
 	private var firstLoad = true
+	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -30,7 +31,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}), for: .valueChanged)
 		tableView.refreshControl = refreshControl
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					let _ = ""
@@ -43,7 +44,16 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 					self?.refreshControl.endRefreshing()
 					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.gradient.removeFromSuperlayer()
+				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
+				self?.tableView.reloadData()
+				
+			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

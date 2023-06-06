@@ -46,17 +46,18 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
 		let selectedTheme = ThemeManager.shared.currentTheme()
-		let selectedNetwork = DependencyManager.shared.currentNetworkType.rawValue
+		let selectedNetwork = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
 		
+		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
 		let options = [
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Theme", subtitle: selectedTheme),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork),
+			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil),
+			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme),
+			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency),
+			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork),
 		]
 		
 		snapshot.appendItems(options, toSection: 0)
@@ -66,19 +67,18 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func segue(forIndexPath: IndexPath) -> String? {
+	func segue(forIndexPath: IndexPath) -> (segue: String, collapseAndNavigate: Bool)? {
 		if forIndexPath.row == 0 {
-			return "side-menu-wallet-connect"
+			return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
 			
 		} else if forIndexPath.row == 1 {
-			return "side-menu-theme"
+			return (segue: "theme", collapseAndNavigate: false)
 			
 		} else if forIndexPath.row == 2 {
-			return "side-menu-currency"
+			return (segue: "side-menu-currency", collapseAndNavigate: true)
 			
 		} else if forIndexPath.row == 3 {
-			return "side-menu-network"
-			
+			return (segue: "side-menu-network", collapseAndNavigate: false)
 		}
 		
 		return nil

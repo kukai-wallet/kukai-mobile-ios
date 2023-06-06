@@ -44,8 +44,13 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 		
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
-		if timeSinceNow > -60 && data.status != .unconfirmed {
+		if data.status == .unconfirmed {
+			hasTime(true)
+			timeLabel.text = "UNCONFIRMED"
+			
+		} else if timeSinceNow > -60 && data.status != .unconfirmed {
 			hasTime(false)
+			
 		} else {
 			hasTime(true)
 			timeLabel.text = data.date?.timeAgoDisplay() ?? ""
