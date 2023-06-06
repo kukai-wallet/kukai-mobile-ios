@@ -23,7 +23,8 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var regularIcon: UIImageView!
 	@IBOutlet weak var regularTitle: UILabel!
 	
-	@IBOutlet var buttonLabels: [UILabel]!
+	@IBOutlet weak var copyButton: CustomisableButton!
+	@IBOutlet weak var showQRButton: CustomisableButton!
 	
 	@IBOutlet weak var tableView: UITableView!
 	
@@ -42,6 +43,14 @@ class SideMenuViewController: UIViewController {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
+		copyButton.customButtonType = .secondary
+		copyButton.configuration?.imagePlacement = .leading
+		copyButton.configuration?.imagePadding = 8
+		
+		showQRButton.customButtonType = .secondary
+		showQRButton.configuration?.imagePlacement = .leading
+		showQRButton.configuration?.imagePadding = 8
 		
 		viewModel.$state.sink { [weak self] state in
 			guard let self = self else { return }

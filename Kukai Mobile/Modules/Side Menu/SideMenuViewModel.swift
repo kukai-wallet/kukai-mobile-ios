@@ -52,11 +52,12 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
 		
+		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
 		let options = [
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Theme", subtitle: selectedTheme),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork),
+			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil),
+			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme),
+			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency),
+			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork),
 		]
 		
 		snapshot.appendItems(options, toSection: 0)
