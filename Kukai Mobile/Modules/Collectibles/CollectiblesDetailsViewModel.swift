@@ -36,8 +36,17 @@ struct NameContent: Hashable {
 	let showcaseCount: Int
 }
 
+struct CreatorContent: Hashable {
+	let creatorName: String
+}
+
 struct SendContent: Hashable {
 	let enabled: Bool
+}
+
+struct PricesContent: Hashable {
+	let lastSalePrice: String
+	let floorPrice: String
 }
 
 struct DescriptionContent: Hashable {
@@ -65,6 +74,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	private var avPlayer: AVPlayer? = nil
 	private var avPlayerLayer: AVPlayerLayer? = nil
+	private var sendData = SendContent(enabled: true)
 	
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
@@ -88,7 +98,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectibleDetailImageCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailImageCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAVCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAVCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailNameCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailNameCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailCreatorCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailCreatorCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailSendCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailSendCell")
+		collectionView.register(UINib(nibName: "CollectibleDetailPricesCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailPricesCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailDescriptionCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailDescriptionCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeHeaderCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeHeaderCell")
 		collectionView.register(UINib(nibName: "CollectibleDetailAttributeItemCell", bundle: nil), forCellWithReuseIdentifier: "CollectibleDetailAttributeItemCell")
@@ -113,8 +125,14 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			} else if let item = item as? NameContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: item)
 				
+			} else if let item = item as? CreatorContent {
+				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailCreatorCell", for: indexPath), withItem: item)
+				
 			} else if let item = item as? SendContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: item)
+				
+			} else if let item = item as? PricesContent {
+				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailPricesCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? DescriptionContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath), withItem: item)
@@ -151,6 +169,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		var section1Content: [CellDataType] = []
 		
+		let objktCollectionData = DependencyManager.shared.objktClient.collections[nft.parentContract]
 		let nameIcon = TzKTClient.avatarURL(forToken: nft.parentContract)
 		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil, showcaseCount: 2)
 		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
@@ -164,7 +183,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			self.isImage = response.mediaContent.isImage
 			section1Content.append(response.mediaContent)
 			section1Content.append(self.nameContent)
-			section1Content.append(SendContent(enabled: true))
+			
+			if let creator = objktCollectionData?.creator?.alias {
+				section1Content.append(CreatorContent(creatorName: creator))
+			}
+			
+			self.sendData = SendContent(enabled: true)
+			section1Content.append(self.sendData)
 			section1Content.append(DescriptionContent(description: self.nft?.description ?? ""))
 			
 			if self.attributes.count > 0 {
@@ -209,6 +234,37 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		}
 		
 		ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		
+		
+		// Load remote data after UI
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
+		DependencyManager.shared.objktClient.resolveToken(address: nft.parentContract, tokenId: nft.tokenId, forOwnerWalletAddress: address) { [weak self] result in
+			guard let self = self, let res = try? result.get(), let data = res.data else {
+				return
+			}
+			
+			var needsUpdating = false
+			if data.isOnSale(), let price = data.onSalePrice() {
+				let onSale = OnSaleData(amount: "\(price.normalisedRepresentation) XTZ")
+				self.currentSnapshot.insertItems([onSale], beforeItem: self.currentSnapshot.itemIdentifiers[0])
+				needsUpdating = true
+			}
+			
+			let lastSale = data.lastSalePrice()
+			let floorPrice = data.floorPrice()
+			if lastSale != nil || floorPrice != nil {
+				
+				let lastSaleString = lastSale == nil ? " " : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
+				let floorPriceString = floorPrice == nil ? " " : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
+				let priceData = PricesContent(lastSalePrice: lastSaleString, floorPrice: floorPriceString)
+				self.currentSnapshot.insertItems([priceData], afterItem: self.sendData)
+				needsUpdating = true
+			}
+			
+			if needsUpdating {
+				self.dataSource?.apply(self.currentSnapshot, animatingDifferences: animate)
+			}
+		}
 	}
 	
 	
@@ -464,12 +520,21 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			return parsedCell
 			
+		} else if let obj = item as? CreatorContent, let parsedCell = cell as? CollectibleDetailCreatorCell {
+			parsedCell.creatorLabel.text = obj.creatorName
+			return parsedCell
+			
 		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
 			parsedCell.sendButton.isEnabled = obj.enabled
 			if let target = sendTarget, let action = sendAction {
 				parsedCell.setup(target: target, action: action)
 			}
 			
+			return parsedCell
+			
+		} else if let obj = item as? PricesContent, let parsedCell = cell as? CollectibleDetailPricesCell {
+			parsedCell.lastSaleLabel.text = obj.lastSalePrice
+			parsedCell.floorPriceLabel.text = obj.floorPrice
 			return parsedCell
 			
 		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
@@ -517,8 +582,14 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 		} else if let item = item as? NameContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item, layoutOnly: true)
 			
+		} else if let item = item as? CreatorContent {
+			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailCreatorCell", ofType: CollectibleDetailCreatorCell.self), withItem: item, layoutOnly: true)
+			
 		} else if let item = item as? SendContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item, layoutOnly: true)
+			
+		} else if let item = item as? PricesContent {
+			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailPricesCell", ofType: CollectibleDetailPricesCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? DescriptionContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailDescriptionCell", ofType: CollectibleDetailDescriptionCell.self), withItem: item, layoutOnly: true)
