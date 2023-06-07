@@ -17,8 +17,6 @@ class CustomisableButton: UIButton {
 		case none
 	}
 	
-	private var didSetupCustomImage = false
-	
 	@IBInspectable var imageWidth: CGFloat = 0
 	@IBInspectable var imageHeight: CGFloat = 0
 	@IBInspectable var customImage: UIImage = UIImage()
@@ -27,6 +25,9 @@ class CustomisableButton: UIButton {
 	public var customButtonType: customButtonType = .none
 	
 	private var gradientLayer = CAGradientLayer()
+	private var previousFrame: CGRect = CGRect(x: -1, y: -1, width: -1, height: -1)
+	private var previousEnabled = false
+	private var didSetupCustomImage = false
 	
 	override func layoutSubviews() {
 		super.layoutSubviews()
@@ -55,6 +56,10 @@ class CustomisableButton: UIButton {
 	}
 	
 	func setupGradient() {
+		if previousFrame == self.frame && previousEnabled == isEnabled {
+			return // prevent UI loops, only process if something has changed
+		}
+		
 		gradientLayer.removeFromSuperlayer()
 		
 		switch self.customButtonType {
@@ -94,5 +99,8 @@ class CustomisableButton: UIButton {
 			case .none:
 				break
 		}
+		
+		previousFrame = self.frame
+		previousEnabled = isEnabled
 	}
 }
