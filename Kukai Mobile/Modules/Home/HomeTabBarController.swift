@@ -20,7 +20,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	@IBOutlet weak var scanButton: UIButton!
 	
 	private var refreshType: BalanceService.RefreshType = .useCache
-	private var topRightMenu = MenuViewController()
 	private let scanner = ScanViewController()
 	private var bag = [AnyCancellable]()
 	private var gradientLayers: [CAGradientLayer] = []
