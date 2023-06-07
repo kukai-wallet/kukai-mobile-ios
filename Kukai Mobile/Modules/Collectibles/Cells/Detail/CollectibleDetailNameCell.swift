@@ -56,11 +56,16 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 	}
 	
 	func menuForMore(sourceViewController: UIViewController) -> MenuViewController {
-		var actions: [UIAction] = []
+		guard let nft = nft else {
+			return MenuViewController()
+		}
 		
+		var actions: [[UIAction]] = []
+		actions.append([])
+		let objktCollectionInfo = DependencyManager.shared.objktClient.collections[nft.parentContract]
 		
 		if isImage {
-			actions.append(
+			actions[0].append(
 				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft, let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
 						return
@@ -83,12 +88,12 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		actions.append(UIAction(title: "Token Contract", image: UIImage(named: "About"), identifier: nil, handler: { [weak self] action in
+		actions[0].append(UIAction(title: "Token Contract", image: UIImage(named: "About"), identifier: nil, handler: { [weak self] action in
 			self?.delegate?.tokenContractDisplayRequested()
 		}))
 		
 		if isHiddenNft {
-			actions.append(
+			actions[0].append(
 				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
@@ -106,7 +111,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				})
 			)
 		} else {
-			actions.append(
+			actions[0].append(
 				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
 					guard let nft = self?.nft else {
 						return
@@ -125,7 +130,47 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 			)
 		}
 		
-		return MenuViewController(actions: [actions], header: nil, sourceViewController: sourceViewController)
+		
+		
+		// Social section
+		if let twitterURL = objktCollectionInfo?.twitterURL() {
+			let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
+				
+				let path = twitterURL.path()
+				let pathIndex = path.index(after: path.startIndex)
+				let twitterUsername = path.suffix(from: pathIndex)
+				if let deeplinkURL = URL(string: "twitter://user?screen_name=\(twitterUsername)"), UIApplication.shared.canOpenURL(deeplinkURL) {
+					UIApplication.shared.open(deeplinkURL)
+				} else {
+					UIApplication.shared.open(twitterURL)
+				}
+			}
+			
+			actions.append([action])
+		}
+		
+		
+		// Web section
+		var webActions: [UIAction] = []
+		
+		
+		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
+			if let url = URL(string: "https://objkt.com/collection/\(nft.parentContract)") {
+				UIApplication.shared.open(url)
+			}
+		}
+		webActions.append(action)
+		
+		if let websiteURL = objktCollectionInfo?.websiteURL() {
+			let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
+				UIApplication.shared.open(websiteURL)
+			}
+			
+			webActions.append(action)
+		}
+		actions.append(webActions)
+		
+		return MenuViewController(actions: actions, header: objktCollectionInfo?.name ?? nft.parentAlias, sourceViewController: sourceViewController)
 	}
 	
 	
