@@ -74,17 +74,25 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			return
 		}
 		
-		// Build snapshot data
-		let title = (selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
-		let headerData: [AnyHashable] = [ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: nil) ]
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		normalSnapshot.appendSections([0, 1])
-		normalSnapshot.appendItems(headerData, toSection: 0)
-		normalSnapshot.appendItems(selectedToken?.nfts ?? [], toSection: 1)
 		
+		
+		// Build snapshot data
+		let title = (selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
+		
+		if let creator = DependencyManager.shared.objktClient.collections[selectedToken?.tokenContractAddress ?? ""]?.creator?.alias {
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: creator) ], toSection: 0)
+			
+		} else {
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: nil) ], toSection: 0)
+		}
+		
+		normalSnapshot.appendItems(selectedToken?.nfts ?? [], toSection: 1)
 		ds.apply(normalSnapshot)
+		
 		
 		// Return success
 		self.state = .success(nil)
@@ -93,6 +101,56 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
 		if let nft = dataSource?.itemIdentifier(for: indexPath) as? NFT {
 			return nft
+		}
+		
+		return nil
+	}
+	
+	func menuViewControllerForMoreButton(forViewController: UIViewController) -> MenuViewController? {
+		var actions: [[UIAction]] = []
+		let contractAddress = selectedToken?.tokenContractAddress ?? ""
+		
+		if let objktCollectionInfo = DependencyManager.shared.objktClient.collections[contractAddress] {
+			
+			// Social section
+			if let twitterURL = objktCollectionInfo.twitterURL() {
+				let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
+					
+					let path = twitterURL.path()
+					let pathIndex = path.index(after: path.startIndex)
+					let twitterUsername = path.suffix(from: pathIndex)
+					if let deeplinkURL = URL(string: "twitter://user?screen_name=\(twitterUsername)"), UIApplication.shared.canOpenURL(deeplinkURL) {
+						UIApplication.shared.open(deeplinkURL)
+					} else {
+						UIApplication.shared.open(twitterURL)
+					}
+				}
+				
+				actions.append([action])
+			}
+			
+			
+			// Web section
+			var webActions: [UIAction] = []
+			
+			
+			let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
+				if let url = URL(string: "https://objkt.com/collection/\(contractAddress)") {
+					UIApplication.shared.open(url)
+				}
+			}
+			webActions.append(action)
+			
+			if let websiteURL = objktCollectionInfo.websiteURL() {
+				let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
+					UIApplication.shared.open(websiteURL)
+				}
+				
+				webActions.append(action)
+			}
+			
+			actions.append(webActions)
+			return MenuViewController(actions: actions, header: nil, alertStyleIndexes: nil, sourceViewController: forViewController)
 		}
 		
 		return nil

@@ -413,7 +413,7 @@ public class BalanceService {
 				modifiedNFTs[exploreItem.primaryKey]?.token.nfts?.append(contentsOf: token.nfts ?? [])
 				
 			} else {
-				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: exploreItem.thumbnailImageUrl, tokenContractAddress: exploreItem.contractAddresses[0], tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
+				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: exploreItem.thumbnailImageUrl, tokenContractAddress: token.tokenContractAddress, tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
 				modifiedNFTs[exploreItem.primaryKey] = (token: newToken, sortIndex: exploreItem.sortIndex)
 			}
 		}
@@ -427,7 +427,7 @@ public class BalanceService {
 		
 		
 		// Ultimately we need data from OBJKT.com for the `unmodifiedNFTs`. Make a list of which ever ones don't exist, and bulk fetch them
-		let addresses = unmodifiedNFTs.compactMap({ $0.tokenContractAddress })
+		let addresses = self.currentlyRefreshingAccount.nfts.compactMap({ $0.tokenContractAddress })
 		let unresolved = DependencyManager.shared.objktClient.unresolvedCollections(addresses: addresses)
 		DependencyManager.shared.objktClient.resolveCollectionsAll(addresses: unresolved) { [weak self] _ in
 			

@@ -20,6 +20,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	
 	private let viewModel = CollectionDetailsViewModel()
 	private var cancellable: AnyCancellable?
+	private var menuViewController: MenuViewController? = nil
 	
 	public var selectedToken: Token? = nil
 	
@@ -62,6 +63,11 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		MediaProxyService.load(url: selectedToken?.thumbnailURL, to: navBarMiddleImage, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		navBarMiddleLabel.text = selectedToken?.name ?? ""
 		navBarMiddleView.transform = .init(translationX: 0, y: 44)
+		
+		menuViewController = viewModel.menuViewControllerForMoreButton(forViewController: self)
+		if menuViewController == nil {
+			moreButton.isHidden = true
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -75,7 +81,8 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 		navBarMiddleView.transform = .init(translationX: 0, y: max(0, (44 - adjustedOffset)))
 	}
 	
-	@IBAction func moreButtonTapped(_ sender: Any) {
+	@IBAction func moreButtonTapped(_ sender: UIButton) {
+		menuViewController?.display(attachedTo: sender)
 	}
 	
 	
