@@ -23,13 +23,13 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n13-aX-p2X">
-                                <rect key="frame" x="0.0" y="188" width="390" height="573"/>
+                                <rect key="frame" x="0.0" y="200" width="390" height="561"/>
                                 <connections>
                                     <segue destination="xRK-Jy-uzj" kind="embed" identifier="pageControl" id="gcR-ky-GNp"/>
                                 </connections>
                             </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-PJ-idT">
-                                <rect key="frame" x="16" y="91" width="358" height="93"/>
+                                <rect key="frame" x="16" y="91" width="358" height="99"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IIR-aA-UNT">
                                         <rect key="frame" x="0.0" y="0.0" width="358" height="51"/>
@@ -85,14 +85,14 @@
                                         </subviews>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zbT-3u-N5h">
-                                        <rect key="frame" x="0.0" y="51" width="358" height="4"/>
+                                        <rect key="frame" x="0.0" y="51" width="358" height="10"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="4" id="Nbk-uX-Rve"/>
+                                            <constraint firstAttribute="height" constant="10" id="Nbk-uX-Rve"/>
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hV5-tU-KsY">
-                                        <rect key="frame" x="0.0" y="55" width="358" height="38"/>
+                                        <rect key="frame" x="0.0" y="61" width="358" height="38"/>
                                         <subviews>
                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Tv3-wX-gsp">
                                                 <rect key="frame" x="0.0" y="0.0" width="308" height="39"/>
@@ -160,7 +160,7 @@
                             <constraint firstItem="m63-98-6lD" firstAttribute="bottom" secondItem="n13-aX-p2X" secondAttribute="bottom" id="7nz-Yy-fvW"/>
                             <constraint firstItem="n13-aX-p2X" firstAttribute="leading" secondItem="m63-98-6lD" secondAttribute="leading" id="9bb-fP-uU0"/>
                             <constraint firstItem="m63-98-6lD" firstAttribute="trailing" secondItem="bHe-PJ-idT" secondAttribute="trailing" constant="16" id="Rey-jw-CKQ"/>
-                            <constraint firstItem="n13-aX-p2X" firstAttribute="top" secondItem="bHe-PJ-idT" secondAttribute="bottom" constant="4" id="VVZ-wX-eXH"/>
+                            <constraint firstItem="n13-aX-p2X" firstAttribute="top" secondItem="bHe-PJ-idT" secondAttribute="bottom" constant="10" id="VVZ-wX-eXH"/>
                             <constraint firstItem="bHe-PJ-idT" firstAttribute="top" secondItem="m63-98-6lD" secondAttribute="top" id="g5d-gQ-Pkj"/>
                             <constraint firstItem="n13-aX-p2X" firstAttribute="trailing" secondItem="m63-98-6lD" secondAttribute="trailing" id="rha-Yv-M3O"/>
                             <constraint firstItem="bHe-PJ-idT" firstAttribute="leading" secondItem="m63-98-6lD" secondAttribute="leading" constant="16" id="zc0-gn-ipl"/>
@@ -282,7 +282,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;collectionName&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JXC-fk-mDo">
-                                    <rect key="frame" x="36" y="0.0" width="171.33333333333334" height="24"/>
+                                    <rect key="frame" x="36" y="0.0" width="171.33333333333334" height="0.0"/>
                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                     <color key="textColor" name="Txt2"/>
                                     <nil key="highlightedColor"/>
