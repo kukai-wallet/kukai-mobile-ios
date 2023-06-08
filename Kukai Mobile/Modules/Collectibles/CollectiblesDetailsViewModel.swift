@@ -170,8 +170,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		var section1Content: [CellDataType] = []
 		
 		let objktCollectionData = DependencyManager.shared.objktClient.collections[nft.parentContract]
-		let nameIcon = TzKTClient.avatarURL(forToken: nft.parentContract)
-		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: nft.parentAlias ?? nft.parentContract, collectionLink: nil, showcaseCount: 2)
+		let nameIcon = MediaProxyService.url(fromUri: URL(string: objktCollectionData?.logo ?? ""), ofFormat: .icon)
+		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: objktCollectionData?.name ?? objktCollectionData?.contract.truncateTezosAddress(), collectionLink: nil, showcaseCount: 2)
 		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
