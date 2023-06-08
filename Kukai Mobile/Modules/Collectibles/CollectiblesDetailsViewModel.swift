@@ -57,6 +57,12 @@ struct AttributesContent: Hashable {
 	var expanded: Bool
 }
 
+struct AttributeItem: Hashable {
+	let name: String
+	let value: String
+	let percentage: String
+}
+
 struct BlankFooter: Hashable {
 	let id: Int
 }
@@ -75,6 +81,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var avPlayer: AVPlayer? = nil
 	private var avPlayerLayer: AVPlayerLayer? = nil
 	private var sendData = SendContent(enabled: true)
+	private var descriptionData = DescriptionContent(description: "")
 	
 	var nft: NFT? = nil
 	var sendTarget: Any? = nil
@@ -85,7 +92,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	var isHidden = false
 	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil, showcaseCount: 0)
 	var attributesContent = AttributesContent(expanded: true)
-	var attributes: [TzKTBalanceMetadataAttributeKeyValue] = []
+	var attributes: [AttributeItem] = []
 	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	weak var menuSourceController: UIViewController? = nil
 	
@@ -110,7 +117,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath)
 			}
 			
-			if let item = item as? TzKTBalanceMetadataAttributeKeyValue {
+			if let item = item as? AttributeItem {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath), withItem: item)
 				
 			} else if let item = item as? OnSaleData {
@@ -172,7 +179,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		let objktCollectionData = DependencyManager.shared.objktClient.collections[nft.parentContract]
 		let nameIcon = MediaProxyService.url(fromUri: URL(string: objktCollectionData?.logo ?? ""), ofFormat: .icon)
 		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: objktCollectionData?.name ?? objktCollectionData?.contract.truncateTezosAddress(), collectionLink: nil, showcaseCount: 2)
-		attributes = nft.metadata?.getKeyValuesFromAttributes() ?? []
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
 			guard let self = self else {
@@ -190,16 +196,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			self.sendData = SendContent(enabled: true)
 			section1Content.append(self.sendData)
-			section1Content.append(DescriptionContent(description: self.nft?.description ?? ""))
-			
-			if self.attributes.count > 0 {
-				section1Content.append(self.attributesContent)
-				self.currentSnapshot.appendItems(section1Content, toSection: 0)
-				self.currentSnapshot.appendItems(self.attributes, toSection: 1)
-				
-			} else {
-				self.currentSnapshot.appendItems(section1Content, toSection: 0)
-			}
+			self.descriptionData = DescriptionContent(description: self.nft?.description ?? "")
+			section1Content.append(self.descriptionData)
+			self.currentSnapshot.appendItems(section1Content, toSection: 0)
 			
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
 			self.state = .success(nil)
@@ -243,6 +242,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return
 			}
 			
+			// On sale
 			var needsUpdating = false
 			if data.isOnSale(), let price = data.onSalePrice() {
 				let onSale = OnSaleData(amount: "\(price.normalisedRepresentation) XTZ")
@@ -250,6 +250,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				needsUpdating = true
 			}
 			
+			
+			// Last sale and floor price
 			let lastSale = data.lastSalePrice()
 			let floorPrice = data.floorPrice()
 			if lastSale != nil || floorPrice != nil {
@@ -260,6 +262,23 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				self.currentSnapshot.insertItems([priceData], afterItem: self.sendData)
 				needsUpdating = true
 			}
+			
+			
+			// Attributes
+			let totalEditions = data.fa.first?.editions ?? 1
+			for attribute in data.token.first?.attributes ?? [] {
+				let percentage = ((attribute.attribute.attribute_counts.first?.editions ?? 1) * 100) / totalEditions
+				let percentString = percentage.rounded(scale: 2, roundingMode: .bankers).description + "%"
+				let attObj = AttributeItem(name: attribute.attribute.name, value: attribute.attribute.value, percentage: percentString)
+				self.attributes.append(attObj)
+			}
+			
+			if self.attributes.count > 0 {
+				self.currentSnapshot.insertItems([self.attributesContent], afterItem: self.descriptionData)
+				self.currentSnapshot.appendItems(self.attributes, toSection: 1)
+				needsUpdating = true
+			}
+			
 			
 			if needsUpdating {
 				self.dataSource?.apply(self.currentSnapshot, animatingDifferences: animate)
@@ -473,10 +492,10 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		}
 		
-		if let obj = item as? TzKTBalanceMetadataAttributeKeyValue, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
-			parsedCell.keyLabel.text = obj.key
+		if let obj = item as? AttributeItem, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
+			parsedCell.keyLabel.text = obj.name
 			parsedCell.valueLabel.text = obj.value
-			parsedCell.percentLabel.text = "0%"
+			parsedCell.percentLabel.text = obj.percentage
 			return parsedCell
 			
 		} else if let item = item as? OnSaleData, let parsedCell = cell as? CollectibleDetailOnSaleCell {
@@ -559,7 +578,7 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 		return reusableAttributeSizingCell
 	}
 	
-	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue {
+	func attributeFor(indexPath: IndexPath) -> AttributeItem {
 		return attributes[indexPath.row]
 	}
 	
@@ -567,7 +586,7 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 		let identifiers = currentSnapshot.itemIdentifiers(inSection: indexPath.section)
 		let item = identifiers[indexPath.row]
 		
-		if let item = item as? TzKTBalanceMetadataAttributeKeyValue {
+		if let item = item as? AttributeItem {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self), withItem: item, layoutOnly: true)
 			
 		} else if let item = item as? OnSaleData {

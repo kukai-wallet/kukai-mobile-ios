@@ -10,7 +10,7 @@ import KukaiCoreSwift
 
 protocol CollectibleDetailLayoutDataDelegate: AnyObject {
 	func reusableAttributeCell() -> CollectibleDetailAttributeItemCell?
-	func attributeFor(indexPath: IndexPath) -> TzKTBalanceMetadataAttributeKeyValue
+	func attributeFor(indexPath: IndexPath) -> AttributeItem
 	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
 
@@ -97,8 +97,9 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 				continue
 			}
 			
-			reusableAttributeCell.keyLabel.text = attribute.key
+			reusableAttributeCell.keyLabel.text = attribute.name
 			reusableAttributeCell.valueLabel.text = attribute.value
+			reusableAttributeCell.percentLabel.text = attribute.percentage
 			
 			let minimumSize = CGSize(width: minimumCellWidth, height: defaultAttributeCellHeight)
 			let requiredWidth = reusableAttributeCell.contentView.systemLayoutSizeFitting(minimumSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required).width
