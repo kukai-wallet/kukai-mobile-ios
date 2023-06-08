@@ -109,7 +109,7 @@ public class ThemeManager {
 				"TxtBtnMicro4": UIColor("#86889D"),
 				"TxtBtnGraph1": UIColor("#6D75F4"),
 				"TxtBtnGraphOn1": UIColor("#696A80"),
-				"TxtBtnSlider1": UIColor("#F6F6FA"),
+				"TxtBtnSlider1": UIColor("#343994"),
 				"TxtBtnSlider2": UIColor("#343994"),
 				"TxTBtnAlert1": UIColor("#383838"),
 				"TxTBtnAlert4": UIColor("#383838"),
