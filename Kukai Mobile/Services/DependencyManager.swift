@@ -220,8 +220,6 @@ class DependencyManager {
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
-		balanceService = BalanceService()
-		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)

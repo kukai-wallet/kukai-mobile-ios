@@ -9,6 +9,8 @@ import UIKit
 import KukaiCoreSwift
 import os.log
 
+import Combine
+
 class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
 	@IBOutlet weak var kukaiLogo: UIImageView!
@@ -23,7 +25,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private var hasWallet = DependencyManager.shared.walletList.count() > 0
 	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()
-	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

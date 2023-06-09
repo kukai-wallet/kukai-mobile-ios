@@ -36,10 +36,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+		accountDataRefreshedCancellable = DependencyManager.shared.balanceService.$addressRefreshed
 			.dropFirst()
-			.sink { [weak self] _ in
-				if self?.dataSource != nil && self?.isVisible == true {
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
 			}
@@ -140,18 +141,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: true, refreshType: .refreshEverything) { [weak self] error in
-			guard let self = self else { return }
-			
-			if let e = error {
-				self.state = .failure(e, "Unable to fetch data")
-			}
-			
-			self.refresh(animate: animate)
-			
-			// Return success
-			self.state = .success(nil)
-		}
+		DependencyManager.shared.balanceService.fetch(records: [BalanceService.FetchRequestRecord(address: address, type: .refreshEverything)])
 	}
 	
 	private func loadGroups(animate: Bool) {
@@ -174,7 +164,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// If needs shimmers
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) || DependencyManager.shared.balanceService.isFetchingData {
+		if DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.contains(selectedAddress) {
 			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			data.append(contentsOf: [[LoadingContainerCellObject()]])

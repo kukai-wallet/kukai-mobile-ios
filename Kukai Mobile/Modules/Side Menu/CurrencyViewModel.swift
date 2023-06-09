@@ -106,6 +106,8 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let code = code(forIndexPath: indexPath)
 		
+		// TODO:
+		/*
 		DependencyManager.shared.coinGeckoService.setSelectedCurrency(currency: code) { [weak self] error in
 			if let e = error {
 				self?.state = .failure(KukaiError.unknown(), "Unable to change currency: \(e)")
@@ -122,5 +124,6 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
 			})
 		}
+		*/
 	}
 }

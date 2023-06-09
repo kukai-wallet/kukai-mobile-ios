@@ -52,7 +52,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
-				self?.refresh(address: nil)
+				self?.refresh(addresses: nil)
 			}.store(in: &bag)
 		
 		DependencyManager.shared.$walletDidChange
@@ -60,7 +60,20 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
-				self?.refresh(address: nil)
+				self?.refresh(addresses: nil)
+			}.store(in: &bag)
+		
+		DependencyManager.shared.balanceService.$addressRefreshed
+			.dropFirst()
+			.sink { [weak self] address in
+				if address == DependencyManager.shared.selectedWalletAddress {
+					DependencyManager.shared.balanceService.loadCache(address: address)
+					DependencyManager.shared.balanceService.currencyChanged = false
+					
+					self?.stopActivityAnimationIfNecessary()
+					self?.updateAccountButton()
+				}
+				
 			}.store(in: &bag)
 		
 		ThemeManager.shared.$themeDidChange
@@ -105,9 +118,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && !DependencyManager.shared.balanceService.isFetchingData {
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count != 0 {
 			self.refreshType = .useCacheIfNotStale
-			refresh(address: nil)
+			refresh(addresses: nil)
 			
 		} else if DependencyManager.shared.balanceService.currencyChanged {
 			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway
@@ -157,7 +170,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] addresses in
 				self?.refreshType = .refreshEverything
-				self?.refreshWallets(addresses: addresses)
+				self?.refresh(addresses: addresses)
 			}.store(in: &bag)
 	}
 	
@@ -286,45 +299,22 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 	}
 	
-	func refresh(address: String?) {
-		var addressToRefresh = address
-		if addressToRefresh == nil {
-			addressToRefresh = DependencyManager.shared.selectedWalletAddress
+	func refresh(addresses: [String]?) {
+		var records: [BalanceService.FetchRequestRecord] = []
+		for address in addresses ?? [] {
+			records.append(BalanceService.FetchRequestRecord(address: address, type: refreshType))
 		}
 		
-		guard let address = addressToRefresh else { return }
-		
-		let isSelected = (address == DependencyManager.shared.selectedWalletAddress)
-		DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelected, refreshType: refreshType) { [weak self] error in
-			guard let self = self else { return }
-			
-			self.refreshType = .useCache
-			if let e = error {
-				self.alert(errorWithMessage: e.description)
-			}
-			
-			self.stopActivityAnimationIfNecessary()
-			
-			DependencyManager.shared.balanceService.currencyChanged = false
-			DependencyManager.shared.accountBalancesDidUpdate = true
+		if records.count == 0 {
+			records.append(BalanceService.FetchRequestRecord(address: DependencyManager.shared.selectedWalletAddress ?? "", type: refreshType))
 		}
-	}
-	
-	func refreshWallets(addresses: [String]) {
-		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		
-		DependencyManager.shared.balanceService.refresh(addresses: addresses, selectedAddress: selectedAddress) { [weak self] error in
-			if let err = error {
-				self?.alert(errorWithMessage: "\(err)")
-			}
-			
-			DependencyManager.shared.accountBalancesDidUpdate = true
-		}
+		DependencyManager.shared.balanceService.fetch(records: records)
 	}
 	
 	func refreshAllWallets() {
 		let addresses = DependencyManager.shared.walletList.addresses()
-		refreshWallets(addresses: addresses)
+		refresh(addresses: addresses)
 	}
 	
 	func sendButtonTapped() {

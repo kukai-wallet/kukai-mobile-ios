@@ -11,8 +11,6 @@ import OSLog
 
 public class ActivityService {
 	
-	@Published var isFetchingData: Bool = false
-	
 	public var pendingTransactionGroups: [TzKTTransactionGroup] = []
 	public var transactionGroups: [TzKTTransactionGroup] = []
 	private static let pendingCachedFileName = "activity-service-pending-"
@@ -68,20 +66,13 @@ public class ActivityService {
 	
 	// MARK: - Transaction processing
 	
-	public func fetchTransactionGroups(forAddress address: String, isSelectedAccount: Bool, completion: @escaping ((KukaiError?) -> Void)) {
-		self.isFetchingData = true
-		
+	public func fetchTransactionGroups(forAddress address: String, completion: @escaping ((KukaiError?) -> Void)) {
 		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { [weak self] transactions in
 			let groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: address)
 			
-			self?.checkAndUpdatePendingTransactions(forAddress: address, isSelectedAccount: isSelectedAccount, comparedToGroups: groups)
+			self?.checkAndUpdatePendingTransactions(forAddress: address, comparedToGroups: groups)
 			let _ = DiskService.write(encodable: groups, toFileName: ActivityService.transactionsCacheFilename(withAddress: address))
 			
-			if isSelectedAccount {
-				self?.transactionGroups = groups
-			}
-			
-			self?.isFetchingData = false
 			completion(nil)
 		}
 	}
@@ -119,7 +110,7 @@ public class ActivityService {
 		return false
 	}
 	
-	public func checkAndUpdatePendingTransactions(forAddress address: String, isSelectedAccount: Bool, comparedToGroups: [TzKTTransactionGroup]) {
+	public func checkAndUpdatePendingTransactions(forAddress address: String, comparedToGroups: [TzKTTransactionGroup]) {
 		let now = Date()
 		var indexesToRemove: [Int] = []
 		
@@ -144,10 +135,6 @@ public class ActivityService {
 		if indexesToRemove.count > 0 {
 			pending.remove(atOffsets: IndexSet(indexesToRemove))
 			let _ = DiskService.write(encodable: pending, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address))
-			
-			if isSelectedAccount {
-				pendingTransactionGroups = pending
-			}
 			os_log("Pending transactions checked, removing index: \(indexesToRemove)")
 			
 		} else {
