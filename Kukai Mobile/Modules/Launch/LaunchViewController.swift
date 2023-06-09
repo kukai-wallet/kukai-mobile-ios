@@ -9,6 +9,8 @@ import UIKit
 import KukaiCoreSwift
 import os.log
 
+import Combine
+
 class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
 	@IBOutlet weak var kukaiLogo: UIImageView!
@@ -24,6 +26,8 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()
 	
+	//var bag1: AnyCancellable? = nil
+	//var bag2: AnyCancellable? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -71,6 +75,39 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			logoWidthConstraint.constant = 200
 			logoHeightConstraint.constant = 55
 		}
+		
+		/*
+		bag1 = DependencyManager.shared.balanceService.$addressRefreshed.dropFirst().sink(receiveValue: { address in
+			print("$addressRefreshed: \(address)")
+		})
+		
+		bag2 = DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed.dropFirst().sink(receiveValue: { addresses in
+			print("$addressesWaitingToBeRefreshed: \(addresses)")
+		})
+		
+		
+		DependencyManager.shared.balanceService.fetch(records: [
+			BalanceService.FetchRequestRecord(address: "1", type: .refreshAccountOnly),
+			BalanceService.FetchRequestRecord(address: "2", type: .refreshAccountOnly),
+			BalanceService.FetchRequestRecord(address: "3", type: .refreshAccountOnly)
+		])
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+			DependencyManager.shared.balanceService.fetch(records: [
+				BalanceService.FetchRequestRecord(address: "4", type: .refreshAccountOnly),
+				BalanceService.FetchRequestRecord(address: "5", type: .refreshAccountOnly),
+				BalanceService.FetchRequestRecord(address: "6", type: .refreshAccountOnly)
+			])
+		}
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 9) {
+			DependencyManager.shared.balanceService.fetch(records: [
+				BalanceService.FetchRequestRecord(address: "7", type: .refreshAccountOnly),
+				BalanceService.FetchRequestRecord(address: "8", type: .refreshAccountOnly),
+				BalanceService.FetchRequestRecord(address: "9", type: .refreshAccountOnly)
+			])
+		}
+		*/
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

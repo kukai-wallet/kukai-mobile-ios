@@ -27,11 +27,12 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
 			.dropFirst()
-			.sink { [weak self] _ in
-				if self?.dataSource != nil {
-					self?.refresh(animate: false)
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && selectedAddress == address {
+					self?.refresh(animate: true)
 				}
 			}
 	}
@@ -68,7 +69,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section-1) {
 				
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				
 			} else {
 				//self.state = .failure(KukaiError.internalApplicationError(error: "Unable to rearrange favourite"), "Unable to rearrange favourite")
@@ -174,7 +174,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			if TokenStateService.shared.removeFavourite(forAddress: address, token: token) {
 				cell.setup(isFav: false, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount -= 1
 				
 			} else {
@@ -185,7 +184,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			if TokenStateService.shared.addFavourite(forAddress: address, token: token) {
 				cell.setup(isFav: true, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteCount += 1
 				
 			} else {

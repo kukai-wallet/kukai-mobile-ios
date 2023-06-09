@@ -102,7 +102,6 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 					let address = DependencyManager.shared.selectedWalletAddress ?? ""
 					if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
 						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-						DependencyManager.shared.accountBalancesDidUpdate = true
 						self?.delegate?.shouldDismiss()
 						
 					} else {
@@ -120,7 +119,6 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 					let address = DependencyManager.shared.selectedWalletAddress ?? ""
 					if TokenStateService.shared.addHidden(forAddress: address, nft: nft) {
 						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-						DependencyManager.shared.accountBalancesDidUpdate = true
 						self?.delegate?.shouldDismiss()
 						
 					} else {
@@ -184,7 +182,6 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		if isFavouritedNft {
 			if TokenStateService.shared.removeFavourite(forAddress: address, nft: nft) {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = false
 				isFavouritedNft = false
 				favouriteButton.customImage = .init(named: "FavoritesOff") ?? UIImage()
@@ -197,7 +194,6 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		} else {
 			if TokenStateService.shared.addFavourite(forAddress: address, nft: nft) {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				favouriteButton.isSelected = true
 				isFavouritedNft = true
 				favouriteButton.customImage = .init(named: "FavoritesOn") ?? UIImage()

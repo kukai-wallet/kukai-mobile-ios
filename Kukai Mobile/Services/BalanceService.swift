@@ -2,15 +2,17 @@
 //  BalanceService.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 16/02/2022.
+//  Created by Simon Mcloughlin on 09/06/2023.
 //
 
 import Foundation
 import KukaiCoreSwift
-import Combine
 import OSLog
 
+
 public class BalanceService {
+	
+	// MARK: - Types
 	
 	public enum RefreshType {
 		case useCache
@@ -19,26 +21,56 @@ public class BalanceService {
 		case refreshEverything
 	}
 	
-	public var currencyChanged = false
+	public struct FetchRequestRecord: Hashable {
+		let address: String
+		let type: BalanceService.RefreshType
+		
+		public func hash(into hasher: inout Hasher) {
+			hasher.combine(address)
+			hasher.combine(type)
+		}
+		
+		static public func ==(lhs: FetchRequestRecord, rhs: FetchRequestRecord) -> Bool {
+			return lhs.address == rhs.address && lhs.type == rhs.type
+		}
+	}
+	
+	
+	
+	// MARK: - Current account state properties
 	
 	public var account = Account(walletAddress: "")
 	public var exchangeData: [DipDupExchangesAndTokens] = []
-	
-	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var estimatedTotalXtz = XTZAmount.zero()
-	public var lastFullRefreshDates: [String: Date] = [:]
+	
+	
+	
+	// MARK: - Global state properties
+	
+	public var currencyChanged = false
+	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
 	public var lastExchangeDataRefreshDate: Date? = nil
+	public var lastFullRefreshDates: [String: Date] = [:]
 	
-	@Published var isFetchingData: Bool = false
+	@Published public var addressesWaitingToBeRefreshed: [String] = []
+	@Published public var addressRefreshed: String = ""
 	
-	private var dispatchGroupBalances = DispatchGroup()
-	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	private static let cacheLastRefreshDates = "balance-service-refresh-dates"
-	private var bag_refreshAll = Set<AnyCancellable>()
 	
 	
+	
+	// MARK: - Queue properties
+	
+	private var balanceRequestDispathGroup = DispatchGroup()
+	private var balanceFetchQueueDispatchGroup = DispatchGroup()
+	private let balanceFetchQueue = DispatchQueue(label: "app.kukai.balance-service.fetch", attributes: .concurrent)
+	private let balanceRecordQueue = DispatchQueue(label: "app.kukai.balance-service.record-checker", attributes: .concurrent)
+	
+	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
+	private var currentFetchRequests: [FetchRequestRecord] = []
+	private var pendingFetchRequests: [FetchRequestRecord] = []
 	
 	
 	
@@ -46,6 +78,75 @@ public class BalanceService {
 	
 	init() {
 		lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
+	}
+	
+	
+	
+	// MARK: - Queue Processing
+	
+	public func fetch(records: [FetchRequestRecord]) {
+		
+		balanceRecordQueue.sync { [weak self] in
+			let uniqueRecords = uniqueRecords(records: records)
+			addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
+			
+			if (self?.currentFetchRequests.count ?? 0) == 0, let request = uniqueRecords.first {
+				self?.currentFetchRequests = [request]
+				self?.pendingFetchRequests.append(contentsOf: uniqueRecords.suffix(from: 1))
+				self?.startProcessingCurrentRequests()
+				
+			} else {
+				self?.pendingFetchRequests.append(contentsOf: uniqueRecords)
+			}
+		}
+	}
+	
+	private func uniqueRecords(records: [FetchRequestRecord]) -> [FetchRequestRecord] {
+		return NSOrderedSet(array: records).compactMap({ $0 as? FetchRequestRecord })
+	}
+	
+	private func startProcessingCurrentRequests() {
+		
+		// Record all enters first in case any cache calls come abck too quickly
+		for _ in currentFetchRequests {
+			balanceFetchQueueDispatchGroup.enter()
+		}
+		
+		// Process all fetches one by one
+		for record in currentFetchRequests {
+			
+			balanceFetchQueue.async(flags: .barrier) { [weak self] in
+				
+				self?.fetchAllBalancesTokensAndPrices(forAddress: record.address, refreshType: record.type, completion: { error in
+					
+					DispatchQueue.main.async { [weak self] in
+						if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: record.address) {
+							self?.addressesWaitingToBeRefreshed.remove(at: index)
+							self?.addressRefreshed = record.address
+						}
+						
+						self?.balanceFetchQueueDispatchGroup.leave()
+					}
+				})
+			}
+		}
+		
+		// When all done, check for pending
+		balanceFetchQueueDispatchGroup.notify(queue: .main) { [weak self] in
+			self?.balanceRecordQueue.sync { [weak self] in
+				self?.startProcessingPendingRequests()
+			}
+		}
+	}
+	
+	private func startProcessingPendingRequests() {
+		currentFetchRequests = []
+		
+		if pendingFetchRequests.count > 0 {
+			currentFetchRequests = pendingFetchRequests
+			pendingFetchRequests = []
+			startProcessingCurrentRequests()
+		}
 	}
 	
 	
@@ -134,122 +235,68 @@ public class BalanceService {
 	
 	
 	
-	
 	// MARK: - Refresh
 	
-	public func refresh(addresses: [String], selectedAddress: String, completion: @escaping ((KukaiError?) -> Void)) {
-		var futures: [Deferred<Future<Bool, KukaiError>>] = []
-		for address in addresses {
-			let isSelected = (selectedAddress == address)
-			futures.append(fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelected, refreshType: .refreshEverything))
-		}
-		
-		// Convert futures into sequential array
-		guard let concatenatedPublishers = futures.concatenatePublishers() else {
-			os_log("balanceService - unable to create concatenatedPublishers", type: .error)
-			return
-		}
-		
-		// Get the result of the concatenated publisher, whether it be successful payload, or error
-		concatenatedPublishers
-			.last()
-			.convertToResult()
-			.sink { concatenatedResult in
-				guard let _ = try? concatenatedResult.get() else {
-					let error = (try? concatenatedResult.getError()) ?? KukaiError.unknown()
-					os_log("balanceService - refresh all - received error: %@", type: .debug, "\(error)")
-					
-					completion(error)
-					return
-				}
-				
-				completion(nil)
-			}
-			.store(in: &self.bag_refreshAll)
-	}
-	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, isSelectedAccount: Bool, refreshType: RefreshType) -> Deferred<Future<Bool, KukaiError>> {
-		return Deferred {
-			Future<Bool, KukaiError> { [weak self] promise in
-				guard let self = self else {
-					os_log("balanceService - fetch all future - can't find self", type: .error)
-					promise(.failure(KukaiError.unknown()))
-					return
-				}
-				
-				self.fetchAllBalancesTokensAndPrices(forAddress: address, isSelectedAccount: isSelectedAccount, refreshType: refreshType) { error in
-					if let e = error {
-						promise(.failure(e))
-					} else {
-						promise(.success(true))
-					}
-				}
-			}
-		}
-	}
-	
-	public func fetchAllBalancesTokensAndPrices(forAddress address: String, isSelectedAccount: Bool, refreshType: RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
-		
-		isFetchingData = true
+	private func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: BalanceService.RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
 		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 		
 		var error: KukaiError? = nil
-		dispatchGroupBalances.enter()
-		dispatchGroupBalances.enter()
-		dispatchGroupBalances.enter()
-		dispatchGroupBalances.enter()
-		dispatchGroupBalances.enter()
-		dispatchGroupBalances.enter()
+		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
 		
 		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
 			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
-			self.dispatchGroupBalances.leave()
+			self.balanceRequestDispathGroup.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
 			DependencyManager.shared.activityService.loadCache(address: address)
-			self.dispatchGroupBalances.leave()
+			self.balanceRequestDispathGroup.leave()
 			
 		} else if refreshType == .refreshAccountOnly {
 			
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
 					error = result.getFailure()
-					self?.dispatchGroupBalances.leave()
+					self?.balanceRequestDispathGroup.leave()
 					return
 				}
 				
 				self?.currentlyRefreshingAccount = res
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 			}
 			
-			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
+			balanceRequestDispathGroup.enter()
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, completion: { [weak self] err in
 				if let e = err {
 					error = e
-					self?.dispatchGroupBalances.leave()
+					self?.balanceRequestDispathGroup.leave()
 					return
 				}
 				
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 			})
 			
 			loadCachedExchangeDataIfNotLoaded()
 			DependencyManager.shared.activityService.loadCache(address: address)
-			self.dispatchGroupBalances.leave()
+			self.balanceRequestDispathGroup.leave()
 			
 		} else {
 			// Get all balance data from TzKT
 			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
 				guard let res = try? result.get() else {
 					error = result.getFailure()
-					self?.dispatchGroupBalances.leave()
+					self?.balanceRequestDispathGroup.leave()
 					return
 				}
 				
 				self?.currentlyRefreshingAccount = res
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 			}
 			
 			
@@ -258,11 +305,11 @@ public class BalanceService {
 			
 			
 			// Get latest transactions
-			dispatchGroupBalances.enter()
-			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, isSelectedAccount: isSelectedAccount, completion: { [weak self] err in
+			balanceRequestDispathGroup.enter()
+			DependencyManager.shared.activityService.fetchTransactionGroups(forAddress: address, completion: { [weak self] err in
 				if let e = err {
 					error = e
-					self?.dispatchGroupBalances.leave()
+					self?.balanceRequestDispathGroup.leave()
 					return
 				}
 				
@@ -272,7 +319,7 @@ public class BalanceService {
 				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
-					self?.dispatchGroupBalances.leave()
+					self?.balanceRequestDispathGroup.leave()
 				}
 			})
 			
@@ -285,29 +332,29 @@ public class BalanceService {
 		
 		// Make sure we have the latest explore data
 		DependencyManager.shared.exploreService.fetchExploreItems { [weak self] result in
-			self?.dispatchGroupBalances.leave()
+			self?.balanceRequestDispathGroup.leave()
 		}
 		
 		// Get latest Tezos USD price
 		DependencyManager.shared.coinGeckoService.fetchTezosPrice { [weak self] result in
 			guard let _ = try? result.get() else {
 				error = result.getFailure()
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 				return
 			}
 			
-			self?.dispatchGroupBalances.leave()
+			self?.balanceRequestDispathGroup.leave()
 		}
 		
 		// Get latest Exchange rates
 		DependencyManager.shared.coinGeckoService.fetchExchangeRates { [weak self] result in
 			guard let _ = try? result.get() else {
 				error = result.getFailure()
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 				return
 			}
 			
-			self?.dispatchGroupBalances.leave()
+			self?.balanceRequestDispathGroup.leave()
 		}
 		
 		// Check current chain information
@@ -317,16 +364,16 @@ public class BalanceService {
 					error = err
 				}
 				
-				self.dispatchGroupBalances.leave()
+				self.balanceRequestDispathGroup.leave()
 			}
 		} else {
-			self.dispatchGroupBalances.leave()
+			self.balanceRequestDispathGroup.leave()
 		}
 		
 		
 		
 		// When everything fetched, process data
-		dispatchGroupBalances.notify(queue: .global(qos: .background)) { [weak self] in
+		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
 			if let err = error {
 				DispatchQueue.main.async { completion(err) }
 				
@@ -350,18 +397,9 @@ public class BalanceService {
 						}
 					}
 					
-					// Respond on main when everything done
-					DispatchQueue.main.async {
-						self.isFetchingData = false
-						let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
-						
-						if isSelectedAccount {
-							self.account = self.currentlyRefreshingAccount
-						}
-						
-						self.currentlyRefreshingAccount = Account(walletAddress: "")
-						completion(nil)
-					}
+					let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+					self.currentlyRefreshingAccount = Account(walletAddress: "")
+					completion(nil)
 				}
 			}
 		}
@@ -371,20 +409,20 @@ public class BalanceService {
 		// If we've checked for excahnge data less than 10 minutes ago, ignore
 		if (lastExchangeDataRefreshDate != nil && (lastExchangeDataRefreshDate ?? Date()).timeIntervalSince(Date()) < 60*10) {
 			loadCachedExchangeDataIfNotLoaded()
-			self.dispatchGroupBalances.leave()
+			self.balanceRequestDispathGroup.leave()
 			return
 		}
 		
 		DependencyManager.shared.dipDupClient.getAllExchangesAndTokens { [weak self] result in
 			guard let res = try? result.get() else {
-				self?.dispatchGroupBalances.leave()
+				self?.balanceRequestDispathGroup.leave()
 				return
 			}
 			
 			self?.lastExchangeDataRefreshDate = Date()
 			self?.exchangeData = res
 			let _ = DiskService.write(encodable: res, toFileName: BalanceService.cacheFilenameExchangeData)
-			self?.dispatchGroupBalances.leave()
+			self?.balanceRequestDispathGroup.leave()
 		}
 	}
 	

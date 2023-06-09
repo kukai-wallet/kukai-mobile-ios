@@ -28,6 +28,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private let popularKeys = ["usd", "eur", "gbp", "jpy", "rub", "inr", "btc", "eth"]
 	private var popularCells: [CurrencyObj] = []
 	private var otherCells: [CurrencyObj] = []
+	private var cancellable: AnyCancellable? = nil
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
@@ -112,15 +113,17 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			DependencyManager.shared.balanceService.fetchAllBalancesTokensAndPrices(forAddress: walletAddress, isSelectedAccount: true, refreshType: .refreshEverything, completion: { [weak self] error in
-				if let e = error {
-					self?.state = .failure(KukaiError.unknown(), "Unable to update balances: \(e)")
-					return
+			self?.cancellable = DependencyManager.shared.$addressRefreshed
+				.dropFirst()
+				.sink { address in
+					if address == walletAddress {
+						DependencyManager.shared.balanceService.currencyChanged = true
+						self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
+						self?.cancellable = nil
+					}
 				}
-				
-				DependencyManager.shared.balanceService.currencyChanged = true
-				self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
-			})
+			
+			DependencyManager.shared.balanceService.fetch(records: [BalanceService.FetchRequestRecord(address: walletAddress, type: .refreshEverything)])
 		}
 	}
 }
