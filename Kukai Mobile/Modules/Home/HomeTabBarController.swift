@@ -120,7 +120,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count != 0 {
+		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
 			self.refreshType = .useCacheIfNotStale
 			refresh(addresses: nil)
 			
