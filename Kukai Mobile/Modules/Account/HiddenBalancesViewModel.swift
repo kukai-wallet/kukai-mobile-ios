@@ -25,10 +25,11 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$accountBalancesDidUpdate
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
 			.dropFirst()
-			.sink { [weak self] _ in
-				if self?.dataSource != nil {
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
 			}

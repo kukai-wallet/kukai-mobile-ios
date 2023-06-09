@@ -50,6 +50,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
 				
+				self?.setupTzKTAccountListener()
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
 				self?.refresh(addresses: nil)
@@ -72,6 +73,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 					
 					self?.stopActivityAnimationIfNecessary()
 					self?.updateAccountButton()
+					DependencyManager.shared.addressRefreshed = address
 				}
 				
 			}.store(in: &bag)
@@ -249,11 +251,13 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func stopActivityAnimation(success: Bool) {
-		activityAnimationInProgress = false
-		
-		activityAnimationImageView.stopAnimating()
-		activityAnimationImageView.isHidden = true
-		activityTabBarImageView?.isHidden = false
+		DispatchQueue.main.async { [weak self] in
+			self?.activityAnimationInProgress = false
+			
+			self?.activityAnimationImageView.stopAnimating()
+			self?.activityAnimationImageView.isHidden = true
+			self?.activityTabBarImageView?.isHidden = false
+		}
 	}
 	
 	func stopActivityAnimationIfNecessary() {
@@ -263,13 +267,15 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	public func updateAccountButton() {
-		guard let wallet = DependencyManager.shared.selectedWalletMetadata else { return }
-		
-		let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_26)
-		
-		accountButton.setImage(media.image, for: .normal)
-		accountButton.setAttributedTitle(textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
-		accountButton.titleLabel?.numberOfLines = (media.subtitle != nil) ? 2 : 1
+		DispatchQueue.main.async { [weak self] in
+			guard let wallet = DependencyManager.shared.selectedWalletMetadata else { return }
+			
+			let media = TransactionService.walletMedia(forWalletMetadata: wallet, ofSize: .size_26)
+			
+			self?.accountButton.setImage(media.image, for: .normal)
+			self?.accountButton.setAttributedTitle(self?.textForWallet(title: media.title, subtitle: media.subtitle), for: .normal)
+			self?.accountButton.titleLabel?.numberOfLines = (media.subtitle != nil) ? 2 : 1
+		}
 	}
 	
 	func textForWallet(title: String, subtitle: String?) -> NSAttributedString {

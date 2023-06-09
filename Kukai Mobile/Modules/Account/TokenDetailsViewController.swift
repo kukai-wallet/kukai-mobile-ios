@@ -228,7 +228,6 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 						let address = DependencyManager.shared.selectedWalletAddress ?? ""
 						if TokenStateService.shared.removeHidden(forAddress: address, token: token) {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-							DependencyManager.shared.accountBalancesDidUpdate = true
 							self?.dismiss(animated: true)
 						} else {
 							self?.alert(errorWithMessage: "Unable to unhide token")
@@ -246,7 +245,6 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 						let address = DependencyManager.shared.selectedWalletAddress ?? ""
 						if TokenStateService.shared.addHidden(forAddress: address, token: token) {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-							DependencyManager.shared.accountBalancesDidUpdate = true
 							self?.dismiss(animated: true)
 							
 						} else {
@@ -303,7 +301,6 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 		if viewModel.buttonData?.isFavourited == true {
 			if TokenStateService.shared.removeFavourite(forAddress: address, token: token) {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				viewModel.buttonData?.isFavourited = false
 				return false
 				
@@ -314,7 +311,6 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 		} else {
 			if TokenStateService.shared.addFavourite(forAddress: address, token: token) {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-				DependencyManager.shared.accountBalancesDidUpdate = true
 				viewModel.buttonData?.isFavourited = true
 				return true
 				

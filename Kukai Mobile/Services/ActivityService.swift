@@ -103,7 +103,6 @@ public class ActivityService {
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
 			pendingTransactionGroups.insert(group, at: 0)
-			DependencyManager.shared.accountBalancesDidUpdate = true
 			return DiskService.write(encodable: pendingTransactionGroups, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: fromWallet.address))
 		}
 		

@@ -86,14 +86,13 @@ public class BalanceService {
 	
 	public func fetch(records: [FetchRequestRecord]) {
 		
-		print("\n\n\nfetch: \(records)\n\n\n")
-		
 		balanceRecordQueue.sync { [weak self] in
 			let uniqueRecords = uniqueRecords(records: records)
 			addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
 			
-			if (self?.currentFetchRequests.count ?? 0) == 0 {
-				self?.currentFetchRequests = uniqueRecords
+			if (self?.currentFetchRequests.count ?? 0) == 0, let request = uniqueRecords.first {
+				self?.currentFetchRequests = [request]
+				self?.pendingFetchRequests.append(contentsOf: uniqueRecords.suffix(from: 1))
 				self?.startProcessingCurrentRequests()
 				
 			} else {
@@ -398,12 +397,9 @@ public class BalanceService {
 						}
 					}
 					
-					// Respond on main when everything done
-					DispatchQueue.main.async {
-						let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
-						self.currentlyRefreshingAccount = Account(walletAddress: "")
-						completion(nil)
-					}
+					let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+					self.currentlyRefreshingAccount = Account(walletAddress: "")
+					completion(nil)
 				}
 			}
 		}

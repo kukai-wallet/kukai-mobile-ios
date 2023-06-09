@@ -36,7 +36,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.balanceService.$addressRefreshed
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
