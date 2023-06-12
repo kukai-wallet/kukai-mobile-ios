@@ -188,6 +188,12 @@ public class WalletConnectService {
 	
 	private func processWalletConnectRequest() {
 		DependencyManager.shared.tezosNodeClient.getNetworkInformation { _, error in
+			if let err = error {
+				self.delegate?.error(message: "Unable to fetch info from the Tezos node, please try again", error: err)
+				return
+			}
+			
+			
 			guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
 				  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
 				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))

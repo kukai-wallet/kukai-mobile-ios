@@ -64,6 +64,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self?.refresh(addresses: nil)
 			}.store(in: &bag)
 		
+		DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed
+			.dropFirst()
+			.sink { [weak self] addresses in
+				if addresses.count == 0 {
+					self?.stopActivityAnimationIfNecessary()
+				}
+			}.store(in: &bag)
+		
 		DependencyManager.shared.balanceService.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
