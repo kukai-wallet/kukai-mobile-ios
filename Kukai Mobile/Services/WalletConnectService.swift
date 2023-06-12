@@ -187,33 +187,35 @@ public class WalletConnectService {
 	}
 	
 	private func processWalletConnectRequest() {
-		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
-			  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
-			  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
-		else {
-			let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-			self.delegate?.error(message: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
-			return
-		}
-		
-		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-			self.delegate?.error(message: "Processing WalletConnect request, unable to parse response or locate wallet", error: nil)
-			return
-		}
-		
-		TransactionService.shared.walletConnectOperationData.requestParams = params
-		self.delegate?.processingIncomingOperations()
-		
-		// Map all wallet connect objects to kuaki objects
-		let convertedOps = params.kukaiOperations()
-		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
-			guard let estimatedOps = try? result.get() else {
-				self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: nil)
+		DependencyManager.shared.tezosNodeClient.getNetworkInformation { _, error in
+			guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
+				  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+			else {
+				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+				self.delegate?.error(message: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				return
 			}
 			
-			self?.processTransactions(estimatedOperations: estimatedOps, forWallet: wallet)
+			guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
+				self.delegate?.error(message: "Processing WalletConnect request, unable to parse response or locate wallet", error: nil)
+				return
+			}
+			
+			TransactionService.shared.walletConnectOperationData.requestParams = params
+			self.delegate?.processingIncomingOperations()
+			
+			// Map all wallet connect objects to kuaki objects
+			let convertedOps = params.kukaiOperations()
+			
+			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
+				guard let estimatedOps = try? result.get() else {
+					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: nil)
+					return
+				}
+				
+				self?.processTransactions(estimatedOperations: estimatedOps, forWallet: wallet)
+			}
 		}
 	}
 	
@@ -252,12 +254,12 @@ public class WalletConnectService {
 			
 			if token.isNFT, let nft = (token.token.nfts ?? []).first(where: { $0.tokenId == result.tokenId }) {
 				TransactionService.shared.walletConnectOperationData.sendData.chosenNFT = nft
+				mainThreadProcessedOperations(ofType: .sendNft)
 				
 			} else {
 				TransactionService.shared.walletConnectOperationData.sendData.chosenToken = token.token
+				mainThreadProcessedOperations(ofType: .sendToken)
 			}
-			
-			mainThreadProcessedOperations(ofType: .sendToken)
 			
 		} else {
 			TransactionService.shared.walletConnectOperationData.currentTransactionType = .contractCall

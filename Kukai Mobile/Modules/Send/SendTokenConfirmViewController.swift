@@ -143,7 +143,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
+		if selectedMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -265,7 +265,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	func dismissAndReturn() {
-		
 		if isWalletConnectOp {
 			TransactionService.shared.resetWalletConnectState()
 		} else {
