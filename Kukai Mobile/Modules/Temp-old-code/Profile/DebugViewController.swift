@@ -85,7 +85,7 @@ class DebugViewController: UITableViewController {
 			
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			self.clearDocumentsDirectory()
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetAllState()
 			
 			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
 			UserDefaults.standard.removePersistentDomain(forName: domain)

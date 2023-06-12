@@ -60,7 +60,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		TransactionService.shared.resetState()
+		TransactionService.shared.resetWalletConnectState()
 		self.dismissBottomSheet()
 	}
 	
@@ -112,7 +112,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				})
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
@@ -142,7 +142,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				})
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 }

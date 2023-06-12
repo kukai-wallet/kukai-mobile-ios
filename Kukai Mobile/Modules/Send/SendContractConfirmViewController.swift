@@ -229,7 +229,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	}
 	
 	func dismissAndReturn() {
-		TransactionService.shared.resetState()
+		TransactionService.shared.resetAllState()
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}

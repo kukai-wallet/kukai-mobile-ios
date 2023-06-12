@@ -115,7 +115,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
-		TransactionService.shared.resetState()
+		TransactionService.shared.resetAllState()
 		updateAccountButton()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
@@ -415,7 +415,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 }

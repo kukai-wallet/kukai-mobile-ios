@@ -79,7 +79,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				})
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
@@ -108,7 +108,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				})
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	

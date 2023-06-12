@@ -215,7 +215,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func dismissAndReturn() {
-		TransactionService.shared.resetState()
+		TransactionService.shared.resetAllState()
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}

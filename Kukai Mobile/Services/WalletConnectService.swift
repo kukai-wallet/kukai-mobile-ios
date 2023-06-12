@@ -62,7 +62,7 @@ public class WalletConnectService {
 			.sink { [weak self] sessionRequest in
 				os_log("WC sessionRequestPublisher", log: .default, type: .info)
 				
-				TransactionService.shared.resetState()
+				TransactionService.shared.resetWalletConnectState()
 				TransactionService.shared.walletConnectOperationData.request = sessionRequest.request
 				
 				if sessionRequest.request.method == "tezos_send" {
@@ -178,12 +178,20 @@ public class WalletConnectService {
 	
 	// MARK: - Operations
 	
+	public static func accountFromRequest(_ request: WalletConnectSign.Request?) -> String? {
+		guard let params = try? request?.params.get(WalletConnectRequestParams.self) else {
+			return nil
+		}
+		
+		return params.account
+	}
+	
 	private func processWalletConnectRequest() {
 		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
 			  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
 			  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 		else {
-			let onDevice = "tezos:\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "")"
+			let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 			self.delegate?.error(message: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 			return
 		}
@@ -210,13 +218,15 @@ public class WalletConnectService {
 	}
 	
 	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], forWallet: Wallet) {
-		TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
-		let operations = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()
+		let operationsObj = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
+		let operations = operationsObj.selectedOperationsAndFees()
+		
+		TransactionService.shared.currentRemoteOperationsAndFeesData = operationsObj
 		
 		if let contractDetails = OperationFactory.Extractor.isContractCall(operations: operations) {
 			let totalXTZ = OperationFactory.Extractor.totalXTZAmountForContractCall(operations: operations)
-			TransactionService.shared.currentTransactionType = .contractCall
-			TransactionService.shared.contractCallData = TransactionService.ContractCallData(chosenToken: Token.xtz(), chosenAmount: totalXTZ, contractAddress: contractDetails.address, operationCount: operations.count, mainEntrypoint: contractDetails.entrypoint)
+			TransactionService.shared.walletConnectOperationData.currentTransactionType = .contractCall
+			TransactionService.shared.walletConnectOperationData.contractCallData = TransactionService.ContractCallData(chosenToken: Token.xtz(), chosenAmount: totalXTZ, contractAddress: contractDetails.address, operationCount: operations.count, mainEntrypoint: contractDetails.entrypoint)
 			mainThreadProcessedOperations(ofType: .contractCall)
 			
 		} else if OperationFactory.Extractor.isTezTransfer(operations: operations), let transactionOperation = operations.first as? OperationTransaction {
@@ -226,31 +236,31 @@ public class WalletConnectService {
 				let accountBalance = (try? res.get()) ?? xtzAmount
 				let selectedToken = Token.xtz(withAmount: accountBalance)
 				
-				TransactionService.shared.currentTransactionType = .send
-				TransactionService.shared.sendData.chosenToken = selectedToken
-				TransactionService.shared.sendData.chosenAmount = xtzAmount
-				TransactionService.shared.sendData.destination = transactionOperation.destination
+				TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
+				TransactionService.shared.walletConnectOperationData.sendData.chosenToken = selectedToken
+				TransactionService.shared.walletConnectOperationData.sendData.chosenAmount = xtzAmount
+				TransactionService.shared.walletConnectOperationData.sendData.destination = transactionOperation.destination
 				self?.mainThreadProcessedOperations(ofType: .sendToken)
 			}
 			
 		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()),
 				  let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
 			
-			TransactionService.shared.currentTransactionType = .send
-			TransactionService.shared.sendData.destination = result.destination
-			TransactionService.shared.sendData.chosenAmount = TokenAmount(fromRpcAmount: result.rpcAmount, decimalPlaces: token.token.decimalPlaces)
+			TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
+			TransactionService.shared.walletConnectOperationData.sendData.destination = result.destination
+			TransactionService.shared.walletConnectOperationData.sendData.chosenAmount = TokenAmount(fromRpcAmount: result.rpcAmount, decimalPlaces: token.token.decimalPlaces)
 			
 			if token.isNFT, let nft = (token.token.nfts ?? []).first(where: { $0.tokenId == result.tokenId }) {
-				TransactionService.shared.sendData.chosenNFT = nft
+				TransactionService.shared.walletConnectOperationData.sendData.chosenNFT = nft
 				
 			} else {
-				TransactionService.shared.sendData.chosenToken = token.token
+				TransactionService.shared.walletConnectOperationData.sendData.chosenToken = token.token
 			}
 			
 			mainThreadProcessedOperations(ofType: .sendToken)
 			
 		} else {
-			TransactionService.shared.currentTransactionType = .contractCall
+			TransactionService.shared.walletConnectOperationData.currentTransactionType = .contractCall
 			mainThreadProcessedOperations(ofType: .contractCall)
 		}
 	}
