@@ -133,6 +133,17 @@ extension UIView {
 			degress: cssDegreesToIOS(117.79))
 	}
 	
+	func addGradientButtonPrimaryHighlighted(withFrame frame: CGRect) -> CAGradientLayer {
+		return addBackgroundGradient(
+			withFrame: frame,
+			colors: [
+				UIColor.colorNamed("BtnPrim3-1").cgColor,
+				UIColor.colorNamed("BtnPrim3-2").cgColor,
+			],
+			locations: [0.20, 0.87],
+			degress: cssDegreesToIOS(117.79))
+	}
+	
 	func addGradientButtonPrimaryDisabled(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,
@@ -150,6 +161,20 @@ extension UIView {
 			colors: [
 				UIColor.colorNamed("BtnStrokeTer1-1").cgColor,
 				UIColor.colorNamed("BtnStrokeTer1-2").cgColor
+			],
+			locations: [0.20, 0.87],
+			degrees: cssDegreesToIOS(117.79),
+			lineWidth: 1,
+			corners: [.allCorners],
+			cornerRadius: 8)
+	}
+	
+	func addGradientButtonTertiaryHighlightedBorder() -> CAGradientLayer {
+		return self.addGradientBorder(
+			withFrame: self.bounds,
+			colors: [
+				UIColor.colorNamed("BtnStrokeTer3-1").cgColor,
+				UIColor.colorNamed("BtnStrokeTer3-2").cgColor
 			],
 			locations: [0.20, 0.87],
 			degrees: cssDegreesToIOS(117.79),

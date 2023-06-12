@@ -27,6 +27,7 @@ class CustomisableButton: UIButton {
 	private var gradientLayer = CAGradientLayer()
 	private var previousFrame: CGRect = CGRect(x: -1, y: -1, width: -1, height: -1)
 	private var previousEnabled = false
+	private var previousHighlighted = false
 	private var didSetupCustomImage = false
 	
 	override func layoutSubviews() {
@@ -56,7 +57,7 @@ class CustomisableButton: UIButton {
 	}
 	
 	func setupGradient() {
-		if previousFrame == self.frame && previousEnabled == isEnabled {
+		if previousFrame == self.frame && previousEnabled == isEnabled && previousHighlighted == isHighlighted {
 			return // prevent UI loops, only process if something has changed
 		}
 		
@@ -68,8 +69,11 @@ class CustomisableButton: UIButton {
 				setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
 				setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
 				
-				if isEnabled {
+				if isEnabled && !isHighlighted {
 					gradientLayer = self.addGradientButtonPrimary(withFrame: self.bounds)
+					
+				} else if isHighlighted {
+					gradientLayer = self.addGradientButtonPrimaryHighlighted(withFrame: self.bounds)
 					
 				} else {
 					gradientLayer = self.addGradientButtonPrimaryDisabled(withFrame: self.bounds)
@@ -78,9 +82,14 @@ class CustomisableButton: UIButton {
 			case .secondary:
 				self.borderWidth = 1
 				
-				if isEnabled {
+				if isEnabled && !isHighlighted {
 					self.borderColor = UIColor.colorNamed("BtnStrokeSec1")
-					self.backgroundColor = UIColor.colorNamed("BtnTer1")
+					self.backgroundColor = UIColor.colorNamed("BtnSec1")
+					
+				} else if isHighlighted {
+					self.borderColor = UIColor.colorNamed("BtnStrokeSec3")
+					self.backgroundColor = UIColor.colorNamed("BtnSec3")
+					
 				} else {
 					self.borderColor = UIColor.colorNamed("BtnStrokeSec4")
 					self.backgroundColor = UIColor.colorNamed("BtnSec4")
@@ -88,12 +97,17 @@ class CustomisableButton: UIButton {
 				
 			case .tertiary:
 				
-				if isEnabled {
+				if isEnabled && !isHighlighted  {
 					gradientLayer = self.addGradientButtonTertiaryBorder()
 					self.backgroundColor = UIColor.colorNamed("BtnTer1")
+					
+				}  else if isHighlighted {
+					gradientLayer = self.addGradientButtonTertiaryHighlightedBorder()
+					self.backgroundColor = UIColor.colorNamed("BtnTer3")
+					
 				} else {
 					gradientLayer = self.addGradientButtonTertiaryDisabledBorder()
-					self.backgroundColor = UIColor.colorNamed("BtnSec4")
+					self.backgroundColor = UIColor.colorNamed("BtnTer4")
 				}
 				
 			case .none:
@@ -102,5 +116,6 @@ class CustomisableButton: UIButton {
 		
 		previousFrame = self.frame
 		previousEnabled = isEnabled
+		previousHighlighted = isHighlighted
 	}
 }
