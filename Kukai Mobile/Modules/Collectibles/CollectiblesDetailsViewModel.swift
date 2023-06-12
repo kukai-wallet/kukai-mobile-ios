@@ -265,6 +265,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			
 			// Attributes
+			self.attributes = []
 			let totalEditions = data.fa.first?.editions ?? 1
 			for attribute in data.token.first?.attributes ?? [] {
 				let percentage = ((attribute.attribute.attribute_counts.first?.editions ?? 1) * 100) / totalEditions

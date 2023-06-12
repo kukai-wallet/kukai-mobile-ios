@@ -54,15 +54,15 @@ extension UIImage {
 	}
 	
 	class func unknownToken() -> UIImage {
-		return UIImage(named: "missingToken")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
+		return UIImage(named: "missingImage")?.resizedImage(size: CGSize(width: 52, height: 52)) ?? UIImage()
 	}
 	
 	class func unknownThumb() -> UIImage {
-		return UIImage(named: "missingThumb")?.resizedImage(size: CGSize(width: 54, height: 54)) ?? UIImage()
+		return UIImage(named: "missingImageGroup") ?? UIImage()
 	}
 	
 	class func unknownGroup() -> UIImage {
-		return UIImage(named: "missingGroup")?.resizedImage(size: CGSize(width: 54, height: 54)) ?? UIImage()
+		return UIImage(named: "missingImageGroup") ?? UIImage()
 	}
 	
 	class func animationFrames(prefix: String, count: Int) -> [UIImage] {
