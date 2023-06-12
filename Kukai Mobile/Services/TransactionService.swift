@@ -206,9 +206,13 @@ public class TransactionService {
 	}
 	
 	public struct WalletConnectOperationData {
+		var currentTransactionType: TransactionType
 		var proposal: Session.Proposal?
 		var request: WalletConnectSign.Request?
 		var requestParams: WalletConnectRequestParams?
+		
+		var sendData: SendData
+		var contractCallData: ContractCallData
 	}
 	
 	
@@ -219,6 +223,7 @@ public class TransactionService {
 	
 	public var currentTransactionType: TransactionType = .none
 	public var currentOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+	public var currentRemoteOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 	
 	public var sendData: SendData
 	public var exchangeData: ExchangeData
@@ -232,6 +237,7 @@ public class TransactionService {
 	private init() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentRemoteOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
@@ -239,16 +245,32 @@ public class TransactionService {
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
 		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
-		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
+		self.walletConnectOperationData = WalletConnectOperationData(currentTransactionType: .none,
+																	 proposal: nil,
+																	 request: nil,
+																	 requestParams: nil,
+																	 sendData: SendData(chosenToken: nil,
+																						chosenNFT: nil,
+																						chosenAmount: nil,
+																						destination: nil,
+																						destinationAlias: nil,
+																						destinationIcon: nil),
+																	 contractCallData: ContractCallData(chosenToken: nil,
+																										chosenAmount: nil,
+																										contractAddress: nil,
+																										operationCount: nil,
+																										mainEntrypoint: nil)
+		)
 	}
 	
 	
 	
 	// MARK: - functions
 	
-	public func resetState() {
+	public func resetAllState() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentRemoteOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
@@ -256,7 +278,26 @@ public class TransactionService {
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
 		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
-		self.walletConnectOperationData = WalletConnectOperationData(proposal: nil, request: nil, requestParams: nil)
+		
+		self.resetWalletConnectState()
+	}
+	
+	public func resetWalletConnectState() {
+		self.walletConnectOperationData = WalletConnectOperationData(currentTransactionType: .none,
+																	 proposal: nil,
+																	 request: nil,
+																	 requestParams: nil,
+																	 sendData: SendData(chosenToken: nil,
+																						chosenNFT: nil,
+																						chosenAmount: nil,
+																						destination: nil,
+																						destinationAlias: nil,
+																						destinationIcon: nil),
+																	 contractCallData: ContractCallData(chosenToken: nil,
+																										chosenAmount: nil,
+																										contractAddress: nil,
+																										operationCount: nil,
+																										mainEntrypoint: nil))
 	}
 	
 	public func recordChosen(exchange: DipDupExchange) {

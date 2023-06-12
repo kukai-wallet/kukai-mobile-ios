@@ -61,8 +61,11 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var isWalletConnectOp = false
 	private var didSend = false
 	private var connectedAppURL: URL? = nil
+	private var currentSendData: TransactionService.SendData = TransactionService.SendData()
+	private var selectedMetadata: WalletMetadata? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -74,16 +77,27 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		
 		// Handle wallet connect data
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
+		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			
+			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
+				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
+				self.alert(errorWithMessage: "Unable to locate requested account")
+				self.walletConnectRespondOnReject()
+				self.dismissBottomSheet()
+				return
+			}
+			
+			self.isWalletConnectOp = true
+			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
+			self.selectedMetadata = walletMetadataForRequestedAccount
+			self.connectedAppNameLabel.text = session.peer.name
+			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
 				connectedAppURL = iconUrl
 			}
-			self.connectedAppNameLabel.text = session.peer.name
 			
-			// TODO: add selected wallet to send data
-			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
-			guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
-			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
+			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
 			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
 				fromSocialAlias.text = media.title
@@ -95,6 +109,10 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			}
 			
 		} else {
+			self.isWalletConnectOp = false
+			self.currentSendData = TransactionService.shared.sendData
+			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
+			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
 			fromContainer.isHidden = true
@@ -105,17 +123,17 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		
 		// Destination view configuration
-		if let alias = TransactionService.shared.sendData.destinationAlias {
+		if let alias = currentSendData.destinationAlias {
 			// social display
 			toStackViewRegular.isHidden = true
 			toSocialAlias.text = alias
-			toSocialIcon.image = TransactionService.shared.sendData.destinationIcon
-			toSocialAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			toSocialIcon.image = currentSendData.destinationIcon
+			toSocialAddress.text = currentSendData.destination?.truncateTezosAddress()
 			
 		} else {
 			// basic display
 			toStackViewSocial.isHidden = true
-			toRegularAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			toRegularAddress.text = currentSendData.destination?.truncateTezosAddress()
 		}
 		
 		
@@ -125,7 +143,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
+		if selectedMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -152,19 +170,28 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		
-		if !didSend && TransactionService.shared.walletConnectOperationData.request != nil {
+		if !didSend && isWalletConnectOp {
 			walletConnectRespondOnReject()
 		}
 	}
 	
+	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
+		if isWalletConnectOp {
+			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()
+			
+		} else {
+			return TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		}
+	}
+	
 	func didCompleteSlide() {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
+		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.alert(errorWithMessage: "Unable to find wallet")
 			self.slideButton.resetSlider()
 			return
 		}
 		
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
 			self?.hideLoadingModal(completion: { [weak self] in
@@ -174,7 +201,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if TransactionService.shared.walletConnectOperationData.request != nil {
+						if self?.isWalletConnectOp == true {
 							self?.walletConnectRespondOnSign(opHash: opHash)
 							
 						} else {
@@ -190,9 +217,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	func updateAmountDisplay() {
-		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
-		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
-		guard let token = TransactionService.shared.sendData.chosenToken, let amount = TransactionService.shared.sendData.chosenAmount else {
+		guard let token = currentSendData.chosenToken, let amount = currentSendData.chosenAmount else {
 			return
 		}
 		
@@ -215,17 +240,22 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	func updateFees() {
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
 		feeValueLabel.text = fee.normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
-		if let token = TransactionService.shared.sendData.chosenToken, token.isXTZ(), let amount = TransactionService.shared.sendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
+		if let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
 			let updatedValue = ((token.balance - oneMutez) - fee)
-			TransactionService.shared.sendData.chosenAmount = updatedValue
-			TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
+			currentSendData.chosenAmount = updatedValue
+			
+			if isWalletConnectOp {
+				TransactionService.shared.currentRemoteOperationsAndFeesData.updateXTZAmount(to: updatedValue)
+			} else {
+				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
+			}
 			updateAmountDisplay()
 		}
 	}
@@ -235,20 +265,25 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	func dismissAndReturn() {
-		TransactionService.shared.resetState()
+		if isWalletConnectOp {
+			TransactionService.shared.resetWalletConnectState()
+		} else {
+			TransactionService.shared.resetAllState()
+		}
+		
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
+		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
-		let destinationAlias = TransactionService.shared.sendData.destinationAlias
-		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()
-		let token = TransactionService.shared.sendData.chosenToken
+		let destinationAddress = currentSendData.destination ?? ""
+		let destinationAlias = currentSendData.destinationAlias
+		let amount = currentSendData.chosenAmount ?? .zero()
+		let token = currentSendData.chosenToken
 		
-		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
 		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
 		

@@ -74,7 +74,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if let token = viewModel.token(atIndexPath: indexPath) {
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetAllState()
 			TransactionService.shared.sendData.chosenToken = token
 			TransactionService.shared.sendData.chosenNFT = nil
 			self.performSegue(withIdentifier: "details", sender: self)

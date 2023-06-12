@@ -64,6 +64,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self?.refresh(addresses: nil)
 			}.store(in: &bag)
 		
+		DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed
+			.dropFirst()
+			.sink { [weak self] addresses in
+				if addresses.count == 0 {
+					self?.stopActivityAnimationIfNecessary()
+				}
+			}.store(in: &bag)
+		
 		DependencyManager.shared.balanceService.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
@@ -115,7 +123,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
-		TransactionService.shared.resetState()
+		TransactionService.shared.resetAllState()
 		updateAccountButton()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
@@ -415,7 +423,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 			}
 			
-			TransactionService.shared.resetState()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 }

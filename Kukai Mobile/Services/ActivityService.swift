@@ -102,7 +102,11 @@ public class ActivityService {
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
-			pendingTransactionGroups.insert(group, at: 0)
+			if fromWallet.address == DependencyManager.shared.selectedWalletAddress {
+				pendingTransactionGroups.insert(group, at: 0)
+				DependencyManager.shared.addressRefreshed = fromWallet.address
+			}
+			
 			return DiskService.write(encodable: pendingTransactionGroups, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: fromWallet.address))
 		}
 		

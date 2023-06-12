@@ -63,8 +63,11 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var isWalletConnectOp = false
 	private var didSend = false
 	private var connectedAppURL: URL? = nil
+	private var currentContractData: TransactionService.ContractCallData = TransactionService.ContractCallData()
+	private var selectedMetadata: WalletMetadata? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -76,16 +79,27 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		
 		// Handle wallet connect data
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
+		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			
+			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
+				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
+				self.alert(errorWithMessage: "Unable to locate requested account")
+				self.walletConnectRespondOnReject()
+				self.dismissBottomSheet()
+				return
+			}
+			
+			self.isWalletConnectOp = true
+			self.currentContractData = TransactionService.shared.walletConnectOperationData.contractCallData
+			self.selectedMetadata = walletMetadataForRequestedAccount
+			self.connectedAppNameLabel.text = session.peer.name
+			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
 				connectedAppURL = iconUrl
 			}
-			self.connectedAppNameLabel.text = session.peer.name
 			
-			// TODO: add selected wallet to send data
-			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
-			guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
-			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
+			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
 			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
 				fromSocialAlias.text = media.title
@@ -97,6 +111,10 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 			}
 			
 		} else {
+			self.isWalletConnectOp = false
+			self.currentContractData = TransactionService.shared.contractCallData
+			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
+			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
 			fromContainer.isHidden = true
@@ -107,16 +125,16 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		
 		// Destination view configuration
-		if let count = TransactionService.shared.contractCallData.operationCount, count > 1 {
+		if let count = currentContractData.operationCount, count > 1 {
 			toSingleView.isHidden = true
-			toBatchContractLabel.text = TransactionService.shared.contractCallData.contractAddress?.truncateTezosAddress()
+			toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
 			toBatchCountLabel.text = "\(count)"
 			
 		} else {
 			toBatchView.isHidden = true
-			toSingleContractLabel.text = TransactionService.shared.contractCallData.contractAddress?.truncateTezosAddress()
+			toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
 		}
-		entrypointLabel.text = TransactionService.shared.contractCallData.mainEntrypoint
+		entrypointLabel.text = currentContractData.mainEntrypoint
 		
 		
 		// Fees
@@ -125,7 +143,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
+		if selectedMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -152,21 +170,28 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		
-		if !didSend && TransactionService.shared.walletConnectOperationData.request != nil {
+		if !didSend && isWalletConnectOp {
 			walletConnectRespondOnReject()
 		}
 	}
 	
+	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
+		if isWalletConnectOp {
+			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()
+			
+		} else {
+			return TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		}
+	}
+	
 	func didCompleteSlide() {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
+		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.alert(errorWithMessage: "Unable to find wallet")
 			self.slideButton.resetSlider()
 			return
 		}
 		
-		//self.showLoadingModal(completion: nil)
-		
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
 			self?.hideLoadingModal(completion: { [weak self] in
@@ -176,7 +201,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if TransactionService.shared.walletConnectOperationData.request != nil {
+						if self?.isWalletConnectOp == true {
 							self?.walletConnectRespondOnSign(opHash: opHash)
 							
 						} else {
@@ -192,9 +217,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	}
 	
 	func updateAmountDisplay() {
-		// TODO: use a combination of wallet connect + send data. Avoid repeating everything
-		// Maybe avoid using wc all together here, have a service pull all the bits out into sendData
-		guard let token = TransactionService.shared.contractCallData.chosenToken, let amount = TransactionService.shared.contractCallData.chosenAmount else {
+		guard let token = currentContractData.chosenToken, let amount = currentContractData.chosenAmount else {
 			return
 		}
 		
@@ -217,7 +240,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	}
 	
 	func updateFees() {
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
 		feeValueLabel.text = fee.normalisedRepresentation + " tez"
@@ -229,18 +252,23 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	}
 	
 	func dismissAndReturn() {
-		TransactionService.shared.resetState()
+		if isWalletConnectOp {
+			TransactionService.shared.resetWalletConnectState()
+		} else {
+			TransactionService.shared.resetAllState()
+		}
+		
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
+		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = TransactionService.shared.contractCallData.contractAddress ?? ""
-		let amount = TransactionService.shared.contractCallData.chosenAmount ?? .zero()
+		let destinationAddress = currentContractData.contractAddress ?? ""
+		let amount = currentContractData.chosenAmount ?? .zero()
 		
-		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
 		let contractOp = OperationFactory.Extractor.firstContractCallOperation(operations: currentOps)
 		

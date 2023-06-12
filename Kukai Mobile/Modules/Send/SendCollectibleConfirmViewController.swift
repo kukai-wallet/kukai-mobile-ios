@@ -55,8 +55,11 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var isWalletConnectOp = false
 	private var didSend = false
 	private var connectedAppURL: URL? = nil
+	private var currentSendData: TransactionService.SendData = TransactionService.SendData()
+	private var selectedMetadata: WalletMetadata? = nil
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,22 +69,29 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			testnetWarningView.isHidden = true
 		}
 		
-		guard let token = TransactionService.shared.sendData.chosenNFT, let amount = TransactionService.shared.sendData.chosenAmount else {
-			return
-		}
-		
 		
 		// Handle wallet connect data
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
+		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			
+			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
+				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
+				self.alert(errorWithMessage: "Unable to locate requested account")
+				self.walletConnectRespondOnReject()
+				self.dismissBottomSheet()
+				return
+			}
+			
+			self.isWalletConnectOp = true
+			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
+			self.selectedMetadata = walletMetadataForRequestedAccount
+			self.connectedAppNameLabel.text = session.peer.name
+			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
 				connectedAppURL = iconUrl
 			}
-			self.connectedAppNameLabel.text = session.peer.name
 			
-			// TODO: add selected wallet to send data
-			// TODO: incoming WC cannot overwrite existing send data, just in case we decide to not close send flow
-			guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
-			let media = TransactionService.walletMedia(forWalletMetadata: selectedWalletMetadata, ofSize: .size_22)
+			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
 			if let subtitle = media.subtitle {
 				fromStackViewRegular.isHidden = true
 				fromSocialAlias.text = media.title
@@ -93,6 +103,10 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			}
 			
 		} else {
+			self.isWalletConnectOp = false
+			self.currentSendData = TransactionService.shared.sendData
+			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
+			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
 			fromContainer.isHidden = true
@@ -100,34 +114,21 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Token data
-		collectibleNameLabel.text = token.name
-		let quantityString = amount.normalisedRepresentation
-		if quantityString == "1" {
-			quantityStackView.isHidden = true
-			collectibleImageQuantityView.isHidden = true
-		} else {
-			quantityStackView.isHidden = false
-			collectibleQuantityLabel.text = quantityString
-			collectibleImageQuantityLabel.text = "x\(quantityString)"
-		}
-		
-		feeValueLabel?.text = "0 tez"
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
-		
+		updateAmountDisplay()
 		
 		
 		// Destination view configuration
-		if let alias = TransactionService.shared.sendData.destinationAlias {
+		if let alias = currentSendData.destinationAlias {
 			// social display
 			toStackViewRegular.isHidden = true
 			socialAlias.text = alias
-			socialIcon.image = TransactionService.shared.sendData.destinationIcon
-			socialAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			socialIcon.image = currentSendData.destinationIcon
+			socialAddress.text = currentSendData.destination?.truncateTezosAddress()
 			
 		} else {
 			// basic display
 			toStackViewSocial.isHidden = true
-			regularAddress.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			regularAddress.text = currentSendData.destination?.truncateTezosAddress()
 		}
 		
 		
@@ -137,7 +138,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Ledger check
-		if DependencyManager.shared.selectedWalletMetadata?.type != .ledger {
+		if selectedMetadata?.type != .ledger {
 			ledgerWarningLabel.isHidden = true
 		}
 		
@@ -153,6 +154,26 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		slideButton.delegate = self
     }
 	
+	func updateAmountDisplay() {
+		guard let token = currentSendData.chosenNFT, let amount = currentSendData.chosenAmount else {
+			return
+		}
+		
+		collectibleNameLabel.text = token.name
+		let quantityString = amount.normalisedRepresentation
+		if quantityString == "1" {
+			quantityStackView.isHidden = true
+			collectibleImageQuantityView.isHidden = true
+		} else {
+			quantityStackView.isHidden = false
+			collectibleQuantityLabel.text = quantityString
+			collectibleImageQuantityLabel.text = "x\(quantityString)"
+		}
+		
+		feeValueLabel?.text = "0 tez"
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
@@ -164,7 +185,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		
-		if !didSend && TransactionService.shared.walletConnectOperationData.request != nil {
+		if !didSend && isWalletConnectOp {
 			walletConnectRespondOnReject()
 		}
 	}
@@ -173,16 +194,23 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		self.dismissBottomSheet()
 	}
 	
+	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
+		if isWalletConnectOp {
+			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()
+			
+		} else {
+			return TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		}
+	}
+	
 	func didCompleteSlide() {
-		guard let wallet = DependencyManager.shared.selectedWallet else {
+		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.alert(errorWithMessage: "Unable to find wallet")
 			self.slideButton.resetSlider()
 			return
 		}
 		
-		self.showLoadingModal(completion: nil)
-		
-		DependencyManager.shared.tezosNodeClient.send(operations: TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
+		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
 			self?.hideLoadingModal(completion: { [weak self] in
@@ -192,7 +220,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if TransactionService.shared.walletConnectOperationData.request != nil {
+						if self?.isWalletConnectOp == true {
 							self?.walletConnectRespondOnSign(opHash: opHash)
 							
 						} else {
@@ -208,29 +236,35 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func updateFees() {
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
+		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
+		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = (feesAndData.fee + feesAndData.maxStorageCost).normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 	
 	func dismissAndReturn() {
-		TransactionService.shared.resetState()
+		if isWalletConnectOp {
+			TransactionService.shared.resetWalletConnectState()
+		} else {
+			TransactionService.shared.resetAllState()
+		}
+		
 		self.dismiss(animated: true, completion: nil)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		guard let nft = TransactionService.shared.sendData.chosenNFT, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else { return }
+		guard let nft = currentSendData.chosenNFT, let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = TransactionService.shared.sendData.destination ?? ""
-		let destinationAlias = TransactionService.shared.sendData.destinationAlias
-		let amount = TransactionService.shared.sendData.chosenAmount ?? .zero()
+		let destinationAddress = currentSendData.destination ?? ""
+		let destinationAlias = currentSendData.destinationAlias
+		let amount = currentSendData.chosenAmount ?? .zero()
 		
 		let mediaURL = MediaProxyService.thumbnailURL(forNFT: nft)
 		let token = Token.placeholder(fromNFT: nft, amount: amount, thumbnailURL: mediaURL)
 		
-		let currentOps = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
 		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
 		
