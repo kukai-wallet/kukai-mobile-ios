@@ -43,7 +43,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.balanceService.$addressRefreshed
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
@@ -83,7 +83,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
 				let type = MediaProxyService.typesContents(types)
-				cell.mediaIconView.isHidden = (type == .imageOnly || type == nil)
+				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
+				cell.setupViews(quantity: balance, isRichMedia: (type != .imageOnly && type != nil))
 				
 				return cell
 				

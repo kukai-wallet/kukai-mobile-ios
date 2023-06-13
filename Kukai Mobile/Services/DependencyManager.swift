@@ -177,7 +177,7 @@ class DependencyManager {
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
 		
-		updateKukaiCoreClients()
+		updateKukaiCoreClients(supressUpdateNotification: true)
 	}
 	
 	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {

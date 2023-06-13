@@ -25,6 +25,8 @@ class WelcomeViewController: UIViewController {
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 		
-		DependencyManager.shared.setDefaultMainnetURLs()
+		if DependencyManager.shared.currentNetworkType != .mainnet {
+			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
+		}
 	}
 }

@@ -50,7 +50,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iM6-NV-SVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="321.33333333333331" y="63" width="55.666666666666686" height="36"/>
+                                <rect key="frame" x="297.33333333333331" y="63" width="79.666666666666686" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="oRt-ll-jgQ"/>
@@ -396,13 +396,13 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;network&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y5o-6k-XuW">
-                                                            <rect key="frame" x="16" y="10" width="277" height="22"/>
+                                                            <rect key="frame" x="16" y="10" width="277" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;description&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MYy-eA-GIr">
-                                                            <rect key="frame" x="16" y="36" width="277" height="21"/>
+                                                            <rect key="frame" x="16" y="35" width="277" height="22"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
@@ -476,13 +476,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your account QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdP-t4-k2y">
-                                <rect key="frame" x="16" y="131" width="361" height="20"/>
+                                <rect key="frame" x="16" y="131" width="361" height="18.666666666666657"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt8"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g8u-6O-KBs">
-                                <rect key="frame" x="116.66666666666669" y="175" width="160" height="160"/>
+                                <rect key="frame" x="116.66666666666669" y="173.66666666666666" width="160" height="159.99999999999997"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="160" id="VcL-PY-CGC"/>
                                     <constraint firstAttribute="height" constant="160" id="v13-IC-DS5"/>
@@ -610,7 +610,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="THb-l2-U1S">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="CurrencyChoiceCell" rowHeight="71" id="RqK-9j-b9Q" customClass="CurrencyChoiceCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -685,6 +685,7 @@
                             <constraint firstItem="6dS-y4-XJF" firstAttribute="bottom" secondItem="THb-l2-U1S" secondAttribute="bottom" id="vWU-Er-Tx8"/>
                         </constraints>
                     </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="THb-l2-U1S" id="3z1-hm-0cy"/>
                     </connections>
@@ -702,7 +703,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="1As-Qc-Zln">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="103" width="393" height="715"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="WalletConnectCell" rowHeight="75" id="ZZD-ad-ggb" customClass="WalletConnectCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -771,7 +772,20 @@
                             <constraint firstItem="1As-Qc-Zln" firstAttribute="top" secondItem="r4C-eQ-V3s" secondAttribute="top" id="eJl-3c-JFa"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Wallet Connect" id="v9P-eA-jL7"/>
+                    <navigationItem key="navigationItem" title="Wallet Connect" id="v9P-eA-jL7">
+                        <barButtonItem key="rightBarButtonItem" id="BSt-eS-EzB">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="06y-hB-5Ph">
+                                <rect key="frame" x="271.33333333333331" y="5" width="105.66666666666669" height="34.333333333333336"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Reconnect"/>
+                                <connections>
+                                    <action selector="reconnectTapped:" destination="geB-IL-aG3" eventType="touchUpInside" id="9MW-Xc-gqt"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="1As-Qc-Zln" id="RwR-fA-ZcB"/>
                         <segue destination="UIX-UY-OxN" kind="custom" identifier="approve" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" id="Xte-B6-xA0"/>
@@ -912,16 +926,16 @@
     </scenes>
     <designables>
         <designable name="FDu-I5-fEA">
-            <size key="intrinsicContentSize" width="83.666666666666671" height="31"/>
+            <size key="intrinsicContentSize" width="97.666666666666671" height="31"/>
         </designable>
         <designable name="Itg-aH-eLT">
-            <size key="intrinsicContentSize" width="58.666666666666664" height="31"/>
+            <size key="intrinsicContentSize" width="72.666666666666671" height="31"/>
         </designable>
         <designable name="Nzm-zE-JrN">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="iM6-NV-SVb">
-            <size key="intrinsicContentSize" width="55.666666666666664" height="31"/>
+            <size key="intrinsicContentSize" width="79.666666666666671" height="38"/>
         </designable>
     </designables>
     <resources>
