@@ -106,9 +106,14 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				})
 				
 			} catch {
+				var message = "\(error)"
+				if error.localizedDescription == "Unsupported or empty accounts for namespace" {
+					message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
+				}
+				
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.alert(errorWithMessage: "Error: \(error)")
+					self?.alert(errorWithMessage: message)
 				})
 			}
 			
