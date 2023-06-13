@@ -14,6 +14,8 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 	@IBOutlet weak var subTitleLabel: UILabel!
 	@IBOutlet weak var buttonView: UIView!
 	@IBOutlet var mediaIconView: UIView!
+	@IBOutlet weak var quantityView: UIView!
+	@IBOutlet weak var quantityLabel: UILabel!
 	
 	private var gradient = CAGradientLayer()
 	
@@ -22,5 +24,21 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		
 		gradient.removeFromSuperlayer()
 		gradient = buttonView.addGradientButtonPrimary(withFrame: buttonView.bounds)
+	}
+	
+	func setupViews(quantity: String?, isRichMedia: Bool) {
+		if let quantity = quantity {
+			quantityView.isHidden = false
+			quantityLabel.text = quantity
+			
+		} else {
+			quantityView.isHidden = true
+		}
+		
+		if isRichMedia {
+			mediaIconView.isHidden = false
+		} else {
+			mediaIconView.isHidden = true
+		}
 	}
 }

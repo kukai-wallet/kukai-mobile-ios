@@ -23,7 +23,7 @@ class CollectiblesCollectionCell: UICollectionViewCell {
 	private var gradientLayer: CAGradientLayer? = nil
 	
 	func setup(iconUrl: URL?, title: String, imageURLs: [URL?], totalCount: Int?) {
-		MediaProxyService.load(url: iconUrl, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownGroup())
+		MediaProxyService.load(url: iconUrl, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		collectionName.text = title
 		
 		setupImages(imageURLs: imageURLs, totalCount: totalCount)

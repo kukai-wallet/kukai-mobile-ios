@@ -42,14 +42,14 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TgC-ei-dnj">
-                        <rect key="frame" x="408" y="13" width="18" height="18"/>
+                        <rect key="frame" x="388" y="16" width="36" height="36"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ul6-Ej-ePW">
-                                <rect key="frame" x="5.6666666666666856" y="3.6666666666666679" width="7" height="11"/>
+                                <rect key="frame" x="11" y="8" width="14" height="20"/>
                                 <color key="tintColor" name="BG8"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="7" id="6ub-R6-YKE"/>
-                                    <constraint firstAttribute="height" constant="9" id="fed-fp-UfM"/>
+                                    <constraint firstAttribute="width" constant="14" id="6ub-R6-YKE"/>
+                                    <constraint firstAttribute="height" constant="18" id="fed-fp-UfM"/>
                                 </constraints>
                                 <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
                             </imageView>
@@ -57,14 +57,14 @@
                         <color key="backgroundColor" name="BGMediaOval"/>
                         <constraints>
                             <constraint firstItem="Ul6-Ej-ePW" firstAttribute="centerX" secondItem="TgC-ei-dnj" secondAttribute="centerX" id="4YH-RK-iJI"/>
-                            <constraint firstAttribute="width" constant="18" id="9Kz-b0-l8M"/>
+                            <constraint firstAttribute="width" constant="36" id="9Kz-b0-l8M"/>
                             <constraint firstItem="Ul6-Ej-ePW" firstAttribute="centerY" secondItem="TgC-ei-dnj" secondAttribute="centerY" id="eG5-5w-JhN"/>
-                            <constraint firstAttribute="height" constant="18" id="isw-dk-s3L"/>
+                            <constraint firstAttribute="height" constant="36" id="isw-dk-s3L"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                <real key="value" value="9"/>
+                                <real key="value" value="18"/>
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
@@ -106,6 +106,32 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ydm-IN-WgZ">
+                        <rect key="frame" x="16" y="400" width="80.666666666666671" height="24"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uTQ-ko-iqe">
+                                <rect key="frame" x="4" y="2" width="72.666666666666671" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="TxtQuantity"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" name="BGQunatity"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="uTQ-ko-iqe" secondAttribute="trailing" constant="4" id="6VE-W9-lQu"/>
+                            <constraint firstAttribute="bottom" secondItem="uTQ-ko-iqe" secondAttribute="bottom" constant="2" id="F5A-Ea-87l"/>
+                            <constraint firstItem="uTQ-ko-iqe" firstAttribute="leading" secondItem="ydm-IN-WgZ" secondAttribute="leading" constant="4" id="Mym-oT-AiE"/>
+                            <constraint firstAttribute="height" constant="24" id="aGE-zZ-EKi"/>
+                            <constraint firstItem="uTQ-ko-iqe" firstAttribute="top" secondItem="ydm-IN-WgZ" secondAttribute="top" constant="2" id="neD-Qo-BCl"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="13"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="5Ag-oI-TaQ"/>
@@ -116,9 +142,11 @@
                 <constraint firstItem="Z6d-66-68a" firstAttribute="leading" secondItem="kzA-mR-sv6" secondAttribute="leading" id="9om-qC-4jU"/>
                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="2l1-Nr-YMm" secondAttribute="bottom" priority="999" constant="14" id="ARp-Y0-m1K"/>
                 <constraint firstItem="zEV-zt-kYJ" firstAttribute="top" secondItem="kzA-mR-sv6" secondAttribute="top" id="QEp-iL-OrB"/>
-                <constraint firstAttribute="trailing" secondItem="TgC-ei-dnj" secondAttribute="trailing" constant="14" id="hWL-IS-66i"/>
-                <constraint firstItem="TgC-ei-dnj" firstAttribute="top" secondItem="kzA-mR-sv6" secondAttribute="top" constant="13" id="k0K-DN-vtz"/>
+                <constraint firstItem="ydm-IN-WgZ" firstAttribute="leading" secondItem="zEV-zt-kYJ" secondAttribute="leading" constant="16" id="RVf-Pt-vM6"/>
+                <constraint firstAttribute="trailing" secondItem="TgC-ei-dnj" secondAttribute="trailing" constant="16" id="hWL-IS-66i"/>
+                <constraint firstItem="TgC-ei-dnj" firstAttribute="top" secondItem="kzA-mR-sv6" secondAttribute="top" constant="16" id="k0K-DN-vtz"/>
                 <constraint firstItem="CLc-br-ch2" firstAttribute="leading" secondItem="kzA-mR-sv6" secondAttribute="leading" id="kJB-AA-FKz"/>
+                <constraint firstItem="ydm-IN-WgZ" firstAttribute="bottom" secondItem="zEV-zt-kYJ" secondAttribute="bottom" constant="-16" id="t2y-rL-vTe"/>
                 <constraint firstItem="Z6d-66-68a" firstAttribute="top" secondItem="CLc-br-ch2" secondAttribute="bottom" constant="4" id="unp-sD-k61"/>
                 <constraint firstItem="2l1-Nr-YMm" firstAttribute="centerX" secondItem="5Ag-oI-TaQ" secondAttribute="centerX" id="uyj-v7-fdn"/>
                 <constraint firstAttribute="trailing" secondItem="CLc-br-ch2" secondAttribute="trailing" id="vC4-0G-rec"/>
@@ -130,6 +158,8 @@
                 <outlet property="buttonView" destination="2l1-Nr-YMm" id="me9-Rq-rfv"/>
                 <outlet property="iconView" destination="zEV-zt-kYJ" id="5ts-QQ-Mw4"/>
                 <outlet property="mediaIconView" destination="TgC-ei-dnj" id="T8x-AS-ftK"/>
+                <outlet property="quantityLabel" destination="uTQ-ko-iqe" id="GNi-eJ-ojh"/>
+                <outlet property="quantityView" destination="ydm-IN-WgZ" id="0y2-Hp-z8A"/>
                 <outlet property="subTitleLabel" destination="Z6d-66-68a" id="OWs-8b-yWe"/>
                 <outlet property="titleLabel" destination="CLc-br-ch2" id="Ng4-91-1Gc"/>
             </connections>
@@ -144,6 +174,9 @@
         <namedColor name="BGMediaOval">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BGQunatity">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -151,6 +184,9 @@
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtBtnPrim1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtQuantity">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>

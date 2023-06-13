@@ -58,7 +58,7 @@ extension UIImage {
 	}
 	
 	class func unknownThumb() -> UIImage {
-		return UIImage(named: "missingImageGroup") ?? UIImage()
+		return UIImage(named: "missingImage") ?? UIImage()
 	}
 	
 	class func unknownGroup() -> UIImage {
