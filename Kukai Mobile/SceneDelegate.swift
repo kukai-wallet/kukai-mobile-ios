@@ -38,18 +38,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
-		
-		// Manually open WC2 connection
-		WalletConnectService.shared.connectOnAppOpen()
-		
-		// Remove any old assets to avoid clogging up users device too much
-		MediaProxyService.clearExpiredImages()
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
+		// Check system colors set correctly from beginning
+		ThemeManager.shared.updateSystemInterfaceStyle()
+		
+		// Manually open WC2 connection
+		WalletConnectService.shared.connectOnAppOpen()
+		
+		// Remove any old assets to avoid clogging up users device too much
+		MediaProxyService.clearExpiredImages()
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {

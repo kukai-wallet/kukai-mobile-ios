@@ -108,6 +108,7 @@ public class WalletConnectService {
 	
 	public func reconnect(completion: @escaping ((Error?) -> Void)) {
 		bag.forEach({ $0.cancel() })
+		bag = []
 		
 		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
 			completion(nil)
