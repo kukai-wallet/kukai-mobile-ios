@@ -13,7 +13,6 @@ import OSLog
 class WalletConnectViewController: UIViewController {
 	
 	@IBOutlet weak var tableView: UITableView!
-	@IBOutlet weak var deleteAllButton: UIButton!
 	
 	private let viewModel = WalletConnectViewModel()
 	private var cancellable: AnyCancellable?
@@ -45,5 +44,21 @@ class WalletConnectViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		viewModel.refresh(animate: true)
+	}
+	
+	
+	@IBAction func reconnectTapped(_ sender: Any) {
+
+		self.showLoadingModal { [weak self] in
+			
+			WalletConnectService.shared.reconnect { error in
+				
+				self?.hideLoadingModal(completion: {
+					if let err = error {
+						self?.alert(errorWithMessage: "Unable to reconnect: \(err)")
+					}
+				})
+			}
+		}
 	}
 }

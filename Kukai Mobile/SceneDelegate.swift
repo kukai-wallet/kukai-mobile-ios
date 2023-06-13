@@ -39,6 +39,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
 		
+		// Manually open WC2 connection
+		WalletConnectService.shared.connectOnAppOpen()
+		
 		// Remove any old assets to avoid clogging up users device too much
 		MediaProxyService.clearExpiredImages()
 	}
@@ -54,6 +57,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
 		// They will auto trigger themselves based on `viewDidAppear` methods
 		showPrivacyProtectionWindow()
+		
+		// Manually close WC2 connection
+		WalletConnectService.shared.disconnectForAppClose()
 		
 		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 	}

@@ -37,24 +37,27 @@ public struct WalletConnectGetAccountObj: Codable {
 public class WalletConnectService {
 	
 	private var bag = [AnyCancellable]()
+	private var temporaryBag = [AnyCancellable]()
 	
 	public static let shared = WalletConnectService()
 	public weak var delegate: WalletConnectServiceDelegate? = nil
+	
+	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
+	private static let metadata = AppMetadata(name: "Kukai iOS",
+											  description: "Kukai iOS",
+											  url: "https://wallet.kukai.app",
+											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
+											  redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
 	
 	private init() {}
 	
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(projectId: "97f804b46f0db632c52af0556586a5f3", socketFactory: NativeSocketFactory())
-		let metadata = AppMetadata(name: "Kukai iOS",
-								   description: "Kukai iOS",
-								   url: "https://wallet.kukai.app",
-								   icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
-								   redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
-		Pair.configure(metadata: metadata)
+		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: NativeSocketFactory(), socketConnectionType: .manual)
+		Pair.configure(metadata: WalletConnectService.metadata)
 		
-		
+		try? Networking.instance.connect()
 		
 		// Callbacks
 		Sign.instance.sessionRequestPublisher
@@ -101,6 +104,39 @@ public class WalletConnectService {
 				os_log("WC sessionDeletePublisher %@", log: .default, type: .info)
 				//self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
+	}
+	
+	public func reconnect(completion: @escaping ((Error?) -> Void)) {
+		bag.forEach({ $0.cancel() })
+		
+		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
+			completion(nil)
+			
+			self?.temporaryBag.forEach({ $0.cancel() })
+			
+		}.store(in: &temporaryBag)
+		
+		do {
+			try Networking.instance.disconnect(closeCode: .normalClosure)
+			self.setup()
+			
+		} catch (let error) {
+			completion(error)
+		}
+	}
+	
+	public func disconnectForAppClose() {
+		if delegate != nil {
+			try? Networking.instance.disconnect(closeCode: .normalClosure)
+		}
+	}
+	
+	public func connectOnAppOpen() {
+		if delegate != nil {
+			self.reconnect { _ in
+				
+			}
+		}
 	}
 	
 	
