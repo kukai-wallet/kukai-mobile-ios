@@ -52,8 +52,13 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
+		viewModel.isVisible = true
 		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func needsRefreshFromParent() {

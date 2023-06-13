@@ -16,12 +16,37 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	typealias CellDataType = AnyHashable
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	
+	public var isVisible = false
 	public var selectedToken: Token? = nil
 	public var externalImage: UIImage? = nil
 	public var externalName: String? = nil
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+			.dropFirst()
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
+					self?.refresh(animate: true)
+				}
+			}
+	}
+	
+	deinit {
+		accountDataRefreshedCancellable?.cancel()
+	}
+	
+	
 	
 	// MARK: - CollectionView Setup
 	
