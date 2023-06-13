@@ -176,8 +176,6 @@ class DependencyManager {
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
-		
-		updateKukaiCoreClients()
 	}
 	
 	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
