@@ -56,34 +56,58 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			timeLabel.text = data.date?.timeAgoDisplay() ?? ""
 		}
 		
-		// Icon and title
-		iconView.addTokenIcon(token: data.primaryToken)
-		titleLabel.text = title(forToken: data.primaryToken)
-		
-		if data.primaryToken?.tokenType == .nonfungible {
+		if data.subType == .contractCall {
+			// Icon and title
+			iconView.image = UIImage(named: "CallKnockOut")
+			iconView.backgroundColor = .colorNamed("BGThumbNFT")
 			iconView.customCornerRadius = 8
-		} else {
-			iconView.customCornerRadius = 20
-		}
-		
-		// Destination
-		destinationFrom(data)
-		
-		
-		// Send or receive differences
-		if data.subType == .send {
-			typeIcon.image = .init(named: "ArrowSend")
-			typeIcon.tintColor = ActivityItemCell.sendTitleColor
-			typeLabel.text = "Send"
-			typeLabel.textColor = ActivityItemCell.sendTitleColor
-			toLabel.text = "To: "
+			
+			typeIcon.isHidden = true
+			typeLabel.text = ""
+			
+			titleLabel.text = "Call: \(data.entrypointCalled ?? "unknown")"
+			
+			toLabel.isHidden = true
+			destinationIconStackView.isHidden = true
+			destinationLabel.text = data.target?.alias ?? data.target?.address.truncateTezosAddress()
+			
+			invisibleRightButton.isHidden = true
 			
 		} else {
-			typeIcon.image = .init(named: "ArrowReceive")
-			typeIcon.tintColor = ActivityItemCell.receiveTitleColor
-			typeLabel.text = "Receive"
-			typeLabel.textColor = ActivityItemCell.receiveTitleColor
-			toLabel.text = "From: "
+			
+			// Icon and title
+			iconView.addTokenIcon(token: data.primaryToken)
+			titleLabel.text = title(forToken: data.primaryToken)
+			
+			if data.primaryToken?.tokenType == .nonfungible {
+				iconView.customCornerRadius = 8
+			} else {
+				iconView.customCornerRadius = 20
+			}
+			
+			// Destination
+			destinationFrom(data)
+			
+			
+			// Send or receive differences
+			typeIcon.isHidden = false
+			toLabel.isHidden = false
+			if data.subType == .send {
+				typeIcon.image = .init(named: "ArrowSend")
+				typeIcon.tintColor = ActivityItemCell.sendTitleColor
+				typeLabel.text = "Send"
+				typeLabel.textColor = ActivityItemCell.sendTitleColor
+				toLabel.text = "To: "
+				
+			} else {
+				typeIcon.image = .init(named: "ArrowReceive")
+				typeIcon.tintColor = ActivityItemCell.receiveTitleColor
+				typeLabel.text = "Receive"
+				typeLabel.textColor = ActivityItemCell.receiveTitleColor
+				toLabel.text = "From: "
+			}
+			
+			invisibleRightButton.isHidden = false
 		}
 	}
 	
