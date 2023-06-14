@@ -48,9 +48,11 @@ class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		TransactionService.shared.resetAllState()
-		TransactionService.shared.sendData.chosenToken = nil
-		TransactionService.shared.sendData.chosenNFT = viewModel.nft(atIndexPath: indexPath)
-		(self.parent as? HiddenTokensMainViewController)?.openCollectibleDetails()
+		if let nft = viewModel.nft(atIndexPath: indexPath) {
+			TransactionService.shared.resetAllState()
+			TransactionService.shared.sendData.chosenToken = nil
+			TransactionService.shared.sendData.chosenNFT = nft
+			(self.parent as? HiddenTokensMainViewController)?.openCollectibleDetails()
+		}
 	}
 }

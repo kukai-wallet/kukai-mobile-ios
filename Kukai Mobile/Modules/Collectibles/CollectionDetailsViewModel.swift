@@ -122,7 +122,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: tokenToView?.thumbnailURL, title: title, creator: nil) ], toSection: 0)
 		}
 		
-		normalSnapshot.appendItems(tokenToView?.nfts ?? [], toSection: 1)
+		let visibleNfts = (tokenToView?.nfts ?? []).filter({ !$0.isHidden })
+		normalSnapshot.appendItems(visibleNfts, toSection: 1)
 		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		

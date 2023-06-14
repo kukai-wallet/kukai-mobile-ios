@@ -91,6 +91,10 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 	}
 	
 	func nft(atIndexPath: IndexPath) -> NFT? {
-		return collectiblesToDisplay[atIndexPath.row]
+		if let nft = dataSource?.itemIdentifier(for: atIndexPath) as? NFT {
+			return nft
+		}
+		
+		return nil
 	}
 }

@@ -106,13 +106,14 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					return cell
 				}
 				
+				let visibleNfts = nfts.filter({ !$0.isHidden })
 				var totalCount: Int? = nil
 				
-				if nfts.count > 5 {
+				if visibleNfts.count > 5 {
 					totalCount = nfts.count - 4
 				}
 				
-				let urls = nfts.map({ MediaProxyService.thumbnailURL(forNFT: $0) })
+				let urls = visibleNfts.map({ MediaProxyService.thumbnailURL(forNFT: $0) })
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
 				
