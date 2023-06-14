@@ -9,6 +9,7 @@
 
 import AVFoundation
 import UIKit
+import Combine
 import os.log
 
 protocol ScanViewControllerDelegate: AnyObject {
@@ -32,9 +33,12 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	
 	weak var delegate: ScanViewControllerDelegate?
 	
+	private var bag = [AnyCancellable]()
+	private var gradient = CAGradientLayer()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		setupNav()
 		setupPreviewView()
@@ -50,6 +54,15 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				}
 			}
 		}
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.gradient.removeFromSuperlayer()
+				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
+				self?.view.setNeedsDisplay()
+				
+			}.store(in: &bag)
 	}
 	
 	@objc func back() {
