@@ -30,11 +30,12 @@ extension UIViewController {
 	private static var activityIndicator = UIActivityIndicatorView()
 	private static var loadingModal = UIViewController.createLoadingModal()
 	private static var loadingModalStatusLabel = UILabel()
+	private static let loadingModalBackgroundColor = UIColor.black.withAlphaComponent(0.75)
 	
 	static func createActivityView() -> UIView {
 		let view = UIView(frame: UIScreen.main.bounds)
 		view.translatesAutoresizingMaskIntoConstraints = false
-		view.backgroundColor = UIColor.black.withAlphaComponent(0.75)
+		view.backgroundColor = UIViewController.loadingModalBackgroundColor
 		
 		UIViewController.activityViewActivityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		UIViewController.activityViewActivityIndicator.color = UIColor.white
@@ -92,15 +93,25 @@ extension UIViewController {
 		UIViewController.loadingModalStatusLabel.text = message
 	}
 	
-	func showLoadingModal(completion: (() -> Void)? = nil) {
-		UIViewController.activityIndicator.startAnimating()
-		self.present(UIViewController.loadingModal, animated: true, completion: completion)
+	func showLoadingModal(invisible: Bool = false, completion: (() -> Void)? = nil) {
+		
+		if invisible {
+			UIViewController.activityIndicator.isHidden = true
+			UIViewController.loadingModal.view.backgroundColor = .clear
+			
+		} else {
+			UIViewController.activityIndicator.isHidden = false
+			UIViewController.activityIndicator.startAnimating()
+			UIViewController.loadingModal.view.backgroundColor = UIViewController.loadingModalBackgroundColor
+		}
+		
+		self.present(UIViewController.loadingModal, animated: !invisible, completion: completion)
 	}
 	
-	func hideLoadingModal(completion: (() -> Void)? = nil) {
+	func hideLoadingModal(invisible: Bool = false, completion: (() -> Void)? = nil) {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 			UIViewController.activityIndicator.stopAnimating()
-			UIViewController.loadingModal.dismiss(animated: true, completion: completion)
+			UIViewController.loadingModal.dismiss(animated: !invisible, completion: completion)
 			UIViewController.loadingModalStatusLabel.text = ""
 		}
 	}
