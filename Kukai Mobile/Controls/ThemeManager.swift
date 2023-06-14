@@ -495,7 +495,7 @@ public class ThemeManager {
 	}
 	
 	public func currentInterfaceStyle() -> UIUserInterfaceStyle {
-		return self.themes[self.selectedTheme]?.interfaceStyle ?? UITraitCollection.current.userInterfaceStyle
+		return self.themes[self.selectedTheme]?.interfaceStyle ?? .dark
 	}
 }
 
