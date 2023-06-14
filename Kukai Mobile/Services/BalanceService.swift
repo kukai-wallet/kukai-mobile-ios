@@ -87,8 +87,8 @@ public class BalanceService {
 	public func fetch(records: [FetchRequestRecord]) {
 		
 		balanceRecordQueue.sync { [weak self] in
-			let uniqueRecords = uniqueRecords(records: records)
-			addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
+			let uniqueRecords = self?.uniqueRecords(records: records) ?? []
+			self?.addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
 			
 			if (self?.currentFetchRequests.count ?? 0) == 0, let request = uniqueRecords.first {
 				self?.currentFetchRequests = [request]
@@ -186,6 +186,11 @@ public class BalanceService {
 			
 			self.account = self.currentlyRefreshingAccount
 		}
+	}
+	
+	public func hasNotBeenFetched(forAddress address: String) -> Bool {
+		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
+		return lastFullRefreshDates[addressCacheKey] == nil
 	}
 	
 	public func isCacheStale(forAddress address: String) -> Bool {

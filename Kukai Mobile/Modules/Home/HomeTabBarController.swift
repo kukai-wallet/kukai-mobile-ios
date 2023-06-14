@@ -59,6 +59,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				let address = DependencyManager.shared.selectedWalletAddress ?? ""
+				DependencyManager.shared.balanceService.loadCache(address: address)
+				
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
 				self?.refresh(addresses: nil)
