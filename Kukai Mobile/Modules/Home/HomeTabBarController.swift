@@ -135,10 +135,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			self.refreshType = .useCacheIfNotStale
 			refresh(addresses: nil)
 			
-		} else if DependencyManager.shared.balanceService.currencyChanged {
-			// currency display only needs a logic update. Can force a screen refresh by simply triggering a cache read, as it will always query the latest from coingecko anyway
-			self.refreshType = .useCache
-			refreshAllWallets()
 		}
 	}
 	

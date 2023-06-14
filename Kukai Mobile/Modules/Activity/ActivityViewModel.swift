@@ -194,12 +194,12 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		guard let ds = dataSource else {
+		guard let ds = dataSource, let group = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
 		
-		if groups[indexPath.section-1].transactions.count == 1 {
+		if group.transactions.count == 1 {
 			return
 		}
 		
