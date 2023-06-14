@@ -33,7 +33,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 	
 	var gradientLayer = CAGradientLayer()
 	
-	
 	func setup(data: TzKTTransactionGroup) {
 		if let tx = data.transactions.first {
 			setup(data: tx)
@@ -167,5 +166,9 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 				destinationIcon.image = UIImage(named: record.iconName)
 			}
 		}
+	}
+	
+	@IBAction func invisibleRightButtonTapped(_ sender: Any) {
+		self.parentViewController()?.alert(withTitle: "More button", andMessage: "Options under construction")
 	}
 }

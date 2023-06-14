@@ -8,7 +8,7 @@
 import UIKit
 import Combine
 
-class AccountViewController: UIViewController, UITableViewDelegate {
+class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTotalCellDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
@@ -24,6 +24,7 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		gradient = self.view.addGradientBackgroundFull()
 		
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
+		viewModel.estimatedTotalCellDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -100,5 +101,9 @@ class AccountViewController: UIViewController, UITableViewDelegate {
 		]
 		
 		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
+	}
+	
+	func totalEstiamtedInfoTapped() {
+		self.alert(withTitle: "Total Estimated", andMessage: "Info Text")
 	}
 }
