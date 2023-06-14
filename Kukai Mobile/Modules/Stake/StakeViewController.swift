@@ -18,6 +18,7 @@ class StakeViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		viewModel.infoDelegate = self
