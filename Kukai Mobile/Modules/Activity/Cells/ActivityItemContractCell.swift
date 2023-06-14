@@ -22,10 +22,6 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 	
 	var gradientLayer = CAGradientLayer()
 	
-	@IBAction func invisibleRightButtonTapped(_ sender: Any) {
-	}
-	
-	
 	func setup(data: TzKTTransaction) {
 		
 		// Time or confirmed
@@ -62,5 +58,9 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 			confirmedLabel.isHidden = false
 			confirmedIcon.isHidden = false
 		}
+	}
+	
+	@IBAction func invisibleRightButtonTapped(_ sender: Any) {
+		self.parentViewController()?.alert(withTitle: "More button", andMessage: "Options under construction")
 	}
 }

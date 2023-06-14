@@ -109,13 +109,16 @@
                                 </constraints>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-LI-1ta">
-                                <rect key="frame" x="381" y="0.0" width="70" height="100"/>
+                                <rect key="frame" x="411" y="0.0" width="40" height="100"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="70" id="ztN-1q-1ol"/>
+                                    <constraint firstAttribute="width" constant="40" id="ztN-1q-1ol"/>
                                 </constraints>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
+                                <connections>
+                                    <action selector="invisibleRightButtonTapped:" destination="VHf-nR-jpu" eventType="touchUpInside" id="cNX-Mp-NH8"/>
+                                </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
                                 <rect key="frame" x="320.66666666666669" y="78" width="120.33333333333331" height="12"/>

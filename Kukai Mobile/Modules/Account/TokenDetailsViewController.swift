@@ -152,13 +152,13 @@ extension TokenDetailsViewController {
 		headerAnimatorStarted = true
 		
 		// Set what we want the constraints to be
-		self.headerIconWidthConstraint.constant = 28
-		self.headerIconHeightConstraint.constant = 28
+		self.headerIconWidthConstraint.constant = 32
+		self.headerIconHeightConstraint.constant = 32
 		
 		// Setup property animator
 		headerAnimator = UIViewPropertyAnimator(duration: 3, curve: .easeOut, animations: { [weak self] in
 			
-			self?.headerIcon.customCornerRadius = (self?.headerIconWidthConstraint.constant ?? 28) / 2
+			self?.headerIcon.customCornerRadius = (self?.headerIconWidthConstraint.constant ?? 32) / 2
 			
 			// Refresh constraints
 			self?.view.layoutIfNeeded()
@@ -177,7 +177,7 @@ extension TokenDetailsViewController {
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		
 		// Every move event, compute how much things should change
-		let fraction = self.tableView.contentOffset.y / 100
+		let fraction = self.tableView.contentOffset.y / 75
 		
 		if fraction <= 1 {
 			headerAnimator.fractionComplete = fraction

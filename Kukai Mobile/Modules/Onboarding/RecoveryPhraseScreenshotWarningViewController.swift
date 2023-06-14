@@ -34,5 +34,6 @@ class RecoveryPhraseScreenshotWarningViewController: UIViewController {
 	}
 	
 	@IBAction func learnMoreTapped(_ sender: Any) {
+		self.alert(withTitle: "Learn More", andMessage: "Info text")
 	}
 }

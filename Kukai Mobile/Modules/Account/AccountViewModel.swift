@@ -27,6 +27,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var isVisible = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
+	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
 	
 	
 	// MARK: - Init
@@ -55,7 +56,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
 			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
@@ -103,12 +104,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.balanceLabel.text = "--- tez"
 					cell.balanceLabel.textColor = .colorNamed("Txt14")
 					cell.valueLabel.text = ""
+					cell.delegate = self?.estimatedTotalCellDelegate
 					return cell
 					
 				} else {
 					cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " tez"
 					cell.balanceLabel.textColor = .colorNamed("Txt2")
 					cell.valueLabel.text = total.value
+					cell.delegate = self?.estimatedTotalCellDelegate
 					return cell
 				}
 				

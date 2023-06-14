@@ -284,7 +284,15 @@ public class BalanceService {
 					return
 				}
 				
-				self?.balanceRequestDispathGroup.leave()
+				// Perform lookups on all unique destinations
+				let allDestinations = DependencyManager.shared.activityService.transactionGroups.compactMap({ $0.transactions.first?.target?.address })
+				let uniqueDestinations = Array(Set(allDestinations))
+				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
+				
+				LookupService.shared.resolveAddresses(unresolvedDestinations) {
+					DependencyManager.shared.activityService.loadCache(address: address)
+					self?.balanceRequestDispathGroup.leave()
+				}
 			})
 			
 			loadCachedExchangeDataIfNotLoaded()
@@ -324,6 +332,7 @@ public class BalanceService {
 				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
+					DependencyManager.shared.activityService.loadCache(address: address)
 					self?.balanceRequestDispathGroup.leave()
 				}
 			})

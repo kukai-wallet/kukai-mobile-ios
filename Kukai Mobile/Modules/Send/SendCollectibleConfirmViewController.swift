@@ -204,6 +204,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func didCompleteSlide() {
+		self.showLoadingModal(invisible: true)
+		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.alert(errorWithMessage: "Unable to find wallet")
 			self.slideButton.resetSlider()
@@ -213,7 +215,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
-			self?.hideLoadingModal(completion: { [weak self] in
+			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
 						os_log("Sent: %@", log: .default, type: .default,  opHash)
