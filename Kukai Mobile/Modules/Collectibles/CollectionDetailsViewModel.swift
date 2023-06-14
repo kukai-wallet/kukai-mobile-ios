@@ -22,10 +22,35 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	typealias CellDataType = AnyHashable
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	
+	public var isVisible = false
 	public var selectedToken: Token? = nil
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+			.dropFirst()
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
+					self?.refresh(animate: true)
+				}
+			}
+	}
+	
+	deinit {
+		accountDataRefreshedCancellable?.cancel()
+	}
+	
+	
 	
 	// MARK: - CollectionView Setup
 	
@@ -74,6 +99,13 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 			return
 		}
 		
+		var tokenToView = selectedToken
+		if let updatedSelectedToken = DependencyManager.shared.balanceService.account.nfts.first(where: { $0.tokenContractAddress == selectedToken?.tokenContractAddress }) {
+			tokenToView = updatedSelectedToken
+		} else {
+			tokenToView?.nfts = []
+		}
+		
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
@@ -81,17 +113,17 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		
 		
 		// Build snapshot data
-		let title = (selectedToken?.name ?? selectedToken?.tokenContractAddress?.truncateTezosAddress()) ?? ""
+		let title = (tokenToView?.name ?? tokenToView?.tokenContractAddress?.truncateTezosAddress()) ?? ""
 		
-		if let creator = DependencyManager.shared.objktClient.collections[selectedToken?.tokenContractAddress ?? ""]?.creator?.alias {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: creator) ], toSection: 0)
+		if let creator = DependencyManager.shared.objktClient.collections[tokenToView?.tokenContractAddress ?? ""]?.creator?.alias {
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: tokenToView?.thumbnailURL, title: title, creator: creator) ], toSection: 0)
 			
 		} else {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: selectedToken?.thumbnailURL, title: title, creator: nil) ], toSection: 0)
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: tokenToView?.thumbnailURL, title: title, creator: nil) ], toSection: 0)
 		}
 		
-		normalSnapshot.appendItems(selectedToken?.nfts ?? [], toSection: 1)
-		ds.apply(normalSnapshot)
+		normalSnapshot.appendItems(tokenToView?.nfts ?? [], toSection: 1)
+		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		
 		// Return success

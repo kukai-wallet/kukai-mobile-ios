@@ -164,7 +164,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// If needs shimmers
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.contains(selectedAddress) || DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) {
+		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
 			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			data.append(contentsOf: [[LoadingContainerCellObject()]])
 			data.append(contentsOf: [[LoadingContainerCellObject()]])

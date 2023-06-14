@@ -72,7 +72,13 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		viewModel.isVisible = true
 		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {

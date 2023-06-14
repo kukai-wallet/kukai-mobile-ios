@@ -188,6 +188,11 @@ public class BalanceService {
 		}
 	}
 	
+	public func hasNotBeenFetched(forAddress address: String) -> Bool {
+		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
+		return lastFullRefreshDates[addressCacheKey] == nil
+	}
+	
 	public func isCacheStale(forAddress address: String) -> Bool {
 		let addressCacheKey = BalanceService.addressCacheKey(forAddress: address)
 		if let date = lastFullRefreshDates[addressCacheKey] {
