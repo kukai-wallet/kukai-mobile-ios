@@ -28,6 +28,8 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	public var selectedType: AddressType = .tezosAddress
 	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
 	
+	private var temporarySupportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail]
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -84,7 +86,8 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	// MARK: - TableView
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return AddressType.allCases.count
+		//return AddressType.allCases.count
+		return temporarySupportedAddressTypes.count
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -96,7 +99,8 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 			return UITableViewCell()
 		}
 		
-		let addressType = AddressType.allCases[indexPath.section]
+		//let addressType = AddressType.allCases[indexPath.section]
+		let addressType = temporarySupportedAddressTypes[indexPath.section]
 		cell.titleLabel?.text = addressType.rawValue
 		cell.iconView.image = AddressTypeViewController.imageFor(addressType: addressType)
 		
