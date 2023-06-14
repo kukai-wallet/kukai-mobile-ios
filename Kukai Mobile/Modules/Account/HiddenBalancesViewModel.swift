@@ -85,6 +85,10 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		return tokensToDisplay[atIndexPath.row]
+		if let token = dataSource?.itemIdentifier(for: atIndexPath) as? Token {
+			return token
+		}
+		
+		return nil
 	}
 }
