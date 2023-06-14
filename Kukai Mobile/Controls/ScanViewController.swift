@@ -296,7 +296,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		super.viewWillDisappear(animated)
 		
 		if (captureSession?.isRunning == true) {
-			captureSession.stopRunning()
+			DispatchQueue.global(qos: .background).async { [weak self] in
+				self?.captureSession.stopRunning()
+			}
 		}
 	}
 	

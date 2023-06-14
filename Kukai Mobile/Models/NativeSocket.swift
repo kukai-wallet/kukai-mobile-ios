@@ -53,6 +53,8 @@ public class NativeSocket: NSObject, WebSocketConnecting, URLSessionWebSocketDel
 				self.socket?.delegate = self
 				self.isConnected = false
 				self.initURL = url
+				
+				self.connect()
 			}
 		}
 	}

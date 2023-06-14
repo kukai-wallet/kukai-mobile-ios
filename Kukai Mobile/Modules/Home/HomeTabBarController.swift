@@ -368,20 +368,22 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func processingIncomingOperations() {
-		self.showLoadingModal()
+		self.showLoadingView()
 	}
 	
 	public func processedOperations(ofType: WalletConnectOperationType) {
-		self.hideLoadingModal { [weak self] in
+		self.hideLoadingView()
+		
+		if self.presentedViewController == nil {
 			switch ofType {
 				case .sendToken:
-					self?.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
+					self.performSegue(withIdentifier: "wallet-connect-send-token", sender: nil)
 					
 				case .sendNft:
-					self?.performSegue(withIdentifier: "wallet-connect-send-nft", sender: nil)
+					self.performSegue(withIdentifier: "wallet-connect-send-nft", sender: nil)
 					
 				case .contractCall:
-					self?.performSegue(withIdentifier: "wallet-connect-contract", sender: nil)
+					self.performSegue(withIdentifier: "wallet-connect-contract", sender: nil)
 			}
 		}
 	}
