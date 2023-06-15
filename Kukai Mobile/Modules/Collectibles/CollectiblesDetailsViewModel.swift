@@ -177,7 +177,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		var section1Content: [CellDataType] = []
 		
 		let objktCollectionData = DependencyManager.shared.objktClient.collections[nft.parentContract]
-		let nameIcon = MediaProxyService.url(fromUri: URL(string: objktCollectionData?.logo ?? ""), ofFormat: .icon)
+		let tokenObj = DependencyManager.shared.balanceService.account.nfts.first(where: { $0.tokenContractAddress == nft.parentContract })
+		let nameIcon = MediaProxyService.url(fromUri: tokenObj?.thumbnailURL, ofFormat: .icon)
 		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: objktCollectionData?.name ?? objktCollectionData?.contract.truncateTezosAddress(), collectionLink: nil, showcaseCount: 2)
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
