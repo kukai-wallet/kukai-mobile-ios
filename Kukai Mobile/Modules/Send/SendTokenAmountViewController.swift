@@ -105,10 +105,9 @@ class SendTokenAmountViewController: UIViewController {
 			return
 		}
 		
-		if let token = TransactionService.shared.sendData.chosenToken, let textDecimal = Decimal(string: textfield.text ?? "") {
+		if let token = TransactionService.shared.sendData.chosenToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
 			self.showLoadingModal()
 			
-			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces)
 			let operations = OperationFactory.sendOperation(amount, of: token, from: selectedWalletMetadata.address, to: destination)
 			TransactionService.shared.sendData.chosenAmount = amount
 			
