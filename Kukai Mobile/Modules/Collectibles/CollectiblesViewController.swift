@@ -25,6 +25,7 @@ class CollectiblesViewController: UIViewController {
 	private var pageController: OnboardingPageViewController? = nil
 	private var bag = [AnyCancellable]()
 	private var gradient = CAGradientLayer()
+	private var isVisible = false
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,18 @@ class CollectiblesViewController: UIViewController {
 		
 		segmentedControl.removeBorder()
 		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 14), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 14), defaultColor: UIColor.colorNamed("Txt2"))
+		
+		
+		
+		DependencyManager.shared.$addressRefreshed
+			.dropFirst()
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.isVisible == true && selectedAddress == address {
+					self?.displayGhostnet()
+				}
+			}.store(in: &bag)
+		
 		
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
@@ -45,16 +58,26 @@ class CollectiblesViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		self.isVisible = true
 		
+		displayGhostnet()
+		
+		let isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+		self.segmentedControl.setTitle(isGroupMode ? "Collections" : "All", forSegmentAt: 0)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		self.isVisible = false
+	}
+	
+	private func displayGhostnet() {
 		if DependencyManager.shared.currentNetworkType != .testnet {
 			ghostnetStackview.isHidden = true
 			
 		} else {
 			ghostnetStackview.isHidden = false
 		}
-		
-		let isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
-		self.segmentedControl.setTitle(isGroupMode ? "Collections" : "All", forSegmentAt: 0)
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
