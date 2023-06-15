@@ -48,10 +48,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BrandImage" translatesAutoresizingMaskIntoConstraints="NO" id="97z-j1-zQU">
-                                <rect key="frame" x="67.5" y="205" width="240" height="262"/>
+                                <rect key="frame" x="53.5" y="197" width="268" height="293"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="262" id="gY2-Rp-3CQ"/>
-                                    <constraint firstAttribute="width" constant="240" id="oNF-rh-uUc"/>
+                                    <constraint firstAttribute="height" constant="293" id="gY2-Rp-3CQ"/>
+                                    <constraint firstAttribute="width" constant="268" id="oNF-rh-uUc"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="cKA-wQ-ndA">
@@ -128,7 +128,7 @@ for your Digital Assets</string>
                             <constraint firstItem="em4-VY-ISj" firstAttribute="leading" secondItem="o5u-Ld-4hk" secondAttribute="leading" constant="16" id="A3n-7U-OJs"/>
                             <constraint firstItem="o5u-Ld-4hk" firstAttribute="trailing" secondItem="em4-VY-ISj" secondAttribute="trailing" constant="16" id="GDh-6L-RvY"/>
                             <constraint firstItem="XYC-YP-h5d" firstAttribute="leading" secondItem="fpw-5A-t7A" secondAttribute="leading" id="KwN-uQ-By4"/>
-                            <constraint firstItem="97z-j1-zQU" firstAttribute="top" secondItem="em4-VY-ISj" secondAttribute="bottom" constant="42" id="MWx-rz-9pm"/>
+                            <constraint firstItem="97z-j1-zQU" firstAttribute="top" secondItem="em4-VY-ISj" secondAttribute="bottom" constant="34" id="MWx-rz-9pm"/>
                             <constraint firstItem="cKA-wQ-ndA" firstAttribute="top" secondItem="o5u-Ld-4hk" secondAttribute="top" id="PHI-ON-iZW"/>
                             <constraint firstItem="o5u-Ld-4hk" firstAttribute="trailing" secondItem="fpw-5A-t7A" secondAttribute="trailing" constant="56" id="RL6-lP-UcK"/>
                             <constraint firstItem="XYC-YP-h5d" firstAttribute="trailing" secondItem="fpw-5A-t7A" secondAttribute="trailing" id="aTT-iJ-9xS"/>
@@ -174,7 +174,7 @@ for your Digital Assets</string>
                                         <color key="tintColor" name="TxtBtnPrim1"/>
                                         <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Send" image="ArrowUp-right"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Social Wallet">
+                                        <buttonConfiguration key="configuration" style="plain" title="Use Social">
                                             <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
@@ -187,21 +187,21 @@ for your Digital Assets</string>
                                             <segue destination="3EC-3V-hGn" kind="show" id="v51-jF-ffS"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40t-0K-fyh">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Easiest way to get started, sign in with your preferred social account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="40t-0K-fyh">
                                         <rect key="frame" x="24" y="275" width="327" height="34"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt8"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="UseKey_KukaBase" translatesAutoresizingMaskIntoConstraints="NO" id="kz3-TL-M8X">
-                                        <rect key="frame" x="67.5" y="383" width="240" height="169"/>
+                                        <rect key="frame" x="67.5" y="349" width="240" height="169"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="169" id="kwR-c8-ZyG"/>
                                             <constraint firstAttribute="width" constant="240" id="xl5-ok-sIn"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="y7X-1i-Vte" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="95" y="576" width="185" height="56"/>
+                                        <rect key="frame" x="95" y="542" width="185" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="Q0O-u9-vdF"/>
                                         </constraints>
@@ -222,62 +222,18 @@ for your Digital Assets</string>
                                             <action selector="hdWalletTapped:" destination="lT5-9C-9oi" eventType="touchUpInside" id="ViP-0u-vVr"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4M-lS-U4B">
-                                        <rect key="frame" x="24" y="648" width="327" height="34"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a standard wallet with a recovery phrase and multi account support" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W4M-lS-U4B">
+                                        <rect key="frame" x="24" y="614" width="327" height="34"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt8"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qtx-l7-yNL" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="129.5" y="690" width="116.5" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="34" id="tZa-DY-JRi"/>
-                                        </constraints>
-                                        <color key="tintColor" name="TxtB6"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Learn More"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ChevronRight"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                                <real key="value" value="6"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
-                                                <color key="value" name="TxtB6"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                                <real key="value" value="11"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfV-fK-RWc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="129.5" y="317" width="116.5" height="34"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="34" id="2hY-sh-LTj"/>
-                                        </constraints>
-                                        <color key="tintColor" name="TxtB6"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Learn More"/>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ChevronRight"/>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                                <real key="value" value="6"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
-                                                <color key="value" name="TxtB6"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                                <real key="value" value="11"/>
-                                            </userDefinedRuntimeAttribute>
-                                        </userDefinedRuntimeAttributes>
-                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="kz3-TL-M8X" firstAttribute="centerX" secondItem="n5P-c3-kPv" secondAttribute="centerX" id="0bd-wi-Qj4"/>
-                                    <constraint firstItem="qtx-l7-yNL" firstAttribute="top" secondItem="W4M-lS-U4B" secondAttribute="bottom" constant="8" id="2hr-Eu-ds6"/>
                                     <constraint firstItem="Twj-9G-pYr" firstAttribute="trailing" secondItem="W4M-lS-U4B" secondAttribute="trailing" constant="24" id="6mg-61-X3g"/>
-                                    <constraint firstItem="hfV-fK-RWc" firstAttribute="centerX" secondItem="n5P-c3-kPv" secondAttribute="centerX" id="80j-Wy-amq"/>
                                     <constraint firstItem="UlV-Fl-sF1" firstAttribute="top" secondItem="hDy-VV-EUb" secondAttribute="bottom" constant="24" id="BLV-Ie-28z"/>
-                                    <constraint firstItem="Twj-9G-pYr" firstAttribute="bottom" secondItem="qtx-l7-yNL" secondAttribute="bottom" constant="24" id="EpT-6x-rAX"/>
+                                    <constraint firstItem="Twj-9G-pYr" firstAttribute="bottom" secondItem="W4M-lS-U4B" secondAttribute="bottom" constant="24" id="FmA-bX-dkE"/>
                                     <constraint firstItem="UlV-Fl-sF1" firstAttribute="leading" secondItem="Twj-9G-pYr" secondAttribute="leading" constant="95" id="GUB-5e-eif"/>
                                     <constraint firstItem="UlV-Fl-sF1" firstAttribute="leading" secondItem="gyi-lZ-XNU" secondAttribute="leading" constant="95" id="K23-j1-qbo"/>
                                     <constraint firstItem="y7X-1i-Vte" firstAttribute="top" secondItem="kz3-TL-M8X" secondAttribute="bottom" constant="24" id="Kag-8W-ZEI"/>
@@ -289,12 +245,10 @@ for your Digital Assets</string>
                                     <constraint firstItem="W4M-lS-U4B" firstAttribute="top" secondItem="y7X-1i-Vte" secondAttribute="bottom" constant="16" id="U5T-Uh-Bz0"/>
                                     <constraint firstItem="gyi-lZ-XNU" firstAttribute="trailing" secondItem="UlV-Fl-sF1" secondAttribute="trailing" constant="95" id="XAX-L6-doF"/>
                                     <constraint firstItem="40t-0K-fyh" firstAttribute="top" secondItem="UlV-Fl-sF1" secondAttribute="bottom" constant="16" id="aSK-Ve-ase"/>
+                                    <constraint firstItem="kz3-TL-M8X" firstAttribute="top" secondItem="40t-0K-fyh" secondAttribute="bottom" constant="40" id="mKx-A4-bWh"/>
                                     <constraint firstItem="W4M-lS-U4B" firstAttribute="leading" secondItem="Twj-9G-pYr" secondAttribute="leading" constant="24" id="o2y-nF-Jad"/>
                                     <constraint firstItem="hDy-VV-EUb" firstAttribute="top" secondItem="Twj-9G-pYr" secondAttribute="top" constant="10" id="odM-gn-pwR"/>
-                                    <constraint firstItem="kz3-TL-M8X" firstAttribute="top" secondItem="hfV-fK-RWc" secondAttribute="bottom" constant="32" id="sMk-CM-338"/>
                                     <constraint firstItem="hDy-VV-EUb" firstAttribute="centerX" secondItem="n5P-c3-kPv" secondAttribute="centerX" id="t0m-2D-jaG"/>
-                                    <constraint firstItem="qtx-l7-yNL" firstAttribute="centerX" secondItem="n5P-c3-kPv" secondAttribute="centerX" id="v99-94-AiD"/>
-                                    <constraint firstItem="hfV-fK-RWc" firstAttribute="top" secondItem="40t-0K-fyh" secondAttribute="bottom" constant="8" id="w2l-jD-8cR"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="Twj-9G-pYr"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="gyi-lZ-XNU"/>
@@ -311,9 +265,7 @@ for your Digital Assets</string>
                     </view>
                     <navigationItem key="navigationItem" title="Create Wallet" id="4eZ-dV-F86"/>
                     <connections>
-                        <outlet property="hdLearnMoreButton" destination="qtx-l7-yNL" id="igF-br-Dty"/>
                         <outlet property="hdWalletButton" destination="y7X-1i-Vte" id="h4u-6f-gJ2"/>
-                        <outlet property="socialLearnMoreButton" destination="hfV-fK-RWc" id="tfa-ZN-5XC"/>
                         <outlet property="socialWalletButton" destination="UlV-Fl-sF1" id="HUE-VM-7JC"/>
                         <segue destination="qyy-a1-UF5" kind="show" identifier="hdWallet" id="POR-LJ-u0z"/>
                     </connections>
@@ -1048,7 +1000,7 @@ for your Digital Assets</string>
             </objects>
             <point key="canvasLocation" x="-7490" y="-1641"/>
         </scene>
-        <!--Create with Social-->
+        <!--Use Social-->
         <scene sceneID="cIQ-Pr-EuE">
             <objects>
                 <viewController id="3EC-3V-hGn" customClass="CreateWithSocialViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
@@ -1062,7 +1014,7 @@ for your Digital Assets</string>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hoU-aE-01p">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="463"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlV-fF-pfc">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Access your Kukai wallet using your preferred social account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlV-fF-pfc">
                                                 <rect key="frame" x="57" y="0.0" width="261" height="29"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                 <color key="textColor" name="Txt8"/>
@@ -1088,6 +1040,9 @@ for your Digital Assets</string>
                                                         <real key="value" value="11"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="learnMoreTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="xXE-cx-E98"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5t4-7b-ZSi" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                 <rect key="frame" x="57" y="103" width="261" height="56"/>
@@ -1611,7 +1566,7 @@ for your Digital Assets</string>
                             <constraint firstItem="9yM-Wm-jUE" firstAttribute="leading" secondItem="tD5-io-Ek5" secondAttribute="leading" id="dAy-eS-Qeb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Create with Social" id="Z5V-FP-DQR"/>
+                    <navigationItem key="navigationItem" title="Use Social" id="Z5V-FP-DQR"/>
                     <connections>
                         <outlet property="appleButton" destination="5t4-7b-ZSi" id="W4T-Uu-p3k"/>
                         <outlet property="continueWIthEmailButton" destination="bRr-0r-cKe" id="vd1-Y4-rim"/>
@@ -1662,7 +1617,7 @@ for your Digital Assets</string>
                                         <color key="textColor" name="Txt2"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwi-i3-AuU">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" " textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nwi-i3-AuU">
                                         <rect key="frame" x="16" y="137" width="343" height="22"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                         <color key="textColor" name="Txt8"/>
@@ -2148,7 +2103,7 @@ for your Digital Assets</string>
                                         <color key="tintColor" name="TxtBtnPrim1"/>
                                         <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Send" image="ArrowUp-right"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Social Wallet">
+                                        <buttonConfiguration key="configuration" style="plain" title="Use Social">
                                             <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
@@ -2161,7 +2116,7 @@ for your Digital Assets</string>
                                             <segue destination="3EC-3V-hGn" kind="show" id="lKc-o7-U0k"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpv-S6-eiy">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Easiest way to get started, sign in with your preferred social account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qpv-S6-eiy">
                                         <rect key="frame" x="24" y="275" width="327" height="34"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt8"/>
@@ -2196,7 +2151,7 @@ for your Digital Assets</string>
                                             <segue destination="eqC-Rn-fYp" kind="show" id="CMJ-gv-lfT"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lorem ipsum dolor sit amet, consectetuer adipiscing elit" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glh-ec-2Fe">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create a standard wallet with a recovery phrase and multi account support" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="glh-ec-2Fe">
                                         <rect key="frame" x="24" y="614" width="327" height="34"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt8"/>
@@ -2539,6 +2494,9 @@ for your Digital Assets</string>
                                         <real key="value" value="22"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="infoButtonTapped:" destination="eqC-Rn-fYp" eventType="touchUpInside" id="7sw-73-nTS"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
@@ -3467,7 +3425,7 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="150.5" height="38"/>
         </designable>
         <designable name="UlV-Fl-sF1">
-            <size key="intrinsicContentSize" width="143" height="38"/>
+            <size key="intrinsicContentSize" width="119" height="38"/>
         </designable>
         <designable name="W7A-VI-SBu">
             <size key="intrinsicContentSize" width="53.5" height="38"/>
@@ -3482,7 +3440,7 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="154" height="31"/>
         </designable>
         <designable name="Ymw-EH-abR">
-            <size key="intrinsicContentSize" width="143" height="38"/>
+            <size key="intrinsicContentSize" width="119" height="38"/>
         </designable>
         <designable name="ZcX-hG-7A3">
             <size key="intrinsicContentSize" width="44" height="34"/>
@@ -3508,9 +3466,6 @@ Please store it carefully!</string>
         <designable name="hXk-sA-ymi">
             <size key="intrinsicContentSize" width="40" height="30"/>
         </designable>
-        <designable name="hfV-fK-RWc">
-            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
-        </designable>
         <designable name="kBV-Wl-oY1">
             <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
@@ -3522,9 +3477,6 @@ Please store it carefully!</string>
         </designable>
         <designable name="qIG-P5-Mvs">
             <size key="intrinsicContentSize" width="44" height="34"/>
-        </designable>
-        <designable name="qtx-l7-yNL">
-            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
         <designable name="r2f-ZX-fLU">
             <size key="intrinsicContentSize" width="44" height="34"/>
@@ -3552,8 +3504,8 @@ Please store it carefully!</string>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="hb3-4s-783"/>
-        <segue reference="lKc-o7-U0k"/>
+        <segue reference="Ura-gb-YOV"/>
+        <segue reference="v51-jF-ffS"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertCautionColored" width="20" height="18"/>
