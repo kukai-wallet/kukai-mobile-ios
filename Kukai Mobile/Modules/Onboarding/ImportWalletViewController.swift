@@ -102,6 +102,10 @@ class ImportWalletViewController: UIViewController {
 		}
 	}
 	
+	@IBAction func infoButtonTapped(_ sender: Any) {
+		self.alert(withTitle: "Info", andMessage: "Info text")
+	}
+	
 	private func validateTextView() {
 		let textViewValidation = doesTextViewPassValidation()
 		

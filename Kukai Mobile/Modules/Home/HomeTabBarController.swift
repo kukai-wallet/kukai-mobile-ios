@@ -89,6 +89,11 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 			}.store(in: &bag)
 		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.refreshType = .refreshEverything
+			self?.refresh(addresses: nil)
+		}.store(in: &bag)
+		
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
 			.sink { [weak self] _ in

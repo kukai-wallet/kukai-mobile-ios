@@ -93,6 +93,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	var chartController = ChartHostingController()
 	var chartData = AllChartData(day: [], week: [], month: [], year: [])
+	var chartDataUnsucessful = false
 	var buttonData: TokenDetailsButtonData? = nil
 	var balanceAndBakerData: TokenDetailsBalanceAndBakerData? = nil
 	var sendData = TokenDetailsSendData(isBuyTez: false)
@@ -127,7 +128,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
 			
-			if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				cell.setup()
 				return cell
 				
@@ -251,8 +252,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					self.state = .success(nil)
 					
-				case .failure(let error):
-					self.state = .failure(error, "Unable to get chart data")
+				case .failure(_):
+					self.currentSnapshot.deleteItems([self.chartData])
+					self.chartDataUnsucessful = true
+					self.chartData = AllChartData(day: [], week: [], month: [], year: [])
+					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
+					
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					self.state = .success(nil)
 			}
 		}
 		

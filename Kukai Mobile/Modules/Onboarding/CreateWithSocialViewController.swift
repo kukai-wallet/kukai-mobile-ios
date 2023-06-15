@@ -74,6 +74,9 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	
+	@IBAction func learnMoreTapped(_ sender: Any) {
+		self.alert(withTitle: "Learn More", andMessage: "Info Text")
+	}
 	
 	@IBAction func appleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {

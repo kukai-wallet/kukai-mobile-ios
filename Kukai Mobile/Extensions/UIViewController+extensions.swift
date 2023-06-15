@@ -50,6 +50,7 @@ extension UIViewController {
 	
 	func showLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.startAnimating()
+		UIViewController.activityView.frame = UIScreen.main.bounds
 		UIApplication.shared.currentWindow?.addSubview(UIViewController.activityView)
 	}
 	
