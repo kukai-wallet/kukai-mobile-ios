@@ -398,6 +398,7 @@ public class BalanceService {
 				}
 				
 				// Make modifications, group, create sum totals on background
+				self.setDexRates()
 				self.updateEstimatedTotal()
 				self.updateTokenStates(forAddress: address)
 				self.orderGroupAndAliasNFTs {
@@ -524,14 +525,21 @@ public class BalanceService {
 		return newTokens
 	}
 	
+	// TODO: could likely improve this area
+	private func setDexRates() {
+		for token in self.currentlyRefreshingAccount.tokens {
+			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
+			self.tokenValueAndRate[token.id] = dexRate
+		}
+	}
+	
 	private func updateEstimatedTotal() {
 		var estimatedTotal: XTZAmount = .zero()
 		
 		for token in self.currentlyRefreshingAccount.tokens {
-			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
-			estimatedTotal += dexRate.xtzValue
-			
-			self.tokenValueAndRate[token.id] = dexRate
+			if let dexRate = self.tokenValueAndRate[token.id]?.xtzValue {
+				estimatedTotal += dexRate
+			}
 		}
 		
 		self.estimatedTotalXtz = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
