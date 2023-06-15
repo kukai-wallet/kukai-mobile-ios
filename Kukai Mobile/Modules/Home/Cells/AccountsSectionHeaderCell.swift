@@ -29,7 +29,7 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	override func setEditing(_ editing: Bool, animated: Bool) {
 		super.setEditing(editing, animated: animated)
 		
-		menuButton.isHidden = editing
+		menuButton.isHidden = (menu == nil || editing)
 	}
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
