@@ -189,9 +189,9 @@ public class ThemeManager {
 				"BGBtn_SliderFill": UIColor("#6D75F4", alpha: 0.45),
 				
 				// Gradient
-				"gradBgFull-1": UIColor("#F2F3FC"),
-				"gradBgFull-2": UIColor("#F2F3FC"),
-				"gradBgFull-3": UIColor("#F2F3FC"),
+				"gradBgFull-1": UIColor("#FFFFFF"),
+				"gradBgFull-2": UIColor("#F5F6FF"),
+				"gradBgFull-3": UIColor("#E9EAF2"),
 				"gradModal-1": UIColor("#FFFFFF"),
 				"gradModal-2": UIColor("#EEEFF7"),
 				"gradModal-3": UIColor("#E4E5ED"),
