@@ -13,17 +13,18 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = DiscoverViewModel()
-	private var cancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
+	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		gradient = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
+		viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
 					self?.showLoadingView(completion: nil)
@@ -35,7 +36,16 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 				case .success:
 					self?.hideLoadingView(completion: nil)
 			}
-		}
+		}.store(in: &bag)
+		
+		ThemeManager.shared.$themeDidChange
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.gradient.removeFromSuperlayer()
+				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
+				self?.tableView.reloadData()
+				
+			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

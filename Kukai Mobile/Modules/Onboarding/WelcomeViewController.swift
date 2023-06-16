@@ -17,6 +17,7 @@ class WelcomeViewController: UIViewController {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		newWalletButton.customButtonType = .primary
+		existingWalletButton.customButtonType = .secondary
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

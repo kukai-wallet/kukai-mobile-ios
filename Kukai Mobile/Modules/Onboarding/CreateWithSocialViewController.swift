@@ -53,6 +53,16 @@ class CreateWithSocialViewController: UIViewController {
 		googleButton.configuration?.imagePadding = 8
 		continueWIthEmailButton.customButtonType = .secondary
 		
+		facebookButton.customButtonType = .secondary
+		twitterButton.customButtonType = .secondary
+		redditButton.customButtonType = .secondary
+		
+		discordButton.customButtonType = .secondary
+		twitchButton.customButtonType = .secondary
+		lineButton.customButtonType = .secondary
+		
+		githubButton.customButtonType = .secondary
+		
 		learnMoreButton.configuration?.imagePlacement = .trailing
 		learnMoreButton.configuration?.imagePadding = 8
 		viewMoreOptionsButton.configuration?.imagePlacement = .trailing
