@@ -31,10 +31,16 @@ class EditFeesViewController: UIViewController {
 	
 	private var infoIndex = 0
 	private var selectedSegmentIndex = 0
+	private var isWalletConnectOp = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		
+		if let _ = TransactionService.shared.walletConnectOperationData.request?.topic {
+			isWalletConnectOp = true
+		}
 		
 		feeErrorLabel.isHidden = true
 		gasErrorLabel.isHidden = true
@@ -58,7 +64,12 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func refreshUI() {
-		selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
+		if isWalletConnectOp {
+			selectedSegmentIndex = TransactionService.shared.currentRemoteOperationsAndFeesData.type.rawValue
+		} else {
+			selectedSegmentIndex = TransactionService.shared.currentOperationsAndFeesData.type.rawValue
+		}
+		
 		if selectedSegmentIndex == 0 {
 			normalButtonTapped(normalButton)
 		} else if selectedSegmentIndex == 1 {
@@ -86,10 +97,18 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func updateFeeDisplay() {
-		gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
-		storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
-		feeTextField.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation
-		maxStorageCostLbl.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation
+		if isWalletConnectOp {
+			gasLimitTextField.text = TransactionService.shared.currentRemoteOperationsAndFeesData.gasLimit.description
+			storageLimitTextField.text = TransactionService.shared.currentRemoteOperationsAndFeesData.storageLimit.description
+			feeTextField.text = TransactionService.shared.currentRemoteOperationsAndFeesData.fee.normalisedRepresentation
+			maxStorageCostLbl.text = TransactionService.shared.currentRemoteOperationsAndFeesData.maxStorageCost.normalisedRepresentation
+			
+		} else {
+			gasLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.gasLimit.description
+			storageLimitTextField.text = TransactionService.shared.currentOperationsAndFeesData.storageLimit.description
+			feeTextField.text = TransactionService.shared.currentOperationsAndFeesData.fee.normalisedRepresentation
+			maxStorageCostLbl.text = TransactionService.shared.currentOperationsAndFeesData.maxStorageCost.normalisedRepresentation
+		}
 	}
 	
 	func recordFee() {
@@ -99,7 +118,12 @@ class EditFeesViewController: UIViewController {
 				let gasLimit = Int(gasLimitTextField.text ?? "0")
 				let storageLimit = Int(storageLimitTextField.text ?? "0")
 				
-				TransactionService.shared.currentOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+				if isWalletConnectOp {
+					TransactionService.shared.currentRemoteOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+				} else {
+					TransactionService.shared.currentOperationsAndFeesData.setCustomFeesTo(feesTo: xtzAmount, gasLimitTo: gasLimit, storageLimitTo: storageLimit)
+				}
+				
 				updateTransaction()
 			}
 		}
@@ -108,7 +132,11 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func updateTransaction() {
-		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		if isWalletConnectOp {
+			TransactionService.shared.currentRemoteOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		} else {
+			TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		}
 		
 		// Check if a previous bototm sheet is displaying a transaction, and update its fee
 		if let parentVC = self.presentingViewController as? EditFeesViewControllerDelegate {
@@ -142,7 +170,12 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	func segmentedButtonTapped() {
-		TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		if isWalletConnectOp {
+			TransactionService.shared.currentRemoteOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		} else {
+			TransactionService.shared.currentOperationsAndFeesData.type = TransactionService.FeeType(rawValue: selectedSegmentIndex) ?? .normal
+		}
+		
 		updateFeeDisplay()
 		recordFee()
 		
