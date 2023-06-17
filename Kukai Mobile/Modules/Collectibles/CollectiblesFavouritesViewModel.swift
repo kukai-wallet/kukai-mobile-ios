@@ -56,7 +56,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
 			if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
-				let url = MediaProxyService.displayURL(forNFT: obj)
+				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
