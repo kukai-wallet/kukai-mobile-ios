@@ -76,7 +76,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 				
 			} else if (self?.itemCount ?? 0) <= 1, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
-				let url = MediaProxyService.displayURL(forNFT: obj)
+				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				cell.titleLabel.text = obj.name
 				cell.subTitleLabel.text = obj.parentAlias ?? ""
@@ -89,7 +89,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 				
 			} else if self?.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
-				let url = MediaProxyService.displayURL(forNFT: obj)
+				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
@@ -113,7 +113,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					totalCount = nfts.count - 4
 				}
 				
-				let urls = visibleNfts.map({ MediaProxyService.thumbnailURL(forNFT: $0) })
+				let urls = visibleNfts.map({ MediaProxyService.thumbnailURL(forNFT: $0, keepGif: true) })
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
 				
