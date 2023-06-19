@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import KukaiCoreSwift
+import Kingfisher
 
 class CollectiblesCollectionsViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
@@ -84,6 +85,14 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		if let c = cell as? CollectiblesCollectionCell {
 			c.addGradientBackground()
 		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

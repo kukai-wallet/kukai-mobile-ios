@@ -7,9 +7,13 @@
 
 import UIKit
 
-class CollectiblesCollectionHeaderMediumCell: UICollectionViewCell {
+class CollectiblesCollectionHeaderMediumCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var creatorLabel: UILabel!
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [iconView]
+	}
 }

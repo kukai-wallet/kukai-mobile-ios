@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTotalCellDelegate {
 	
@@ -88,6 +89,14 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		if let c = cell as? UITableViewCellContainerView {
 			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
+	}
+	
+	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 	
 	func menuVCForBalancesMore() -> MenuViewController {

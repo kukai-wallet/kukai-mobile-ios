@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class CollectiblesRecentsViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
@@ -90,5 +91,13 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 			TransactionService.shared.sendData.chosenNFT = obj
 			delegate?.performSegue(withIdentifier: "detail", sender: obj)
 		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 }

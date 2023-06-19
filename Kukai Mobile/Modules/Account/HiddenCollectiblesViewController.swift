@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 	
@@ -54,5 +55,13 @@ class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 			TransactionService.shared.sendData.chosenNFT = nft
 			(self.parent as? HiddenTokensMainViewController)?.openCollectibleDetails()
 		}
+	}
+	
+	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 }

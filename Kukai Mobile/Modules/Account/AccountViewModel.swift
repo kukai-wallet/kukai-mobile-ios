@@ -9,6 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 import OSLog
+import Kingfisher
 
 struct TotalEstiamtedValue: Hashable {
 	let tez: XTZAmount
@@ -80,9 +81,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					symbol = " "
 				}
 				
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { _ in
+				cell.iconView.backgroundColor = .colorNamed("BG4")
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
 					cell.iconView.backgroundColor = .white
 				}
+				
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))

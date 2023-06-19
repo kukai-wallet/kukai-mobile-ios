@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell {
+class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
@@ -30,5 +30,9 @@ class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell {
 		} else {
 			mediaIconView.isHidden = true
 		}
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [iconView]
 	}
 }

@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 import Combine
+import Kingfisher
 
 class CollectionDetailsViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
 	
@@ -135,5 +136,13 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 			TransactionService.shared.sendData.chosenNFT = obj
 			self.performSegue(withIdentifier: "detail", sender: obj)
 		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 }

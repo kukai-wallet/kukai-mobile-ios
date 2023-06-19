@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class CollectiblesCollectionCell: UICollectionViewCell {
+class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var collectionIcon: UIImageView!
 	@IBOutlet weak var collectionName: UILabel!
@@ -139,5 +139,9 @@ class CollectiblesCollectionCell: UICollectionViewCell {
 		collectionImage4.backgroundColor = .clear
 		collectionImage5.image = nil
 		collectionImage5.backgroundColor = .clear
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [collectionImage1, collectionImage2, collectionImage3, collectionImage4, collectionImage5]
 	}
 }

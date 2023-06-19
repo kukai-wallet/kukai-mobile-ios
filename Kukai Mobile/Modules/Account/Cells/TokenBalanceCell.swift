@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
+class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
@@ -36,5 +36,9 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView {
 			priceChangeIcon.tintColor = UIColor.colorNamed("Txt10")
 			priceChangeLabel.textColor = UIColor.colorNamed("Txt10")
 		}
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [iconView]
 	}
 }
