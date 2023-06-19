@@ -38,3 +38,12 @@ extension UITableViewCell: UITableViewCellGradient {
 		}
 	}
 }
+
+
+
+
+
+
+protocol UITableViewCellImageDownloading {
+	func downloadingImageViews() -> [UIImageView]
+}

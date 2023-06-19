@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate {
 
@@ -62,5 +63,13 @@ class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate 
 			TransactionService.shared.sendData.chosenNFT = nil
 			(self.parent as? HiddenTokensMainViewController)?.openTokenDetails()
 		}
+	}
+	
+	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
+class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var favIconStackview: UIStackView!
@@ -72,5 +72,9 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView {
 				self?.layoutIfNeeded()
 			}
 		}
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [tokenIcon]
 	}
 }

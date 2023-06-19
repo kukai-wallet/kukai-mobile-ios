@@ -41,4 +41,8 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 			mediaIconView.isHidden = true
 		}
 	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [iconView]
+	}
 }

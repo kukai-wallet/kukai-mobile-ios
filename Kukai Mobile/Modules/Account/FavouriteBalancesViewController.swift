@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import Kingfisher
 
 class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
@@ -112,5 +113,13 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
 		return false
+	}
+	
+	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let cell = cell as? UITableViewCellImageDownloading else {
+			return
+		}
+		
+		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
 	}
 }

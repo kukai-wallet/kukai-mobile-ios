@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView {
+class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var hiddenIcon: UIImageView!
 	@IBOutlet weak var tokenIcon: UIImageView!
@@ -19,5 +19,9 @@ class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView {
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [tokenIcon]
 	}
 }
