@@ -117,7 +117,6 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				.dropFirst()
 				.sink { address in
 					if address == walletAddress {
-						DependencyManager.shared.balanceService.currencyChanged = true
 						self?.state = .success(CurrencyViewModel.didChangeCurrencyMessage)
 						self?.cancellable = nil
 					}

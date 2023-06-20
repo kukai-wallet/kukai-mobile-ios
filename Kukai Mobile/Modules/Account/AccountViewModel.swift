@@ -21,11 +21,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
+	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
@@ -36,20 +37,32 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
+		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
-			}
+			}.store(in: &bag)
 		
 		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
-		accountDataRefreshedCancellable?.cancel()
+		bag.forEach({ $0.cancel() })
 	}
 	
 	
@@ -163,7 +176,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			
 			// Else build arrays of acutal data
-			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
+			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
 			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 			
@@ -209,7 +222,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		ds.apply(snapshot, animatingDifferences: animate)
+		if forceRefresh {
+			ds.applySnapshotUsingReloadData(snapshot)
+			forceRefresh = false
+		} else {
+			ds.apply(snapshot, animatingDifferences: animate)
+		}
 		self.state = .success(nil)
 	}
 	

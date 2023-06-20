@@ -139,6 +139,7 @@ class DependencyManager {
 	// We create dummy published vars, where the actual value isn't relevant, we only care about triggering logic from these when a value is set
 	@Published var networkDidChange: Bool = false
 	@Published var walletDidChange: Bool = false
+	@Published var addressLoaded: String = ""
 	@Published var addressRefreshed: String = ""
 	
 	

@@ -16,11 +16,12 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	typealias CellDataType = AnyHashable
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	
 	public var isVisible = false
+	var forceRefresh = false
 	public var selectedToken: Token? = nil
 	public var externalImage: UIImage? = nil
 	public var externalName: String? = nil
@@ -32,18 +33,30 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
+		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
-			}
+			}.store(in: &bag)
 	}
 	
 	deinit {
-		accountDataRefreshedCancellable?.cancel()
+		bag.forEach({ $0.cancel() })
 	}
 	
 	
@@ -94,7 +107,12 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 		normalSnapshot.appendSections([0])
 		normalSnapshot.appendItems(favs, toSection: 0)
 		
-		ds.apply(normalSnapshot)
+		if forceRefresh {
+			ds.applySnapshotUsingReloadData(normalSnapshot)
+			forceRefresh = false
+		} else {
+			ds.apply(normalSnapshot, animatingDifferences: animate)
+		}
 		
 		// Return success
 		self.state = .success(nil)

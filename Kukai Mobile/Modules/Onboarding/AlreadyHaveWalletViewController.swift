@@ -82,7 +82,7 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 				self.alert(withTitle: "Under Construction", andMessage: "coming soon")
 				
 			case 3:
-				self.alert(withTitle: "Under Construction", andMessage: "coming soon")
+				self.performSegue(withIdentifier: "watch", sender: nil)
 				
 			default:
 				self.alert(withTitle: "Under Construction", andMessage: "coming soon")

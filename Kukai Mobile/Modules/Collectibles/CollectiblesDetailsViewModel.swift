@@ -195,7 +195,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				section1Content.append(CreatorContent(creatorName: creator))
 			}
 			
-			self.sendData = SendContent(enabled: true)
+			self.sendData = SendContent(enabled: !(DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false) )
 			section1Content.append(self.sendData)
 			self.descriptionData = DescriptionContent(description: self.nft?.description ?? "")
 			section1Content.append(self.descriptionData)

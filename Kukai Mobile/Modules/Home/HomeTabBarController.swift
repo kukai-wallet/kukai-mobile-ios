@@ -61,6 +61,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				let address = DependencyManager.shared.selectedWalletAddress ?? ""
 				DependencyManager.shared.balanceService.loadCache(address: address)
+				DependencyManager.shared.addressLoaded = address
 				
 				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
@@ -80,7 +81,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] address in
 				if address == DependencyManager.shared.selectedWalletAddress {
 					DependencyManager.shared.balanceService.loadCache(address: address)
-					DependencyManager.shared.balanceService.currencyChanged = false
 					
 					self?.stopActivityAnimationIfNecessary()
 					self?.updateAccountButton()
