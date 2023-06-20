@@ -60,7 +60,6 @@ class DebugViewController: UITableViewController {
 		
 		report += "\n\n\nBalances: \n"
 		report += "Has fetched initial data: \n" + "\(String(describing: DependencyManager.shared.balanceService.hasFetchedInitialData))" + " \n\n"
-		report += "Has currency changed: \n" + "\(DependencyManager.shared.balanceService.currencyChanged)" + " \n\n"
 		report += "Wallet address to fetch: \n" + "\(DependencyManager.shared.balanceService.account.walletAddress)" + " \n\n"
 		report += "XTZ Balance: \n" + "\(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation)" + " \n\n"
 		report += "Delegate address: \n" + "\(DependencyManager.shared.balanceService.account.delegate?.address ?? "-None-")" + " \n\n"
@@ -68,7 +67,6 @@ class DebugViewController: UITableViewController {
 		report += "Number of unique NFT groups: \n" + "\(DependencyManager.shared.balanceService.account.nfts.count)" + " \n\n"
 		report += "Number of Dex token pairs: \n" + "\(DependencyManager.shared.balanceService.exchangeData.count)" + " \n\n"
 		report += "Number of Dex exchange rate pairs cached: \n" + "\(DependencyManager.shared.balanceService.tokenValueAndRate.keys.count)" + " \n\n"
-		report += "Estimated total XTZ: \n" + "\(DependencyManager.shared.balanceService.estimatedTotalXtz.normalisedRepresentation)" + " \n\n"
 		
 		
 		self.alert(withTitle: "Report ready", andMessage: "Report ready, tap 'Ok' to copy report to clipboard, otherwise click cancel") { action in

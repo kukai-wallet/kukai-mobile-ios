@@ -40,17 +40,16 @@ public class BalanceService {
 	// MARK: - Current account state properties
 	
 	public var account = Account(walletAddress: "")
-	public var exchangeData: [DipDupExchangesAndTokens] = []
-	public var estimatedTotalXtz = XTZAmount.zero()
 	
 	
 	
 	// MARK: - Global state properties
 	
-	public var currencyChanged = false
 	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
+	public var exchangeData: [DipDupExchangesAndTokens] = []
 	public var lastExchangeDataRefreshDate: Date? = nil
 	public var lastFullRefreshDates: [String: Date] = [:]
+	public var estimatedTotalXtz: [String: XTZAmount] = [:]
 	
 	@Published public var addressesWaitingToBeRefreshed: [String] = []
 	@Published public var addressRefreshed: String = ""
@@ -58,6 +57,7 @@ public class BalanceService {
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	private static let cacheLastRefreshDates = "balance-service-refresh-dates"
+	private static let cacheEstimatedTotals = "balance-service-estimated-total"
 	
 	
 	
@@ -173,19 +173,22 @@ public class BalanceService {
 	}
 	
 	public func loadCache(address: String?) {
-		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)),
-		   let exchangeData = DiskService.read(type: [DipDupExchangesAndTokens].self, fromFileName: BalanceService.cacheFilenameExchangeData) {
+		loadCachedExchangeDataIfNotLoaded()
+		loadEstimatedTotalsIfNotLoaded()
+		
+		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)) {
 			
 			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
 			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
 			DependencyManager.shared.activityService.loadCache(address: address)
 			
-			self.currentlyRefreshingAccount = account
-			self.exchangeData = exchangeData
-			self.updateEstimatedTotal()
-			
-			self.account = self.currentlyRefreshingAccount
+			self.account = account
 		}
+	}
+	
+	public func estimatedTotalXtz(forAddress: String) -> XTZAmount {
+		let cacheKey = BalanceService.addressCacheKey(forAddress: forAddress)
+		return self.estimatedTotalXtz[cacheKey] ?? .zero()
 	}
 	
 	public func hasNotBeenFetched(forAddress address: String) -> Bool {
@@ -214,6 +217,12 @@ public class BalanceService {
 		}
 	}
 	
+	private func loadEstimatedTotalsIfNotLoaded() {
+		if self.estimatedTotalXtz.count == 0, let cachedData = DiskService.read(type: [String: XTZAmount].self, fromFileName: BalanceService.cacheEstimatedTotals) {
+			self.estimatedTotalXtz = cachedData
+		}
+	}
+	
 	func deleteAccountCachcedData(forAddress address: String) {
 		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
 		account = Account(walletAddress: "")
@@ -226,6 +235,7 @@ public class BalanceService {
 		let allAccounts = DiskService.allFileNamesWith(prefix: BalanceService.cacheFilenameAccount)
 		let _ = DiskService.delete(fileNames: allAccounts)
 		let _ = DiskService.delete(fileName: BalanceService.cacheFilenameExchangeData)
+		let _ = DiskService.delete(fileName: BalanceService.cacheEstimatedTotals)
 		let _ = DiskService.delete(fileName: BalanceService.cacheLastRefreshDates)
 		
 		lastFullRefreshDates = [:]
@@ -234,7 +244,7 @@ public class BalanceService {
 		exchangeData = []
 		
 		tokenValueAndRate = [:]
-		estimatedTotalXtz = XTZAmount.zero()
+		estimatedTotalXtz = [:]
 	}
 	
 	
@@ -260,6 +270,7 @@ public class BalanceService {
 			self.balanceRequestDispathGroup.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
+			loadEstimatedTotalsIfNotLoaded()
 			DependencyManager.shared.activityService.loadCache(address: address)
 			self.balanceRequestDispathGroup.leave()
 			
@@ -296,6 +307,7 @@ public class BalanceService {
 			})
 			
 			loadCachedExchangeDataIfNotLoaded()
+			loadEstimatedTotalsIfNotLoaded()
 			DependencyManager.shared.activityService.loadCache(address: address)
 			self.balanceRequestDispathGroup.leave()
 			
@@ -398,8 +410,7 @@ public class BalanceService {
 				}
 				
 				// Make modifications, group, create sum totals on background
-				self.setDexRates()
-				self.updateEstimatedTotal()
+				self.updateDexRatesAndEstimatedTotal()
 				self.updateTokenStates(forAddress: address)
 				self.orderGroupAndAliasNFTs {
 					
@@ -525,24 +536,19 @@ public class BalanceService {
 		return newTokens
 	}
 	
-	// TODO: could likely improve this area
-	private func setDexRates() {
-		for token in self.currentlyRefreshingAccount.tokens {
-			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
-			self.tokenValueAndRate[token.id] = dexRate
-		}
-	}
-	
-	private func updateEstimatedTotal() {
+	private func updateDexRatesAndEstimatedTotal() {
 		var estimatedTotal: XTZAmount = .zero()
 		
 		for token in self.currentlyRefreshingAccount.tokens {
-			if let dexRate = self.tokenValueAndRate[token.id]?.xtzValue {
-				estimatedTotal += dexRate
-			}
+			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
+			self.tokenValueAndRate[token.id] = dexRate
+			estimatedTotal += dexRate.xtzValue
 		}
 		
-		self.estimatedTotalXtz = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
+		let cacheKey = BalanceService.addressCacheKey(forAddress: self.currentlyRefreshingAccount.walletAddress)
+		self.estimatedTotalXtz[cacheKey] = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
+		
+		let _ = DiskService.write(encodable: self.estimatedTotalXtz, toFileName: BalanceService.cacheEstimatedTotals)
 	}
 	
 	func updateTokenStates(forAddress address: String, selectedAccount: Bool = false) {

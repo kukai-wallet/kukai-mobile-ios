@@ -163,7 +163,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			
 			// Else build arrays of acutal data
-			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz
+			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
 			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 			
