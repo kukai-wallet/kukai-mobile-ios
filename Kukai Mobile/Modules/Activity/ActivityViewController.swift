@@ -46,6 +46,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 			}
 		}.store(in: &bag)
 		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.refreshControl.endRefreshing()
+		}.store(in: &bag)
+		
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
