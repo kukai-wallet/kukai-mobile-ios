@@ -23,11 +23,12 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	private var previousLayout: LayoutType = .single
 	
 	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
 	var isVisible = false
+	var forceRefresh = false
 	var isSearching = false
 	var sortMenu: MenuViewController? = nil
 	var isGroupMode = false
@@ -43,18 +44,18 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
-			}
+			}.store(in: &bag)
 	}
 	
 	deinit {
-		accountDataRefreshedCancellable?.cancel()
+		bag.forEach({ $0.cancel() })
 	}
 	
 	

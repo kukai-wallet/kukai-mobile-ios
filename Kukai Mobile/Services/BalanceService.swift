@@ -410,9 +410,10 @@ public class BalanceService {
 				}
 				
 				// Make modifications, group, create sum totals on background
-				self.updateDexRatesAndEstimatedTotal()
+				// TODO: consider performance improvement here. Only need to run these things if something has changed
+				self.updateDexRatesAndEstimatedTotal() // TODO: if updated dex rates, exchange rates, or fiat price
 				self.updateTokenStates(forAddress: address)
-				self.orderGroupAndAliasNFTs {
+				self.orderGroupAndAliasNFTs { // TODO: only if we didn't load account cache, or explore items changed
 					
 					// If we haven't set Collections groupMode flag before, check it now that we have data to consider best option
 					if !StorageService.hasUserDefaultKeyBeenSet(key: StorageService.settingsKeys.collectiblesGroupModeEnabled) {

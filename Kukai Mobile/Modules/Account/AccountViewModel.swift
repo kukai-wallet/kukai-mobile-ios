@@ -21,11 +21,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
+	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
@@ -36,20 +37,20 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
-			}
+			}.store(in: &bag)
 		
 		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
-		accountDataRefreshedCancellable?.cancel()
+		bag.forEach({ $0.cancel() })
 	}
 	
 	
@@ -208,6 +209,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				snapshot.appendItems(data, toSection: 0)
 			}
 		}
+		
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		self.state = .success(nil)
