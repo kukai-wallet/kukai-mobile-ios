@@ -9,15 +9,11 @@ import UIKit
 
 class CollectibleDetailSendCell: UICollectionViewCell {
 
-	@IBOutlet weak var sendButton: UIButton!
-	
-	override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
+	@IBOutlet weak var sendButton: CustomisableButton!
 	
 	func setup(target: Any?, action: Selector) {
-		let _ = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
+		
+		sendButton.customButtonType = .primary
 		
 		if let image = sendButton.imageView {
 			sendButton.bringSubviewToFront(image)

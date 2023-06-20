@@ -142,6 +142,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
 		
+		
+		// Watch
+		if wallets.watchWallets.count > 0 {
+			sections.append(sections.count)
+			sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil)])
+		}
+		for (index, metadata) in wallets.watchWallets.enumerated() {
+			sectionData[sections.count-1].append(metadata)
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+		}
+		
+		
+		
 		// Add it all
 		snapshot.appendSections(sections)
 		for (index, data) in sectionData.enumerated() {

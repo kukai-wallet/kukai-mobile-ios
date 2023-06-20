@@ -44,6 +44,7 @@ struct TokenDetailsBalanceAndBakerData: Hashable {
 
 struct TokenDetailsSendData: Hashable {
 	var isBuyTez: Bool
+	var isDisabled: Bool
 }
 
 struct TokenDetailsActivityHeader: Hashable {
@@ -96,7 +97,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var chartDataUnsucessful = false
 	var buttonData: TokenDetailsButtonData? = nil
 	var balanceAndBakerData: TokenDetailsBalanceAndBakerData? = nil
-	var sendData = TokenDetailsSendData(isBuyTez: false)
+	var sendData = TokenDetailsSendData(isBuyTez: false, isDisabled: false)
 	var stakingRewardLoadingData = LoadingData()
 	var stakingRewardData: AggregateRewardInformation? = nil
 	var activityHeaderData = TokenDetailsActivityHeader(header: true)
@@ -199,6 +200,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		loadTokenData(token: token)
 		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
+		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		
 		var data: [AnyHashable] = [
 			chartData,

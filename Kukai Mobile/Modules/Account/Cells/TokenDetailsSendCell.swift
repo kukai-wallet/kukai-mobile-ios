@@ -9,11 +9,11 @@ import UIKit
 
 class TokenDetailsSendCell: UITableViewCell {
 	
-	@IBOutlet weak var sendButton: UIButton!
-	
-	private var gradient = CAGradientLayer()
+	@IBOutlet weak var sendButton: CustomisableButton!
 	
 	func setup(data: TokenDetailsSendData) {
+		
+		sendButton.customButtonType = .primary
 		
 		if data.isBuyTez {
 			var image = UIImage(named: "Plus")
@@ -30,12 +30,7 @@ class TokenDetailsSendCell: UITableViewCell {
 			sendButton.configuration?.imagePadding = 8
 			sendButton.configuration?.imagePlacement = .trailing
 		}
-	}
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
 		
-		gradient.removeFromSuperlayer()
-		gradient = sendButton.addGradientButtonPrimary(withFrame: sendButton.bounds)
+		sendButton.isEnabled = !data.isDisabled
 	}
 }
