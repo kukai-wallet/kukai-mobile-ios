@@ -33,6 +33,18 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	override init() {
 		super.init()
 		
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
 		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
@@ -86,7 +98,12 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		normalSnapshot.appendSections([0])
 		normalSnapshot.appendItems(DependencyManager.shared.balanceService.account.recentNFTs, toSection: 0)
 		
-		ds.apply(normalSnapshot)
+		if forceRefresh {
+			ds.applySnapshotUsingReloadData(normalSnapshot)
+			forceRefresh = false
+		} else {
+			ds.apply(normalSnapshot, animatingDifferences: animate)
+		}
 		
 		// Return success
 		self.state = .success(nil)

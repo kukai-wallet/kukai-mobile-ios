@@ -44,6 +44,18 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	override init() {
 		super.init()
 		
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
 		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
@@ -160,7 +172,6 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		normalSnapshot.appendItems(hashableData, toSection: 1)
 		itemCount = hashableData.count
 		
-		//ds.apply(normalSnapshot)
 		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		let currentLayoutType = getLayoutType()

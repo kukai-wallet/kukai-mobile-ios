@@ -17,8 +17,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
-	public var forceReload = false
 	public var isVisible = false
+	var forceRefresh = false
 	public var menuVc: MenuViewController? = nil
 	
 	public var expandedIndex: IndexPath? = nil
@@ -26,7 +26,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var groups: [TzKTTransactionGroup] = []
 	private var previousAddress: String = ""
 	
-	private var accountDataRefreshedCancellable: AnyCancellable?
+	private var bag = [AnyCancellable]()
 	private var selectedWalletAddress = DependencyManager.shared.selectedWalletAddress
 	
 	
@@ -36,18 +36,30 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
-		accountDataRefreshedCancellable = DependencyManager.shared.$addressRefreshed
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
+		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
-			}
+			}.store(in: &bag)
 	}
 	
 	deinit {
-		accountDataRefreshedCancellable?.cancel()
+		bag.forEach({ $0.cancel() })
 	}
 	
 	
@@ -119,10 +131,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		self.expandedIndex = nil
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
-		if previousAddress != currentAddress {
-			forceReload = true
-			previousAddress = currentAddress ?? ""
-		}
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
 			
@@ -184,9 +192,9 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Load
-		if forceReload {
+		if forceRefresh {
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
-			self.forceReload = false
+			self.forceRefresh = false
 			
 		} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)

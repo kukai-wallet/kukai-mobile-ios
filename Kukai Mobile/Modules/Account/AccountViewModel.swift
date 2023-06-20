@@ -37,6 +37,18 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	override init() {
 		super.init()
 		
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					self?.forceRefresh = true
+					
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+		
 		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
@@ -210,8 +222,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		
-		ds.apply(snapshot, animatingDifferences: animate)
+		if forceRefresh {
+			ds.applySnapshotUsingReloadData(snapshot)
+			forceRefresh = false
+		} else {
+			ds.apply(snapshot, animatingDifferences: animate)
+		}
 		self.state = .success(nil)
 	}
 	
