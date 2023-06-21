@@ -31,6 +31,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 	private var activityAnimationInProgress = false
 	
+	public var didApprovePairing = false
+	public var didApproveSigning = false
+	
 	
 	public override func viewDidLoad() {
         super.viewDidLoad()
@@ -215,6 +218,21 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public func openScanner() {
 		self.present(scanner, animated: true)
+	}
+	
+	public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let dest = segue.destination.presentationController as? UISheetPresentationController {
+			dest.delegate = self
+		}
+		
+		if let vc = segue.destination as? WalletConnectPairViewController {
+			didApprovePairing = false
+			vc.presenter = self
+			
+		} else if let vc = segue.destination as? WalletConnectSignViewController {
+			didApproveSigning = false
+			vc.presenter = self
+		}
 	}
 	
 	
@@ -430,6 +448,49 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 			
 			TransactionService.shared.resetWalletConnectState()
+		}
+	}
+}
+
+
+// MARK: - UISheetPresentationControllerDelegate
+
+extension HomeTabBarController: UISheetPresentationControllerDelegate {
+	
+	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+		if let _ = presentationController.presentedViewController as? WalletConnectPairViewController, !didApprovePairing {
+			didApprovePairing = false
+			
+			guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
+				return
+			}
+			
+			self.showLoadingView()
+			do {
+				try WalletConnectService.reject(proposalId: proposal.id, reason: .userRejected)
+				self.hideLoadingView()
+				
+			} catch (let error) {
+				self.hideLoadingView()
+				self.alert(errorWithMessage: "Error: \(error)")
+			}
+			
+		} else if let _ = presentationController.presentedViewController as? WalletConnectSignViewController, !didApproveSigning {
+			didApproveSigning = false
+			
+			guard let request = TransactionService.shared.walletConnectOperationData.request else {
+				return
+			}
+			
+			self.showLoadingView()
+			do {
+				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
+				self.hideLoadingView()
+				
+			} catch (let error) {
+				self.hideLoadingView()
+				self.alert(errorWithMessage: "Error: \(error)")
+			}
 		}
 	}
 }

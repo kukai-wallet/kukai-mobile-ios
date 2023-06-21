@@ -67,6 +67,7 @@ class AccountsViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		viewModel.isPresentingForConnectedApps = (bottomSheetContainer != nil)
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
 	}

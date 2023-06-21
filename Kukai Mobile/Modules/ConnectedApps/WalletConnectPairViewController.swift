@@ -23,6 +23,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	@IBOutlet weak var connectButton: CustomisableButton!
 	
 	var bottomSheetMaxHeight: CGFloat = 450
+	weak var presenter: HomeTabBarController? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -60,8 +61,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		TransactionService.shared.resetWalletConnectState()
-		self.dismissBottomSheet()
+		rejectTapped("")
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
@@ -91,7 +91,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			approve(proposalId: proposal.id, namespaces: sessionNamespaces)
 			
 		} else {
-			reject(proposalId: proposal.id, reason: .userRejectedChains)
+			rejectTapped(proposal.id)
 		}
 	}
 	
@@ -101,6 +101,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		Task {
 			do {
 				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces)
+				presenter?.didApprovePairing = true
+				
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -126,28 +128,20 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			return
 		}
 		
-		self.showLoadingModal()
-		reject(proposalId: proposal.id, reason: .userRejected)
-	}
-	
-	@MainActor
-	private func reject(proposalId: String, reason: RejectionReason) {
-		os_log("WC Reject Session %@", log: .default, type: .info, proposalId)
-		Task {
+		TransactionService.shared.resetWalletConnectState()
+		self.showLoadingModal {
 			do {
-				try await Sign.instance.reject(proposalId: proposalId, reason: reason)
+				try WalletConnectService.reject(proposalId: proposal.id, reason: .userRejected)
+				
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
-			} catch {
-				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+			} catch (let error) {
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.alert(errorWithMessage: "Error: \(error)")
 				})
 			}
-			
-			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 }

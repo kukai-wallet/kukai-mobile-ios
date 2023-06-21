@@ -50,7 +50,13 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Get data
 		pairs = Pair.instance.getPairings().map({ pair -> PairObj in
-			return PairObj(name: pair.peer?.name ?? "", url: pair.peer?.url ?? "", topic: pair.topic)
+			
+			if pair.peer == nil {
+				return PairObj(name: "Pending", url: "Waiting for request from dApp", topic: pair.topic)
+				
+			} else {
+				return PairObj(name: pair.peer?.name ?? " ", url: pair.peer?.url ?? " ", topic: pair.topic)
+			}
 		})
 		
 		
