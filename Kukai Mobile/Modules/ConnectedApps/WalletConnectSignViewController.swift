@@ -25,6 +25,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	private var bag = Set<AnyCancellable>()
 	
 	var bottomSheetMaxHeight: CGFloat = 500
+	weak var presenter: HomeTabBarController? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -68,6 +69,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["signature": signature])))
 				self.slideButton.markComplete(withText: "Complete")
+				self.presenter?.didApproveSigning = true
+				
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})
@@ -96,7 +99,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
+				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.presentingViewController?.dismiss(animated: true)
 				})

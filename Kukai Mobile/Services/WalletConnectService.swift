@@ -93,16 +93,18 @@ public class WalletConnectService {
 		
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { /*[weak self]*/ _ in
-				os_log("WC sessionSettlePublisher %@", log: .default, type: .info)
+			.sink { /*[weak self]*/ data in
+				os_log("WC sessionSettlePublisher %@", log: .default, type: .info, data.topic)
 				//self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { /*[weak self]*/ _ in
-				os_log("WC sessionDeletePublisher %@", log: .default, type: .info)
-				//self?.viewModel.refresh(animate: true)
+			.sink { /*[weak self]*/ data in
+				os_log("WC sessionDeletePublisher %@", log: .default, type: .info, data.0)
+				Task {
+					await WalletConnectService.cleanupSessionlessPairs()
+				}
 			}.store(in: &bag)
 	}
 	
@@ -211,6 +213,60 @@ public class WalletConnectService {
 		}
 	}
 	
+	@MainActor
+	public static func cleanupSessionlessPairs() async {
+		var pairsToClean: [Pairing] = []
+		Pair.instance.getPairings().forEach({ pair in
+			let sessions = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic })
+			if sessions.count == 0 {
+				pairsToClean.append(pair)
+			}
+		})
+		
+		await pairsToClean.asyncForEach({ pair in
+			try? await Pair.instance.disconnect(topic: pair.topic)
+		})
+	}
+	
+	
+	@MainActor
+	public static func cleanupDanglingPairings() async {
+		var pairsToClean: [Pairing] = []
+		Pair.instance.getPairings().forEach({ pair in
+			if pair.peer == nil {
+				pairsToClean.append(pair)
+			}
+		})
+		
+		await pairsToClean.asyncForEach({ pair in
+			try? await Pair.instance.disconnect(topic: pair.topic)
+			
+			await Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic }).asyncForEach({ session in
+				try? await Sign.instance.disconnect(topic: session.topic)
+			})
+		})
+	}
+	
+	@MainActor
+	public static func reject(proposalId: String, reason: RejectionReason) throws {
+		os_log("WC Reject Pairing %@", log: .default, type: .info, proposalId)
+		Task {
+			TransactionService.shared.resetWalletConnectState()
+			
+			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
+			await WalletConnectService.cleanupDanglingPairings()
+		}
+	}
+	
+	@MainActor
+	public static func reject(topic: String, requestId: RPCID) throws {
+		os_log("WC Reject Request topic: %@, id: %@", log: .default, type: .info, topic, requestId.description)
+		Task {
+			TransactionService.shared.resetWalletConnectState()
+			
+			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
+		}
+	}
 	
 	
 	// MARK: - Operations
