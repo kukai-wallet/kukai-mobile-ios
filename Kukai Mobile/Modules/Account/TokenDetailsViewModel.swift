@@ -153,7 +153,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					} else {
 						cell.tokenIcon.image = self.tokenIcon
 					}
-					cell.bakerButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.setBakerTapped), for: .touchUpInside)
+					
+					if DependencyManager.shared.selectedWalletMetadata?.isWatchOnly == false {
+						cell.bakerButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.setBakerTapped), for: .touchUpInside)
+					}
 					cell.setup(data: obj)
 					
 					return cell

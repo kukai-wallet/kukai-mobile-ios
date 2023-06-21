@@ -28,6 +28,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
+	public var isPresentingForConnectedApps = false
 	
 	private var headers: [AccountsHeaderObject] = []
 	private var newWalletAutoSelected = false
@@ -144,14 +145,16 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Watch
-		if wallets.watchWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil)])
-		}
-		for (index, metadata) in wallets.watchWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
-			
-			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+		if !isPresentingForConnectedApps {
+			if wallets.watchWallets.count > 0 {
+				sections.append(sections.count)
+				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil)])
+			}
+			for (index, metadata) in wallets.watchWallets.enumerated() {
+				sectionData[sections.count-1].append(metadata)
+				
+				if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
+			}
 		}
 		
 		
