@@ -158,6 +158,12 @@ public class TransactionService {
 				}
 			}
 			
+			if let constants = DependencyManager.shared.tezosNodeClient.networkConstants {
+				let totalStorage = operations.map({ $0.operationFees.storageLimit }).reduce(0, +)
+				let newBurnFee = FeeEstimatorService.feeForBurn(totalStorage, withConstants: constants)
+				operations.last?.operationFees.networkFees[OperationFees.NetworkFeeType.burnFee] = newBurnFee
+			}
+			
 			return operations
 		}
 	}
@@ -223,7 +229,9 @@ public class TransactionService {
 	
 	public var currentTransactionType: TransactionType = .none
 	public var currentOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+	public var currentForgedString = ""
 	public var currentRemoteOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+	public var currentRemoteForgedString = ""
 	
 	public var sendData: SendData
 	public var exchangeData: ExchangeData
@@ -270,7 +278,9 @@ public class TransactionService {
 	public func resetAllState() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentForgedString = ""
 		self.currentRemoteOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentRemoteForgedString = ""
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)

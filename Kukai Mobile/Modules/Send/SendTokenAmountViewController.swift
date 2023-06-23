@@ -109,8 +109,9 @@ class SendTokenAmountViewController: UIViewController {
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
 				
 				switch estimationResult {
-					case .success(let estimatedOperations):
-						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
+					case .success(let estimationResult):
+						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
+						TransactionService.shared.currentForgedString = estimationResult.forgedString
 						
 						self?.hideLoadingModal(completion: { [weak self] in
 							self?.performSegue(withIdentifier: "confirm", sender: nil)

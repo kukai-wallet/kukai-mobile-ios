@@ -120,8 +120,9 @@ class SendCollectibleAmountViewController: UIViewController {
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
 				
 				switch estimationResult {
-					case .success(let estimatedOperations):
-						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOperations)
+					case .success(let result):
+						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: result.operations)
+						TransactionService.shared.currentForgedString = result.forgedString
 						
 						self?.hideLoadingModal(completion: { [weak self] in
 							self?.performSegue(withIdentifier: "confirm", sender: nil)

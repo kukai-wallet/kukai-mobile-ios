@@ -203,11 +203,14 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { estimateResult in
-			guard let estimatedOperations = try? estimateResult.get() else {
+			/*guard let estimatedOperations = try? estimateResult.get() else {
 				completion(Result.failure(estimateResult.getFailure()))
 				return
-			}
+			}*/
 			
+			completion(Result.failure(KukaiError.unknown(withString: "Not implemented yet")))
+			
+			/*
 			DependencyManager.shared.tezosNodeClient.send(operations: estimatedOperations, withWallet: selectedWallet) { result in
 				guard let opHash = try? result.get() else {
 					completion(Result.failure(result.getFailure()))
@@ -217,6 +220,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				DependencyManager.shared.balanceService.fetch(records: [BalanceService.FetchRequestRecord(address: selectedWallet.address, type: .refreshAccountOnly)])
 				completion(Result.success(opHash))
 			}
+			*/
 		}
 	}
 }
