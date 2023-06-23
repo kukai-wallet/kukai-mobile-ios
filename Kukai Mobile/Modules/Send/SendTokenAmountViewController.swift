@@ -84,13 +84,7 @@ class SendTokenAmountViewController: UIViewController {
 	}
 	
 	@IBAction func maxButtonTapped(_ sender: UIButton) {
-		if let selectedToken = selectedToken, selectedToken.isXTZ(), let oneMutez = XTZAmount(fromRpcAmount: "1") {
-			textfield.text = (selectedToken.balance - oneMutez).normalisedRepresentation
-		} else {
-			textfield.text = selectedToken?.balance.normalisedRepresentation ?? ""
-		}
-		
-		maxWarningLabel.isHidden = false
+		textfield.text = selectedToken?.balance.normalisedRepresentation ?? ""
 		let _ = textfield.revalidateTextfield()
 	}
 	
@@ -152,7 +146,8 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 		}
 		
 		if validated, let textDecimal = Decimal(string: text) {
-			errorLabel.isHidden = true
+			self.errorLabel.isHidden = true
+			self.validateMaxXTZ(input: text)
 			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: token.decimalPlaces))
 			self.reviewButton.isEnabled = true
 			
@@ -160,14 +155,24 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 			errorLabel.isHidden = false
 			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 			self.reviewButton.isEnabled = false
+			self.maxWarningLabel.isHidden = true
 			
 		} else {
-			errorLabel.isHidden = true
+			self.errorLabel.isHidden = true
+			self.maxWarningLabel.isHidden = true
 			self.fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 		}
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
 		
+	}
+	
+	func validateMaxXTZ(input: String) {
+		if selectedToken?.isXTZ() == true, let balance = selectedToken?.balance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount  {
+			maxWarningLabel.isHidden = false
+		} else {
+			maxWarningLabel.isHidden = true
+		}
 	}
 }

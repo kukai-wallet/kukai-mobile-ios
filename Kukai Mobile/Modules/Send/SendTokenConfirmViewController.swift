@@ -61,6 +61,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var isSendingMaxTez = false
 	private var isWalletConnectOp = false
 	private var didSend = false
 	private var connectedAppURL: URL? = nil
@@ -215,23 +216,18 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 	}
 	
-	func updateAmountDisplay(withPlaceholder: TokenAmount? = nil) {
-		guard let token = currentSendData.chosenToken, let amount = currentSendData.chosenAmount else {
+	func updateAmountDisplay(withValue value: TokenAmount) {
+		guard let token = currentSendData.chosenToken else {
 			return
 		}
 		
-		var updatedAmount = amount
-		if let placeholder = withPlaceholder {
-			updatedAmount = placeholder
-		}
-		
-		let amountText = updatedAmount.normalisedRepresentation
+		let amountText = value.normalisedRepresentation
 		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
 			// small display
 			largeDisplayStackView.isHidden = true
 			smallDisplayIcon.addTokenIcon(token: token)
 			smallDisplayAmount.text = amountText + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: updatedAmount)
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 			
 		} else {
 			// large display
@@ -239,7 +235,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			largeDisplayIcon.addTokenIcon(token: token)
 			largeDisplayAmount.text = amountText
 			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: updatedAmount)
+			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 		}
 	}
 	
@@ -253,15 +249,14 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		if let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
 			let updatedValue = ((token.balance - oneMutez) - fee)
-			currentSendData.chosenAmount = updatedValue
 			
 			if updatedValue < .zero() {
 				self.alert(withTitle: "Insufficient Funds", andMessage: "Your balance is \(token.balance.normalisedRepresentation) and the required fee to make this transaction is \(fee.normalisedRepresentation)")
-				updateAmountDisplay(withPlaceholder: .zero())
+				updateAmountDisplay(withValue: .zero())
 				slideButton.isUserInteractionEnabled = false
 				slideButton.alpha = 0.6
 			} else {
-				updateAmountDisplay()
+				updateAmountDisplay(withValue: updatedValue)
 				slideButton.isUserInteractionEnabled = true
 				slideButton.alpha = 1
 			}
@@ -272,7 +267,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
 			}
 		} else {
-			updateAmountDisplay()
+			updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
 		}
 	}
 	
