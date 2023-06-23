@@ -164,6 +164,8 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		if let connectedAppURL = connectedAppURL {
 			MediaProxyService.load(url: connectedAppURL, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		} else {
+			self.connectedAppIcon.image = UIImage.unknownToken()
 		}
 	}
 	

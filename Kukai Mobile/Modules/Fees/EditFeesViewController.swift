@@ -291,8 +291,26 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 			} else if textfield == gasLimitTextField {
 				gasErrorLabel.isHidden = true
 				
+				var forgedString = ""
+				var numberOfOperations = 0
+				if isWalletConnectOp {
+					forgedString = TransactionService.shared.currentRemoteForgedString
+					numberOfOperations = TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees().count
+				} else {
+					forgedString = TransactionService.shared.currentForgedString
+					numberOfOperations = TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees().count
+				}
+				
+				let newFee = FeeEstimatorService.fee(forGasLimit: Int(text) ?? 0, forgedHexString: forgedString, numberOfOperations: numberOfOperations)
+				feeTextField.text = newFee.normalisedRepresentation
+				
 			} else if textfield == storageLimitTextField {
 				storageErrorLabel.isHidden = true
+				
+				if let networkConstants = DependencyManager.shared.tezosNodeClient.networkConstants {
+					let newMaxStorageCost = FeeEstimatorService.feeForBurn(Int(text) ?? 0, withConstants: networkConstants)
+					maxStorageCostLbl.text = newMaxStorageCost.normalisedRepresentation
+				}
 			}
 		}
 	}

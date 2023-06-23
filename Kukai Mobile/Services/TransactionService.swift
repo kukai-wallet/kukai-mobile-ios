@@ -100,10 +100,10 @@ public class TransactionService {
 		
 		public init(estimatedOperations: [KukaiCoreSwift.Operation]) {
 			self.type = .normal
-			self.normalOperationsAndFees = TransactionService.makeCopyOf(operations: estimatedOperations)
-			self.customOperationsAndFees = TransactionService.makeCopyOf(operations: estimatedOperations)
+			self.normalOperationsAndFees = estimatedOperations.copyOperations()
+			self.customOperationsAndFees = estimatedOperations.copyOperations()
 			
-			let operationCopy = TransactionService.makeCopyOf(operations: estimatedOperations)
+			let operationCopy = estimatedOperations.copyOperations()
 			let normalTotalFee = operationCopy.map({ $0.operationFees.transactionFee }).reduce(XTZAmount.zero(), +)
 			let normalTotalGas = operationCopy.map({ $0.operationFees.gasLimit }).reduce(0, +)
 			let increasedFee = XTZAmount(fromNormalisedAmount: normalTotalFee * Decimal(2))
@@ -156,6 +156,12 @@ public class TransactionService {
 				if let storagePerOp = storagePerOp {
 					op.operationFees.storageLimit += storagePerOp
 				}
+			}
+			
+			if let constants = DependencyManager.shared.tezosNodeClient.networkConstants {
+				let totalStorage = operations.map({ $0.operationFees.storageLimit }).reduce(0, +)
+				let newBurnFee = FeeEstimatorService.feeForBurn(totalStorage, withConstants: constants)
+				operations.last?.operationFees.networkFees[OperationFees.NetworkFeeType.burnFee] = newBurnFee
 			}
 			
 			return operations
@@ -223,7 +229,9 @@ public class TransactionService {
 	
 	public var currentTransactionType: TransactionType = .none
 	public var currentOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+	public var currentForgedString = ""
 	public var currentRemoteOperationsAndFeesData: OperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+	public var currentRemoteForgedString = ""
 	
 	public var sendData: SendData
 	public var exchangeData: ExchangeData
@@ -270,7 +278,9 @@ public class TransactionService {
 	public func resetAllState() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentForgedString = ""
 		self.currentRemoteOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
+		self.currentRemoteForgedString = ""
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
@@ -376,58 +386,5 @@ public class TransactionService {
 	public static func sizeForWalletIcon(walletIconSize: WalletIconSize) -> CGSize {
 		let raw = walletIconSize.rawValue
 		return CGSize(width: raw, height: raw)
-	}
-	
-	
-	/// Hacky function to create a deep copy of an array of Operations
-	public static func makeCopyOf(operations: [KukaiCoreSwift.Operation]) -> [KukaiCoreSwift.Operation] {
-		guard let opJson = try? JSONEncoder().encode(operations), let jsonArray = try? JSONSerialization.jsonObject(with: opJson, options: .allowFragments) as? [[String: Any]] else {
-			return []
-		}
-		
-		var ops: [KukaiCoreSwift.Operation] = []
-		for (index, jsonObj) in jsonArray.enumerated() {
-			guard let kind = OperationKind(rawValue: (jsonObj["kind"] as? String) ?? ""), let jsonObjAsData = try? JSONSerialization.data(withJSONObject: jsonObj, options: .fragmentsAllowed) else {
-				os_log("Unable to parse operation of kind: %@", log: .default, type: .error, (jsonObj["kind"] as? String) ?? "")
-				continue
-			}
-			
-			var tempOp: KukaiCoreSwift.Operation? = nil
-			switch kind {
-				case .activate_account:
-					tempOp = try? JSONDecoder().decode(OperationActivateAccount.self, from: jsonObjAsData)
-				case .ballot:
-					tempOp = try? JSONDecoder().decode(OperationBallot.self, from: jsonObjAsData)
-				case .delegation:
-					tempOp = try? JSONDecoder().decode(OperationDelegation.self, from: jsonObjAsData)
-				case .double_baking_evidence:
-					tempOp = try? JSONDecoder().decode(OperationDoubleBakingEvidence.self, from: jsonObjAsData)
-				case .double_endorsement_evidence:
-					tempOp = try? JSONDecoder().decode(OperationDoubleEndorsementEvidence.self, from: jsonObjAsData)
-				case .endorsement:
-					tempOp = try? JSONDecoder().decode(OperationEndorsement.self, from: jsonObjAsData)
-				case .origination:
-					tempOp = try? JSONDecoder().decode(OperationOrigination.self, from: jsonObjAsData)
-				case .proposals:
-					tempOp = try? JSONDecoder().decode(OperationProposals.self, from: jsonObjAsData)
-				case .reveal:
-					tempOp = try? JSONDecoder().decode(OperationReveal.self, from: jsonObjAsData)
-				case .seed_nonce_revelation:
-					tempOp = try? JSONDecoder().decode(OperationSeedNonceRevelation.self, from: jsonObjAsData)
-				case .transaction:
-					tempOp = try? JSONDecoder().decode(OperationTransaction.self, from: jsonObjAsData)
-				case .unknown:
-					tempOp = nil
-			}
-			
-			if let tempOp = tempOp {
-				tempOp.operationFees = operations[index].operationFees
-				ops.append(tempOp)
-			} else {
-				os_log("Unable to parse operation: %@", log: .default, type: .error, String(data: jsonObjAsData, encoding: .utf8) ?? "")
-			}
-		}
-		
-		return ops
 	}
 }

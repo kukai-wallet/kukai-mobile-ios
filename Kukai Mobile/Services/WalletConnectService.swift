@@ -308,21 +308,22 @@ public class WalletConnectService {
 			let convertedOps = params.kukaiOperations()
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
-				guard let estimatedOps = try? result.get() else {
+				guard let estimationResult = try? result.get() else {
 					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: nil)
 					return
 				}
 				
-				self?.processTransactions(estimatedOperations: estimatedOps, forWallet: wallet)
+				self?.processTransactions(estimationResult: estimationResult, forWallet: wallet)
 			}
 		}
 	}
 	
-	private func processTransactions(estimatedOperations estimatedOps: [KukaiCoreSwift.Operation], forWallet: Wallet) {
-		let operationsObj = TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps)
+	private func processTransactions(estimationResult: FeeEstimatorService.EstimationResult, forWallet: Wallet) {
+		let operationsObj = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
 		let operations = operationsObj.selectedOperationsAndFees()
 		
 		TransactionService.shared.currentRemoteOperationsAndFeesData = operationsObj
+		TransactionService.shared.currentRemoteForgedString = estimationResult.forgedString
 		
 		if let contractDetails = OperationFactory.Extractor.isContractCall(operations: operations) {
 			let totalXTZ = OperationFactory.Extractor.totalXTZAmountForContractCall(operations: operations)
@@ -344,7 +345,7 @@ public class WalletConnectService {
 				self?.mainThreadProcessedOperations(ofType: .sendToken)
 			}
 			
-		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: TransactionService.OperationsAndFeesData(estimatedOperations: estimatedOps).selectedOperationsAndFees()),
+		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: operationsObj.selectedOperationsAndFees()),
 				  let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
 			
 			TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
