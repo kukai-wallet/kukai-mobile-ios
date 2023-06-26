@@ -183,7 +183,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
 			
 			
-			// Group and srot favourites (and remove hidden)
+			// Group and srot favorites (and remove hidden)
 			tokensToDisplay = []
 			var nonFavourites: [Token] = []
 			

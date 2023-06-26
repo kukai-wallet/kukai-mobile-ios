@@ -54,7 +54,7 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		isReOrder = !isReOrder
 		
 		if isReOrder {
-			self.title = "Reorder Favourites"
+			self.title = "Reorder Favorites"
 			reOrderButton.setTitle("Done", for: .normal)
 			
 			viewModel.isEditing = isReOrder
@@ -65,7 +65,7 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 			cell?.setEditView(editing: true, withAnimation: true)
 			
 		} else {
-			self.title = "Favourites"
+			self.title = "Favorites"
 			reOrderButton.setTitle("Reorder", for: .normal)
 			
 			tableView.isEditing = isReOrder // remove editing before cells added, so old cells appear without edit as they slide in

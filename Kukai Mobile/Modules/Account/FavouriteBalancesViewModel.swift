@@ -71,7 +71,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				
 			} else {
-				//self.state = .failure(KukaiError.internalApplicationError(error: "Unable to rearrange favourite"), "Unable to rearrange favourite")
+				//self.state = .failure(KukaiError.internalApplicationError(error: "Unable to rearrange favorite"), "Unable to rearrange favorite")
 			}
 		}
 	}
@@ -177,7 +177,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				favouriteCount -= 1
 				
 			} else {
-				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to remove favourite"), "Unable to remove favourite")
+				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to remove favorite"), "Unable to remove favorite")
 			}
 			
 		} else {
@@ -187,7 +187,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				favouriteCount += 1
 				
 			} else {
-				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to add favourite"), "Unable to add favourite")
+				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to add favorite"), "Unable to add favorite")
 			}
 		}
 	}

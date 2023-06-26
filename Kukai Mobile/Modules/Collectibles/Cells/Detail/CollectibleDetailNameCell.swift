@@ -188,7 +188,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				favouriteButton.updateCustomImage()
 				
 			} else {
-				self.delegate?.errorMessage(message: "Unable to unfavourite collectible")
+				self.delegate?.errorMessage(message: "Unable to unfavorite collectible")
 			}
 			
 		} else {
@@ -200,7 +200,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				favouriteButton.updateCustomImage()
 				
 			} else {
-				self.delegate?.errorMessage(message: "Unable to favourite collectible")
+				self.delegate?.errorMessage(message: "Unable to favorite collectible")
 			}
 		}
 	}

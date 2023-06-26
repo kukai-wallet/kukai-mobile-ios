@@ -21,6 +21,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 		let _ = self.view.addGradientBackgroundFull()
 		
 		enterAddressComponent.delegate = self
+		enterAddressComponent.headerLabel.text = "Watch:"
     }
 	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
