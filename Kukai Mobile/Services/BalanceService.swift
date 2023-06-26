@@ -64,12 +64,10 @@ public class BalanceService {
 	// MARK: - Queue properties
 	
 	private var balanceRequestDispathGroup = DispatchGroup()
-	private var balanceFetchQueueDispatchGroup = DispatchGroup()
-	private let balanceFetchQueue = DispatchQueue(label: "app.kukai.balance-service.fetch", attributes: .concurrent)
-	private let balanceRecordQueue = DispatchQueue(label: "app.kukai.balance-service.record-checker", attributes: .concurrent)
+	private let balanceFetchQueue = DispatchQueue(label: "app.kukai.balance-service.fetch", qos: .background, attributes: [], autoreleaseFrequency: .inherit, target: nil)
 	
 	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
-	private var currentFetchRequests: [FetchRequestRecord] = []
+	private var currentFetchRequest: FetchRequestRecord? = nil
 	private var pendingFetchRequests: [FetchRequestRecord] = []
 	
 	
@@ -85,19 +83,16 @@ public class BalanceService {
 	// MARK: - Queue Processing
 	
 	public func fetch(records: [FetchRequestRecord]) {
+		let uniqueRecords = self.uniqueRecords(records: records)
+		self.addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
 		
-		balanceRecordQueue.sync { [weak self] in
-			let uniqueRecords = self?.uniqueRecords(records: records) ?? []
-			self?.addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )
+		if currentFetchRequest == nil, let request = uniqueRecords.first {
+			self.currentFetchRequest = request
+			self.pendingFetchRequests.append(contentsOf: uniqueRecords.suffix(from: 1))
+			self.processingCurrentRequest()
 			
-			if (self?.currentFetchRequests.count ?? 0) == 0, let request = uniqueRecords.first {
-				self?.currentFetchRequests = [request]
-				self?.pendingFetchRequests.append(contentsOf: uniqueRecords.suffix(from: 1))
-				self?.startProcessingCurrentRequests()
-				
-			} else {
-				self?.pendingFetchRequests.append(contentsOf: uniqueRecords)
-			}
+		} else {
+			self.pendingFetchRequests.append(contentsOf: uniqueRecords)
 		}
 	}
 	
@@ -105,47 +100,33 @@ public class BalanceService {
 		return NSOrderedSet(array: records).compactMap({ $0 as? FetchRequestRecord })
 	}
 	
-	private func startProcessingCurrentRequests() {
-		
-		// Record all enters first in case any cache calls come abck too quickly
-		for _ in currentFetchRequests {
-			balanceFetchQueueDispatchGroup.enter()
+	private func processingCurrentRequest() {
+		guard let currentFetchRequest = currentFetchRequest else {
+			return
 		}
 		
-		// Process all fetches one by one
-		for record in currentFetchRequests {
-			
-			balanceFetchQueue.async(flags: .barrier) { [weak self] in
+		balanceFetchQueue.async() { [weak self] in
+			self?.fetchAllBalancesTokensAndPrices(forAddress: currentFetchRequest.address, refreshType: currentFetchRequest.type, completion: { error in
 				
-				self?.fetchAllBalancesTokensAndPrices(forAddress: record.address, refreshType: record.type, completion: { error in
-					
-					DispatchQueue.main.async { [weak self] in
-						if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: record.address) {
-							self?.addressesWaitingToBeRefreshed.remove(at: index)
-							self?.addressRefreshed = record.address
-						}
-						
-						self?.balanceFetchQueueDispatchGroup.leave()
+				DispatchQueue.main.async { [weak self] in
+					if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: currentFetchRequest.address) {
+						self?.addressesWaitingToBeRefreshed.remove(at: index)
+						self?.addressRefreshed = currentFetchRequest.address
 					}
-				})
-			}
-		}
-		
-		// When all done, check for pending
-		balanceFetchQueueDispatchGroup.notify(queue: .main) { [weak self] in
-			self?.balanceRecordQueue.sync { [weak self] in
-				self?.startProcessingPendingRequests()
-			}
+					
+					self?.processPendingRequests()
+				}
+			})
 		}
 	}
 	
-	private func startProcessingPendingRequests() {
-		currentFetchRequests = []
+	private func processPendingRequests() {
+		currentFetchRequest = nil
 		
 		if pendingFetchRequests.count > 0 {
-			currentFetchRequests = pendingFetchRequests
-			pendingFetchRequests = []
-			startProcessingCurrentRequests()
+			currentFetchRequest = pendingFetchRequests.first
+			pendingFetchRequests.remove(at: 0)
+			processingCurrentRequest()
 		}
 	}
 	

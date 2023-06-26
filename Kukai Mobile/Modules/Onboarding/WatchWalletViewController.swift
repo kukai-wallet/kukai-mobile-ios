@@ -23,7 +23,6 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 		enterAddressComponent.delegate = self
     }
 	
-	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
 		if !validAddress {
 			return
@@ -75,7 +74,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 		if walletCache.cacheWatchWallet(metadata: watchMeta) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
-			self.performSegue(withIdentifier: "done", sender: self)
+			self.segue()
 			
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to cache wallet details")
@@ -97,6 +96,17 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 			
 			self?.address = res.address
 			self?.navigate()
+		}
+	}
+	
+	func segue() {
+		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		if let vc = viewController {
+			self.navigationController?.popToViewController(vc, animated: true)
+			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
+			
+		} else {
+			self.performSegue(withIdentifier: "done", sender: nil)
 		}
 	}
 }
