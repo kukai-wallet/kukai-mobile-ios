@@ -326,11 +326,10 @@ public class BalanceService {
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
 					DependencyManager.shared.activityService.loadCache(address: address)
+					self?.updateCacheDate(forAddress: address)
 					self?.balanceRequestDispathGroup.leave()
 				}
 			})
-			
-			updateCacheDate(forAddress: address)
 		}
 		
 		

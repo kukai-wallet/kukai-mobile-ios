@@ -84,6 +84,9 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		if let c = cell as? CollectiblesCollectionCell {
 			c.addGradientBackground()
+			
+		} else if let c = cell as? LoadingGroupModeCell {
+			c.addGradientBackground()
 		}
 	}
 	
