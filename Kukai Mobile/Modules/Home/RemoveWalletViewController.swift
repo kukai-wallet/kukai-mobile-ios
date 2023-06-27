@@ -71,14 +71,25 @@ class RemoveWalletViewController: UIViewController {
 	}
 	
 	@IBAction func removeButtonTapped(_ sender: Any) {
-		guard let address = selectedWalletMetadata?.address else { return }
+		guard let metadata = selectedWalletMetadata else { return }
 		
-		if WalletCacheService().deleteWallet(withAddress: address, parentIndex: selectedWalletParentIndex) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
-			self.dismiss(animated: true)
+		if metadata.isWatchOnly {
+			if WalletCacheService().deleteWatchWallet(address: metadata.address) {
+				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+				self.dismiss(animated: true)
+				
+			} else {
+				self.alert(errorWithMessage: "Unable to delete wallet")
+			}
 			
 		} else {
-			self.alert(errorWithMessage: "Unable to delete wallet")
+			if WalletCacheService().deleteWallet(withAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
+				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+				self.dismiss(animated: true)
+				
+			} else {
+				self.alert(errorWithMessage: "Unable to delete wallet")
+			}
 		}
 	}
 	

@@ -18,7 +18,7 @@ public struct TezosDomainValidator: Validator {
 		}
 		
 		let last4Characters = String(text.suffix(4))
-		return last4Characters == ".tez"
+		return last4Characters == ".tez" || last4Characters == ".gho"
 	}
 	
 	public func restrictEntryIfInvalid(text: String) -> Bool {

@@ -65,6 +65,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	
 	public func makeDataSource(withCollectionView collectionView: UICollectionView) {
 		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
+		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
@@ -80,6 +81,11 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
 				
 				return cell
+				
+			} else if let _ = item as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
+				cell.setup()
+				cell.backgroundColor = .clear
+				return cell
 			}
 			
 			return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath)
@@ -93,19 +99,27 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 			return
 		}
 		
-		var favs: [NFT] = []
-		for token in DependencyManager.shared.balanceService.account.nfts {
-			guard !token.isHidden else {
-				continue
-			}
+		var hashableData: [AnyHashable] = []
+		
+		// If needs shimmers
+		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
+			hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
 			
-			favs.append(contentsOf: (token.nfts ?? []).filter({ $0.isFavourite && !$0.isHidden }) )
+		} else {
+			for token in DependencyManager.shared.balanceService.account.nfts {
+				guard !token.isHidden else {
+					continue
+				}
+				
+				hashableData.append(contentsOf: (token.nfts ?? []).filter({ $0.isFavourite && !$0.isHidden }) )
+			}
 		}
 		
 		// Build snapshot
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		normalSnapshot.appendSections([0])
-		normalSnapshot.appendItems(favs, toSection: 0)
+		normalSnapshot.appendItems(hashableData, toSection: 0)
 		
 		if forceRefresh {
 			ds.applySnapshotUsingReloadData(normalSnapshot)

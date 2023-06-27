@@ -29,5 +29,7 @@ class WelcomeViewController: UIViewController {
 		if DependencyManager.shared.currentNetworkType != .mainnet {
 			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
 		}
+		
+		DependencyManager.shared.selectedWalletMetadata = nil
 	}
 }

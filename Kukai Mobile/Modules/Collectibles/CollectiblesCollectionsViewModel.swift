@@ -79,6 +79,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		collectionView.register(UINib(nibName: "CollectiblesCollectionCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionCell")
 		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
 		collectionView.register(UINib(nibName: "CollectiblesCollectionSinglePageCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionSinglePageCell")
+		collectionView.register(UINib(nibName: "LoadingGroupModeCell", bundle: nil), forCellWithReuseIdentifier: "LoadingGroupModeCell")
+		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
@@ -111,7 +113,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let isRichMedia = (type != .imageOnly && type != nil)
 				
 				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
-					
+				
 				return cell
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
@@ -130,6 +132,15 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
 				
+				return cell
+			} else if let _ = item as? LoadingContainerCellObject, self?.isGroupMode == true, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
+				cell.setup()
+				cell.backgroundColor = .clear
+				return cell
+				
+			} else if let _ = item as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
+				cell.setup()
+				cell.backgroundColor = .clear
 				return cell
 			}
 			
@@ -151,17 +162,33 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		
 		// Add non hidden groups
 		if isGroupMode {
-			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-				guard !nftGroup.isHidden else { continue }
-				hashableData.append(nftGroup)
+			
+			// If needs shimmers
+			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
+				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject(), LoadingContainerCellObject()]
+				
+			} else {
+				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+					guard !nftGroup.isHidden else { continue }
+					hashableData.append(nftGroup)
+				}
 			}
 			
 		} else {
-			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-				guard !nftGroup.isHidden else { continue }
-				
-				let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden })
-				hashableData.append(contentsOf: nonHiddenNFTs ?? [])
+			
+			// If needs shimmers
+			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
+				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
+			
+			} else {
+				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+					guard !nftGroup.isHidden else { continue }
+					
+					let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden })
+					hashableData.append(contentsOf: nonHiddenNFTs ?? [])
+				}
 			}
 		}
 		

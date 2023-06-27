@@ -112,6 +112,7 @@ extension AccountsViewController: AccountsViewModelDelegate {
 	
 	func allWalletsRemoved() {
 		self.navigationController?.popToRootViewController(animated: true)
+		DependencyManager.shared.selectedWalletMetadata = nil
 	}
 }
 

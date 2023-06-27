@@ -305,7 +305,7 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 				return false
 				
 			} else {
-				alert(errorWithMessage: "Unable to favourite token")
+				alert(errorWithMessage: "Unable to favorite token")
 			}
 			
 		} else {
@@ -315,7 +315,7 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 				return true
 				
 			} else {
-				alert(errorWithMessage: "Unable to favourite token")
+				alert(errorWithMessage: "Unable to favorite token")
 			}
 		}
 		

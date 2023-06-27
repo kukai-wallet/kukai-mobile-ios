@@ -1,24 +1,17 @@
 //
-//  LoadingContainerCell.swift
+//  LoadingCollectibleCell.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 12/04/2023.
+//  Created by Simon Mcloughlin on 27/06/2023.
 //
 
 import UIKit
 import Combine
 
-public struct LoadingContainerCellObject: Hashable {
-	let id = UUID()
-}
+class LoadingCollectibleCell: UICollectionViewCell {
 
-class LoadingContainerCell: UITableViewCell, UITableViewCellContainerView {
-	
-	@IBOutlet weak var containerView: UIView!
-	@IBOutlet weak var iconShimmerView: ShimmerView!
 	@IBOutlet var shimmerViews: [ShimmerView]!
 	
-	var gradientLayer = CAGradientLayer()
 	private var bag: [AnyCancellable] = []
 	
 	deinit {
@@ -37,13 +30,9 @@ class LoadingContainerCell: UITableViewCell, UITableViewCellContainerView {
 						view.reloadForThemeChange()
 					}
 					
-					self?.iconShimmerView.reloadForThemeChange()
-					
 				}.store(in: &bag)
 		}
 		
-		
-		iconShimmerView.startAnimating()
 		for view in shimmerViews {
 			view.startAnimating()
 		}
