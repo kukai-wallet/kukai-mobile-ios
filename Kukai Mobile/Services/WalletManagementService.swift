@@ -82,15 +82,21 @@ class WalletManagementService {
 		})
 	}
 	
+	public static func isUsedAccount(address: String, completion: @escaping ((Bool) -> Void)) {
+		DependencyManager.shared.tzktClient.getAccount(forAddress: address) { result in
+			guard let res = try? result.get() else {
+				completion(false)
+				return
+			}
+			
+			let result = (res.type == "user" || (res.balance ?? 0) > 0 || (res.tokenBalancesCount ?? 0) > 0)
+			completion(result)
+		}
+	}
+	
 	public static func isUsedAccount(address: String) async -> Bool {
 		return await withCheckedContinuation({ continuation in
-			DependencyManager.shared.tzktClient.getAccount(forAddress: address) { result in
-				guard let res = try? result.get() else {
-					continuation.resume(returning: false)
-					return
-				}
-				
-				let result = (res.type == "user" || (res.balance ?? 0) > 0 || (res.tokenBalancesCount ?? 0) > 0)
+			WalletManagementService.isUsedAccount(address: address) { result in
 				continuation.resume(returning: result)
 			}
 		})

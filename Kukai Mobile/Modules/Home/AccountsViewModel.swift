@@ -209,25 +209,33 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
-			if let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
-			   let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) {
-				
-				vc.showLoadingModal()
-				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
-					if success {
-						self?.refresh(animate: true)
-						vc.hideLoadingModal()
-						
-					} else {
-						vc.hideLoadingModal {
-							vc.alert(withTitle: "Error", andMessage: "Unable to cache")
-						}
-					}
+			
+			vc.showLoadingView()
+			self?.isPreviousAccountUsed(forAddress: walletMetadata.address, completion: { isUsed in
+				guard isUsed else {
+					vc.hideLoadingView()
+					vc.alert(withTitle: "Previous Account empty", andMessage: "The main wallet or the previous account is empty, you can only have 1 empty account per wallet at a time")
+					return
 				}
 				
-			} else {
-				vc.alert(errorWithMessage: "Unable to add child")
-			}
+				guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
+					  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
+					vc.hideLoadingView()
+					vc.alert(errorWithMessage: "Unable to add child")
+					return
+				}
+				
+				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
+					guard success else {
+						vc.hideLoadingView()
+						vc.alert(withTitle: "Error", andMessage: "Unable to cache")
+						return
+					}
+					
+					self?.refresh(animate: true)
+					vc.hideLoadingView()
+				}
+			})
 		}
 		
 		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
@@ -239,6 +247,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
+	}
+	
+	private func isPreviousAccountUsed(forAddress address: String, completion: @escaping ((Bool) -> Void)) {
+		var metadataToCheck = DependencyManager.shared.walletList.metadata(forAddress: address)
+		if (metadataToCheck?.children.count ?? 0) > 0, let last = metadataToCheck?.children.last {
+			metadataToCheck = last
+		}
+		
+		guard let meta = metadataToCheck else {
+			completion(false)
+			return
+		}
+		
+		WalletManagementService.isUsedAccount(address: meta.address, completion: completion)
 	}
 	
 	func pullToRefresh(animate: Bool) {
