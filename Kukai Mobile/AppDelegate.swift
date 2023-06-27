@@ -32,6 +32,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Airplay audio/video support
 		application.beginReceivingRemoteControlEvents()
 		
+		
+		#if targetEnvironment(simulator)
+		if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
+			print("Documents Directory: \(documentsPath) \n\n")
+		}
+		#endif
+		
 		return true
 	}
 	

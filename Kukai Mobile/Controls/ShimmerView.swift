@@ -37,6 +37,15 @@ class ShimmerView: UIView {
 		self.layer.addSublayer(gradientLayer)
 	}
 	
+	func reloadForThemeChange() {
+		gradientBackgroundColor = UIColor.colorNamed("BG4").cgColor
+		gradientMovingColor = UIColor.colorNamed("BG6").cgColor
+		
+		gradientLayer.removeFromSuperlayer()
+		draw(self.bounds)
+		startAnimating()
+	}
+	
 	func startAnimating() {
 		let animation = CABasicAnimation(keyPath: "locations")
 		animation.fromValue = self.startLocations
