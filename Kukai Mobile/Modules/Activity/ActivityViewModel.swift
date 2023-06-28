@@ -129,7 +129,11 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		self.expandedIndex = nil
+		if self.expandedIndex != nil {
+			self.forceRefresh = true
+			self.expandedIndex = nil
+		}
+		
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
@@ -190,7 +194,6 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.appendItems(array, toSection: index)
 		}
 		
-		
 		// Load
 		if forceRefresh {
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
@@ -240,8 +243,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return false
 	}
 	
-	private func openGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
-		if let cell = tableView.cellForRow(at: indexPath) as? ActivityItemBatchCell {
+	private func openGroup(forTableView tableView: UITableView?, atIndexPath indexPath: IndexPath) {
+		if let cell = tableView?.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setOpen()
 		}
 		
