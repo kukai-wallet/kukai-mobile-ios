@@ -8,8 +8,8 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
-
+class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+	
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
 	
@@ -108,6 +108,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView {
 			
 			invisibleRightButton.isHidden = false
 		}
+	}
+	
+	func downloadingImageViews() -> [UIImageView] {
+		return [iconView]
 	}
 	
 	
