@@ -565,8 +565,20 @@ public class BalanceService {
 			}
 		}
 		
+		var recentNfts = (selectedAccount ? self.account.recentNFTs : self.currentlyRefreshingAccount.recentNFTs)
+		for (index, nft) in recentNfts.enumerated() {
+			let nftId = TokenStateService.shared.nftId(from: nft)
+			let isHidden = hiddenCollectibles?[nftId] ?? false
+			
+			recentNfts[index].isHidden = isHidden
+			recentNfts[index].favouriteSortIndex = favouriteCollectibles?[nftId]
+		}
+		
 		if selectedAccount {
+			self.account.recentNFTs = recentNfts
 			let _ = DiskService.write(encodable: self.account, toFileName: BalanceService.accountCacheFilename(withAddress: address))
+		} else {
+			self.currentlyRefreshingAccount.recentNFTs = recentNfts
 		}
 	}
 	

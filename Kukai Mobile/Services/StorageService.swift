@@ -6,14 +6,14 @@
 //
 
 import Foundation
+import KeychainSwift
 
 public class StorageService {
 	
 	private static let secureLoginInfo = "app.kukai.wallet.login"
 	private static let onboardingComplete = "app.kukai.onboarding.complete"
 	
-	@objc(_TtCC12Kukai_Mobile14StorageServiceP33_43FB357E44C0FD6E6F611B5FA483FE9D9LoginInfo)
-	private class LoginInfo: NSObject, NSCoding {
+	private class LoginInfo: Codable {
 		var isBiometricEnabled: Bool
 		var isPasswordEnabled: Bool
 		var password: String
@@ -22,23 +22,6 @@ public class StorageService {
 			self.isBiometricEnabled = isBiometricEnabled
 			self.isPasswordEnabled = isPasswordEnabled
 			self.password = password
-		}
-		
-		required convenience init?(coder: NSCoder) {
-			let bio = coder.decodeBool(forKey: "isBiometricEnabled")
-			let passSet = coder.decodeBool(forKey: "isPasswordEnabled")
-			
-			guard let password = coder.decodeObject(forKey: "password") as? String else {
-				return nil
-			}
-			
-			self.init(isBiometricEnabled: bio, isPasswordEnabled: passSet, password: password)
-		}
-		
-		func encode(with coder: NSCoder) {
-			coder.encode(isBiometricEnabled, forKey: "isBiometricEnabled")
-			coder.encode(isPasswordEnabled, forKey: "isPasswordEnabled")
-			coder.encode(password, forKey: "password")
 		}
 	}
 	
@@ -53,15 +36,24 @@ public class StorageService {
 	// MARK: - Functions
 	
 	private static func getLoginInfo() -> LoginInfo? {
-		return KeychainWrapper.standard.object(forKey: StorageService.secureLoginInfo, withAccessibility: .whenUnlockedThisDeviceOnly) as? LoginInfo
+		guard let data = KeychainSwift().getData(StorageService.secureLoginInfo), let obj = try? JSONDecoder().decode(LoginInfo.self, from: data) else {
+			return nil
+		}
+		
+		return obj
 	}
 	
 	private static func setLoginInfo(_ info: LoginInfo) {
-		KeychainWrapper.standard.set(info, forKey: StorageService.secureLoginInfo, withAccessibility: .whenUnlockedThisDeviceOnly)
+		guard let data = try? JSONEncoder().encode(info) else {
+			return
+		}
+		
+		KeychainSwift().set(data, forKey: StorageService.secureLoginInfo, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
 	}
 	
 	public static func deleteKeychainItems() {
-		KeychainWrapper.standard.removeObject(forKey: StorageService.secureLoginInfo, withAccessibility: .whenUnlockedThisDeviceOnly)
+		
+		KeychainSwift().delete(StorageService.secureLoginInfo)
 	}
 	
 	public static func setBiometricEnabled(_ enabled: Bool) {

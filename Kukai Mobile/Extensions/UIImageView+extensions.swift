@@ -29,7 +29,7 @@ extension UIImageView {
 		if token.isXTZ() {
 			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
 		} else {
-			MediaProxyService.load(url: token.thumbnailURL, to: self, withCacheType: .permanent, fallback: UIImage.unknownToken()) { _ in
+			MediaProxyService.load(url: token.thumbnailURL, to: self, withCacheType: token.tokenType == .nonfungible ? .temporary : .permanent, fallback: UIImage.unknownToken()) { _ in
 				if token.tokenType == .nonfungible {
 					self.backgroundColor = .colorNamed("BGThumbNFT")
 				} else {
