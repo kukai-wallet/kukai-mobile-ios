@@ -135,11 +135,16 @@
                             </userDefinedRuntimeAttribute>
                         </userDefinedRuntimeAttributes>
                     </view>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Bmi-HE-84C">
+                        <rect key="frame" x="140" y="330.66666666666669" width="20" height="20"/>
+                        <color key="color" name="Txt2"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
                 <constraint firstItem="zhP-fZ-deK" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" constant="16" id="042-QO-pMX"/>
+                <constraint firstItem="Bmi-HE-84C" firstAttribute="centerY" secondItem="2Ug-l3-7rn" secondAttribute="centerY" id="1Ch-1g-kbF"/>
                 <constraint firstItem="zhP-fZ-deK" firstAttribute="bottom" secondItem="kC8-mQ-rG0" secondAttribute="bottom" constant="-16" id="24T-mA-YgL"/>
                 <constraint firstItem="fVZ-ec-hFZ" firstAttribute="centerY" secondItem="kC8-mQ-rG0" secondAttribute="centerY" id="B0X-Pd-baR"/>
                 <constraint firstItem="73D-pt-ZBl" firstAttribute="leading" secondItem="kC8-mQ-rG0" secondAttribute="leading" constant="16" id="Ek7-kq-y6l"/>
@@ -158,6 +163,7 @@
                 <constraint firstItem="kC8-mQ-rG0" firstAttribute="height" secondItem="kC8-mQ-rG0" secondAttribute="width" multiplier="1:1" id="kzq-hd-e8B"/>
                 <constraint firstItem="Trj-n0-yRV" firstAttribute="trailing" secondItem="2Ug-l3-7rn" secondAttribute="trailing" id="laF-xu-TOh"/>
                 <constraint firstAttribute="trailing" secondItem="kC8-mQ-rG0" secondAttribute="trailing" id="odq-9B-kiE"/>
+                <constraint firstItem="Bmi-HE-84C" firstAttribute="centerX" secondItem="2Ug-l3-7rn" secondAttribute="centerX" id="pml-wy-NR4"/>
                 <constraint firstItem="wPi-Ru-RCn" firstAttribute="top" secondItem="2Ug-l3-7rn" secondAttribute="bottom" id="qmx-SZ-Lt6"/>
                 <constraint firstItem="kC8-mQ-rG0" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="qzg-kW-j4s"/>
             </constraints>
@@ -173,6 +179,7 @@
                 <outlet property="quantityLabel" destination="bH2-sr-yQS" id="Ezw-s0-EZx"/>
                 <outlet property="quantityView" destination="zhP-fZ-deK" id="paV-l5-Tt1"/>
                 <outlet property="scrubber" destination="2Ug-l3-7rn" id="joH-4M-A42"/>
+                <outlet property="scrubberActivityView" destination="Bmi-HE-84C" id="bw5-eg-b0L"/>
                 <outlet property="startTimeLabel" destination="wPi-Ru-RCn" id="f1F-Oe-cXR"/>
             </connections>
             <point key="canvasLocation" x="68.702290076335871" y="-105.28169014084507"/>

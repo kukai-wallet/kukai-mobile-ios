@@ -22,6 +22,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	@IBOutlet weak var startTimeLabel: UILabel!
 	@IBOutlet weak var endTimeLabel: UILabel!
 	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
+	@IBOutlet weak var scrubberActivityView: UIActivityIndicatorView!
 	@IBOutlet var aspectRatioConstraint: NSLayoutConstraint!
 	
 	private var imageView: UIImageView? = nil
@@ -31,6 +32,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var isPlaying = false
 	private var periodicTimeObserver: Any? = nil
 	private var playbackReadyObservation: NSKeyValueObservation? = nil
+	private var airplayObservation: NSKeyValueObservation? = nil
 	private var rateChangeObservation: NSKeyValueObservation? = nil
 	private var airPlayButton = AVRoutePickerView()
 	private var didSetNowPlaying = false
@@ -163,6 +165,13 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			return
 		}
 		
+		if isAudio {
+			scrubberActivityView.isHidden = false
+			scrubberActivityView.startAnimating()
+		} else {
+			scrubberActivityView.isHidden = true
+		}
+		
 		playbackReadyObservation = avPlayer.currentItem?.observe(\.status, changeHandler: { [weak self] item, value in
 			if item.status == .readyToPlay {
 				self?.hideScrubberLoading()
@@ -180,13 +189,19 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 					// If video, make sure we stop the spinner when the video is ready
 					self?.mediaActivityView.stopAnimating()
 					self?.mediaActivityView.isHidden = true
-					self?.airPlayTextLayer?.isHidden = false
 				}
 			}
 		})
 		
+		airplayObservation = avPlayer.observe(\.isExternalPlaybackActive) { [weak self] avPlayer, value in
+			print("isExternalPlaybackActive: \(avPlayer.isExternalPlaybackActive)")
+			self?.airPlayTextLayer?.isHidden = !avPlayer.isExternalPlaybackActive
+		}
+		
 		rateChangeObservation = avPlayer.observe(\.rate) { [weak self] avPlayer, value in
 			if avPlayer.rate == 0 && self?.isPlaying == true {
+				
+				print("calling reset")
 				self?.commandReset()
 			}
 		}
@@ -208,6 +223,11 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func hideScrubberLoading() {
+		if !scrubberActivityView.isHidden {
+			scrubberActivityView.stopAnimating()
+			scrubberActivityView.isHidden = true
+		}
+		
 		playPauseButton.isHidden = false
 		scrubber.isHidden = false
 		airPlayPlaceholderView.isHidden = false
@@ -294,11 +314,11 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func commandPause() {
+		isPlaying = !isPlaying
+		
 		playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
 		avPlayer?.pause()
 		let _ = try? AVAudioSession.sharedInstance().setActive(false)
-		
-		isPlaying = !isPlaying
 	}
 	
 	private func commandReset() {
