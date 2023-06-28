@@ -81,7 +81,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "Tez"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
-				cell.setPriceChange(value: 100)
+				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -101,7 +101,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
-				cell.setPriceChange(value: Decimal(Int.random(in: -100..<100)))
+				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 					let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
