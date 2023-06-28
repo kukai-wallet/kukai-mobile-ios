@@ -112,7 +112,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
 			
 		} else {
-			hashableData = DependencyManager.shared.balanceService.account.recentNFTs
+			hashableData = DependencyManager.shared.balanceService.account.recentNFTs.filter({ $0.isHidden == false })
 		}
 		
 		normalSnapshot.appendItems(hashableData, toSection: 0)

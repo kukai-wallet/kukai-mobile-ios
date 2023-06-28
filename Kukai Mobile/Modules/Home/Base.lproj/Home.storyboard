@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -185,13 +186,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxm-nU-LyP">
-                                                    <rect key="frame" x="40.000000000000007" y="18.333333333333329" width="76.666666666666686" height="18.666666666666671"/>
+                                                    <rect key="frame" x="39.999999999999993" y="18" width="79.333333333333314" height="19.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEg-Fn-9q8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="116.66666666666669" y="18.333333333333329" width="50" height="18.666666666666671"/>
+                                                    <rect key="frame" x="119.33333333333331" y="18" width="50" height="19.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="NPg-Hh-oA7"/>
                                                     </constraints>
@@ -254,13 +255,13 @@
                                                             <rect key="frame" x="44" y="16" width="246" height="35"/>
                                                             <subviews>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eXR-AY-uAm">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="246" height="18.666666666666668"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="246" height="19.333333333333332"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                     <color key="textColor" name="Txt2"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dqA-p2-tZv">
-                                                                    <rect key="frame" x="0.0" y="18.666666666666664" width="246" height="16.333333333333336"/>
+                                                                    <rect key="frame" x="0.0" y="19.333333333333336" width="246" height="15.666666666666664"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="10"/>
                                                                     <color key="textColor" name="Txt10"/>
                                                                     <nil key="highlightedColor"/>
@@ -1013,10 +1014,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4bK-1b-rfc">
-                                <rect key="frame" x="16" y="83.333333333333314" width="358" height="690.33333333333348"/>
+                                <rect key="frame" x="16" y="77" width="358" height="690.33333333333326"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Alert" translatesAutoresizingMaskIntoConstraints="NO" id="NU3-fB-cJx">
-                                        <rect key="frame" x="140" y="50.000000000000014" width="78" height="77.999999999999986"/>
+                                        <rect key="frame" x="140" y="50" width="78" height="78"/>
                                         <color key="tintColor" name="BGAlert4"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="78" id="5bE-FT-cNH"/>
@@ -1081,7 +1082,7 @@
                                                         </constraints>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rFh-lc-5C7">
-                                                        <rect key="frame" x="0.0" y="284" width="326" height="22"/>
+                                                        <rect key="frame" x="0.0" y="283.99999999999994" width="326" height="22"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8oD-KP-iCA">
                                                                 <rect key="frame" x="0.0" y="0.0" width="95.333333333333329" height="22"/>
@@ -1108,7 +1109,7 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="MKG-2k-v5R">
-                                                        <rect key="frame" x="0.0" y="312" width="326" height="22"/>
+                                                        <rect key="frame" x="0.0" y="311.99999999999994" width="326" height="22"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HcP-m8-2Vh">
                                                                 <rect key="frame" x="0.0" y="0.0" width="95.333333333333329" height="22"/>
@@ -1143,13 +1144,13 @@
                                                 </constraints>
                                             </stackView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message that if you remove this wallet the accounts contained and all content will be removed" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rwk-gp-69K">
-                                                <rect key="frame" x="0.0" y="358" width="326" height="33.666666666666686"/>
+                                                <rect key="frame" x="0.0" y="357.99999999999994" width="326" height="33.666666666666686"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                 <color key="textColor" name="Txt6"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="LR0-GJ-gJA">
-                                                <rect key="frame" x="0.0" y="415.66666666666663" width="326" height="56"/>
+                                                <rect key="frame" x="0.0" y="415.66666666666669" width="326" height="56"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1un-2s-Olb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="155" height="56"/>
