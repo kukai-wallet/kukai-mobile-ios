@@ -9,11 +9,18 @@ import Foundation
 
 public struct FreeformValidator: Validator {
 	
-	public init() {
+	let allowEmpty: Bool
+	
+	public init(allowEmpty: Bool) {
+		self.allowEmpty = allowEmpty
 	}
 	
 	public func validate(text: String) -> Bool {
-		return true
+		if text.count > 0 && text.prefix(1).rangeOfCharacter(from: .whitespacesAndNewlines) == nil {
+			return true
+		}
+		
+		return false
 	}
 	
 	public func restrictEntryIfInvalid(text: String) -> Bool {
