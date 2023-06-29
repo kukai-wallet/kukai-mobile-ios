@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Setup Sentry, but with Anonymous events
 		SentrySDK.start { options in
-			options.dsn = "https://53b9190ed8364ecc9b418dcc3493c506@o926227.ingest.sentry.io/5875459"
+			options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
 			options.beforeSend = { (event) -> Event? in
 				
 				// Scrub any identifiable data to keep users anonymous

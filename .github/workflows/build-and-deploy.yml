@@ -102,8 +102,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           export PATH=/usr/local/bin:$PATH
-          export SENTRY_ORG=simon-mcloughlin
-          export SENTRY_PROJECT=simon-mcloughlin
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
           export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
           export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
