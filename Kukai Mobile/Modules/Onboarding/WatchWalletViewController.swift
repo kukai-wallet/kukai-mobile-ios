@@ -43,6 +43,24 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 		}
 	}
 	
+	func findAddressThenNavigate(text: String, type: AddressType) {
+		self.showLoadingModal()
+		
+		enterAddressComponent.findAddress(forText: text) { [weak self] result in
+			self?.hideLoadingModal()
+			
+			guard let res = try? result.get() else {
+				self?.hideLoadingModal(completion: {
+					self?.alert(errorWithMessage: result.getFailure().description)
+				})
+				return
+			}
+			
+			self?.address = res.address
+			self?.navigate()
+		}
+	}
+	
 	func navigate() {
 		var watchMeta = WalletMetadata(address: self.address, hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: true, bas58EncodedPublicKey: "")
 		
@@ -71,33 +89,40 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 			watchMeta.socialUsername = self.alias
 		}
 		
-		let walletCache = WalletCacheService()
-		if walletCache.cacheWatchWallet(metadata: watchMeta) {
-			DependencyManager.shared.walletList = walletCache.readNonsensitive()
-			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
-			self.segue()
-			
-		} else {
-			self.alert(withTitle: "Error", andMessage: "Unable to cache wallet details")
+		self.showLoadingView()
+		findDomainsAndCache(forMetadata: watchMeta) { [weak self] in
+			self?.hideLoadingView()
+			self?.segue()
 		}
 	}
 	
-	func findAddressThenNavigate(text: String, type: AddressType) {
-		self.showLoadingModal()
-		
-		enterAddressComponent.findAddress(forText: text) { [weak self] result in
-			self?.hideLoadingModal()
-			
-			guard let res = try? result.get() else {
-				self?.hideLoadingModal(completion: {
-					self?.alert(errorWithMessage: result.getFailure().description)
-				})
-				return
-			}
-			
-			self?.address = res.address
-			self?.navigate()
+	func findDomainsAndCache(forMetadata metadata: WalletMetadata, completion: @escaping (() -> Void)) {
+		let walletCache = WalletCacheService()
+		guard walletCache.cacheWatchWallet(metadata: metadata) else {
+			self.alert(withTitle: "Error", andMessage: "Unable to cache wallet details")
+			completion()
+			return
 		}
+		
+		DependencyManager.shared.walletList = walletCache.readNonsensitive()
+		DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainFor(address: metadata.address, completion: { result in
+			switch result {
+				case .success(let response):
+					let _ = DependencyManager.shared.walletList.set(mainnetDomain: response.mainnet, ghostnetDomain: response.ghostnet, forAddress: metadata.address)
+					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: metadata.address)
+					
+					LookupService.shared.add(displayText: response.mainnet?.domain.name ?? "", forType: .tezosDomain, forAddress: metadata.address, isMainnet: true)
+					LookupService.shared.add(displayText: response.ghostnet?.domain.name ?? "", forType: .tezosDomain, forAddress: metadata.address, isMainnet: false)
+					LookupService.shared.cacheRecords()
+					completion()
+					
+				case .failure(_):
+					DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: metadata.address)
+					completion()
+			}
+		})
+		
 	}
 	
 	func segue() {
