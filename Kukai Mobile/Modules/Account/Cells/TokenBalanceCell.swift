@@ -29,11 +29,13 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		if value > 0 {
 			priceChangeIcon.image = UIImage(named: "ArrowUp")
 			priceChangeIcon.tintColor = UIColor.colorNamed("BGGood4")
+			priceChangeIcon.tintAdjustmentMode = .normal
 			priceChangeLabel.textColor = UIColor.colorNamed("TxtGood4")
 			
 		} else {
 			priceChangeIcon.image = UIImage(named: "ArrowDown")
 			priceChangeIcon.tintColor = UIColor.colorNamed("Txt10")
+			priceChangeIcon.tintAdjustmentMode = .normal
 			priceChangeLabel.textColor = UIColor.colorNamed("Txt10")
 		}
 	}

@@ -51,6 +51,11 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
+				let address = DependencyManager.shared.selectedWalletAddress ?? ""
+				DependencyManager.shared.balanceService.loadCache(address: address)
+				DependencyManager.shared.addressLoaded = address
+				self?.updateAccountButton()
+				
 				AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
 				
 				self?.setupTzKTAccountListener()

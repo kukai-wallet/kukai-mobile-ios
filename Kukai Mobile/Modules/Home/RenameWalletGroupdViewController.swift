@@ -22,7 +22,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		customNameTextField.validator = FreeformValidator()
+		customNameTextField.validator = FreeformValidator(allowEmpty: false)
 		customNameTextField.validatorTextFieldDelegate = self
 		
 		cancelButton.customButtonType = .secondary
@@ -68,6 +68,7 @@ extension RenameWalletGroupdViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
+		validated(false, textfield: customNameTextField, forText: "")
 		return true
 	}
 	

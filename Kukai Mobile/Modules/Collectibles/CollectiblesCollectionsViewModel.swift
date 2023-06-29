@@ -85,7 +85,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
 			if let sortMenu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
-				cell.searchBar.validator = FreeformValidator()
+				cell.searchBar.validator = FreeformValidator(allowEmpty: true)
 				cell.searchBar.validatorTextFieldDelegate = self?.validatorTextfieldDelegate
 				cell.setup(sortMenu: sortMenu)
 				return cell

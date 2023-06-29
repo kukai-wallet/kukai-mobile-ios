@@ -94,10 +94,8 @@ class CreateWithSocialViewController: UIViewController {
 			return
 		}
 		
-		self.showLoadingModal {
-			DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
-				self?.handleResult(result: result)
-			}
+		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
+			self?.handleResult(result: result)
 		}
 	}
 	
@@ -107,10 +105,8 @@ class CreateWithSocialViewController: UIViewController {
 			return
 		}
 		
-		self.showLoadingModal {
-			DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
-				self?.handleResult(result: result)
-			}
+		DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
 		}
 	}
 	
@@ -165,39 +161,36 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		
+		self.showLoadingView()
 		switch result {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
 				
 				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
 					if success {
+						self?.hideLoadingView()
 						self?.navigate()
 						
 					} else {
-						self?.hideLoadingModal { [weak self] in
-							self?.alert(withTitle: "Error", andMessage: "Unable to cache")
-						}
+						self?.hideLoadingView()
+						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
 					}
 				}
 				
 			case .failure(let error):
-				self.hideLoadingModal { [weak self] in
-					self?.alert(withTitle: "Error", andMessage: error.description)
-				}
+				self.hideLoadingView()
+				self.alert(withTitle: "Error", andMessage: error.description)
 		}
 	}
 	
 	private func navigate() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
-			self?.hideLoadingModal { [weak self] in
-				let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
-				if let vc = viewController {
-					self?.navigationController?.popToViewController(vc, animated: true)
-					AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
-				} else {
-					self?.performSegue(withIdentifier: "done", sender: nil)
-				}
+			let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+			if let vc = viewController {
+				self?.navigationController?.popToViewController(vc, animated: true)
+				AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
+			} else {
+				self?.performSegue(withIdentifier: "done", sender: nil)
 			}
 		}
 	}

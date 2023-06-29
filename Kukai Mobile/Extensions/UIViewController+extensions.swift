@@ -34,10 +34,8 @@ extension UIViewController {
 	
 	static func createActivityView() -> UIView {
 		let view = UIView(frame: UIScreen.main.bounds)
-		view.translatesAutoresizingMaskIntoConstraints = false
 		view.backgroundColor = UIViewController.loadingModalBackgroundColor
 		
-		UIViewController.activityViewActivityIndicator.translatesAutoresizingMaskIntoConstraints = false
 		UIViewController.activityViewActivityIndicator.color = UIColor.white
 		
 		view.addSubview(UIViewController.activityViewActivityIndicator)
