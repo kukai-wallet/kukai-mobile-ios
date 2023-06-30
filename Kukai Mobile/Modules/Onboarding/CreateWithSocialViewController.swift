@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import CustomAuth
 
 class CreateWithSocialViewController: UIViewController {
 	
@@ -36,6 +37,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	private var appleGradient = CAGradientLayer()
 	private var googleGradient = CAGradientLayer()
+	private var torusObserver: NSObjectProtocol?
 	
 	
     override func viewDidLoad() {
@@ -70,6 +72,13 @@ class CreateWithSocialViewController: UIViewController {
 		
 		emailTextField.validator = EmailValidator()
 		emailTextField.validatorTextFieldDelegate = self
+		
+		
+		// Can't detect certain events from Torus presented modals (e.g. when a user clicks cancel). Adding a second listener to the notification they use so I can trigger a loading modal
+		let torusNotificationName: Notification.Name = .init("TSDSDKCallbackNotification")
+		self.torusObserver = CustomAuth.notificationCenter.addObserver(forName: torusNotificationName, object: nil, queue: OperationQueue.main) { [weak self] notification in
+			self?.showLoadingView()
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +90,7 @@ class CreateWithSocialViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.scrollView.stopAutoScroll()
+		self.torusObserver = nil
 	}
 	
 	
@@ -161,14 +171,13 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		self.showLoadingView()
+		//self.showLoadingView()
 		switch result {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
 				
 				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
 					if success {
-						self?.hideLoadingView()
 						self?.navigate()
 						
 					} else {
@@ -185,6 +194,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	private func navigate() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+			self?.hideLoadingView()
 			let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
 			if let vc = viewController {
 				self?.navigationController?.popToViewController(vc, animated: true)

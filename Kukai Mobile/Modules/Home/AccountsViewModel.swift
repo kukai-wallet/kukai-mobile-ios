@@ -29,8 +29,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
-	
-	private var headers: [AccountsHeaderObject] = []
 	private var newWalletAutoSelected = false
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {

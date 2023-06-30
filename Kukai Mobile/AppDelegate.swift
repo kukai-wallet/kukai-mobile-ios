@@ -16,28 +16,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		setupTheme()
 		StorageService.runCleanupChecks()
 		
-		// Setup Sentry, but with Anonymous events
-		SentrySDK.start { options in
-			options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
-			options.beforeSend = { (event) -> Event? in
-				
-				// Scrub any identifiable data to keep users anonymous
-				event.context?["app"]?.removeValue(forKey: "device_app_hash")
-				event.user = nil
-				
-				return event
+		#if targetEnvironment(simulator)
+			// If running on simulator, print documents directory to help with debugging
+			if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
+				print("Documents Directory: \(documentsPath) \n\n")
 			}
-		}
+		
+		#else
+			// If not running on simulator, Setup Sentry, but with Anonymous events
+			SentrySDK.start { options in
+				options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
+				options.beforeSend = { (event) -> Event? in
+					
+					// Scrub any identifiable data to keep users anonymous
+					event.context?["app"]?.removeValue(forKey: "device_app_hash")
+					event.user = nil
+				
+					return event
+				}
+			}
+		#endif
 		
 		// Airplay audio/video support
 		application.beginReceivingRemoteControlEvents()
-		
-		
-		#if targetEnvironment(simulator)
-		if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
-			print("Documents Directory: \(documentsPath) \n\n")
-		}
-		#endif
 		
 		return true
 	}

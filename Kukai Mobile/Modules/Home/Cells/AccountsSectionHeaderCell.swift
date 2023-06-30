@@ -22,8 +22,13 @@ class AccountsSectionHeaderCell: UITableViewCell {
 			menuButton.isHidden = false
 			
 		} else {
+			menu = nil
 			menuButton.isHidden = true
 		}
+	}
+	
+	override func prepareForReuse() {
+		menu = nil
 	}
 	
 	override func setEditing(_ editing: Bool, animated: Bool) {
