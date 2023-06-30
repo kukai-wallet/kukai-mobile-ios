@@ -178,7 +178,6 @@ class CreateWithSocialViewController: UIViewController {
 				
 				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
 					if success {
-						self?.hideLoadingView()
 						self?.navigate()
 						
 					} else {
@@ -195,6 +194,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	private func navigate() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+			self?.hideLoadingView()
 			let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
 			if let vc = viewController {
 				self?.navigationController?.popToViewController(vc, animated: true)
