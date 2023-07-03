@@ -10,8 +10,10 @@ import KukaiCoreSwift
 import WalletConnectSign
 
 struct PairObj: Hashable {
-	let name: String
-	let url: String
+	let icon: URL?
+	let site: String
+	let address: String?
+	let network: String?
 	let topic: String
 }
 
@@ -29,12 +31,21 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self, let obj = item as? PairObj,  let cell = tableView.dequeueReusableCell(withIdentifier: "WalletConnectCell", for: indexPath) as? WalletConnectCell else { return UITableViewCell() }
+			guard let self = self, let obj = item as? PairObj,  let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell else { return UITableViewCell() }
 			
-			cell.nameLbl.text = obj.name
-			cell.serverLbl.text = obj.url
-			cell.row = indexPath.row
-			cell.delegate = self
+			let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: .icon)
+			MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			cell.siteLabel.text = obj.site
+			cell.networkLabel.text = obj.network
+			
+			if let add = obj.address, let metadata = DependencyManager.shared.walletList.metadata(forAddress: add) {
+				let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
+				cell.addressIconView.image = media.image
+				cell.addressLabel.text = media.title
+			} else {
+				cell.addressLabel.text = " "
+			}
+			
 			return cell
 				
 		})
@@ -52,10 +63,16 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		pairs = Pair.instance.getPairings().map({ pair -> PairObj in
 			
 			if pair.peer == nil {
-				return PairObj(name: "Pending", url: "Waiting for request from dApp", topic: pair.topic)
+				return PairObj(icon: nil, site: "Pending ...", address: nil, network: nil, topic: pair.topic)
 				
 			} else {
-				return PairObj(name: pair.peer?.name ?? " ", url: pair.peer?.url ?? " ", topic: pair.topic)
+				let firstSession = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic }).first
+				let firstAccount = firstSession?.accounts.first
+				let address = firstAccount?.address
+				let network = firstAccount?.blockchain.reference == "ghostnet" ? "Ghostnet" : "Mainnet"
+				let iconURL = URL(string: pair.peer?.icons.first ?? "")
+				
+				return PairObj(icon: iconURL, site: pair.peer?.name ?? " ", address: address, network: network, topic: pair.topic)
 			}
 		})
 		
@@ -76,13 +93,14 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .loading
 		
 		for (index, _) in pairs.enumerated() {
-			deleteTapped(forRow: index)
+			//deleteTapped(forRow: index)
 		}
 		
 		self.refresh(animate: true)
 	}
 }
 
+/*
 extension WalletConnectViewModel: WalletConnectCellProtocol {
 	
 	@MainActor
@@ -109,3 +127,4 @@ extension WalletConnectViewModel: WalletConnectCellProtocol {
 		}
 	}
 }
+*/

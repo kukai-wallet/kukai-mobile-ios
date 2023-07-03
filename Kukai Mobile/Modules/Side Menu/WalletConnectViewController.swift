@@ -6,9 +6,9 @@
 //
 
 import UIKit
-import WalletConnectSign
+import KukaiCoreSwift
+//import WalletConnectSign
 import Combine
-import OSLog
 
 class WalletConnectViewController: UIViewController {
 	
@@ -19,9 +19,11 @@ class WalletConnectViewController: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
+		tableView.delegate = self
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -46,7 +48,7 @@ class WalletConnectViewController: UIViewController {
 		viewModel.refresh(animate: true)
 	}
 	
-	
+	/*
 	@IBAction func reconnectTapped(_ sender: Any) {
 
 		self.showLoadingModal { [weak self] in
@@ -59,6 +61,18 @@ class WalletConnectViewController: UIViewController {
 					}
 				})
 			}
+		}
+	}
+	*/
+}
+
+extension WalletConnectViewController: UITableViewDelegate {
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 }

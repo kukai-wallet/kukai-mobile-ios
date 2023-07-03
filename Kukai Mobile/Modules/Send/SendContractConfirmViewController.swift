@@ -96,7 +96,8 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 			self.connectedAppNameLabel.text = session.peer.name
 			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				connectedAppURL = iconUrl
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+				connectedAppURL = smallIconURL
 			}
 			
 			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
