@@ -420,20 +420,24 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func error(message: String?, error: Error?) {
-		self.hideLoadingModal { [weak self] in
+		self.hideLoadingView()
 			
-			if let m = message {
-				self?.alert(errorWithMessage: m)
-				self?.respondOnReject(withMessage: m)
-				
-			} else if let e = error {
-				self?.alert(errorWithMessage: "\(e)")
-				self?.respondOnReject(withMessage: "An error occurred on the wallet")
-				
-			} else {
-				self?.alert(errorWithMessage: "Unknown Wallet Connect error occured")
-				self?.respondOnReject(withMessage: "Unknown error occurred")
+		if let m = message {
+			var message = "\(m)"
+			if let e = error {
+				message += ". Due to error: \n\n\(e)"
 			}
+			
+			self.alert(errorWithMessage: message)
+			self.respondOnReject(withMessage: m)
+			
+		} else if let e = error {
+			self.alert(errorWithMessage: "\(e)")
+			self.respondOnReject(withMessage: "An error occurred on the wallet")
+			
+		} else {
+			self.alert(errorWithMessage: "Unknown Wallet Connect error occured")
+			self.respondOnReject(withMessage: "Unknown error occurred")
 		}
 	}
 	

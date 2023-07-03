@@ -309,7 +309,7 @@ public class WalletConnectService {
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 				guard let estimationResult = try? result.get() else {
-					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: nil)
+					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: result.getFailure())
 					return
 				}
 				

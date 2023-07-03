@@ -102,7 +102,24 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		os_log("WC Approve Session %@", log: .default, type: .info, proposalId)
 		Task {
 			do {
-				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces)
+				let currentAccount = DependencyManager.shared.selectedWalletMetadata
+				let prefix = currentAccount?.address.prefix(3).lowercased() ?? ""
+				var algo = ""
+				if prefix == "tz1" {
+					algo = "ed25519"
+				} else if prefix == "tz2" {
+					algo = "secp256k1"
+				} else {
+					algo = "unknown"
+				}
+				
+				let sessionProperties = [
+					"algo": algo,
+					"address": currentAccount?.address ?? "",
+					"pubkey": currentAccount?.bas58EncodedPublicKey ?? ""
+				]
+				
+				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces, sessionProperties: sessionProperties)
 				presenter?.didApprovePairing = true
 				
 				self.hideLoadingModal(completion: { [weak self] in
