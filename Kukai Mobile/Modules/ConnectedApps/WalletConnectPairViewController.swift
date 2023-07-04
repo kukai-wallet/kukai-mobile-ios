@@ -73,26 +73,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 		
 		self.showLoadingModal()
-		var sessionNamespaces = [String: SessionNamespace]()
-		
-		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
-		let supportedEvents: [String] = []
-		
-		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods.filter({ supportedMethods.contains([$0]) })
-		let approvedMethods = requiredMethods?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedMethods.contains([$0]) }) ?? [] )
-		
-		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events.filter({ supportedEvents.contains([$0]) })
-		let approvedEvents = requiredEvents?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? [] )
-		
-		
-		let network = DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
-		if let wcAccount = Account("tezos:\(network):\(account)") {
-			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
-			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
-			sessionNamespaces["tezos"] = sessionNamespace
-			
-			approve(proposalId: proposal.id, namespaces: sessionNamespaces)
-			
+		if let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: account, currentNetworkType: DependencyManager.shared.currentNetworkType) {
+			approve(proposalId: proposal.id, namespaces: namespaces)
 		} else {
 			rejectTapped(proposal.id)
 		}

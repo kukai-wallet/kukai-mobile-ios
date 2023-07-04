@@ -30,24 +30,30 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			guard let self = self, let obj = item as? PairObj,  let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell else { return UITableViewCell() }
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: .icon)
-			MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
-			cell.siteLabel.text = obj.site
-			cell.networkLabel.text = obj.network
-			
-			if let add = obj.address, let metadata = DependencyManager.shared.walletList.metadata(forAddress: add) {
-				let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
-				cell.addressIconView.image = media.image
-				cell.addressLabel.text = media.title
-			} else {
-				cell.addressLabel.text = " "
-			}
-			
-			return cell
+			if let _ = item as? UUID {
+				return tableView.dequeueReusableCell(withIdentifier: "empty", for: indexPath)
 				
+			} else if let obj = item as? PairObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
+				let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: .icon)
+				MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				cell.siteLabel.text = obj.site
+				cell.networkLabel.text = obj.network
+				
+				if let add = obj.address, let metadata = DependencyManager.shared.walletList.metadata(forAddress: add) {
+					let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
+					cell.addressIconView.image = media.image
+					cell.addressLabel.text = media.title
+				} else {
+					cell.addressLabel.text = " "
+				}
+				
+				return cell
+				
+			} else {
+				return UITableViewCell()
+			}
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -80,7 +86,12 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
-		snapshot.appendItems(pairs, toSection: 0)
+		
+		if pairs.count > 0 {
+			snapshot.appendItems(pairs, toSection: 0)
+		} else {
+			snapshot.appendItems([UUID()], toSection: 0)
+		}
 		
 		ds.applySnapshotUsingReloadData(snapshot)
 		
@@ -88,43 +99,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	@MainActor
-	public func deleteAll() {
-		self.state = .loading
-		
-		for (index, _) in pairs.enumerated() {
-			//deleteTapped(forRow: index)
-		}
-		
-		self.refresh(animate: true)
+	func pairFor(indexPath: IndexPath) -> PairObj? {
+		return dataSource?.itemIdentifier(for: indexPath) as? PairObj
 	}
 }
-
-/*
-extension WalletConnectViewModel: WalletConnectCellProtocol {
-	
-	@MainActor
-	func deleteTapped(forRow: Int) {
-		self.state = .loading
-		
-		let item = pairs[forRow]
-		Task {
-			do {
-				try await Pair.instance.disconnect(topic: item.topic)
-				
-				for session in Sign.instance.getSessions().filter({ $0.pairingTopic == item.topic }) {
-					try await Sign.instance.disconnect(topic: session.topic)
-				}
-				
-				DispatchQueue.main.async { [weak self] in
-					self?.refresh(animate: true)
-				}
-			} catch {
-				DispatchQueue.main.async { [weak self] in
-					self?.state = .failure(KukaiError.internalApplicationError(error: error), "\(error)")
-				}
-			}
-		}
-	}
-}
-*/

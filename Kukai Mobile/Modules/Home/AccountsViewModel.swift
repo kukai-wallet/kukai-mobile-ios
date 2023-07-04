@@ -29,6 +29,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
+	public var addressToMarkAsSelected: String? = nil
 	private var newWalletAutoSelected = false
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
@@ -80,7 +81,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		selectedIndex = IndexPath(row: -1, section: -1)
 		
 		let wallets = DependencyManager.shared.walletList
-		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+		let currentAddress = addressToMarkAsSelected != nil ? addressToMarkAsSelected ?? "" : DependencyManager.shared.selectedWalletAddress ?? ""
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
 		var sections: [Int] = []

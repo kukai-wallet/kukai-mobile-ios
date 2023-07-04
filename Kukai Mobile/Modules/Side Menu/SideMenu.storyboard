@@ -796,6 +796,29 @@
                                             <outlet property="siteLabel" destination="hPt-Yd-2QB" id="rRQ-1o-Jzu"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="empty" rowHeight="86" id="mLn-NM-vSk">
+                                        <rect key="frame" x="0.0" y="136" width="393" height="86"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mLn-NM-vSk" id="T7e-fX-uiW">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Currently no connected apps. Use the Discover tab to find applications and games you can connect your wallet too" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gOK-AC-22B">
+                                                    <rect key="frame" x="16" y="16" width="361" height="54"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="gOK-AC-22B" secondAttribute="trailing" constant="16" id="2gE-5f-Z9Y"/>
+                                                <constraint firstAttribute="bottom" secondItem="gOK-AC-22B" secondAttribute="bottom" constant="16" id="4JB-yw-CC8"/>
+                                                <constraint firstItem="gOK-AC-22B" firstAttribute="leading" secondItem="T7e-fX-uiW" secondAttribute="leading" constant="16" id="aFN-sv-MwS"/>
+                                                <constraint firstItem="gOK-AC-22B" firstAttribute="top" secondItem="T7e-fX-uiW" secondAttribute="top" constant="16" id="iiP-5d-lUe"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                 </prototypes>
                             </tableView>
                         </subviews>
@@ -813,11 +836,61 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="4tr-xJ-w1n" id="IJr-hq-ugU"/>
+                        <segue destination="nWB-ll-IpC" kind="custom" identifier="accounts" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ok4-tN-Ggw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Zd-gC-1ai" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3315" y="798"/>
+        </scene>
+        <!--Accounts Container View Controller-->
+        <scene sceneID="eeY-bb-Pgq">
+            <objects>
+                <viewController id="nWB-ll-IpC" customClass="AccountsContainerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aNa-gP-GwP">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose Account" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVb-vM-foY">
+                                <rect key="frame" x="16" y="95" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3pj-vZ-91z">
+                                <rect key="frame" x="0.0" y="161" width="393" height="691"/>
+                                <connections>
+                                    <segue destination="alr-VP-pS2" kind="embed" identifier="embed" id="Vnk-Ma-Lu3"/>
+                                </connections>
+                            </containerView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Rl5-Rx-xaZ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FVb-vM-foY" firstAttribute="top" secondItem="Rl5-Rx-xaZ" secondAttribute="top" constant="36" id="3cI-Xz-SXT"/>
+                            <constraint firstItem="3pj-vZ-91z" firstAttribute="trailing" secondItem="Rl5-Rx-xaZ" secondAttribute="trailing" id="AWm-3R-nKb"/>
+                            <constraint firstItem="3pj-vZ-91z" firstAttribute="top" secondItem="FVb-vM-foY" secondAttribute="bottom" constant="42" id="P2r-Br-2DM"/>
+                            <constraint firstAttribute="bottom" secondItem="3pj-vZ-91z" secondAttribute="bottom" id="fxx-qr-iOO"/>
+                            <constraint firstItem="Rl5-Rx-xaZ" firstAttribute="trailing" secondItem="FVb-vM-foY" secondAttribute="trailing" constant="16" id="qMH-tU-nW4"/>
+                            <constraint firstItem="FVb-vM-foY" firstAttribute="leading" secondItem="Rl5-Rx-xaZ" secondAttribute="leading" constant="16" id="zhB-BL-xKq"/>
+                            <constraint firstItem="3pj-vZ-91z" firstAttribute="leading" secondItem="Rl5-Rx-xaZ" secondAttribute="leading" id="ztr-q5-AvG"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="3pj-vZ-91z" id="wj5-f0-agT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r0f-SI-lQt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3314" y="1630"/>
+        </scene>
+        <!--accounts-->
+        <scene sceneID="gOf-uC-OFr">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Home" referencedIdentifier="accounts" id="alr-VP-pS2" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="afu-bE-ffp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4104" y="1630"/>
         </scene>
     </scenes>
     <designables>
