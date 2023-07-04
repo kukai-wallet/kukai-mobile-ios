@@ -32,7 +32,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+				MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			} else {
 				self.iconView.image = UIImage.unknownToken()
 			}

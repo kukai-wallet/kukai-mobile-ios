@@ -56,7 +56,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		super.viewDidAppear(animated)
 		
 		if let proposal = TransactionService.shared.walletConnectOperationData.proposal, let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-			MediaProxyService.load(url: iconUrl, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+			MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		} else {
 			self.iconView.image = UIImage.unknownToken()
 		}
@@ -72,26 +73,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 		
 		self.showLoadingModal()
-		var sessionNamespaces = [String: SessionNamespace]()
-		
-		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
-		let supportedEvents: [String] = []
-		
-		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods.filter({ supportedMethods.contains([$0]) })
-		let approvedMethods = requiredMethods?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedMethods.contains([$0]) }) ?? [] )
-		
-		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events.filter({ supportedEvents.contains([$0]) })
-		let approvedEvents = requiredEvents?.union( proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? [] )
-		
-		
-		let network = DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
-		if let wcAccount = Account("tezos:\(network):\(account)") {
-			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
-			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
-			sessionNamespaces["tezos"] = sessionNamespace
-			
-			approve(proposalId: proposal.id, namespaces: sessionNamespaces)
-			
+		if let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: account, currentNetworkType: DependencyManager.shared.currentNetworkType) {
+			approve(proposalId: proposal.id, namespaces: namespaces)
 		} else {
 			rejectTapped(proposal.id)
 		}
@@ -102,7 +85,24 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		os_log("WC Approve Session %@", log: .default, type: .info, proposalId)
 		Task {
 			do {
-				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces)
+				let currentAccount = DependencyManager.shared.selectedWalletMetadata
+				let prefix = currentAccount?.address.prefix(3).lowercased() ?? ""
+				var algo = ""
+				if prefix == "tz1" {
+					algo = "ed25519"
+				} else if prefix == "tz2" {
+					algo = "secp256k1"
+				} else {
+					algo = "unknown"
+				}
+				
+				let sessionProperties = [
+					"algo": algo,
+					"address": currentAccount?.address ?? "",
+					"pubkey": currentAccount?.bas58EncodedPublicKey ?? ""
+				]
+				
+				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces, sessionProperties: sessionProperties)
 				presenter?.didApprovePairing = true
 				
 				self.hideLoadingModal(completion: { [weak self] in

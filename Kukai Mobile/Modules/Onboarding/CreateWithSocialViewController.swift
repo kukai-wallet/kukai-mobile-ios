@@ -104,6 +104,7 @@ class CreateWithSocialViewController: UIViewController {
 			return
 		}
 		
+		self.showLoadingView() // uses differetn callback structure to rest, need to pop loading here
 		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
 			self?.handleResult(result: result)
 		}
@@ -171,7 +172,6 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	func handleResult(result: Result<TorusWallet, KukaiError>) {
-		//self.showLoadingView()
 		switch result {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
@@ -188,7 +188,11 @@ class CreateWithSocialViewController: UIViewController {
 				
 			case .failure(let error):
 				self.hideLoadingView()
-				self.alert(withTitle: "Error", andMessage: error.description)
+				
+				// Ignore apple sign in cancelled error
+				if error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001 {
+					self.alert(withTitle: "Error", andMessage: error.description)
+				}
 		}
 	}
 	

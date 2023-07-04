@@ -49,6 +49,8 @@ public class WalletConnectService {
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
 											  redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
 	
+	@Published public var didCleanAfterDelete: Bool = false
+	
 	private init() {}
 	
 	public func setup() {
@@ -100,10 +102,11 @@ public class WalletConnectService {
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { /*[weak self]*/ data in
+			.sink { [weak self] data in
 				os_log("WC sessionDeletePublisher %@", log: .default, type: .info, data.0)
-				Task {
+				Task { [weak self] in
 					await WalletConnectService.cleanupSessionlessPairs()
+					self?.didCleanAfterDelete = true
 				}
 			}.store(in: &bag)
 	}
@@ -140,6 +143,55 @@ public class WalletConnectService {
 				
 			}
 		}
+	}
+	
+	
+	
+	// MARK: - Namespaces
+	
+	public static func createNamespace(forProposal proposal: Session.Proposal, address: String, currentNetworkType: TezosNodeClientConfig.NetworkType) -> [String: SessionNamespace]? {
+		
+		var sessionNamespaces = [String: SessionNamespace]()
+		
+		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
+		let supportedEvents: [String] = []
+		
+		let requiredMethods = proposal.requiredNamespaces["tezos"]?.methods.filter({ supportedMethods.contains([$0]) })
+		let optionalMethods = proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedMethods.contains([$0]) }) ?? []
+		let approvedMethods = requiredMethods?.union( optionalMethods )
+		
+		let requiredEvents = proposal.requiredNamespaces["tezos"]?.events.filter({ supportedEvents.contains([$0]) })
+		let optionalEvents = proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? []
+		let approvedEvents = requiredEvents?.union( optionalEvents )
+		
+		
+		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
+		if let wcAccount = Account("tezos:\(network):\(address)") {
+			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
+			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
+			sessionNamespaces["tezos"] = sessionNamespace
+			
+			return sessionNamespaces
+			
+		} else {
+			return nil
+		}
+	}
+	
+	public static func updateNamespaces(forPairing pairing: Pairing, toAddress: String/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
+		let session = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic })
+		var tezosNamespace = session?.namespaces["tezos"]
+		
+		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
+		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
+			tezosNamespace?.accounts = Set([newAccount])
+		}
+		
+		if let namespace = tezosNamespace {
+			return ["tezos": namespace]
+		}
+		
+		return nil
 	}
 	
 	
@@ -309,7 +361,7 @@ public class WalletConnectService {
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 				guard let estimationResult = try? result.get() else {
-					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: nil)
+					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: result.getFailure())
 					return
 				}
 				

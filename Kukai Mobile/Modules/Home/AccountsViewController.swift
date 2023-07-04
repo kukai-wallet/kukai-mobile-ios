@@ -22,6 +22,7 @@ class AccountsViewController: UIViewController {
 	private var refreshControl = UIRefreshControl()
 	
 	public weak var bottomSheetContainer: UIViewController? = nil
+	public var addressToMarkAsSelected: String? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -68,6 +69,7 @@ class AccountsViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		viewModel.isPresentingForConnectedApps = (bottomSheetContainer != nil)
+		viewModel.addressToMarkAsSelected = addressToMarkAsSelected
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
 	}
