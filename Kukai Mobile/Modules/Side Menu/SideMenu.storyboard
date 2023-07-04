@@ -796,7 +796,7 @@
                                             <outlet property="siteLabel" destination="hPt-Yd-2QB" id="rRQ-1o-Jzu"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="empty" rowHeight="86" id="mLn-NM-vSk">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="empty" rowHeight="86" id="mLn-NM-vSk" customClass="ConnectedAppCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="136" width="393" height="86"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="mLn-NM-vSk" id="T7e-fX-uiW">
@@ -836,7 +836,7 @@
                     </view>
                     <connections>
                         <outlet property="tableView" destination="4tr-xJ-w1n" id="IJr-hq-ugU"/>
-                        <segue destination="nWB-ll-IpC" kind="custom" identifier="accounts" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ok4-tN-Ggw"/>
+                        <segue destination="nWB-ll-IpC" kind="custom" identifier="accounts" customClass="BottomSheetMediumUpToLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ok4-tN-Ggw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Zd-gC-1ai" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
