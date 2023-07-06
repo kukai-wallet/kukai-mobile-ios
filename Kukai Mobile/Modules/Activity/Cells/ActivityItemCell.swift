@@ -136,13 +136,14 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		}
 		
 		if token.tokenType == .nonfungible && (token.balance.toNormalisedDecimal() ?? 0) > 1 {
-			return "(\(token.balance.normalisedRepresentation)) \(token.name ?? "")"
+			return "(\(token.balance.normalisedRepresentation)) \(token.name ?? "Unknwon Token")"
 			
 		} else if token.tokenType == .nonfungible {
-			return token.name ?? ""
+			return token.name ?? "Unknown Token"
 			
 		} else {
-			return "\(token.balance.normalisedRepresentation) \(token.symbol)"
+			let symbol = token.symbol == "" ? "Unknown Token" : token.symbol
+			return "\(token.balance.normalisedRepresentation) \(symbol)"
 		}
 	}
 	

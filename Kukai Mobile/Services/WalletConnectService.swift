@@ -102,7 +102,7 @@ public class WalletConnectService {
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { [weak self] data in
+			.sink { [weak self] data in 
 				os_log("WC sessionDeletePublisher %@", log: .default, type: .info, data.0)
 				Task { [weak self] in
 					await WalletConnectService.cleanupSessionlessPairs()
