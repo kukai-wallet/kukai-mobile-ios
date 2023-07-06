@@ -100,6 +100,6 @@ extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
 	}
 	
 	func shouldDismiss() {
-		self.dismiss(animated: true)
+		self.navigationController?.popViewController(animated: true)
 	}
 }
