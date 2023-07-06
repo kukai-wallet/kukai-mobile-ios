@@ -25,9 +25,9 @@ extension UIViewController {
 	// MARK: - Activity display
 	
 	private static var activityView = createActivityView()
-	private static var activityViewActivityIndicator = UIActivityIndicatorView()
+	private static var activityViewActivityIndicator = UIActivityIndicatorView(style: .large)
 	
-	private static var activityIndicator = UIActivityIndicatorView()
+	private static var activityIndicator = UIActivityIndicatorView(style: .large)
 	private static var loadingModal = UIViewController.createLoadingModal()
 	private static var loadingModalStatusLabel = UILabel()
 	private static let loadingModalBackgroundColor = UIColor.black.withAlphaComponent(0.75)
@@ -50,6 +50,18 @@ extension UIViewController {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityView.frame = UIScreen.main.bounds
 		UIApplication.shared.currentWindow?.addSubview(UIViewController.activityView)
+		
+		loadingViewShowActivity()
+	}
+	
+	func loadingViewHideActivity() {
+		UIViewController.activityViewActivityIndicator.stopAnimating()
+		UIViewController.activityViewActivityIndicator.isHidden = true
+	}
+	
+	func loadingViewShowActivity() {
+		UIViewController.activityViewActivityIndicator.startAnimating()
+		UIViewController.activityViewActivityIndicator.isHidden = false
 	}
 	
 	func hideLoadingView(completion: (() -> Void)? = nil) {

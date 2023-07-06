@@ -9,7 +9,7 @@ import UIKit
 import Combine
 import KukaiCoreSwift
 
-class AccountsViewController: UIViewController {
+class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	
 	@IBOutlet var addButtonContainer: UIBarButtonItem!
 	@IBOutlet var editButtonContainer: UIBarButtonItem!
@@ -65,13 +65,17 @@ class AccountsViewController: UIViewController {
 		}
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
+	func bottomSheetDataChanged() {
 		viewModel.isPresentingForConnectedApps = (bottomSheetContainer != nil)
 		viewModel.addressToMarkAsSelected = addressToMarkAsSelected
 		deselectCurrentSelection()
 		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		bottomSheetDataChanged()
 	}
 	
 	@IBAction func editButtonTapped(_ sender: Any) {
@@ -151,7 +155,7 @@ extension AccountsViewController: UITableViewDelegate {
 			DependencyManager.shared.selectedWalletMetadata = metadata
 			
 			if let container = bottomSheetContainer {
-				container.presentingViewController?.viewWillAppear(true)
+				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
 				container.dismissBottomSheet()
 				
 			} else {

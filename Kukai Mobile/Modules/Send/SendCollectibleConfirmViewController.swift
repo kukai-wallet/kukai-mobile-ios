@@ -61,6 +61,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	private var currentSendData: TransactionService.SendData = TransactionService.SendData()
 	private var selectedMetadata: WalletMetadata? = nil
 	
+	var dimBackground: Bool = false
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -187,6 +189,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		self.hideLoadingView()
 		
 		if !didSend && isWalletConnectOp {
 			walletConnectRespondOnReject()

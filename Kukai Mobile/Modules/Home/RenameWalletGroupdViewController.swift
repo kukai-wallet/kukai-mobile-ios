@@ -17,6 +17,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
 	public var selectedWalletMetadata: WalletMetadata? = nil
 	
 	var bottomSheetMaxHeight: CGFloat = 220
+	var dimBackground: Bool = true
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
