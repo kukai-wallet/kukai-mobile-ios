@@ -110,7 +110,7 @@ class SendCollectibleAmountViewController: UIViewController {
 		}
 		
 		if let nft = TransactionService.shared.sendData.chosenNFT, let textDecimal = Decimal(string: quantityTextField.text ?? "") {
-			self.showLoadingModal()
+			self.showLoadingView()
 			
 			let amount = TokenAmount(fromNormalisedAmount: textDecimal, decimalPlaces: nft.decimalPlaces)
 			let operations = OperationFactory.sendOperation(textDecimal, ofNft: nft, from: selectedWalletMetadata.address, to: destination)
@@ -123,15 +123,12 @@ class SendCollectibleAmountViewController: UIViewController {
 					case .success(let result):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: result.operations)
 						TransactionService.shared.currentForgedString = result.forgedString
-						
-						self?.hideLoadingModal(completion: { [weak self] in
-							self?.performSegue(withIdentifier: "confirm", sender: nil)
-						})
+						self?.loadingViewHideActivity()
+						self?.performSegue(withIdentifier: "confirm", sender: nil)
 						
 					case .failure(let estimationError):
-						self?.hideLoadingModal(completion: { [weak self] in
-							self?.alert(errorWithMessage: "\(estimationError)")
-						})
+						self?.hideLoadingView()
+						self?.alert(errorWithMessage: "\(estimationError)")
 				}
 			}
 		}

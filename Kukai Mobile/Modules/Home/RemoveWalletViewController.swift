@@ -66,7 +66,7 @@ class RemoveWalletViewController: UIViewController {
 		super.viewWillDisappear(animated)
 		
 		if let vc = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? AccountsViewController {
-			vc.viewWillAppear(true)
+			vc.bottomSheetDataChanged()
 		}
 	}
 	

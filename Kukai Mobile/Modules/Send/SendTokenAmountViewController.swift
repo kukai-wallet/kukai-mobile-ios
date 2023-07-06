@@ -100,7 +100,7 @@ class SendTokenAmountViewController: UIViewController {
 		}
 		
 		if let token = TransactionService.shared.sendData.chosenToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
-			self.showLoadingModal()
+			self.showLoadingView()
 			
 			let operations = OperationFactory.sendOperation(amount, of: token, from: selectedWalletMetadata.address, to: destination)
 			TransactionService.shared.sendData.chosenAmount = amount
@@ -112,15 +112,12 @@ class SendTokenAmountViewController: UIViewController {
 					case .success(let estimationResult):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
 						TransactionService.shared.currentForgedString = estimationResult.forgedString
-						
-						self?.hideLoadingModal(completion: { [weak self] in
-							self?.performSegue(withIdentifier: "confirm", sender: nil)
-						})
+						self?.loadingViewHideActivity()
+						self?.performSegue(withIdentifier: "confirm", sender: nil)
 						
 					case .failure(let estimationError):
-						self?.hideLoadingModal(completion: { [weak self] in
-							self?.alert(errorWithMessage: "\(estimationError)")
-						})
+						self?.hideLoadingView()
+						self?.alert(errorWithMessage: "\(estimationError)")
 				}
 			}
 		}

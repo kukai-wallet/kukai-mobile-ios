@@ -10,6 +10,7 @@ import UIKit
 class AddWalletViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	var bottomSheetMaxHeight: CGFloat = 330
+	var dimBackground: Bool = true
 	
 	@IBOutlet var createWalletButton: CustomisableButton!
 	@IBOutlet var existingWalletButton: CustomisableButton!

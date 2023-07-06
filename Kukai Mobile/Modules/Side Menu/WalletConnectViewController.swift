@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import Combine
 
-class WalletConnectViewController: UIViewController {
+class WalletConnectViewController: UIViewController, BottomSheetContainerDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
@@ -59,6 +59,10 @@ class WalletConnectViewController: UIViewController {
 				
 				print("deleting ....")
 			}.store(in: &bag)
+	}
+	
+	func bottomSheetDataChanged() {
+		viewModel.refresh(animate: true)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

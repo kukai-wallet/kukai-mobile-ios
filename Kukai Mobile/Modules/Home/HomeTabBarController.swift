@@ -399,7 +399,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func processedOperations(ofType: WalletConnectOperationType) {
-		self.hideLoadingView()
+		self.loadingViewHideActivity()
 		
 		if self.presentedViewController == nil {
 			switch ofType {

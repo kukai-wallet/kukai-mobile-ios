@@ -25,6 +25,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	private var bag = Set<AnyCancellable>()
 	
 	var bottomSheetMaxHeight: CGFloat = 500
+	var dimBackground: Bool = true
 	weak var presenter: HomeTabBarController? = nil
 	
 	override func viewDidLoad() {

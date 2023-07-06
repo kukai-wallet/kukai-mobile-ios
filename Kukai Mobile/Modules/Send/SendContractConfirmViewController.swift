@@ -69,6 +69,8 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	private var currentContractData: TransactionService.ContractCallData = TransactionService.ContractCallData()
 	private var selectedMetadata: WalletMetadata? = nil
 	
+	var dimBackground: Bool = false
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -172,6 +174,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		self.hideLoadingView()
 		
 		if !didSend && isWalletConnectOp {
 			walletConnectRespondOnReject()

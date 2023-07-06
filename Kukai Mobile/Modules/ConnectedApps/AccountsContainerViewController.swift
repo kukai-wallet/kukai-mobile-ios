@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol BottomSheetContainerDelegate {
+	func bottomSheetDataChanged()
+}
+
 class AccountsContainerViewController: UIViewController {
 
 	@IBOutlet var containerView: UIView!

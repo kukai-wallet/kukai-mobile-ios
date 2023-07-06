@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol {
+class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol, BottomSheetContainerDelegate {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
@@ -23,6 +23,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	@IBOutlet weak var connectButton: CustomisableButton!
 	
 	var bottomSheetMaxHeight: CGFloat = 450
+	var dimBackground: Bool = true
 	weak var presenter: HomeTabBarController? = nil
 	
 	override func viewDidLoad() {
@@ -39,9 +40,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		self.nameLabel.text = proposal.proposer.name
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
+	func bottomSheetDataChanged() {
 		if DependencyManager.shared.walletList.count() == 1 {
 			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()
 			multiAccountTitle.isHidden = true
@@ -50,6 +49,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			singleAccountContainer.isHidden = true
 			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress(), for: .normal)
 		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		bottomSheetDataChanged()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
