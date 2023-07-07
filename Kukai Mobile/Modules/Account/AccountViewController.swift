@@ -46,7 +46,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
-					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 			}
 		}.store(in: &bag)
 		

@@ -42,7 +42,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
-					(self?.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 			}
 		}.store(in: &bag)
 		

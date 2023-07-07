@@ -144,4 +144,8 @@ public class ActivityService {
 			os_log("Pending transactions checked, none to remove")
 		}
 	}
+	
+	public static func pendingOperationsFor(forAddress address: String) -> [TzKTTransactionGroup] {
+		return DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address)) ?? []
+	}
 }

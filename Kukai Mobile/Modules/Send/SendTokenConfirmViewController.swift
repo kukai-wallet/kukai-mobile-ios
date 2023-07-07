@@ -328,7 +328,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 																				   primaryToken: token)
 		}
 		
-		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		DependencyManager.shared.balanceService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	
