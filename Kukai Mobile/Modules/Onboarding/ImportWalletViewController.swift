@@ -30,6 +30,7 @@ class ImportWalletViewController: UIViewController {
 	
 	private var suggestionView: TextFieldSuggestionAccessoryView? = nil
 	private var bag = Set<AnyCancellable>()
+	private var accountScanningVc: AccountScanningViewController? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -170,33 +171,40 @@ class ImportWalletViewController: UIViewController {
 	
 	private func conintue(withWallet wallet: Wallet) {
 		self.view.endEditing(true)
-		self.showLoadingModal()
-		
+		createScanningVc()
+		addScanningToWindow()
 		
 		if wallet is HDWallet, let hd = wallet as? HDWallet {
 			self.updateLoadingModalStatusLabel(message: "Importing Wallet, and scanning for accounts")
 			
 			Task {
-				if await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd) {
-					self.navigate()
+				if await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd, progress: { [weak self] found in
+					if found == 1 {
+						self?.accountScanningVc?.showAllText()
+					}
+					
+					self?.accountScanningVc?.updateFound(found)
+					
+				}) {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+						self?.removeScanningVc()
+						self?.navigate()
+					}
 					
 				} else {
-					self.hideLoadingModal { [weak self] in
-						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
-					}
+					self.alert(withTitle: "Error", andMessage: "Unable to cache")
 				}
 			}
 			
 		} else {
-			self.updateLoadingModalStatusLabel(message: "Importing Wallet, and checking tezos domain registrations")
+			accountScanningVc?.hideAllText()
 			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
 				if success {
+					self?.removeScanningVc()
 					self?.navigate()
 					
 				} else {
-					self?.hideLoadingModal { [weak self] in
-						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
-					}
+					self?.alert(withTitle: "Error", andMessage: "Unable to cache")
 				}
 			}
 		}
@@ -232,15 +240,38 @@ class ImportWalletViewController: UIViewController {
 	}
 	
 	private func navigate() {
-		self.hideLoadingModal { [weak self] in
-			let viewController = self?.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
-			if let vc = viewController {
-				self?.navigationController?.popToViewController(vc, animated: true)
-				AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
-				
-			} else {
-				self?.performSegue(withIdentifier: "done", sender: nil)
-			}
+		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		if let vc = viewController {
+			self.navigationController?.popToViewController(vc, animated: true)
+			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
+			
+		} else {
+			self.performSegue(withIdentifier: "done", sender: nil)
+		}
+	}
+	
+	private func createScanningVc() {
+		if accountScanningVc == nil {
+			accountScanningVc = UIStoryboard(name: "Onboarding", bundle: nil).instantiateViewController(withIdentifier: "account-scanning-modal") as? AccountScanningViewController
+		}
+	}
+	
+	private func addScanningToWindow() {
+		guard let vc = accountScanningVc else { return }
+		
+		//vc.hideAllText()
+		vc.view.frame = UIScreen.main.bounds
+		UIApplication.shared.currentWindow?.addSubview(vc.view)
+	}
+	
+	private func removeScanningVc() {
+		guard let vc = accountScanningVc else { return }
+		
+		UIView.animate(withDuration: 0.3) {
+			vc.view.alpha = 0
+			
+		} completion: { done in
+			vc.view.removeFromSuperview()
 		}
 	}
 }

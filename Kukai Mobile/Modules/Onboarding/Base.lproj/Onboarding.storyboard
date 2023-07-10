@@ -2555,6 +2555,84 @@ for your Digital Assets</string>
             </objects>
             <point key="canvasLocation" x="-7490" y="2740"/>
         </scene>
+        <!--Account Scanning View Controller-->
+        <scene sceneID="qbm-47-wc0">
+            <objects>
+                <viewController storyboardIdentifier="account-scanning-modal" id="uZ7-Px-sdb" customClass="AccountScanningViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TtS-aa-Cj2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spinner" translatesAutoresizingMaskIntoConstraints="NO" id="4QS-ZN-Rmt">
+                                <rect key="frame" x="165" y="160" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="h0h-G1-e0v"/>
+                                    <constraint firstAttribute="width" constant="45" id="qk3-97-SLf"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KukaiWheel" translatesAutoresizingMaskIntoConstraints="NO" id="tOv-fA-SA5">
+                                <rect key="frame" x="177.5" y="172.5" width="20" height="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="EW5-EL-FDi"/>
+                                    <constraint firstAttribute="width" constant="20" id="G0P-3E-ACB"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Importing Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ofn-hQ-dML">
+                                <rect key="frame" x="110" y="213" width="155" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning for accounts:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sqm-0p-gX3">
+                                <rect key="frame" x="103.5" y="249" width="168" height="20"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;number&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tMO-uB-SMZ">
+                                <rect key="frame" x="105" y="281" width="165" height="41"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="34"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o0M-th-qIA">
+                                <rect key="frame" x="168.5" y="324" width="38" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt12"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hfi-cO-7V5"/>
+                        <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="sqm-0p-gX3" firstAttribute="top" secondItem="ofn-hQ-dML" secondAttribute="bottom" constant="12" id="79h-hJ-JsK"/>
+                            <constraint firstItem="tOv-fA-SA5" firstAttribute="centerY" secondItem="4QS-ZN-Rmt" secondAttribute="centerY" id="B8o-P2-qA6"/>
+                            <constraint firstItem="o0M-th-qIA" firstAttribute="centerX" secondItem="4QS-ZN-Rmt" secondAttribute="centerX" id="CbT-ML-pcn"/>
+                            <constraint firstItem="tMO-uB-SMZ" firstAttribute="centerX" secondItem="4QS-ZN-Rmt" secondAttribute="centerX" id="Ja6-Cr-exg"/>
+                            <constraint firstItem="ofn-hQ-dML" firstAttribute="top" secondItem="4QS-ZN-Rmt" secondAttribute="bottom" constant="8" id="Nf4-Gw-uM2"/>
+                            <constraint firstItem="tMO-uB-SMZ" firstAttribute="top" secondItem="sqm-0p-gX3" secondAttribute="bottom" constant="12" id="PHZ-WK-Yhf"/>
+                            <constraint firstItem="4QS-ZN-Rmt" firstAttribute="top" secondItem="hfi-cO-7V5" secondAttribute="top" constant="140" id="X8I-jZ-7t0"/>
+                            <constraint firstItem="ofn-hQ-dML" firstAttribute="centerX" secondItem="4QS-ZN-Rmt" secondAttribute="centerX" id="Xoc-YR-2iz"/>
+                            <constraint firstItem="4QS-ZN-Rmt" firstAttribute="centerX" secondItem="hfi-cO-7V5" secondAttribute="centerX" id="bnf-86-2dA"/>
+                            <constraint firstItem="o0M-th-qIA" firstAttribute="top" secondItem="tMO-uB-SMZ" secondAttribute="bottom" constant="2" id="o64-JK-fOi"/>
+                            <constraint firstItem="tOv-fA-SA5" firstAttribute="centerX" secondItem="4QS-ZN-Rmt" secondAttribute="centerX" id="t7n-wz-Dy4"/>
+                            <constraint firstItem="sqm-0p-gX3" firstAttribute="centerX" secondItem="4QS-ZN-Rmt" secondAttribute="centerX" id="xZ2-UF-Qwy"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="foundLabel" destination="o0M-th-qIA" id="sW5-eM-I5l"/>
+                        <outlet property="kukaiLogoImage" destination="tOv-fA-SA5" id="fgT-un-GM3"/>
+                        <outlet property="numberLabel" destination="tMO-uB-SMZ" id="e82-Uh-lSt"/>
+                        <outlet property="scanningLabel" destination="sqm-0p-gX3" id="chI-Ef-og0"/>
+                        <outlet property="spinnerImage" destination="4QS-ZN-Rmt" id="3AC-58-CWB"/>
+                        <outlet property="titleLabel" destination="ofn-hQ-dML" id="lwS-Sq-aj8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2zy-z4-nIW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-5790" y="2730"/>
+        </scene>
         <!--Recovery Phrase Info View Controller-->
         <scene sceneID="HPq-uy-tCq">
             <objects>
@@ -3511,6 +3589,7 @@ Please store it carefully!</string>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="HiddenOff" width="24" height="24"/>
         <image name="HiddenOn" width="24" height="24"/>
+        <image name="KukaiWheel" width="24" height="24"/>
         <image name="Photos" width="24" height="24"/>
         <image name="Social_Apple" width="30" height="30"/>
         <image name="Social_Discord_1color" width="30" height="30"/>
@@ -3521,6 +3600,7 @@ Please store it carefully!</string>
         <image name="Social_Reddit_1color" width="30" height="30"/>
         <image name="Social_Twitch_1color" width="30" height="30"/>
         <image name="Social_Twitter_1color" width="31" height="30"/>
+        <image name="Spinner" width="145" height="144"/>
         <image name="UseKey_KukaBase" width="240" height="169"/>
         <image name="UseSocialBase_KukaiTarget" width="240" height="169"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
@@ -3572,11 +3652,17 @@ Please store it carefully!</string>
         <namedColor name="BtnTer1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="TintGeneral">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt0">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt14">
             <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
