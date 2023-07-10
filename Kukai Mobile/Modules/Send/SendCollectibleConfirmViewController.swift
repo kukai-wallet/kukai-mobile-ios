@@ -286,7 +286,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 																		 parameters: parameters,
 																		 primaryToken: token)
 		
-		DependencyManager.shared.balanceService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
+		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(result)")
 	}
 	

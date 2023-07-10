@@ -295,7 +295,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 																				   parameters: parameters,
 																				   primaryToken: nil)
 		
-		DependencyManager.shared.balanceService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
+		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	

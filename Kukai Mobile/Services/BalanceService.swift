@@ -51,7 +51,6 @@ public class BalanceService {
 	public var lastFullRefreshDates: [String: Date] = [:]
 	public var estimatedTotalXtz: [String: XTZAmount] = [:]
 	
-	@Published public var addressesWithPendingOperation: [String] = []
 	@Published public var addressesWaitingToBeRefreshed: [String] = []
 	@Published public var addressRefreshed: String = ""
 	
@@ -97,12 +96,6 @@ public class BalanceService {
 		}
 	}
 	
-	public func addUniqueAddressToPendingOperation(address: String) {
-		if !addressesWithPendingOperation.contains([address]) {
-			addressesWithPendingOperation.append(address)
-		}
-	}
-	
 	private func uniqueRecords(records: [FetchRequestRecord]) -> [FetchRequestRecord] {
 		return NSOrderedSet(array: records).compactMap({ $0 as? FetchRequestRecord })
 	}
@@ -120,11 +113,6 @@ public class BalanceService {
 					if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: currentFetchRequest.address) {
 						self?.addressesWaitingToBeRefreshed.remove(at: index)
 						self?.addressRefreshed = currentFetchRequest.address
-					}
-					
-					// If the address in question has a pending operation waiting, check to see if it has been removed. If so, remove the address from the pending list
-					if let index = self?.addressesWithPendingOperation.firstIndex(of: currentFetchRequest.address), ActivityService.pendingOperationsFor(forAddress: currentFetchRequest.address).count == 0 {
-						self?.addressesWithPendingOperation.remove(at: index)
 					}
 					
 					self?.processPendingRequests()

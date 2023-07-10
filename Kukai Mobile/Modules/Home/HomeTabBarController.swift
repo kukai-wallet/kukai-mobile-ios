@@ -75,7 +75,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				self?.refresh(addresses: nil)
 			}.store(in: &bag)
 		
-		DependencyManager.shared.balanceService.$addressesWithPendingOperation
+		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
 			.sink { [weak self] addresses in
 				if addresses.count > 0 {
@@ -150,8 +150,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 		
 		// Check if we need to start or stop the activity animation
-		if DependencyManager.shared.balanceService.addressesWithPendingOperation.count > 0 {
-			startActivityAnimationIfNecessary(addressesToBeRefreshed: DependencyManager.shared.balanceService.addressesWithPendingOperation)
+		if DependencyManager.shared.activityService.addressesWithPendingOperation.count > 0 {
+			startActivityAnimationIfNecessary(addressesToBeRefreshed: DependencyManager.shared.activityService.addressesWithPendingOperation)
 		} else {
 			stopActivityAnimationIfNecessary()
 		}
