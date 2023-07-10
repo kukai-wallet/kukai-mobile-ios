@@ -20,11 +20,12 @@ struct AllChartData: Hashable {
 	}
 }
 
-struct LoadingData: Hashable {
+struct LoadingData: Hashable, Identifiable {
 	let id = UUID()
 }
 
-struct TokenDetailsButtonData: Hashable {
+struct TokenDetailsButtonData: Hashable, Identifiable {
+	let id = UUID()
 	var isFavourited: Bool
 	let canBeUnFavourited: Bool
 	let isHidden: Bool
@@ -34,7 +35,8 @@ struct TokenDetailsButtonData: Hashable {
 	let hasMoreButton: Bool
 }
 
-struct TokenDetailsBalanceAndBakerData: Hashable {
+struct TokenDetailsBalanceAndBakerData: Hashable, Identifiable {
+	let id = UUID()
 	let balance: String
 	let value: String
 	let isStakingPossible: Bool
@@ -47,7 +49,8 @@ struct TokenDetailsSendData: Hashable {
 	var isDisabled: Bool
 }
 
-struct TokenDetailsActivityHeader: Hashable {
+struct TokenDetailsActivityHeader: Hashable, Identifiable {
+	let id = UUID()
 	let header: Bool
 }
 
@@ -190,7 +193,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 			}
 			
-			return UITableViewCell()
+			let backupCell = UITableViewCell()
+			backupCell.backgroundColor = .clear
+			
+			return backupCell
 		})
 		
 		dataSource?.defaultRowAnimation = .fade
@@ -303,7 +309,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			tokenSymbol = "Tezos"
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			//tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
@@ -313,19 +319,20 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
 			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: bakerString)
 			
-		} else if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+		} else {
 			tokenIconURL = token.thumbnailURL
 			tokenSymbol = token.symbol
 			
-			let fiatPerToken = tokenValueAndRate.marketRate
-			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
-			
 			let isFav = token.isFavourite
 			let isHidden = token.isHidden
+			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
+			
+			let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] ?? (xtzValue: .zero(), marketRate: 0)
+			//let fiatPerToken = tokenValueAndRate.marketRate
+			//tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
-			
-			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
 		}
 	}

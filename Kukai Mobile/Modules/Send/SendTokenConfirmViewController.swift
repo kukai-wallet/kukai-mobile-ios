@@ -392,7 +392,7 @@ extension SendTokenConfirmViewController: BottomSheetCustomCalculateProtocol {
 		view.layoutIfNeeded()
 		
 		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-		height += (scrollView.contentSize.height - 24)
+		height += scrollView.contentSize.height
 		
 		return height
 	}
