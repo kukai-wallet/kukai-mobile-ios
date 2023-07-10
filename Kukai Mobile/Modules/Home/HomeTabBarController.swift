@@ -71,15 +71,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				DependencyManager.shared.balanceService.loadCache(address: address)
 				DependencyManager.shared.addressLoaded = address
 				
-				self?.stopActivityAnimation(success: false)
 				self?.refreshType = .useCacheIfNotStale
 				self?.refresh(addresses: nil)
 			}.store(in: &bag)
 		
-		DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed
+		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
 			.sink { [weak self] addresses in
-				if addresses.count == 0 {
+				if addresses.count > 0 {
+					self?.startActivityAnimationIfNecessary(addressesToBeRefreshed: addresses)
+				} else {
 					self?.stopActivityAnimationIfNecessary()
 				}
 			}.store(in: &bag)
@@ -90,7 +91,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				if address == DependencyManager.shared.selectedWalletAddress {
 					DependencyManager.shared.balanceService.loadCache(address: address)
 					
-					self?.stopActivityAnimationIfNecessary()
 					self?.updateAccountButton()
 					DependencyManager.shared.addressRefreshed = address
 				}
@@ -147,7 +147,13 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
 			self.refreshType = .useCacheIfNotStale
 			refresh(addresses: nil)
-			
+		}
+		
+		// Check if we need to start or stop the activity animation
+		if DependencyManager.shared.activityService.addressesWithPendingOperation.count > 0 {
+			startActivityAnimationIfNecessary(addressesToBeRefreshed: DependencyManager.shared.activityService.addressesWithPendingOperation)
+		} else {
+			stopActivityAnimationIfNecessary()
 		}
 	}
 	
@@ -285,6 +291,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		activityAnimationImageView.startAnimating()
 	}
 	
+	func startActivityAnimationIfNecessary(addressesToBeRefreshed addresses: [String]) {
+		if !self.activityAnimationInProgress, let selectedAddress = DependencyManager.shared.selectedWalletAddress, addresses.contains([selectedAddress]) {
+			self.startActivityAnimation()
+		} else {
+			self.stopActivityAnimationIfNecessary()
+		}
+	}
+	
 	func stopActivityAnimation(success: Bool) {
 		DispatchQueue.main.async { [weak self] in
 			self?.activityAnimationInProgress = false
@@ -296,7 +310,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func stopActivityAnimationIfNecessary() {
-		if self.activityAnimationInProgress && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
+		if self.activityAnimationInProgress {
 			self.stopActivityAnimation(success: true)
 		}
 	}

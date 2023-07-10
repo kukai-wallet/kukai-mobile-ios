@@ -16,6 +16,8 @@ public class ActivityService {
 	private static let pendingCachedFileName = "activity-service-pending-"
 	private static let cachedFileName = "activity-service-"
 	
+	@Published public var addressesWithPendingOperation: [String] = []
+	
 	
 	
 	// MARK: - Init
@@ -138,10 +140,30 @@ public class ActivityService {
 		if indexesToRemove.count > 0 {
 			pending.remove(atOffsets: IndexSet(indexesToRemove))
 			let _ = DiskService.write(encodable: pending, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address))
+			if pending.count == 0 {
+				self.updatePendingQueue(forAddress: address)
+			}
 			os_log("Pending transactions checked, removing index: \(indexesToRemove)")
 			
 		} else {
+			self.updatePendingQueue(forAddress: address)
 			os_log("Pending transactions checked, none to remove")
+		}
+	}
+	
+	public static func pendingOperationsFor(forAddress address: String) -> [TzKTTransactionGroup] {
+		return DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address)) ?? []
+	}
+	
+	public func addUniqueAddressToPendingOperation(address: String) {
+		if !addressesWithPendingOperation.contains([address]) {
+			addressesWithPendingOperation.append(address)
+		}
+	}
+	
+	public func updatePendingQueue(forAddress address: String) {
+		if let index = self.addressesWithPendingOperation.firstIndex(of: address) {
+			self.addressesWithPendingOperation.remove(at: index)
 		}
 	}
 }

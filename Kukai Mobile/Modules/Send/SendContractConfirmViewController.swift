@@ -295,7 +295,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 																				   parameters: parameters,
 																				   primaryToken: nil)
 		
-		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
 	}
 	
@@ -359,7 +359,7 @@ extension SendContractConfirmViewController: BottomSheetCustomCalculateProtocol 
 		view.layoutIfNeeded()
 		
 		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-		height += (scrollView.contentSize.height - 24)
+		height += scrollView.contentSize.height
 		
 		return height
 	}

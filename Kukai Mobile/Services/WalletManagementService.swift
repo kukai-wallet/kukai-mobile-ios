@@ -102,7 +102,7 @@ class WalletManagementService {
 		})
 	}
 	
-	public static func cacheWalletAndScanForAccounts(wallet: HDWallet) async -> Bool {
+	public static func cacheWalletAndScanForAccounts(wallet: HDWallet, progress: ((Int) -> Void)? = nil) async -> Bool {
 		guard await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true),
 				let hdIndex = DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == wallet.address }) else {
 			return false
@@ -118,6 +118,7 @@ class WalletManagementService {
 			}
 			
 			if await WalletManagementService.isUsedAccount(address: child.address) {
+				progress?(childIndex)
 				let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, markSelected: false)
 			} else {
 				isUsedAccount = false

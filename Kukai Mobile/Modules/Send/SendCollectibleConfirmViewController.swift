@@ -286,7 +286,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 																		 parameters: parameters,
 																		 primaryToken: token)
 		
-		(self.presentingViewController as? UINavigationController)?.homeTabBarController()?.startActivityAnimation()
+		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(result)")
 	}
 	
@@ -350,7 +350,7 @@ extension SendCollectibleConfirmViewController: BottomSheetCustomCalculateProtoc
 		view.layoutIfNeeded()
 		
 		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-		height += (scrollView.contentSize.height - 24)
+		height += scrollView.contentSize.height
 		
 		return height
 	}

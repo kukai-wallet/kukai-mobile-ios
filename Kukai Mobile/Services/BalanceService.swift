@@ -109,6 +109,7 @@ public class BalanceService {
 			self?.fetchAllBalancesTokensAndPrices(forAddress: currentFetchRequest.address, refreshType: currentFetchRequest.type, completion: { error in
 				
 				DispatchQueue.main.async { [weak self] in
+					// If an address on the list of to be refreshed, has had anything done at all, remove it from list
 					if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: currentFetchRequest.address) {
 						self?.addressesWaitingToBeRefreshed.remove(at: index)
 						self?.addressRefreshed = currentFetchRequest.address

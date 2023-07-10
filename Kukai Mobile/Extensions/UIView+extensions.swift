@@ -93,4 +93,18 @@ extension UIView {
 		layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
 		self.layer.insertSublayer(layer, at: 0)
 	}
+	
+	func rotate360Degrees(duration: CFTimeInterval = 3) {
+		let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+		rotateAnimation.fromValue = 0.0
+		rotateAnimation.toValue = CGFloat(Double.pi * 2)
+		rotateAnimation.isRemovedOnCompletion = false
+		rotateAnimation.duration = duration
+		rotateAnimation.repeatCount=Float.infinity
+		self.layer.add(rotateAnimation, forKey: nil)
+	}
+	
+	func stopRotate360Degrees() {
+		self.layer.removeAllAnimations()
+	}
 }
