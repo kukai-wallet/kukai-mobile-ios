@@ -123,8 +123,11 @@ class SideMenuViewController: UIViewController {
 	@IBAction func getTezTapped(_ sender: Any) {
 	}
 	
-	@IBAction func copyTapped(_ sender: Any) {
-		UIPasteboard.general.string = DependencyManager.shared.selectedWalletAddress
+	@IBAction func copyTapped(_ sender: UIButton) {
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
+		
+		Toast.shared.show(withMessage: "\(address.truncateTezosAddress()) copied!", attachedTo: sender)
+		UIPasteboard.general.string = address
 	}
 	
 	@IBAction func showQRTapped(_ sender: Any) {
