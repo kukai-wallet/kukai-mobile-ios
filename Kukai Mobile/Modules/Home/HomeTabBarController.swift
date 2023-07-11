@@ -150,7 +150,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 		
 		// Check if we need to start or stop the activity animation
-		if DependencyManager.shared.activityService.addressesWithPendingOperation.count > 0 {
+		let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
+		if pendingAddresses.count > 0, let selectedAddress = DependencyManager.shared.selectedWalletAddress, pendingAddresses.contains([selectedAddress]) {
 			startActivityAnimationIfNecessary(addressesToBeRefreshed: DependencyManager.shared.activityService.addressesWithPendingOperation)
 		} else {
 			stopActivityAnimationIfNecessary()
@@ -292,10 +293,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	func startActivityAnimationIfNecessary(addressesToBeRefreshed addresses: [String]) {
-		if !self.activityAnimationInProgress, let selectedAddress = DependencyManager.shared.selectedWalletAddress, addresses.contains([selectedAddress]) {
+		if !self.activityAnimationInProgress {
 			self.startActivityAnimation()
-		} else {
-			self.stopActivityAnimationIfNecessary()
 		}
 	}
 	
