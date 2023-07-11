@@ -175,8 +175,6 @@ class ImportWalletViewController: UIViewController {
 		addScanningToWindow()
 		
 		if wallet is HDWallet, let hd = wallet as? HDWallet {
-			self.updateLoadingModalStatusLabel(message: "Importing Wallet, and scanning for accounts")
-			
 			Task {
 				if await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd, progress: { [weak self] found in
 					if found == 1 {

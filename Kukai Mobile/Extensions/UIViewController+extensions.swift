@@ -105,6 +105,7 @@ extension UIViewController {
 	}
 	
 	func showLoadingModal(invisible: Bool = false, completion: (() -> Void)? = nil) {
+		UIViewController.loadingModalStatusLabel.text = ""
 		
 		if invisible {
 			UIViewController.activityIndicator.isHidden = true
