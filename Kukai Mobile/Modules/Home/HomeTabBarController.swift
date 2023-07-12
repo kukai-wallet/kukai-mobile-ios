@@ -33,6 +33,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public var didApprovePairing = false
 	public var didApproveSigning = false
+	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
 	
 	public override func viewDidLoad() {
@@ -213,13 +214,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		sideMenuVc = UIStoryboard(name: "SideMenu", bundle: nil).instantiateInitialViewController() ?? SideMenuViewController()
 		sideMenuVc?.homeTabBarController = self
+		sideMenuTintView.frame = currentWindow.bounds
+		sideMenuTintView.backgroundColor = .colorNamed("TintGeneral")
+		sideMenuTintView.alpha = 0
 		
 		
-		let sideMenuWidth = currentWindow.bounds.width - 16
+		let sideMenuWidth = currentWindow.bounds.width - 30
 		self.sideMenuVc?.view.frame = CGRect(x: sideMenuWidth * -1, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+		currentWindow.addSubview(sideMenuTintView)
 		currentWindow.addSubview(sideMenuVc?.view ?? UIView())
 		
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+			self?.sideMenuTintView.alpha = 1
 			self?.sideMenuVc?.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
 		}
 	}

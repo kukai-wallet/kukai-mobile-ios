@@ -108,9 +108,11 @@ class SideMenuViewController: UIViewController {
 	@IBAction func closeTapped(_ sender: Any) {
 		let frame = self.view.frame
 		UIView.animate(withDuration: 0.3) { [weak self] in
+			self?.homeTabBarController?.sideMenuTintView.alpha = 0
 			self?.view.frame = CGRect(x: frame.width * -1, y: 0, width: frame.width, height: frame.height)
 			
 		} completion: { [weak self] done in
+			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
 			self?.view.removeFromSuperview()
 		}
 	}
