@@ -56,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Remove any old assets to avoid clogging up users device too much
 		MediaProxyService.clearExpiredImages()
 	}
-
+	
 	func sceneDidEnterBackground(_ scene: UIScene) {
 		
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
@@ -66,7 +66,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Manually close WC2 connection
 		WalletConnectService.shared.disconnectForAppClose()
 		
-		DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+		DispatchQueue.global(qos: .background).async {
+			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
+		}
 	}
 
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {

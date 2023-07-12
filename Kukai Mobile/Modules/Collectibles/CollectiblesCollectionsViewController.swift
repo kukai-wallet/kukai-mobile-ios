@@ -17,6 +17,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	private let viewModel = CollectiblesCollectionsViewModel()
 	private var bag = [AnyCancellable]()
 	private var refreshingFromParent = true
+	private var movingToDetails = false
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -68,6 +69,12 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		}
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		movingToDetails = false
+	}
+	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		viewModel.isVisible = false
@@ -102,10 +109,12 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		if indexPath.section == 0 {
 			return
 			
-		} else if viewModel.isGroupMode, let obj = viewModel.token(forIndexPath: indexPath) {
+		} else if let obj = viewModel.token(forIndexPath: indexPath) {
+			movingToDetails = true
 			delegate?.performSegue(withIdentifier: "collection", sender: obj)
 			
-		} else if !viewModel.isGroupMode, let obj = viewModel.nft(forIndexPath: indexPath) {
+		} else if let obj = viewModel.nft(forIndexPath: indexPath) {
+			movingToDetails = true
 			delegate?.performSegue(withIdentifier: "detail", sender: obj)
 		}
 	}
@@ -130,21 +139,26 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	
 	public func textFieldDidBeginEditing(_ textField: UITextField) {
-		self.showSearchingUI()
+		// When moving back and forth from details we don't want the search page to refresh
+		// however transitions cause the keyboard to disappear/reappear, triggering these functions
+		if !movingToDetails {
+			self.showSearchingUI()
+		}
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
-		
+		if !movingToDetails {
+			self.hideSearchingUI()
+		}
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
-		self.hideSearchingUI()
-		return false // When user taps clear we want to resignFirstResponder, but apple re-focuses on clear. So we do our own clear and tell apple not too
+		return true
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if text != "" {
-			//viewModel.searchFor(text)
+			viewModel.searchFor(text)
 			
 		} else {
 			self.hideSearchingUI()
@@ -156,9 +170,19 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	private func showSearchingUI() {
-		/*(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = true
-		viewModel.isSearching = true
+		self.viewModel.isSearching = true
 		
+		let searchCell = self.collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.cancelButton.isHidden = false
+		
+		UIView.animate(withDuration: 0.3) {
+			searchCell?.contentView.layoutIfNeeded()
+		}
+		
+		self.viewModel.startSearching(forColelctionView: self.collectionView, completion: {})
+		
+		
+		/*
 		self.navigationController?.setNavigationBarHidden(true, animated: true)
 		
 		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
@@ -168,14 +192,26 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 		collectionViewTopConstraint.constant = 0
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
 			self?.view.layoutIfNeeded()
-		}*/
+		}
+		*/
 	}
 	
 	private func hideSearchingUI() {
-		/*(collectionView.collectionViewLayout as? CollectibleListLayout)?.isSearching = false
-		viewModel.isSearching = false
-		viewModel.endSearching()
+		self.viewModel.isSearching = false
 		
+		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.searchBar.text = ""
+		searchCell?.cancelButton.isHidden = true
+		searchCell?.searchBar.resignFirstResponder()
+		
+		UIView.animate(withDuration: 0.3) {
+			searchCell?.contentView.layoutIfNeeded()
+		}
+		
+		viewModel.endSearching(forColelctionView: self.collectionView, completion: {})
+		
+		
+		/*
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 		
 		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
@@ -186,6 +222,7 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 		collectionViewTopConstraint.constant = 12
 		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
 			self?.view.layoutIfNeeded()
-		}*/
+		}
+		*/
 	}
 }
