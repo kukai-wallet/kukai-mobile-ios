@@ -287,7 +287,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			self.searchSnapshot.appendSections([0, 1])
 			self.searchSnapshot.appendItems([self.sortMenu], toSection: 0)
 			self.searchSnapshot.appendItems([0], toSection: 1)
-			dataSource?.apply(searchSnapshot, animatingDifferences: true, completion: completion)
+			self.dataSource?.apply(searchSnapshot, animatingDifferences: true, completion: completion)
 		})
 	}
 	
@@ -301,7 +301,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			
 			collectionView.collectionViewLayout = self.layout()
 			
-			dataSource?.apply(normalSnapshot, animatingDifferences: true, completion: completion)
+			self.dataSource?.apply(normalSnapshot, animatingDifferences: true, completion: completion)
 		})
 	}
 	
