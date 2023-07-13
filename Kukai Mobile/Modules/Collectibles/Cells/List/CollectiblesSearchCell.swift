@@ -11,6 +11,7 @@ class CollectiblesSearchCell: UICollectionViewCell {
 
 	@IBOutlet weak var searchBar: ValidatorTextField!
 	@IBOutlet weak var sortButton: CustomisableButton!
+	@IBOutlet weak var cancelButton: UIButton!
 	
 	private var sortMenu: MenuViewController? = nil
 	
@@ -20,5 +21,9 @@ class CollectiblesSearchCell: UICollectionViewCell {
 	
 	@IBAction func sortTapped(_ sender: UIButton) {
 		sortMenu?.display(attachedTo: sender)
+	}
+	
+	@IBAction func cancelButtonTapped(_ sender: Any) {
+		searchBar.resignFirstResponder()
 	}
 }

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -25,7 +26,7 @@
                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3tt-10-QNm">
                         <rect key="frame" x="0.0" y="0.0" width="485" height="32"/>
                         <subviews>
-                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Search" textAlignment="natural" minimumFontSize="17" clearButtonMode="always" translatesAutoresizingMaskIntoConstraints="NO" id="kBC-Zb-iRc" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="485" height="32"/>
                                 <color key="backgroundColor" name="BG4"/>
                                 <constraints>
@@ -60,6 +61,15 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </textField>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sh-wM-z5j">
+                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="32"/>
+                                <color key="tintColor" name="BGB4"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Cancel"/>
+                                <connections>
+                                    <action selector="cancelButtonTapped:" destination="gTV-IL-0wX" eventType="touchUpInside" id="evq-X6-3Jf"/>
+                                </connections>
+                            </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JrW-xZ-m9g" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="34" height="32"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -99,6 +109,7 @@
             </constraints>
             <size key="customSize" width="485" height="40"/>
             <connections>
+                <outlet property="cancelButton" destination="0sh-wM-z5j" id="lCH-ky-fIQ"/>
                 <outlet property="searchBar" destination="kBC-Zb-iRc" id="eiV-N2-wuH"/>
                 <outlet property="sortButton" destination="JrW-xZ-m9g" id="d8v-M3-Ksu"/>
             </connections>
@@ -107,10 +118,10 @@
     </objects>
     <designables>
         <designable name="JrW-xZ-m9g">
-            <size key="intrinsicContentSize" width="42" height="32"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="kBC-Zb-iRc">
-            <size key="intrinsicContentSize" width="74" height="18"/>
+            <size key="intrinsicContentSize" width="44.666666666666664" height="18.666666666666668"/>
         </designable>
     </designables>
     <resources>
