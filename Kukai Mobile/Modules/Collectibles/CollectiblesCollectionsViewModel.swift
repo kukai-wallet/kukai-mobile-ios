@@ -83,6 +83,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		collectionView.register(UINib(nibName: "CollectiblesCollectionSinglePageCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionSinglePageCell")
 		collectionView.register(UINib(nibName: "LoadingGroupModeCell", bundle: nil), forCellWithReuseIdentifier: "LoadingGroupModeCell")
 		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
+		collectionView.register(UINib(nibName: "MessageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MessageCollectionViewCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			guard let self = self else { return UICollectionViewCell() }
@@ -95,6 +96,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 			} else if let obj = item as? Int, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultsCountCell", for: indexPath) as? SearchResultsCountCell {
 				cell.countLabel.text = "\(obj) Found"
+				return cell
+				
+			} else if let obj = item as? String, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageCollectionViewCell", for: indexPath) as? MessageCollectionViewCell {
+				cell.messageLabel.text = obj
 				return cell
 				
 			} else if self.isSearching, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
@@ -229,7 +234,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	// MARK: UI functions
 	
 	func searchFor(_ text: String) {
-		searchSnapshot.deleteSections([2])
+		if searchSnapshot.sectionIdentifiers.count > 2 {
+			searchSnapshot.deleteSections([2])
+		}
 		
 		var searchResults: [NFT] = []
 		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
@@ -247,8 +254,14 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		searchSnapshot.deleteItems(countIdentifier)
 		searchSnapshot.appendItems([searchResults.count], toSection: 1)
 		
-		searchSnapshot.appendSections([2])
-		searchSnapshot.appendItems(searchResults, toSection: 2)
+		if searchResults.count > 0 {
+			searchSnapshot.appendSections([2])
+			searchSnapshot.appendItems(searchResults, toSection: 2)
+		} else {
+			searchSnapshot.appendSections([2])
+			searchSnapshot.appendItems(["No items found.\n\nYou do not own any matching items."], toSection: 2)
+		}
+		
 		dataSource?.apply(searchSnapshot, animatingDifferences: true)
 	}
 	
@@ -457,10 +470,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return section
 				
 			} else {
-				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+				let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(96))
 				let item = NSCollectionLayoutItem(layoutSize: itemSize)
 				
-				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(80))
+				let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(96))
 				let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
 				
 				let section = NSCollectionLayoutSection (group: group)
