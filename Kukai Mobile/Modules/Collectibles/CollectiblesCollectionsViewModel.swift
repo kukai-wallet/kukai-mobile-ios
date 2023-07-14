@@ -239,28 +239,30 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		var searchResults: [NFT] = []
-		for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+		if text != "" {
+			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+				
+				let results = nftGroup.nfts?.filter({ nft in
+					return nft.name.range(of: text, options: .caseInsensitive) != nil
+				})
+				
+				if let res = results {
+					searchResults.append(contentsOf: res)
+				}
+			}
 			
-			let results = nftGroup.nfts?.filter({ nft in
-				return nft.name.range(of: text, options: .caseInsensitive) != nil
-			})
-			
-			if let res = results {
-				searchResults.append(contentsOf: res)
+			if searchResults.count > 0 {
+				searchSnapshot.appendSections([2])
+				searchSnapshot.appendItems(searchResults, toSection: 2)
+			} else {
+				searchSnapshot.appendSections([2])
+				searchSnapshot.appendItems(["No items found.\n\nYou do not own any matching items."], toSection: 2)
 			}
 		}
 		
 		let countIdentifier = searchSnapshot.itemIdentifiers(inSection: 1)
 		searchSnapshot.deleteItems(countIdentifier)
 		searchSnapshot.appendItems([searchResults.count], toSection: 1)
-		
-		if searchResults.count > 0 {
-			searchSnapshot.appendSections([2])
-			searchSnapshot.appendItems(searchResults, toSection: 2)
-		} else {
-			searchSnapshot.appendSections([2])
-			searchSnapshot.appendItems(["No items found.\n\nYou do not own any matching items."], toSection: 2)
-		}
 		
 		dataSource?.apply(searchSnapshot, animatingDifferences: true)
 	}
