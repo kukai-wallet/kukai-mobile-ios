@@ -105,7 +105,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			} else if self.isSearching, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
 				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				cell.titleLabel.text = obj.name
+				
+				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
+				cell.setup(title: obj.name, quantity: balance)
 				return cell
 				
 			} else if self.itemCount <= 1, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
