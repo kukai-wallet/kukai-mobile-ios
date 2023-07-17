@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import KukaiCoreSwift
 
 class WalletCreatedViewController: UIViewController {
 	
@@ -42,12 +41,11 @@ class WalletCreatedViewController: UIViewController {
 		getStartedButton.isEnabled = isSelected
 	}
 	
-	@IBAction func getStartedTapped(_ sender: Any) {
-		if CurrentDevice.biometricType() == .none {
-			//self.performSegue(withIdentifier: "password", sender: nil)
-			self.alert(errorWithMessage: "Biometrics are not enabled on this device. Please enable FaceID / TouchID")
-		} else {
-			self.performSegue(withIdentifier: "biometric", sender: nil)
+	@IBAction func termsTapped(_ sender: Any) {
+		guard let url = URL(string: "https://wallet.kukai.app/terms-of-use") else {
+			return
 		}
+		
+		UIApplication.shared.open(url)
 	}
 }

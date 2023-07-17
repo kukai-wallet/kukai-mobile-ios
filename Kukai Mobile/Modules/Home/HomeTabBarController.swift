@@ -52,7 +52,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				let address = DependencyManager.shared.selectedWalletAddress ?? ""
+				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
+				
 				DependencyManager.shared.balanceService.loadCache(address: address)
 				DependencyManager.shared.addressLoaded = address
 				self?.updateAccountButton()
@@ -68,7 +69,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.$walletDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
-				let address = DependencyManager.shared.selectedWalletAddress ?? ""
+				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
+				
 				DependencyManager.shared.balanceService.loadCache(address: address)
 				DependencyManager.shared.addressLoaded = address
 				
