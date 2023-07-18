@@ -18,6 +18,7 @@ class WalletCreatedViewController: UIViewController {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		checkboxButton.accessibilityIdentifier = "checkmark"
 		getStartedButton.customButtonType = .primary
     }
 	

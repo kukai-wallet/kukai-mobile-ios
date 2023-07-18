@@ -81,6 +81,9 @@
 		C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02A4FD927DA421100F42DE4 /* Date+extensions.swift */; };
 		C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */; };
 		C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */; };
+		C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F32A66E23100A1497D /* SharedHelpers.swift */; };
+		C02DF5F62A66E47100A1497D /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F52A66E47100A1497D /* Onboarding.swift */; };
+		C02DF5F92A66E4B100A1497D /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F82A66E4B100A1497D /* Performance.swift */; };
 		C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */; };
 		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
 		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
@@ -230,7 +233,6 @@
 		C0B0364C269EE2070071ACD0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364B269EE2070071ACD0 /* Assets.xcassets */; };
 		C0B0364F269EE2070071ACD0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */; };
 		C0B0365A269EE2070071ACD0 /* Kukai_MobileTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */; };
-		C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */; };
 		C0B0367A269F1E450071ACD0 /* ExportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B03679269F1E450071ACD0 /* ExportOptions.plist */; };
 		C0B0367C269F37340071ACD0 /* ExportOptions-Beta.plist in Resources */ = {isa = PBXBuildFile; fileRef = C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */; };
 		C0B08A39270DDED300075618 /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0B08A38270DDED300075618 /* TransactionService.swift */; };
@@ -442,6 +444,9 @@
 		C02A4FD927DA421100F42DE4 /* Date+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+extensions.swift"; sourceTree = "<group>"; };
 		C02D7CAD27BEB240006A8E39 /* CurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewController.swift; sourceTree = "<group>"; };
 		C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
+		C02DF5F32A66E23100A1497D /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
+		C02DF5F52A66E47100A1497D /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
+		C02DF5F82A66E4B100A1497D /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewController.swift; sourceTree = "<group>"; };
 		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -608,7 +613,6 @@
 		C0B03659269EE2070071ACD0 /* Kukai_MobileTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kukai_MobileTests.swift; sourceTree = "<group>"; };
 		C0B0365B269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B03660269EE2070071ACD0 /* Kukai MobileUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Kukai MobileUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Kukai_MobileUITests.swift; sourceTree = "<group>"; };
 		C0B03666269EE2070071ACD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0B03679269F1E450071ACD0 /* ExportOptions.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ExportOptions.plist; sourceTree = "<group>"; };
 		C0B0367B269F37340071ACD0 /* ExportOptions-Beta.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "ExportOptions-Beta.plist"; sourceTree = "<group>"; };
@@ -883,6 +887,15 @@
 				C00AE0062887017400184DF7 /* SwapTokenCell.swift */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		C02DF5F72A66E47500A1497D /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				C02DF5F82A66E4B100A1497D /* Performance.swift */,
+				C02DF5F52A66E47100A1497D /* Onboarding.swift */,
+			);
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		C0411B4529DEBF7F00778E1E /* TextFieldSuggestionAccessoryView */ = {
@@ -1271,8 +1284,9 @@
 		C0B03663269EE2070071ACD0 /* Kukai MobileUITests */ = {
 			isa = PBXGroup;
 			children = (
-				C0B03664269EE2070071ACD0 /* Kukai_MobileUITests.swift */,
 				C0B03666269EE2070071ACD0 /* Info.plist */,
+				C02DF5F32A66E23100A1497D /* SharedHelpers.swift */,
+				C02DF5F72A66E47500A1497D /* Tests */,
 			);
 			path = "Kukai MobileUITests";
 			sourceTree = "<group>";
@@ -1956,7 +1970,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C0B03665269EE2070071ACD0 /* Kukai_MobileUITests.swift in Sources */,
+				C02DF5F92A66E4B100A1497D /* Performance.swift in Sources */,
+				C02DF5F62A66E47100A1497D /* Onboarding.swift in Sources */,
+				C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2110,7 +2126,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2170,7 +2186,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = Kukai;
@@ -2265,7 +2281,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2287,7 +2303,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2308,6 +2324,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2328,6 +2345,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2388,7 +2406,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "Kukai Beta";
@@ -2446,7 +2464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileTests/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2467,6 +2485,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				INFOPLIST_FILE = "Kukai MobileUITests/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2530,7 +2549,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = feature/updated_torus;
+				branch = develop;
 				kind = branch;
 			};
 		};
