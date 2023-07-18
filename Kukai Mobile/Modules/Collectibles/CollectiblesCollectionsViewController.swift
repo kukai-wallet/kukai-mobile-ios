@@ -157,12 +157,7 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		if text != "" {
-			viewModel.searchFor(text)
-			
-		} else {
-			self.hideSearchingUI()
-		}
+		viewModel.searchFor(text)
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {

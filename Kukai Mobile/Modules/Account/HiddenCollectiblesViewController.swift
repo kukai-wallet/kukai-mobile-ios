@@ -57,6 +57,14 @@ class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		cell.layoutIfNeeded()
+		
+		if let c = cell as? UITableViewCellContainerView {
+			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+		}
+	}
+	
 	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		guard let cell = cell as? UITableViewCellImageDownloading else {
 			return

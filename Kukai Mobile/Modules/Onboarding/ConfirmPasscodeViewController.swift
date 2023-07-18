@@ -1,20 +1,17 @@
 //
-//  LoginViewController.swift
+//  ConfirmPasscodeViewController.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 27/07/2021.
+//  Created by Simon Mcloughlin on 17/07/2023.
 //
 
 import UIKit
 import KukaiCoreSwift
-import LocalAuthentication
-import OSLog
 
-class LoginViewController: UIViewController {
+class ConfirmPasscodeViewController: UIViewController {
 	
 	@IBOutlet weak var hiddenTextfield: ValidatorTextField!
 	@IBOutlet weak var errorLabel: UILabel!
-	@IBOutlet weak var useBiometricsButton: UIButton!
 	@IBOutlet weak var digitView1: UIView!
 	@IBOutlet weak var digitView2: UIView!
 	@IBOutlet weak var digitView3: UIView!
@@ -22,8 +19,7 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var digitView5: UIView!
 	@IBOutlet weak var digitView6: UIView!
 	
-	
-	override func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
@@ -36,23 +32,23 @@ class LoginViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if CurrentDevice.biometricType() == .none || StorageService.isBiometricEnabled() == false {
-			useBiometricsButton.isHidden = true
-		}
+		self.navigationItem.hidesBackButton = false
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		
-		if CurrentDevice.biometricType() == .touchID {
-			useBiometricsButton.setTitle("Use Touch ID", for: .normal)
-		}
+		hiddenTextfield.becomeFirstResponder()
+	}
+	
+	func navigate() {
+		StorageService.setCompletedOnboarding(true)
 		
-		//#if DEBUG
-		//self.returnToApp()
-		//#else
-		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
-			validateBiometric()
+		if CurrentDevice.biometricType() != .none {
+			self.performSegue(withIdentifier: "biometric", sender: nil)
 		} else {
-			self.returnToApp()
+			self.performSegue(withIdentifier: "home", sender: nil)
 		}
-		//#endif
 	}
 	
 	func updateDigitViewsWithLength(length: Int) {
@@ -95,56 +91,9 @@ class LoginViewController: UIViewController {
 			digitView6.backgroundColor = colorOff
 		}
 	}
-	
-	private func validateBiometric() {
-		let context = LAContext()
-		
-		if StorageService.isBiometricEnabled() && CurrentDevice.biometricType() != .none {
-			let reason = "To allow access to app"
-			
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-				[weak self] success, authenticationError in
-				
-				DispatchQueue.main.async {
-					if success {
-						self?.returnToApp()
-						
-					} else {
-						self?.hiddenTextfield.becomeFirstResponder()
-					}
-				}
-			}
-		} else {
-			self.hiddenTextfield.becomeFirstResponder()
-		}
-	}
-	
-	private func returnToApp() {
-		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-			os_log("Can't get scene delegate", log: .default, type: .debug)
-			return
-		}
-		
-		reestablishConnectionsAfterLogin()
-		sceneDelegate.hidePrivacyProtectionWindow()
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-	}
-	
-	private func reestablishConnectionsAfterLogin() {
-		if !DependencyManager.shared.tzktClient.isListening {
-			AccountViewModel.setupAccountActivityListener()
-		}
-	}
-	
-	@IBAction func useFaceIdTapped(_ sender: Any) {
-		validateBiometric()
-	}
 }
 
-extension LoginViewController: ValidatorTextFieldDelegate {
+extension ConfirmPasscodeViewController: ValidatorTextFieldDelegate {
 	
 	func textFieldDidBeginEditing(_ textField: UITextField) {
 		
@@ -163,7 +112,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		
 		if validated {
 			if StorageService.validatePassword(text) == true {
-				returnToApp()
+				navigate()
 			} else {
 				errorLabel.isHidden = false
 			}
