@@ -176,11 +176,19 @@ extension UIViewController {
 		}
 	}
 	
-	func alert(withTitle title: String, andMessage message: String, okText: String = "ok", okAction: @escaping ((UIAlertAction) -> Void), cancelText: String = "cancel", cancelAction: @escaping ((UIAlertAction) -> Void)) {
+	func alert(withTitle title: String,
+			   andMessage message: String,
+			   okText: String = "ok",
+			   okStyle: UIAlertAction.Style = .default,
+			   okAction: @escaping ((UIAlertAction) -> Void),
+			   cancelText: String = "cancel",
+			   cancelStyle: UIAlertAction.Style = .default,
+			   cancelAction: @escaping ((UIAlertAction) -> Void)) {
+		
 		DispatchQueue.main.async {
 			let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-			let okAction = UIAlertAction(title: okText, style: .default, handler: okAction)
-			let cancelAction = UIAlertAction(title: cancelText, style: .default, handler: cancelAction)
+			let okAction = UIAlertAction(title: okText, style: okStyle, handler: okAction)
+			let cancelAction = UIAlertAction(title: cancelText, style: cancelStyle, handler: cancelAction)
 			alert.addAction(okAction)
 			alert.addAction(cancelAction)
 			

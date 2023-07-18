@@ -24,7 +24,7 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 4
+		return 3
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,14 +44,16 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 				cell.descriptionLabel.text = "Import accounts using your recovery phrase from Kukai or another wallet"
 				
 			case 2:
-				cell.iconView.image = UIImage(named: "WalletLedger")
-				cell.titleLabel.text = "Connect with Ledger"
-				cell.descriptionLabel.text = "Add accounts from your Bluetooth hardware wallet"
-			
-			case 3:
 				cell.iconView.image = UIImage(named: "WalletWatch")
 				cell.titleLabel.text = "Watch a Tezos Address"
 				cell.descriptionLabel.text = "Watch a public address or .tez domain"
+			
+			/*
+			case 3:
+				cell.iconView.image = UIImage(named: "WalletLedger")
+				cell.titleLabel.text = "Connect with Ledger"
+				cell.descriptionLabel.text = "Add accounts from your Bluetooth hardware wallet"
+			*/
 				
 			default:
 				cell.iconView.image = UIImage()
@@ -79,10 +81,12 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 				self.performSegue(withIdentifier: "phrase", sender: nil)
 				
 			case 2:
-				self.alert(withTitle: "Under Construction", andMessage: "coming soon")
-				
-			case 3:
 				self.performSegue(withIdentifier: "watch", sender: nil)
+			
+			/*
+			case 3:
+				self.alert(withTitle: "Under Construction", andMessage: "coming soon")
+			*/
 				
 			default:
 				self.alert(withTitle: "Under Construction", andMessage: "coming soon")

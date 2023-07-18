@@ -100,7 +100,10 @@ class RecoveryPhraseViewController: UIViewController {
 			presentedCopyAlert = true
 		}
 		
-		self.alert(withTitle: "Copy?", andMessage: "Do you want to copy the recovery phrase? This phrase gives anyone access to your wallet and funds, copying it to your system clipboard may expose these words to other apps", okText: "I understand, copy",
+		self.alert(withTitle: "Copy?",
+				   andMessage: "Do you want to copy the recovery phrase?  This phrase gives anyone access to your wallet and funds, copying it to your system clipboard may expose these words to other apps",
+				   okText: "Copy",
+				   okStyle: .destructive,
 				   okAction: { [weak self] action in
 			
 			if let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic {
@@ -109,7 +112,7 @@ class RecoveryPhraseViewController: UIViewController {
 			
 			self?.presentedCopyAlert = false
 			
-		}, cancelText: "cancel", cancelAction: { [weak self] action in
+		}, cancelText: "Cancel", cancelStyle: .default, cancelAction: { [weak self] action in
 			self?.presentedCopyAlert = false
 		})
 	}
@@ -127,14 +130,13 @@ class RecoveryPhraseViewController: UIViewController {
 			self.performSegue(withIdentifier: "verify", sender: nil)
 			
 		} else {
-			let alert = UIAlertController(title: "Written the secret Recovery Phrase down?", message: "Without the secret recovery phrase you will not be able to access your key or any assets associated with it.", preferredStyle: .alert)
-			alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-			alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: { [weak self] action in
+			self.alert(withTitle: "Written the secret Recovery Phrase down?", andMessage: "Without the secret recovery phrase you will not be able to access your key or any assets associated with it.", okText: "Yes", okStyle: .default,
+					   okAction: { [weak self] action in
 				self?.writtenItDown = true
 				self?.performSegue(withIdentifier: "verify", sender: nil)
-			}))
-			
-			self.present(alert, animated: true)
+			}, cancelText: "No", cancelStyle: .default) { action in
+				
+			}
 		}
 	}
 	
