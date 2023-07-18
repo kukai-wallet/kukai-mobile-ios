@@ -19,6 +19,7 @@ class CreatePasscodeViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		hiddenTextfield.addDoneToolbar()
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)

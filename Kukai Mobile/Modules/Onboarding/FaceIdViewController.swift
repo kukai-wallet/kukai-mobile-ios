@@ -24,7 +24,7 @@ class FaceIdViewController: UIViewController {
 		nextButton.customButtonType = .primary
 		createPasswordWarning.isHidden = true
 		
-		if CurrentDevice.biometricType() == .touch {
+		if CurrentDevice.biometricType() == .touchID {
 			biometricImage.image = UIImage(systemName: "touchid")
 			biometricLabel.text = "Use Touch ID"
 		}
@@ -37,7 +37,6 @@ class FaceIdViewController: UIViewController {
 	}
 	
 	@IBAction func toggleChanged(_ sender: Any) {
-		//createPasswordWarning.isHidden = toggle.isOn
 	}
 	
 	@IBAction func nextTapped(_ sender: Any) {
@@ -45,8 +44,9 @@ class FaceIdViewController: UIViewController {
 			biometricAndHome()
 			
 		} else {
-			self.alert(errorWithMessage: "For this internal build, biometrics are mandatory")
-			//self.performSegue(withIdentifier: "password", sender: self)
+			StorageService.setBiometricEnabled(false)
+			StorageService.setCompletedOnboarding(true)
+			self.performSegue(withIdentifier: "home", sender: nil)
 		}
 	}
 	

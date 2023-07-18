@@ -21,6 +21,7 @@ class ConfirmPasscodeViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = self.view.addGradientBackgroundFull()
 		
 		errorLabel.isHidden = true
 		hiddenTextfield.addDoneToolbar()
@@ -43,10 +44,10 @@ class ConfirmPasscodeViewController: UIViewController {
 	func navigate() {
 		StorageService.setCompletedOnboarding(true)
 		
-		if CurrentDevice.hasBiometrics {
-			self.performSegue(withIdentifier: "home", sender: nil)
-		} else {
+		if CurrentDevice.biometricType() != .none {
 			self.performSegue(withIdentifier: "biometric", sender: nil)
+		} else {
+			self.performSegue(withIdentifier: "home", sender: nil)
 		}
 	}
 	

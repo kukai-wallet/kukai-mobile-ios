@@ -164,9 +164,11 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			
 		} else if hasWallet && !didCompleteOnboarding {
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 			
 		} else {
+			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 		}
 	}
