@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import Sentry
 import os.log
 
@@ -39,6 +40,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		
 		// Airplay audio/video support
 		application.beginReceivingRemoteControlEvents()
+		
+		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
+		processXCUITestArguments()
 		
 		return true
 	}
@@ -84,5 +88,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let barButtonAppearence = UIBarButtonItem.appearance(whenContainedInInstancesOf: [UINavigationBar.self])
 		barButtonAppearence.tintColor = UIColor.colorNamed("BGB4")
 		barButtonAppearence.setTitleTextAttributes([.foregroundColor: UIColor.clear, .font: UIFont.systemFont(ofSize: 1)], for: .normal)
+	}
+	
+	
+	
+	
+	
+	// MARK: - Testing
+	
+	func processXCUITestArguments() {
+		let environment = ProcessInfo.processInfo.environment
+		
+		if environment["XCUITEST-KEYBOARD"] == "true" {
+			disconnectHardwareKeyboard()
+		}
+		
+		if environment["XCUITEST-RESET"] == "true" {
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			TransactionService.shared.resetAllState()
+			StorageService.deleteKeychainItems()
+		}
+	}
+	
+	func disconnectHardwareKeyboard() {
+		#if targetEnvironment(simulator)
+		// Disable hardware keyboards.
+		let setHardwareLayout = NSSelectorFromString("setHardwareLayout:")
+		UITextInputMode.activeInputModes
+		// Filter `UIKeyboardInputMode`s.
+			.filter({ $0.responds(to: setHardwareLayout) })
+			.forEach { $0.perform(setHardwareLayout, with: nil) }
+		#endif
 	}
 }

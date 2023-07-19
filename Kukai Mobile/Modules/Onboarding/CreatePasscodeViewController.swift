@@ -21,7 +21,6 @@ class CreatePasscodeViewController: UIViewController {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		hiddenTextfield.addDoneToolbar()
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
     }

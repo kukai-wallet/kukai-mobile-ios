@@ -28,7 +28,6 @@ class LoginViewController: UIViewController {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		errorLabel.isHidden = true
-		hiddenTextfield.addDoneToolbar()
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
     }

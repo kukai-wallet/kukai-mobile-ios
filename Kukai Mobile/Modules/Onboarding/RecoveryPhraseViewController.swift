@@ -61,6 +61,7 @@ class RecoveryPhraseViewController: UIViewController {
 		for (index, word) in mnemonic.words.enumerated() {
 			if let label = value(forKey: "word\(index+1)Label") as? UILabel {
 				label.text = word
+				label.accessibilityIdentifier = "word\(index+1)"
 			}
 		}
     }
