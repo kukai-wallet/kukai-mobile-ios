@@ -12,6 +12,7 @@ struct SideMenuOptionData: Hashable {
 	let icon: UIImage
 	let title: String
 	let subtitle: String?
+	let id: String
 }
 
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -53,34 +54,47 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendSections([0])
 		
 		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
-		let options = [
-			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil),
-			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme),
-			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency),
-			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork),
+		var options = [
+			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil, id: "wc2"),
+			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, id: "theme"),
+			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, id: "currency"),
+			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, id: "network"),
 		]
+		
+		let biometricType = CurrentDevice.biometricType()
+		if biometricType != .none {
+			let title = biometricType == .faceID ? "Face ID" : "Touch ID"
+			let image = biometricType == .faceID ? UIImage(systemName: "faceid") : UIImage(systemName: "touchid")
+			let enabled = StorageService.isBiometricEnabled()
+			options.append( SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: enabled ? "Enabled" : "Disabled", id: "biometric") )
+		}
 		
 		snapshot.appendItems(options, toSection: 0)
 		
-		ds.apply(snapshot, animatingDifferences: animate)
+		ds.applySnapshotUsingReloadData(snapshot)
 		
 		self.state = .success(nil)
 	}
 	
 	func segue(forIndexPath: IndexPath) -> (segue: String, collapseAndNavigate: Bool)? {
-		if forIndexPath.row == 0 {
-			return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
-			
-		} else if forIndexPath.row == 1 {
-			return (segue: "theme", collapseAndNavigate: false)
-			
-		} else if forIndexPath.row == 2 {
-			return (segue: "side-menu-currency", collapseAndNavigate: true)
-			
-		} else if forIndexPath.row == 3 {
-			return (segue: "side-menu-network", collapseAndNavigate: false)
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
+			return nil
 		}
 		
-		return nil
+		switch obj.id {
+			case "wc2":
+				return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
+			case "theme":
+				return (segue: "theme", collapseAndNavigate: false)
+			case "currency":
+				return (segue: "side-menu-currency", collapseAndNavigate: true)
+			case "network":
+				return (segue: "side-menu-network", collapseAndNavigate: false)
+			case "biometric":
+				return (segue: "biometric", collapseAndNavigate: false)
+				
+			default:
+				return nil
+		}
 	}
 }

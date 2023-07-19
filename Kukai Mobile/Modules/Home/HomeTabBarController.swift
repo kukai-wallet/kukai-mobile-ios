@@ -136,6 +136,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		WalletConnectService.shared.delegate = self
 	}
 	
+	public func refreshSideMenu() {
+		sideMenuVc?.viewModel.refresh(animate: true)
+	}
+	
 	public override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
