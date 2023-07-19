@@ -35,8 +35,96 @@
                                 <rect key="frame" x="0.0" y="2" width="393" height="713"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BackUpCell" rowHeight="78" id="uTi-xw-5WX" customClass="BackUpCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="78"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uTi-xw-5WX" id="e1k-P7-Gr7">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="78"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5JT-bm-ZMG">
+                                                    <rect key="frame" x="16" y="12" width="361" height="64"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="fSL-04-2kd">
+                                                            <rect key="frame" x="10" y="12" width="40" height="40"/>
+                                                            <color key="tintColor" name="TxtAlert2"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="40" id="JBT-fu-Pja"/>
+                                                                <constraint firstAttribute="width" constant="40" id="anr-7d-GzG"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACTION REQUIRED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYM-UE-dcX">
+                                                            <rect key="frame" x="58" y="12" width="127" height="17"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Txt2"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Backup your wallet, keep your assets safe." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-hH-MdO">
+                                                            <rect key="frame" x="57.999999999999986" y="31" width="201.66666666666663" height="29"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
+                                                            <color key="textColor" name="TxtAlert2"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mc4-MV-VSh" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="267.66666666666669" y="10" width="83.333333333333314" height="32"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="32" id="lO0-W8-hiQ"/>
+                                                            </constraints>
+                                                            <color key="tintColor" name="TxtBtnSec1"/>
+                                                            <state key="normal" title="Button"/>
+                                                            <buttonConfiguration key="configuration" style="plain" title="BACK UP">
+                                                                <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                            </buttonConfiguration>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="8"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </button>
+                                                    </subviews>
+                                                    <color key="backgroundColor" name="BGAlert1"/>
+                                                    <constraints>
+                                                        <constraint firstItem="DEU-hH-MdO" firstAttribute="leading" secondItem="fSL-04-2kd" secondAttribute="trailing" constant="8" id="7IL-yy-jdC"/>
+                                                        <constraint firstItem="fSL-04-2kd" firstAttribute="leading" secondItem="5JT-bm-ZMG" secondAttribute="leading" constant="10" id="AwO-0N-wA9"/>
+                                                        <constraint firstItem="DEU-hH-MdO" firstAttribute="top" secondItem="kYM-UE-dcX" secondAttribute="bottom" constant="2" id="Gca-Zd-87X"/>
+                                                        <constraint firstAttribute="trailing" secondItem="mc4-MV-VSh" secondAttribute="trailing" constant="10" id="OQe-N1-zLE"/>
+                                                        <constraint firstAttribute="bottom" secondItem="fSL-04-2kd" secondAttribute="bottom" constant="12" id="WR7-sf-3NQ"/>
+                                                        <constraint firstItem="fSL-04-2kd" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="12" id="mVL-1r-4A7"/>
+                                                        <constraint firstItem="mc4-MV-VSh" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="10" id="rgH-h7-czd"/>
+                                                        <constraint firstItem="kYM-UE-dcX" firstAttribute="top" secondItem="fSL-04-2kd" secondAttribute="top" id="s0C-6a-6vG"/>
+                                                        <constraint firstItem="mc4-MV-VSh" firstAttribute="leading" secondItem="DEU-hH-MdO" secondAttribute="trailing" constant="8" id="s1U-L8-Ta3"/>
+                                                        <constraint firstItem="kYM-UE-dcX" firstAttribute="leading" secondItem="fSL-04-2kd" secondAttribute="trailing" constant="8" id="yIT-x4-OF4"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" name="BGAlert6"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="5JT-bm-ZMG" firstAttribute="leading" secondItem="e1k-P7-Gr7" secondAttribute="leading" constant="16" id="37m-Xj-JaW"/>
+                                                <constraint firstAttribute="trailing" secondItem="5JT-bm-ZMG" secondAttribute="trailing" constant="16" id="bSr-M5-qYM"/>
+                                                <constraint firstItem="5JT-bm-ZMG" firstAttribute="top" secondItem="e1k-P7-Gr7" secondAttribute="top" constant="12" id="luG-uC-SQn"/>
+                                                <constraint firstAttribute="bottom" secondItem="5JT-bm-ZMG" secondAttribute="bottom" constant="2" id="rfW-bp-PjZ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="backUpButton" destination="mc4-MV-VSh" id="Kh8-Pp-K5z"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="58" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="393" height="58"/>
+                                        <rect key="frame" x="0.0" y="128" width="393" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c9F-pE-jDL" id="rMO-1e-A9t">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="58"/>
@@ -89,7 +177,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="EstimatedTotalCell" rowHeight="52" id="fLd-MK-ZQo" customClass="EstimatedTotalCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="108" width="393" height="52"/>
+                                        <rect key="frame" x="0.0" y="186" width="393" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fLd-MK-ZQo" id="fZ4-yB-WXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="52"/>
@@ -102,13 +190,13 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2w-kh-15K">
-                                                    <rect key="frame" x="319" y="26" width="50" height="22"/>
+                                                    <rect key="frame" x="318" y="26" width="51" height="22"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="-1.6666666666666661" width="66" height="31.333333333333329"/>
+                                                    <rect key="frame" x="16" y="-2" width="66" height="32"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -152,7 +240,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceCell" rowHeight="80" id="Kcw-mz-qlU" customClass="TokenBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="160" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="238" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kcw-mz-qlU" id="LLJ-Pv-DUc">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -176,19 +264,19 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obd-iN-h5Z">
-                                                            <rect key="frame" x="76" y="27.666666666666671" width="80" height="21"/>
+                                                            <rect key="frame" x="76" y="27.666666666666671" width="82.333333333333314" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="5kd-E0-i9d">
-                                                            <rect key="frame" x="172" y="16" width="173" height="21"/>
+                                                            <rect key="frame" x="174.33333333333337" y="16" width="170.66666666666663" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGP-vD-NDI">
-                                                            <rect key="frame" x="203.66666666666663" y="40" width="141.33333333333337" height="17"/>
+                                                            <rect key="frame" x="206.33333333333337" y="40" width="138.66666666666663" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
@@ -201,7 +289,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;priceChange&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJ3-t4-MrW">
-                                                            <rect key="frame" x="91" y="40" width="96.666666666666686" height="17"/>
+                                                            <rect key="frame" x="91" y="40" width="99.333333333333314" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="TxtGood4"/>
                                                             <nil key="highlightedColor"/>
@@ -252,7 +340,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingContainerCell" rowHeight="80" id="2KM-oc-IJC" customClass="LoadingContainerCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="240" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="318" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2KM-oc-IJC" id="Hdf-Mg-Mpn">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -374,11 +462,22 @@
                         <segue destination="coy-OE-NPZ" kind="show" identifier="hidden" id="D3A-Jh-dg3"/>
                         <segue destination="r1r-bU-jrg" kind="show" identifier="favourites" id="3hk-qU-4Ic"/>
                         <segue destination="PJu-ck-fWS" kind="show" identifier="details" id="zcN-zW-iIF"/>
+                        <segue destination="afZ-no-uZ1" kind="show" identifier="recover" id="lv2-Xs-Dwb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3475.5725190839694" y="-1420.4225352112676"/>
+        </scene>
+        <!--RecoveryPhrase-->
+        <scene sceneID="ABl-yB-vmg">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RecoveryPhrase" id="afZ-no-uZ1" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="gEd-9r-Yqp"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FWf-TM-nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2734" y="-1420"/>
         </scene>
         <!--Hidden Tokens-->
         <scene sceneID="Qrr-xS-5hQ">
@@ -1160,7 +1259,7 @@
             <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="66" height="31"/>
+            <size key="intrinsicContentSize" width="66" height="32"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
@@ -1169,6 +1268,7 @@
     <resources>
         <image name="Account" width="26" height="26"/>
         <image name="AccountOn" width="26" height="26"/>
+        <image name="AlertKnockout" width="24" height="24"/>
         <image name="ArrowUp" width="24" height="24"/>
         <image name="ArrowWeb" width="24" height="24"/>
         <image name="Copy" width="24" height="24"/>
@@ -1184,6 +1284,12 @@
         </namedColor>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGAlert6">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1203,8 +1309,14 @@
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="TxtAlert2">
+            <color red="0.62352941176470589" green="0.15294117647058825" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtBtnSec1">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtGood4">
             <color red="0.035000000149011612" green="0.68199998140335083" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

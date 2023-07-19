@@ -83,6 +83,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			TransactionService.shared.sendData.chosenToken = token
 			TransactionService.shared.sendData.chosenNFT = nil
 			self.performSegue(withIdentifier: "details", sender: self)
+			
+		} else if viewModel.isBackUpCell(atIndexPath: indexPath) {
+			self.performSegue(withIdentifier: "recover", sender: self)
 		}
 	}
 	

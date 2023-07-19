@@ -235,12 +235,30 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
+			guard let address = DependencyManager.shared.selectedWalletAddress else {
+				return
+			}
+			
+			var metadata = DependencyManager.shared.walletList.metadata(forAddress: address)
+			metadata?.backedUp = true
+			
+			guard let meta = metadata else {
+				return
+			}
+			
+			let walletCache = WalletCacheService()
+			let _ = DependencyManager.shared.walletList.update(address: address, with: meta)
+			let _ = walletCache.writeNonsensitive(DependencyManager.shared.walletList)
+			
+			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
+			
 			let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
 			if let vc = viewController {
 				self.navigationController?.popToViewController(vc, animated: true)
 				AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
 			} else {
-				self.performSegue(withIdentifier: "done", sender: nil)
+				self.navigationController?.popToHome()
 			}
 		}
 	}

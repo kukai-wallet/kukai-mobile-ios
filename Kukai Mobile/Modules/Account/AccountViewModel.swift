@@ -73,7 +73,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
-			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+			if let _ = item as? Bool, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+				return cell
+				
+			} else if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				cell.setup(menuVC: obj)
 				return cell
 				
@@ -148,12 +151,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		let metadata = DependencyManager.shared.selectedWalletMetadata
 		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		var data: [AnyHashable] = []
 		
 		if isTestnet {
 			data.append(GhostnetWarningCellObj())
+		}
+		
+		if metadata?.backedUp == false {
+			data.append(true)
 		}
 		
 		// If initial load, display shimmer views
@@ -180,8 +188,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
-			
 			
 			// Group and srot favorites (and remove hidden)
 			tokensToDisplay = []
@@ -202,24 +208,22 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
 			tokensToDisplay.append(contentsOf: nonFavourites)
 			
-			data.append(contentsOf: tokensToDisplay)
-			
-			
-			// Build snapshot
-			if isPresentedForSelectingToken {
-				snapshot.appendSections([0])
-				snapshot.appendItems(data, toSection: 0)
+			if !isPresentedForSelectingToken {
+				data.append(balancesMenuVC)
 				
-			} else {
 				if tokensToDisplay.count > 0 {
-					data.insert(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString), at: isTestnet ? 1 : 0)
+					//data.insert(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString), at: isTestnet ? 1 : 0)
+					data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
 				}
 				
-				data.insert(balancesMenuVC, at: isTestnet ? 1 : 0)
-				
-				snapshot.appendSections([0])
-				snapshot.appendItems(data, toSection: 0)
+				//data.insert(balancesMenuVC, at: isTestnet ? 1 : 0)
 			}
+			
+			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
+			data.append(contentsOf: tokensToDisplay)
+			
+			snapshot.appendSections([0])
+			snapshot.appendItems(data, toSection: 0)
 		}
 		
 		if forceRefresh {
@@ -256,6 +260,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			return nil
 		}
+	}
+	
+	func isBackUpCell(atIndexPath: IndexPath) -> Bool {
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		
+		return obj is Bool
 	}
 	
 	static func setupAccountActivityListener() {

@@ -43,15 +43,15 @@ class LoginViewController: UIViewController {
 			useBiometricsButton.setTitle("Use Touch ID", for: .normal)
 		}
 		
-		//#if DEBUG
-		//self.returnToApp()
-		//#else
+		#if DEBUG
+		self.returnToApp()
+		#else
 		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
 		} else {
 			self.returnToApp()
 		}
-		//#endif
+		#endif
 	}
 	
 	func updateDigitViewsWithLength(length: Int) {
