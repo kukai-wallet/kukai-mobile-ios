@@ -35,11 +35,11 @@ final class Onboarding: XCTestCase {
 			seedWords.append( elementsQuery.staticTexts["word\(i)"].label )
 		}
 		
+		// TODO: tap info buttons
+		// TODO: can we fake a screenshot to see the warning???
+		
 		app.buttons["Ok, I saved it"].tap()
 		app.alerts["Written the secret Recovery Phrase down?"].scrollViews.otherElements.buttons["Yes"].tap()
-		
-		print("seedWords: \(seedWords)")
-		
 		
 		// Find the word numbers requested
 		let number1 = Int(app.staticTexts["select-word-1"].label.components(separatedBy: "#").last ?? "1") ?? 1
@@ -52,12 +52,14 @@ final class Onboarding: XCTestCase {
 		let seedWord3 = seedWords[number3-1]
 		let seedWord4 = seedWords[number4-1]
 		
+		
+		// TODO: verify tapping the wrong words doesn't move
+		
 		// Tap those words in order on verification screen
 		app.staticTexts[seedWord1].tap()
 		app.staticTexts[seedWord2].tap()
 		app.staticTexts[seedWord3].tap()
 		app.staticTexts[seedWord4].tap()
-		
 		
 		// Confirm tersm and conditions and create a passcode
 		app.buttons["checkmark"].tap()
@@ -82,8 +84,42 @@ final class Onboarding: XCTestCase {
 		key.tap()
 		key.tap()
 		
+		// TODO: verify:
+		// balance is zero
+		// no tokens
+		// no collectibles
+		// no actiivty
+		// no other wallets/accounts in account switcher
+		
+		
 		
 		// Verify we are on home page looking at balances (successfully onboarded)
 		SharedHelpers.shared.waitForStaticText("Balances", inApp: app, delay: 10)
+	}
+	
+	func testImportHDWallet() {
+		// TODO:
+	}
+	
+	func testImportRegularWallet() {
+		// TODO:
+	}
+	
+	func testImportWatchWallet() {
+		// TODO:
+		// use mainnet
+		// verify tezos domain import
+		// verify balance not zero
+		// verify tokens are displayed
+		// verify collectibles
+		// verify activity
+	}
+	
+	func testImportSocial_apple() {
+		// TODO: - although, torus servers have been very buggy, might need to reconsider
+	}
+	
+	func testImportSocial_google() {
+		// TODO: - although, torus servers have been very buggy, might need to reconsider
 	}
 }

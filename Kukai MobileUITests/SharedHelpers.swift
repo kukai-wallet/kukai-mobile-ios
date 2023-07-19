@@ -32,10 +32,17 @@ class SharedHelpers: XCTestCase {
 	func application(clearContacts: Bool = false) -> XCUIApplication {
 		sharedApplication.launchEnvironment = ["XCUITEST-KEYBOARD": "true"]
 		
+		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
 		if launchCount == 0 {
 			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}
+		
+		// TODO: option to start off in ghostnet or mainnet
+		// TODO: set this up on a schedule, run UITests every midnight UTC on develop: https://jasonet.co/posts/scheduled-actions/#:~:text=The%20schedule%20event%20lets%20you,run%20it%20on%20my%20schedule.%22
+		// Important caveats: https://www.peterullrich.com/setup-recurring-jobs-with-github-actions
+		// Maybe post results into slack
+		
 		
 		return sharedApplication
 	}
