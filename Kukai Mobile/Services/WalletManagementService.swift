@@ -15,7 +15,8 @@ class WalletManagementService {
 	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool, completion: @escaping ((Bool) -> Void)) {
 		let walletCache = WalletCacheService()
 		
-		if walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex) {
+		// Only wallets not backed up are brand new wallets created via the HD wallet option
+		if walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: true) {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
 			
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {

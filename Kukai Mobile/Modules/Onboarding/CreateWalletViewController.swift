@@ -26,10 +26,10 @@ class CreateWalletViewController: UIViewController {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: "") {
 			let walletCache = WalletCacheService()
 			
-			if walletCache.cache(wallet: wallet, childOfIndex: nil) {
+			if walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false) {
 				DependencyManager.shared.walletList = walletCache.readNonsensitive()
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-				self.performSegue(withIdentifier: "hdWallet", sender: self)
+				self.performSegue(withIdentifier: "done", sender: self)
 			} else {
 				self.alert(withTitle: "Error", andMessage: "Unable to cache")
 			}
