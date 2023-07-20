@@ -28,7 +28,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	public var selectedType: AddressType = .tezosAddress
 	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
 	
-	private var temporarySupportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail]
+	public var supportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail]
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -43,11 +43,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		super.viewWillAppear(animated)
 		
 		if let sheetController = self.presentationController as? UISheetPresentationController {
-			let customMediumHeight = UISheetPresentationController.Detent.custom { context in
-				return context.maximumDetentValue * 0.90
-			}
-			
-			sheetController.detents = [customMediumHeight, .large()]
+			sheetController.detents = [.medium(), .large()]
 			sheetController.prefersGrabberVisible = true
 			sheetController.preferredCornerRadius = 30
 			sheetController.prefersScrollingExpandsWhenScrolledToEdge = true
@@ -87,7 +83,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	
 	func numberOfSections(in tableView: UITableView) -> Int {
 		//return AddressType.allCases.count
-		return temporarySupportedAddressTypes.count
+		return supportedAddressTypes.count
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,7 +96,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		}
 		
 		//let addressType = AddressType.allCases[indexPath.section]
-		let addressType = temporarySupportedAddressTypes[indexPath.section]
+		let addressType = supportedAddressTypes[indexPath.section]
 		cell.titleLabel?.text = addressType.rawValue
 		cell.iconView.image = AddressTypeViewController.imageFor(addressType: addressType)
 		

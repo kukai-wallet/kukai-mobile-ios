@@ -10,4 +10,5 @@ import UIKit
 class StakeHeadingCell: UITableViewCell {
 	
 	@IBOutlet weak var headingLabel: UILabel!
+	@IBOutlet weak var actionTitleLabel: UILabel?
 }
