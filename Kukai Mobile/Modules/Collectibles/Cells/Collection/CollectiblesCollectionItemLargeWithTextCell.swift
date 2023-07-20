@@ -13,7 +13,7 @@ class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell, UITable
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
-	@IBOutlet weak var mediaIconView: UIView!
+	@IBOutlet weak var mediaIconView: UIImageView!
 	
 	func setup(title: String, quantity: String?, isRichMedia: Bool) {
 		titleLabel.text = title

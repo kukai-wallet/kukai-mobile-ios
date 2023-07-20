@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
-        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -30,38 +29,18 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kC8-mQ-rG0">
                         <rect key="frame" x="0.0" y="8" width="300" height="300"/>
                         <subviews>
-                            <view alpha="0.75" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="egX-MF-KhN">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="media" translatesAutoresizingMaskIntoConstraints="NO" id="rkY-vb-dQn">
                                 <rect key="frame" x="260" y="12" width="30" height="30"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RKl-Hx-xNv">
-                                        <rect key="frame" x="7" y="6" width="16" height="18"/>
-                                        <color key="tintColor" name="BG8"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="16" id="HhG-tv-tcv"/>
-                                            <constraint firstAttribute="height" constant="16" id="R60-8L-ud3"/>
-                                        </constraints>
-                                        <imageReference key="image" image="play.fill" catalog="system" symbolScale="large"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" name="BGMediaOval"/>
                                 <constraints>
-                                    <constraint firstItem="RKl-Hx-xNv" firstAttribute="centerX" secondItem="egX-MF-KhN" secondAttribute="centerX" id="6rD-7r-JNV"/>
-                                    <constraint firstAttribute="width" constant="30" id="Ebk-yr-2pp"/>
-                                    <constraint firstItem="RKl-Hx-xNv" firstAttribute="centerY" secondItem="egX-MF-KhN" secondAttribute="centerY" id="Ilw-xu-bg1"/>
-                                    <constraint firstAttribute="height" constant="30" id="fIl-5f-xpJ"/>
+                                    <constraint firstAttribute="height" constant="30" id="I6N-dM-TR3"/>
+                                    <constraint firstAttribute="width" constant="30" id="lqS-Oo-dQ2"/>
                                 </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                        <real key="value" value="15"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </view>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" name="BGFullNFT"/>
                         <constraints>
-                            <constraint firstItem="egX-MF-KhN" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="top" constant="12" id="59N-Uz-83t"/>
-                            <constraint firstAttribute="trailing" secondItem="egX-MF-KhN" secondAttribute="trailing" constant="10" id="TRs-f6-gVs"/>
+                            <constraint firstAttribute="trailing" secondItem="rkY-vb-dQn" secondAttribute="trailing" constant="10" id="e0M-el-pV6"/>
+                            <constraint firstItem="rkY-vb-dQn" firstAttribute="top" secondItem="kC8-mQ-rG0" secondAttribute="top" constant="12" id="x0t-TM-qbn"/>
                         </constraints>
                     </view>
                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="fVZ-ec-hFZ">
@@ -174,7 +153,7 @@
                 <outlet property="aspectRatioConstraint" destination="kzq-hd-e8B" id="zGs-Mt-wZE"/>
                 <outlet property="endTimeLabel" destination="Trj-n0-yRV" id="XqY-N1-zPj"/>
                 <outlet property="mediaActivityView" destination="fVZ-ec-hFZ" id="NA9-DB-vuw"/>
-                <outlet property="mediaIconView" destination="egX-MF-KhN" id="7m2-vU-kxU"/>
+                <outlet property="mediaIconView" destination="rkY-vb-dQn" id="Go8-Dp-470"/>
                 <outlet property="placeholderView" destination="kC8-mQ-rG0" id="YQS-x0-twW"/>
                 <outlet property="playPauseButton" destination="73D-pt-ZBl" id="Fe3-bx-UF4"/>
                 <outlet property="quantityLabel" destination="bH2-sr-yQS" id="Ezw-s0-EZx"/>
@@ -187,15 +166,10 @@
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="media" width="36" height="36"/>
         <image name="play.fill" catalog="system" width="117" height="128"/>
-        <namedColor name="BG8">
-            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="BGFullNFT">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="BGMediaOval">
-            <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGQunatity">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

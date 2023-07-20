@@ -13,7 +13,7 @@ import MediaPlayer
 class CollectibleDetailAVCell: UICollectionViewCell {
 
 	@IBOutlet weak var placeholderView: UIView!
-	@IBOutlet var mediaIconView: UIView!
+	@IBOutlet var mediaIconView: UIImageView!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var playPauseButton: UIButton!

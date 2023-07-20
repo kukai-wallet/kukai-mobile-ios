@@ -13,7 +13,7 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subTitleLabel: UILabel!
 	@IBOutlet weak var buttonView: UIView!
-	@IBOutlet var mediaIconView: UIView!
+	@IBOutlet var mediaIconView: UIImageView!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
 	
