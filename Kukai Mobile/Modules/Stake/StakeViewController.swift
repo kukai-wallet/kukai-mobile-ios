@@ -56,10 +56,50 @@ class StakeViewController: UIViewController {
 	}
 	
 	public func enteredCustomBaker(address: String) {
-		self.viewModel.setDelegateAndRefresh(toAddress: address) { [weak self] result in
-			if case .failure(let error) = result {
-				self?.hideLoadingView()
-				self?.alert(errorWithMessage: error.description)
+		if address == "" {
+			let currentDelegate = DependencyManager.shared.balanceService.account.delegate
+			let name = currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress() ?? ""
+			var logo: String? = nil
+			
+			if let add = currentDelegate?.address {
+				logo = TzKTClient.avatarURL(forToken: add)?.absoluteString
+			}
+			
+			let baker = TzKTBaker(address: "", name: name, logo: logo)
+			
+			TransactionService.shared.delegateData.chosenBaker = baker
+			TransactionService.shared.delegateData.isAdd = false
+			
+		} else {
+			let baker = TzKTBaker(address: address, name: address.truncateTezosAddress(), logo: nil)
+			TransactionService.shared.delegateData.chosenBaker = baker
+			TransactionService.shared.delegateData.isAdd = true
+		}
+		
+		createOperationsAndConfirm(toAddress: address)
+	}
+	
+	func createOperationsAndConfirm(toAddress: String) {
+		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
+			self.alert(errorWithMessage: "Unable to locate wallet")
+			return
+		}
+		
+		self.showLoadingView()
+		
+		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { [weak self] estimationResult in
+			
+			switch estimationResult {
+				case .success(let estimationResult):
+					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
+					TransactionService.shared.currentForgedString = estimationResult.forgedString
+					self?.loadingViewHideActivity()
+					self?.performSegue(withIdentifier: "confirm", sender: nil)
+					
+				case .failure(let estimationError):
+					self?.hideLoadingView()
+					self?.alert(errorWithMessage: "\(estimationError)")
 			}
 		}
 	}
@@ -89,12 +129,11 @@ extension StakeViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let baker = viewModel.bakerFor(indexPath: indexPath) {
-			viewModel.setDelegateAndRefresh(toAddress: baker.address) { [weak self] result in
-				if case .failure(let error) = result {
-					self?.hideLoadingView()
-					self?.alert(errorWithMessage: error.description)
-				}
-			}
+			
+			TransactionService.shared.delegateData.chosenBaker = baker
+			TransactionService.shared.delegateData.isAdd = true
+			createOperationsAndConfirm(toAddress: baker.address)
+			
 		} else if viewModel.isEnterCustom(indePath: indexPath) {
 			self.performSegue(withIdentifier: "custom", sender: nil)
 		}

@@ -148,36 +148,6 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func setDelegateAndRefresh(toAddress: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
-		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
-			completion(Result.failure(KukaiError.unknown(withString: "Can't find wallet")))
-			return
-		}
-		
-		if !state.isLoading() {
-			state = .loading
-		}
-		
-		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
-		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { estimateResult in
-			guard let estimatedOperations = try? estimateResult.get() else {
-				completion(Result.failure(estimateResult.getFailure()))
-				return
-			}
-			
-			DependencyManager.shared.tezosNodeClient.send(operations: estimatedOperations.operations, withWallet: selectedWallet) { result in
-				guard let opHash = try? result.get() else {
-					completion(Result.failure(result.getFailure()))
-					return
-				}
-				
-				// Screen will automatically refresh through websocket
-				completion(Result.success(opHash))
-			}
-		}
-	}
-	
 	func bakerFor(indexPath: IndexPath) -> TzKTBaker? {
 		return dataSource?.itemIdentifier(for: indexPath) as? TzKTBaker
 	}
