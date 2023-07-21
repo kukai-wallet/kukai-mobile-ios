@@ -79,6 +79,12 @@ class StakeViewController: UIViewController {
 		createOperationsAndConfirm(toAddress: address)
 	}
 	
+	public func stakeTapped() {
+		if let baker = TransactionService.shared.delegateData.chosenBaker {
+			createOperationsAndConfirm(toAddress: baker.address)
+		}
+	}
+	
 	func createOperationsAndConfirm(toAddress: String) {
 		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
 			self.alert(errorWithMessage: "Unable to locate wallet")
@@ -132,7 +138,7 @@ extension StakeViewController: UITableViewDelegate {
 			
 			TransactionService.shared.delegateData.chosenBaker = baker
 			TransactionService.shared.delegateData.isAdd = true
-			createOperationsAndConfirm(toAddress: baker.address)
+			self.performSegue(withIdentifier: "details", sender: nil)
 			
 		} else if viewModel.isEnterCustom(indePath: indexPath) {
 			self.performSegue(withIdentifier: "custom", sender: nil)

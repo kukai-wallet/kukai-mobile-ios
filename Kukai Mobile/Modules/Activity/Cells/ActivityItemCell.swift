@@ -72,6 +72,35 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			
 			invisibleRightButton.isHidden = true
 			
+		} else if data.subType == .delegate {
+			
+			typeIcon.isHidden = true
+			typeLabel.text = ""
+			toLabel.isHidden = false
+			
+			if data.newDelegate == nil {
+				iconView.image = UIImage.unknownToken()
+				iconView.backgroundColor = .white
+				iconView.customCornerRadius = 20
+				
+				titleLabel.text = "Remove Delegate"
+				toLabel.text = "From: "
+				destinationLabel.text = data.prevDelegate?.alias ?? data.prevDelegate?.address.truncateTezosAddress()
+				
+			} else {
+				let url = TzKTClient.avatarURL(forToken: data.newDelegate?.address ?? "")
+				MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+				iconView.backgroundColor = .white
+				iconView.customCornerRadius = 20
+				
+				titleLabel.text = "Delegate"
+				toLabel.text = "To: "
+				destinationLabel.text = data.newDelegate?.alias ?? data.newDelegate?.address.truncateTezosAddress()
+			}
+			
+			destinationIconStackView.isHidden = true
+			invisibleRightButton.isHidden = true
+			
 		} else {
 			
 			// Icon and title

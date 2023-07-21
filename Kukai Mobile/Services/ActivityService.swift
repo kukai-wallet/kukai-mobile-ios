@@ -115,6 +115,21 @@ public class ActivityService {
 		return false
 	}
 	
+	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, newDelegate: TzKTAddress?) -> Bool {
+		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, newDelegate: newDelegate)
+		
+		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
+			if fromWallet.address == DependencyManager.shared.selectedWalletAddress {
+				pendingTransactionGroups.insert(group, at: 0)
+				DependencyManager.shared.addressRefreshed = fromWallet.address
+			}
+			
+			return DiskService.write(encodable: pendingTransactionGroups, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: fromWallet.address))
+		}
+		
+		return false
+	}
+	
 	public func checkAndUpdatePendingTransactions(forAddress address: String, comparedToGroups: [TzKTTransactionGroup]) {
 		let now = Date()
 		var indexesToRemove: [Int] = []

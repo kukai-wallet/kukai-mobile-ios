@@ -56,10 +56,18 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		// Baker info config
 		if self.currentDelegateData.isAdd == true {
 			confirmBakerRemoveView.isHidden = true
+			
 			bakerAddNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-			bakerAddSplitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-			bakerAddSpaceLabel.text = baker.stakingCapacity.rounded(scale: 0, roundingMode: .bankers).description + " tez"
-			bakerAddEstimatedRewardLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			if baker.name == nil && baker.fee == 0 && baker.stakingCapacity == 0 && baker.estimatedRoi == 0 {
+				bakerAddSplitLabel.text = "N/A"
+				bakerAddSpaceLabel.text = "N/A"
+				bakerAddEstimatedRewardLabel.text = "N/A"
+				
+			} else {
+				bakerAddSplitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " tez"
+				bakerAddEstimatedRewardLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			}
 			
 		} else {
 			confirmBakerAddView.isHidden = true
@@ -172,16 +180,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		
-		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
-																				   type: .delegation,
-																				   counter: counter,
-																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: baker.address,
-																				   destinationAlias: baker.name,
-																				   xtzAmount: .zero(),
-																				   parameters: nil,
-																				   primaryToken: nil)
+		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash, type: .delegation, counter: counter, fromWallet: selectedWalletMetadata, newDelegate: TzKTAddress(alias: baker.name, address: baker.address))
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
