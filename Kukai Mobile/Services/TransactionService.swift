@@ -17,6 +17,7 @@ public class TransactionService {
 	
 	public enum TransactionType {
 		case send
+		case delegate
 		case exchange
 		case addLiquidity
 		case removeLiquidity
@@ -177,6 +178,11 @@ public class TransactionService {
 		var destinationIcon: UIImage?
 	}
 	
+	public struct DelegateData {
+		var chosenBaker: TzKTBaker?
+		var isAdd: Bool?
+	}
+	
 	public struct ExchangeData {
 		var selectedExchangeAndToken: DipDupExchange?
 		var calculationResult: DexSwapCalculationResult?
@@ -234,6 +240,7 @@ public class TransactionService {
 	public var currentRemoteForgedString = ""
 	
 	public var sendData: SendData
+	public var delegateData: DelegateData
 	public var exchangeData: ExchangeData
 	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
@@ -248,6 +255,7 @@ public class TransactionService {
 		self.currentRemoteOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
+		self.delegateData = DelegateData(chosenBaker: nil, isAdd: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
@@ -283,6 +291,7 @@ public class TransactionService {
 		self.currentRemoteForgedString = ""
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
+		self.delegateData = DelegateData(chosenBaker: nil, isAdd: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)

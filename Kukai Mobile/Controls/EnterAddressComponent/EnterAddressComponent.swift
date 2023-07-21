@@ -66,6 +66,10 @@ public class EnterAddressComponent: UIView {
 		self.sendButton.isEnabled = false
 	}
 	
+	public func updateAvilableAddressTypes(_ types: [AddressType]) {
+		addressTypeVC?.supportedAddressTypes = types
+	}
+	
 	
 	
 	// MARK: - Button actions
