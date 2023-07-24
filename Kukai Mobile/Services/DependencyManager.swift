@@ -45,6 +45,7 @@ class DependencyManager {
 	var coinGeckoService: CoinGeckoService
 	var tezosDomainsClient: TezosDomainsClient
 	var exploreService: ExploreService
+	var discoverService: DiscoverService
 	
 	
 	// Properties and helpers
@@ -177,6 +178,7 @@ class DependencyManager {
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
+		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		
 		updateKukaiCoreClients(supressUpdateNotification: true)
 	}
@@ -224,6 +226,7 @@ class DependencyManager {
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
+		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		
 		if !supressUpdateNotification {
 			networkDidChange = true

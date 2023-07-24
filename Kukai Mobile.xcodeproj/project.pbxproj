@@ -186,6 +186,11 @@
 		C082BBC528941F1A002B1E42 /* AddLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C082BBC428941F1A002B1E42 /* AddLiquidityViewController.swift */; };
 		C082BBC728941F2B002B1E42 /* RemoveLiquidityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C082BBC628941F2B002B1E42 /* RemoveLiquidityViewController.swift */; };
 		C082C29A2A5D9F8B00DB9598 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C082C2992A5D9F8B00DB9598 /* Toast.swift */; };
+		C083E6542A6EB03300B3BEBE /* DiscoverService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083E6532A6EB03300B3BEBE /* DiscoverService.swift */; };
+		C083E6572A6EB79300B3BEBE /* URLFromString.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083E6562A6EB79300B3BEBE /* URLFromString.swift */; };
+		C083E6592A6EB98700B3BEBE /* DefaultUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083E6582A6EB98700B3BEBE /* DefaultUUID.swift */; };
+		C083E65B2A6EC7D600B3BEBE /* DiscoverHeadingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083E65A2A6EC7D600B3BEBE /* DiscoverHeadingCell.swift */; };
+		C083E65D2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C083E65C2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift */; };
 		C08462412919204800B7D62D /* UIView+gradients.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08462402919204800B7D62D /* UIView+gradients.swift */; };
 		C0846243291925A100B7D62D /* CAGradientLayer+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0846242291925A100B7D62D /* CAGradientLayer+extensions.swift */; };
 		C084624529195C9D00B7D62D /* AccountButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C084624429195C9D00B7D62D /* AccountButton.swift */; };
@@ -564,6 +569,11 @@
 		C082BBC428941F1A002B1E42 /* AddLiquidityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLiquidityViewController.swift; sourceTree = "<group>"; };
 		C082BBC628941F2B002B1E42 /* RemoveLiquidityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveLiquidityViewController.swift; sourceTree = "<group>"; };
 		C082C2992A5D9F8B00DB9598 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		C083E6532A6EB03300B3BEBE /* DiscoverService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverService.swift; sourceTree = "<group>"; };
+		C083E6562A6EB79300B3BEBE /* URLFromString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLFromString.swift; sourceTree = "<group>"; };
+		C083E6582A6EB98700B3BEBE /* DefaultUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUUID.swift; sourceTree = "<group>"; };
+		C083E65A2A6EC7D600B3BEBE /* DiscoverHeadingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverHeadingCell.swift; sourceTree = "<group>"; };
+		C083E65C2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverShowMoreCell.swift; sourceTree = "<group>"; };
 		C08462402919204800B7D62D /* UIView+gradients.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+gradients.swift"; sourceTree = "<group>"; };
 		C0846242291925A100B7D62D /* CAGradientLayer+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CAGradientLayer+extensions.swift"; sourceTree = "<group>"; };
 		C084624429195C9D00B7D62D /* AccountButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountButton.swift; sourceTree = "<group>"; };
@@ -815,6 +825,7 @@
 				C095367C2A0A9284001B20C4 /* StorageService.swift */,
 				C080C4DA2A1E271C00B372EB /* ExploreService.swift */,
 				C00C39902A28AA5900C431EB /* LookupService.swift */,
+				C083E6532A6EB03300B3BEBE /* DiscoverService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1100,6 +1111,15 @@
 			path = Onboarding;
 			sourceTree = "<group>";
 		};
+		C083E6552A6EB72700B3BEBE /* PropertyWrappers */ = {
+			isa = PBXGroup;
+			children = (
+				C083E6562A6EB79300B3BEBE /* URLFromString.swift */,
+				C083E6582A6EB98700B3BEBE /* DefaultUUID.swift */,
+			);
+			path = PropertyWrappers;
+			sourceTree = "<group>";
+		};
 		C08694ED27BD69B6000A4909 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1200,7 +1220,9 @@
 		C09CEB3A29C1F41000D95D69 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				C083E65A2A6EC7D600B3BEBE /* DiscoverHeadingCell.swift */,
 				C08694E127BD1BB1000A4909 /* DiscoverCell.swift */,
+				C083E65C2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1282,6 +1304,7 @@
 				C0082BF126A6C69C00DB160B /* Services */,
 				C08694ED27BD69B6000A4909 /* Models */,
 				C06EA1A426A56C3F006029CF /* Controls */,
+				C083E6552A6EB72700B3BEBE /* PropertyWrappers */,
 				C049B5AD26A0799300F1C5E0 /* Extensions */,
 			);
 			path = "Kukai Mobile";
@@ -1838,6 +1861,7 @@
 				C0321C7D2811792D0013E72B /* ThemeManager.swift in Sources */,
 				C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */,
 				C07AC26927D26C0200D320D4 /* CoinGeckoMarketDataResponse.swift in Sources */,
+				C083E6542A6EB03300B3BEBE /* DiscoverService.swift in Sources */,
 				C0E6BCBB2A332FE900F86577 /* BalanceService.swift in Sources */,
 				C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */,
 				C034F2C52A6AD2E5000F4C4C /* BakerDetailsViewController.swift in Sources */,
@@ -1861,6 +1885,7 @@
 				C0A321D327C68B9E00D7788B /* ValidatorTextField.swift in Sources */,
 				C0FA74DC2A4B011200CA845B /* LoadingCollectibleCell.swift in Sources */,
 				C08694EC27BD5F8C000A4909 /* RequestIfService.swift in Sources */,
+				C083E65B2A6EC7D600B3BEBE /* DiscoverHeadingCell.swift in Sources */,
 				C049E73A2881837F00887B64 /* AccountsViewController.swift in Sources */,
 				C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */,
 				C08C973F2908192A00249959 /* UICollectionViewCell+extensions.swift in Sources */,
@@ -1885,6 +1910,7 @@
 				C0C7DFBA29BF37FF00F60E0C /* SideMenuViewController.swift in Sources */,
 				C0081FD827D8FE3700F7FEFF /* ActivityViewModel.swift in Sources */,
 				C03BF8892A279821003BD343 /* ActivityItemContractCell.swift in Sources */,
+				C083E6592A6EB98700B3BEBE /* DefaultUUID.swift in Sources */,
 				C095367D2A0A9284001B20C4 /* StorageService.swift in Sources */,
 				C049B5A726A04DCA00F1C5E0 /* LaunchViewController.swift in Sources */,
 				C08C974129081F3D00249959 /* CollectibleDetailLayout.swift in Sources */,
@@ -1911,6 +1937,7 @@
 				C0151B272A15256900C7F250 /* SendContractConfirmViewController.swift in Sources */,
 				C0F7113729DCBE0500FA59E0 /* RecoveryPhraseScreenshotWarningViewController.swift in Sources */,
 				C049E73C2881838E00887B64 /* AccountsViewModel.swift in Sources */,
+				C083E6572A6EB79300B3BEBE /* URLFromString.swift in Sources */,
 				C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */,
 				C0C6B5CF28CA27AF00368AEA /* StakeViewController.swift in Sources */,
 				C03BF88D2A279836003BD343 /* ActivityItemBatchCell.swift in Sources */,
@@ -1956,6 +1983,7 @@
 				C001D5A42A027E710089EC7A /* CollectiblesCollectionsViewController.swift in Sources */,
 				C0D6B94B294B84FE004F2F2D /* HiddenCollectiblesViewController.swift in Sources */,
 				C08694E427BD1D86000A4909 /* AccountViewController.swift in Sources */,
+				C083E65D2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift in Sources */,
 				C082BBC528941F1A002B1E42 /* AddLiquidityViewController.swift in Sources */,
 				C06C529D29FC09EF0073A2FE /* RemoveWalletViewController.swift in Sources */,
 				C07E283829E84BE000E8529A /* AccountsSectionHeaderCell.swift in Sources */,

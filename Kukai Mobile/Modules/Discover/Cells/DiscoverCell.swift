@@ -9,7 +9,7 @@ import UIKit
 
 class DiscoverCell: UITableViewCell {
 
-	@IBOutlet weak var headingLabel: UILabel!
 	@IBOutlet weak var iconView: UIImageView!
-	
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var descriptionLabel: UILabel!
 }

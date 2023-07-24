@@ -20,6 +20,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 		super.viewDidLoad()
 		gradient = self.view.addGradientBackgroundFull()
 		
+		viewModel.menu = MenuViewController(actions: [], header: nil, sourceViewController: self)
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
