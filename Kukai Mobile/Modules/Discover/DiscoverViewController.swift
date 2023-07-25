@@ -15,8 +15,8 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 	private let viewModel = DiscoverViewModel()
 	private var bag = [AnyCancellable]()
 	private var gradient = CAGradientLayer()
-	private var featuredTimer: Timer? = nil
-	private var featuredCell: DiscoverFeaturedCell? = nil
+	private weak var featuredTimer: Timer? = nil
+	private weak var featuredCell: DiscoverFeaturedCell? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -72,12 +72,13 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		guard let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) else {
-			return
+		if let url = viewModel.urlForDiscoverItem(atIndexPath: indexPath) {
+			featuredTimer?.invalidate()
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+			
+		} else if viewModel.isShowMoreOrLess(indexPath: indexPath) {
+			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
 		}
-		
-		featuredTimer?.invalidate()
-		UIApplication.shared.open(url, options: [:], completionHandler: nil)
 	}
 	
 	func innerCellTapped(url: URL?) {

@@ -8,5 +8,17 @@
 import UIKit
 
 class DiscoverShowMoreCell: UITableViewCell {
-
+	
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var chevron: UIImageView!
+	
+	func setOpen() {
+		titleLabel.text = "Show Less"
+		chevron.rotate(degrees: -90, duration: 0.3)
+	}
+	
+	func setClosed() {
+		titleLabel.text = "Show More"
+		chevron.rotateBack(duration: 0.3)
+	}
 }

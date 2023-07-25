@@ -22,8 +22,10 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var menu: MenuViewController? = nil
 	var isVisible = false
 	var featuredDelegate: DiscoverFeaturedCellDelegate? = nil
+	var expandedSection: Int? = nil
 	
 	private var bag = [AnyCancellable]()
+	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	
 	
 	
@@ -80,6 +82,13 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let _ = item as? ShowMore, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverShowMoreCell", for: indexPath) as? DiscoverShowMoreCell {
+				if self?.expandedSection == indexPath.section {
+					cell.setOpen()
+					
+				} else {
+					cell.setClosed()
+				}
+				
 				return cell
 				
 			} else {
@@ -118,13 +127,13 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
 		if DependencyManager.shared.currentNetworkType == .testnet {
-			snapshot.appendSections([0, 1])
+			currentSnapshot.appendSections([0, 1])
 			
-			snapshot.appendItems([GhostnetWarningCellObj(), menu], toSection: 0)
-			snapshot.appendItems([
+			currentSnapshot.appendItems([GhostnetWarningCellObj(), menu], toSection: 0)
+			currentSnapshot.appendItems([
 				"Defi",
 				DiscoverItem(id: UUID(), title: "WTZ", description: "Ghostnet version of Crunchy's wrapped XTZ", imageUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
 				DiscoverItem(id: UUID(), title: "Quipuswap", description: "Ghostnet version of Quipuswap DEX", imageUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
@@ -133,7 +142,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		} else {
 			let groups = DependencyManager.shared.discoverService.items
 			
-			snapshot.appendSections(Array(0..<groups.count))
+			currentSnapshot.appendSections(Array(0..<groups.count))
 			
 			for (index, group) in groups.enumerated() {
 				var itemsToAdd: [AnyHashable] = []
@@ -143,11 +152,11 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					itemsToAdd.append(group)
 					
 				} else {
-					itemsToAdd.append(group.title)
+					itemsToAdd.append(group.title.uppercased())
 					for (index2, item) in group.items.enumerated() {
 						itemsToAdd.append(item)
 						
-						if index2 == 3 {
+						if index2 == 3 && expandedSection != index {
 							break
 						}
 					}
@@ -157,11 +166,11 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					}
 				}
 				
-				snapshot.appendItems(itemsToAdd, toSection: index)
+				currentSnapshot.appendItems(itemsToAdd, toSection: index)
 			}
 		}
 		
-		datasource.apply(snapshot, animatingDifferences: animate)
+		datasource.apply(currentSnapshot, animatingDifferences: animate)
 	}
 	
 	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
@@ -170,5 +179,68 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return obj.projectURL
+	}
+	
+	func isShowMoreOrLess(indexPath: IndexPath) -> Bool {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? ShowMore else {
+			return false
+		}
+		
+		return true
+	}
+	
+	func openOrCloseGroup(forTableView tableView: UITableView, atIndexPath indexPath: IndexPath) {
+		guard let ds = dataSource else {
+			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
+			return
+		}
+		
+		let group = DependencyManager.shared.discoverService.items[indexPath.section]
+		
+		if group.items.count <= 4 {
+			return
+		}
+		
+		if expandedSection == nil {
+			expandedSection = indexPath.section
+			self.openGroup(forTableView: tableView, atSection: indexPath.section)
+			
+		} else if expandedSection == indexPath.section {
+			expandedSection = nil
+			self.closeGroup(forTableView: tableView, atSection: indexPath.section)
+			
+		} else if let previousIndex = expandedSection, previousIndex != indexPath.section {
+			self.openGroup(forTableView: tableView, atSection: indexPath.section)
+			self.closeGroup(forTableView: tableView, atSection: previousIndex)
+			expandedSection = indexPath.section
+		}
+		
+		ds.apply(currentSnapshot, animatingDifferences: true)
+	}
+	
+	private func openGroup(forTableView tableView: UITableView, atSection section: Int) {
+		let numberOfCells = tableView.numberOfRows(inSection: section)
+		let indexPath = IndexPath(row: numberOfCells-1, section: section)
+		guard let cell = tableView.cellForRow(at: indexPath) as? DiscoverShowMoreCell, let item = dataSource?.itemIdentifier(for: indexPath) else {
+			return
+		}
+		
+		cell.setOpen()
+		
+		let group = DependencyManager.shared.discoverService.items[section]
+		currentSnapshot.insertItems(Array(group.items[4..<group.items.count]), beforeItem: item)
+	}
+	
+	private func closeGroup(forTableView tableView: UITableView, atSection section: Int) {
+		let numberOfCells = tableView.numberOfRows(inSection: section)
+		let indexPath = IndexPath(row: numberOfCells-1, section: section)
+		guard let cell = tableView.cellForRow(at: indexPath) as? DiscoverShowMoreCell else {
+			return
+		}
+		
+		cell.setClosed()
+		
+		let group = DependencyManager.shared.discoverService.items[section]
+		currentSnapshot.deleteItems(Array(group.items[4..<group.items.count]))
 	}
 }

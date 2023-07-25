@@ -54,6 +54,9 @@ class DiscoverFeaturedCell: UITableViewCell {
 	}
 	
 	public func setupTimer() {
+		timer?.invalidate()
+		timer = nil
+		
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] timer in
 			var nextRow = self?.pageControl.currentPage ?? 0
 			if nextRow == ((self?.pageControl.numberOfPages ?? 1) - 1) {
@@ -83,7 +86,7 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 		}
 		
 		let item = discoverGroup.items[indexPath.row]
-		cell.setup(categories: ["blah", "test", "blah"], imageURL: item.imageUri, title: item.title, description: item.description, pageWidth: collectionView.frame.width)
+		cell.setup(categories: [" "], imageURL: item.imageUri, title: item.title, description: item.description, pageWidth: collectionView.frame.width)
 		
 		return cell
 	}

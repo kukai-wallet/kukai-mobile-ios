@@ -277,7 +277,7 @@
                                             <outlet property="titleLabel" destination="H4H-KZ-xRL" id="Hd6-Zt-Yzc"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoverShowMoreCell" id="eYM-Vj-2yY" customClass="DiscoverShowMoreCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DiscoverShowMoreCell" id="eYM-Vj-2yY" customClass="DiscoverShowMoreCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="406" width="393" height="41"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eYM-Vj-2yY" id="brP-lv-1SB">
@@ -295,6 +295,7 @@
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="t2a-Ui-NvU">
                                                             <rect key="frame" x="80" y="3" width="6" height="11"/>
+                                                            <color key="tintColor" name="BGB4"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="11" id="Vx9-gL-V67"/>
                                                                 <constraint firstAttribute="width" constant="6" id="ZTH-8g-ReS"/>
@@ -320,6 +321,10 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="chevron" destination="t2a-Ui-NvU" id="PTW-pI-E6C"/>
+                                            <outlet property="titleLabel" destination="fMZ-vJ-Gia" id="GmH-AG-tsQ"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
