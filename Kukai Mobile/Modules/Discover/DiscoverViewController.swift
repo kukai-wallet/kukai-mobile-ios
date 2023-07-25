@@ -8,13 +8,15 @@
 import UIKit
 import Combine
 
-class DiscoverViewController: UIViewController, UITableViewDelegate {
+class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFeaturedCellDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = DiscoverViewModel()
 	private var bag = [AnyCancellable]()
 	private var gradient = CAGradientLayer()
+	private var featuredTimer: Timer? = nil
+	private var featuredCell: DiscoverFeaturedCell? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -22,6 +24,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 		
 		viewModel.menu = MenuViewController(actions: [], header: nil, sourceViewController: self)
 		viewModel.makeDataSource(withTableView: tableView)
+		viewModel.featuredDelegate = self
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
@@ -47,10 +50,23 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 				self?.tableView.reloadData()
 				
 			}.store(in: &bag)
+		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			if self?.viewModel.isVisible == true {
+				self?.featuredCell?.setupTimer()
+			}
+		}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		viewModel.refresh(animate: true)
+		super.viewWillAppear(animated)
+		viewModel.isVisible = true
+		viewModel.refresh(animate: false)
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		viewModel.isVisible = false
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -60,6 +76,21 @@ class DiscoverViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
+		featuredTimer?.invalidate()
 		UIApplication.shared.open(url, options: [:], completionHandler: nil)
+	}
+	
+	func innerCellTapped(url: URL?) {
+		guard let url = url else {
+			return
+		}
+		
+		featuredTimer?.invalidate()
+		UIApplication.shared.open(url, options: [:], completionHandler: nil)
+	}
+	
+	func timerSetup(timer: Timer?, sender: DiscoverFeaturedCell) {
+		featuredTimer = timer
+		featuredCell = sender
 	}
 }

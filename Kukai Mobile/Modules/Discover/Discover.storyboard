@@ -6,11 +6,15 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="collection view cell content view" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
         <array key="Figtree-Bold.ttf">
             <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-Medium.ttf">
+            <string>Figtree-Medium</string>
         </array>
         <array key="Figtree-Regular.ttf">
             <string>Figtree-Regular</string>
@@ -40,7 +44,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Discover" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cwV-gP-NKx">
-                                                    <rect key="frame" x="16" y="20.666666666666668" width="72.333333333333329" height="22.000000000000004"/>
+                                                    <rect key="frame" x="16" y="21" width="72.333333333333329" height="21"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
@@ -85,8 +89,115 @@
                                             <outlet property="titleLabel" destination="cwV-gP-NKx" id="73l-tZ-tyI"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="DiscoverFeaturedCell" rowHeight="214" id="Hga-ae-sqi" customClass="DiscoverFeaturedCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="108" width="393" height="214"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Hga-ae-sqi" id="Bbb-QK-dKY">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="214"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PZu-G2-zhR">
+                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="198"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="198" id="hir-OM-eYq"/>
+                                                    </constraints>
+                                                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dfg-UI-Jpn">
+                                                        <size key="itemSize" width="394" height="160"/>
+                                                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    </collectionViewFlowLayout>
+                                                    <cells>
+                                                        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DiscoverFeaturedItemCell" id="yeS-b1-X0Z" customClass="DiscoverFeaturedItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="0.0" y="5" width="394" height="188"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Teb-de-wNR">
+                                                                <rect key="frame" x="0.0" y="0.0" width="394" height="188"/>
+                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kXi-RG-cXs">
+                                                                        <rect key="frame" x="0.0" y="20" width="394" height="134"/>
+                                                                        <color key="backgroundColor" name="BGThumbNFT"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="134" id="RkR-5f-Geu"/>
+                                                                            <constraint firstAttribute="width" constant="394" id="a33-gD-prU"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;categories&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5JY-Sl-jCP">
+                                                                        <rect key="frame" x="8" y="4" width="378" height="12"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="8"/>
+                                                                        <color key="textColor" name="Txt12"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;description&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HI-rq-H40">
+                                                                        <rect key="frame" x="16" y="174" width="362" height="10"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="8"/>
+                                                                        <color key="textColor" name="Txt12"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDk-gk-axQ">
+                                                                        <rect key="frame" x="16" y="160" width="362" height="12"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                                                        <color key="textColor" name="Txt8"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="5JY-Sl-jCP" firstAttribute="leading" secondItem="Teb-de-wNR" secondAttribute="leading" constant="8" id="5Mi-QY-iP1"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="dDk-gk-axQ" secondAttribute="trailing" constant="16" id="6iY-bo-8Nn"/>
+                                                                    <constraint firstItem="dDk-gk-axQ" firstAttribute="top" secondItem="kXi-RG-cXs" secondAttribute="bottom" constant="6" id="Eyo-Xu-tib"/>
+                                                                    <constraint firstItem="kXi-RG-cXs" firstAttribute="leading" secondItem="Teb-de-wNR" secondAttribute="leading" id="UpA-XS-jwi"/>
+                                                                    <constraint firstItem="kXi-RG-cXs" firstAttribute="top" secondItem="5JY-Sl-jCP" secondAttribute="bottom" constant="4" id="XiC-0n-9XU"/>
+                                                                    <constraint firstItem="dDk-gk-axQ" firstAttribute="leading" secondItem="Teb-de-wNR" secondAttribute="leading" constant="16" id="aYd-HP-cdC"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="kXi-RG-cXs" secondAttribute="trailing" id="eSG-Cn-P4k"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="9HI-rq-H40" secondAttribute="bottom" priority="999" constant="4" id="fvr-md-oiU"/>
+                                                                    <constraint firstItem="9HI-rq-H40" firstAttribute="top" secondItem="dDk-gk-axQ" secondAttribute="bottom" constant="2" id="gXH-pc-hee"/>
+                                                                    <constraint firstItem="5JY-Sl-jCP" firstAttribute="top" secondItem="Teb-de-wNR" secondAttribute="top" constant="4" id="opU-kx-qFI"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="9HI-rq-H40" secondAttribute="trailing" constant="16" id="qN2-kJ-3la"/>
+                                                                    <constraint firstItem="9HI-rq-H40" firstAttribute="leading" secondItem="Teb-de-wNR" secondAttribute="leading" constant="16" id="sek-hH-wfx"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="5JY-Sl-jCP" secondAttribute="trailing" constant="8" id="t3P-7W-ecY"/>
+                                                                </constraints>
+                                                            </collectionViewCellContentView>
+                                                            <color key="backgroundColor" name="BG2"/>
+                                                            <size key="customSize" width="394" height="188"/>
+                                                            <connections>
+                                                                <outlet property="categoriesLabel" destination="5JY-Sl-jCP" id="Byb-yK-Ugq"/>
+                                                                <outlet property="descriptionLabel" destination="9HI-rq-H40" id="mPU-Ht-cy6"/>
+                                                                <outlet property="iconView" destination="kXi-RG-cXs" id="Z5S-TZ-5Eb"/>
+                                                                <outlet property="imageViewWidthConstraint" destination="a33-gD-prU" id="QwC-po-pzv"/>
+                                                                <outlet property="titleLabel" destination="dDk-gk-axQ" id="Alv-M9-CFG"/>
+                                                            </connections>
+                                                        </collectionViewCell>
+                                                    </cells>
+                                                </collectionView>
+                                                <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="TAK-in-Nwy">
+                                                    <rect key="frame" x="16" y="198" width="361" height="16"/>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="pageIndicatorTintColor" name="BGB0"/>
+                                                    <color key="currentPageIndicatorTintColor" name="BGB4"/>
+                                                </pageControl>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="PZu-G2-zhR" firstAttribute="top" secondItem="Bbb-QK-dKY" secondAttribute="top" id="CPw-Jc-xN6"/>
+                                                <constraint firstAttribute="trailing" secondItem="TAK-in-Nwy" secondAttribute="trailing" constant="16" id="aTi-OE-hR8"/>
+                                                <constraint firstItem="TAK-in-Nwy" firstAttribute="leading" secondItem="Bbb-QK-dKY" secondAttribute="leading" constant="16" id="cIe-x4-SN9"/>
+                                                <constraint firstAttribute="bottom" secondItem="TAK-in-Nwy" secondAttribute="bottom" id="e3p-2V-OW6"/>
+                                                <constraint firstItem="PZu-G2-zhR" firstAttribute="leading" secondItem="Bbb-QK-dKY" secondAttribute="leading" id="na3-PP-Ek9"/>
+                                                <constraint firstAttribute="trailing" secondItem="PZu-G2-zhR" secondAttribute="trailing" id="rwZ-g4-GRe"/>
+                                                <constraint firstItem="TAK-in-Nwy" firstAttribute="top" secondItem="PZu-G2-zhR" secondAttribute="bottom" id="w4h-kU-6jY"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="collectionView" destination="PZu-G2-zhR" id="RGW-H7-R8K"/>
+                                            <outlet property="pageControl" destination="TAK-in-Nwy" id="gY8-EB-ZOu"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoverHeadingCell" id="sTP-YN-nXe" customClass="DiscoverHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="108" width="393" height="12"/>
+                                        <rect key="frame" x="0.0" y="322" width="393" height="12"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sTP-YN-nXe" id="6hT-0Y-hZO">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="12"/>
@@ -113,7 +224,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoverCell" rowHeight="72" id="JET-l6-oMh" customClass="DiscoverCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="120" width="393" height="72"/>
+                                        <rect key="frame" x="0.0" y="334" width="393" height="72"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="JET-l6-oMh" id="aSK-0h-b52">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="72"/>
@@ -134,13 +245,13 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H4H-KZ-xRL">
-                                                    <rect key="frame" x="88" y="16" width="269" height="15"/>
+                                                    <rect key="frame" x="88" y="16" width="269" height="14"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Txt6"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;description&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jzS-dL-OoR">
-                                                    <rect key="frame" x="88" y="35" width="289" height="12"/>
+                                                    <rect key="frame" x="88" y="34" width="289" height="12"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="10"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
@@ -167,7 +278,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DiscoverShowMoreCell" id="eYM-Vj-2yY" customClass="DiscoverShowMoreCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="192" width="393" height="41"/>
+                                        <rect key="frame" x="0.0" y="406" width="393" height="41"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eYM-Vj-2yY" id="brP-lv-1SB">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="41"/>
@@ -235,7 +346,7 @@
     </scenes>
     <designables>
         <designable name="uLl-Eg-mC4">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="26" height="26"/>
         </designable>
     </designables>
     <resources>
@@ -243,17 +354,32 @@
         <image name="Discover" width="26" height="26"/>
         <image name="DiscoverOn" width="26" height="26"/>
         <image name="Ellipses" width="24" height="24"/>
+        <namedColor name="BG2">
+            <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGB0">
+            <color red="0.72549019607843135" green="0.74117647058823533" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BGThumbNFT">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt6">
             <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt8">
+            <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

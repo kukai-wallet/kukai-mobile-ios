@@ -22,7 +22,7 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 	//public let categories: [String]
 	public let description: String
 	
-	@URLFromString public var thumbnailUri: URL?
+	@URLFromString public var imageUri: URL?
 	@URLFromString public var projectURL: URL?
 }
 
@@ -48,6 +48,8 @@ public class DiscoverService {
 	
 	/// Fetch items, which automatically get primaryKey added. Map them into a dictionary based on UUID and store in `items`
 	public func fetchItems(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
+		self.requestIfService.delete(key: discoverCacheKey)
+		
 		guard let url = URL(string: discoverURL) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return

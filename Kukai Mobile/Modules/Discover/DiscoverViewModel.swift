@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 struct ShowMore: Hashable, Identifiable {
 	let id = UUID()
@@ -19,14 +20,49 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var menu: MenuViewController? = nil
+	var isVisible = false
+	var featuredDelegate: DiscoverFeaturedCellDelegate? = nil
+	
+	private var bag = [AnyCancellable]()
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		DependencyManager.shared.$addressLoaded
+			.dropFirst()
+			.sink { [weak self] address in
+				if DependencyManager.shared.selectedWalletAddress == address {
+					if self?.isVisible == true {
+						self?.refresh(animate: true)
+					}
+				}
+			}.store(in: &bag)
+	}
+	
+	deinit {
+		bag.forEach({ $0.cancel() })
+	}
+	
+	
+	
+	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 		
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				cell.setup(menuVC: obj)
+				return cell
+				
+			} else if let obj = item as? DiscoverGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverFeaturedCell", for: indexPath) as? DiscoverFeaturedCell {
+				cell.delegate = self?.featuredDelegate
+				cell.setup(discoverGroup: obj, startIndex: 0)
 				return cell
 				
 			} else if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverHeadingCell", for: indexPath) as? DiscoverHeadingCell {
@@ -34,9 +70,9 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
-				let updatedURL = MediaProxyService.url(fromUri: obj.thumbnailUri, ofFormat: .icon, keepGif: true)
+				let updatedURL = MediaProxyService.url(fromUri: obj.imageUri, ofFormat: .icon, keepGif: true)
 				MediaProxyService.load(url: updatedURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken()) { size in
-					cell.iconView.backgroundColor = .white
+					cell.iconView.backgroundColor = .colorNamed("BGThumbNFT")
 				}
 				
 				cell.titleLabel.text = obj.title
@@ -90,8 +126,8 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			snapshot.appendItems([GhostnetWarningCellObj(), menu], toSection: 0)
 			snapshot.appendItems([
 				"Defi",
-				DiscoverItem(id: UUID(), title: "WTZ", description: "Ghostnet version of Crunchy's wrapped XTZ", thumbnailUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
-				DiscoverItem(id: UUID(), title: "Quipuswap", description: "Ghostnet version of Quipuswap DEX", thumbnailUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
+				DiscoverItem(id: UUID(), title: "WTZ", description: "Ghostnet version of Crunchy's wrapped XTZ", imageUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
+				DiscoverItem(id: UUID(), title: "Quipuswap", description: "Ghostnet version of Quipuswap DEX", imageUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
 			], toSection: 1)
 			
 		} else {
@@ -104,19 +140,21 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				if index == 0 {
 					itemsToAdd.append(menu)
-				}
-				
-				itemsToAdd.append(group.title)
-				for (index2, item) in group.items.enumerated() {
-					itemsToAdd.append(item)
+					itemsToAdd.append(group)
 					
-					if index2 == 3 {
-						break
+				} else {
+					itemsToAdd.append(group.title)
+					for (index2, item) in group.items.enumerated() {
+						itemsToAdd.append(item)
+						
+						if index2 == 3 {
+							break
+						}
 					}
-				}
-				
-				if group.items.count > 4 {
-					itemsToAdd.append(ShowMore())
+					
+					if group.items.count > 4 {
+						itemsToAdd.append(ShowMore())
+					}
 				}
 				
 				snapshot.appendItems(itemsToAdd, toSection: index)
@@ -127,12 +165,10 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
-		/*
-		let obj = dataSource?.itemIdentifier(for: atIndexPath)
-		if let item = obj as? DiscoverItem {
-			return URL(string: item.url)
+		guard let obj = dataSource?.itemIdentifier(for: atIndexPath) as? DiscoverItem else {
+			return nil
 		}
-		*/
-		return nil
+		
+		return obj.projectURL
 	}
 }
