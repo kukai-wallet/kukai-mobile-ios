@@ -260,7 +260,7 @@ public class ThemeManager {
 				"LineMenuContext": UIColor("#EBEBFF"),
 				"BGInputs": UIColor("#DFE0F0"),
 				"BGPanelExpand": UIColor("#FFFFFF"),
-				"TintGeneral": UIColor("#000000", alpha: 0.75),
+				"TintGeneral": UIColor("#333333", alpha: 0.75),
 				"TintContext": UIColor("#000000", alpha: 0.2),
 				"BGQunatity": UIColor("#EDEEFF"),
 				"BGSale": UIColor("#6D75F4"),

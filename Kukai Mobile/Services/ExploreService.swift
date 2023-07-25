@@ -95,7 +95,7 @@ public struct ExploreItem: Codable {
 
 public class ExploreService {
 	
-	private let exploreURL = "https://explore.kukaiwallet.workers.dev/"
+	private let exploreURL = "https://services.kukaiwallet.workers.dev/v1/explore"
 	
 	private let exploreCacheKey = "explore-cahce-key"
 	

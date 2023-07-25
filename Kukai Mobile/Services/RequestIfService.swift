@@ -11,6 +11,7 @@ import KukaiCoreSwift
 public class RequestIfService {
 	
 	public enum TimeConstants: TimeInterval {
+		case second = 1
 		case minute = 60
 		case hour = 3600
 		case day = 86400
