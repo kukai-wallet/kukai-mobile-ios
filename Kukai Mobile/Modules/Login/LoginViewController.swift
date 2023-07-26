@@ -164,14 +164,22 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 			if StorageService.validatePassword(text) == true {
 				returnToApp()
 			} else {
-				errorLabel.isHidden = false
+				displayErrorAndReset()
 			}
-		} else if text == "" {
+		} else if text.count > 0 {
 			errorLabel.isHidden = true
 		}
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
 		
+	}
+	
+	func displayErrorAndReset() {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			self?.errorLabel.isHidden = false
+			self?.hiddenTextfield.text = ""
+			self?.updateDigitViewsWithLength(length: 0)
+		}
 	}
 }

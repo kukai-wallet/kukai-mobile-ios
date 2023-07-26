@@ -26,6 +26,10 @@ public struct LengthValidator: Validator {
 	}
 	
 	public func restrictEntryIfInvalid(text: String) -> Bool {
+		if text.count > max {
+			return true
+		}
+		
 		return false
 	}
 	
