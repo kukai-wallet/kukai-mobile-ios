@@ -47,26 +47,26 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="fSL-04-2kd">
                                                             <rect key="frame" x="10" y="12" width="40" height="40"/>
-                                                            <color key="tintColor" name="TxtAlert2"/>
+                                                            <color key="tintColor" name="TxtAlert4"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="JBT-fu-Pja"/>
                                                                 <constraint firstAttribute="width" constant="40" id="anr-7d-GzG"/>
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ACTION REQUIRED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kYM-UE-dcX">
-                                                            <rect key="frame" x="58" y="12" width="127" height="17"/>
+                                                            <rect key="frame" x="58" y="8" width="127" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Backup your wallet, keep your assets safe." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-hH-MdO">
-                                                            <rect key="frame" x="57.999999999999986" y="31" width="199.66666666666663" height="28"/>
+                                                            <rect key="frame" x="57.999999999999986" y="27" width="201.66666666666663" height="29"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
-                                                            <color key="textColor" name="TxtAlert2"/>
+                                                            <color key="textColor" name="TxtAlert4"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mc4-MV-VSh" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                            <rect key="frame" x="265.66666666666669" y="10" width="85.333333333333314" height="32"/>
+                                                            <rect key="frame" x="267.66666666666669" y="10" width="83.333333333333314" height="32"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="32" id="lO0-W8-hiQ"/>
                                                             </constraints>
@@ -83,7 +83,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="BGAlert1"/>
+                                                    <color key="backgroundColor" name="BG3"/>
                                                     <constraints>
                                                         <constraint firstItem="DEU-hH-MdO" firstAttribute="leading" secondItem="fSL-04-2kd" secondAttribute="trailing" constant="8" id="7IL-yy-jdC"/>
                                                         <constraint firstItem="fSL-04-2kd" firstAttribute="leading" secondItem="5JT-bm-ZMG" secondAttribute="leading" constant="10" id="AwO-0N-wA9"/>
@@ -92,7 +92,7 @@
                                                         <constraint firstAttribute="bottom" secondItem="fSL-04-2kd" secondAttribute="bottom" constant="12" id="WR7-sf-3NQ"/>
                                                         <constraint firstItem="fSL-04-2kd" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="12" id="mVL-1r-4A7"/>
                                                         <constraint firstItem="mc4-MV-VSh" firstAttribute="top" secondItem="5JT-bm-ZMG" secondAttribute="top" constant="10" id="rgH-h7-czd"/>
-                                                        <constraint firstItem="kYM-UE-dcX" firstAttribute="top" secondItem="fSL-04-2kd" secondAttribute="top" id="s0C-6a-6vG"/>
+                                                        <constraint firstItem="kYM-UE-dcX" firstAttribute="top" secondItem="fSL-04-2kd" secondAttribute="top" constant="-4" id="s0C-6a-6vG"/>
                                                         <constraint firstItem="mc4-MV-VSh" firstAttribute="leading" secondItem="DEU-hH-MdO" secondAttribute="trailing" constant="8" id="s1U-L8-Ta3"/>
                                                         <constraint firstItem="kYM-UE-dcX" firstAttribute="leading" secondItem="fSL-04-2kd" secondAttribute="trailing" constant="8" id="yIT-x4-OF4"/>
                                                     </constraints>
@@ -105,7 +105,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" name="BGAlert6"/>
+                                                            <color key="value" name="BGAlert2"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
@@ -184,19 +184,19 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSc-km-vdB">
-                                                    <rect key="frame" x="98" y="2" width="271" height="24"/>
+                                                    <rect key="frame" x="112" y="2" width="257" height="24"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="751" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R2w-kh-15K">
-                                                    <rect key="frame" x="319" y="26" width="50" height="22"/>
+                                                    <rect key="frame" x="318" y="26" width="51" height="22"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="-1.6666666666666661" width="66" height="31.333333333333329"/>
+                                                    <rect key="frame" x="16" y="4" width="80" height="20"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -264,19 +264,19 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;symbol&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="obd-iN-h5Z">
-                                                            <rect key="frame" x="76" y="27.666666666666671" width="80" height="21"/>
+                                                            <rect key="frame" x="76" y="27.666666666666671" width="82.333333333333314" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="5kd-E0-i9d">
-                                                            <rect key="frame" x="172" y="16" width="173" height="21"/>
+                                                            <rect key="frame" x="174.33333333333337" y="16" width="170.66666666666663" height="21"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xGP-vD-NDI">
-                                                            <rect key="frame" x="203.66666666666663" y="40" width="141.33333333333337" height="17"/>
+                                                            <rect key="frame" x="206.33333333333337" y="40" width="138.66666666666663" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt10"/>
                                                             <nil key="highlightedColor"/>
@@ -289,7 +289,7 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;priceChange&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJ3-t4-MrW">
-                                                            <rect key="frame" x="91" y="40" width="96.666666666666686" height="17"/>
+                                                            <rect key="frame" x="91" y="40" width="99.333333333333314" height="17"/>
                                                             <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="TxtGood4"/>
                                                             <nil key="highlightedColor"/>
@@ -1256,10 +1256,13 @@
     </scenes>
     <designables>
         <designable name="405-zw-M1R">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="26" height="26"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="66" height="31"/>
+            <size key="intrinsicContentSize" width="80" height="20"/>
+        </designable>
+        <designable name="mc4-MV-VSh">
+            <size key="intrinsicContentSize" width="83.333333333333329" height="31"/>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
@@ -1282,13 +1285,13 @@
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BG3">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="BGAlert1">
-            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="BGAlert6">
+        <namedColor name="BGAlert2">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
@@ -1309,8 +1312,8 @@
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="TxtAlert2">
-            <color red="0.62352941176470589" green="0.15294117647058825" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="TxtAlert4">
+            <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
