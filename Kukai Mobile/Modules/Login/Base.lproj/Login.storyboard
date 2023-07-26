@@ -83,14 +83,14 @@ for your Digital Assets</string>
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Kukai Passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Soc-0C-Sxc">
-                                <rect key="frame" x="16" y="96" width="382" height="36"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter Kukai Passcode" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Soc-0C-Sxc">
+                                <rect key="frame" x="16" y="223" width="382" height="36"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="baN-I4-8nc">
-                                <rect key="frame" x="76" y="156" width="262" height="16"/>
+                                <rect key="frame" x="76" y="299" width="262" height="16"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Dqp-Dk-AZd">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -179,44 +179,54 @@ for your Digital Assets</string>
                                 </subviews>
                             </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fAR-6P-WdI" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="76" y="363" width="262" height="34"/>
+                                <rect key="frame" x="76" y="506" width="262" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect passcode try again" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bbP-OS-KTi">
-                                <rect key="frame" x="76" y="196" width="262" height="17"/>
+                                <rect key="frame" x="76" y="339" width="262" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="BGAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NuK-Wj-JqR">
-                                <rect key="frame" x="16" y="240" width="382" height="36"/>
+                                <rect key="frame" x="16" y="383" width="382" height="36"/>
                                 <color key="tintColor" name="TxtB6"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Use Face ID">
+                                <buttonConfiguration key="configuration" style="plain" title="Try Face ID Again">
                                     <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                 </buttonConfiguration>
                                 <connections>
                                     <action selector="useFaceIdTapped:" destination="omX-7m-ObT" eventType="touchUpInside" id="W3V-03-opq"/>
                                 </connections>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kukai" translatesAutoresizingMaskIntoConstraints="NO" id="1xh-u7-IE1">
+                                <rect key="frame" x="173.5" y="132" width="67" height="67"/>
+                                <color key="tintColor" name="BrandColorTrue"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="67" id="Wz4-32-hrr"/>
+                                    <constraint firstAttribute="width" constant="67" id="eMh-13-H3i"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="ZqB-3W-TcA"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="baN-I4-8nc" firstAttribute="trailing" secondItem="Soc-0C-Sxc" secondAttribute="trailing" constant="-60" id="67Z-7W-fCK"/>
+                            <constraint firstItem="Soc-0C-Sxc" firstAttribute="top" secondItem="1xh-u7-IE1" secondAttribute="bottom" constant="24" id="9OM-eq-hYC"/>
                             <constraint firstItem="bbP-OS-KTi" firstAttribute="leading" secondItem="baN-I4-8nc" secondAttribute="leading" id="Ekg-ON-eON"/>
                             <constraint firstItem="bbP-OS-KTi" firstAttribute="trailing" secondItem="baN-I4-8nc" secondAttribute="trailing" id="FB6-8h-96W"/>
                             <constraint firstItem="fAR-6P-WdI" firstAttribute="trailing" secondItem="baN-I4-8nc" secondAttribute="trailing" id="K3U-V9-Gr1"/>
+                            <constraint firstItem="1xh-u7-IE1" firstAttribute="centerX" secondItem="u9M-Lq-H2Y" secondAttribute="centerX" id="KSb-Id-0O1"/>
                             <constraint firstItem="NuK-Wj-JqR" firstAttribute="leading" secondItem="ZqB-3W-TcA" secondAttribute="leading" constant="16" id="PBX-uf-mc7"/>
                             <constraint firstItem="baN-I4-8nc" firstAttribute="leading" secondItem="Soc-0C-Sxc" secondAttribute="leading" constant="60" id="Qg4-eP-bGR"/>
-                            <constraint firstItem="baN-I4-8nc" firstAttribute="top" secondItem="Soc-0C-Sxc" secondAttribute="bottom" constant="24" id="RlP-jz-aBI"/>
-                            <constraint firstItem="Soc-0C-Sxc" firstAttribute="top" secondItem="ZqB-3W-TcA" secondAttribute="top" constant="48" id="YAo-Mg-tpM"/>
+                            <constraint firstItem="baN-I4-8nc" firstAttribute="top" secondItem="Soc-0C-Sxc" secondAttribute="bottom" constant="40" id="RlP-jz-aBI"/>
                             <constraint firstItem="fAR-6P-WdI" firstAttribute="leading" secondItem="baN-I4-8nc" secondAttribute="leading" id="ZK4-yj-Rh3"/>
                             <constraint firstItem="bbP-OS-KTi" firstAttribute="top" secondItem="baN-I4-8nc" secondAttribute="bottom" constant="24" id="ZNI-Zc-2xe"/>
                             <constraint firstItem="NuK-Wj-JqR" firstAttribute="top" secondItem="baN-I4-8nc" secondAttribute="bottom" constant="68" id="g8Z-xx-xwR"/>
                             <constraint firstItem="ZqB-3W-TcA" firstAttribute="trailing" secondItem="Soc-0C-Sxc" secondAttribute="trailing" constant="16" id="hGu-lh-MWx"/>
                             <constraint firstItem="ZqB-3W-TcA" firstAttribute="trailing" secondItem="NuK-Wj-JqR" secondAttribute="trailing" constant="16" id="ici-Uv-YAi"/>
+                            <constraint firstItem="1xh-u7-IE1" firstAttribute="top" secondItem="ZqB-3W-TcA" secondAttribute="top" constant="84" id="mhN-yz-O2H"/>
                             <constraint firstItem="fAR-6P-WdI" firstAttribute="top" secondItem="bbP-OS-KTi" secondAttribute="bottom" constant="150" id="xHd-dm-bdG"/>
                             <constraint firstItem="Soc-0C-Sxc" firstAttribute="leading" secondItem="ZqB-3W-TcA" secondAttribute="leading" constant="16" id="zsq-js-dpe"/>
                         </constraints>
@@ -245,6 +255,7 @@ for your Digital Assets</string>
         </designable>
     </designables>
     <resources>
+        <image name="Kukai" width="24" height="24"/>
         <image name="logo_kukai" width="293" height="80"/>
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -254,6 +265,9 @@ for your Digital Assets</string>
         </namedColor>
         <namedColor name="BGB0">
             <color red="0.72549019607843135" green="0.74117647058823533" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BrandColorTrue">
+            <color red="0.34901960784313724" green="0.38823529411764707" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

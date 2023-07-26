@@ -40,7 +40,7 @@ class LoginViewController: UIViewController {
 		}
 		
 		if CurrentDevice.biometricType() == .touchID {
-			useBiometricsButton.setTitle("Use Touch ID", for: .normal)
+			useBiometricsButton.setTitle("Try Touch ID Again", for: .normal)
 		}
 		
 		#if DEBUG
