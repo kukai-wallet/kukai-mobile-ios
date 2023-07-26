@@ -11,7 +11,6 @@ import KukaiCoreSwift
 class DiscoverFeaturedItemCell: UICollectionViewCell {
     
 	@IBOutlet weak var imageViewWidthConstraint: NSLayoutConstraint!
-	@IBOutlet weak var categoriesLabel: UILabel!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var descriptionLabel: UILabel!
@@ -22,7 +21,6 @@ class DiscoverFeaturedItemCell: UICollectionViewCell {
 		let url = MediaProxyService.url(fromUri: imageURL, ofFormat: .medium, keepGif: true)
 		MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
 		
-		self.categoriesLabel.text = categories.joined(separator: "・")
 		self.titleLabel.text = title
 		self.descriptionLabel.text = description
 	}

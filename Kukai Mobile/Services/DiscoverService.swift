@@ -19,7 +19,7 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 	@DefaultUUID public var id: UUID
 	
 	public let title: String
-	//public let categories: [String]
+	public let categories: [String]
 	public let description: String
 	
 	@URLFromString public var imageUri: URL?
@@ -48,15 +48,13 @@ public class DiscoverService {
 	
 	/// Fetch items, which automatically get primaryKey added. Map them into a dictionary based on UUID and store in `items`
 	public func fetchItems(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
-		self.requestIfService.delete(key: discoverCacheKey)
-		
 		guard let url = URL(string: discoverURL) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: discoverCacheKey, responseType: [DiscoverGroup].self) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.hour.rawValue, forKey: discoverCacheKey, responseType: [DiscoverGroup].self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return

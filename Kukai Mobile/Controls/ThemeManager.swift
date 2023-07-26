@@ -70,6 +70,8 @@ public class ThemeManager {
 		ThemeManager.shared.setup(
 			lightColors: [
 				
+				"BrandColorTrue": UIColor("#5963FF"),
+				
 				// Default Text
 				"Txt0": UIColor("#000000"),
 				"Txt2": UIColor("#1C1C27"),
@@ -274,6 +276,8 @@ public class ThemeManager {
 				"BGMediaOval": UIColor("#000000"),
 			],
 			darkColors: [
+				
+				"BrandColorTrue": UIColor("#5963FF"),
 				
 				// Default Text
 				"Txt0": UIColor("#FFFFFF"),

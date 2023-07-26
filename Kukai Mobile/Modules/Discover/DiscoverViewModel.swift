@@ -18,6 +18,8 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
+	private static let itemPerSection = 3
+	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var menu: MenuViewController? = nil
 	var isVisible = false
@@ -135,8 +137,8 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.appendItems([GhostnetWarningCellObj(), menu], toSection: 0)
 			currentSnapshot.appendItems([
 				"Defi",
-				DiscoverItem(id: UUID(), title: "WTZ", description: "Ghostnet version of Crunchy's wrapped XTZ", imageUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
-				DiscoverItem(id: UUID(), title: "Quipuswap", description: "Ghostnet version of Quipuswap DEX", imageUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
+				DiscoverItem(id: UUID(), title: "WTZ", categories: [], description: "Ghostnet version of Crunchy's wrapped XTZ", imageUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
+				DiscoverItem(id: UUID(), title: "Quipuswap", categories: [], description: "Ghostnet version of Quipuswap DEX", imageUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
 			], toSection: 1)
 			
 		} else {
@@ -156,12 +158,12 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					for (index2, item) in group.items.enumerated() {
 						itemsToAdd.append(item)
 						
-						if index2 == 3 && expandedSection != index {
+						if index2 == (DiscoverViewModel.itemPerSection-1) && expandedSection != index {
 							break
 						}
 					}
 					
-					if group.items.count > 4 {
+					if group.items.count > DiscoverViewModel.itemPerSection {
 						itemsToAdd.append(ShowMore())
 					}
 				}
@@ -197,7 +199,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let group = DependencyManager.shared.discoverService.items[indexPath.section]
 		
-		if group.items.count <= 4 {
+		if group.items.count <= DiscoverViewModel.itemPerSection {
 			return
 		}
 		
@@ -228,7 +230,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		cell.setOpen()
 		
 		let group = DependencyManager.shared.discoverService.items[section]
-		currentSnapshot.insertItems(Array(group.items[4..<group.items.count]), beforeItem: item)
+		currentSnapshot.insertItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]), beforeItem: item)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atSection section: Int) {
@@ -241,6 +243,6 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		cell.setClosed()
 		
 		let group = DependencyManager.shared.discoverService.items[section]
-		currentSnapshot.deleteItems(Array(group.items[4..<group.items.count]))
+		currentSnapshot.deleteItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]))
 	}
 }

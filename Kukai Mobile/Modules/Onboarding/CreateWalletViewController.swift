@@ -29,12 +29,23 @@ class CreateWalletViewController: UIViewController {
 			if walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false) {
 				DependencyManager.shared.walletList = walletCache.readNonsensitive()
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-				self.performSegue(withIdentifier: "done", sender: self)
+				self.navigate()
 			} else {
 				self.alert(withTitle: "Error", andMessage: "Unable to cache")
 			}
 		} else {
 			self.alert(withTitle: "Error", andMessage: "Unable to create wallet")
+		}
+	}
+	
+	private func navigate() {
+		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		if let vc = viewController {
+			self.navigationController?.popToViewController(vc, animated: true)
+			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
+			
+		} else {
+			self.performSegue(withIdentifier: "done", sender: nil)
 		}
 	}
 }

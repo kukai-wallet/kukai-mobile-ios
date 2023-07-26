@@ -17,6 +17,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 	private var gradient = CAGradientLayer()
 	private weak var featuredTimer: Timer? = nil
 	private weak var featuredCell: DiscoverFeaturedCell? = nil
+	private let footer = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 24))
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -27,6 +28,8 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 		viewModel.featuredDelegate = self
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		tableView.tableFooterView = footer
+		footer.backgroundColor = .clear
 		
 		viewModel.$state.sink { [weak self] state in
 			switch state {
