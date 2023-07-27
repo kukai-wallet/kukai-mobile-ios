@@ -49,14 +49,12 @@ class DiscoverFeaturedCell: UITableViewCell {
 		self.pageControl.currentPage = startIndex
 		
 		if discoverGroup.items.count > 1 {
+			stopTimer()
 			setupTimer()
 		}
 	}
 	
 	public func setupTimer() {
-		timer?.invalidate()
-		timer = nil
-		
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] timer in
 			var nextRow = self?.pageControl.currentPage ?? 0
 			if nextRow == ((self?.pageControl.numberOfPages ?? 1) - 1) {
@@ -67,6 +65,11 @@ class DiscoverFeaturedCell: UITableViewCell {
 		})
 		
 		delegate?.timerSetup(timer: timer, sender: self)
+	}
+	
+	public func stopTimer() {
+		timer?.invalidate()
+		timer = nil
 	}
 }
 
@@ -98,5 +101,13 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		let pageWidth = collectionView.frame.width
 		self.pageControl.currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
+	}
+	
+	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+		self.stopTimer()
+	}
+	
+	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		self.setupTimer()
 	}
 }
