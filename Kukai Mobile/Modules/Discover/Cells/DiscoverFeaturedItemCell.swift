@@ -18,8 +18,7 @@ class DiscoverFeaturedItemCell: UICollectionViewCell {
 	func setup(categories: [String], imageURL: URL?, title: String, description: String, pageWidth: CGFloat) {
 		self.imageViewWidthConstraint.constant = pageWidth
 		
-		let url = MediaProxyService.url(fromUri: imageURL, ofFormat: .medium, keepGif: true)
-		MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
+		MediaProxyService.load(url: imageURL, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
 		
 		self.titleLabel.text = title
 		self.descriptionLabel.text = description

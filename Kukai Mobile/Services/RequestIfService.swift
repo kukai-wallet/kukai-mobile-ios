@@ -13,6 +13,8 @@ public class RequestIfService {
 	public enum TimeConstants: TimeInterval {
 		case second = 1
 		case minute = 60
+		case fifteenMinute = 900
+		case thirtyMinute = 1800
 		case hour = 3600
 		case day = 86400
 		case week = 604800
