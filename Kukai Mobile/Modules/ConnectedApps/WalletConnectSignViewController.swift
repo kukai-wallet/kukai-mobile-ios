@@ -76,6 +76,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				self.presenter?.didApproveSigning = true
 				
 				self.hideLoadingModal(completion: { [weak self] in
+					TransactionService.shared.resetWalletConnectState()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
@@ -85,8 +86,6 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
-			
-			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
@@ -105,6 +104,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			do {
 				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
 				self.hideLoadingModal(completion: { [weak self] in
+					TransactionService.shared.resetWalletConnectState()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
@@ -114,8 +114,6 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					self?.alert(errorWithMessage: "\(error)")
 				})
 			}
-			
-			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	

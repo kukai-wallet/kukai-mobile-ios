@@ -303,10 +303,9 @@ public class WalletConnectService {
 	public static func reject(proposalId: String, reason: RejectionReason) throws {
 		os_log("WC Reject Pairing %@", log: .default, type: .info, proposalId)
 		Task {
-			TransactionService.shared.resetWalletConnectState()
-			
 			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
 			await WalletConnectService.cleanupDanglingPairings()
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
@@ -314,9 +313,8 @@ public class WalletConnectService {
 	public static func reject(topic: String, requestId: RPCID) throws {
 		os_log("WC Reject Request topic: %@, id: %@", log: .default, type: .info, topic, requestId.description)
 		Task {
-			TransactionService.shared.resetWalletConnectState()
-			
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
+			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
