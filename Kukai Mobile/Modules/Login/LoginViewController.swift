@@ -35,23 +35,23 @@ class LoginViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if CurrentDevice.biometricType() == .none || StorageService.isBiometricEnabled() == false {
+		if CurrentDevice.biometricTypeAuthorized() == .none || StorageService.isBiometricEnabled() == false {
 			useBiometricsButton.isHidden = true
 		}
 		
-		if CurrentDevice.biometricType() == .touchID {
+		if CurrentDevice.biometricTypeAuthorized() == .touchID {
 			useBiometricsButton.setTitle("Try Touch ID Again", for: .normal)
 		}
 		
-		#if DEBUG
-		self.returnToApp()
-		#else
+		//#if DEBUG
+		//self.returnToApp()
+		//#else
 		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
 		} else {
 			self.returnToApp()
 		}
-		#endif
+		//#endif
 	}
 	
 	func updateDigitViewsWithLength(length: Int) {
@@ -98,7 +98,7 @@ class LoginViewController: UIViewController {
 	private func validateBiometric() {
 		let context = LAContext()
 		
-		if StorageService.isBiometricEnabled() && CurrentDevice.biometricType() != .none {
+		if StorageService.isBiometricEnabled() && CurrentDevice.biometricTypeAuthorized() != .none {
 			let reason = "To allow access to app"
 			
 			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {

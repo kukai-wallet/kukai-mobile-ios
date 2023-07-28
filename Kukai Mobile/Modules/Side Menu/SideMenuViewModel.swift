@@ -53,6 +53,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
 		
+		
 		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
 		var options = [
 			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil, id: "wc2"),
@@ -61,12 +62,16 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, id: "network"),
 		]
 		
-		let biometricType = CurrentDevice.biometricType()
-		if biometricType != .none {
+		if CurrentDevice.biometricTypeAuthorized() != .unavailable {
+			let biometricType = CurrentDevice.biometricTypeSupported()
 			let title = biometricType == .faceID ? "Face ID" : "Touch ID"
 			let image = biometricType == .faceID ? UIImage(systemName: "faceid") : UIImage(systemName: "touchid")
-			let enabled = StorageService.isBiometricEnabled()
-			options.append( SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: enabled ? "Enabled" : "Disabled", id: "biometric") )
+			var enabledText = StorageService.isBiometricEnabled() ? "Enabled" : "Disabled"
+			if CurrentDevice.biometricTypeAuthorized() == .none {
+				enabledText = "Not Authorized"
+			}
+			
+			options.append(SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: enabledText, id: "biometric"))
 		}
 		
 		snapshot.appendItems(options, toSection: 0)
@@ -84,17 +89,34 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		switch obj.id {
 			case "wc2":
 				return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
+				
 			case "theme":
 				return (segue: "theme", collapseAndNavigate: false)
+				
 			case "currency":
 				return (segue: "side-menu-currency", collapseAndNavigate: true)
+				
 			case "network":
 				return (segue: "side-menu-network", collapseAndNavigate: false)
+				
 			case "biometric":
-				return (segue: "biometric", collapseAndNavigate: false)
+				if CurrentDevice.biometricTypeAuthorized() == .none {
+					return nil
+					
+				} else {
+					return (segue: "biometric", collapseAndNavigate: false)
+				}
 				
 			default:
 				return nil
 		}
+	}
+	
+	func isBiometricCell(forIndexPath: IndexPath) -> Bool {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
+			return false
+		}
+		
+		return obj.id == "biometric"
 	}
 }

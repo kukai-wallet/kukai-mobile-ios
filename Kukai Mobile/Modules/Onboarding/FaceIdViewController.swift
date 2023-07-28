@@ -22,7 +22,7 @@ class FaceIdViewController: UIViewController {
 		
 		nextButton.customButtonType = .primary
 		
-		if CurrentDevice.biometricType() == .touchID {
+		if CurrentDevice.biometricTypeSupported() == .touchID {
 			biometricImage.image = UIImage(systemName: "touchid")
 			biometricLabel.text = "Use Touch ID"
 		}
@@ -90,6 +90,11 @@ class FaceIdViewController: UIViewController {
 				DispatchQueue.main.async {
 					if success {
 						StorageService.setBiometricEnabled(true)
+						StorageService.setCompletedOnboarding(true)
+						completion(nil)
+						
+					} else if success == false && (authenticationError?.code == -6 && (authenticationError?.userInfo["NSDebugDescription"] as? String) == "User has denied the use of biometry for this app.") {
+						StorageService.setBiometricEnabled(false)
 						StorageService.setCompletedOnboarding(true)
 						completion(nil)
 						
