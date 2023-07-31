@@ -223,7 +223,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 					if let newMediaContent = mediaContent {
 						self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
 					} else {
-						self?.state = .failure(KukaiError.unknown(withString: "Unable to determine NFT media type"), "Unable to determine NFT media type")
+						// Unbale to determine type and unable to locate URL, or fetch packet from URL. Default to missing image palceholder
+						let blankMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nil, mediaURL2: nil, width: 100, height: 100, quantity: self?.quantityString(forNFT: self?.nft))
+						self?.replace(existingMediaContent: response.mediaContent, with: blankMediaContent)
 					}
 				}
 			}
