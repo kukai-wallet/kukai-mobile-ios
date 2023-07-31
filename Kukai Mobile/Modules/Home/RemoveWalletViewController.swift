@@ -74,23 +74,41 @@ class RemoveWalletViewController: UIViewController {
 		guard let metadata = selectedWalletMetadata else { return }
 		
 		if metadata.isWatchOnly {
-			if WalletCacheService().deleteWatchWallet(address: metadata.address) {
-				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			if RemoveWalletViewController.deleteCaches(forWatchAddress: metadata.address) {
 				self.dismiss(animated: true)
-				
 			} else {
 				self.alert(errorWithMessage: "Unable to delete wallet")
 			}
 			
 		} else {
-			if WalletCacheService().deleteWallet(withAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
-				DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
 				self.dismiss(animated: true)
-				
 			} else {
 				self.alert(errorWithMessage: "Unable to delete wallet")
 			}
 		}
+	}
+	
+	public static func deleteCaches(forAddress address: String, parentIndex: Int?) -> Bool {
+		if WalletCacheService().deleteWallet(withAddress: address, parentIndex: parentIndex) {
+			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
+			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
+			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			return true
+		}
+		
+		return false
+	}
+	
+	public static func deleteCaches(forWatchAddress address: String) -> Bool {
+		if WalletCacheService().deleteWatchWallet(address: address) {
+			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
+			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
+			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			return true
+		}
+		
+		return false
 	}
 	
 	@IBAction func cancelButtonTapped(_ sender: Any) {
