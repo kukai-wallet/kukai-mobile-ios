@@ -477,11 +477,10 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
+				TransactionService.shared.resetWalletConnectState()
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 			}
-			
-			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 }

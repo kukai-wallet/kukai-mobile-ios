@@ -170,16 +170,19 @@ extension SideMenuViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		guard let segueDetails = viewModel.segue(forIndexPath: indexPath) else {
-			return
-		}
-		
-		if segueDetails.collapseAndNavigate {
-			self.closeTapped(self)
-			homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+		// If we have a segue from the viewModel open it
+		// else if is biometric (disbaled by user) open settings
+		if let segueDetails = viewModel.segue(forIndexPath: indexPath) {
+			if segueDetails.collapseAndNavigate {
+				self.closeTapped(self)
+				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+				
+			} else {
+				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+			}
 			
-		} else {
-			homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+		} else if viewModel.isBiometricCell(forIndexPath: indexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+			UIApplication.shared.open(settingsURL)
 		}
 	}
 }

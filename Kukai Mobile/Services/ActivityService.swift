@@ -50,6 +50,7 @@ public class ActivityService {
 	
 	func deleteAccountCachcedData(forAddress address: String) {
 		let _ = DiskService.delete(fileName: ActivityService.transactionsCacheFilename(withAddress: address))
+		let _ = DiskService.delete(fileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address))
 	}
 	
 	public func deleteAllCachedData() {

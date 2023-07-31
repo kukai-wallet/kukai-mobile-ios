@@ -43,10 +43,10 @@ class ConfirmPasscodeViewController: UIViewController {
 	func navigate() {
 		StorageService.setCompletedOnboarding(true)
 		
-		if CurrentDevice.biometricType() != .none {
-			self.performSegue(withIdentifier: "biometric", sender: nil)
-		} else {
+		if CurrentDevice.biometricTypeAuthorized() == .unavailable {
 			self.performSegue(withIdentifier: "home", sender: nil)
+		} else {
+			self.performSegue(withIdentifier: "biometric", sender: nil)
 		}
 	}
 	

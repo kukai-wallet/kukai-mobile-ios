@@ -111,6 +111,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				presenter?.didApprovePairing = true
 				
 				self.hideLoadingModal(completion: { [weak self] in
+					TransactionService.shared.resetWalletConnectState()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
@@ -125,8 +126,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					self?.alert(errorWithMessage: message)
 				})
 			}
-			
-			TransactionService.shared.resetWalletConnectState()
 		}
 	}
 	
@@ -135,12 +134,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			return
 		}
 		
-		TransactionService.shared.resetWalletConnectState()
 		self.showLoadingModal {
 			do {
 				try WalletConnectService.reject(proposalId: proposal.id, reason: .userRejected)
 				
 				self.hideLoadingModal(completion: { [weak self] in
+					TransactionService.shared.resetWalletConnectState()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
