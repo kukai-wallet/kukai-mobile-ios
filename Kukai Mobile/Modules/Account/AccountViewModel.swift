@@ -166,22 +166,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// If initial load, display shimmer views
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
-			
-			let hashableData: [AnyHashable] = [
-				balancesMenuVC,
-				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
-				LoadingContainerCellObject(),
-				LoadingContainerCellObject(),
-				LoadingContainerCellObject()
-			]
-			
-			data.append(contentsOf: hashableData)
-			
-			snapshot.appendSections([0])
-			snapshot.appendItems(data, toSection: 0)
-			
-		} else {
+		if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress) {
 			
 			// Else build arrays of acutal data
 			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
@@ -221,6 +206,20 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
 			data.append(contentsOf: tokensToDisplay)
+			
+			snapshot.appendSections([0])
+			snapshot.appendItems(data, toSection: 0)
+			
+		} else {
+			let hashableData: [AnyHashable] = [
+				balancesMenuVC,
+				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
+				LoadingContainerCellObject(),
+				LoadingContainerCellObject(),
+				LoadingContainerCellObject()
+			]
+			
+			data.append(contentsOf: hashableData)
 			
 			snapshot.appendSections([0])
 			snapshot.appendItems(data, toSection: 0)
