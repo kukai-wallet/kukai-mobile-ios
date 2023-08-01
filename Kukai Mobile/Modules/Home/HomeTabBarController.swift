@@ -28,7 +28,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
-	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
 	
 	public var didApprovePairing = false
@@ -295,7 +295,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			activitySubview.addSubview(activityAnimationImageView)
 		}
 		
-		activityAnimationImageView.frame = activityTabBarImageView?.frame ?? CGRect(x: 0, y: 0, width: 30, height: 30)
+		activityAnimationImageView.frame = activityTabBarImageView?.frame ?? CGRect(x: 0, y: 0, width: 24, height: 24)
 		activityAnimationImageView.animationImages = activityAnimationFrames
 		activityAnimationImageView.animationDuration = 3
 		

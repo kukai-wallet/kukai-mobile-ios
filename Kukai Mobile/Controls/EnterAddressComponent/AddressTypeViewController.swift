@@ -22,12 +22,14 @@ public protocol AddressTypeDelegate: AnyObject {
 
 class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 	
+	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var tableView: UITableView!
 	
 	public weak var delegate: AddressTypeDelegate? = nil
 	public var selectedType: AddressType = .tezosAddress
 	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
 	
+	public var headerText: String = "Recipient Address"
 	public var supportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail]
 	
 	override func viewDidLoad() {
@@ -37,6 +39,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		self.view.addSubview(tableView)
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
+		self.titleLabel.text = headerText
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

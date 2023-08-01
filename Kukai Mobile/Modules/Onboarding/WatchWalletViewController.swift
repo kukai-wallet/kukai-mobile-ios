@@ -21,7 +21,9 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 		let _ = self.view.addGradientBackgroundFull()
 		
 		enterAddressComponent.delegate = self
+		enterAddressComponent.updateAvilableAddressTypes([.tezosAddress, .tezosDomain])
 		enterAddressComponent.headerLabel.text = "Watch:"
+		enterAddressComponent.setAddressTypeHeader("Watch Address")
     }
 	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {

@@ -35,6 +35,7 @@ public class EnterAddressComponent: UIView {
 	
 	private let scanVC = ScanViewController()
 	private let addressTypeVC = UIStoryboard(name: "SendAddressType", bundle: nil).instantiateInitialViewController() as? AddressTypeViewController
+	private var addressTypeHeader = "Recipient Address"
 	private let nibName = "EnterAddressComponent"
 	
 	private var currentSelectedType: AddressType = .tezosAddress
@@ -56,6 +57,10 @@ public class EnterAddressComponent: UIView {
 		let bundle = Bundle(for: type(of: self))
 		let nib = UINib(nibName: nibName, bundle: bundle)
 		return nib.instantiate(withOwner: self, options: nil).first as? UIView
+	}
+	
+	public func setAddressTypeHeader(_ title: String) {
+		addressTypeHeader = title
 	}
 	
 	private func setup() {
@@ -81,6 +86,7 @@ public class EnterAddressComponent: UIView {
 		
 		addressVC.delegate = self
 		addressVC.modalPresentationStyle = .pageSheet
+		addressVC.headerText = addressTypeHeader
 		parent.present(addressVC, animated: true, completion: nil)
 	}
 	
