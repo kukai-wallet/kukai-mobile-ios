@@ -15,5 +15,6 @@ class BackUpCell: UITableViewCell {
         super.awakeFromNib()
 		
 		backUpButton.customButtonType = .secondary
+		backUpButton.accessibilityIdentifier = "account-backup-button"
     }
 }

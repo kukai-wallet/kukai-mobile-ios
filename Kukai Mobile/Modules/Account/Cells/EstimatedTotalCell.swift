@@ -19,8 +19,11 @@ class EstimatedTotalCell: UITableViewCell {
 	
 	public weak var delegate: EstimatedTotalCellDelegate? = nil
 	
-	override class func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		balanceLabel.accessibilityIdentifier = "account-total-xtz"
+		valueLabel.accessibilityIdentifier = "account-total-fiat"
 	}
 	
 	@IBAction func totalEstimatedTapped(_ sender: Any) {

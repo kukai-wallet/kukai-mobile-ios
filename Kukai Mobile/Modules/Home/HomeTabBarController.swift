@@ -41,6 +41,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.setupAppearence()
 		self.delegate = self
 		
+		sideMenuButton.accessibilityIdentifier = "home-button-side"
+		accountButton.accessibilityIdentifier = "home-button-account"
+		scanButton.accessibilityIdentifier = "home-button-scan"
+		
 		activityAnimationFrames = UIImage.animationFrames(prefix: "ActivityAni", count: 90)
 		
 		

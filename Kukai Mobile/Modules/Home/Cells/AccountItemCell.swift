@@ -18,6 +18,15 @@ class AccountItemCell: UITableViewCell, UITableViewCellContainerView {
 	
 	var gradientLayer = CAGradientLayer()
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		titleLabel.accessibilityIdentifier = "accounts-item-title"
+		subtitleLabel.accessibilityIdentifier = "accounts-item-subtitle"
+		checkedImageView.accessibilityIdentifier = "accounts-item-checked"
+		chevronImageView.accessibilityIdentifier = "accounts-item-chevron"
+	}
+	
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
 		

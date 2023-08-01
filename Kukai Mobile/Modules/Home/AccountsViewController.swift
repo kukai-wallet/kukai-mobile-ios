@@ -27,6 +27,10 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		addButtonContainer.accessibilityIdentifier = "accounts-nav-add"
+		editButtonContainer.accessibilityIdentifier = "accounts-nav-edit"
+		doneButtonContainer.accessibilityIdentifier = "accounts-nav-done"
+		
 		if !self.isModal {
 			let _ = self.view.addGradientBackgroundFull()
 		} else {

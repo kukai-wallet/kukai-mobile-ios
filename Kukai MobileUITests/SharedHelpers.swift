@@ -47,11 +47,57 @@ class SharedHelpers: XCTestCase {
 		return sharedApplication
 	}
 	
-	func waitForStaticText(_ string: String, inApp app: XCUIApplication, delay: TimeInterval) {
+	
+	
+	// MARK: - Check exists
+	
+	func waitForStaticText(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
 		let obj = app.staticTexts[string]
-		let exists = NSPredicate(format: "exists == 1")
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
 		expectation(for: exists, evaluatedWith: obj, handler: nil)
 		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
+	func waitForStaticText(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
+		let obj = element.staticTexts[string]
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+		
+		expectation(for: exists, evaluatedWith: obj, handler: nil)
+		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
+	func waitForButton(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
+		let obj = element.buttons[string]
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+		
+		expectation(for: exists, evaluatedWith: obj, handler: nil)
+		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
+	func waitForImage(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
+		let obj = element.images[string]
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+		
+		expectation(for: exists, evaluatedWith: obj, handler: nil)
+		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
+	
+	
+	// MARK: - Interactions
+	
+	func enterBackspace(app: XCUIApplication, times: Int = 1) {
+		for _ in 0..<times {
+			app.keys["Delete"].tap()
+		}
+	}
+	
+	func dismissPopover(app: XCUIApplication) {
+		app.otherElements["PopoverDismissRegion"].tap()
+	}
+	
+	func navigationBack(app: XCUIApplication) {
+		app.navigationBars.firstMatch.buttons["Back"].tap()
 	}
 }

@@ -8,7 +8,9 @@
 import XCTest
 
 final class Onboarding: XCTestCase {
-
+	
+	// MARK: - Setup
+	
     override func setUpWithError() throws {
         continueAfterFailure = false
 		
@@ -19,10 +21,91 @@ final class Onboarding: XCTestCase {
 		
     }
 	
+	
+	
+	// MARK: - Test functions
+	
 	func testNewHDWallet() throws {
 		let app = XCUIApplication()
 		app.buttons["Create a Wallet"].tap()
 		app.buttons["HD Wallet"].tap()
+		
+		// Confirm tersm and conditions and create a passcode
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		// Enter wrong passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app, passcode: ["0", "1", "2", "3", "4", "5", "6", "7"])
+		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inApp: app, delay: 2)
+		
+		// Confirm correct passcode
+		sleep(1)
+		SharedHelpers.shared.enterBackspace(app: app, times: 2)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		Account.check(app: app, estimatedTotalExists: false)
+		Account.check(app: app, hasNumberOfTokens: 1)
+		Account.check(app: app, displayingBackup: true)
+		
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.check(app: app, hasSections: 1)
+		let details = WalletManagement.getWalletDetails(app: app, index: 0)
+		
+		XCTAssert(details.title.count > 0)
+		XCTAssert(details.subtitle == nil)
+		
+		// TODO: verify:
+		// no collectibles
+		// no actiivty
+	}
+	
+	func testImportHDWallet() {
+		// TODO:
+	}
+	
+	func testImportRegularWallet() {
+		// TODO:
+	}
+	
+	func testImportWatchWallet() {
+		// TODO:
+		// use mainnet
+		// verify tezos domain import
+		// verify balance not zero
+		// verify tokens are displayed
+		// verify collectibles
+		// verify activity
+	}
+	
+	func testImportSocial_apple() {
+		// TODO: - although, torus servers have been very buggy, might need to reconsider
+	}
+	
+	func testImportSocial_google() {
+		// TODO: - although, torus servers have been very buggy, might need to reconsider
+	}
+	
+	
+	
+	// MARK: - Helpers
+	
+	public static func handlePasscode(app: XCUIApplication, passcode: [String] = ["0", "0", "0", "0", "0", "0"]) {
+		for key in passcode {
+			app.keys[key].tap()
+		}
+	}
+	
+	public static func handleSeedWordVerification(app: XCUIApplication) {
 		
 		// Reveal seed words and copy
 		let elementsQuery = app.scrollViews.otherElements
@@ -60,66 +143,5 @@ final class Onboarding: XCTestCase {
 		app.staticTexts[seedWord2].tap()
 		app.staticTexts[seedWord3].tap()
 		app.staticTexts[seedWord4].tap()
-		
-		// Confirm tersm and conditions and create a passcode
-		app.buttons["checkmark"].tap()
-		app.staticTexts["Get Started"].tap()
-		
-		sleep(1)
-		
-		let key = app.keys["0"]
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		
-		sleep(1)
-		
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		key.tap()
-		
-		// TODO: verify:
-		// balance is zero
-		// no tokens
-		// no collectibles
-		// no actiivty
-		// no other wallets/accounts in account switcher
-		
-		
-		
-		// Verify we are on home page looking at balances (successfully onboarded)
-		SharedHelpers.shared.waitForStaticText("Balances", inApp: app, delay: 10)
-	}
-	
-	func testImportHDWallet() {
-		// TODO:
-	}
-	
-	func testImportRegularWallet() {
-		// TODO:
-	}
-	
-	func testImportWatchWallet() {
-		// TODO:
-		// use mainnet
-		// verify tezos domain import
-		// verify balance not zero
-		// verify tokens are displayed
-		// verify collectibles
-		// verify activity
-	}
-	
-	func testImportSocial_apple() {
-		// TODO: - although, torus servers have been very buggy, might need to reconsider
-	}
-	
-	func testImportSocial_google() {
-		// TODO: - although, torus servers have been very buggy, might need to reconsider
 	}
 }
