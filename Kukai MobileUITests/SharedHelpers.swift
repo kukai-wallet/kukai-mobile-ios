@@ -67,8 +67,24 @@ class SharedHelpers: XCTestCase {
 		waitForExpectations(timeout: delay, handler: nil)
 	}
 	
+	func waitForButton(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
+		let obj = app.buttons[string]
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+		
+		expectation(for: exists, evaluatedWith: obj, handler: nil)
+		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
 	func waitForButton(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
 		let obj = element.buttons[string]
+		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+		
+		expectation(for: exists, evaluatedWith: obj, handler: nil)
+		waitForExpectations(timeout: delay, handler: nil)
+	}
+	
+	func waitForImage(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
+		let obj = app.images[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
 		expectation(for: exists, evaluatedWith: obj, handler: nil)
@@ -85,13 +101,94 @@ class SharedHelpers: XCTestCase {
 	
 	
 	
-	// MARK: - Interactions
+	// MARK: - Keyboard
 	
-	func enterBackspace(app: XCUIApplication, times: Int = 1) {
-		for _ in 0..<times {
-			app.keys["Delete"].tap()
+	func type(app: XCUIApplication, text: String) {
+		let containsLetters = text.rangeOfCharacter(from: NSCharacterSet.letters) != nil
+		let containsNumbers = text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) != nil
+		let needsToSwtichKeyboards = (containsLetters && containsNumbers)
+		
+		
+		for char in text {
+			if char == " " {
+				typeSpace(app: app)
+			} else {
+				
+				// Handle the need to switch between letters / numbers keyboard
+				// Handle the need to switch to uppercase / lowercase
+				let charAsString = "\(char)"
+				if needsToSwtichKeyboards && charAsString.rangeOfCharacter(from: NSCharacterSet.letters) != nil {
+					let switchToLetters = app.keys["letters"]
+					if switchToLetters.exists {
+						switchToLetters.tap()
+					}
+					
+					SharedHelpers.shared.typeSwitchToUppercaseIfNecessary(app: app, input: charAsString)
+					app.keys[charAsString].tap()
+					
+				} else if needsToSwtichKeyboards && charAsString.rangeOfCharacter(from: NSCharacterSet.decimalDigits) != nil {
+					let switchToNumbers = app.keys["numbers"]
+					if switchToNumbers.exists {
+						switchToNumbers.tap()
+					}
+					
+					app.keys[charAsString].tap()
+					
+				} else {
+					SharedHelpers.shared.typeSwitchToUppercaseIfNecessary(app: app, input: charAsString)
+					app.keys[charAsString].tap()
+				}
+			}
 		}
 	}
+	
+	func typeSpace(app: XCUIApplication) {
+		app.keys["space"].tap()
+	}
+	
+	func typeBackspace(app: XCUIApplication, times: Int = 1) {
+		var key: XCUIElement? = nil
+		
+		if app.keys["Delete"].exists {
+			key = app.keys["Delete"]
+			
+		} else if app.keys["delete"].exists {
+			key = app.keys["delete"]
+		}
+		
+		for _ in 0..<times {
+			key?.tap()
+		}
+	}
+	
+	func typeDone(app: XCUIApplication) {
+		app.keyboards.buttons["Done"].tap()
+	}
+	
+	func typeSwitchToUppercase(app: XCUIApplication) {
+		let key = app.keyboards.buttons["shift"]
+		if key.exists {
+			key.tap()
+		}
+	}
+	
+	func typeSwitchToUppercaseIfNecessary(app: XCUIApplication, input: String) {
+		if !app.keys[input].exists {
+			SharedHelpers.shared.typeSwitchToUppercase(app: app)
+		}
+	}
+	
+	func typeSwitchToNumbers(app: XCUIApplication) {
+		app.keys["numbers"].tap()
+	}
+	
+	func typeSwitchToLetters(app: XCUIApplication) {
+		app.keys["letters"].tap()
+	}
+	
+	
+	
+	// MARK: - Interactions
 	
 	func dismissPopover(app: XCUIApplication) {
 		app.otherElements["PopoverDismissRegion"].tap()

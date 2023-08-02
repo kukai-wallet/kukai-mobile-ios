@@ -348,6 +348,9 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 			textfield.resignFirstResponder()
 			walletAddressErrorLabel.isHidden = false
 			walletAddressErrorLabel.text = "Invalid wallet address"
+			
+		} else if isValid && textfield == walletAddressTextField {
+			walletAddressErrorLabel.isHidden = true
 		}
 	}
 	
