@@ -57,6 +57,17 @@ final class Onboarding: XCTestCase {
 		Account.check(app: app, hasNumberOfTokens: 1)
 		Account.check(app: app, displayingBackup: true)
 		
+		// Back and handle backup flow
+		SharedHelpers.shared.navigationBack(app: app)
+		Account.tapBackup(app: app)
+		Onboarding.handleSeedWordVerification(app: app)
+		
+		
+		// Verify backup is gone
+		Account.check(app: app, displayingBackup: false)
+		
+		
+		// Navigate to wallet management
 		Home.handleOpenWalletManagement(app: app)
 		
 		WalletManagement.check(app: app, hasSections: 1)
@@ -65,20 +76,18 @@ final class Onboarding: XCTestCase {
 		XCTAssert(details.title.count > 0)
 		XCTAssert(details.subtitle == nil)
 		
-		// TODO: verify:
-		// no collectibles
-		// no actiivty
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportHDWallet() {
-		let seedPhrase = "" // TODO: needs to come from Envrionement / launch arugments
+		let seedPhrase = "" // TODO: env variable
 		
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase)
+		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: true)
 		
 		app.buttons["Import"].tap()
 		
-		// Confirm tersm and conditions and create a passcode
+		// Confirm terms and conditions and create a passcode
 		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
@@ -96,7 +105,6 @@ final class Onboarding: XCTestCase {
 		// App state verification
 		Account.waitForInitalLoad(app: app)
 		
-		// TODO: need to load into ghostnet
 		
 		// TODO: verify:
 		// Balance is not zero
@@ -104,6 +112,12 @@ final class Onboarding: XCTestCase {
 		// Correct address in nav
 		// Correct wallets imported (setup child wallets)
 		
+		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportHDWallet_password() {
@@ -111,7 +125,7 @@ final class Onboarding: XCTestCase {
 		let seedPassword = ""
 		
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase)
+		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
 		
 		app.buttons["Advanced"].tap()
 		
@@ -119,13 +133,13 @@ final class Onboarding: XCTestCase {
 		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
 		Onboarding.handleRecordyAddress(app: app, address: "tz1")
 		SharedHelpers.shared.typeDone(app: app)
-		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: true, inElement: app.scrollViews, delay: 5)
+		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: true, inElement: app.scrollViews, delay: 2)
 		
 		// Enter valid address, but not matching
 		Onboarding.handleClearingAddress(app: app)
 		Onboarding.handleRecordyAddress(app: app, address: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
 		SharedHelpers.shared.typeDone(app: app)
-		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 5)
+		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
 		
@@ -137,7 +151,7 @@ final class Onboarding: XCTestCase {
 		Onboarding.handleClearingAddress(app: app)
 		Onboarding.handleRecordyAddress(app: app, address: "tz1LGtCUAc5h3WSFUh7UC2VdaANYYxKfciop")
 		SharedHelpers.shared.typeDone(app: app)
-		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 5)
+		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
 		
@@ -160,23 +174,130 @@ final class Onboarding: XCTestCase {
 		// App state verification
 		Account.waitForInitalLoad(app: app)
 		
-		// TODO: need to load into ghostnet
 		
 		// TODO: verify:
 		// Balance is not zero
 		// Tokens present
 		// Correct address in nav
-		// Correct wallets imported (setup child wallets)
 		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	
-	
-	/*
 	func testImportRegularWallet() {
-		// TODO:
+		let seedPhrase = "" // TODO: needs to come from Envrionement / launch arugments
+		
+		let app = XCUIApplication()
+		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
+		
+		app.buttons["Advanced"].tap()
+		app.switches["legacy-toggle"].tap()
+		app.buttons["Import"].tap()
+		
+		
+		// Confirm tersm and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
+	}
+	
+	func testImportRegularWallet_password() {
+		let seedPhrase = "" // TODO: needs to come from Envrionement / launch arugments
+		let seedPassword = "abc123def456"
+		
+		let app = XCUIApplication()
+		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
+		
+		app.buttons["Advanced"].tap()
+		
+		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
+		Onboarding.handleRecordyAddress(app: app, address: "tz1Wj6kenWpyTzPkU8xN9aiRFx2aBVFQ172F")
+		SharedHelpers.shared.typeDone(app: app)
+		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
+		
+		app.switches["legacy-toggle"].tap()
+		app.buttons["Import"].tap()
+		
+		
+		// Confirm tersm and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportWatchWallet_address() {
+		let app = XCUIApplication()
+		app.staticTexts["Already Have a Wallet"].tap()
+		app.tables.staticTexts["Watch a public address or .tez domain"].tap()
+		
+		let enterAddressTextField = app.textFields["Enter Address"]
+		enterAddressTextField.tap()
+		SharedHelpers.shared.type(app: app, text: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
+		
+		app.buttons["send-button"].tap()
+		
+		
+		
+		// Confirm tersm and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		
 		// TODO:
 		// use mainnet
 		// verify tezos domain import
@@ -184,9 +305,50 @@ final class Onboarding: XCTestCase {
 		// verify tokens are displayed
 		// verify collectibles
 		// verify activity
+		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	
+	/*
 	func testImportWatchWallet_domain() {
+		let app = XCUIApplication()
+		app.staticTexts["Already Have a Wallet"].tap()
+		app.tables.staticTexts["Watch a public address or .tez domain"].tap()
+		
+		app.staticTexts["Tezos Address"].tap()
+		app.tables.staticTexts["Tezos Domain"].tap()
+		app.textFields["Enter Tezos Domain"].tap()
+		
+		SharedHelpers.shared.type(app: app, text: "something.gho")
+		
+		app.buttons["send-button"].tap()
+		
+		
+		
+		// Confirm tersm and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		
+		
 		// TODO:
 		// use mainnet
 		// verify tezos domain import
@@ -194,16 +356,77 @@ final class Onboarding: XCTestCase {
 		// verify tokens are displayed
 		// verify collectibles
 		// verify activity
-	}
-	
-	func testImportSocial_apple() {
-		// TODO: - although, torus servers have been very buggy, might need to reconsider
-	}
-	
-	func testImportSocial_google() {
-		// TODO: - although, torus servers have been very buggy, might need to reconsider
+		
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
 	}
 	*/
+	
+	func testImportSocial_apple() {
+		Onboarding.handleLoggingInToAppleIdIfNeeded()
+		
+		let app = XCUIApplication()
+		app.launch()
+		sleep(2)
+		
+		app.staticTexts["Create a Wallet"].tap()
+		app.buttons["Use Social"].tap()
+		app.scrollViews.otherElements.staticTexts["Sign in with Apple"].tap()
+		
+		
+		
+		
+		sleep(4)
+		let testApp = XCUIApplication(bundleIdentifier: "com.apple.AuthKitUIService")
+		
+		let continueButton = testApp.buttons["Continue"]
+		if continueButton.exists {
+			continueButton.tap()
+		}
+		
+		let shareEmailOption = testApp.tables.staticTexts["Share My Email"]
+		if shareEmailOption.exists {
+			shareEmailOption.tap()
+		}
+		
+		let continueWithPassword = testApp.buttons["Continue with Password"]
+		if continueWithPassword.exists {
+			continueWithPassword.tap()
+		}
+		
+		testApp.secureTextFields["Password"].tap()
+		SharedHelpers.shared.type(app: testApp, text: "") // TODO: env varible
+		
+		testApp.buttons["Sign In"].tap()
+		
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 20)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		sleep(1)
+		Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Account.waitForInitalLoad(app: app)
+		
+		// Navigate to wallet management
+		Home.handleOpenWalletManagement(app: app)
+		
+		WalletManagement.deleteAllWallets(app: app)
+	}
+	
+	
+	
 	
 	
 	// MARK: - Helpers
@@ -212,23 +435,28 @@ final class Onboarding: XCTestCase {
 		SharedHelpers.shared.type(app: app, text: passcode)
 	}
 	
-	public static func handleOnboardingAndRecoveryPhraseEntry(app: XCUIApplication, phrase: String) {
+	public static func handleOnboardingAndRecoveryPhraseEntry(app: XCUIApplication, phrase: String, useAutoComplete: Bool) {
 		app.staticTexts["Already Have a Wallet"].tap()
 		app.tables.staticTexts["Import accounts using your recovery phrase from Kukai or another wallet"].tap()
 		app.scrollViews.children(matching: .textView).element.tap()
 		
-		// for each word, type all but last character, then use custom auto complete to enter
-		let seedWords = phrase.components(separatedBy: " ")
-		
-		let customAutoCompleteView = app.collectionViews
-		
-		for word in seedWords {
-			let minusLastCharacter = String(word.prefix(word.count-1))
-			print("minusLastCharacter: \(minusLastCharacter)")
+		if useAutoComplete {
+			// for each word, type all but last character, then use custom auto complete to enter
+			let seedWords = phrase.components(separatedBy: " ")
 			
-			SharedHelpers.shared.type(app: app, text: minusLastCharacter)
+			let customAutoCompleteView = app.collectionViews
 			
-			customAutoCompleteView.staticTexts[word].tap()
+			for word in seedWords {
+				let minusLastCharacter = String(word.prefix(word.count-1))
+				print("minusLastCharacter: \(minusLastCharacter)")
+				
+				//SharedHelpers.shared.type(app: app, text: minusLastCharacter)
+				app.typeText(minusLastCharacter)
+				
+				customAutoCompleteView.staticTexts[word].tap()
+			}
+		} else {
+			app.typeText(phrase)
 		}
 	}
 	
@@ -236,14 +464,14 @@ final class Onboarding: XCTestCase {
 		let elementsQuery = app.scrollViews.otherElements
 		elementsQuery.textFields["Extra word (passphrase)"].tap()
 		
-		SharedHelpers.shared.type(app: app, text: password)
+		app.typeText(password)
 	}
 	
 	public static func handleRecordyAddress(app: XCUIApplication, address: String) {
 		let elementsQuery = app.scrollViews.otherElements
 		elementsQuery.textFields["Wallet Address"].tap()
 		
-		SharedHelpers.shared.type(app: app, text: address)
+		app.typeText(address)
 	}
 	
 	public static func handleClearingAddress(app: XCUIApplication) {
@@ -251,7 +479,42 @@ final class Onboarding: XCTestCase {
 		let input = textField.value as? String ?? ""
 		
 		textField.tap()
-		SharedHelpers.shared.typeBackspace(app: app, times: input.count)
+		
+		let clearButton = textField.buttons["Clear text"]
+		if clearButton.exists {
+			clearButton.tap()
+		} else {
+			SharedHelpers.shared.typeBackspace(app: app, times: input.count)
+		}
+	}
+	
+	public static func handleLoggingInToAppleIdIfNeeded() {
+		let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+		settingsApp.launch()
+		
+		sleep(2)
+		if settingsApp.staticTexts["kukai automated testing"].exists {
+			return
+		}
+		
+		
+		settingsApp.staticTexts["Sign in to your iPhone"].tap()
+		settingsApp.textFields["Email"].tap()
+		SharedHelpers.shared.type(app: settingsApp, text: "") // TODO: env variable
+		
+		settingsApp.buttons["Next"].tap()
+		sleep(4)
+		
+		settingsApp.secureTextFields["Required"].tap()
+		SharedHelpers.shared.type(app: settingsApp, text: "") // TODO: env variable
+		
+		
+		settingsApp.buttons["Next"].tap()
+		sleep(4)
+		
+		settingsApp.buttons["Don't Merge"].tap()
+		
+		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inApp: settingsApp, delay: 4)
 	}
 	
 	public static func handleSeedWordVerification(app: XCUIApplication) {
@@ -267,9 +530,12 @@ final class Onboarding: XCTestCase {
 			seedWords.append( elementsQuery.staticTexts["word\(i)"].label )
 		}
 		
-		// TODO: tap info buttons
-		// TODO: can we fake a screenshot to see the warning???
+		app.buttons["info"].tap()
 		
+		SharedHelpers.shared.waitForButton("OK", exists: true, inApp: app, delay: 2)
+		app.buttons["OK"].tap()
+		
+		SharedHelpers.shared.waitForButton("Ok, I saved it", exists: true, inApp: app, delay: 2)
 		app.buttons["Ok, I saved it"].tap()
 		app.alerts["Written the secret Recovery Phrase down?"].scrollViews.otherElements.buttons["Yes"].tap()
 		
@@ -284,13 +550,42 @@ final class Onboarding: XCTestCase {
 		let seedWord3 = seedWords[number3-1]
 		let seedWord4 = seedWords[number4-1]
 		
+		// pick wrong words to verify app doesn't allow access
+		let wrongWord1 = Onboarding.findWrongWord(forSection: 1, inApp: app, realWord: seedWord1)
+		let wrongWord2 = Onboarding.findWrongWord(forSection: 2, inApp: app, realWord: seedWord2)
+		let wrongWord3 = Onboarding.findWrongWord(forSection: 3, inApp: app, realWord: seedWord3)
+		let wrongWord4 = Onboarding.findWrongWord(forSection: 4, inApp: app, realWord: seedWord4)
 		
-		// TODO: verify tapping the wrong words doesn't move
+		app.buttons[wrongWord1].tap()
+		app.buttons[wrongWord2].tap()
+		app.buttons[wrongWord3].tap()
+		app.buttons[wrongWord4].tap()
 		
-		// Tap those words in order on verification screen
+		sleep(2)
+		XCTAssert(app.staticTexts[wrongWord1].exists) // Shouldn't have moved
+		
+		
+		// Tap correct words in order on verification screen
 		app.staticTexts[seedWord1].tap()
 		app.staticTexts[seedWord2].tap()
 		app.staticTexts[seedWord3].tap()
 		app.staticTexts[seedWord4].tap()
+		
+		sleep(2)
+		XCTAssert(!app.staticTexts[wrongWord1].exists) // Should have moved
+	}
+	
+	private static func findWrongWord(forSection: Int, inApp app: XCUIApplication, realWord: String) -> String {
+		var tempWord = ""
+		for i in 1..<4 {
+			tempWord = app.buttons["selection-\(forSection)-option-\(i)"].label
+			print("tempWord: \(tempWord), realWord: \(realWord)")
+			
+			if tempWord != realWord {
+				return tempWord
+			}
+		}
+		
+		return tempWord
 	}
 }

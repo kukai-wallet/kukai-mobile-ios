@@ -62,6 +62,8 @@ class ImportWalletViewController: UIViewController {
 		
 		let tap = UITapGestureRecognizer(target: self, action: #selector(ImportWalletViewController.resignAll))
 		view.addGestureRecognizer(tap)
+		
+		legacyToggle.accessibilityIdentifier = "legacy-toggle"
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

@@ -79,4 +79,38 @@ final class WalletManagement: XCTestCase {
 		
 		return (title: title, subtitle: subtitle)
 	}
+	
+	public static func deleteAllWallets(app: XCUIApplication) {
+		
+		// Cycle through all the wallets that have a more button, and delete those groups first
+		let moreButtons = app.buttons.matching(identifier: "accounts-section-header-more")
+		for i in 0..<moreButtons.count {
+			let moreButton = moreButtons.element(boundBy: i)
+			moreButton.tap()
+			
+			app.popovers.tables.staticTexts["Remove Wallet"].tap()
+			app.buttons["Remove"].tap()
+			sleep(2)
+		}
+		
+		
+		// Check if we are still on that screen
+		let editButton = app.navigationBars.buttons["accounts-nav-edit"]
+		if !editButton.exists {
+			return
+		}
+		
+		// If so, tap the edit button and delete any remaining account
+		editButton.tap()
+		
+		let accounts = app.tables.staticTexts.matching(identifier: "accounts-item-title")
+		for i in 0..<accounts.count {
+			let account = accounts.element(boundBy: i)
+			account.tap()
+			
+			app.buttons["Delete"].tap()
+			app.buttons["Remove"].tap()
+			sleep(2)
+		}
+	}
 }

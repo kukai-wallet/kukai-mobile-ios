@@ -65,4 +65,8 @@ final class Account: XCTestCase {
 	public static func check(app: XCUIApplication, displayingBackup: Bool) {
 		SharedHelpers.shared.waitForButton("account-backup-button", exists: displayingBackup, inElement: app.tables, delay: 2)
 	}
+	
+	public static func tapBackup(app: XCUIApplication) {
+		app.tables.buttons["account-backup-button"].tap()
+	}
 }
