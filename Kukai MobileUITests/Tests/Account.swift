@@ -53,6 +53,26 @@ final class Account: XCTestCase {
 		XCTAssert(symbol == symbolIs)
 	}
 	
+	public static func check(app: XCUIApplication, xtzBalanceIsNotZero: Bool) {
+		let xtz = app.tables.staticTexts["account-token-balance"].firstMatch.label
+		let fiat = app.staticTexts["account-token-fiat"].firstMatch.label
+		
+		let sanatisedXTZ = xtz.replacingOccurrences(of: ",", with: "")
+		var sanatisedFiat = fiat.replacingOccurrences(of: ",", with: "")
+		sanatisedFiat = String(sanatisedFiat.dropFirst())
+		
+		let xtzDecimal = Decimal(string: sanatisedXTZ) ?? 0
+		let fiatDecimal = Decimal(string: sanatisedFiat) ?? 0
+		
+		if xtzBalanceIsNotZero {
+			XCTAssert(xtzDecimal > 0, xtzDecimal.description)
+			XCTAssert(fiatDecimal > 0, fiatDecimal.description)
+		} else {
+			XCTAssert(xtzDecimal == 0)
+			XCTAssert(fiatDecimal == 0)
+		}
+	}
+	
 	public static func check(app: XCUIApplication, estimatedTotalExists: Bool) {
 		SharedHelpers.shared.waitForStaticText("account-total-xtz", exists: estimatedTotalExists, inElement: app.tables, delay: 2)
 	}
