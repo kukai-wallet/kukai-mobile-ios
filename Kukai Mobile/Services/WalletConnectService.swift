@@ -41,6 +41,7 @@ public class WalletConnectService {
 	
 	public static let shared = WalletConnectService()
 	public weak var delegate: WalletConnectServiceDelegate? = nil
+	public var uriToOpenOnAppReturn: WalletConnectURI? = nil
 	
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
@@ -140,7 +141,12 @@ public class WalletConnectService {
 	public func connectOnAppOpen() {
 		if delegate != nil {
 			self.reconnect { _ in
-				
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					
+					if let uri = WalletConnectService.shared.uriToOpenOnAppReturn {
+						WalletConnectService.shared.pairClient(uri: uri)
+					}
+				}
 			}
 		}
 	}
@@ -204,6 +210,8 @@ public class WalletConnectService {
 		Task {
 			do {
 				try await Pair.instance.pair(uri: uri)
+				uriToOpenOnAppReturn = nil
+				
 			} catch {
 				os_log("WC Pairing connect error: %@", log: .default, type: .error, "\(error)")
 				self.delegate?.error(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)

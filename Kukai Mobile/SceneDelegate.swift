@@ -76,6 +76,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
+		if url.absoluteString.prefix(12) == "kukai://wc2/" {
+			let wc2URI = url.absoluteString.dropFirst(12)
+			
+			if let uri = WalletConnectURI(string: String(wc2URI)) {
+				WalletConnectService.shared.uriToOpenOnAppReturn = uri
+			}
+		} else {
+			WalletConnectService.shared.uriToOpenOnAppReturn = nil
+		}
+		
 		CustomAuth.handle(url: url)
 	}
 	
