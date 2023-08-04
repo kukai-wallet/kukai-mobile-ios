@@ -19,8 +19,12 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	
 	var gradientLayer = CAGradientLayer()
 	
-	override class func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
+		
+		balanceLabel.accessibilityIdentifier = "account-token-balance"
+		valuelabel.accessibilityIdentifier = "account-token-fiat"
+		symbolLabel.accessibilityIdentifier = "account-token-symbol"
 	}
 	
 	public func setPriceChange(value: Decimal) {

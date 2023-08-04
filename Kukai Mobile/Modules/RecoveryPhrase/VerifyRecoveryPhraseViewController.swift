@@ -45,6 +45,8 @@ class VerifyRecoveryPhraseViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		setupAccessibility()
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -92,6 +94,24 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 				}
 			}
 		}
+	}
+	
+	private func setupAccessibility() {
+		selection1Button1.accessibilityIdentifier = "selection-1-option-1"
+		selection1Button2.accessibilityIdentifier = "selection-1-option-2"
+		selection1Button3.accessibilityIdentifier = "selection-1-option-3"
+		
+		selection2Button1.accessibilityIdentifier = "selection-2-option-1"
+		selection2Button2.accessibilityIdentifier = "selection-2-option-2"
+		selection2Button3.accessibilityIdentifier = "selection-2-option-3"
+		
+		selection3Button1.accessibilityIdentifier = "selection-3-option-1"
+		selection3Button2.accessibilityIdentifier = "selection-3-option-2"
+		selection3Button3.accessibilityIdentifier = "selection-3-option-3"
+		
+		selection4Button1.accessibilityIdentifier = "selection-4-option-1"
+		selection4Button2.accessibilityIdentifier = "selection-4-option-2"
+		selection4Button3.accessibilityIdentifier = "selection-4-option-3"
 	}
 	
 	private func randomMnemonicWord(exlcuding: String) -> String {

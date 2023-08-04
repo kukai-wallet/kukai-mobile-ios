@@ -120,4 +120,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			.forEach { $0.perform(setHardwareLayout, with: nil) }
 		#endif
 	}
+	
+	func shouldLaunchGhostnet() -> Bool {
+		let environment = ProcessInfo.processInfo.environment
+		
+		if environment["XCUITEST-GHOSTNET"] == "true" {
+			return true
+		}
+		
+		return false
+	}
 }

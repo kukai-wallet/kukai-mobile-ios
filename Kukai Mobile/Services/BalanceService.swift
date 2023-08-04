@@ -215,6 +215,7 @@ public class BalanceService {
 		
 		let accountKey = BalanceService.addressCacheKey(forAddress: address)
 		lastFullRefreshDates[accountKey] = nil
+		let _ = DiskService.write(encodable: lastFullRefreshDates, toFileName: BalanceService.cacheLastRefreshDates)
 	}
 	
 	func deleteAllCachedData() {
@@ -225,6 +226,7 @@ public class BalanceService {
 		let _ = DiskService.delete(fileName: BalanceService.cacheLastRefreshDates)
 		
 		lastFullRefreshDates = [:]
+		let _ = DiskService.write(encodable: lastFullRefreshDates, toFileName: BalanceService.cacheLastRefreshDates)
 		
 		account = Account(walletAddress: "")
 		exchangeData = []

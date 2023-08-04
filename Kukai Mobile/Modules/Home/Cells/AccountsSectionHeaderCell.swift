@@ -15,6 +15,13 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	
 	private var menu: MenuViewController? = nil
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		headingLabel.accessibilityIdentifier = "accounts-section-header"
+		menuButton.accessibilityIdentifier = "accounts-section-header-more"
+	}
+	
 	func setup(menuVC: MenuViewController?) {
 		
 		if let menuVC = menuVC {

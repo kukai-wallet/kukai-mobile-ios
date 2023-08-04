@@ -62,6 +62,8 @@ class ImportWalletViewController: UIViewController {
 		
 		let tap = UITapGestureRecognizer(target: self, action: #selector(ImportWalletViewController.resignAll))
 		view.addGestureRecognizer(tap)
+		
+		legacyToggle.accessibilityIdentifier = "legacy-toggle"
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -348,6 +350,9 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 			textfield.resignFirstResponder()
 			walletAddressErrorLabel.isHidden = false
 			walletAddressErrorLabel.text = "Invalid wallet address"
+			
+		} else if isValid && textfield == walletAddressTextField {
+			walletAddressErrorLabel.isHidden = true
 		}
 	}
 	

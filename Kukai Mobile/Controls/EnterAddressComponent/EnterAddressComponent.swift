@@ -64,6 +64,8 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func setup() {
+		sendButton.accessibilityIdentifier = "send-button"
+		
 		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress ?? "")
 		textField.validatorTextFieldDelegate = self
 		
