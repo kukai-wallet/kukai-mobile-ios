@@ -57,8 +57,6 @@ final class Onboarding: XCTestCase {
 		Account.check(app: app, hasNumberOfTokens: 1)
 		Account.check(app: app, displayingBackup: true)
 		
-		// Back and handle backup flow
-		SharedHelpers.shared.navigationBack(app: app)
 		Account.tapBackup(app: app)
 		Onboarding.handleSeedWordVerification(app: app)
 		
@@ -183,12 +181,6 @@ final class Onboarding: XCTestCase {
 		Account.waitForInitalLoad(app: app)
 		
 		
-		// TODO: verify:
-		// Balance is not zero
-		// Tokens present
-		// Correct address in nav
-		
-		
 		// Navigate to wallet management
 		Home.handleOpenWalletManagement(app: app)
 		
@@ -281,7 +273,7 @@ final class Onboarding: XCTestCase {
 		
 		let enterAddressTextField = app.textFields["Enter Address"]
 		enterAddressTextField.tap()
-		SharedHelpers.shared.type(app: app, text: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
+		app.typeText("tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
 		
 		app.buttons["send-button"].tap()
 		
@@ -305,23 +297,25 @@ final class Onboarding: XCTestCase {
 		// App state verification
 		Account.waitForInitalLoad(app: app)
 		
-		
-		// TODO:
-		// use mainnet
-		// verify tezos domain import
-		// verify balance not zero
-		// verify tokens are displayed
-		// verify collectibles
-		// verify activity
+		Account.check(app: app, estimatedTotalExists: true)
+		Account.check(app: app, hasNumberOfTokens: 3)
+		Account.check(app: app, xtzBalanceIsNotZero: true)
+		Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
 		Home.handleOpenWalletManagement(app: app)
 		
+		WalletManagement.check(app: app, hasSections: 1)
+		WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		
+		let details0 = WalletManagement.getWalletDetails(app: app, index: 0)
+		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
+		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		
 		WalletManagement.deleteAllWallets(app: app)
 	}
 	
-	/*
 	func testImportWatchWallet_domain() {
 		let app = XCUIApplication()
 		app.staticTexts["Already Have a Wallet"].tap()
@@ -331,7 +325,7 @@ final class Onboarding: XCTestCase {
 		app.tables.staticTexts["Tezos Domain"].tap()
 		app.textFields["Enter Tezos Domain"].tap()
 		
-		SharedHelpers.shared.type(app: app, text: "something.gho")
+		app.typeText("kukaiautomatedtesting.gho")
 		
 		app.buttons["send-button"].tap()
 		
@@ -355,23 +349,24 @@ final class Onboarding: XCTestCase {
 		// App state verification
 		Account.waitForInitalLoad(app: app)
 		
-		
-		
-		// TODO:
-		// use mainnet
-		// verify tezos domain import
-		// verify balance not zero
-		// verify tokens are displayed
-		// verify collectibles
-		// verify activity
+		Account.check(app: app, estimatedTotalExists: true)
+		Account.check(app: app, hasNumberOfTokens: 3)
+		Account.check(app: app, xtzBalanceIsNotZero: true)
+		Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
 		Home.handleOpenWalletManagement(app: app)
 		
+		WalletManagement.check(app: app, hasSections: 1)
+		WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		
+		let details0 = WalletManagement.getWalletDetails(app: app, index: 0)
+		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
+		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	*/
 	
 	func testImportSocial_apple() {
 		Onboarding.handleLoggingInToAppleIdIfNeeded()
@@ -406,7 +401,7 @@ final class Onboarding: XCTestCase {
 		}
 		
 		testApp.secureTextFields["Password"].tap()
-		SharedHelpers.shared.type(app: testApp, text: EnvironmentVariables.shared.gmailPassword)
+		testApp.typeText(EnvironmentVariables.shared.gmailPassword)
 		
 		testApp.buttons["Sign In"].tap()
 		
@@ -507,13 +502,13 @@ final class Onboarding: XCTestCase {
 		
 		settingsApp.staticTexts["Sign in to your iPhone"].tap()
 		settingsApp.textFields["Email"].tap()
-		SharedHelpers.shared.type(app: settingsApp, text: EnvironmentVariables.shared.gmailAddress)
+		settingsApp.typeText(EnvironmentVariables.shared.gmailAddress)
 		
 		settingsApp.buttons["Next"].tap()
 		sleep(4)
 		
 		settingsApp.secureTextFields["Required"].tap()
-		SharedHelpers.shared.type(app: settingsApp, text: EnvironmentVariables.shared.gmailPassword)
+		settingsApp.typeText(EnvironmentVariables.shared.gmailPassword)
 		
 		
 		settingsApp.buttons["Next"].tap()
