@@ -26,6 +26,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	public var externalImage: UIImage? = nil
 	public var externalName: String? = nil
 	
+	var imageURLsForCollectibles: [[URL?]] = []
 	
 	
 	// MARK: - Init
@@ -67,11 +68,12 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
 		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
 			if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+				self?.imageURLsForCollectibles.append([url])
+				
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
@@ -134,5 +136,9 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		}
 		
 		return nil
+	}
+	
+	func willDisplayImages(forIndexPath: IndexPath) -> [URL?] {
+		return imageURLsForCollectibles[forIndexPath.row]
 	}
 }

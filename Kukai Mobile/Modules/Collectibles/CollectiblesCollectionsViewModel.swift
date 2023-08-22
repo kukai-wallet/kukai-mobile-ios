@@ -35,6 +35,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var itemCount = 0
 	var needsLayoutChange = false
 	
+	var imageURLsForCollectionGroups: [URL?] = []
+	var imageURLsForCollectibles: [[URL?]] = []
+	var nftCollectionTotalCounts: [Int?] = []
+	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
 	
@@ -103,16 +107,11 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 				
 			} else if self.isSearching, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
-				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-				
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setup(title: obj.name, quantity: balance)
 				return cell
 				
 			} else if self.itemCount <= 1, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
-				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				cell.titleLabel.text = obj.name
 				cell.subTitleLabel.text = obj.parentAlias ?? ""
 				
@@ -124,10 +123,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 				
 			} else if self.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
-				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
-				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
 				let type = MediaProxyService.typesContents(types)
 				let isRichMedia = (type != .imageOnly && type != nil)
@@ -137,20 +133,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				return cell
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
-				guard let nfts = obj.nfts else {
-					return cell
-				}
-				
-				let visibleNfts = nfts.filter({ !$0.isHidden })
-				var totalCount: Int? = nil
-				
-				if visibleNfts.count > 5 {
-					totalCount = nfts.count - 4
-				}
-				
-				let urls = visibleNfts.map({ MediaProxyService.thumbnailURL(forNFT: $0, keepGif: true) })
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
-				cell.setup(iconUrl: obj.thumbnailURL, title: title, imageURLs: urls, totalCount: totalCount)
+				cell.setup(title: title, totalCount: nftCollectionTotalCounts[indexPath.row])
 				
 				return cell
 			} else if let _ = item as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
@@ -169,8 +153,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		})
 	}
 	
-	
 	func refresh(animate: Bool, successMessage: String? = nil) {
+		imageURLsForCollectionGroups = []
+		imageURLsForCollectibles = []
+		
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
 			return
@@ -189,6 +175,22 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
 					guard !nftGroup.isHidden else { continue }
 					hashableData.append(nftGroup)
+					
+					
+					// Process URLs and counts for easier later retreival
+					let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
+					var totalCount: Int? = nil
+					
+					if visibleNfts.count > 5 {
+						totalCount = (nftGroup.nfts?.count ?? 4) - 4
+					}
+					
+					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: .icon)
+					self.imageURLsForCollectionGroups.append(groupURL)
+					
+					let urls = visibleNfts.compactMap({ MediaProxyService.thumbnailURL(forNFT: $0, keepGif: true) })
+					self.imageURLsForCollectibles.append(urls)
+					self.nftCollectionTotalCounts.append(totalCount)
 				}
 			} else {
 				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject(), LoadingContainerCellObject()]
@@ -290,7 +292,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			self.searchSnapshot.appendSections([0, 1])
 			self.searchSnapshot.appendItems([self.sortMenu], toSection: 0)
 			self.searchSnapshot.appendItems([0], toSection: 1)
-			self.dataSource?.apply(self.searchSnapshot, animatingDifferences: true, completion: completion)
+			
+			DispatchQueue.main.async {
+				self.dataSource?.apply(self.searchSnapshot, animatingDifferences: true, completion: completion)
+			}
 		})
 	}
 	
@@ -302,9 +307,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		dataSource?.apply(searchSnapshot, animatingDifferences: true, completion: { [weak self] in
 			guard let self = self else { return }
 			
-			collectionView.collectionViewLayout = self.layout()
-			
-			self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
+			DispatchQueue.main.async {
+				collectionView.collectionViewLayout = self.layout()
+				self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
+			}
 		})
 	}
 	
@@ -318,6 +324,23 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
 		return dataSource?.itemIdentifier(for: indexPath) as? NFT
+	}
+	
+	func willDisplayCollectionImage(forIndexPath: IndexPath) -> URL? {
+		return imageURLsForCollectionGroups[forIndexPath.row]
+	}
+	
+	func willDisplayImages(forIndexPath: IndexPath) -> [URL?] {
+		
+		if isGroupMode && !isSearching {
+			return self.imageURLsForCollectibles[forIndexPath.row]
+			
+		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? NFT {
+			let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
+			return [url]
+		}
+		
+		return []
 	}
 	
 	func getLayoutType() -> LayoutType {

@@ -7,36 +7,42 @@
 
 import UIKit
 import KukaiCoreSwift
+import Kingfisher
 
 class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var collectionIcon: UIImageView!
 	@IBOutlet weak var collectionName: UILabel!
 	
-	@IBOutlet weak var collectionImage1: UIImageView!
-	@IBOutlet weak var collectionImage2: UIImageView!
-	@IBOutlet weak var collectionImage3: UIImageView!
-	@IBOutlet weak var collectionImage4: UIImageView!
-	@IBOutlet weak var collectionImage5: UIImageView!
+	@IBOutlet weak var collectionImage1: AnimatedImageView!
+	@IBOutlet weak var collectionImage2: AnimatedImageView!
+	@IBOutlet weak var collectionImage3: AnimatedImageView!
+	@IBOutlet weak var collectionImage4: AnimatedImageView!
+	@IBOutlet weak var collectionImage5: AnimatedImageView!
+	
 	@IBOutlet weak var lastImageTitle: UILabel!
 	
 	private var gradientLayer: CAGradientLayer? = nil
+	private var totalCount: Int?
 	
-	func setup(iconUrl: URL?, title: String, imageURLs: [URL?], totalCount: Int?) {
-		MediaProxyService.load(url: iconUrl, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
-		collectionName.text = title
-		
-		setupImages(imageURLs: imageURLs, totalCount: totalCount)
+	func setup(title: String, totalCount: Int?) {
+		self.collectionName.text = title
+		self.totalCount = totalCount
 	}
 	
-	func setup(iconImage: UIImage?, title: String, imageURLs: [URL?], totalCount: Int?) {
-		collectionIcon.image = iconImage
-		collectionName.text = title
-		
-		setupImages(imageURLs: imageURLs, totalCount: totalCount)
+	func setup(iconImage: UIImage?, title: String, totalCount: Int?) {
+		self.collectionIcon.image = iconImage
+		self.collectionName.text = title
+		self.totalCount = totalCount
 	}
 	
-	private func setupImages(imageURLs: [URL?], totalCount: Int?) {
+	func setupCollectionImage(url: URL?) {
+		let dimension = collectionIcon.frame.size.width
+		let updated = dimension * UIScreen.main.scale
+		MediaProxyService.load(url: url, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken(), downSampleSize: CGSize(width: updated, height: updated))
+	}
+	
+	func setupImages(imageURLs: [URL?]) {
 		
 		// Images 1-4 display if urls present
 		
@@ -106,6 +112,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 					self?.emptyStyle(forImageView: self?.collectionImage5)
 				}
 			}
+			
 			lastImageTitle.isHidden = true
 			
 		} else {

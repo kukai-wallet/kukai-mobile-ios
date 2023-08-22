@@ -92,6 +92,18 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		if let c = cell as? CollectiblesCollectionCell {
 			c.addGradientBackground()
 			
+			c.setupCollectionImage(url: viewModel.willDisplayCollectionImage(forIndexPath: indexPath))
+			c.setupImages(imageURLs: viewModel.willDisplayImages(forIndexPath: indexPath))
+			
+		} else if let c = cell as? CollectiblesCollectionLargeCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			
+		} else if let c = cell as? CollectiblesCollectionSinglePageCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			
+		} else if let c = cell as? SearchResultCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			
 		} else if let c = cell as? LoadingGroupModeCell {
 			c.addGradientBackground()
 		}
