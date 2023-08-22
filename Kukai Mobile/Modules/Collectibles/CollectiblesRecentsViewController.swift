@@ -7,7 +7,7 @@
 
 import UIKit
 import Combine
-import Kingfisher
+import KukaiCoreSwift
 
 class CollectiblesRecentsViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
@@ -90,6 +90,12 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 		if let obj = viewModel.nft(forIndexPath: indexPath) {
 			TransactionService.shared.sendData.chosenNFT = obj
 			delegate?.performSegue(withIdentifier: "detail", sender: obj)
+		}
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if let c = cell as? CollectiblesCollectionLargeCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 		}
 	}
 	

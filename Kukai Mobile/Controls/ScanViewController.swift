@@ -73,11 +73,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		found(code: textfield.text ?? "")
 	}
 	
-	@objc func pasteButtonTapped() {
-		self.textfield.text = UIPasteboard.general.string
-		self.textFieldDone()
-	}
-	
 	func setupNav() {
 		titleLabel.text = "Scan QR Code"
 		titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -161,7 +156,17 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtBtnSec1") as Any
 			] ))
 			
-			pasteButton.addTarget(self, action: #selector(pasteButtonTapped), for: .touchUpInside)
+			pasteButton.addAction(UIAction(handler: { [weak self] _ in
+				DispatchQueue.main.async {
+					guard let paste = UIPasteboard.general.string else {
+						return
+					}
+					
+					self?.textfield.text = paste
+					self?.textFieldDone()
+				}
+			}), for: .touchUpInside)
+			
 			self.view.addSubview(pasteButton)
 			
 			NSLayoutConstraint.activate([
