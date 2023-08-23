@@ -51,8 +51,11 @@ public class StorageService {
 		KeychainSwift().set(data, forKey: StorageService.secureLoginInfo, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
 	}
 	
+	private static func loginInfoExists() -> Bool {
+		return (getLoginInfo() != nil)
+	}
+	
 	public static func deleteKeychainItems() {
-		
 		KeychainSwift().delete(StorageService.secureLoginInfo)
 	}
 	
@@ -108,7 +111,8 @@ public class StorageService {
 	}
 	
 	public static func runCleanupChecks() {
-		if didCompleteOnboarding() == false {
+		if didCompleteOnboarding() == false || !loginInfoExists() {
+			setCompletedOnboarding(false)
 			deleteKeychainItems()
 		}
 	}

@@ -34,6 +34,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var isGroupMode = false
 	var itemCount = 0
 	var needsLayoutChange = false
+	var needsRefreshAfterSearch = false
 	
 	var imageURLsForCollectionGroups: [URL?] = []
 	var imageURLsForCollectibles: [[URL?]] = []
@@ -53,7 +54,6 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			.sink { [weak self] address in
 				if DependencyManager.shared.selectedWalletAddress == address {
 					self?.forceRefresh = true
-					
 					if self?.isVisible == true {
 						self?.refresh(animate: true)
 					}
@@ -65,7 +65,11 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
-					self?.refresh(animate: true)
+					if self?.isSearching == true {
+						self?.needsRefreshAfterSearch = true
+					} else {
+						self?.refresh(animate: true)
+					}
 				}
 			}.store(in: &bag)
 	}
@@ -309,7 +313,12 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			
 			DispatchQueue.main.async {
 				collectionView.collectionViewLayout = self.layout()
-				self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
+				
+				if self.needsRefreshAfterSearch {
+					self.refresh(animate: true)
+				} else {
+					self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
+				}
 			}
 		})
 	}

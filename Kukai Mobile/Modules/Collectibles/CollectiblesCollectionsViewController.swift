@@ -18,6 +18,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	private var bag = [AnyCancellable]()
 	private var refreshingFromParent = true
 	private var movingToDetails = false
+	private var textFieldDone = false
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -159,9 +160,11 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
-		if !movingToDetails {
+		if !movingToDetails && !textFieldDone {
 			self.hideSearchingUI()
 		}
+		
+		textFieldDone = false
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
@@ -173,7 +176,7 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
-		
+		textFieldDone = true
 	}
 	
 	private func showSearchingUI() {
