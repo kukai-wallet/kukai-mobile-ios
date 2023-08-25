@@ -20,6 +20,10 @@ class AccountButtonCell: UITableViewCell {
 		
 		self.delegate = delegate
 	}
+	
+	override func prepareForReuse() {
+		button.customButtonType = .none
+	}
 
 	@IBAction func buttonTapped(_ sender: UIButton) {
 		self.delegate?.tableViewCellButtonTapped(sender: sender)

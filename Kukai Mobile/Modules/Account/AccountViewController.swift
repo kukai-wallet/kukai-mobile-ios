@@ -135,10 +135,13 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 				(self.tabBarController as? HomeTabBarController)?.manuallySetSlectedTab(toIndex: 3)
 				
 			case AccountViewModel.accessibilityIdentifiers.qr:
-				self.performSegue(withIdentifier: "qr", sender: nil)
+				(self.tabBarController as? HomeTabBarController)?.performSegue(withIdentifier: "side-menu-show-qr", sender: nil)
 				
 			case AccountViewModel.accessibilityIdentifiers.copy:
-				let _ = ""
+				let address = DependencyManager.shared.selectedWalletAddress ?? ""
+				
+				Toast.shared.show(withMessage: "\(address.truncateTezosAddress()) copied!", attachedTo: sender)
+				UIPasteboard.general.string = address
 				
 			default:
 				self.alert(errorWithMessage: "oppsie woopsie")

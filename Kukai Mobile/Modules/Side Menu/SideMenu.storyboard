@@ -479,40 +479,164 @@
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your account QR code" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdP-t4-k2y">
-                                <rect key="frame" x="16" y="131" width="361" height="18.666666666666657"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g8u-6O-KBs">
+                                <rect key="frame" x="103.66666666666669" y="139" width="186" height="186"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="186" id="VcL-PY-CGC"/>
+                                    <constraint firstAttribute="height" constant="186" id="v13-IC-DS5"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B7w-2U-Q4Z">
+                                <rect key="frame" x="32" y="357" width="329" height="104"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;name&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Ts-gQ-SdA">
+                                        <rect key="frame" x="16" y="20" width="297" height="24"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;address&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d4t-cx-Na0">
+                                        <rect key="frame" x="16" y="60" width="297" height="24"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="20"/>
+                                        <color key="textColor" name="Txt8"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="6Ts-gQ-SdA" firstAttribute="leading" secondItem="B7w-2U-Q4Z" secondAttribute="leading" constant="16" id="7Xx-sb-Zf7"/>
+                                    <constraint firstItem="6Ts-gQ-SdA" firstAttribute="top" secondItem="B7w-2U-Q4Z" secondAttribute="top" constant="20" id="VQ3-a0-Jrz"/>
+                                    <constraint firstItem="d4t-cx-Na0" firstAttribute="leading" secondItem="B7w-2U-Q4Z" secondAttribute="leading" constant="16" id="gXM-Z1-0B1"/>
+                                    <constraint firstAttribute="bottom" secondItem="d4t-cx-Na0" secondAttribute="bottom" constant="20" id="k6i-AX-Jfm"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Ts-gQ-SdA" secondAttribute="trailing" constant="16" id="khj-GS-jBS"/>
+                                    <constraint firstAttribute="trailing" secondItem="d4t-cx-Na0" secondAttribute="trailing" constant="16" id="ob2-0A-XNh"/>
+                                    <constraint firstItem="d4t-cx-Na0" firstAttribute="top" secondItem="6Ts-gQ-SdA" secondAttribute="bottom" constant="16" id="pv3-WA-fWd"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" name="BG4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JOj-kz-zuN" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="32" y="477" width="156.66666666666666" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="LAu-Vw-R3d"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" title="Copy"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Copy"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="copyButtonTapped:" destination="3dX-B7-5wO" eventType="touchUpInside" id="0AA-ah-L0e"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Afd-eu-CxP" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="204.66666666666663" y="477" width="156.33333333333337" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="cwo-qb-FlH"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="8" maxY="0.0"/>
+                                <state key="normal" title="Share"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Share"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="shareButtonTapped:" destination="3dX-B7-5wO" eventType="touchUpInside" id="OI9-Y0-FqD"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This address can only be used to receive Tezos compatible tokens" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Tu-Wp-MBG">
+                                <rect key="frame" x="32" y="565" width="329" height="32.666666666666629"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt8"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g8u-6O-KBs">
-                                <rect key="frame" x="116.66666666666669" y="173.66666666666666" width="160" height="159.99999999999997"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VdS-Ic-j1F" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="337" y="83" width="40" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="160" id="VcL-PY-CGC"/>
-                                    <constraint firstAttribute="height" constant="160" id="v13-IC-DS5"/>
+                                    <constraint firstAttribute="height" constant="40" id="pmQ-bg-5nz"/>
+                                    <constraint firstAttribute="width" constant="40" id="vlG-qi-86z"/>
                                 </constraints>
-                            </imageView>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnInfo_Outline_Dark"/>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="infoButtonTapped:" destination="3dX-B7-5wO" eventType="touchUpInside" id="Yps-jW-Bn7"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="uAj-Kq-HRO"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="JOj-kz-zuN" firstAttribute="top" secondItem="B7w-2U-Q4Z" secondAttribute="bottom" constant="16" id="0LN-TT-NCP"/>
                             <constraint firstItem="g8u-6O-KBs" firstAttribute="centerX" secondItem="uAj-Kq-HRO" secondAttribute="centerX" id="28v-KF-K21"/>
+                            <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="B7w-2U-Q4Z" secondAttribute="trailing" constant="32" id="5d2-gE-zl4"/>
+                            <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="VdS-Ic-j1F" secondAttribute="trailing" constant="16" id="60T-o4-8Fn"/>
                             <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="GKP-JB-95F" secondAttribute="trailing" constant="16" id="91J-NW-0h4"/>
-                            <constraint firstItem="g8u-6O-KBs" firstAttribute="top" secondItem="HdP-t4-k2y" secondAttribute="bottom" constant="24" id="Hnl-2x-CKq"/>
-                            <constraint firstItem="HdP-t4-k2y" firstAttribute="top" secondItem="GKP-JB-95F" secondAttribute="bottom" constant="16" id="IeY-kN-yB2"/>
-                            <constraint firstItem="uAj-Kq-HRO" firstAttribute="trailing" secondItem="HdP-t4-k2y" secondAttribute="trailing" constant="16" id="XPR-sH-uyN"/>
-                            <constraint firstItem="HdP-t4-k2y" firstAttribute="leading" secondItem="uAj-Kq-HRO" secondAttribute="leading" constant="16" id="hso-fv-qM2"/>
+                            <constraint firstItem="g8u-6O-KBs" firstAttribute="top" secondItem="GKP-JB-95F" secondAttribute="bottom" constant="24" id="A6A-ty-Ko1"/>
+                            <constraint firstItem="Afd-eu-CxP" firstAttribute="top" secondItem="B7w-2U-Q4Z" secondAttribute="bottom" constant="16" id="CEp-lL-ffP"/>
+                            <constraint firstItem="9Tu-Wp-MBG" firstAttribute="leading" secondItem="B7w-2U-Q4Z" secondAttribute="leading" id="RI5-3m-nOF"/>
+                            <constraint firstItem="Afd-eu-CxP" firstAttribute="leading" secondItem="JOj-kz-zuN" secondAttribute="trailing" constant="16" id="Rmx-yt-JJz"/>
+                            <constraint firstItem="VdS-Ic-j1F" firstAttribute="centerY" secondItem="GKP-JB-95F" secondAttribute="centerY" id="ZRq-az-ax2"/>
+                            <constraint firstItem="9Tu-Wp-MBG" firstAttribute="top" secondItem="JOj-kz-zuN" secondAttribute="bottom" constant="32" id="bjK-B5-GQS"/>
+                            <constraint firstItem="JOj-kz-zuN" firstAttribute="width" secondItem="Afd-eu-CxP" secondAttribute="width" id="iHH-3Q-uUt"/>
+                            <constraint firstItem="JOj-kz-zuN" firstAttribute="leading" secondItem="B7w-2U-Q4Z" secondAttribute="leading" id="oaI-No-eEV"/>
+                            <constraint firstItem="9Tu-Wp-MBG" firstAttribute="trailing" secondItem="B7w-2U-Q4Z" secondAttribute="trailing" id="oqX-A9-GRn"/>
                             <constraint firstItem="GKP-JB-95F" firstAttribute="leading" secondItem="62t-oA-rcZ" secondAttribute="leading" constant="16" id="rdU-ah-JET"/>
+                            <constraint firstItem="Afd-eu-CxP" firstAttribute="trailing" secondItem="B7w-2U-Q4Z" secondAttribute="trailing" id="tRP-Qq-kfI"/>
+                            <constraint firstItem="B7w-2U-Q4Z" firstAttribute="top" secondItem="g8u-6O-KBs" secondAttribute="bottom" constant="32" id="wAi-Jg-CXB"/>
                             <constraint firstItem="GKP-JB-95F" firstAttribute="top" secondItem="uAj-Kq-HRO" secondAttribute="top" constant="32" id="yfh-gf-FcH"/>
+                            <constraint firstItem="B7w-2U-Q4Z" firstAttribute="leading" secondItem="uAj-Kq-HRO" secondAttribute="leading" constant="32" id="zef-N5-wGT"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="addressLabel" destination="d4t-cx-Na0" id="Kj8-Us-dst"/>
+                        <outlet property="copyButton" destination="JOj-kz-zuN" id="ld7-p6-JFD"/>
+                        <outlet property="nameLabel" destination="6Ts-gQ-SdA" id="Ksx-cF-hmy"/>
                         <outlet property="qrCodeImageView" destination="g8u-6O-KBs" id="TZp-Dp-sZp"/>
+                        <outlet property="shareButton" destination="Afd-eu-CxP" id="t3E-fg-O1q"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AZI-Ii-uPO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-926" y="798"/>
+            <point key="canvasLocation" x="-927.48091603053433" y="797.88732394366207"/>
         </scene>
         <!--Theme Picker View Controller-->
         <scene sceneID="eBF-xk-x4F">
@@ -1023,17 +1147,29 @@
         </scene>
     </scenes>
     <designables>
+        <designable name="Afd-eu-CxP">
+            <size key="intrinsicContentSize" width="67" height="22"/>
+        </designable>
         <designable name="FDu-I5-fEA">
             <size key="intrinsicContentSize" width="97.666666666666671" height="31"/>
         </designable>
         <designable name="Itg-aH-eLT">
             <size key="intrinsicContentSize" width="72.666666666666671" height="31"/>
         </designable>
+        <designable name="JOj-kz-zuN">
+            <size key="intrinsicContentSize" width="63" height="22"/>
+        </designable>
         <designable name="Nzm-zE-JrN">
             <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
+        <designable name="VdS-Ic-j1F">
+            <size key="intrinsicContentSize" width="44" height="34"/>
+        </designable>
         <designable name="iM6-NV-SVb">
             <size key="intrinsicContentSize" width="79.666666666666671" height="38"/>
+        </designable>
+        <designable name="n7h-lU-KVu">
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
     </designables>
     <resources>
@@ -1041,11 +1177,15 @@
         <image name="Copy" width="24" height="24"/>
         <image name="QR" width="24" height="24"/>
         <image name="ScanQR" width="24" height="24"/>
+        <image name="Share" width="24" height="24"/>
         <image name="Social_TZ_Ovalcolor" width="30" height="30"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
         <image name="btnUnchecked" width="36" height="36"/>
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG4">
+            <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

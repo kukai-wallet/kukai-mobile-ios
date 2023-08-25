@@ -243,7 +243,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func runNewUserCheck() {
-		/*if !hasPassedNewUserStage {
+		if !hasPassedNewUserStage {
 			let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
 			let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
 			
@@ -251,7 +251,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				hasPassedNewUserStage = true
 				UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.hasPassedNewUserStage)
 			}
-		}*/
+		}
 	}
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {

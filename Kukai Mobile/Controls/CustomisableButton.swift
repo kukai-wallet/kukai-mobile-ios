@@ -43,6 +43,8 @@ class CustomisableButton: UIButton {
 					setTitleColor(.colorNamed("TxtBtnTer3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnTer4"), for: .disabled)
 			}
+			
+			previousFrame = CGRect(x: -1, y: -1, width: -1, height: -1)
 		}
 	}
 	
@@ -130,7 +132,10 @@ class CustomisableButton: UIButton {
 				}
 				
 			case .none:
-				break
+				self.backgroundColor = .clear
+				self.borderWidth = 0
+				
+				gradientLayer.removeFromSuperlayer()
 		}
 		
 		previousFrame = self.frame
