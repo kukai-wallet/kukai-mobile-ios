@@ -274,6 +274,8 @@ public class ThemeManager {
 				"BGRecoveryTrans": UIColor("#C6C7D7", alpha: 0.65),
 				"BGActivityBatch": UIColor("#B7B9EA", alpha: 0.3),
 				"BGMediaOval": UIColor("#000000"),
+				
+				"AccountDiscover": UIColor("#343994", alpha: 0.1),
 			],
 			darkColors: [
 				
@@ -481,6 +483,8 @@ public class ThemeManager {
 				"BGRecoveryTrans": UIColor("#1C1D23", alpha: 0.65),
 				"BGActivityBatch": UIColor("#242B3D", alpha: 0.6),
 				"BGMediaOval": UIColor("#000000"),
+				
+				"AccountDiscover": UIColor("#343994", alpha: 0.34),
 			],
 			others: [:])
 	}

@@ -22,7 +22,31 @@ class CustomisableButton: UIButton {
 	@IBInspectable var customImage: UIImage = UIImage()
 	@IBInspectable var customImageTint: UIColor? = nil
 	
-	public var customButtonType: customButtonType = .none
+	public var customButtonType: customButtonType = .none {
+		didSet {
+			customCornerRadius = 10
+			maskToBounds = true
+			
+			switch self.customButtonType {
+				case .primary, .none:
+					setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
+					setTitleColor(.colorNamed("TxtBtnPrim3"), for: .highlighted)
+					setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
+				
+				case .secondary:
+					setTitleColor(.colorNamed("TxtBtnSec1"), for: .normal)
+					setTitleColor(.colorNamed("TxtBtnSec3"), for: .highlighted)
+					setTitleColor(.colorNamed("TxtBtnSec4"), for: .disabled)
+					
+				case .tertiary:
+					setTitleColor(.colorNamed("TxtBtnTer1"), for: .normal)
+					setTitleColor(.colorNamed("TxtBtnTer3"), for: .highlighted)
+					setTitleColor(.colorNamed("TxtBtnTer4"), for: .disabled)
+			}
+			
+			previousFrame = CGRect(x: -1, y: -1, width: -1, height: -1)
+		}
+	}
 	
 	private var gradientLayer = CAGradientLayer()
 	private var previousFrame: CGRect = CGRect(x: -1, y: -1, width: -1, height: -1)
@@ -66,9 +90,6 @@ class CustomisableButton: UIButton {
 		switch self.customButtonType {
 			case .primary:
 				
-				setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
-				setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
-				
 				if isEnabled && !isHighlighted {
 					gradientLayer = self.addGradientButtonPrimary(withFrame: self.bounds)
 					
@@ -111,7 +132,10 @@ class CustomisableButton: UIButton {
 				}
 				
 			case .none:
-				break
+				self.backgroundColor = .clear
+				self.borderWidth = 0
+				
+				gradientLayer.removeFromSuperlayer()
 		}
 		
 		previousFrame = self.frame

@@ -192,8 +192,8 @@ extension ValidatorTextField: UITextFieldDelegate {
 	
 	public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
 		if revalidateTextfield() {
-			textField.resignFirstResponder()
 			self.validatorTextFieldDelegate?.doneOrReturnTapped(isValid: true, textfield: self, forText: textField.text)
+			textField.resignFirstResponder()
 			return true
 		}
 		

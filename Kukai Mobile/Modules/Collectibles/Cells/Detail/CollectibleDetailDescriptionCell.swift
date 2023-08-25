@@ -25,6 +25,7 @@ class CollectibleDetailDescriptionCell: UICollectionViewCell {
 			NSAttributedString.Key.paragraphStyle: paragraphStyle
 		])
 		
+		//textView.dataDetectorTypes = .link
 		textView.backgroundColor = .clear
 		textView.attributedText = attributedtext
 		textView.linkTextAttributes = [.foregroundColor: UIColor.colorNamed("TxtLink")]
