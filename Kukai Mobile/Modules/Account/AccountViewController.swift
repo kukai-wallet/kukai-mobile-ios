@@ -26,6 +26,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.estimatedTotalCellDelegate = self
+		viewModel.tableViewButtonDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -120,5 +121,27 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	
 	func totalEstiamtedInfoTapped() {
 		self.alert(withTitle: "Total Estimated", andMessage: "Info Text")
+	}
+}
+
+extension AccountViewController: UITableViewCellButtonDelegate {
+	
+	func tableViewCellButtonTapped(sender: UIButton) {
+		switch sender.accessibilityIdentifier {
+			case AccountViewModel.accessibilityIdentifiers.onramp:
+				self.performSegue(withIdentifier: "onramp", sender: nil)
+			
+			case AccountViewModel.accessibilityIdentifiers.discover:
+				(self.tabBarController as? HomeTabBarController)?.manuallySetSlectedTab(toIndex: 3)
+				
+			case AccountViewModel.accessibilityIdentifiers.qr:
+				self.performSegue(withIdentifier: "qr", sender: nil)
+				
+			case AccountViewModel.accessibilityIdentifiers.copy:
+				let _ = ""
+				
+			default:
+				self.alert(errorWithMessage: "oppsie woopsie")
+		}
 	}
 }

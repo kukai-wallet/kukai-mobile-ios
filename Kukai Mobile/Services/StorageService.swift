@@ -28,6 +28,8 @@ public class StorageService {
 	
 	
 	public struct settingsKeys {
+		public static let hasPassedNewUserStage = "app.kukai.global.passed-new-user"
+		
 		public static let collectiblesGroupModeEnabled = "app.kukai.collectibles.group-mode"
 	}
 	

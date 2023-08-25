@@ -16,7 +16,32 @@ struct TotalEstiamtedValue: Hashable {
 	let value: String
 }
 
+struct AccountGettingStartedData: Hashable {
+	let id = UUID()
+}
+
+struct AccountReceiveAssetsData: Hashable {
+	let id = UUID()
+}
+
+struct AccountDiscoverHeaderData: Hashable {
+	let id = UUID()
+}
+
+struct AccountButtonData: Hashable {
+	let title: String
+	let accessibilityId: String
+	let buttonType: CustomisableButton.customButtonType
+}
+
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+	
+	struct accessibilityIdentifiers {
+		static let onramp = "account-onramp"
+		static let discover = "account-discover"
+		static let qr = "account-receive-qr"
+		static let copy = "account-receive-copy"
+	}
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
@@ -26,10 +51,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
+	var hasPassedNewUserStage = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.hasPassedNewUserStage)
 	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
+	
+	weak var tableViewButtonDelegate: UITableViewCellButtonDelegate? = nil
 	
 	
 	// MARK: - Init
@@ -138,6 +166,21 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setup()
 				return cell
 				
+			} else if let _ = item as? AccountGettingStartedData {
+				return tableView.dequeueReusableCell(withIdentifier: "AccountGetStartedCell", for: indexPath)
+				
+			} else if let obj = item as? AccountButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountButtonCell", for: indexPath) as? AccountButtonCell {
+				cell.setup(data: obj, delegate: self?.tableViewButtonDelegate)
+				return cell
+				
+			} else if let _ = item as? AccountReceiveAssetsData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountReceiveAssetsCell", for: indexPath) as? AccountReceiveAssetsCell {
+				cell.setup(delegate: self?.tableViewButtonDelegate)
+				return cell
+				
+			} else if let _ = item as? AccountDiscoverHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountDiscoverCell", for: indexPath) as? AccountDiscoverCell {
+				cell.setup()
+				return cell
+				
 			} else {
 				return tableView.dequeueReusableCell(withIdentifier: "GhostnetWarningCell", for: indexPath)
 			}
@@ -160,55 +203,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			data.append(GhostnetWarningCellObj())
 		}
 		
-		if metadata?.backedUp == false {
-			data.append(true)
-		}
-		
 		// If initial load, display shimmer views
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress) {
 			
-			// Else build arrays of acutal data
-			let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
-			let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
-			
-			
-			// Group and srot favorites (and remove hidden)
-			tokensToDisplay = []
-			var nonFavourites: [Token] = []
-			
-			for token in DependencyManager.shared.balanceService.account.tokens {
-				guard !token.isHidden else {
-					continue
-				}
+			runNewUserCheck()
+			if hasPassedNewUserStage {
+				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
 				
-				if token.isFavourite {
-					tokensToDisplay.append(token)
-				} else {
-					nonFavourites.append(token)
-				}
+			} else {
+				data = handleRefreshForNewUser(startingData: data)
 			}
-			
-			tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
-			tokensToDisplay.append(contentsOf: nonFavourites)
-			
-			if !isPresentedForSelectingToken {
-				data.append(balancesMenuVC)
-				
-				if tokensToDisplay.count > 0 {
-					//data.insert(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString), at: isTestnet ? 1 : 0)
-					data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
-				}
-				
-				//data.insert(balancesMenuVC, at: isTestnet ? 1 : 0)
-			}
-			
-			data.append(DependencyManager.shared.balanceService.account.xtzBalance)
-			data.append(contentsOf: tokensToDisplay)
-			
-			snapshot.appendSections([0])
-			snapshot.appendItems(data, toSection: 0)
 			
 		} else {
 			let hashableData: [AnyHashable] = [
@@ -220,18 +225,94 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			]
 			
 			data.append(contentsOf: hashableData)
-			
-			snapshot.appendSections([0])
-			snapshot.appendItems(data, toSection: 0)
 		}
 		
+		snapshot.appendSections([0])
+		snapshot.appendItems(data, toSection: 0)
+		
+		
+		// Check for force refreshing or animating diffs
 		if forceRefresh {
 			ds.applySnapshotUsingReloadData(snapshot)
 			forceRefresh = false
 		} else {
 			ds.apply(snapshot, animatingDifferences: animate)
 		}
+		
 		self.state = .success(nil)
+	}
+	
+	private func runNewUserCheck() {
+		/*if !hasPassedNewUserStage {
+			let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
+			let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
+			
+			if xtzBalance > .zero() || tokenCount > 0 {
+				hasPassedNewUserStage = true
+				UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.hasPassedNewUserStage)
+			}
+		}*/
+	}
+	
+	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
+		var data = startingData
+		
+		if metadata?.backedUp == false {
+			data.append(true)
+		}
+		
+		// Else build arrays of acutal data
+		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
+		let totalCurrency = totalXTZ * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+		let totalCurrencyString = DependencyManager.shared.coinGeckoService.format(decimal: totalCurrency, numberStyle: .currency, maximumFractionDigits: 2)
+		
+		
+		// Group and sort favorites (and remove hidden)
+		tokensToDisplay = []
+		var nonFavourites: [Token] = []
+		
+		for token in DependencyManager.shared.balanceService.account.tokens {
+			guard !token.isHidden else {
+				continue
+			}
+			
+			if token.isFavourite {
+				tokensToDisplay.append(token)
+			} else {
+				nonFavourites.append(token)
+			}
+		}
+		
+		tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
+		tokensToDisplay.append(contentsOf: nonFavourites)
+		
+		if !isPresentedForSelectingToken {
+			data.append(balancesMenuVC)
+			
+			if tokensToDisplay.count > 0 {
+				data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
+			}
+		}
+		
+		data.append(DependencyManager.shared.balanceService.account.xtzBalance)
+		data.append(contentsOf: tokensToDisplay)
+		
+		return data
+	}
+	
+	private func handleRefreshForNewUser(startingData: [AnyHashable]) -> [AnyHashable] {
+		var data = startingData
+		let hashableData: [AnyHashable] = [
+			AccountGettingStartedData(),
+			AccountButtonData(title: "Get XTZ", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
+			AccountReceiveAssetsData(),
+			AccountDiscoverHeaderData(),
+			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)
+		]
+		
+		data.append(contentsOf: hashableData)
+		
+		return data
 	}
 	
 	func pullToRefresh(animate: Bool) {
