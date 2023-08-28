@@ -58,16 +58,21 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 				
-				DependencyManager.shared.balanceService.loadCache(address: address)
-				DependencyManager.shared.addressLoaded = address
-				self?.updateAccountButton()
-				
-				AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
-				
-				self?.setupTzKTAccountListener()
-				self?.stopActivityAnimation(success: false)
-				self?.refreshType = .useCacheIfNotStale
-				self?.refresh(addresses: nil)
+				DispatchQueue.global(qos: .background).async {
+					DependencyManager.shared.balanceService.loadCache(address: address)
+					
+					DispatchQueue.main.async {
+						DependencyManager.shared.addressLoaded = address
+						self?.updateAccountButton()
+						
+						AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
+						
+						self?.setupTzKTAccountListener()
+						self?.stopActivityAnimation(success: false)
+						self?.refreshType = .useCacheIfNotStale
+						self?.refresh(addresses: nil)
+					}
+				}
 			}.store(in: &bag)
 		
 		DependencyManager.shared.$walletDidChange
@@ -75,11 +80,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 				
-				DependencyManager.shared.balanceService.loadCache(address: address)
-				DependencyManager.shared.addressLoaded = address
-				
-				self?.refreshType = .useCacheIfNotStale
-				self?.refresh(addresses: nil)
+				DispatchQueue.global(qos: .background).async {
+					DependencyManager.shared.balanceService.loadCache(address: address)
+					
+					DispatchQueue.main.async {
+						DependencyManager.shared.addressLoaded = address
+						
+						self?.refreshType = .useCacheIfNotStale
+						self?.refresh(addresses: nil)
+					}
+				}
 			}.store(in: &bag)
 		
 		DependencyManager.shared.activityService.$addressesWithPendingOperation
@@ -96,10 +106,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] address in
 				if address == DependencyManager.shared.selectedWalletAddress {
-					DependencyManager.shared.balanceService.loadCache(address: address)
-					
-					self?.updateAccountButton()
-					DependencyManager.shared.addressRefreshed = address
+					DispatchQueue.global(qos: .background).async {
+						DependencyManager.shared.balanceService.loadCache(address: address)
+						
+						DispatchQueue.main.async {
+							self?.updateAccountButton()
+							DependencyManager.shared.addressRefreshed = address
+						}
+					}
 				}
 				
 			}.store(in: &bag)

@@ -205,7 +205,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// If initial load, display shimmer views
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress) {
+		let balanceService = DependencyManager.shared.balanceService
+		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
 			
 			runNewUserCheck()
 			if hasPassedNewUserStage {

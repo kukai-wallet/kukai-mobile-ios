@@ -68,6 +68,7 @@ public class BalanceService {
 	
 	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
 	private var needsCacheDateUpdate = false
+	private var cacheLoadingInProgress = false
 	private var currentFetchRequest: FetchRequestRecord? = nil
 	private var pendingFetchRequests: [FetchRequestRecord] = []
 	
@@ -155,7 +156,12 @@ public class BalanceService {
 		return lastFullRefreshDates[addressCacheKey] != nil
 	}
 	
+	public func isCacheLoadingInProgress() -> Bool {
+		return cacheLoadingInProgress
+	}
+	
 	public func loadCache(address: String?) {
+		cacheLoadingInProgress = true
 		loadCachedExchangeDataIfNotLoaded()
 		loadEstimatedTotalsIfNotLoaded()
 		
@@ -167,6 +173,8 @@ public class BalanceService {
 			
 			self.account = account
 		}
+		
+		cacheLoadingInProgress = false
 	}
 	
 	public func estimatedTotalXtz(forAddress: String) -> XTZAmount {
