@@ -110,7 +110,8 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		// If needs shimmers
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
+		let balanceService = DependencyManager.shared.balanceService
+		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress), balanceService.isCacheLoadingInProgress() {
 			hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
 			
 		} else {
