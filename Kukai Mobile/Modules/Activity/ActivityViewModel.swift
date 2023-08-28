@@ -176,7 +176,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// If needs shimmers
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress) {
+		let balanceService = DependencyManager.shared.balanceService
+		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
 			for txGroup in self.groups {
 				data.append(contentsOf: [[txGroup]])
 			}

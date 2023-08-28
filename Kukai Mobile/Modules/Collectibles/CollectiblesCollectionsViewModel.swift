@@ -175,7 +175,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			
 			// If needs shimmers
 			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-			if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress)  {
+			let balanceService = DependencyManager.shared.balanceService
+			if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress()  {
 				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
 					guard !nftGroup.isHidden else { continue }
 					hashableData.append(nftGroup)

@@ -67,6 +67,8 @@ public class BalanceService {
 	private let balanceFetchQueue = DispatchQueue(label: "app.kukai.balance-service.fetch", qos: .background, attributes: [], autoreleaseFrequency: .inherit, target: nil)
 	
 	private var currentlyRefreshingAccount: Account = Account(walletAddress: "")
+	private var needsCacheDateUpdate = false
+	private var cacheLoadingInProgress = false
 	private var currentFetchRequest: FetchRequestRecord? = nil
 	private var pendingFetchRequests: [FetchRequestRecord] = []
 	
@@ -154,7 +156,12 @@ public class BalanceService {
 		return lastFullRefreshDates[addressCacheKey] != nil
 	}
 	
+	public func isCacheLoadingInProgress() -> Bool {
+		return cacheLoadingInProgress
+	}
+	
 	public func loadCache(address: String?) {
+		cacheLoadingInProgress = true
 		loadCachedExchangeDataIfNotLoaded()
 		loadEstimatedTotalsIfNotLoaded()
 		
@@ -166,6 +173,8 @@ public class BalanceService {
 			
 			self.account = account
 		}
+		
+		cacheLoadingInProgress = false
 	}
 	
 	public func estimatedTotalXtz(forAddress: String) -> XTZAmount {
@@ -333,7 +342,7 @@ public class BalanceService {
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
 					DependencyManager.shared.activityService.loadCache(address: address)
-					self?.updateCacheDate(forAddress: address)
+					self?.needsCacheDateUpdate = true
 					self?.balanceRequestDispathGroup.leave()
 				}
 			})
@@ -384,7 +393,6 @@ public class BalanceService {
 		}
 		
 		
-		
 		// When everything fetched, process data
 		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
 			if let err = error {
@@ -413,6 +421,12 @@ public class BalanceService {
 					
 					let _ = DiskService.write(encodable: self.currentlyRefreshingAccount, toFileName: BalanceService.accountCacheFilename(withAddress: address))
 					self.currentlyRefreshingAccount = Account(walletAddress: "")
+					
+					if self.needsCacheDateUpdate {
+						self.updateCacheDate(forAddress: address)
+						self.needsCacheDateUpdate = false
+					}
+					
 					completion(nil)
 				}
 			}
