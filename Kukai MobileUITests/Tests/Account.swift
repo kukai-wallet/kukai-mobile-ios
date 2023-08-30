@@ -28,7 +28,6 @@ final class Account: XCTestCase {
 	
 	
 	
-	
 	// MARK: - Helpers
 	
 	public static func waitForInitalLoad(app: XCUIApplication) {

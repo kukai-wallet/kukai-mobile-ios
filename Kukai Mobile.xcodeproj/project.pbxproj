@@ -90,7 +90,6 @@
 		C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */; };
 		C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F32A66E23100A1497D /* SharedHelpers.swift */; };
 		C02DF5F62A66E47100A1497D /* Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F52A66E47100A1497D /* Onboarding.swift */; };
-		C02DF5F92A66E4B100A1497D /* Performance.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F82A66E4B100A1497D /* Performance.swift */; };
 		C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */; };
 		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
 		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
@@ -229,6 +228,7 @@
 		C09860AE27C3C26B00F888AF /* SendTokenAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860AD27C3C26B00F888AF /* SendTokenAmountViewController.swift */; };
 		C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */; };
 		C09860C127C3F7CB00F888AF /* EnterAddressComponent.xib in Resources */ = {isa = PBXBuildFile; fileRef = C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */; };
+		C09B3EDE2A9F8688006ACC6A /* AAA_Prechecks.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B3EDD2A9F8688006ACC6A /* AAA_Prechecks.swift */; };
 		C09CEB4029C2125D00D95D69 /* ActivityToolbarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09CEB3F29C2125D00D95D69 /* ActivityToolbarCell.swift */; };
 		C0A19B4828857301000291A0 /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A19B4728857301000291A0 /* String+extensions.swift */; };
 		C0A1C3B626B05F7100EA03A9 /* PreLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */; };
@@ -475,7 +475,6 @@
 		C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
 		C02DF5F32A66E23100A1497D /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
 		C02DF5F52A66E47100A1497D /* Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Onboarding.swift; sourceTree = "<group>"; };
-		C02DF5F82A66E4B100A1497D /* Performance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Performance.swift; sourceTree = "<group>"; };
 		C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewController.swift; sourceTree = "<group>"; };
 		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -626,6 +625,7 @@
 		C09860AD27C3C26B00F888AF /* SendTokenAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendTokenAmountViewController.swift; sourceTree = "<group>"; };
 		C09860BA27C3E20400F888AF /* EnterAddressComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnterAddressComponent.swift; sourceTree = "<group>"; };
 		C09860C027C3F7CB00F888AF /* EnterAddressComponent.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EnterAddressComponent.xib; sourceTree = "<group>"; };
+		C09B3EDD2A9F8688006ACC6A /* AAA_Prechecks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AAA_Prechecks.swift; sourceTree = "<group>"; };
 		C09CEB3F29C2125D00D95D69 /* ActivityToolbarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityToolbarCell.swift; sourceTree = "<group>"; };
 		C0A19B4728857301000291A0 /* String+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions.swift"; sourceTree = "<group>"; };
 		C0A1C3B526B05F7100EA03A9 /* PreLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreLoginViewController.swift; sourceTree = "<group>"; };
@@ -945,7 +945,7 @@
 		C02DF5F72A66E47500A1497D /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				C02DF5F82A66E4B100A1497D /* Performance.swift */,
+				C09B3EDD2A9F8688006ACC6A /* AAA_Prechecks.swift */,
 				C02DF5F52A66E47100A1497D /* Onboarding.swift */,
 				C0C8CF802A7955D300AED75B /* Home.swift */,
 				C0C8CF7C2A7953D200AED75B /* Account.swift */,
@@ -2078,7 +2078,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C02DF5F92A66E4B100A1497D /* Performance.swift in Sources */,
+				C09B3EDE2A9F8688006ACC6A /* AAA_Prechecks.swift in Sources */,
 				C0C8CF7D2A7953D200AED75B /* Account.swift in Sources */,
 				C02DF5F62A66E47100A1497D /* Onboarding.swift in Sources */,
 				C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */,

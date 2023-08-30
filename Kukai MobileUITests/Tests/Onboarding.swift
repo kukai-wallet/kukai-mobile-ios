@@ -25,7 +25,8 @@ final class Onboarding: XCTestCase {
 	
 	// MARK: - Test functions
 	
-	func testNewHDWallet() throws {
+	// Needs to go first to trigger the new user flow (want to avoid too much artifical logic testing unrealistic flows. Currently app has no way to re-trigger this flow)
+	func test_01_newHDWallet_andNewUser() throws {
 		let app = XCUIApplication()
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		SharedHelpers.shared.tapTertiaryButton(app: app)
@@ -78,7 +79,6 @@ final class Onboarding: XCTestCase {
 		WalletManagement.deleteAllWallets(app: app)
 	}
 	
-	/*
 	func testImportHDWallet() {
 		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
 		
@@ -88,7 +88,7 @@ final class Onboarding: XCTestCase {
 		app.buttons["Import"].tap()
 		
 		// Confirm terms and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -139,14 +139,12 @@ final class Onboarding: XCTestCase {
 		
 		// Enter password and invalid address
 		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
-		Onboarding.handleRecordyAddress(app: app, address: "tz1")
-		SharedHelpers.shared.typeDone(app: app)
+		Onboarding.handleRecoveryAddress(app: app, address: "tz1")
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: true, inElement: app.scrollViews, delay: 2)
 		
 		// Enter valid address, but not matching
 		Onboarding.handleClearingAddress(app: app)
-		Onboarding.handleRecordyAddress(app: app, address: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
-		SharedHelpers.shared.typeDone(app: app)
+		Onboarding.handleRecoveryAddress(app: app, address: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
@@ -157,15 +155,14 @@ final class Onboarding: XCTestCase {
 		
 		// Enter matching address and continue import flow
 		Onboarding.handleClearingAddress(app: app)
-		Onboarding.handleRecordyAddress(app: app, address: "tz1LGtCUAc5h3WSFUh7UC2VdaANYYxKfciop")
-		SharedHelpers.shared.typeDone(app: app)
+		Onboarding.handleRecoveryAddress(app: app, address: "tz1LGtCUAc5h3WSFUh7UC2VdaANYYxKfciop")
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
 		
 		
 		// Confirm tersm and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -201,7 +198,7 @@ final class Onboarding: XCTestCase {
 		
 		
 		// Confirm tersm and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -235,8 +232,7 @@ final class Onboarding: XCTestCase {
 		app.buttons["Advanced"].tap()
 		
 		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
-		Onboarding.handleRecordyAddress(app: app, address: "tz1Wj6kenWpyTzPkU8xN9aiRFx2aBVFQ172F")
-		SharedHelpers.shared.typeDone(app: app)
+		Onboarding.handleRecoveryAddress(app: app, address: "tz1Wj6kenWpyTzPkU8xN9aiRFx2aBVFQ172F")
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.switches["legacy-toggle"].tap()
@@ -244,7 +240,7 @@ final class Onboarding: XCTestCase {
 		
 		
 		// Confirm tersm and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -282,7 +278,7 @@ final class Onboarding: XCTestCase {
 		
 		
 		// Confirm tersm and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -334,7 +330,7 @@ final class Onboarding: XCTestCase {
 		
 		
 		// Confirm tersm and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 5)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -407,7 +403,7 @@ final class Onboarding: XCTestCase {
 		
 		testApp.buttons["Sign In"].tap()
 		
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inApp: app, delay: 20)
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 20)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
@@ -429,7 +425,6 @@ final class Onboarding: XCTestCase {
 		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	*/
 	
 	
 	
@@ -469,13 +464,15 @@ final class Onboarding: XCTestCase {
 		elementsQuery.textFields["Extra word (passphrase)"].tap()
 		
 		app.typeText(password)
+		SharedHelpers.shared.typeDone(app: app)
 	}
 	
-	public static func handleRecordyAddress(app: XCUIApplication, address: String) {
+	public static func handleRecoveryAddress(app: XCUIApplication, address: String) {
 		let elementsQuery = app.scrollViews.otherElements
 		elementsQuery.textFields["Wallet Address"].tap()
 		
 		app.typeText(address)
+		SharedHelpers.shared.typeDone(app: app)
 	}
 	
 	public static func handleClearingAddress(app: XCUIApplication) {
@@ -519,6 +516,28 @@ final class Onboarding: XCTestCase {
 		settingsApp.buttons["Don't Merge"].tap()
 		
 		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inElement: settingsApp, delay: 4)
+	}
+	
+	public static func handleSignInToiCloudPopupIfNeeded() {
+		let settingsApp = XCUIApplication(bundleIdentifier: "com.apple.Preferences")
+		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		settingsApp.launch()
+		
+		sleep(2)
+		let alert = springboard.alerts.firstMatch
+		if alert.exists {
+			if alert.label == "Sign in to iCloud" {
+				alert.scrollViews.secureTextFields["Password"].tap()
+				springboard.typeText(EnvironmentVariables.shared.gmailPassword)
+				alert.scrollViews.buttons["OK"].tap()
+				
+				sleep(5)
+				
+				if springboard.alerts.firstMatch.exists {
+					XCTFail("Failed to login to apple id")
+				}
+			}
+		}
 	}
 	
 	public static func handleSeedWordVerification(app: XCUIApplication) {
