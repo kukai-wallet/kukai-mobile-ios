@@ -52,52 +52,43 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - Check exists
 	
-	func waitForStaticText(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.staticTexts[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
-		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
+	func waitFor(predicate: NSPredicate, obj: Any?, delay: TimeInterval) {
+		expectation(for: predicate, evaluatedWith: obj, handler: nil)
 		waitForExpectations(timeout: delay, handler: nil)
 	}
 	
-	func waitForStaticText(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.staticTexts[string]
+	func waitForStaticText(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.staticTexts[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
-	func waitForButton(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.buttons[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+	func waitForAnyStaticText(_ strings: [String], exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		var predicates: [NSPredicate] = []
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		for str in strings {
+			predicates.append(NSPredicate(block: { _, _ in
+				inElement.staticTexts[str].exists
+			}))
+		}
+		
+		let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+		waitFor(predicate: predicate, obj: nil, delay: delay)
 	}
 	
-	func waitForButton(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.buttons[string]
+	func waitForButton(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.buttons[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
-	func waitForImage(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.images[string]
+	func waitForImage(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.images[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
-	}
-	
-	func waitForImage(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.images[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
-		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
 	
@@ -197,5 +188,17 @@ class SharedHelpers: XCTestCase {
 	
 	func navigationBack(app: XCUIApplication) {
 		app.navigationBars.firstMatch.buttons["Back"].tap()
+	}
+	
+	func tapPrimaryButton(app: XCUIApplication) {
+		app.buttons["primary-button"].tap()
+	}
+	
+	func tapSecondaryButton(app: XCUIApplication) {
+		app.buttons["secondary-button"].tap()
+	}
+	
+	func tapTertiaryButton(app: XCUIApplication) {
+		app.buttons["tertiary-button"].tap()
 	}
 }

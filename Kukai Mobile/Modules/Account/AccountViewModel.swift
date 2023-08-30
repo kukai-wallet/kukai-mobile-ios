@@ -213,7 +213,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
 				
 			} else {
-				data = handleRefreshForNewUser(startingData: data)
+				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 			}
 			
 		} else {
@@ -301,15 +301,19 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return data
 	}
 	
-	private func handleRefreshForNewUser(startingData: [AnyHashable]) -> [AnyHashable] {
+	private func handleRefreshForNewUser(startingData: [AnyHashable], metadata: WalletMetadata?) -> [AnyHashable] {
 		var data = startingData
-		let hashableData: [AnyHashable] = [
+		var hashableData: [AnyHashable] = [
 			AccountGettingStartedData(),
 			AccountButtonData(title: "Get XTZ", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
 			AccountReceiveAssetsData(),
 			AccountDiscoverHeaderData(),
 			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)
 		]
+		
+		if metadata?.backedUp == false {
+			hashableData.append(true)
+		}
 		
 		data.append(contentsOf: hashableData)
 		

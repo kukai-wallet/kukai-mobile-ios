@@ -29,16 +29,19 @@ class CustomisableButton: UIButton {
 			
 			switch self.customButtonType {
 				case .primary, .none:
+					accessibilityIdentifier = "primary-button"
 					setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnPrim3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
 				
 				case .secondary:
+					accessibilityIdentifier = "secondary-button"
 					setTitleColor(.colorNamed("TxtBtnSec1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnSec3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnSec4"), for: .disabled)
 					
 				case .tertiary:
+					accessibilityIdentifier = "tertiary-button"
 					setTitleColor(.colorNamed("TxtBtnTer1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnTer3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnTer4"), for: .disabled)

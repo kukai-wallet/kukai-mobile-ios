@@ -10,6 +10,7 @@ import UIKit
 class AccountReceiveAssetsCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var receiveAssetsTitle: UILabel!
 	@IBOutlet weak var qrButton: CustomisableButton!
 	@IBOutlet weak var copyButton: CustomisableButton!
 	
@@ -17,6 +18,7 @@ class AccountReceiveAssetsCell: UITableViewCell, UITableViewCellContainerView {
 	public weak var delegate: UITableViewCellButtonDelegate? = nil
 	
 	func setup(delegate: UITableViewCellButtonDelegate?) {
+		receiveAssetsTitle.accessibilityIdentifier = "account-receive-assets-header"
 		qrButton.customButtonType = .secondary
 		qrButton.accessibilityIdentifier = AccountViewModel.accessibilityIdentifiers.qr
 		copyButton.customButtonType = .secondary

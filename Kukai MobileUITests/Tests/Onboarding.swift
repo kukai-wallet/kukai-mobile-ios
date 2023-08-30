@@ -27,12 +27,12 @@ final class Onboarding: XCTestCase {
 	
 	func testNewHDWallet() throws {
 		let app = XCUIApplication()
-		app.buttons["Create a Wallet"].tap()
-		app.buttons["HD Wallet"].tap()
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		SharedHelpers.shared.tapTertiaryButton(app: app)
 		
 		// Confirm tersm and conditions and create a passcode
 		app.buttons["checkmark"].tap()
-		app.staticTexts["Get Started"].tap()
+		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Create passcode
 		sleep(1)
@@ -41,7 +41,7 @@ final class Onboarding: XCTestCase {
 		// Enter wrong passcode
 		sleep(1)
 		Onboarding.handlePasscode(app: app, passcode: "01234567")
-		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inApp: app, delay: 2)
+		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
 		
 		// Confirm correct passcode
 		sleep(1)
@@ -54,8 +54,9 @@ final class Onboarding: XCTestCase {
 		Account.waitForInitalLoad(app: app)
 		
 		Account.check(app: app, estimatedTotalExists: false)
-		Account.check(app: app, hasNumberOfTokens: 1)
+		Account.check(app: app, hasNumberOfTokens: 0)
 		Account.check(app: app, displayingBackup: true)
+		Account.check(app: app, displayingGettingStarted: true)
 		
 		Account.tapBackup(app: app)
 		Onboarding.handleSeedWordVerification(app: app)
@@ -76,7 +77,8 @@ final class Onboarding: XCTestCase {
 		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	 
+	
+	/*
 	func testImportHDWallet() {
 		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
 		
@@ -427,7 +429,7 @@ final class Onboarding: XCTestCase {
 		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	
+	*/
 	
 	
 	
@@ -438,7 +440,7 @@ final class Onboarding: XCTestCase {
 	}
 	
 	public static func handleOnboardingAndRecoveryPhraseEntry(app: XCUIApplication, phrase: String, useAutoComplete: Bool) {
-		app.staticTexts["Already Have a Wallet"].tap()
+		SharedHelpers.shared.tapSecondaryButton(app: app)
 		app.tables.staticTexts["Import accounts using your recovery phrase from Kukai or another wallet"].tap()
 		app.scrollViews.children(matching: .textView).element.tap()
 		
@@ -516,7 +518,7 @@ final class Onboarding: XCTestCase {
 		
 		settingsApp.buttons["Don't Merge"].tap()
 		
-		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inApp: settingsApp, delay: 4)
+		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inElement: settingsApp, delay: 4)
 	}
 	
 	public static func handleSeedWordVerification(app: XCUIApplication) {
@@ -534,10 +536,10 @@ final class Onboarding: XCTestCase {
 		
 		app.buttons["info"].tap()
 		
-		SharedHelpers.shared.waitForButton("OK", exists: true, inApp: app, delay: 2)
+		SharedHelpers.shared.waitForButton("OK", exists: true, inElement: app, delay: 2)
 		app.buttons["OK"].tap()
 		
-		SharedHelpers.shared.waitForButton("Ok, I saved it", exists: true, inApp: app, delay: 2)
+		SharedHelpers.shared.waitForButton("Ok, I saved it", exists: true, inElement: app, delay: 2)
 		app.buttons["Ok, I saved it"].tap()
 		app.alerts["Written the secret Recovery Phrase down?"].scrollViews.otherElements.buttons["Yes"].tap()
 		

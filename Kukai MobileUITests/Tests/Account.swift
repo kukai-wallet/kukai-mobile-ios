@@ -32,7 +32,11 @@ final class Account: XCTestCase {
 	// MARK: - Helpers
 	
 	public static func waitForInitalLoad(app: XCUIApplication) {
-		SharedHelpers.shared.waitForStaticText("account-token-balance", exists: true, inElement: app.tables, delay: 10)
+		SharedHelpers.shared.waitForAnyStaticText([
+			"account-token-balance",
+			"account-backup-button",
+			"account-getting-started-header"
+		], exists: true, inElement: app.tables, delay: 10)
 	}
 	
 	public static func check(app: XCUIApplication, estimatedTotalIs: String, fiatIs: String) {
@@ -84,6 +88,10 @@ final class Account: XCTestCase {
 	
 	public static func check(app: XCUIApplication, displayingBackup: Bool) {
 		SharedHelpers.shared.waitForButton("account-backup-button", exists: displayingBackup, inElement: app.tables, delay: 2)
+	}
+	
+	public static func check(app: XCUIApplication, displayingGettingStarted: Bool) {
+		SharedHelpers.shared.waitForStaticText("account-getting-started-header", exists: displayingGettingStarted, inElement: app.tables, delay: 2)
 	}
 	
 	public static func tapBackup(app: XCUIApplication) {
