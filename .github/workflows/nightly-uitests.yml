@@ -6,7 +6,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploying to Testflight
+    name: Run UI Tests
     runs-on: macos-13
     steps:
       - name: Select Xcode version
@@ -22,14 +22,20 @@ jobs:
           echo "GMAIL_ADDRESS=${{ secrets.UITEST_GMAIL_ADDRESS }}" >> $GITHUB_ENV
           echo "GMAIL_PASSWORD=${{ secrets.UITEST_GMAIL_PASSWORD }}" >> $GITHUB_ENV
 
-      - name: Build and Archive
+      - name: Build and run tests
         run: |
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14,OS=16.4" \
           -scheme "Kukai Mobile Beta" \
           -enableCodeCoverage YES \
+          -resultBundlePath TestResults \
           test \
           SEED_PHRASE_1="$SEED_PHRASE_1" \
           SEED_PHRASE_PASSWORD="$SEED_PHRASE_PASSWORD" \
           GMAIL_ADDRESS="$GMAIL_ADDRESS" \
           GMAIL_PASSWORD="$GMAIL_PASSWORD"
+
+      - uses: kishikawakatsumi/xcresulttool@v1
+        with:
+          path: TestResults.xcresult
+        if: success() || failure()

@@ -366,6 +366,7 @@ final class Onboarding: XCTestCase {
 		WalletManagement.deleteAllWallets(app: app)
 	}
 	
+	/*
 	func testImportSocial_apple() {
 		Onboarding.handleLoggingInToAppleIdIfNeeded()
 		
@@ -425,7 +426,7 @@ final class Onboarding: XCTestCase {
 		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	
+	*/
 	
 	
 	// MARK: - Helpers

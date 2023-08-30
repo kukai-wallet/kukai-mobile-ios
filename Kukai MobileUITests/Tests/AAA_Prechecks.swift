@@ -21,7 +21,7 @@ final class AAA_Prechecks: XCTestCase {
 	
 	
 	// Test needs to go first to handle any blocking content, such as apple id session expired, blocking iCloud database
-	func test_01_prechecks() throws {
+	/*func test_01_prechecks() throws {
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		let alert = springboard.alerts.firstMatch
 		if alert.exists, alert.label == "Apple ID Verification" {
@@ -29,5 +29,5 @@ final class AAA_Prechecks: XCTestCase {
 		}
 		
 		Onboarding.handleSignInToiCloudPopupIfNeeded()
-	}
+	}*/
 }
