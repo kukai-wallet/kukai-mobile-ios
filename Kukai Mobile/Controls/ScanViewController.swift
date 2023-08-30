@@ -128,33 +128,40 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		
 		if withTextField {
+			let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 10))
+			paddingView.backgroundColor = .clear
+			
 			textfield.backgroundColor = .colorNamed("BG4")
 			textfield.translatesAutoresizingMaskIntoConstraints = false
 			textfield.customCornerRadius = 8
-			textfield.placeholder = "... or paste"
+			textfield.placeholder = "Paste Code Here"
 			textfield.addDoneToolbar(onDone: (target: self, action: #selector(textFieldDone)))
 			textfield.autocorrectionType = .no
 			textfield.textContentType = .none
 			textfield.autocapitalizationType = .none
 			textfield.spellCheckingType = .no
-			textfield.isEnabled = false
+			textfield.isEnabled = true
+			textfield.leftViewMode = .always
+			textfield.leftView = paddingView
+			textfield.font = .custom(ofType: .bold, andSize: 14)
+			textfield.textColor = .colorNamed("Txt2")
 			self.view.addSubview(textfield)
 			
 			pasteButton.translatesAutoresizingMaskIntoConstraints = false
-			pasteButton.imageWidth = 14
-			pasteButton.imageHeight = 14
+			pasteButton.imageWidth = 26
+			pasteButton.imageHeight = 26
 			pasteButton.customImage = UIImage(named: "Paste") ?? UIImage()
 			pasteButton.customImageTint = .colorNamed("BGB4")
-			pasteButton.borderColor = .colorNamed("BtnStrokeSec1")
-			pasteButton.borderWidth = 1
-			pasteButton.customCornerRadius = 8
-			pasteButton.configuration?.imagePlacement = .trailing
-			pasteButton.configuration?.imagePadding = 6
+			//pasteButton.borderColor = .colorNamed("BtnStrokeSec1")
+			//pasteButton.borderWidth = 1
+			//pasteButton.customCornerRadius = 8
+			//pasteButton.configuration?.imagePlacement = .trailing
+			//pasteButton.configuration?.imagePadding = 6
 			pasteButton.configuration?.baseBackgroundColor = .colorNamed("BtnSec1")
-			pasteButton.configuration?.attributedTitle = AttributedString("Paste", attributes: AttributeContainer( [
-				NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14) as Any,
-				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtBtnSec1") as Any
-			] ))
+			/*pasteButton.configuration?.attributedTitle = AttributedString("Paste", attributes: AttributeContainer( [
+			 NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14) as Any,
+			 NSAttributedString.Key.foregroundColor: UIColor.colorNamed("TxtBtnSec1") as Any
+			 ] ))*/
 			
 			pasteButton.addAction(UIAction(handler: { [weak self] _ in
 				DispatchQueue.main.async {
@@ -177,11 +184,10 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				
 				pasteButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
 				pasteButton.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor, constant: 0),
-				pasteButton.widthAnchor.constraint(equalToConstant: 90),
+				pasteButton.widthAnchor.constraint(equalToConstant: 36),
 				pasteButton.heightAnchor.constraint(equalToConstant: 36),
 			])
 		}
-		
 	}
 	
 	func setupClearBox() {
