@@ -35,7 +35,7 @@ jobs:
           GMAIL_ADDRESS="$GMAIL_ADDRESS" \
           GMAIL_PASSWORD="$GMAIL_PASSWORD"
 
-      - uses: kishikawakatsumi/xcresulttool@v1
+      - uses: kishikawakatsumi/xcresulttool@v1.7.1
         with:
           path: TestResults.xcresult
         if: success() || failure()

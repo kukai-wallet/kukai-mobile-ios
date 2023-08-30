@@ -36,16 +36,16 @@ final class Onboarding: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Create passcode
-		sleep(1)
+		sleep(3)
 		Onboarding.handlePasscode(app: app)
 		
 		// Enter wrong passcode
-		sleep(1)
+		sleep(3)
 		Onboarding.handlePasscode(app: app, passcode: "01234567")
 		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
 		
 		// Confirm correct passcode
-		sleep(1)
+		sleep(3)
 		SharedHelpers.shared.typeBackspace(app: app, times: 2)
 		Onboarding.handlePasscode(app: app)
 		
