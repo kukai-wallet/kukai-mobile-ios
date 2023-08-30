@@ -1,0 +1,35 @@
+name: Nightly UI Tests
+on:
+  push:
+    branches:
+      - feature/automated_tests
+
+jobs:
+  deploy:
+    name: Deploying to Testflight
+    runs-on: macos-13
+    steps:
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
+    
+      - name: Checkout repository
+        uses: actions/checkout@v3.3.0
+
+      - name: Setup Global Env
+        run: |
+          echo "SEED_PHRASE_1=${{ secrets.UITEST_SEED_PHRASE_1 }}" >> $GITHUB_ENV
+          echo "SEED_PHRASE_PASSWORD=${{ secrets.UITEST_SEED_PHRASE_PASSWORD }}" >> $GITHUB_ENV
+          echo "GMAIL_ADDRESS=${{ secrets.UITEST_GMAIL_ADDRESS }}" >> $GITHUB_ENV
+          echo "GMAIL_PASSWORD=${{ secrets.UITEST_GMAIL_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Build and Archive
+        run: |
+          xcodebuild -project "Kukai Mobile.xcodeproj" \
+          -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14,OS=16.4" \
+          -scheme "Kukai Mobile Beta" \
+          -enableCodeCoverage YES \
+          test \
+          SEED_PHRASE_1="$SEED_PHRASE_1" \
+          SEED_PHRASE_PASSWORD="$SEED_PHRASE_PASSWORD" \
+          GMAIL_ADDRESS="$GMAIL_ADDRESS" \
+          GMAIL_PASSWORD="$GMAIL_PASSWORD"
