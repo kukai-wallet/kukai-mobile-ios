@@ -8,8 +8,6 @@ jobs:
   deploy:
     name: Run UI Tests
     runs-on: macos-13
-    env:
-      GITHUB_UNIQUE: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
@@ -29,7 +27,7 @@ jobs:
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14,OS=16.4" \
           -scheme "Kukai Mobile Beta" \
-          -resultBundlePath TestResults-$GITHUB_UNIQUE \
+          -resultBundlePath TestResults \
           -configuration Beta \
           -archivePath $PWD/build/Kukai-mobile.xcarchive \
           clean \
@@ -67,5 +65,5 @@ jobs:
 
       - uses: kishikawakatsumi/xcresulttool@v1.7.1
         with:
-          path: TestResults-$GITHUB_UNIQUE.xcresult
+          path: TestResults.xcresult
         if: success() || failure()
