@@ -82,7 +82,6 @@ final class Onboarding: XCTestCase {
 	
 	func testImportHDWallet() {
 		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
-		
 		let app = XCUIApplication()
 		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: true)
 		
@@ -454,7 +453,6 @@ final class Onboarding: XCTestCase {
 				let minusLastCharacter = String(word.prefix(word.count-1))
 				print("minusLastCharacter: \(minusLastCharacter)")
 				
-				//SharedHelpers.shared.type(app: app, text: minusLastCharacter)
 				app.typeText(minusLastCharacter)
 				sleep(10)
 				

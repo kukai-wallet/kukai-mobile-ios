@@ -29,13 +29,13 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - Helpers
 	
-	func application(clearContacts: Bool = false) -> XCUIApplication {
+	func application(resetForEveryInvocation: Bool = false) -> XCUIApplication {
 		sharedApplication.launchEnvironment = ["XCUITEST-KEYBOARD": "true"]
 		sharedApplication.launchEnvironment = ["XCUITEST-GHOSTNET": "true"]
 		
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
-		if launchCount == 0 {
+		if (resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation {
 			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}
@@ -96,7 +96,7 @@ class SharedHelpers: XCTestCase {
 	// MARK: - Keyboard
 	
 	func type(app: XCUIApplication, text: String) {
-		let containsLetters = text.rangeOfCharacter(from: NSCharacterSet.letters) != nil
+		/*let containsLetters = text.rangeOfCharacter(from: NSCharacterSet.letters) != nil
 		let containsNumbers = text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) != nil
 		let needsToSwtichKeyboards = (containsLetters && containsNumbers)
 		
@@ -131,6 +131,13 @@ class SharedHelpers: XCTestCase {
 					app.keys[charAsString].tap()
 				}
 			}
+		}*/
+		
+		for char in text {
+			let charAsString = "\(char)"
+			sleep(1)
+			app.keys[charAsString].tap()
+			sleep(1)
 		}
 	}
 	
