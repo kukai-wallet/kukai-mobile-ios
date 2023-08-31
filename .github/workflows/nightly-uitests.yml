@@ -8,6 +8,8 @@ jobs:
   deploy:
     name: Run UI Tests
     runs-on: macos-13
+    env:
+      GITHUB_UNIQUE: ${{ github.run_id }}-${{ github.run_attempt }}
     steps:
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_14.3.1.app/Contents/Developer'
@@ -27,15 +29,43 @@ jobs:
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator -destination "platform=iOS Simulator,name=iPhone 14,OS=16.4" \
           -scheme "Kukai Mobile Beta" \
-          -enableCodeCoverage YES \
-          -resultBundlePath TestResults \
+          -resultBundlePath TestResults-$GITHUB_UNIQUE \
+          -configuration Beta \
+          -archivePath $PWD/build/Kukai-mobile.xcarchive \
+          clean \
+          archive \
           test \
           SEED_PHRASE_1="$SEED_PHRASE_1" \
           SEED_PHRASE_PASSWORD="$SEED_PHRASE_PASSWORD" \
           GMAIL_ADDRESS="$GMAIL_ADDRESS" \
           GMAIL_PASSWORD="$GMAIL_PASSWORD"
 
+      - name: Install Sentry CLI
+        if: ${{ success() }}
+        run: brew install getsentry/tools/sentry-cli
+      
+      - name: Upload dSYM
+        if: ${{ success() }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
+          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
+          
+          echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
+          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
+          
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+          
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
+          fi
+
       - uses: kishikawakatsumi/xcresulttool@v1.7.1
         with:
-          path: TestResults.xcresult
+          path: TestResults-$GITHUB_UNIQUE.xcresult
         if: success() || failure()

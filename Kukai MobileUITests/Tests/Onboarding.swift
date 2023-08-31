@@ -455,7 +455,7 @@ final class Onboarding: XCTestCase {
 				//SharedHelpers.shared.type(app: app, text: minusLastCharacter)
 				app.typeText(minusLastCharacter)
 				
-				sleep(2)
+				sleep(10)
 				customAutoCompleteView.staticTexts[word].tap()
 			}
 		} else {
