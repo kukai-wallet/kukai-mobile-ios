@@ -36,17 +36,18 @@ final class Onboarding: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Create passcode
-		sleep(3)
+		sleep(2)
 		Onboarding.handlePasscode(app: app)
 		
 		// Enter wrong passcode
-		sleep(3)
-		Onboarding.handlePasscode(app: app, passcode: "01234567")
+		sleep(2)
+		Onboarding.handlePasscode(app: app, passcode: "012345")
+		
+		sleep(2)
 		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
 		
 		// Confirm correct passcode
-		sleep(3)
-		SharedHelpers.shared.typeBackspace(app: app, times: 2)
+		sleep(2)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -440,6 +441,7 @@ final class Onboarding: XCTestCase {
 		app.tables.staticTexts["Import accounts using your recovery phrase from Kukai or another wallet"].tap()
 		app.scrollViews.children(matching: .textView).element.tap()
 		
+		sleep(2)
 		if useAutoComplete {
 			// for each word, type all but last character, then use custom auto complete to enter
 			let seedWords = phrase.components(separatedBy: " ")
@@ -453,6 +455,7 @@ final class Onboarding: XCTestCase {
 				//SharedHelpers.shared.type(app: app, text: minusLastCharacter)
 				app.typeText(minusLastCharacter)
 				
+				sleep(2)
 				customAutoCompleteView.staticTexts[word].tap()
 			}
 		} else {
