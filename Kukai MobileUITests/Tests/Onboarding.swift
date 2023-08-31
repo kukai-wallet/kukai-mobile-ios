@@ -273,6 +273,7 @@ final class Onboarding: XCTestCase {
 		let enterAddressTextField = app.textFields["Enter Address"]
 		enterAddressTextField.tap()
 		app.typeText("tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
+		sleep(3)
 		
 		app.buttons["send-button"].tap()
 		
@@ -325,6 +326,7 @@ final class Onboarding: XCTestCase {
 		app.textFields["Enter Tezos Domain"].tap()
 		
 		app.typeText("kukaiautomatedtesting.gho")
+		sleep(3)
 		
 		app.buttons["send-button"].tap()
 		
@@ -454,12 +456,13 @@ final class Onboarding: XCTestCase {
 				
 				//SharedHelpers.shared.type(app: app, text: minusLastCharacter)
 				app.typeText(minusLastCharacter)
-				
 				sleep(10)
+				
 				customAutoCompleteView.staticTexts[word].tap()
 			}
 		} else {
 			app.typeText(phrase)
+			sleep(3)
 		}
 	}
 	

@@ -39,11 +39,11 @@ jobs:
           GMAIL_PASSWORD="$GMAIL_PASSWORD"
 
       - name: Install Sentry CLI
-        if: ${{ success() }}
+        if: ${{ success() || failure() }}
         run: brew install getsentry/tools/sentry-cli
       
       - name: Upload dSYM
-        if: ${{ success() }}
+        if: ${{ success() || failure() }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
@@ -64,6 +64,6 @@ jobs:
           fi
 
       - uses: kishikawakatsumi/xcresulttool@v1.7.1
+        if: ${{ success() || failure() }}
         with:
           path: TestResults.xcresult
-        if: success() || failure()
