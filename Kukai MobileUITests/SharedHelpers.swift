@@ -36,6 +36,10 @@ class SharedHelpers: XCTestCase {
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
 		if (resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation {
+			print("\n\n\n")
+			print("-Resetting-")
+			print("\n\n\n")
+			
 			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}

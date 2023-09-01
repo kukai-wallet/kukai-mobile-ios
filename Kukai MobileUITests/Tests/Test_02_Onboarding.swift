@@ -1,5 +1,5 @@
 //
-//  Onboarding.swift
+//  Test_02_Onboarding.swift
 //  Kukai MobileUITests
 //
 //  Created by Simon Mcloughlin on 18/07/2023.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class Onboarding: XCTestCase {
+final class Test_02_Onboarding: XCTestCase {
 	
 	// MARK: - Setup
 	
@@ -36,49 +36,49 @@ final class Onboarding: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		// Enter wrong passcode
-		Onboarding.handlePasscode(app: app, passcode: "012345")
+		Test_02_Onboarding.handlePasscode(app: app, passcode: "012345")
 		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
 		
 		// Confirm correct passcode
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
-		Account.check(app: app, estimatedTotalExists: false)
-		Account.check(app: app, hasNumberOfTokens: 0)
-		Account.check(app: app, displayingBackup: true)
-		Account.check(app: app, displayingGettingStarted: true)
+		Test_04_Account.check(app: app, estimatedTotalExists: false)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
+		Test_04_Account.check(app: app, displayingBackup: true)
+		Test_04_Account.check(app: app, displayingGettingStarted: true)
 		
-		Account.tapBackup(app: app)
-		Onboarding.handleSeedWordVerification(app: app)
+		Test_04_Account.tapBackup(app: app)
+		Test_02_Onboarding.handleSeedWordVerification(app: app)
 		
 		
 		// Verify backup is gone
-		Account.check(app: app, displayingBackup: false)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.check(app: app, hasSections: 1)
-		let details = WalletManagement.getWalletDetails(app: app, index: 0)
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		let details = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		
 		XCTAssert(details.title.count > 0)
 		XCTAssert(details.subtitle == nil)
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportHDWallet() {
 		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: true)
+		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: true)
 		
 		app.buttons["Import"].tap()
 		
@@ -89,35 +89,35 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
-		Account.check(app: app, estimatedTotalExists: true)
-		Account.check(app: app, hasNumberOfTokens: 3)
-		Account.check(app: app, xtzBalanceIsNotZero: true)
-		Account.check(app: app, displayingBackup: false)
+		Test_04_Account.check(app: app, estimatedTotalExists: true)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.check(app: app, hasSections: 1)
-		WalletManagement.check(app: app, hasWalletsOrAccounts: 2)
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 2)
 		
-		let details0 = WalletManagement.getWalletDetails(app: app, index: 0)
+		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
 		
-		let details1 = WalletManagement.getWalletDetails(app: app, index: 1)
-		XCTAssert(details1.title == "tz1cjA...x3ih", details1.title)
+		let details1 = Test_05_WalletManagement.getWalletDetails(app: app, index: 1)
+		XCTAssert(details1.title == EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), details1.title)
 		XCTAssert(details1.subtitle == nil, details1.subtitle ?? "-")
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportHDWallet_password() {
@@ -125,18 +125,18 @@ final class Onboarding: XCTestCase {
 		let seedPassword = EnvironmentVariables.shared.seedPhrasePassword
 		
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
+		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
 		
 		app.buttons["Advanced"].tap()
 		
 		// Enter password and invalid address
-		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
-		Onboarding.handleRecoveryAddress(app: app, address: "tz1")
+		Test_02_Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: "tz1")
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: true, inElement: app.scrollViews, delay: 2)
 		
 		// Enter valid address, but not matching
-		Onboarding.handleClearingAddress(app: app)
-		Onboarding.handleRecoveryAddress(app: app, address: "tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
+		Test_02_Onboarding.handleClearingAddress(app: app)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_HD)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
@@ -146,40 +146,40 @@ final class Onboarding: XCTestCase {
 		
 		
 		// Enter matching address and continue import flow
-		Onboarding.handleClearingAddress(app: app)
-		Onboarding.handleRecoveryAddress(app: app, address: "tz1LGtCUAc5h3WSFUh7UC2VdaANYYxKfciop")
+		Test_02_Onboarding.handleClearingAddress(app: app)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_HD_password)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
 		
 		
-		// Confirm tersm and conditions and create a passcode
+		// Confirm terms and conditions and create a passcode
 		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
 		
 		app.buttons["checkmark"].tap()
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportRegularWallet() {
 		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
 		
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
+		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
 		
 		app.buttons["Advanced"].tap()
 		app.switches["legacy-toggle"].tap()
@@ -193,19 +193,19 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportRegularWallet_password() {
@@ -213,12 +213,12 @@ final class Onboarding: XCTestCase {
 		let seedPassword = EnvironmentVariables.shared.seedPhrasePassword
 		
 		let app = XCUIApplication()
-		Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
+		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
 		
 		app.buttons["Advanced"].tap()
 		
-		Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
-		Onboarding.handleRecoveryAddress(app: app, address: "tz1Wj6kenWpyTzPkU8xN9aiRFx2aBVFQ172F")
+		Test_02_Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_regular_password)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.switches["legacy-toggle"].tap()
@@ -232,19 +232,19 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportWatchWallet_address() {
@@ -254,7 +254,7 @@ final class Onboarding: XCTestCase {
 		
 		let enterAddressTextField = app.textFields["Enter Address"]
 		enterAddressTextField.tap()
-		app.typeText("tz1TmhCvS3ERYpTspQp6TSG5LdqK2JKbDvmv")
+		app.typeText(EnvironmentVariables.shared.walletAddress_HD)
 		sleep(3)
 		
 		app.buttons["send-button"].tap()
@@ -268,31 +268,31 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
-		Account.check(app: app, estimatedTotalExists: true)
-		Account.check(app: app, hasNumberOfTokens: 3)
-		Account.check(app: app, xtzBalanceIsNotZero: true)
-		Account.check(app: app, displayingBackup: false)
+		Test_04_Account.check(app: app, estimatedTotalExists: true)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.check(app: app, hasSections: 1)
-		WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
 		
-		let details0 = WalletManagement.getWalletDetails(app: app, index: 0)
+		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportWatchWallet_domain() {
@@ -316,35 +316,35 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
-		Account.check(app: app, estimatedTotalExists: true)
-		Account.check(app: app, hasNumberOfTokens: 3)
-		Account.check(app: app, xtzBalanceIsNotZero: true)
-		Account.check(app: app, displayingBackup: false)
+		Test_04_Account.check(app: app, estimatedTotalExists: true)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.check(app: app, hasSections: 1)
-		WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
 		
-		let details0 = WalletManagement.getWalletDetails(app: app, index: 0)
+		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportSocial_apple() {
-		Onboarding.handleLoggingInToAppleIdIfNeeded()
+		Test_02_Onboarding.handleLoggingInToAppleIdIfNeeded()
 		
 		let app = XCUIApplication()
 		app.launch()
@@ -386,24 +386,26 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		Onboarding.handlePasscode(app: app)
-		Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
 		
 		// App state verification
-		Account.waitForInitalLoad(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		// Navigate to wallet management
-		Home.handleOpenWalletManagement(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
 		
-		WalletManagement.deleteAllWallets(app: app)
+		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
+	
 	
 	
 	// MARK: - Helpers
 	
 	public static func handlePasscode(app: XCUIApplication, passcode: String = "000000") {
+		sleep(2)
 		SharedHelpers.shared.type(app: app, text: passcode)
 	}
 	
@@ -546,10 +548,10 @@ final class Onboarding: XCTestCase {
 		let seedWord4 = seedWords[number4-1]
 		
 		// pick wrong words to verify app doesn't allow access
-		let wrongWord1 = Onboarding.findWrongWord(forSection: 1, inApp: app, realWord: seedWord1)
-		let wrongWord2 = Onboarding.findWrongWord(forSection: 2, inApp: app, realWord: seedWord2)
-		let wrongWord3 = Onboarding.findWrongWord(forSection: 3, inApp: app, realWord: seedWord3)
-		let wrongWord4 = Onboarding.findWrongWord(forSection: 4, inApp: app, realWord: seedWord4)
+		let wrongWord1 = Test_02_Onboarding.findWrongWord(forSection: 1, inApp: app, realWord: seedWord1)
+		let wrongWord2 = Test_02_Onboarding.findWrongWord(forSection: 2, inApp: app, realWord: seedWord2)
+		let wrongWord3 = Test_02_Onboarding.findWrongWord(forSection: 3, inApp: app, realWord: seedWord3)
+		let wrongWord4 = Test_02_Onboarding.findWrongWord(forSection: 4, inApp: app, realWord: seedWord4)
 		
 		app.buttons[wrongWord1].tap()
 		app.buttons[wrongWord2].tap()

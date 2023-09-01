@@ -1,5 +1,5 @@
 //
-//  WalletManagement.swift
+//  Test_05_WalletManagement.swift
 //  Kukai MobileUITests
 //
 //  Created by Simon Mcloughlin on 01/08/2023.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class WalletManagement: XCTestCase {
+final class Test_05_WalletManagement: XCTestCase {
 
 	
 	// MARK: - Setup

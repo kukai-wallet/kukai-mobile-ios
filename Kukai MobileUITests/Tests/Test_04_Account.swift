@@ -1,5 +1,5 @@
 //
-//  Account.swift
+//  Test_04_Account.swift
 //  Kukai MobileUITests
 //
 //  Created by Simon Mcloughlin on 01/08/2023.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class Account: XCTestCase {
+final class Test_04_Account: XCTestCase {
 
    
 	// MARK: - Setup

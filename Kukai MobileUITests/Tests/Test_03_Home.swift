@@ -1,5 +1,5 @@
 //
-//  Home.swift
+//  Test_03_Home.swift
 //  Kukai MobileUITests
 //
 //  Created by Simon Mcloughlin on 01/08/2023.
@@ -7,7 +7,7 @@
 
 import XCTest
 
-final class Home: XCTestCase {
+final class Test_03_Home: XCTestCase {
 
 	
 	// MARK: - Setup
@@ -26,6 +26,9 @@ final class Home: XCTestCase {
 	
 	// MARK: - Test functions
 	
+	func test_01_importWalletsNeeded() throws {
+		
+	}
 	
 	
 	
