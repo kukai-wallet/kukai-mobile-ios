@@ -36,18 +36,13 @@ final class Onboarding: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Create passcode
-		sleep(2)
 		Onboarding.handlePasscode(app: app)
 		
 		// Enter wrong passcode
-		sleep(2)
 		Onboarding.handlePasscode(app: app, passcode: "012345")
-		
-		sleep(2)
 		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
 		
 		// Confirm correct passcode
-		sleep(2)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -94,10 +89,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -168,10 +160,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -204,10 +193,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -246,10 +232,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -285,10 +268,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -325,8 +305,6 @@ final class Onboarding: XCTestCase {
 		app.textFields["Enter Tezos Domain"].tap()
 		
 		app.typeText("kukaiautomatedtesting.gho")
-		sleep(3)
-		
 		app.buttons["send-button"].tap()
 		
 		
@@ -338,10 +316,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -368,7 +343,6 @@ final class Onboarding: XCTestCase {
 		WalletManagement.deleteAllWallets(app: app)
 	}
 	
-	/*
 	func testImportSocial_apple() {
 		Onboarding.handleLoggingInToAppleIdIfNeeded()
 		
@@ -412,10 +386,7 @@ final class Onboarding: XCTestCase {
 		app.staticTexts["Get Started"].tap()
 		
 		// Create passcode
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
-		
-		sleep(1)
 		Onboarding.handlePasscode(app: app)
 		
 		
@@ -428,7 +399,6 @@ final class Onboarding: XCTestCase {
 		
 		WalletManagement.deleteAllWallets(app: app)
 	}
-	*/
 	
 	
 	// MARK: - Helpers
@@ -454,13 +424,10 @@ final class Onboarding: XCTestCase {
 				print("minusLastCharacter: \(minusLastCharacter)")
 				
 				app.typeText(minusLastCharacter)
-				sleep(10)
-				
 				customAutoCompleteView.staticTexts[word].tap()
 			}
 		} else {
 			app.typeText(phrase)
-			sleep(3)
 		}
 	}
 	

@@ -135,9 +135,7 @@ class SharedHelpers: XCTestCase {
 		
 		for char in text {
 			let charAsString = "\(char)"
-			sleep(1)
 			app.keys[charAsString].tap()
-			sleep(1)
 		}
 	}
 	
