@@ -76,27 +76,13 @@ final class Test_02_Onboarding: XCTestCase {
 	}
 	
 	func testImportHDWallet() {
-		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
 		let app = XCUIApplication()
-		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: true)
 		
-		app.buttons["Import"].tap()
-		
-		// Confirm terms and conditions and create a passcode
-		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
-		
-		app.buttons["checkmark"].tap()
-		app.staticTexts["Get Started"].tap()
-		
-		// Create passcode
-		Test_02_Onboarding.handlePasscode(app: app)
-		Test_02_Onboarding.handlePasscode(app: app)
-		
+		// Import HD wallet and wait for inital load
+		Test_02_Onboarding.handleBasicImport(app: app, useAutoComplete: true)
 		
 		
 		// App state verification
-		Test_04_Account.waitForInitalLoad(app: app)
-		
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
 		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
@@ -403,6 +389,28 @@ final class Test_02_Onboarding: XCTestCase {
 	
 	
 	// MARK: - Helpers
+	
+	public static func handleBasicImport(app: XCUIApplication, useAutoComplete: Bool) {
+		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
+		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: useAutoComplete)
+		
+		app.buttons["Import"].tap()
+		
+		// Confirm terms and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		
+		
+		
+		// App state verification
+		Test_04_Account.waitForInitalLoad(app: app)
+	}
 	
 	public static func handlePasscode(app: XCUIApplication, passcode: String = "000000") {
 		sleep(2)

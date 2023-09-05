@@ -210,4 +210,15 @@ public class TokenStateService {
 	private func writeFavouriteCollectibles() -> Bool  {
 		return DiskService.write(encodable: favouriteCollectibles, toFileName: TokenStateService.favouriteCollectiblesFilename)
 	}
+	
+	
+	
+	// MARK: Delete
+	
+	public func deleteAllCaches() {
+		let _ = DiskService.delete(fileName: TokenStateService.hiddenBalancesFilename)
+		let _ = DiskService.delete(fileName: TokenStateService.hiddenCollectiblesFilename)
+		let _ = DiskService.delete(fileName: TokenStateService.favouriteBalancesFilename)
+		let _ = DiskService.delete(fileName: TokenStateService.favouriteCollectiblesFilename)
+	}
 }

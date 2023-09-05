@@ -26,6 +26,155 @@ final class Test_04_Account: XCTestCase {
 	
 	// MARK: - Test functions
 	
+	public func testXTZTokenDetails() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
+		// Go to Tez token details
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["Tez"].tap()
+		
+		// Check date loads correctly and switches when chart held down
+		sleep(4)
+		
+		let dateElement = app.staticTexts["token-details-selected-date"]
+		XCTAssert(dateElement.label == "Today", dateElement.label)
+		
+		tablesQuery.staticTexts["chart-annotation-bottom"].press(forDuration: 2)
+		//XCTAssert(dateElement.label != "Today", dateElement.label) `forDuration` blocks thread
+		
+		
+		// Check all annotations are loaded correctly for each view
+		checkAnnotationsExistAndNotZero(tablesQuery: tablesQuery)
+		
+		tablesQuery.staticTexts["1W"].tap()
+		sleep(1)
+		checkAnnotationsExistAndNotZero(tablesQuery: tablesQuery)
+		
+		tablesQuery.staticTexts["1M"].tap()
+		sleep(1)
+		checkAnnotationsExistAndNotZero(tablesQuery: tablesQuery)
+		
+		tablesQuery.staticTexts["1Y"].tap()
+		sleep(1)
+		checkAnnotationsExistAndNotZero(tablesQuery: tablesQuery)
+		
+		
+		// Check staking
+		XCTAssert(tablesQuery.staticTexts["Staked"].exists)
+		
+		
+		// Check balance not zero
+		let xtzBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: tablesQuery)
+		let fiatBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: tablesQuery)
+		
+		XCTAssert(xtzBalance > 0, xtzBalance.description)
+		XCTAssert(fiatBalance > 0, fiatBalance.description)
+		
+		
+		// Check activity contains 5 items
+		let count = app.tables.cells.containing(.staticText, identifier: "activity-type-label").count
+		XCTAssert(count == 5, count.description)
+	}
+	
+	private func checkAnnotationsExistAndNotZero(tablesQuery: XCUIElementQuery) {
+		let topAnnotation = tablesQuery.staticTexts["chart-annotation-top"]
+		let bottomAnnotation = tablesQuery.staticTexts["chart-annotation-bottom"]
+		let topAnnotationValue = SharedHelpers.getSanitizedDecimal(fromStaticText: "chart-annotation-top", in: tablesQuery)
+		let bottomAnnotationValue = SharedHelpers.getSanitizedDecimal(fromStaticText: "chart-annotation-bottom", in: tablesQuery)
+		
+		XCTAssert(topAnnotation.exists)
+		XCTAssert(bottomAnnotation.exists)
+		XCTAssert(topAnnotationValue > 0, topAnnotationValue.description)
+		XCTAssert(bottomAnnotationValue > 0, bottomAnnotationValue.description)
+	}
+	
+	public func testOtherTokenDetails() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		// TODO: make sure favourites and hidden are deleted as part of reset
+		
+		// Check position of WTZ
+		let tablesQuery = app.tables
+		let balanceCells = app.tables.cells.containing(.staticText, identifier: "account-token-balance")
+		let thirdCell = balanceCells.element(boundBy: 2)
+		
+		XCTAssert(thirdCell.staticTexts["WTZ"].exists)
+		
+		
+		// Tap into WTZ check state, mark as favourite and confirm position change
+		tablesQuery.staticTexts["WTZ"].tap()
+		sleep(2)
+		
+		let tokenBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: tablesQuery)
+		XCTAssert(tokenBalance > 0, tokenBalance.description)
+		
+		let count = app.tables.cells.containing(.staticText, identifier: "activity-type-label").count
+		XCTAssert(count > 0, count.description)
+		
+		tablesQuery.buttons["button-favourite"].tap()
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		let cellToCheck = balanceCells.element(boundBy: 1)
+		
+		XCTAssert(cellToCheck.staticTexts["WTZ"].exists)
+		
+		
+		// Back into WTZ, unfavourite, confirm it moved back
+		tablesQuery.staticTexts["WTZ"].tap()
+		sleep(2)
+		
+		tablesQuery.buttons["button-favourite"].tap()
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		XCTAssert(thirdCell.staticTexts["WTZ"].exists)
+		
+		
+		// Back into WTZ, hide, check its gone
+		tablesQuery.staticTexts["WTZ"].tap()
+		sleep(2)
+		
+		tablesQuery.buttons["button-more"].tap()
+		app.popovers.tables.staticTexts["Hide Token"].tap()
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		XCTAssert(balanceCells.count == 2)
+		
+		
+		// Unhide and check it appears back
+		tablesQuery.buttons["button-more"].tap()
+		app.popovers.tables.staticTexts["View Hidden Tokens"].tap()
+		sleep(2)
+		
+		tablesQuery.staticTexts["WTZ"].tap()
+		tablesQuery.buttons["button-more"].tap()
+		app.popovers.tables.staticTexts["Unhide Token"].tap()
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		XCTAssert(balanceCells.count == 3)
+	}
+	
+	public func testSendXTZ() {
+		
+	}
+	
+	public func testSendOther() {
+		
+	}
+	
+	public func testStakeXTZ() {
+		
+	}
+	
 	
 	
 	// MARK: - Helpers

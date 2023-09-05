@@ -26,8 +26,10 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		self.buttonData = buttonData
 		self.delegate = delegate
 		
-		favouriteButton.customImage = (buttonData.isFavourited ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff")) ?? UIImage()
-		favouriteButton.updateCustomImage()
+		favouriteButton.accessibilityIdentifier = "button-favourite"
+		moreButton.accessibilityIdentifier = "button-more"
+		
+		setFavState(isFav: buttonData.isFavourited)
 		
 		if buttonData.hasMoreButton, let menu = moreMenu {
 			moreButton.isHidden = false
@@ -38,14 +40,25 @@ class TokenDetailsButtonsCell: UITableViewCell {
 		}
 	}
 	
+	private func setFavState(isFav: Bool) {
+		if isFav {
+			favouriteButton.customImage = UIImage(named: "FavoritesOn") ?? UIImage()
+			favouriteButton.accessibilityValue = "On"
+		} else {
+			favouriteButton.customImage = UIImage(named: "FavoritesOff") ?? UIImage()
+			favouriteButton.accessibilityValue = "Off"
+		}
+		
+		favouriteButton.updateCustomImage()
+	}
+	
 	@IBAction func favouriteButtonTapped(_ sender: Any) {
 		guard buttonData?.canBeUnFavourited == true else {
 			return
 		}
 		
 		if let result = delegate?.favouriteTapped(){
-			favouriteButton.customImage = (result ? UIImage(named: "FavoritesOn") : UIImage(named: "FavoritesOff")) ?? UIImage()
-			favouriteButton.updateCustomImage()
+			setFavState(isFav: result)
 		}
 	}
 	

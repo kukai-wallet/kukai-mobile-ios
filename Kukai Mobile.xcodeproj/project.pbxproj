@@ -80,7 +80,9 @@
 		C0239B9F2886C02F00E0C973 /* LiquidityTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0239B9E2886C02F00E0C973 /* LiquidityTokenCell.swift */; };
 		C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0239BA02886C5C600E0C973 /* DefiViewModel.swift */; };
 		C024038B26D92B0E00E1CB80 /* ScanViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C024038A26D92B0E00E1CB80 /* ScanViewController.swift */; };
-		C0248CEC2AA2067F00B1F63C /* String+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A19B4728857301000291A0 /* String+extensions.swift */; };
+		C0248CEE2AA21B5900B1F63C /* String+extensions_shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0248CED2AA21B5900B1F63C /* String+extensions_shared.swift */; };
+		C0248CEF2AA21B7800B1F63C /* String+extensions_shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0248CED2AA21B5900B1F63C /* String+extensions_shared.swift */; };
+		C0248CF12AA22D2800B1F63C /* XCUIElement+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0248CF02AA22D2800B1F63C /* XCUIElement+extensions.swift */; };
 		C025891D292CD985000D59F6 /* TokenStateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C025891C292CD985000D59F6 /* TokenStateService.swift */; };
 		C025891F292D1154000D59F6 /* HiddenTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C025891E292D1154000D59F6 /* HiddenTokenCell.swift */; };
 		C0258921292D1166000D59F6 /* FavouriteTokenCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0258920292D1166000D59F6 /* FavouriteTokenCell.swift */; };
@@ -466,6 +468,8 @@
 		C0239B9E2886C02F00E0C973 /* LiquidityTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenCell.swift; sourceTree = "<group>"; };
 		C0239BA02886C5C600E0C973 /* DefiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefiViewModel.swift; sourceTree = "<group>"; };
 		C024038A26D92B0E00E1CB80 /* ScanViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanViewController.swift; sourceTree = "<group>"; };
+		C0248CED2AA21B5900B1F63C /* String+extensions_shared.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+extensions_shared.swift"; sourceTree = "<group>"; };
+		C0248CF02AA22D2800B1F63C /* XCUIElement+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "XCUIElement+extensions.swift"; sourceTree = "<group>"; };
 		C025891C292CD985000D59F6 /* TokenStateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenStateService.swift; sourceTree = "<group>"; };
 		C025891E292D1154000D59F6 /* HiddenTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiddenTokenCell.swift; sourceTree = "<group>"; };
 		C0258920292D1166000D59F6 /* FavouriteTokenCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteTokenCell.swift; sourceTree = "<group>"; };
@@ -1035,6 +1039,7 @@
 				C02A4FD927DA421100F42DE4 /* Date+extensions.swift */,
 				C003CECC27FDED5D00F64B4C /* CKRecord+extensions.swift */,
 				C0A19B4728857301000291A0 /* String+extensions.swift */,
+				C0248CED2AA21B5900B1F63C /* String+extensions_shared.swift */,
 				C08C973E2908192A00249959 /* UICollectionViewCell+extensions.swift */,
 				C08C97422908344300249959 /* Collection+extensions.swift */,
 				C0BADFFC29153CCD00E78C26 /* UIColor+extensions.swift */,
@@ -1370,6 +1375,7 @@
 				C0B03666269EE2070071ACD0 /* Info.plist */,
 				C02DF5F32A66E23100A1497D /* SharedHelpers.swift */,
 				C06C08C82A7D31E400625375 /* EnvironmentVariables.swift */,
+				C0248CF02AA22D2800B1F63C /* XCUIElement+extensions.swift */,
 				C02DF5F72A66E47500A1497D /* Tests */,
 			);
 			path = "Kukai MobileUITests";
@@ -1890,6 +1896,7 @@
 				C04E2868293F94EA00DC4171 /* TokenDetailsStakingRewardsCell.swift in Sources */,
 				C0FBC891292C12E200B29921 /* FavouriteBalancesViewController.swift in Sources */,
 				C02A4FDA27DA421100F42DE4 /* Date+extensions.swift in Sources */,
+				C0248CEE2AA21B5900B1F63C /* String+extensions_shared.swift in Sources */,
 				C003CECD27FDED5D00F64B4C /* CKRecord+extensions.swift in Sources */,
 				C04E2864293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift in Sources */,
 				C001D5A82A027EA10089EC7A /* CollectiblesFavouritesViewController.swift in Sources */,
@@ -2080,11 +2087,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C09B3EDE2A9F8688006ACC6A /* Test_01_Prechecks.swift in Sources */,
+				C0248CEF2AA21B7800B1F63C /* String+extensions_shared.swift in Sources */,
 				C0C8CF7D2A7953D200AED75B /* Test_04_Account.swift in Sources */,
 				C02DF5F62A66E47100A1497D /* Test_02_Onboarding.swift in Sources */,
 				C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */,
-				C0248CEC2AA2067F00B1F63C /* String+extensions.swift in Sources */,
 				C0C8CF812A7955D300AED75B /* Test_03_Home.swift in Sources */,
+				C0248CF12AA22D2800B1F63C /* XCUIElement+extensions.swift in Sources */,
 				C0C8CF7F2A79540000AED75B /* Test_05_WalletManagement.swift in Sources */,
 				C06C08C92A7D31E400625375 /* EnvironmentVariables.swift in Sources */,
 			);

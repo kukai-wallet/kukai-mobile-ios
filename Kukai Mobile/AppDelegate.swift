@@ -107,6 +107,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			TransactionService.shared.resetAllState()
 			StorageService.deleteKeychainItems()
+			TokenStateService.shared.deleteAllCaches()
 			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier ?? "")
 		}
 	}

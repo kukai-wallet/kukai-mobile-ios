@@ -71,6 +71,7 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tokensToDisplay = DependencyManager.shared.balanceService.account.tokens.filter({ $0.isHidden })
 		var section1Data: [AnyHashable] = tokensToDisplay
 		
+		
 		if section1Data.count == 0 {
 			section1Data = [""]
 		}

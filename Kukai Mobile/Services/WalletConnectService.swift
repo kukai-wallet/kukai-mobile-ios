@@ -156,7 +156,6 @@ public class WalletConnectService {
 	// MARK: - Namespaces
 	
 	public static func createNamespace(forProposal proposal: Session.Proposal, address: String, currentNetworkType: TezosNodeClientConfig.NetworkType) -> [String: SessionNamespace]? {
-		
 		var sessionNamespaces = [String: SessionNamespace]()
 		
 		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]

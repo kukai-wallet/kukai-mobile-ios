@@ -41,6 +41,8 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	
 	func setup(data: TzKTTransaction) {
 		
+		typeLabel.accessibilityIdentifier = "activity-type-label"
+		
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
 		if data.status == .unconfirmed {

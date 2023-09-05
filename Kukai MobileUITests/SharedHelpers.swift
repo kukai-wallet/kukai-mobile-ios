@@ -36,11 +36,7 @@ class SharedHelpers: XCTestCase {
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
 		if (resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation {
-			print("\n\n\n")
-			print("-Resetting-")
-			print("\n\n\n")
-			
-			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
+			//sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}
 		
@@ -196,7 +192,7 @@ class SharedHelpers: XCTestCase {
 	}
 	
 	func navigationBack(app: XCUIApplication) {
-		app.navigationBars.firstMatch.buttons["Back"].tap()
+		app.navigationBars.firstMatch.buttons.firstMatch.tap()
 	}
 	
 	func tapPrimaryButton(app: XCUIApplication) {
@@ -209,5 +205,20 @@ class SharedHelpers: XCTestCase {
 	
 	func tapTertiaryButton(app: XCUIApplication) {
 		app.buttons["tertiary-button"].tap()
+	}
+	
+	
+	
+	// MARK: - value checks
+	
+	public static func getSanitizedDecimal(fromStaticText: String, in element: XCUIElementTypeQueryProvider) -> Decimal {
+		let el = element.staticTexts[fromStaticText].firstMatch.label
+		var sanitised = el.replacingOccurrences(of: ",", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "$", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "€", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "%", with: "")
+		sanitised = sanitised.components(separatedBy: " ").first ?? ""
+		
+		return Decimal(string: sanitised) ?? 0
 	}
 }

@@ -20,6 +20,8 @@ class TokenBalanceHeaderCell: UITableViewCell {
 	
 	func setup(menuVC: MenuViewController) {
 		menu = menuVC
+		
+		moreButton.accessibilityIdentifier = "button-more"
 	}
 	
 	@IBAction func moreTapped(_ sender: UIButton) {

@@ -123,6 +123,7 @@ struct ChartView: View {
 				}
 			}
 		}
+		.accessibilityIdentifier("chart-annotation-top")
 		.frame(height: 18)
 		.background(.clear)
 	}
@@ -145,6 +146,7 @@ struct ChartView: View {
 				}
 			}
 		}
+		.accessibilityIdentifier("chart-annotation-bottom")
 		.frame(height: 18)
 		.background(.clear)
 	}

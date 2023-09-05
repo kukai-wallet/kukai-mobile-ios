@@ -39,10 +39,6 @@ extension String {
 		return size.width
 	}
 	
-	func truncateTezosAddress() -> String {
-		return "\(self.prefix(6))...\(self.suffix(4))"
-	}
-	
 	func deletingPrefix(_ prefix: String) -> String {
 		guard self.hasPrefix(prefix) else { return self }
 		return String(self.dropFirst(prefix.count))
