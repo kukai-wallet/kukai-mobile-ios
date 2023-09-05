@@ -94,7 +94,6 @@ final class Test_04_Account: XCTestCase {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
-		// TODO: make sure favourites and hidden are deleted as part of reset
 		
 		// Check position of WTZ
 		let tablesQuery = app.tables
@@ -164,11 +163,106 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public func testSendXTZ() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
 		
+		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		
+		// Open XTZ, send 1. + 3 random digits
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["Tez"].tap()
+		tablesQuery.buttons["primary-button"].tap()
+		tablesQuery.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress()].tap()
+		
+		let randomDigit1 = Int.random(in: 0..<10)
+		let randomDigit2 = Int.random(in: 0..<10)
+		let randomDigit3 = Int.random(in: 0..<10)
+		let inputString = "1.\(randomDigit1)\(randomDigit2)\(randomDigit3)"
+		SharedHelpers.shared.type(app: app, text: inputString)
+		
+		app.buttons["primary-button"].tap()
+		sleep(4)
+		
+		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
+		
+		let dragButton = app.buttons["slide-button"]
+		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
+		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+		
+		
+		// Wait for success, the see does new xtzBlance = (old - (send amount + fees))
+		let inputAsDecimal = Decimal(string: inputString) ?? 0
+		let expectedNewTotal = currentXTZBalance - (inputAsDecimal + feeAmount)
+		
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+		
+		sleep(2)
+		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		
+		XCTAssert(expectedNewTotal == newXTZBalance, "\(expectedNewTotal) != \(newXTZBalance)")
 	}
 	
 	public func testSendOther() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
 		
+		// Send token to other account
+		sendToken(to: EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		
+		
+		// Swap accounts and send tokens back
+		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		sendToken(to: EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		
+		
+		// Switch back and end
+		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+	}
+	
+	private func sendToken(to: String, inApp app: XCUIApplication) {
+		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		let tokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 1).staticTexts["account-token-balance"].label
+		let currentTokenBalance = SharedHelpers.sanitizeStringToDecimal(tokenString)
+		
+		
+		// Open WTZ, send 1
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["kUSD"].tap()
+		tablesQuery.buttons["primary-button"].tap()
+		tablesQuery.staticTexts[to].tap()
+		
+		sleep(2)
+		let inputString = "0.0001"
+		SharedHelpers.shared.type(app: app, text: inputString)
+		
+		app.buttons["primary-button"].tap()
+		sleep(4)
+		
+		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
+		
+		let dragButton = app.buttons["slide-button"]
+		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
+		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+		
+		
+		// Wait for success, the see does new xtzBlance = (old - (send amount + fees))
+		let inputAsDecimal = Decimal(string: inputString) ?? 0
+		let expectedXTZ = currentXTZBalance - feeAmount
+		let expectedToken = currentTokenBalance - inputAsDecimal
+		
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+		
+		sleep(2)
+		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		let newTokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 1).staticTexts["account-token-balance"].label
+		let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
+		
+		XCTAssert(expectedXTZ == newXTZBalance, "\(expectedXTZ) != \(newXTZBalance)")
+		XCTAssert(expectedToken == newTokenBalance, "\(expectedToken) != \(newTokenBalance)")
 	}
 	
 	public func testStakeXTZ() {

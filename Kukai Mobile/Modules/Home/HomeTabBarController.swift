@@ -44,6 +44,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		sideMenuButton.accessibilityIdentifier = "home-button-side"
 		accountButton.accessibilityIdentifier = "home-button-account"
 		scanButton.accessibilityIdentifier = "home-button-scan"
+		activityAnimationImageView.accessibilityIdentifier = "home-animation-imageview"
+		activityAnimationImageView.accessibilityValue = "end"
 		
 		activityAnimationFrames = UIImage.animationFrames(prefix: "ActivityAni", count: 90)
 		
@@ -319,6 +321,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		activityTabBarImageView?.isHidden = true
 		activityAnimationImageView.isHidden = false
+		activityAnimationImageView.accessibilityValue = "start"
 		activityAnimationImageView.startAnimating()
 	}
 	
@@ -334,6 +337,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			
 			self?.activityAnimationImageView.stopAnimating()
 			self?.activityAnimationImageView.isHidden = true
+			self?.activityAnimationImageView.accessibilityValue = "end"
 			self?.activityTabBarImageView?.isHidden = false
 		}
 	}

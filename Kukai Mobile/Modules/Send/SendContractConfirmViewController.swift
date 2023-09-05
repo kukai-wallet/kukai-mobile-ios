@@ -141,6 +141,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 		
 		
 		// Fees
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
 		updateFees()
 		

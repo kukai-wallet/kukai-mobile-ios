@@ -136,6 +136,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		
 		// Fees
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
 		updateFees()
 		

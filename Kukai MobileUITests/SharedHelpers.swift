@@ -91,6 +91,13 @@ class SharedHelpers: XCTestCase {
 		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
+	func waitForImage(_ string: String, valueIs: String, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.images[string]
+		let exists = NSPredicate(format: "value == \"\(valueIs)\"")
+		
+		waitFor(predicate: exists, obj: obj, delay: delay)
+	}
+	
 	
 	
 	// MARK: - Keyboard
@@ -211,9 +218,13 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - value checks
 	
-	public static func getSanitizedDecimal(fromStaticText: String, in element: XCUIElementTypeQueryProvider) -> Decimal {
+	public static func getSanitizedDecimal(fromStaticText: String, in element: XCUIElementTypeQueryProvider, elementNumber: Int = 0) -> Decimal {
 		let el = element.staticTexts[fromStaticText].firstMatch.label
-		var sanitised = el.replacingOccurrences(of: ",", with: "")
+		return sanitizeStringToDecimal(el)
+	}
+	
+	public static func sanitizeStringToDecimal(_ value: String) -> Decimal {
+		var sanitised = value.replacingOccurrences(of: ",", with: "")
 		sanitised = sanitised.replacingOccurrences(of: "$", with: "")
 		sanitised = sanitised.replacingOccurrences(of: "€", with: "")
 		sanitised = sanitised.replacingOccurrences(of: "%", with: "")

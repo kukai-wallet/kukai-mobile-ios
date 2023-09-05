@@ -131,7 +131,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 				
 				cell.symbolLabel.text = symbol
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces) // TODO: token is class, setting value stores it everywhere
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
@@ -287,12 +287,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
 		tokensToDisplay.append(contentsOf: nonFavourites)
 		
-		if !isPresentedForSelectingToken {
-			data.append(balancesMenuVC)
-			
-			if tokensToDisplay.count > 0 {
-				data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
-			}
+		data.append(balancesMenuVC)
+		
+		if tokensToDisplay.count > 0 {
+			data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
 		}
 		
 		data.append(DependencyManager.shared.balanceService.account.xtzBalance)

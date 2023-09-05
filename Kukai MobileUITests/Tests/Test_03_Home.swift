@@ -168,4 +168,16 @@ final class Test_03_Home: XCTestCase {
 	public static func handleOpenDiscoverTab(app: XCUIApplication) {
 		app.tabBars["Tab Bar"].buttons["Discover"].tap()
 	}
+	
+	public static func waitForActivityAnimationTo(start: Bool, app: XCUIApplication, delay: TimeInterval) {
+		SharedHelpers.shared.waitForImage("home-animation-imageview", valueIs: "end", inElement: app.tabBars, delay: delay)
+	}
+	
+	public static func switchToAccount(_ account: String, inApp app: XCUIApplication) {
+		handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		app.tables.staticTexts[account].tap()
+		sleep(2)
+	}
 }
