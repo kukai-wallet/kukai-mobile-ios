@@ -184,11 +184,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(4)
 		
 		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
-		
-		let dragButton = app.buttons["slide-button"]
-		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
-		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+		Test_04_Account.slideButtonToComplete(inApp: app)
 		
 		
 		// Wait for success, the see does new xtzBlance = (old - (send amount + fees))
@@ -241,11 +237,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(4)
 		
 		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
-		
-		let dragButton = app.buttons["slide-button"]
-		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
-		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
-		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+		Test_04_Account.slideButtonToComplete(inApp: app)
 		
 		
 		// Wait for success, the see does new xtzBlance = (old - (send amount + fees))
@@ -266,7 +258,51 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public func testStakeXTZ() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
 		
+		// CHange baker
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["Tez"].tap()
+		
+		let bakerButton = tablesQuery.buttons["token-detials-baker-button"]
+		let currentBakerName = bakerButton.label
+		
+		bakerButton.tap()
+		sleep(2)
+		
+		app.tables.cells.containing(.staticText, identifier: "baker-list-name").element(boundBy: 2).tap()
+		sleep(2)
+		
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(4)
+		
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(2)
+		
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+		sleep(2)
+		
+		// Check baker no longer matches
+		tablesQuery.staticTexts["Tez"].tap()
+		XCTAssert(bakerButton.label != currentBakerName, bakerButton.label)
+		
+		
+		// Switch back to bestie, baking benjamins
+		bakerButton.tap()
+		sleep(2)
+		
+		app.tables.staticTexts[" Baking Benjamins"].tap()
+		sleep(2)
+		
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(4)
+		
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(2)
+		
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+		sleep(2)
 	}
 	
 	
@@ -338,5 +374,12 @@ final class Test_04_Account: XCTestCase {
 	
 	public static func tapBackup(app: XCUIApplication) {
 		app.tables.buttons["account-backup-button"].tap()
+	}
+	
+	public static func slideButtonToComplete(inApp app: XCUIApplication) {
+		let dragButton = app.buttons["slide-button"]
+		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
+		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
 	}
 }

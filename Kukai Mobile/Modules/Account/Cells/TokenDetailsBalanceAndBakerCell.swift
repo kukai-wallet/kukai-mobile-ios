@@ -19,6 +19,7 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 		balance.accessibilityIdentifier = "token-detials-balance"
 		value.text = data.value
 		value.accessibilityIdentifier = "token-detials-balance-value"
+		bakerButton?.accessibilityIdentifier = "token-detials-baker-button"
 		
 		if data.isStaked {
 			bakerButton?.setTitle(data.bakerName, for: .normal)
