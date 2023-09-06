@@ -32,18 +32,6 @@ final class Test_06_Collectibles: XCTestCase {
 		Test_03_Home.handleOpenCollectiblesTab(app: app)
 		sleep(2)
 		
-		/*
-		 searchBar.accessibilityIdentifier = "collectibles-search"
-		 cancelButton.accessibilityIdentifier = "collectibles-search-cancel"
-		 
-		 iconView.accessibilityIdentifier = "collectibles-search-result-image"
-		 
-		 collectionIcon.accessibilityIdentifier = "collecibtles-group-icon"
-		 
-		 iconView.accessibilityIdentifier = "collecibtles-large-icon"
-		 
-		 iconView.accessibilityIdentifier = "collecibtles-single-page-icon"
-		 */
 		
 		// Test content is displayed, currently no favourites
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-large-icon").count > 0)
@@ -104,18 +92,64 @@ final class Test_06_Collectibles: XCTestCase {
 	}
 	
 	func testSearch() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		sleep(2)
 		
-	}
-	
-	func testDetail() {
+		app.collectionViews["collectibles-list-view"].textFields["collectibles-search"].tap()
+		sleep(2)
 		
+		app.typeText("Cookie")
+		sleep(2)
+		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collectibles-search-result-image").count > 0)
+		
+		app.collectionViews["collectibles-list-view"].buttons["collectibles-search-cancel"].tap()
+		sleep(2)
+		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-large-icon").count > 0)
 	}
 	
 	func testSend() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		sleep(2)
 		
+		
+		// Send to empty wallet
+		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
+		sendNFT(to: EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		
+		
+		// Confirm empty displays as single large
+		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		sleep(10)
+		
+		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-single-page-icon").count > 0)
+		
+		
+		// Send back
+		app.collectionViews["collectibles-list-view"].staticTexts["View Details"].tap()
+		sendNFT(to: EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		
+		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-single-page-icon").count == 0)
+		
+		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
-	
-	// MARK: - Helpers
-	
+	private func sendNFT(to: String, inApp app: XCUIApplication) {
+		sleep(2)
+		
+		app.collectionViews.buttons["primary-button"].tap()
+		app.tables.staticTexts[to].tap()
+		
+		sleep(2)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		
+		sleep(5)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+	}
 }

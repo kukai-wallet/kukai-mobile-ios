@@ -23,6 +23,7 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		super.layoutSubviews()
 		
 		gradient.removeFromSuperlayer()
+		buttonView.accessibilityTraits = .button
 		gradient = buttonView.addGradientButtonPrimary(withFrame: buttonView.bounds)
 	}
 	
