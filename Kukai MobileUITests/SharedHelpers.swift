@@ -40,11 +40,6 @@ class SharedHelpers: XCTestCase {
 			launchCount += 1
 		}
 		
-		// TODO: set this up on a schedule, run UITests every midnight UTC on develop: https://jasonet.co/posts/scheduled-actions/#:~:text=The%20schedule%20event%20lets%20you,run%20it%20on%20my%20schedule.%22
-		// Important caveats: https://www.peterullrich.com/setup-recurring-jobs-with-github-actions
-		// Maybe post results into slack
-		
-		
 		return sharedApplication
 	}
 	

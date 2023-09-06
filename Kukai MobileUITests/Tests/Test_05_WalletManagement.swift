@@ -26,26 +26,119 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	// MARK: - Test functions
 	
+	func test_01_addAccount() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		app.tables.buttons["accounts-section-header-more"].tap()
+		app.popovers.tables.staticTexts["Add Account"].tap()
+		sleep(2)
+		
+		let newAccountExists = app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].exists
+		XCTAssert(newAccountExists)
+	}
+	
+	func test_02_editGroupName() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		
+		changeGroupName(to: "Test Group Name", inApp: app)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		XCTAssert(app.tables.staticTexts["Test Group Name"].exists)
+		
+		
+		changeGroupName(to: "HD Wallet 1", inApp: app)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		XCTAssert(app.tables.staticTexts["HD Wallet 1"].exists)
+		
+	}
+	
+	private func changeGroupName(to: String, inApp app: XCUIApplication) {
+		app.tables.buttons["accounts-section-header-more"].tap()
+		app.popovers.tables.staticTexts["Edit Name"].tap()
+		sleep(2)
+		
+		let textField = app.textFields.firstMatch
+		textField.tap()
+		sleep(2)
+		
+		textField.buttons["Clear text"].tap()
+		app.typeText(to)
+		sleep(1)
+	}
+	
+	func test_03_editNewAccountName() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		Test_05_WalletManagement.editMode(app: app)
+		
+		
+		app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].tap()
+		app.textFields["No Custom Name"].tap()
+		sleep(2)
+		
+		app.typeText("Test Wallet Name")
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		XCTAssert(app.tables.staticTexts["Test Wallet Name"].exists)
+		
+		
+		app.tables.staticTexts["Test Wallet Name"].tap()
+		let textField = app.textFields["No Custom Name"]
+		textField.tap()
+		sleep(2)
+		
+		textField.buttons["Clear text"].tap()
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		XCTAssert(app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].exists)
+		
+		Test_05_WalletManagement.exitEditMode(app: app)
+	}
+	
+	func test_04_addNewWallet() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		Test_05_WalletManagement.addMore(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.tapTertiaryButton(app: app)
+		sleep(2)
+		
+		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count
+		XCTAssert(count == 2)
+	}
+	
+	func test_05_goBackToMainWallet() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress()].tap()
+	}
+	
+	
 	
 	
 	
 	// MARK: - Helpers
-	
-	/*
-	 headingLabel.accessibilityIdentifier = "accounts-section-header"
-	 menuButton.accessibilityIdentifier = "accounts-section-header-more"
-	 
-	 
-	 titleLabel.accessibilityIdentifier = "accounts-item-title"
-	 subtitleLabel.accessibilityIdentifier = "accounts-item-subtitle"
-	 checkedImageView.accessibilityIdentifier = "accounts-item-checked"
-	 chevronImageView.accessibilityIdentifier = "accounts-item-chevron"
-	 
-	 
-	 addButtonContainer.accessibilityIdentifier = "accounts-nav-add"
-	 editButtonContainer.accessibilityIdentifier = "accounts-nav-edit"
-	 doneButtonContainer.accessibilityIdentifier = "accounts-nav-done"
-	 */
 	
 	public static func check(app: XCUIApplication, hasSections: Int) {
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count
@@ -112,5 +205,17 @@ final class Test_05_WalletManagement: XCTestCase {
 			app.buttons["Remove"].tap()
 			sleep(2)
 		}
+	}
+	
+	public static func editMode(app: XCUIApplication) {
+		app.navigationBars.buttons["accounts-nav-edit"].tap()
+	}
+	
+	public static func exitEditMode(app: XCUIApplication) {
+		app.navigationBars.buttons["accounts-nav-done"].tap()
+	}
+	
+	public static func addMore(app: XCUIApplication) {
+		app.navigationBars.buttons["accounts-nav-add"].tap()
 	}
 }

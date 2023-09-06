@@ -16,6 +16,7 @@ public struct EnvironmentVariables {
 	
 	let walletAddress_HD: String
 	let walletAddress_HD_account_1: String
+	let walletAddress_HD_account_2: String
 	let walletAddress_HD_password: String
 	let walletAddress_regular: String
 	let walletAddress_regular_password: String
@@ -29,6 +30,7 @@ public struct EnvironmentVariables {
 		
 		walletAddress_HD = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD"] ?? ""
 		walletAddress_HD_account_1 = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_ACCOUNT_1"] ?? ""
+		walletAddress_HD_account_2 = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_ACCOUNT_2"] ?? ""
 		walletAddress_HD_password = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_PASSWORD"] ?? ""
 		walletAddress_regular = ProcessInfo.processInfo.environment["WALLET_ADDRESS_REGULAR"] ?? ""
 		walletAddress_regular_password = ProcessInfo.processInfo.environment["WALLET_ADDRESS_REGULAR_PASSWORD"] ?? ""
