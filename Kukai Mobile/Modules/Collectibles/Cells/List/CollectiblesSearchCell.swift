@@ -17,6 +17,9 @@ class CollectiblesSearchCell: UICollectionViewCell {
 	
 	func setup(sortMenu: MenuViewController) {
 		self.sortMenu = sortMenu
+		
+		searchBar.accessibilityIdentifier = "collectibles-search"
+		cancelButton.accessibilityIdentifier = "collectibles-search-cancel"
 	}
 	
 	@IBAction func sortTapped(_ sender: UIButton) {

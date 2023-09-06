@@ -114,7 +114,8 @@ public class ThemeManager {
 				"TxtBtnSlider1": UIColor("#343994"),
 				"TxtBtnSlider2": UIColor("#343994"),
 				"TxTBtnAlert1": UIColor("#383838"),
-				"TxTBtnAlert4": UIColor("#383838"),
+				"TxTBtnAlert3": UIColor("#666666"),
+				"TxTBtnAlert4": UIColor("#C0C4CF"),
 				"TxtLink": UIColor("#6D75F4"),
 				
 				// Coloured Text
@@ -178,9 +179,11 @@ public class ThemeManager {
 				"BtnGraph1": UIColor("#F1F1F4"),
 				"BtnGraphB1": UIColor("#FFFFFF"),
 				"BtnAlert1": UIColor("#FFFFFF", alpha: 0.6),
+				"BtnAlert3": UIColor("#FFFFFF", alpha: 0.3),
+				"BtnAlert4": UIColor("#FFFFFF", alpha: 0.2),
 				"BtnStrokeAlert1": UIColor("#D34C74"),
-				"BtnAlert4": UIColor("#FFFFFF", alpha: 0.6),
-				"BtnStrokeAlert4": UIColor("#D34C74"),
+				"BtnStrokeAlert3": UIColor("#ED6D94"),
+				"BtnStrokeAlert4": UIColor("#D8DAEF"),
 				
 				// Slider Button
 				"gradSliderCircle-1": UIColor("#FFFFFF"),
@@ -323,6 +326,7 @@ public class ThemeManager {
 				"TxtBtnSlider1": UIColor("#F6F6FA"),
 				"TxtBtnSlider2": UIColor("#F6F6FA"),
 				"TxTBtnAlert1": UIColor("#D5D6E8"),
+				"TxTBtnAlert3": UIColor("#808080"),
 				"TxTBtnAlert4": UIColor("#D5D6E8"),
 				"TxtLink": UIColor("#6D75F4"),
 				
@@ -387,9 +391,11 @@ public class ThemeManager {
 				"BtnGraph1": UIColor("#14141D"),
 				"BtnGraphB1": UIColor("#14141D"),
 				"BtnAlert1": UIColor("#2C0000", alpha: 0.25),
+				"BtnAlert3": UIColor("#5E0101", alpha: 0.25),
+				"BtnAlert4": UIColor("#333232", alpha: 0.2),
 				"BtnStrokeAlert1": UIColor("#D34C74"),
-				"BtnAlert4": UIColor("#2C0000", alpha: 0.2),
-				"BtnStrokeAlert4": UIColor("#D34C74"),
+				"BtnStrokeAlert3": UIColor("#A13A58"),
+				"BtnStrokeAlert4": UIColor("#3D3D3E"),
 				
 				// Slider Button
 				"gradSliderCircle-1": UIColor("#FFFFFF"),

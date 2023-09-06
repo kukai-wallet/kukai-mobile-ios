@@ -47,8 +47,23 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 		self.isHiddenNft = isHidden
 		
 		
-		favouriteButton.customImage = (isFavourited ? .init(named: "FavoritesOn") ?? UIImage() : .init(named: "FavoritesOff") ?? UIImage())
+		favouriteButton.accessibilityIdentifier = "button-favourite"
+		moreButton.accessibilityIdentifier = "button-more"
+		
+		setFavState(isFav: isFavourited)
 		menuVc = menuForMore(sourceViewController: menuSourceVc)
+	}
+	
+	private func setFavState(isFav: Bool) {
+		if isFav {
+			favouriteButton.customImage = UIImage(named: "FavoritesOn") ?? UIImage()
+			favouriteButton.accessibilityValue = "On"
+		} else {
+			favouriteButton.customImage = UIImage(named: "FavoritesOff") ?? UIImage()
+			favouriteButton.accessibilityValue = "Off"
+		}
+		
+		favouriteButton.updateCustomImage()
 	}
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
@@ -184,7 +199,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				favouriteButton.isSelected = false
 				isFavouritedNft = false
-				favouriteButton.customImage = .init(named: "FavoritesOff") ?? UIImage()
+				setFavState(isFav: false)
 				favouriteButton.updateCustomImage()
 				
 			} else {
@@ -196,7 +211,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				favouriteButton.isSelected = true
 				isFavouritedNft = true
-				favouriteButton.customImage = .init(named: "FavoritesOn") ?? UIImage()
+				setFavState(isFav: true)
 				favouriteButton.updateCustomImage()
 				
 			} else {

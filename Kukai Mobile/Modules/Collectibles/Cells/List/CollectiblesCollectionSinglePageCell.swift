@@ -40,6 +40,8 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		} else {
 			mediaIconView.isHidden = true
 		}
+		
+		iconView.accessibilityIdentifier = "collecibtles-single-page-icon"
 	}
 	
 	func downloadingImageViews() -> [UIImageView] {

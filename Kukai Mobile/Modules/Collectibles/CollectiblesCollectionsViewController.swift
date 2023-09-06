@@ -30,6 +30,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
 		collectionView.dataSource = viewModel.dataSource
+		collectionView.accessibilityIdentifier = "collectibles-list-view"
 		collectionView.delegate = self
 		
 		viewModel.$state.sink { [weak self] state in

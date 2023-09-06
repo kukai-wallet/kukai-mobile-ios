@@ -28,6 +28,7 @@ class RemoveWalletViewController: UIViewController {
         super.viewDidLoad()
 		let _ = containerView.addGradientBackgroundModal()
 		
+		removeButton.customButtonType = .destructive
 		cancelButton.customButtonType = .primary
     }
 	

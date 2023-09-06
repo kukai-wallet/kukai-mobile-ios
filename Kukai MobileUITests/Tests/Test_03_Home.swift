@@ -158,7 +158,7 @@ final class Test_03_Home: XCTestCase {
 	}
 	
 	public static func handleOpenCollectiblesTab(app: XCUIApplication) {
-		app.tabBars["Tab Bar"].buttons["Collecitbles"].tap()
+		app.tabBars["Tab Bar"].buttons["Collectibles"].tap()
 	}
 	
 	public static func handleOpenActivityTab(app: XCUIApplication) {

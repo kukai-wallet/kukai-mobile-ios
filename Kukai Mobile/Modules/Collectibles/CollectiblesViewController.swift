@@ -34,7 +34,7 @@ class CollectiblesViewController: UIViewController {
 		segmentedControl.removeBorder()
 		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 14), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 14), defaultColor: UIColor.colorNamed("Txt2"))
 		
-		
+		moreButton.accessibilityIdentifier = "colelctibles-tap-more"
 		
 		DependencyManager.shared.$addressRefreshed
 			.dropFirst()
