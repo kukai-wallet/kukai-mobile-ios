@@ -4,7 +4,7 @@
 //
 //  Created by Simon Mcloughlin on 19/07/2022.
 //
-
+/*
 import UIKit
 
 class LiquidityViewController: UIViewController {
@@ -42,3 +42,5 @@ class LiquidityViewController: UIViewController {
 		TransactionService.shared.currentTransactionType = .removeLiquidity
 	}
 }
+*/
+

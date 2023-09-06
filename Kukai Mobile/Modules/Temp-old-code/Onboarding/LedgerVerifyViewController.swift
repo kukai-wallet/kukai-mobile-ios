@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 05/10/2021.
 //
 
+/*
 import UIKit
 import KukaiCryptoSwift
 import KukaiCoreSwift
@@ -76,3 +77,4 @@ class LedgerVerifyViewController: UIViewController {
 		}*/
 	}
 }
+*/

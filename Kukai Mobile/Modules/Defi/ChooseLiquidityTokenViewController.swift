@@ -4,7 +4,7 @@
 //
 //  Created by Simon Mcloughlin on 08/08/2022.
 //
-
+/*
 import UIKit
 import Combine
 
@@ -44,3 +44,4 @@ class ChooseLiquidityTokenViewController: UITableViewController {
 		self.navigationController?.popViewController(animated: true)
 	}
 }
+*/

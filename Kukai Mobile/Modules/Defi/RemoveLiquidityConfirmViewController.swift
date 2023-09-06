@@ -4,7 +4,7 @@
 //
 //  Created by Simon Mcloughlin on 09/08/2022.
 //
-
+/*
 import UIKit
 import KukaiCoreSwift
 
@@ -118,3 +118,4 @@ extension RemoveLiquidityConfirmViewController: SlideButtonDelegate {
 		}
 	}
 }
+*/

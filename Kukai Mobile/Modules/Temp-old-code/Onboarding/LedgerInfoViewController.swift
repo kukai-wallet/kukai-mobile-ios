@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 21/12/2021.
 //
 
+/*
 import UIKit
 
 class LedgerInfoViewController: UIViewController {
@@ -20,3 +21,4 @@ class LedgerInfoViewController: UIViewController {
 		self.navigationItem.hidesBackButton = false
 	}
 }
+*/

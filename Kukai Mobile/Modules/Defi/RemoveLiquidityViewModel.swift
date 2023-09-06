@@ -4,7 +4,7 @@
 //
 //  Created by Simon Mcloughlin on 29/08/2022.
 //
-
+/*
 import UIKit
 import KukaiCoreSwift
 
@@ -155,3 +155,4 @@ class RemoveLiquidityViewModel: ViewModel {
 		}*/
 	}
 }
+*/
