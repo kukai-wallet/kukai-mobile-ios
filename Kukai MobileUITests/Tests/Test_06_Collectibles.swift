@@ -70,6 +70,33 @@ final class Test_06_Collectibles: XCTestCase {
 		sleep(2)
 		
 		
+		// Hide
+		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
+		sleep(2)
+		
+		app.collectionViews.buttons["button-more"].tap()
+		sleep(1)
+		
+		app.popovers.tables.staticTexts["Hide Collectible"].tap()
+		sleep(1)
+		
+		app.buttons["colelctibles-tap-more"].tap()
+		app.popovers.tables.staticTexts["View Hidden Tokens"].tap()
+		sleep(2)
+		
+		app.tables.staticTexts["Tasty Cookie"].tap()
+		sleep(1)
+		app.collectionViews.buttons["button-more"].tap()
+		sleep(1)
+		
+		app.popovers.tables.staticTexts["Unhide Collectible"].tap()
+		sleep(1)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		
+		
 		// Check recents
 		app.buttons["Recents"].tap()
 		sleep(1)
@@ -84,6 +111,20 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-group-icon").count > 0)
 		
+		// Test collection detail displays
+		app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-group-icon").firstMatch.tap()
+		sleep(2)
+		
+		app.collectionViews.cells.containing(.image, identifier: "collection-item-icon").firstMatch.tap()
+		sleep(2)
+		XCTAssert(app.collectionViews.buttons["primary-button"].exists)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		// Revert group mode
 		app.buttons["colelctibles-tap-more"].tap()
 		app.popovers.tables.staticTexts["Ungroup Collections"].tap()
 		sleep(2)

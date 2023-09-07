@@ -92,6 +92,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		if let c = cell as? CollectiblesCollectionCell {
+			c.layoutIfNeeded()
 			c.addGradientBackground()
 			
 			c.setupCollectionImage(url: viewModel.willDisplayCollectionImage(forIndexPath: indexPath))
