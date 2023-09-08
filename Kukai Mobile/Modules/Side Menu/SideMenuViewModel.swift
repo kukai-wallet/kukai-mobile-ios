@@ -25,10 +25,14 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let  obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
+			if let obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle ?? ""
+				return cell
+				
+			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuAboutCell", for: indexPath) as? SideMenuAboutCell {
+				cell.setup()
 				return cell
 				
 			} else {
@@ -55,7 +59,8 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
-		var options = [
+		var options: [AnyHashable] = []
+		options = [
 			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil, id: "wc2"),
 			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, id: "theme"),
 			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, id: "currency"),
@@ -73,6 +78,8 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			options.append(SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: enabledText, id: "biometric"))
 		}
+		
+		options.append(UUID())
 		
 		snapshot.appendItems(options, toSection: 0)
 		

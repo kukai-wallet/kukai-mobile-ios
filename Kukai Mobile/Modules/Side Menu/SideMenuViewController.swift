@@ -24,6 +24,7 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var regularIcon: UIImageView!
 	@IBOutlet weak var regularTitle: UILabel!
 	
+	@IBOutlet weak var getTezButton: CustomisableButton!
 	@IBOutlet weak var copyButton: CustomisableButton!
 	@IBOutlet weak var showQRButton: CustomisableButton!
 	
@@ -49,6 +50,7 @@ class SideMenuViewController: UIViewController {
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
+		/*
 		copyButton.customButtonType = .secondary
 		copyButton.configuration?.imagePlacement = .leading
 		copyButton.configuration?.imagePadding = 8
@@ -56,6 +58,7 @@ class SideMenuViewController: UIViewController {
 		showQRButton.customButtonType = .secondary
 		showQRButton.configuration?.imagePlacement = .leading
 		showQRButton.configuration?.imagePadding = 8
+		*/
 		
 		viewModel.$state.sink { [weak self] state in
 			guard let self = self else { return }
@@ -138,6 +141,7 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func getTezTapped(_ sender: Any) {
+		self.alert(errorWithMessage: "Under construction")
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {
