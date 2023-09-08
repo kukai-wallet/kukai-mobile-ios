@@ -5,14 +5,11 @@
 //  Created by Simon Mcloughlin on 04/08/2023.
 //
 
-import Foundation
+import UIKit
 
-public struct EnvironmentVariables {
-	
-	public static let shared = EnvironmentVariables()
-	
-	let seedPhrase1: String
-	let seedPhrasePassword: String
+public struct TestConfig {
+	let seed: String
+	let password: String
 	
 	let walletAddress_HD: String
 	let walletAddress_HD_account_1: String
@@ -20,22 +17,58 @@ public struct EnvironmentVariables {
 	let walletAddress_HD_password: String
 	let walletAddress_regular: String
 	let walletAddress_regular_password: String
-	
 	let gmailAddress: String
 	let gmailPassword: String
+}
+
+public struct EnvironmentVariables {
+	
+	public static let shared = EnvironmentVariables()
+	
+	private let config1: String
+	private let config2: String
+	private let config3: String
+	
+	private var extractedConfigs: [Int: TestConfig] = [:]
 	
 	private init() {
-		seedPhrase1 = ProcessInfo.processInfo.environment["SEED_PHRASE_1"] ?? ""
-		seedPhrasePassword = ProcessInfo.processInfo.environment["SEED_PHRASE_PASSWORD"] ?? ""
+		config1 = ProcessInfo.processInfo.environment["CONFIG_1"] ?? ""
+		config2 = ProcessInfo.processInfo.environment["CONFIG_2"] ?? ""
+		config3 = ProcessInfo.processInfo.environment["CONFIG_3"] ?? ""
 		
-		walletAddress_HD = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD"] ?? ""
-		walletAddress_HD_account_1 = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_ACCOUNT_1"] ?? ""
-		walletAddress_HD_account_2 = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_ACCOUNT_2"] ?? ""
-		walletAddress_HD_password = ProcessInfo.processInfo.environment["WALLET_ADDRESS_HD_PASSWORD"] ?? ""
-		walletAddress_regular = ProcessInfo.processInfo.environment["WALLET_ADDRESS_REGULAR"] ?? ""
-		walletAddress_regular_password = ProcessInfo.processInfo.environment["WALLET_ADDRESS_REGULAR_PASSWORD"] ?? ""
+		extractedConfigs = [
+			1: convertStringToConfig(config1),
+			2: convertStringToConfig(config2),
+			3: convertStringToConfig(config3)
+		]
+	}
+	
+	private func convertStringToConfig(_ configString: String) -> TestConfig {
+		let componenets = configString.components(separatedBy: ";")
 		
-		gmailAddress = ProcessInfo.processInfo.environment["GMAIL_ADDRESS"] ?? ""
-		gmailPassword = ProcessInfo.processInfo.environment["GMAIL_PASSWORD"] ?? ""
+		return TestConfig(seed: componenets[0],
+						  password: componenets[1],
+						  walletAddress_HD: componenets[2],
+						  walletAddress_HD_account_1: componenets[3],
+						  walletAddress_HD_account_2: componenets[4],
+						  walletAddress_HD_password: componenets[5],
+						  walletAddress_regular: componenets[6],
+						  walletAddress_regular_password: componenets[7],
+						  gmailAddress: componenets[8],
+						  gmailPassword: componenets[9])
+	}
+	
+	public func config() -> TestConfig {
+		let modelName = UIDevice.modelName
+		
+		if modelName == "Simulator iPhone SE (3rd generation)" {
+			return extractedConfigs[1]!
+			
+		} else if modelName == "Simulator iPhone 14 Pro" {
+			return extractedConfigs[2]!
+			
+		} else {
+			return extractedConfigs[3]!
+		}
 	}
 }

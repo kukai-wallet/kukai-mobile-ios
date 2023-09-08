@@ -18,7 +18,6 @@ final class Test_01_Prechecks: XCTestCase {
     override func tearDownWithError() throws {
     }
 	
-	
 	// Test needs to go first to handle any blocking content, such as apple id session expired, blocking iCloud database
 	func test_01_prechecks() throws {
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")

@@ -8,7 +8,9 @@
 import XCTest
 
 final class Test_04_Account: XCTestCase {
-
+	
+	let testConfig: TestConfig = EnvironmentVariables.shared.config()
+	
    
 	// MARK: - Setup
 	
@@ -172,7 +174,7 @@ final class Test_04_Account: XCTestCase {
 		let tablesQuery = app.tables
 		tablesQuery.staticTexts["Tez"].tap()
 		tablesQuery.buttons["primary-button"].tap()
-		tablesQuery.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress()].tap()
+		tablesQuery.staticTexts[testConfig.walletAddress_HD_account_1.truncateTezosAddress()].tap()
 		
 		let randomDigit1 = Int.random(in: 0..<10)
 		let randomDigit2 = Int.random(in: 0..<10)
@@ -205,16 +207,16 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
 		// Send token to other account
-		sendToken(to: EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		sendToken(to: testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
 		
 		
 		// Swap accounts and send tokens back
-		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
-		sendToken(to: EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		Test_03_Home.switchToAccount(testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		sendToken(to: testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 		
 		
 		// Switch back and end
-		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
 	private func sendToken(to: String, inApp app: XCUIApplication) {
@@ -261,7 +263,7 @@ final class Test_04_Account: XCTestCase {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
-		// CHange baker
+		// Change baker
 		let tablesQuery = app.tables
 		tablesQuery.staticTexts["Tez"].tap()
 		
@@ -365,6 +367,7 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public static func check(app: XCUIApplication, displayingBackup: Bool) {
+		app.swipeUp()
 		SharedHelpers.shared.waitForButton("account-backup-button", exists: displayingBackup, inElement: app.tables, delay: 2)
 	}
 	

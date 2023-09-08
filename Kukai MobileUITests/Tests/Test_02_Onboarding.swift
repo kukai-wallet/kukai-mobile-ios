@@ -9,6 +9,9 @@ import XCTest
 
 final class Test_02_Onboarding: XCTestCase {
 	
+	let testConfig: TestConfig = EnvironmentVariables.shared.config()
+	
+	
 	// MARK: - Setup
 	
     override func setUpWithError() throws {
@@ -96,19 +99,25 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 2)
 		
 		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
-		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
+		
+		if details0.subtitle != nil {
+			XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
+			XCTAssert(details0.subtitle == testConfig.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
+			
+		} else {
+			XCTAssert(details0.title == testConfig.walletAddress_HD.truncateTezosAddress(), details0.title)
+		}
 		
 		let details1 = Test_05_WalletManagement.getWalletDetails(app: app, index: 1)
-		XCTAssert(details1.title == EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), details1.title)
+		XCTAssert(details1.title == testConfig.walletAddress_HD_account_1.truncateTezosAddress(), details1.title)
 		XCTAssert(details1.subtitle == nil, details1.subtitle ?? "-")
 		
 		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
 	func testImportHDWallet_password() {
-		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
-		let seedPassword = EnvironmentVariables.shared.seedPhrasePassword
+		let seedPhrase = testConfig.seed
+		let seedPassword = testConfig.password
 		
 		let app = XCUIApplication()
 		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
@@ -122,7 +131,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// Enter valid address, but not matching
 		Test_02_Onboarding.handleClearingAddress(app: app)
-		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_HD)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: testConfig.walletAddress_HD)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
@@ -133,7 +142,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// Enter matching address and continue import flow
 		Test_02_Onboarding.handleClearingAddress(app: app)
-		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_HD_password)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: testConfig.walletAddress_HD_password)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
@@ -162,7 +171,7 @@ final class Test_02_Onboarding: XCTestCase {
 	}
 	
 	func testImportRegularWallet() {
-		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
+		let seedPhrase = testConfig.seed
 		
 		let app = XCUIApplication()
 		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
@@ -195,8 +204,8 @@ final class Test_02_Onboarding: XCTestCase {
 	}
 	
 	func testImportRegularWallet_password() {
-		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
-		let seedPassword = EnvironmentVariables.shared.seedPhrasePassword
+		let seedPhrase = testConfig.seed
+		let seedPassword = testConfig.password
 		
 		let app = XCUIApplication()
 		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: false)
@@ -204,7 +213,7 @@ final class Test_02_Onboarding: XCTestCase {
 		app.buttons["Advanced"].tap()
 		
 		Test_02_Onboarding.handleRecoveryPassword(app: app, password: seedPassword)
-		Test_02_Onboarding.handleRecoveryAddress(app: app, address: EnvironmentVariables.shared.walletAddress_regular_password)
+		Test_02_Onboarding.handleRecoveryAddress(app: app, address: testConfig.walletAddress_regular_password)
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.switches["legacy-toggle"].tap()
@@ -240,7 +249,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		let enterAddressTextField = app.textFields["Enter Address"]
 		enterAddressTextField.tap()
-		app.typeText(EnvironmentVariables.shared.walletAddress_HD)
+		app.typeText(testConfig.walletAddress_HD)
 		sleep(3)
 		
 		app.buttons["send-button"].tap()
@@ -275,8 +284,14 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
 		
 		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
-		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
+		
+		if details0.subtitle != nil {
+			XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
+			XCTAssert(details0.subtitle == testConfig.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
+			
+		} else {
+			XCTAssert(details0.title == testConfig.walletAddress_HD.truncateTezosAddress(), details0.title)
+		}
 		
 		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
@@ -324,7 +339,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), details0.subtitle ?? "-")
+		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
 		
 		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
@@ -362,7 +377,7 @@ final class Test_02_Onboarding: XCTestCase {
 		}
 		
 		testApp.secureTextFields["Password"].tap()
-		testApp.typeText(EnvironmentVariables.shared.gmailPassword)
+		testApp.typeText(testConfig.gmailPassword)
 		
 		testApp.buttons["Sign In"].tap()
 		
@@ -391,7 +406,8 @@ final class Test_02_Onboarding: XCTestCase {
 	// MARK: - Helpers
 	
 	public static func handleBasicImport(app: XCUIApplication, useAutoComplete: Bool) {
-		let seedPhrase = EnvironmentVariables.shared.seedPhrase1
+		let testConfig = EnvironmentVariables.shared.config()
+		let seedPhrase = testConfig.seed
 		Test_02_Onboarding.handleOnboardingAndRecoveryPhraseEntry(app: app, phrase: seedPhrase, useAutoComplete: useAutoComplete)
 		
 		app.buttons["Import"].tap()
@@ -483,13 +499,13 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		settingsApp.staticTexts["Sign in to your iPhone"].tap()
 		settingsApp.textFields["Email"].tap()
-		settingsApp.typeText(EnvironmentVariables.shared.gmailAddress)
+		settingsApp.typeText(EnvironmentVariables.shared.config().gmailAddress)
 		
 		settingsApp.buttons["Next"].tap()
 		sleep(4)
 		
 		settingsApp.secureTextFields["Required"].tap()
-		settingsApp.typeText(EnvironmentVariables.shared.gmailPassword)
+		settingsApp.typeText(EnvironmentVariables.shared.config().gmailPassword)
 		
 		
 		settingsApp.buttons["Next"].tap()
@@ -510,7 +526,7 @@ final class Test_02_Onboarding: XCTestCase {
 		if alert.exists {
 			if alert.label == "Sign in to iCloud" {
 				alert.scrollViews.secureTextFields["Password"].tap()
-				springboard.typeText(EnvironmentVariables.shared.gmailPassword)
+				springboard.typeText(EnvironmentVariables.shared.config().gmailPassword)
 				alert.scrollViews.buttons["OK"].tap()
 				
 				sleep(5)

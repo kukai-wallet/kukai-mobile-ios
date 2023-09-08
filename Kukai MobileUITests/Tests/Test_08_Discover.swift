@@ -22,11 +22,6 @@ final class Test_08_Discover: XCTestCase {
 		
 	}
 	
-	// "discover-item-image"
-	// titleLabel.accessibilityIdentifier = "discover-item-show-more-title"
-	// collectionView.accessibilityIdentifier = "discover-featured-cell"
-	// "discover-featured-cell-image"
-	
 	
 	
 	// MARK: - Test functions

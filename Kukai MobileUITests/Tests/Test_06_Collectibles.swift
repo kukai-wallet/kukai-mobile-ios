@@ -9,6 +9,8 @@ import XCTest
 
 final class Test_06_Collectibles: XCTestCase {
 	
+	let testConfig: TestConfig = EnvironmentVariables.shared.config()
+	
 	
 	// MARK: - Setup
 	
@@ -159,11 +161,11 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		// Send to empty wallet
 		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
-		sendNFT(to: EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		sendNFT(to: testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
 		
 		
 		// Confirm empty displays as single large
-		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
+		Test_03_Home.switchToAccount(testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
 		sleep(10)
 		
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-single-page-icon").count > 0)
@@ -171,11 +173,11 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		// Send back
 		app.collectionViews["collectibles-list-view"].staticTexts["View Details"].tap()
-		sendNFT(to: EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		sendNFT(to: testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 		
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-single-page-icon").count == 0)
 		
-		Test_03_Home.switchToAccount(EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress(), inApp: app)
+		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
 	private func sendNFT(to: String, inApp app: XCUIApplication) {

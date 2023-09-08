@@ -8,7 +8,9 @@
 import XCTest
 
 final class Test_05_WalletManagement: XCTestCase {
-
+	
+	let testConfig: TestConfig = EnvironmentVariables.shared.config()
+	
 	
 	// MARK: - Setup
 	
@@ -36,7 +38,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		app.popovers.tables.staticTexts["Add Account"].tap()
 		sleep(2)
 		
-		let newAccountExists = app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].exists
+		let newAccountExists = app.tables.staticTexts[testConfig.walletAddress_HD_account_2.truncateTezosAddress()].exists
 		XCTAssert(newAccountExists)
 	}
 	
@@ -83,7 +85,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		Test_05_WalletManagement.editMode(app: app)
 		
 		
-		app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].tap()
+		app.tables.staticTexts[testConfig.walletAddress_HD_account_2.truncateTezosAddress()].tap()
 		app.textFields["No Custom Name"].tap()
 		sleep(2)
 		
@@ -101,7 +103,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		textField.buttons["Clear text"].tap()
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		sleep(2)
-		XCTAssert(app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD_account_2.truncateTezosAddress()].exists)
+		XCTAssert(app.tables.staticTexts[testConfig.walletAddress_HD_account_2.truncateTezosAddress()].exists)
 		
 		Test_05_WalletManagement.exitEditMode(app: app)
 	}
@@ -131,7 +133,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		Test_03_Home.handleOpenWalletManagement(app: app)
 		sleep(2)
 		
-		app.tables.staticTexts[EnvironmentVariables.shared.walletAddress_HD.truncateTezosAddress()].tap()
+		app.tables.staticTexts[testConfig.walletAddress_HD.truncateTezosAddress()].tap()
 	}
 	
 	
