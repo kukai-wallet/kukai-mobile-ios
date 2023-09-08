@@ -41,6 +41,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.setupAppearence()
 		self.delegate = self
 		
+		sideMenuTintView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(closeSideMenu)))
+		sideMenuTintView.isUserInteractionEnabled = true
+		
 		sideMenuButton.accessibilityIdentifier = "home-button-side"
 		accountButton.accessibilityIdentifier = "home-button-account"
 		scanButton.accessibilityIdentifier = "home-button-scan"
@@ -156,6 +159,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		WalletConnectService.shared.delegate = self
 	}
 	
+	@objc private func closeSideMenu() {
+		sideMenuVc?.closeTapped(self)
+	}
+	
 	public func refreshSideMenu() {
 		sideMenuVc?.viewModel.refresh(animate: true)
 	}
@@ -245,7 +252,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		sideMenuTintView.alpha = 0
 		
 		
-		let sideMenuWidth = currentWindow.bounds.width - 30
+		let sideMenuWidth = currentWindow.bounds.width - 50
 		self.sideMenuVc?.view.frame = CGRect(x: sideMenuWidth * -1, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
 		currentWindow.addSubview(sideMenuTintView)
 		currentWindow.addSubview(sideMenuVc?.view ?? UIView())

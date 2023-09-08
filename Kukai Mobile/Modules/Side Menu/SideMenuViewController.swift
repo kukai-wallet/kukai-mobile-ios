@@ -39,6 +39,8 @@ class SideMenuViewController: UIViewController {
 		
 		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
+		self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(touched(_:))))
+		
 		scanButton.configuration?.imagePlacement = .trailing
 		scanButton.configuration?.imagePadding = 6
 		
@@ -117,6 +119,16 @@ class SideMenuViewController: UIViewController {
 		} completion: { [weak self] done in
 			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
 			self?.view.removeFromSuperview()
+		}
+	}
+	
+	@objc private func touched(_ gestureRecognizer: UIPanGestureRecognizer) {
+		let velocity = gestureRecognizer.velocity(in: view)
+		
+		if gestureRecognizer.state == .ended {
+			if velocity.x < -150 {
+				self.closeTapped(self)
+			}
 		}
 	}
 	
