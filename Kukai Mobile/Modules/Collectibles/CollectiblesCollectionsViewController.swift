@@ -30,6 +30,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
 		collectionView.dataSource = viewModel.dataSource
+		collectionView.accessibilityIdentifier = "collectibles-list-view"
 		collectionView.delegate = self
 		
 		viewModel.$state.sink { [weak self] state in
@@ -91,6 +92,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		if let c = cell as? CollectiblesCollectionCell {
+			c.layoutIfNeeded()
 			c.addGradientBackground()
 			
 			c.setupCollectionImage(url: viewModel.willDisplayCollectionImage(forIndexPath: indexPath))

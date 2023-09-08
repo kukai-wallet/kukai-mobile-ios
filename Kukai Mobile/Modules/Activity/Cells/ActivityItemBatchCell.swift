@@ -28,7 +28,6 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	}
 	
 	func setup(data: TzKTTransactionGroup) {
-		
 		// Time or confirmed
 		let timeSinceNow = (data.transactions[0].date ?? Date()).timeIntervalSince(Date())
 		if data.transactions[0].status == .unconfirmed {

@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 28/07/2022.
 //
 
+/*
 import UIKit
 import Combine
 
@@ -54,3 +55,4 @@ class LiquidityTokenDetailsViewController: UIViewController {
 		viewModel.withdrawRewards()
 	}
 }
+*/

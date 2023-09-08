@@ -101,6 +101,10 @@ class SlideButton: UIView {
 		label.text = self.textDefault
 		progressCoverView.alpha = 0
 		activityIndicator.isHidden = true
+		
+		buttonView.accessibilityIdentifier = "slide-button"
+		buttonView.accessibilityTraits = .button
+		containerView.accessibilityIdentifier = "slide-button-container"
 	}
 	
 	@objc private func touched(_ gestureRecognizer: UIGestureRecognizer) {

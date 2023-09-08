@@ -36,6 +36,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		headerPriceChangeDate.accessibilityIdentifier = "token-details-selected-date"
+		
 		viewModel.token = TransactionService.shared.sendData.chosenToken
 		viewModel.delegate = self
 		viewModel.chartDelegate = self

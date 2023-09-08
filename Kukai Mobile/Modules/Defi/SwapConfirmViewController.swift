@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 22/07/2022.
 //
 
+/*
 import UIKit
 import KukaiCoreSwift
 
@@ -178,3 +179,4 @@ extension SwapConfirmViewController: SlideButtonDelegate {
 		}
 	}
 }
+*/

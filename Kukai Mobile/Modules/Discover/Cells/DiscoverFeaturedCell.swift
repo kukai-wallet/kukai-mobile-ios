@@ -26,6 +26,9 @@ class DiscoverFeaturedCell: UITableViewCell {
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		
+		collectionView.accessibilityIdentifier = "discover-featured-cell"
+		pageControl.accessibilityIdentifier = "discover-featured-page-control"
+		
 		collectionView.dataSource = self
 		collectionView.delegate = self
 		

@@ -30,6 +30,8 @@ class CollectiblesCollectionLargeCell: UICollectionViewCell {
 		} else {
 			mediaIconView.isHidden = true
 		}
+		
+		iconView.accessibilityIdentifier = "collecibtles-large-icon"
 	}
 	
 	func downloadingImageViews() -> [UIImageView] {

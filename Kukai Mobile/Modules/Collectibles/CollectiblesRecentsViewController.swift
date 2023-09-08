@@ -24,6 +24,7 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
 		collectionView.dataSource = viewModel.dataSource
+		collectionView.accessibilityIdentifier = "collectibles-recents-view"
 		collectionView.delegate = self
 		collectionView.collectionViewLayout = createLayout()
 		

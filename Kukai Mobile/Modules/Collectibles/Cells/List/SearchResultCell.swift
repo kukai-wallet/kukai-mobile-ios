@@ -23,5 +23,7 @@ class SearchResultCell: UICollectionViewCell {
 		} else {
 			quantityView.isHidden = true
 		}
+		
+		iconView.accessibilityIdentifier = "collectibles-search-result-image"
 	}
 }

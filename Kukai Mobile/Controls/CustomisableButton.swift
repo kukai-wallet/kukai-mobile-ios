@@ -14,6 +14,7 @@ class CustomisableButton: UIButton {
 		case primary
 		case secondary
 		case tertiary
+		case destructive
 		case none
 	}
 	
@@ -29,19 +30,28 @@ class CustomisableButton: UIButton {
 			
 			switch self.customButtonType {
 				case .primary, .none:
+					accessibilityIdentifier = "primary-button"
 					setTitleColor(.colorNamed("TxtBtnPrim1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnPrim3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnPrim4"), for: .disabled)
 				
 				case .secondary:
+					accessibilityIdentifier = "secondary-button"
 					setTitleColor(.colorNamed("TxtBtnSec1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnSec3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnSec4"), for: .disabled)
 					
 				case .tertiary:
+					accessibilityIdentifier = "tertiary-button"
 					setTitleColor(.colorNamed("TxtBtnTer1"), for: .normal)
 					setTitleColor(.colorNamed("TxtBtnTer3"), for: .highlighted)
 					setTitleColor(.colorNamed("TxtBtnTer4"), for: .disabled)
+					
+				case .destructive:
+					accessibilityIdentifier = "destructive-button"
+					setTitleColor(.colorNamed("TxTBtnAlert1"), for: .normal)
+					setTitleColor(.colorNamed("TxTBtnAlert3"), for: .highlighted)
+					setTitleColor(.colorNamed("TxtBtnAlert4"), for: .disabled)
 			}
 			
 			previousFrame = CGRect(x: -1, y: -1, width: -1, height: -1)
@@ -129,6 +139,21 @@ class CustomisableButton: UIButton {
 				} else {
 					gradientLayer = self.addGradientButtonTertiaryDisabledBorder()
 					self.backgroundColor = UIColor.colorNamed("BtnTer4")
+				}
+				
+			case .destructive:
+				
+				if isEnabled && !isHighlighted  {
+					self.borderColor = UIColor.colorNamed("BtnStrokeAlert1")
+					self.backgroundColor = UIColor.colorNamed("BtnAlert1")
+					
+				}  else if isHighlighted {
+					self.borderColor = UIColor.colorNamed("BtnStrokeAlert3")
+					self.backgroundColor = UIColor.colorNamed("BtnAlert3")
+					
+				} else {
+					self.borderColor = UIColor.colorNamed("BtnStrokeAlert4")
+					self.backgroundColor = UIColor.colorNamed("BtnAlert4")
 				}
 				
 			case .none:

@@ -11,6 +11,7 @@ import KukaiCoreSwift
 
 class SideMenuViewController: UIViewController {
 
+	@IBOutlet weak var closeButton: CustomisableButton!
 	@IBOutlet weak var scanButton: CustomisableButton!
 	
 	@IBOutlet weak var currentAccountContainer: UIView!
@@ -35,6 +36,8 @@ class SideMenuViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
+		
+		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
 		scanButton.configuration?.imagePlacement = .trailing
 		scanButton.configuration?.imagePadding = 6

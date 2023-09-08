@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 19/07/2022.
 //
 
+/*
 import UIKit
 
 class SwapTokenCell: UITableViewCell {
@@ -18,3 +19,4 @@ class SwapTokenCell: UITableViewCell {
         super.awakeFromNib()
     }
 }
+*/

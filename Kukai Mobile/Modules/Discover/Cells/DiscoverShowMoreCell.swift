@@ -12,6 +12,12 @@ class DiscoverShowMoreCell: UITableViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var chevron: UIImageView!
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		
+		titleLabel.accessibilityIdentifier = "discover-item-show-more-title"
+	}
+	
 	func setOpen() {
 		titleLabel.text = "Show Less"
 		chevron.rotate(degrees: -90, duration: 0.3)

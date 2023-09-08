@@ -28,6 +28,8 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	func setup(title: String, totalCount: Int?) {
 		self.collectionName.text = title
 		self.totalCount = totalCount
+		
+		collectionIcon.accessibilityIdentifier = "collecibtles-group-icon"
 	}
 	
 	func setup(iconImage: UIImage?, title: String, totalCount: Int?) {

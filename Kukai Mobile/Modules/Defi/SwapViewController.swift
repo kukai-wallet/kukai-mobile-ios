@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 19/07/2022.
 //
 
+/*
 import UIKit
 import KukaiCoreSwift
 import Combine
@@ -162,3 +163,4 @@ extension SwapViewController: ValidatorTextFieldDelegate {
 		
 	}
 }
+*/

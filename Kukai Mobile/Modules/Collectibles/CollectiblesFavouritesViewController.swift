@@ -24,6 +24,7 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		
 		collectionView.dataSource = viewModel.dataSource
+		collectionView.accessibilityIdentifier = "collectibles-fav-view"
 		collectionView.delegate = self
 		collectionView.collectionViewLayout = createLayout()
 		

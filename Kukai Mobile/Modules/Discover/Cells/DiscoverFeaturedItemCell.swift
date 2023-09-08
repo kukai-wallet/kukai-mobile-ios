@@ -17,6 +17,7 @@ class DiscoverFeaturedItemCell: UICollectionViewCell {
 	
 	func setup(categories: [String], imageURL: URL?, title: String, description: String, pageWidth: CGFloat) {
 		self.imageViewWidthConstraint.constant = pageWidth
+		iconView.accessibilityIdentifier = "discover-featured-cell-image"
 		
 		MediaProxyService.load(url: imageURL, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
 		

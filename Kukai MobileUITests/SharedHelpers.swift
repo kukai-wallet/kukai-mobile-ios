@@ -29,21 +29,16 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - Helpers
 	
-	func application(clearContacts: Bool = false) -> XCUIApplication {
+	func application(resetForEveryInvocation: Bool = false) -> XCUIApplication {
 		sharedApplication.launchEnvironment = ["XCUITEST-KEYBOARD": "true"]
 		sharedApplication.launchEnvironment = ["XCUITEST-GHOSTNET": "true"]
 		
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
-		if launchCount == 0 {
+		if (resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation {
 			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}
-		
-		// TODO: set this up on a schedule, run UITests every midnight UTC on develop: https://jasonet.co/posts/scheduled-actions/#:~:text=The%20schedule%20event%20lets%20you,run%20it%20on%20my%20schedule.%22
-		// Important caveats: https://www.peterullrich.com/setup-recurring-jobs-with-github-actions
-		// Maybe post results into slack
-		
 		
 		return sharedApplication
 	}
@@ -52,52 +47,50 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - Check exists
 	
-	func waitForStaticText(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.staticTexts[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
-		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
+	func waitFor(predicate: NSPredicate, obj: Any?, delay: TimeInterval) {
+		expectation(for: predicate, evaluatedWith: obj, handler: nil)
 		waitForExpectations(timeout: delay, handler: nil)
 	}
 	
-	func waitForStaticText(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.staticTexts[string]
+	func waitForStaticText(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.staticTexts[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
-	func waitForButton(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.buttons[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+	func waitForAnyStaticText(_ strings: [String], exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		var predicates: [NSPredicate] = []
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		for str in strings {
+			predicates.append(NSPredicate(block: { _, _ in
+				inElement.staticTexts[str].exists
+			}))
+		}
+		
+		let predicate = NSCompoundPredicate(orPredicateWithSubpredicates: predicates)
+		waitFor(predicate: predicate, obj: nil, delay: delay)
 	}
 	
-	func waitForButton(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.buttons[string]
+	func waitForButton(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.buttons[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
-	func waitForImage(_ string: String, exists: Bool, inApp app: XCUIApplication, delay: TimeInterval) {
-		let obj = app.images[string]
+	func waitForImage(_ string: String, exists: Bool, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.images[string]
 		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
-	func waitForImage(_ string: String, exists: Bool, inElement element: XCUIElementQuery, delay: TimeInterval) {
-		let obj = element.images[string]
-		let exists = NSPredicate(format: "exists == \( exists ? 1 : 0)")
+	func waitForImage(_ string: String, valueIs: String, inElement: XCUIElementTypeQueryProvider, delay: TimeInterval) {
+		let obj = inElement.images[string]
+		let exists = NSPredicate(format: "value == \"\(valueIs)\"")
 		
-		expectation(for: exists, evaluatedWith: obj, handler: nil)
-		waitForExpectations(timeout: delay, handler: nil)
+		waitFor(predicate: exists, obj: obj, delay: delay)
 	}
 	
 	
@@ -105,7 +98,7 @@ class SharedHelpers: XCTestCase {
 	// MARK: - Keyboard
 	
 	func type(app: XCUIApplication, text: String) {
-		let containsLetters = text.rangeOfCharacter(from: NSCharacterSet.letters) != nil
+		/*let containsLetters = text.rangeOfCharacter(from: NSCharacterSet.letters) != nil
 		let containsNumbers = text.rangeOfCharacter(from: NSCharacterSet.decimalDigits) != nil
 		let needsToSwtichKeyboards = (containsLetters && containsNumbers)
 		
@@ -140,6 +133,11 @@ class SharedHelpers: XCTestCase {
 					app.keys[charAsString].tap()
 				}
 			}
+		}*/
+		
+		for char in text {
+			let charAsString = "\(char)"
+			app.keys[charAsString].tap()
 		}
 	}
 	
@@ -196,6 +194,37 @@ class SharedHelpers: XCTestCase {
 	}
 	
 	func navigationBack(app: XCUIApplication) {
-		app.navigationBars.firstMatch.buttons["Back"].tap()
+		app.navigationBars.firstMatch.buttons.firstMatch.tap()
+	}
+	
+	func tapPrimaryButton(app: XCUIApplication) {
+		app.buttons["primary-button"].tap()
+	}
+	
+	func tapSecondaryButton(app: XCUIApplication) {
+		app.buttons["secondary-button"].tap()
+	}
+	
+	func tapTertiaryButton(app: XCUIApplication) {
+		app.buttons["tertiary-button"].tap()
+	}
+	
+	
+	
+	// MARK: - value checks
+	
+	public static func getSanitizedDecimal(fromStaticText: String, in element: XCUIElementTypeQueryProvider, elementNumber: Int = 0) -> Decimal {
+		let el = element.staticTexts[fromStaticText].firstMatch.label
+		return sanitizeStringToDecimal(el)
+	}
+	
+	public static func sanitizeStringToDecimal(_ value: String) -> Decimal {
+		var sanitised = value.replacingOccurrences(of: ",", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "$", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "€", with: "")
+		sanitised = sanitised.replacingOccurrences(of: "%", with: "")
+		sanitised = sanitised.components(separatedBy: " ").first ?? ""
+		
+		return Decimal(string: sanitised) ?? 0
 	}
 }

@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 09/11/2021.
 //
 
+/*
 import UIKit
 import Combine
 import KukaiCoreSwift
@@ -133,3 +134,4 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		processTokens(animate: true)
 	}
 }
+*/

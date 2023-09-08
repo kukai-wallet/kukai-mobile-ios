@@ -23,7 +23,6 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 	var gradientLayer = CAGradientLayer()
 	
 	func setup(data: TzKTTransaction) {
-		
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
 		if data.status == .unconfirmed {

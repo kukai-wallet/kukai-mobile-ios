@@ -17,13 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		setupTheme()
 		StorageService.runCleanupChecks()
 		
-		#if targetEnvironment(simulator)
+		/*#if targetEnvironment(simulator)
 			// If running on simulator, print documents directory to help with debugging
 			if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
 				print("Documents Directory: \(documentsPath) \n\n")
 			}
 		
-		#else
+		#else*/
 			// If not running on simulator, Setup Sentry, but with Anonymous events
 			SentrySDK.start { options in
 				options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					return event
 				}
 			}
-		#endif
+		//#endif
 		
 		// Airplay audio/video support
 		application.beginReceivingRemoteControlEvents()
@@ -107,6 +107,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			TransactionService.shared.resetAllState()
 			StorageService.deleteKeychainItems()
+			TokenStateService.shared.deleteAllCaches()
+			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier ?? "")
 		}
 	}
 	

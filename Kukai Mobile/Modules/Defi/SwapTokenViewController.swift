@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 09/11/2021.
 //
 
+/*
 import UIKit
 import Combine
 
@@ -84,3 +85,4 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 		self.tableView.reloadData()
 	}
 }
+*/

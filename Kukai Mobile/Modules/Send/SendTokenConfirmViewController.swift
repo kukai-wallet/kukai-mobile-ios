@@ -139,6 +139,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		
 		// Fees and amount view config
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
 		updateFees()
 		
@@ -316,7 +317,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 																				   parameters: parameters,
 																				   primaryToken: nil)
 		} else {
-			token?.balance = amount
+			let newToken = Token(name: token?.name, symbol: token?.symbol ?? "", tokenType: token?.tokenType ?? .fungible, faVersion: token?.faVersion, balance: amount, thumbnailURL: token?.thumbnailURL, tokenContractAddress: token?.tokenContractAddress, tokenId: token?.tokenId, nfts: token?.nfts, mintingTool: token?.mintingTool)
 			addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
 																				   type: .transaction,
 																				   counter: counter,
@@ -325,7 +326,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 																				   destinationAlias: destinationAlias,
 																				   xtzAmount: .zero(),
 																				   parameters: parameters,
-																				   primaryToken: token)
+																				   primaryToken: newToken)
 		}
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)

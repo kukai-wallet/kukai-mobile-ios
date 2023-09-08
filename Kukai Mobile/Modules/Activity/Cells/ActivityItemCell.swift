@@ -40,6 +40,9 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	}
 	
 	func setup(data: TzKTTransaction) {
+		iconView.accessibilityIdentifier = "activity-item-icon"
+		typeLabel.accessibilityIdentifier = "activity-type-label"
+		titleLabel.accessibilityIdentifier = "activity-item-title"
 		
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())

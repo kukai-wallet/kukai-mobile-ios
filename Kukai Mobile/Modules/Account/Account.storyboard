@@ -184,7 +184,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSc-km-vdB">
-                                                    <rect key="frame" x="112" y="2" width="257" height="24"/>
+                                                    <rect key="frame" x="98" y="2" width="271" height="24"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
@@ -196,7 +196,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="4" width="80" height="20"/>
+                                                    <rect key="frame" x="16" y="-2" width="66" height="32"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -598,6 +598,7 @@
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getting Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaX-dE-p7M">
                                                             <rect key="frame" x="16" y="20.333333333333336" width="159" height="26.666666666666664"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="account-getting-started-header"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
@@ -681,7 +682,7 @@
                                                     <rect key="frame" x="16" y="16" width="361" height="180"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Receive Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ij-BE-VqB">
-                                                            <rect key="frame" x="16" y="21.666666666666664" width="153.33333333333334" height="26.666666666666664"/>
+                                                            <rect key="frame" x="16" y="21.666666666666664" width="150.33333333333334" height="26.666666666666664"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
@@ -754,6 +755,7 @@
                                             <outlet property="containerView" destination="p5E-1m-530" id="8Ht-Bi-TVG"/>
                                             <outlet property="copyButton" destination="Rdt-d8-lSF" id="M9T-cT-eeM"/>
                                             <outlet property="qrButton" destination="EKG-xY-HYO" id="NfG-GD-M7M"/>
+                                            <outlet property="receiveAssetsTitle" destination="2ij-BE-VqB" id="WSR-6W-E9r"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1339,11 +1341,11 @@
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstItem="Fd9-v5-h5P" firstAttribute="top" secondItem="O8q-Fb-K5L" secondAttribute="bottom" constant="2" id="2pq-uV-JIN"/>
+                                                        <constraint firstAttribute="bottom" secondItem="Fd9-v5-h5P" secondAttribute="bottom" constant="12" id="K54-1x-odm"/>
                                                         <constraint firstItem="O8q-Fb-K5L" firstAttribute="leading" secondItem="ozB-Tc-i01" secondAttribute="trailing" constant="14" id="Nbo-en-e3a"/>
                                                         <constraint firstItem="O8q-Fb-K5L" firstAttribute="top" secondItem="ozB-Tc-i01" secondAttribute="top" id="k4j-Fy-R2O"/>
                                                         <constraint firstItem="ozB-Tc-i01" firstAttribute="top" secondItem="jS4-U7-14d" secondAttribute="top" constant="8" id="nDt-D3-Tc1"/>
                                                         <constraint firstItem="ozB-Tc-i01" firstAttribute="leading" secondItem="jS4-U7-14d" secondAttribute="leading" constant="16" id="ugN-nF-38F"/>
-                                                        <constraint firstAttribute="bottom" secondItem="ozB-Tc-i01" secondAttribute="bottom" priority="999" constant="8" id="vCH-9J-DiT"/>
                                                         <constraint firstAttribute="trailing" secondItem="O8q-Fb-K5L" secondAttribute="trailing" constant="16" id="wrf-dP-amv"/>
                                                         <constraint firstAttribute="trailing" secondItem="Fd9-v5-h5P" secondAttribute="trailing" constant="16" id="xBm-hf-TLY"/>
                                                         <constraint firstItem="Fd9-v5-h5P" firstAttribute="leading" secondItem="O8q-Fb-K5L" secondAttribute="leading" id="xLM-u7-fSA"/>

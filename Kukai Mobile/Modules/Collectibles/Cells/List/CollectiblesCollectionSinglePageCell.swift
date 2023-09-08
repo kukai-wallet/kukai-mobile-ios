@@ -23,6 +23,7 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		super.layoutSubviews()
 		
 		gradient.removeFromSuperlayer()
+		buttonView.accessibilityTraits = .button
 		gradient = buttonView.addGradientButtonPrimary(withFrame: buttonView.bounds)
 	}
 	
@@ -40,6 +41,8 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		} else {
 			mediaIconView.isHidden = true
 		}
+		
+		iconView.accessibilityIdentifier = "collecibtles-single-page-icon"
 	}
 	
 	func downloadingImageViews() -> [UIImageView] {
