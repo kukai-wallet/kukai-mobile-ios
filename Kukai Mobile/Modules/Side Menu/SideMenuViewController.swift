@@ -32,7 +32,6 @@ class SideMenuViewController: UIViewController {
 	
 	public let viewModel = SideMenuViewModel()
 	private var bag = [AnyCancellable]()
-	
 	private var previousPanX: CGFloat = 0
 	
 	public weak var homeTabBarController: HomeTabBarController? = nil
@@ -51,16 +50,6 @@ class SideMenuViewController: UIViewController {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
-		
-		/*
-		copyButton.customButtonType = .secondary
-		copyButton.configuration?.imagePlacement = .leading
-		copyButton.configuration?.imagePadding = 8
-		
-		showQRButton.customButtonType = .secondary
-		showQRButton.configuration?.imagePlacement = .leading
-		showQRButton.configuration?.imagePadding = 8
-		*/
 		
 		viewModel.$state.sink { [weak self] state in
 			guard let self = self else { return }

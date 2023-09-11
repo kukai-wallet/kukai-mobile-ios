@@ -7,9 +7,12 @@
 
 import UIKit
 
-class SideMenuOptionCell: UITableViewCell {
+class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
+	
+	var containerView: UIView! = UIView()
+	var gradientLayer: CAGradientLayer = CAGradientLayer()
 }
