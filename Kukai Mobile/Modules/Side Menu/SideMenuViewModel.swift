@@ -49,19 +49,13 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		//let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
-		//let selectedTheme = ThemeManager.shared.currentTheme()
-		//let selectedNetwork = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0])
 		
-		
-		//let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
 		var options: [AnyHashable] = []
 		options = [
-			
 			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, id: "settings"),
 			SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, id: "security"),
 			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, id: "connected"),
@@ -70,26 +64,10 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			/*
 			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil, id: "wc2"),
-			SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, id: "theme"),
-			SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, id: "currency"),
-			SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, id: "network"),
 			*/
 		]
 		
 		
-		/*
-		if CurrentDevice.biometricTypeAuthorized() != .unavailable {
-			let biometricType = CurrentDevice.biometricTypeSupported()
-			let title = biometricType == .faceID ? "Face ID" : "Touch ID"
-			let image = biometricType == .faceID ? UIImage(systemName: "faceid") : UIImage(systemName: "touchid")
-			var enabledText = StorageService.isBiometricEnabled() ? "Enabled" : "Disabled"
-			if CurrentDevice.biometricTypeAuthorized() == .none {
-				enabledText = "Not Authorized"
-			}
-			
-			options.append(SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: enabledText, id: "biometric"))
-		}
-		*/
 		
 		options.append(UUID())
 		
@@ -109,37 +87,15 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			case "settings":
 				return (segue: "side-menu-settings", collapseAndNavigate: true)
 				
+			case "security":
+				return (segue: "side-menu-security", collapseAndNavigate: true)
+				
 			/*
 			case "wc2":
 				return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
-				
-			case "theme":
-				return (segue: "theme", collapseAndNavigate: false)
-				
-			case "currency":
-				return (segue: "side-menu-currency", collapseAndNavigate: true)
-				
-			case "network":
-				return (segue: "side-menu-network", collapseAndNavigate: false)
-				
-			case "biometric":
-				if CurrentDevice.biometricTypeAuthorized() == .none {
-					return nil
-					
-				} else {
-					return (segue: "biometric", collapseAndNavigate: false)
-				}
 			*/
 			default:
 				return nil
 		}
-	}
-	
-	func isBiometricCell(forIndexPath: IndexPath) -> Bool {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
-			return false
-		}
-		
-		return obj.id == "biometric"
 	}
 }

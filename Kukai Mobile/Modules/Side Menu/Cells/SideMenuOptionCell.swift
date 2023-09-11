@@ -13,6 +13,8 @@ class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	
+	@IBOutlet weak var toggle: UISwitch?
+	
 	var containerView: UIView! = UIView()
 	var gradientLayer: CAGradientLayer = CAGradientLayer()
 }

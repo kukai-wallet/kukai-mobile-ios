@@ -228,8 +228,13 @@ extension SideMenuViewController: UITableViewDelegate {
 				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
 			}
 			
-		} else if viewModel.isBiometricCell(forIndexPath: indexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+		}
+		
+		
+		/*
+		else if viewModel.isBiometricCell(forIndexPath: indexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
 			UIApplication.shared.open(settingsURL)
 		}
+		*/
 	}
 }
