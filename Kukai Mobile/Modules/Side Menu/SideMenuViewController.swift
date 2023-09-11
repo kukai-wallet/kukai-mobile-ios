@@ -33,6 +33,8 @@ class SideMenuViewController: UIViewController {
 	public let viewModel = SideMenuViewModel()
 	private var bag = [AnyCancellable]()
 	
+	private var previousPanX: CGFloat = 0
+	
 	public weak var homeTabBarController: HomeTabBarController? = nil
 	
 	override func viewDidLoad() {
@@ -117,7 +119,7 @@ class SideMenuViewController: UIViewController {
 		let frame = self.view.frame
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.homeTabBarController?.sideMenuTintView.alpha = 0
-			self?.view.frame = CGRect(x: frame.width * -1, y: 0, width: frame.width, height: frame.height)
+			self?.view.frame = CGRect(x: frame.origin.x + (frame.width * -1), y: 0, width: frame.width, height: frame.height)
 			
 		} completion: { [weak self] done in
 			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
@@ -127,10 +129,47 @@ class SideMenuViewController: UIViewController {
 	
 	@objc private func touched(_ gestureRecognizer: UIPanGestureRecognizer) {
 		let velocity = gestureRecognizer.velocity(in: view)
+		let location = gestureRecognizer.location(in: view)
+		let currentFrame = self.view.frame
 		
+		let currentPanX = location.x
+		if previousPanX == 0 {
+			previousPanX = currentPanX
+		}
+		
+		let change = (previousPanX - currentPanX)
+		let newX = currentFrame.origin.x - change
+		
+		
+		// If user is panning left, animate the position of the view left
+		// If view reaches a treshold, close
+		// If attempt to pan right (> 0), cancel
+		if newX > 0 {
+			return
+			
+		} else if (newX * -1) >= (currentFrame.width / 1.5) {
+			gestureRecognizer.isEnabled = false
+			self.closeTapped(self)
+			return
+			
+		} else {
+			UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+				self?.view.frame = CGRect(x: currentFrame.origin.x - change, y: 0, width: currentFrame.width, height: currentFrame.height)
+			}, completion: nil)
+		}
+		
+		
+		// If gesture ends without reaching close treshold, examine veloicity
+		// If velocity was greater than a treshold, close anyway
+		// else reset position
 		if gestureRecognizer.state == .ended {
-			if velocity.x < -150 {
+			if velocity.x < -200 {
 				self.closeTapped(self)
+				
+			} else {
+				UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+					self?.view.frame = CGRect(x: 0, y: 0, width: currentFrame.width, height: currentFrame.height)
+				}, completion: nil)
 			}
 		}
 	}
