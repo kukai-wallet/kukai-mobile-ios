@@ -16,6 +16,9 @@
         <array key="Figtree-Medium.ttf">
             <string>Figtree-Medium</string>
         </array>
+        <array key="Figtree-Regular.ttf">
+            <string>Figtree-Regular</string>
+        </array>
         <array key="Figtree-SemiBold.ttf">
             <string>Figtree-SemiBold</string>
         </array>
@@ -1653,7 +1656,7 @@
         <!--Backup-->
         <scene sceneID="OBa-RV-5GZ">
             <objects>
-                <viewController id="DRY-R1-GFZ" sceneMemberID="viewController">
+                <viewController id="DRY-R1-GFZ" customClass="SideMenuBackupViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hLY-FL-fRo">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1666,16 +1669,131 @@
             </objects>
             <point key="canvasLocation" x="3702" y="1720"/>
         </scene>
-        <!--View Controller-->
+        <!--Side Menu Reset View Controller-->
         <scene sceneID="4rV-bC-pkf">
             <objects>
-                <viewController id="tc5-6d-abe" sceneMemberID="viewController">
+                <viewController id="tc5-6d-abe" customClass="SideMenuResetViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ReX-cw-VL4">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4pm-lK-Q4h">
+                                <rect key="frame" x="16" y="239.99999999999997" width="361" height="372.33333333333326"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Delete" translatesAutoresizingMaskIntoConstraints="NO" id="J4Y-bt-NV0">
+                                        <rect key="frame" x="141.66666666666666" y="50" width="78" height="78"/>
+                                        <color key="tintColor" name="BGAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="78" id="v50-du-7Bi"/>
+                                            <constraint firstAttribute="width" constant="78" id="vES-aa-ucd"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reset &amp; Wipe App?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OAx-ua-Hcj">
+                                        <rect key="frame" x="16" y="152" width="329" height="26.666666666666657"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="XOU-gb-htq">
+                                        <rect key="frame" x="16" y="202.66666666666669" width="329" height="145.66666666666669"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This will remove all existing accounts and data. Make sure you have your recovery phrase and private keys backed up" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ri-Pz-J41">
+                                                <rect key="frame" x="0.0" y="0.0" width="329" height="57.666666666666664"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="16"/>
+                                                <color key="textColor" name="Txt6"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="4Jl-9t-eMF">
+                                                <rect key="frame" x="0.0" y="89.666666666666686" width="329" height="56"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vT4-cL-ycF" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="156.66666666666666" height="56"/>
+                                                        <color key="backgroundColor" name="BtnAlert1"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="9rF-kn-Ft3"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Yes">
+                                                            <color key="titleColor" name="TxTBtnAlert1"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" name="BtnStrokeAlert1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="yesButtonTapped:" destination="tc5-6d-abe" eventType="touchUpInside" id="fBj-hx-Y9s"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7hS-5P-Vf4" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="172.66666666666663" y="0.0" width="156.33333333333337" height="56"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="No">
+                                                            <color key="titleColor" name="TxtBtnPrim1"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="noButtonTapped:" destination="tc5-6d-abe" eventType="touchUpInside" id="pB8-33-M85"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="vT4-cL-ycF" firstAttribute="width" secondItem="7hS-5P-Vf4" secondAttribute="width" id="MuN-oZ-jqh"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="XOU-gb-htq" firstAttribute="leading" secondItem="4pm-lK-Q4h" secondAttribute="leading" constant="16" id="6HV-D6-fh6"/>
+                                    <constraint firstItem="J4Y-bt-NV0" firstAttribute="centerX" secondItem="4pm-lK-Q4h" secondAttribute="centerX" id="7xj-sP-xEH"/>
+                                    <constraint firstItem="J4Y-bt-NV0" firstAttribute="top" secondItem="4pm-lK-Q4h" secondAttribute="top" constant="50" id="8fi-7h-6DO"/>
+                                    <constraint firstItem="OAx-ua-Hcj" firstAttribute="leading" secondItem="4pm-lK-Q4h" secondAttribute="leading" constant="16" id="SCb-2H-btX"/>
+                                    <constraint firstAttribute="trailing" secondItem="OAx-ua-Hcj" secondAttribute="trailing" constant="16" id="SJa-nW-akZ"/>
+                                    <constraint firstItem="OAx-ua-Hcj" firstAttribute="top" secondItem="J4Y-bt-NV0" secondAttribute="bottom" constant="24" id="Xiq-vI-Lwn"/>
+                                    <constraint firstAttribute="bottom" secondItem="XOU-gb-htq" secondAttribute="bottom" constant="24" id="dUM-WD-1X9"/>
+                                    <constraint firstItem="XOU-gb-htq" firstAttribute="top" secondItem="OAx-ua-Hcj" secondAttribute="bottom" constant="24" id="nq3-LX-Vg8"/>
+                                    <constraint firstAttribute="trailing" secondItem="XOU-gb-htq" secondAttribute="trailing" constant="16" id="pRi-FJ-ck5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="aUh-zk-wJD"/>
                         <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="aUh-zk-wJD" firstAttribute="trailing" secondItem="4pm-lK-Q4h" secondAttribute="trailing" constant="16" id="4kb-9i-ErO"/>
+                            <constraint firstItem="4pm-lK-Q4h" firstAttribute="centerY" secondItem="ReX-cw-VL4" secondAttribute="centerY" id="RLJ-Up-YVl"/>
+                            <constraint firstItem="4pm-lK-Q4h" firstAttribute="leading" secondItem="aUh-zk-wJD" secondAttribute="leading" constant="16" id="c1t-QE-SJz"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="containerView" destination="4pm-lK-Q4h" id="ODa-Ti-Rvk"/>
+                        <outlet property="noButton" destination="7hS-5P-Vf4" id="S3u-or-X74"/>
+                        <outlet property="yesButton" destination="vT4-cL-ycF" id="UFR-9G-6nV"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yyK-jd-XL0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -1691,6 +1809,9 @@
         </designable>
         <designable name="6n3-6W-xs4">
             <size key="intrinsicContentSize" width="30" height="34"/>
+        </designable>
+        <designable name="7hS-5P-Vf4">
+            <size key="intrinsicContentSize" width="30" height="36"/>
         </designable>
         <designable name="Afd-eu-CxP">
             <size key="intrinsicContentSize" width="47" height="34"/>
@@ -1722,11 +1843,15 @@
         <designable name="n7h-lU-KVu">
             <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
+        <designable name="vT4-cL-ycF">
+            <size key="intrinsicContentSize" width="32" height="36"/>
+        </designable>
     </designables>
     <resources>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="Close" width="24" height="24"/>
         <image name="Copy" width="24" height="24"/>
+        <image name="Delete" width="24" height="24"/>
         <image name="ScanQR" width="24" height="24"/>
         <image name="Share" width="24" height="24"/>
         <image name="Social_Discord_1color" width="30" height="30"/>
@@ -1747,13 +1872,25 @@
         <namedColor name="BG6">
             <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BGAlert4">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGSideMenu">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BtnAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BtnStrokeAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="TintGeneral">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxTBtnAlert1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt0">
@@ -1773,6 +1910,9 @@
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtBtnPrim1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtBtnSec1">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

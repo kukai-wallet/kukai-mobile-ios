@@ -104,11 +104,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		}
 		
 		if environment["XCUITEST-RESET"] == "true" {
-			let _ = WalletCacheService().deleteAllCacheAndKeys()
-			TransactionService.shared.resetAllState()
-			StorageService.deleteKeychainItems()
-			TokenStateService.shared.deleteAllCaches()
-			UserDefaults.standard.removePersistentDomain(forName: Bundle.main.bundleIdentifier ?? "")
+			SideMenuResetViewController.resetAllDataAndCaches {
+				print("XCUITEST-RESET = done")
+			}
 		}
 	}
 	

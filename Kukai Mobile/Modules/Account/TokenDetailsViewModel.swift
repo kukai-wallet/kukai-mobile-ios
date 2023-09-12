@@ -73,7 +73,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
+	private static let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	private var currentChartRange: TokenDetailsChartCellRange = .day
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
 	
@@ -298,6 +298,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	// MARK: - Data
 	
+	public static func deleteAllCachedData() {
+		let _ = DiskService.delete(fileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
+	}
+	
 	func loadTokenData(token: Token) {
 		self.token = token
 		tokenSymbol = token.symbol
@@ -344,13 +348,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			return
 		}
 		
-		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
 			completion(Result.success(bakerRewardCache))
 			
 		} else {
-			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
-				if let res = try? result.get(), let filename = self?.bakerRewardsCacheFilename {
-					let _ = DiskService.write(encodable: res, toFileName: filename)
+			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { result in
+				if let res = try? result.get() {
+					let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
 					completion(Result.success(res))
 					
 				} else {

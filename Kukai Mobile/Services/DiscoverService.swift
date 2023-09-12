@@ -64,4 +64,8 @@ public class DiscoverService {
 			completion(Result.success(true))
 		}
 	}
+	
+	public func deleteCache() {
+		self.requestIfService.delete(key: discoverCacheKey)
+	}
 }

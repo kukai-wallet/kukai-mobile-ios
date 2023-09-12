@@ -163,4 +163,8 @@ public class ExploreService {
 			completion(Result.success(true))
 		}
 	}
+	
+	public func deleteCache() {
+		self.requestIfService.delete(key: exploreCacheKey)
+	}
 }
