@@ -16,6 +16,12 @@ struct SideMenuOptionData: Hashable {
 	let id: String
 }
 
+struct SideMenuResponse {
+	let segue: String?
+	let collapseAndNavigate: Bool?
+	let url: URL?
+}
+
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
@@ -75,20 +81,41 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func segue(forIndexPath: IndexPath) -> (segue: String, collapseAndNavigate: Bool)? {
+	func details(forIndexPath: IndexPath) -> SideMenuResponse? {
 		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
 			return nil
 		}
 		
 		switch obj.id {
 			case "settings":
-				return (segue: "side-menu-settings", collapseAndNavigate: true)
+				return SideMenuResponse(segue: "side-menu-settings", collapseAndNavigate: true, url: nil)
 				
 			case "security":
-				return (segue: "side-menu-security", collapseAndNavigate: true)
+				return SideMenuResponse(segue: "side-menu-security", collapseAndNavigate: true, url: nil)
+			
+			case "connected":
+				return SideMenuResponse(segue: "side-menu-wallet-connect", collapseAndNavigate: false, url: nil)
+				
+			case "feedback":
+				let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+				let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+				let os = UIDevice.current.systemVersion
+				let device = UIDevice.current.modelName
+				
+				let subject = "Kukai iOS Feedback"
+				let body = "\n\n\n\n\n ==================== \nApp Version: v\(version) (\(build)) \nOS Version: \(os) \nModel: \(device)"
+				let coded = "mailto:contact@kukai.app?subject=\(subject)&body=\(body)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+				if let emailURL = URL(string: coded) {
+					return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: emailURL)
+				}
+				
+			case "share":
+				return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: nil)
 				
 			default:
 				return nil
 		}
+		
+		return nil
 	}
 }

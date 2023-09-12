@@ -186,30 +186,6 @@ class SideMenuViewController: UIViewController {
 	@IBAction func swapTapped(_ sender: Any) {
 		
 	}
-	
-	/*
-	@IBAction func deleteAllTapped(_ sender: Any) {
-		let alert = UIAlertController(title: "Are you Sure?", message: "Are you sure you want to delete all your wallets? This in unrecoverable", preferredStyle: .alert)
-		alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-			
-			let _ = WalletCacheService().deleteAllCacheAndKeys()
-			TransactionService.shared.resetState()
-			DependencyManager.shared.walletList = WalletMetadataList(socialWallets: [], hdWallets: [], linearWallets: [], ledgerWallets: [])
-			
-			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
-			UserDefaults.standard.removePersistentDomain(forName: domain)
-			
-			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
-			
-			self.closeTapped(sender)
-			self.homeTabBarController?.navigationController?.popToRootViewController(animated: true)
-		}))
-		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-		
-		self.present(alert, animated: true)
-	}
-	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {
@@ -217,24 +193,31 @@ extension SideMenuViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		// If we have a segue from the viewModel open it
-		// else if is biometric (disbaled by user) open settings
-		if let segueDetails = viewModel.segue(forIndexPath: indexPath) {
-			if segueDetails.collapseAndNavigate {
+		guard let details = viewModel.details(forIndexPath: indexPath) else { return }
+		
+		if let url = details.url, UIApplication.shared.canOpenURL(url) {
+			UIApplication.shared.open(url)
+			
+		} else if let segue = details.segue {
+			if details.collapseAndNavigate == true {
+				
 				self.closeTapped(self)
-				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
 				
 			} else {
-				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
 			}
 			
+		} else {
+			shareURL()
 		}
-		
-		
-		/*
-		else if viewModel.isBiometricCell(forIndexPath: indexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-			UIApplication.shared.open(settingsURL)
+	}
+	
+	func shareURL() {
+		if let shareURL = NSURL(string: "https://kukai.app") {
+			let objectsToShare = [shareURL]
+			let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+			self.present(activityVC, animated: true, completion: nil)
 		}
-		*/
 	}
 }
