@@ -96,8 +96,13 @@ extension SideMenuSecurityViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		if let segue = viewModel.segue(forIndexPath: indexPath) {
+		let res = viewModel.segue(forIndexPath: indexPath)
+		
+		if let segue = res.segue {
 			self.performSegue(withIdentifier: segue, sender: self)
+			
+		} else if let url = res.url {
+			UIApplication.shared.open(url)
 		}
 	}
 }

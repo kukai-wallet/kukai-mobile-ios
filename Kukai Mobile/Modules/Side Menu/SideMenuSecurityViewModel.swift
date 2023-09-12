@@ -36,6 +36,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.toggle?.isOn = obj.toggleOn
+				cell.delegate = self
 				return cell
 				
 			} else {
@@ -71,7 +72,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		
 		options.append(contentsOf: [
 			[SideMenuOptionData(icon: UIImage(named: "Kukai") ?? UIImage.unknownToken(), title: "Kukai Passcode", subtitle: nil, id: "passcode")],
-			[SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Back Up", subtitle: nil, id: "currency")],
+			[SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Back Up", subtitle: nil, id: "backup")],
 			[SideMenuOptionData(icon: UIImage(named: "Reset") ?? UIImage.unknownToken(), title: "Reset App", subtitle: nil, id: "reset")]
 		])
 		
@@ -86,12 +87,34 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		self.state = .success(nil)
 	}
 	
-	func segue(forIndexPath: IndexPath) -> String? {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
-			return nil
+	func segue(forIndexPath: IndexPath) -> (segue: String?, url: URL?) {
+		if isBiometricNotAuthCell(forIndexPath: forIndexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+			return (segue: nil, url: settingsURL)
+			
+		} else if isBiometricCell(forIndexPath: forIndexPath) {
+			return (segue: nil, url: nil)
+			
+		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData{
+			return (segue: obj.id, url: nil)
 		}
 		
-		return obj.id
+		return (segue: nil, url: nil)
+	}
+	
+	func isBiometricCell(forIndexPath: IndexPath) -> Bool {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionToggleData else {
+			return false
+		}
+		
+		return true
+	}
+	
+	func isBiometricNotAuthCell(forIndexPath: IndexPath) -> Bool {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData, obj.id == "biometric-not-auth" else {
+			return false
+		}
+		
+		return true
 	}
 	
 	/*
@@ -132,4 +155,15 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		return obj.id == "biometric"
 	}
 	*/
+}
+
+extension SideMenuSecurityViewModel: SideMenuOptionToggleDelegate {
+	
+	func sideMenuToggleChangedTo(isOn: Bool, forTitle: String) {
+		FaceIdViewController.handleBiometricChangeTo(isOn: isOn) { [weak self] errorMessage in
+			if let err = errorMessage {
+				self?.refresh(animate: true)
+			}
+		}
+	}
 }

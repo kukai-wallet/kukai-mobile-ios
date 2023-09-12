@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SideMenuOptionToggleDelegate: AnyObject {
+	func sideMenuToggleChangedTo(isOn: Bool, forTitle: String)
+}
+
 class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var iconView: UIImageView!
@@ -17,4 +21,10 @@ class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	
 	var containerView: UIView! = UIView()
 	var gradientLayer: CAGradientLayer = CAGradientLayer()
+	
+	weak var delegate: SideMenuOptionToggleDelegate? = nil
+	
+	@IBAction func toggleChanged(_ sender: Any) {
+		delegate?.sideMenuToggleChangedTo(isOn: toggle?.isOn ?? false, forTitle: titleLabel.text ?? "")
+	}
 }
