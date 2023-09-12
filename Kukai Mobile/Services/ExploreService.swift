@@ -165,6 +165,6 @@ public class ExploreService {
 	}
 	
 	public func deleteCache() {
-		self.requestIfService.delete(key: exploreCacheKey)
+		let _ = self.requestIfService.delete(key: exploreCacheKey)
 	}
 }

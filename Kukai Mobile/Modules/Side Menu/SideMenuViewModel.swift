@@ -12,6 +12,7 @@ struct SideMenuOptionData: Hashable {
 	let icon: UIImage
 	let title: String
 	let subtitle: String?
+	let subtitleIsWarning: Bool
 	let id: String
 }
 
@@ -56,15 +57,11 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		var options: [AnyHashable] = []
 		options = [
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, id: "settings"),
-			SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, id: "security"),
-			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, id: "connected"),
-			SideMenuOptionData(icon: UIImage(named: "Contacts") ?? UIImage.unknownToken(), title: "Feedback & Support", subtitle: nil, id: "feedback"),
-			SideMenuOptionData(icon: UIImage(named: "Share") ?? UIImage.unknownToken(), title: "Tell Others about Kukai", subtitle: nil, id: "share"),
-			
-			/*
-			SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Wallet Connect", subtitle: nil, id: "wc2"),
-			*/
+			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, subtitleIsWarning: false, id: "settings"),
+			SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, subtitleIsWarning: false, id: "security"),
+			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, subtitleIsWarning: false, id: "connected"),
+			SideMenuOptionData(icon: UIImage(named: "Contacts") ?? UIImage.unknownToken(), title: "Feedback & Support", subtitle: nil, subtitleIsWarning: false, id: "feedback"),
+			SideMenuOptionData(icon: UIImage(named: "Share") ?? UIImage.unknownToken(), title: "Tell Others about Kukai", subtitle: nil, subtitleIsWarning: false, id: "share"),
 		]
 		
 		
@@ -90,10 +87,6 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			case "security":
 				return (segue: "side-menu-security", collapseAndNavigate: true)
 				
-			/*
-			case "wc2":
-				return (segue: "side-menu-wallet-connect", collapseAndNavigate: true)
-			*/
 			default:
 				return nil
 		}

@@ -67,14 +67,6 @@ class SideMenuSecurityViewController: UIViewController {
 		
 		viewModel.refresh(animate: true)
 	}
-	
-	/*
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let dest = segue.destination.presentationController as? UISheetPresentationController {
-			dest.delegate = self
-		}
-	}
-	*/
 }
 
 extension SideMenuSecurityViewController: UITableViewDelegate {
@@ -106,14 +98,3 @@ extension SideMenuSecurityViewController: UITableViewDelegate {
 		}
 	}
 }
-
-/*
- // MARK: - UISheetPresentationControllerDelegate
- 
- extension SideMenuSecurityViewController: UISheetPresentationControllerDelegate {
- 
- public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
- viewModel.refresh(animate: true)
- }
- }
- */

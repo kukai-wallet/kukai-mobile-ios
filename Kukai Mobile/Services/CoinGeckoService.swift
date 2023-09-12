@@ -109,12 +109,12 @@ public class CoinGeckoService {
 	}
 	
 	public func deleteAllCaches() {
-		self.requestIfService.delete(key: fetchTezosPriceKey)
-		self.requestIfService.delete(key: fetchEchangeRatesKey)
-		self.requestIfService.delete(key: chartDataDayKey)
-		self.requestIfService.delete(key: chartDataWeekKey)
-		self.requestIfService.delete(key: chartDataMonthKey)
-		self.requestIfService.delete(key: chartDataYearKey)
+		let _ = self.requestIfService.delete(key: fetchTezosPriceKey)
+		let _ = self.requestIfService.delete(key: fetchEchangeRatesKey)
+		let _ = self.requestIfService.delete(key: chartDataDayKey)
+		let _ = self.requestIfService.delete(key: chartDataWeekKey)
+		let _ = self.requestIfService.delete(key: chartDataMonthKey)
+		let _ = self.requestIfService.delete(key: chartDataYearKey)
 	}
 	
 	public func fetchAllChartData(completion: @escaping ((Result<[CoinGeckoMarketDataResponse], KukaiError>) -> Void)) {

@@ -27,4 +27,15 @@ class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	@IBAction func toggleChanged(_ sender: Any) {
 		delegate?.sideMenuToggleChangedTo(isOn: toggle?.isOn ?? false, forTitle: titleLabel.text ?? "")
 	}
+	
+	func setup(title: String, subtitle: String, subtitleIsWarning: Bool) {
+		self.titleLabel.text = title
+		self.subtitleLabel.text = subtitle
+		
+		if subtitleIsWarning {
+			self.subtitleLabel.textColor = .colorNamed("TxtAlert4")
+		} else {
+			self.subtitleLabel.textColor = .colorNamed("Txt10")
+		}
+	}
 }

@@ -52,10 +52,10 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		snapshot.appendSections([0, 1, 2, 3])
 		
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, id: "network")], toSection: 0)
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, id: "currency")], toSection: 1)
-		snapshot.appendItems([SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, id: "theme")], toSection: 2)
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Storage", subtitle: collectibleStorageSize, id: "storage")], toSection: 3)
+		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, subtitleIsWarning: false, id: "network")], toSection: 0)
+		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, subtitleIsWarning: false, id: "currency")], toSection: 1)
+		snapshot.appendItems([SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, subtitleIsWarning: false, id: "theme")], toSection: 2)
+		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Storage", subtitle: collectibleStorageSize, subtitleIsWarning: false, id: "storage")], toSection: 3)
 		
 		ds.applySnapshotUsingReloadData(snapshot)
 		

@@ -66,6 +66,6 @@ public class DiscoverService {
 	}
 	
 	public func deleteCache() {
-		self.requestIfService.delete(key: discoverCacheKey)
+		let _ = self.requestIfService.delete(key: discoverCacheKey)
 	}
 }

@@ -273,13 +273,23 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			DependencyManager.shared.walletList = walletCache.readNonsensitive()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 			
-			let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
-			if let vc = viewController {
-				self.navigationController?.popToViewController(vc, animated: true)
-				AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
-			} else {
-				self.navigationController?.popToHome()
-			}
+			self.navigate()
+		}
+	}
+	
+	private func navigate() {
+		let sideMenuBackViewController = self.navigationController?.viewControllers.filter({ $0 is SideMenuBackupViewController }).first
+		let accountsViewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		
+		if let backup = sideMenuBackViewController {
+			self.navigationController?.popToViewController(backup, animated: true)
+			
+		} else if let accounts = accountsViewController {
+			self.navigationController?.popToViewController(accounts, animated: true)
+			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
+			
+		} else {
+			self.navigationController?.popToHome()
 		}
 	}
 }
