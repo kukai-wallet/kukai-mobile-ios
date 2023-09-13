@@ -125,7 +125,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		sleep(2)
 		
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count
-		XCTAssert(count == 2)
+		XCTAssert(count == 3)
 	}
 	
 	func test_05_goBackToMainWallet() {

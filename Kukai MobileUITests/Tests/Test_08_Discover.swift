@@ -54,9 +54,6 @@ final class Test_08_Discover: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		app.buttons["side-menu-close-button"].tap()
-		sleep(2)
-		
 		
 		let mainnetItemCount = app.tables.cells.containing(.image, identifier: "discover-item-image").count
 		XCTAssert(mainnetItemCount > ghostnetItemCount)
@@ -67,13 +64,16 @@ final class Test_08_Discover: XCTestCase {
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
+		app.tables.staticTexts["Settings"].tap()
+		sleep(2)
+		
 		app.tables.staticTexts["Network"].tap()
 		sleep(2)
 		
 		app.tables.staticTexts["Ghostnet"].tap()
 		sleep(4)
 		
-		app.buttons["side-menu-close-button"].tap()
+		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 	}
 }

@@ -266,6 +266,6 @@ final class Test_09_SideMenu: XCTestCase {
 		SharedHelpers.shared.tapDescructiveButton(app: app)
 		sleep(5)
 		
-		XCTAssert(app.buttons["Create Wallet"].exists)
+		XCTAssert(app.buttons["Create a Wallet"].exists)
 	}
 }
