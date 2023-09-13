@@ -142,6 +142,7 @@ class DependencyManager {
 	@Published var walletDidChange: Bool = false
 	@Published var addressLoaded: String = ""
 	@Published var addressRefreshed: String = ""
+	@Published var sideMenuOpen: Bool = false
 	
 	
 	

@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import KukaiCoreSwift
 
 class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFeaturedCellDelegate {
 	
@@ -26,6 +27,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 		viewModel.menu = MenuViewController(actions: [], header: nil, sourceViewController: self)
 		viewModel.makeDataSource(withTableView: tableView)
 		viewModel.featuredDelegate = self
+		
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		tableView.tableFooterView = footer
@@ -81,6 +83,12 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 			
 		} else if viewModel.isShowMoreOrLess(indexPath: indexPath) {
 			viewModel.openOrCloseGroup(forTableView: tableView, atIndexPath: indexPath)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		if let c = cell as? DiscoverCell {
+			MediaProxyService.load(url: viewModel.willDisplayImage(forIndexPath: indexPath), to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 		}
 	}
 	

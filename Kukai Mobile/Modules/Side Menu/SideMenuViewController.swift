@@ -113,6 +113,8 @@ class SideMenuViewController: UIViewController {
 		} completion: { [weak self] done in
 			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
 			self?.view.removeFromSuperview()
+			
+			DependencyManager.shared.sideMenuOpen = false
 		}
 	}
 	

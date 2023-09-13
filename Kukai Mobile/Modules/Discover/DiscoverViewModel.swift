@@ -74,13 +74,9 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let obj = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
-				let updatedURL = MediaProxyService.url(fromUri: obj.imageUri, ofFormat: .icon, keepGif: true)
-				MediaProxyService.load(url: updatedURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken()) { size in
-					cell.iconView.backgroundColor = .colorNamed("BGThumbNFT")
-				}
-				
 				cell.titleLabel.text = obj.title
 				cell.descriptionLabel.text = obj.description
+				
 				return cell
 				
 			} else if let _ = item as? ShowMore, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverShowMoreCell", for: indexPath) as? DiscoverShowMoreCell {
@@ -244,5 +240,11 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let group = DependencyManager.shared.discoverService.items[section]
 		currentSnapshot.deleteItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]))
+	}
+	
+	func willDisplayImage(forIndexPath: IndexPath) -> URL? {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? DiscoverItem else { return nil }
+		
+		return MediaProxyService.url(fromUri: obj.imageUri, ofFormat: .icon, keepGif: true)
 	}
 }

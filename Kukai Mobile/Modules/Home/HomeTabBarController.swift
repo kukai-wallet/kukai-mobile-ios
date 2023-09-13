@@ -257,9 +257,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		currentWindow.addSubview(sideMenuTintView)
 		currentWindow.addSubview(sideMenuVc?.view ?? UIView())
 		
-		UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
+		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.sideMenuTintView.alpha = 1
 			self?.sideMenuVc?.view.frame = CGRect(x: 0, y: 0, width: sideMenuWidth, height: currentWindow.bounds.height)
+			
+		} completion: { _ in
+			DependencyManager.shared.sideMenuOpen = true
 		}
 	}
 	

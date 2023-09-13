@@ -92,9 +92,16 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 		}
 		
 		let item = discoverGroup.items[indexPath.row]
-		cell.setup(categories: [" "], imageURL: item.imageUri, title: item.title, description: item.description, pageWidth: collectionView.frame.width)
+		cell.setup(categories: [" "], title: item.title, description: item.description, pageWidth: collectionView.frame.width)
 		
 		return cell
+	}
+	
+	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		guard let c = cell as? DiscoverFeaturedItemCell else { return }
+		
+		let item = discoverGroup.items[indexPath.row]
+		c.setupImage(imageURL: item.imageUri)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

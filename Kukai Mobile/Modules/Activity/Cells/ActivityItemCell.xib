@@ -52,14 +52,6 @@
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Ellipses" translatesAutoresizingMaskIntoConstraints="NO" id="kvQ-ug-G3P">
-                                <rect key="frame" x="429" y="13.666666666666664" width="12" height="12"/>
-                                <color key="tintColor" name="BGB4"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="12" id="3tD-dr-Wgh"/>
-                                    <constraint firstAttribute="height" constant="12" id="yZj-aC-zUW"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fot-0r-ybG">
                                 <rect key="frame" x="60" y="33.333333333333336" width="381" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
@@ -109,18 +101,6 @@
                                     <constraint firstAttribute="height" constant="16" id="TcW-ja-mk7"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2aZ-LI-1ta">
-                                <rect key="frame" x="411" y="0.0" width="40" height="100"/>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="ztN-1q-1ol"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
-                                <connections>
-                                    <action selector="invisibleRightButtonTapped:" destination="VHf-nR-jpu" eventType="touchUpInside" id="cNX-Mp-NH8"/>
-                                </connections>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
                                 <rect key="frame" x="309" y="78" width="132" height="12"/>
                                 <subviews>
@@ -153,17 +133,12 @@
                             <constraint firstItem="REs-fD-NQd" firstAttribute="leading" secondItem="3nn-gA-TSY" secondAttribute="leading" constant="10" id="9RN-Zf-KRO"/>
                             <constraint firstItem="fot-0r-ybG" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="leading" id="9gN-CX-fs1"/>
                             <constraint firstItem="P7q-6s-SWO" firstAttribute="top" secondItem="REs-fD-NQd" secondAttribute="top" id="CmQ-I2-Han"/>
-                            <constraint firstAttribute="trailing" secondItem="kvQ-ug-G3P" secondAttribute="trailing" constant="10" id="FYo-t3-ZCE"/>
-                            <constraint firstItem="kvQ-ug-G3P" firstAttribute="centerY" secondItem="pnA-HH-brD" secondAttribute="centerY" id="Gzb-Lk-7kP"/>
-                            <constraint firstAttribute="trailing" secondItem="2aZ-LI-1ta" secondAttribute="trailing" id="Ib5-b9-eI9"/>
+                            <constraint firstAttribute="trailing" secondItem="KpP-S4-rR7" secondAttribute="trailing" constant="10" id="HIJ-eX-PaL"/>
                             <constraint firstItem="09k-6q-ogO" firstAttribute="top" secondItem="fot-0r-ybG" secondAttribute="bottom" constant="4" id="NmW-lM-eAd"/>
                             <constraint firstItem="pnA-HH-brD" firstAttribute="leading" secondItem="REs-fD-NQd" secondAttribute="trailing" constant="10" id="Ond-es-aLd"/>
                             <constraint firstItem="REs-fD-NQd" firstAttribute="top" secondItem="3nn-gA-TSY" secondAttribute="top" constant="10" id="Oxf-zl-5Ui"/>
                             <constraint firstItem="P7q-6s-SWO" firstAttribute="centerY" secondItem="pnA-HH-brD" secondAttribute="centerY" id="T4a-Uz-3KF"/>
-                            <constraint firstItem="KpP-S4-rR7" firstAttribute="trailing" secondItem="kvQ-ug-G3P" secondAttribute="trailing" id="VXe-Ls-jux"/>
-                            <constraint firstAttribute="bottom" secondItem="2aZ-LI-1ta" secondAttribute="bottom" id="dLf-rm-SzK"/>
                             <constraint firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" constant="10" id="dPC-n1-Iiu"/>
-                            <constraint firstItem="2aZ-LI-1ta" firstAttribute="top" secondItem="3nn-gA-TSY" secondAttribute="top" id="eje-4V-Jth"/>
                             <constraint firstAttribute="bottom" secondItem="REs-fD-NQd" secondAttribute="bottom" constant="50" id="gsX-de-L0Z"/>
                             <constraint firstItem="09k-6q-ogO" firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" id="hjN-xB-HfE"/>
                             <constraint firstAttribute="bottom" secondItem="KpP-S4-rR7" secondAttribute="bottom" constant="10" id="lPX-zT-ZeB"/>
@@ -195,7 +170,6 @@
                 <outlet property="destinationIconStackView" destination="gBZ-as-9TO" id="g8q-NH-Xjm"/>
                 <outlet property="destinationLabel" destination="qIp-2X-KmI" id="zON-sK-m4K"/>
                 <outlet property="iconView" destination="REs-fD-NQd" id="15Q-4H-a9T"/>
-                <outlet property="invisibleRightButton" destination="2aZ-LI-1ta" id="Zm2-J6-bXf"/>
                 <outlet property="timeLabel" destination="N6Q-9u-1aj" id="T3w-uC-HPE"/>
                 <outlet property="titleLabel" destination="fot-0r-ybG" id="4MB-Nm-iyL"/>
                 <outlet property="toLabel" destination="j7j-21-7Im" id="jGV-OG-PzJ"/>
@@ -207,10 +181,6 @@
     </objects>
     <resources>
         <image name="Check" width="24" height="24"/>
-        <image name="Ellipses" width="24" height="24"/>
-        <namedColor name="BGB4">
-            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
