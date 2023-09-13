@@ -42,11 +42,17 @@ final class Test_08_Discover: XCTestCase {
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
+		app.tables.staticTexts["Settings"].tap()
+		sleep(2)
+		
 		app.tables.staticTexts["Network"].tap()
 		sleep(2)
 		
 		app.tables.staticTexts["Mainnet"].tap()
 		sleep(4)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
 		
 		app.buttons["side-menu-close-button"].tap()
 		sleep(2)

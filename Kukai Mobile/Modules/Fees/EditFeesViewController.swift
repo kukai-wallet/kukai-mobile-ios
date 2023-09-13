@@ -37,6 +37,9 @@ class EditFeesViewController: UIViewController {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		gasLimitTextField.accessibilityIdentifier = "gas-limit-textfield"
+		feeTextField.accessibilityIdentifier = "fee-textfield"
+		storageLimitTextField.accessibilityIdentifier = "storage-limit-textfield"
 		
 		if let _ = TransactionService.shared.walletConnectOperationData.request?.topic {
 			isWalletConnectOp = true

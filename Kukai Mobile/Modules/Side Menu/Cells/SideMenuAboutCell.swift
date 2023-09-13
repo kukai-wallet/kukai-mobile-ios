@@ -21,8 +21,13 @@ class SideMenuAboutCell: UITableViewCell {
 		versionLabel.text = "v\(version) (\(build))"
 		
 		twitterButton.customButtonType = .secondary
+		twitterButton.accessibilityIdentifier = "side-menu-twitter"
+		
 		discordButton.customButtonType = .secondary
+		discordButton.accessibilityIdentifier = "side-menu-discord"
+		
 		telegramButton.customButtonType = .secondary
+		telegramButton.accessibilityIdentifier = "side-menu-telegram"
 	}
 	
 	@IBAction func twitterButtonTapped(_ sender: Any) {

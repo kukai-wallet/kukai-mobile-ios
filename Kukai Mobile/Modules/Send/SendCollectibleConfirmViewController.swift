@@ -67,6 +67,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
+		feeButton.accessibilityIdentifier = "fee-button"
+		
 		if DependencyManager.shared.currentNetworkType != .testnet {
 			testnetWarningView.isHidden = true
 		}

@@ -11,6 +11,7 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	let testConfig: TestConfig = EnvironmentVariables.shared.config()
 	
+	public static let mainnetWatchWalletAddress = "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt"
 	
 	// MARK: - Setup
 	
@@ -219,5 +220,13 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	public static func addMore(app: XCUIApplication) {
 		app.navigationBars.buttons["accounts-nav-add"].tap()
+	}
+	
+	public static func handleSwitchingTo(app: XCUIApplication, address: String) {
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		sleep(2)
+		
+		app.tables.staticTexts[address].tap()
+		sleep(2)
 	}
 }
