@@ -301,7 +301,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func handleRefreshForNewUser(startingData: [AnyHashable], metadata: WalletMetadata?) -> [AnyHashable] {
 		var data = startingData
-		var hashableData: [AnyHashable] = [
+		let hashableData: [AnyHashable] = [
 			AccountGettingStartedData(),
 			AccountButtonData(title: "Get XTZ", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
 			AccountReceiveAssetsData(),

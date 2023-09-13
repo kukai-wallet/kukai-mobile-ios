@@ -55,15 +55,33 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		Test_04_Account.check(app: app, estimatedTotalExists: false)
 		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
-		Test_04_Account.check(app: app, displayingBackup: true)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		Test_04_Account.check(app: app, displayingGettingStarted: true)
 		
-		Test_04_Account.tapBackup(app: app)
+		
+		Test_03_Home.handleOpenSideMenu(app: app)
+		sleep(2)
+		
+		app.tables.staticTexts["Security"].tap()
+		sleep(2)
+		
+		app.tables.staticTexts["Back Up"].tap()
+		sleep(2)
+		
+		app.tables.staticTexts["Not Backed Up"].tap()
+		sleep(2)
+		
 		Test_02_Onboarding.handleSeedWordVerification(app: app)
 		
 		
-		// Verify backup is gone
-		Test_04_Account.check(app: app, displayingBackup: false)
+		// Verify backup state changed
+		SharedHelpers.shared.waitForStaticText("Not Backed Up", exists: false, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.waitForStaticText("Backed Up", exists: true, inElement: app.tables, delay: 3)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
 		
 		
 		// Navigate to wallet management

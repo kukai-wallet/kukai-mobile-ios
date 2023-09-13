@@ -314,7 +314,6 @@ final class Test_04_Account: XCTestCase {
 	public static func waitForInitalLoad(app: XCUIApplication) {
 		SharedHelpers.shared.waitForAnyStaticText([
 			"account-token-balance",
-			"account-backup-button",
 			"account-getting-started-header"
 		], exists: true, inElement: app.tables, delay: 10)
 	}
