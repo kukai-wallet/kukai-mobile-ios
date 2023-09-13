@@ -44,7 +44,7 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var options: [AnyHashable] = []
 		
 		for obj in DependencyManager.shared.walletList.allMetadata(onlySeedBased: true) {
-			let title = obj.hdWalletGroupName ?? obj.walletNickname ?? obj.address.truncateTezosAddress()
+			let title = obj.walletNickname ?? obj.address.truncateTezosAddress()
 			let subtitle = obj.backedUp ? "Backed Up" : "Not Backed Up"
 			options.append(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !obj.backedUp, id: obj.address))
 		}

@@ -309,10 +309,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)
 		]
 		
-		if metadata?.backedUp == false {
-			hashableData.append(true)
-		}
-		
 		data.append(contentsOf: hashableData)
 		
 		return data
