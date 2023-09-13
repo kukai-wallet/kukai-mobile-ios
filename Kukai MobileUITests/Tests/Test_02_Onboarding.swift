@@ -55,15 +55,33 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		Test_04_Account.check(app: app, estimatedTotalExists: false)
 		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
-		Test_04_Account.check(app: app, displayingBackup: true)
+		Test_04_Account.check(app: app, displayingBackup: false)
 		Test_04_Account.check(app: app, displayingGettingStarted: true)
 		
-		Test_04_Account.tapBackup(app: app)
+		
+		Test_03_Home.handleOpenSideMenu(app: app)
+		sleep(2)
+		
+		app.tables.staticTexts["Security"].tap()
+		sleep(2)
+		
+		app.tables.staticTexts["Back Up"].tap()
+		sleep(2)
+		
+		app.tables.staticTexts["Not Backed Up"].tap()
+		sleep(2)
+		
 		Test_02_Onboarding.handleSeedWordVerification(app: app)
 		
 		
-		// Verify backup is gone
-		Test_04_Account.check(app: app, displayingBackup: false)
+		// Verify backup state changed
+		SharedHelpers.shared.waitForStaticText("Not Backed Up", exists: false, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.waitForStaticText("Backed Up", exists: true, inElement: app.tables, delay: 3)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
 		
 		
 		// Navigate to wallet management
@@ -75,7 +93,12 @@ final class Test_02_Onboarding: XCTestCase {
 		XCTAssert(details.title.count > 0)
 		XCTAssert(details.subtitle == nil)
 		
-		Test_05_WalletManagement.deleteAllWallets(app: app)
+		
+		// Back to home and click reset via side menu
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		Test_09_SideMenu.handleResetAppFromTabBar(app: app)
 	}
 	
 	func testImportHDWallet() {
@@ -245,15 +268,8 @@ final class Test_02_Onboarding: XCTestCase {
 	func testImportWatchWallet_address() {
 		let app = XCUIApplication()
 		app.staticTexts["Already Have a Wallet"].tap()
-		app.tables.staticTexts["Watch a public address or .tez domain"].tap()
 		
-		let enterAddressTextField = app.textFields["Enter Address"]
-		enterAddressTextField.tap()
-		app.typeText(testConfig.walletAddress_HD)
-		sleep(3)
-		
-		app.buttons["send-button"].tap()
-		
+		Test_02_Onboarding.handleImportWatchWallet_address(app: app, address: testConfig.walletAddress_HD)
 		
 		
 		// Confirm tersm and conditions and create a passcode
@@ -265,12 +281,10 @@ final class Test_02_Onboarding: XCTestCase {
 		// Create passcode
 		Test_02_Onboarding.handlePasscode(app: app)
 		Test_02_Onboarding.handlePasscode(app: app)
-		
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// App state verification
-		Test_04_Account.waitForInitalLoad(app: app)
-		
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
 		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
@@ -299,15 +313,8 @@ final class Test_02_Onboarding: XCTestCase {
 	func testImportWatchWallet_domain() {
 		let app = XCUIApplication()
 		app.staticTexts["Already Have a Wallet"].tap()
-		app.tables.staticTexts["Watch a public address or .tez domain"].tap()
 		
-		app.staticTexts["Tezos Address"].tap()
-		app.tables.staticTexts["Tezos Domain"].tap()
-		app.textFields["Enter Tezos Domain"].tap()
-		
-		app.typeText("kukaiautomatedtesting.gho")
-		app.buttons["send-button"].tap()
-		
+		Test_02_Onboarding.handleImportWatchWallet_domain(app: app, address: "kukaiautomatedtesting.gho")
 		
 		
 		// Confirm tersm and conditions and create a passcode
@@ -319,12 +326,10 @@ final class Test_02_Onboarding: XCTestCase {
 		// Create passcode
 		Test_02_Onboarding.handlePasscode(app: app)
 		Test_02_Onboarding.handlePasscode(app: app)
-		
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// App state verification
-		Test_04_Account.waitForInitalLoad(app: app)
-		
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
 		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
@@ -354,7 +359,6 @@ final class Test_02_Onboarding: XCTestCase {
 		app.staticTexts["Create a Wallet"].tap()
 		app.buttons["Use Social"].tap()
 		app.scrollViews.otherElements.staticTexts["Sign in with Apple"].tap()
-		
 		
 		
 		
@@ -404,6 +408,28 @@ final class Test_02_Onboarding: XCTestCase {
 	
 	
 	// MARK: - Helpers
+	
+	public static func handleImportWatchWallet_address(app: XCUIApplication, address: String) {
+		app.tables.staticTexts["Watch a Tezos Address"].tap()
+		
+		let enterAddressTextField = app.textFields["Enter Address"]
+		enterAddressTextField.tap()
+		app.typeText(address)
+		sleep(3)
+		
+		app.buttons["send-button"].tap()
+	}
+	
+	public static func handleImportWatchWallet_domain(app: XCUIApplication, address: String) {
+		app.tables.staticTexts["Watch a Tezos Address"].tap()
+		
+		app.staticTexts["Tezos Address"].tap()
+		app.tables.staticTexts["Tezos Domain"].tap()
+		app.textFields["Enter Tezos Domain"].tap()
+		
+		app.typeText(address)
+		app.buttons["send-button"].tap()
+	}
 	
 	public static func handleBasicImport(app: XCUIApplication, useAutoComplete: Bool) {
 		let testConfig = EnvironmentVariables.shared.config()

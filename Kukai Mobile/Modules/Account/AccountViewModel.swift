@@ -301,17 +301,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func handleRefreshForNewUser(startingData: [AnyHashable], metadata: WalletMetadata?) -> [AnyHashable] {
 		var data = startingData
-		var hashableData: [AnyHashable] = [
+		let hashableData: [AnyHashable] = [
 			AccountGettingStartedData(),
 			AccountButtonData(title: "Get XTZ", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
 			AccountReceiveAssetsData(),
 			AccountDiscoverHeaderData(),
 			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)
 		]
-		
-		if metadata?.backedUp == false {
-			hashableData.append(true)
-		}
 		
 		data.append(contentsOf: hashableData)
 		

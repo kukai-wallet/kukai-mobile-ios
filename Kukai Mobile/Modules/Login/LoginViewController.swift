@@ -43,15 +43,12 @@ class LoginViewController: UIViewController {
 			useBiometricsButton.setTitle("Try Touch ID Again", for: .normal)
 		}
 		
-		#if DEBUG
-		self.returnToApp()
-		#else
+		
 		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
 		} else {
-			self.returnToApp()
+			self.next()
 		}
-		#endif
 	}
 	
 	func updateDigitViewsWithLength(length: Int) {
@@ -106,7 +103,7 @@ class LoginViewController: UIViewController {
 				
 				DispatchQueue.main.async {
 					if success {
-						self?.returnToApp()
+						self?.next()
 						
 					} else {
 						self?.hiddenTextfield.becomeFirstResponder()
@@ -118,13 +115,22 @@ class LoginViewController: UIViewController {
 		}
 	}
 	
-	private func returnToApp() {
+	private func next() {
+		
+		// If from edit passcode flow, continue to next screen
+		if self.navigationController?.isInSideMenuSecurityFlow() ?? false {
+			self.performSegue(withIdentifier: "edit-passcode", sender: nil)
+			return
+		}
+		
+		// If part of app login, dimiss
 		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
 			os_log("Can't get scene delegate", log: .default, type: .debug)
 			return
 		}
 		
 		reestablishConnectionsAfterLogin()
+		hiddenTextfield.resignFirstResponder()
 		sceneDelegate.hidePrivacyProtectionWindow()
 	}
 	
@@ -162,7 +168,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		
 		if validated {
 			if StorageService.validatePassword(text) == true {
-				returnToApp()
+				next()
 			} else {
 				displayErrorAndReset()
 			}

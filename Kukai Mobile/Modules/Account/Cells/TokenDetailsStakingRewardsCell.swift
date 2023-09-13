@@ -31,6 +31,10 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 	var gradientLayer = CAGradientLayer()
 	
 	func setup(data: AggregateRewardInformation) {
+		
+		lastBaker.accessibilityIdentifier = "token-detials-staking=rewards-last-baker"
+		nextBaker.accessibilityIdentifier = "token-detials-staking=rewards-next-baker"
+		
 		if let previousReward = data.previousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			

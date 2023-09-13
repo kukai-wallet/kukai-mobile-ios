@@ -39,32 +39,9 @@ class FaceIdViewController: UIViewController {
 		self.navigationItem.hidesBackButton = true
 	}
 	
-	@IBAction func toggleChanged(_ sender: Any) {
-		if isModal && toggle.isOn {
-			biometric { [weak self] errorMessage in
-				if let err = errorMessage {
-					self?.alert(errorWithMessage: err)
-					self?.toggle.isOn = !(self?.toggle.isOn ?? false)
-				} else {
-					let tabBar = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController)
-					tabBar?.refreshSideMenu()
-					self?.dismissBottomSheet()
-				}
-			}
-			
-		} else if isModal && !toggle.isOn {
-			StorageService.setBiometricEnabled(false)
-			DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5) { [weak self] in
-				let tabBar = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? HomeTabBarController)
-				tabBar?.refreshSideMenu()
-				self?.dismissBottomSheet()
-			}
-		}
-	}
-	
 	@IBAction func nextTapped(_ sender: Any) {
 		if toggle.isOn {
-			biometric { errorMessage in
+			FaceIdViewController.biometric { errorMessage in
 				if let err = errorMessage {
 					self.alert(errorWithMessage: err)
 				} else {
@@ -79,7 +56,18 @@ class FaceIdViewController: UIViewController {
 		}
 	}
 	
-	func biometric(completion: @escaping ((String?) -> Void)) {
+	public static func handleBiometricChangeTo(isOn: Bool, completion: @escaping ((String?) -> Void)) {
+		if isOn {
+			biometric(completion: completion)
+		} else {
+			StorageService.setBiometricEnabled(false)
+			DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5) {
+				completion(nil)
+			}
+		}
+	}
+	
+	private static func biometric(completion: @escaping ((String?) -> Void)) {
 		let context = LAContext()
 		var error: NSError?
 		

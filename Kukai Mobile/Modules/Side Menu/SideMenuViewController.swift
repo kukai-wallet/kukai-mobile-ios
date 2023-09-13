@@ -24,6 +24,7 @@ class SideMenuViewController: UIViewController {
 	@IBOutlet weak var regularIcon: UIImageView!
 	@IBOutlet weak var regularTitle: UILabel!
 	
+	@IBOutlet weak var getTezButton: CustomisableButton!
 	@IBOutlet weak var copyButton: CustomisableButton!
 	@IBOutlet weak var showQRButton: CustomisableButton!
 	
@@ -31,6 +32,7 @@ class SideMenuViewController: UIViewController {
 	
 	public let viewModel = SideMenuViewModel()
 	private var bag = [AnyCancellable]()
+	private var previousPanX: CGFloat = 0
 	
 	public weak var homeTabBarController: HomeTabBarController? = nil
 	
@@ -39,6 +41,8 @@ class SideMenuViewController: UIViewController {
 		
 		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
+		self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(touched(_:))))
+		
 		scanButton.configuration?.imagePlacement = .trailing
 		scanButton.configuration?.imagePadding = 6
 		
@@ -46,14 +50,6 @@ class SideMenuViewController: UIViewController {
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
-		
-		copyButton.customButtonType = .secondary
-		copyButton.configuration?.imagePlacement = .leading
-		copyButton.configuration?.imagePadding = 8
-		
-		showQRButton.customButtonType = .secondary
-		showQRButton.configuration?.imagePlacement = .leading
-		showQRButton.configuration?.imagePadding = 8
 		
 		viewModel.$state.sink { [weak self] state in
 			guard let self = self else { return }
@@ -112,11 +108,60 @@ class SideMenuViewController: UIViewController {
 		let frame = self.view.frame
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.homeTabBarController?.sideMenuTintView.alpha = 0
-			self?.view.frame = CGRect(x: frame.width * -1, y: 0, width: frame.width, height: frame.height)
+			self?.view.frame = CGRect(x: frame.origin.x + (frame.width * -1), y: 0, width: frame.width, height: frame.height)
 			
 		} completion: { [weak self] done in
 			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
 			self?.view.removeFromSuperview()
+			
+			DependencyManager.shared.sideMenuOpen = false
+		}
+	}
+	
+	@objc private func touched(_ gestureRecognizer: UIPanGestureRecognizer) {
+		let velocity = gestureRecognizer.velocity(in: view)
+		let location = gestureRecognizer.location(in: view)
+		let currentFrame = self.view.frame
+		
+		let currentPanX = location.x
+		if previousPanX == 0 {
+			previousPanX = currentPanX
+		}
+		
+		let change = (previousPanX - currentPanX)
+		let newX = currentFrame.origin.x - change
+		
+		
+		// If user is panning left, animate the position of the view left
+		// If view reaches a treshold, close
+		// If attempt to pan right (> 0), cancel
+		if newX > 0 {
+			return
+			
+		} else if (newX * -1) >= (currentFrame.width / 1.5) {
+			gestureRecognizer.isEnabled = false
+			self.closeTapped(self)
+			return
+			
+		} else {
+			UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+				self?.view.frame = CGRect(x: currentFrame.origin.x - change, y: 0, width: currentFrame.width, height: currentFrame.height)
+			}, completion: nil)
+		}
+		
+		
+		// If gesture ends without reaching close treshold, examine veloicity
+		// If velocity was greater than a treshold, close anyway
+		// else reset position
+		if gestureRecognizer.state == .ended {
+			if velocity.x < -200 {
+				self.closeTapped(self)
+				
+			} else {
+				UIView.animate(withDuration: 0.1, delay: 0.0, options: .curveEaseInOut, animations: { [weak self] in
+					self?.view.frame = CGRect(x: 0, y: 0, width: currentFrame.width, height: currentFrame.height)
+				}, completion: nil)
+			}
 		}
 	}
 	
@@ -126,6 +171,7 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func getTezTapped(_ sender: Any) {
+		self.alert(errorWithMessage: "Under construction")
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {
@@ -142,30 +188,6 @@ class SideMenuViewController: UIViewController {
 	@IBAction func swapTapped(_ sender: Any) {
 		
 	}
-	
-	/*
-	@IBAction func deleteAllTapped(_ sender: Any) {
-		let alert = UIAlertController(title: "Are you Sure?", message: "Are you sure you want to delete all your wallets? This in unrecoverable", preferredStyle: .alert)
-		alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { action in
-			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
-			
-			let _ = WalletCacheService().deleteAllCacheAndKeys()
-			TransactionService.shared.resetState()
-			DependencyManager.shared.walletList = WalletMetadataList(socialWallets: [], hdWallets: [], linearWallets: [], ledgerWallets: [])
-			
-			let domain = Bundle.main.bundleIdentifier ?? "app.kukai.mobile"
-			UserDefaults.standard.removePersistentDomain(forName: domain)
-			
-			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
-			
-			self.closeTapped(sender)
-			self.homeTabBarController?.navigationController?.popToRootViewController(animated: true)
-		}))
-		alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-		
-		self.present(alert, animated: true)
-	}
-	*/
 }
 
 extension SideMenuViewController: UITableViewDelegate {
@@ -173,19 +195,31 @@ extension SideMenuViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
-		// If we have a segue from the viewModel open it
-		// else if is biometric (disbaled by user) open settings
-		if let segueDetails = viewModel.segue(forIndexPath: indexPath) {
-			if segueDetails.collapseAndNavigate {
+		guard let details = viewModel.details(forIndexPath: indexPath) else { return }
+		
+		if let url = details.url, UIApplication.shared.canOpenURL(url) {
+			UIApplication.shared.open(url)
+			
+		} else if let segue = details.segue {
+			if details.collapseAndNavigate == true {
+				
 				self.closeTapped(self)
-				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
 				
 			} else {
-				homeTabBarController?.performSegue(withIdentifier: segueDetails.segue, sender: nil)
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
 			}
 			
-		} else if viewModel.isBiometricCell(forIndexPath: indexPath), let settingsURL = URL(string: UIApplication.openSettingsURLString) {
-			UIApplication.shared.open(settingsURL)
+		} else {
+			shareURL()
+		}
+	}
+	
+	func shareURL() {
+		if let shareURL = NSURL(string: "https://kukai.app") {
+			let objectsToShare = [shareURL]
+			let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+			self.present(activityVC, animated: true, completion: nil)
 		}
 	}
 }

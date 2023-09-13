@@ -28,6 +28,69 @@ final class Test_04_Account: XCTestCase {
 	
 	// MARK: - Test functions
 	
+	public func testWatchWalletTokenDetails() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress.truncateTezosAddress())
+		sleep(2)
+		Test_03_Home.handleOpenSideMenu(app: app)
+		sleep(2)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
+		
+		// Go to Tez token details
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["Tez"].tap()
+		
+		// Check baker rewards loads correctly
+		sleep(4)
+		
+		SharedHelpers.shared.waitForStaticText("token-detials-staking=rewards-last-baker", exists: true, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.waitForStaticText("token-detials-staking=rewards-next-baker", exists: true, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		
+		let kUSD = app.tables.staticTexts["kUSD"]
+		let WTZ = app.tables.staticTexts["WTZ"]
+		let EURL = app.tables.staticTexts["EURL"]
+		var enteredTokenDetials = false
+		
+		// Scroll tableview up to 10 times searching for a known token that has a chart, if so tap it
+		for _ in 0..<10 {
+			if kUSD.exists {
+				kUSD.tap()
+				enteredTokenDetials = true
+				break
+				
+			} else if WTZ.exists {
+				WTZ.tap()
+				enteredTokenDetials = true
+				break
+				
+			} else if EURL.exists {
+				EURL.tap()
+				enteredTokenDetials = true
+				break
+				
+			} else {
+				app.swipeUp()
+			}
+		}
+		
+		if enteredTokenDetials {
+			sleep(4)
+			XCTAssert(app.tables.staticTexts["chart-annotation-bottom"].exists)
+			SharedHelpers.shared.navigationBack(app: app)
+		}
+		
+		Test_03_Home.handleOpenSideMenu(app: app)
+		sleep(2)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
+		sleep(2)
+		
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
+	}
+	
 	public func testXTZTokenDetails() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
@@ -214,7 +277,6 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
 		sendToken(to: testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 		
-		
 		// Switch back and end
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
@@ -237,6 +299,22 @@ final class Test_04_Account: XCTestCase {
 		
 		app.buttons["primary-button"].tap()
 		sleep(4)
+		
+		
+		app.buttons["Normal"].tap()
+		sleep(2)
+		
+		let currentFee = app.textFields["fee-textfield"].value as? String
+		let currentGas = app.textFields["gas-limit-textfield"].value as? String
+		
+		app.buttons["Fast"].tap()
+		
+		XCTAssert(currentFee != nil && (app.textFields["fee-textfield"].value as? String) != currentFee, currentFee ?? "-")
+		XCTAssert(currentGas != nil && (app.textFields["gas-limit-textfield"].value as? String) != currentGas, currentGas ?? "-")
+		Test_04_Account.slideDownBottomSheet(inApp: app, element: app.buttons["Fast"].firstMatch)
+		sleep(2)
+		
+		XCTAssert(app.staticTexts["Fast"].exists)
 		
 		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
 		Test_04_Account.slideButtonToComplete(inApp: app)
@@ -314,7 +392,6 @@ final class Test_04_Account: XCTestCase {
 	public static func waitForInitalLoad(app: XCUIApplication) {
 		SharedHelpers.shared.waitForAnyStaticText([
 			"account-token-balance",
-			"account-backup-button",
 			"account-getting-started-header"
 		], exists: true, inElement: app.tables, delay: 10)
 	}
@@ -375,6 +452,10 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.waitForStaticText("account-getting-started-header", exists: displayingGettingStarted, inElement: app.tables, delay: 2)
 	}
 	
+	public static func check(app: XCUIApplication, isDisplayingGhostnetWarning: Bool) {
+		SharedHelpers.shared.waitForStaticText("ghostnet-warning", exists: isDisplayingGhostnetWarning, inElement: app.tables, delay: 2)
+	}
+	
 	public static func tapBackup(app: XCUIApplication) {
 		app.tables.buttons["account-backup-button"].tap()
 	}
@@ -383,6 +464,12 @@ final class Test_04_Account: XCTestCase {
 		let dragButton = app.buttons["slide-button"]
 		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
 		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
+		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+	}
+	
+	public static func slideDownBottomSheet(inApp app: XCUIApplication, element: XCUIElement) {
+		let dragStart = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+		let dragDestination = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 25))
 		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
 	}
 }

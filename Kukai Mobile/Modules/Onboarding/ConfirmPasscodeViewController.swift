@@ -41,6 +41,14 @@ class ConfirmPasscodeViewController: UIViewController {
 	}
 	
 	func navigate() {
+		
+		// If from edit passcode flow, return to security screen
+		if self.navigationController?.isInSideMenuSecurityFlow() ?? false {
+			self.navigationController?.popToSecuritySettings()
+			return
+		}
+		
+		// Else if part of onboarding flow
 		StorageService.setCompletedOnboarding(true)
 		
 		if CurrentDevice.biometricTypeAuthorized() == .unavailable {

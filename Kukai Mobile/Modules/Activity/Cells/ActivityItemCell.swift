@@ -26,8 +26,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
-	@IBOutlet weak var invisibleRightButton: UIButton!
-	
 	private static let sendTitleColor = UIColor.colorNamed("Txt10")
 	private static let receiveTitleColor = UIColor.colorNamed("TxtB6")
 	
@@ -73,8 +71,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			destinationIconStackView.isHidden = true
 			destinationLabel.text = data.target?.alias ?? data.target?.address.truncateTezosAddress()
 			
-			invisibleRightButton.isHidden = true
-			
 		} else if data.subType == .delegate {
 			
 			typeIcon.isHidden = true
@@ -102,7 +98,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			}
 			
 			destinationIconStackView.isHidden = true
-			invisibleRightButton.isHidden = true
 			
 		} else {
 			
@@ -137,8 +132,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 				typeLabel.textColor = ActivityItemCell.receiveTitleColor
 				toLabel.text = "From: "
 			}
-			
-			invisibleRightButton.isHidden = false
 		}
 	}
 	
@@ -203,9 +196,5 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 				destinationIcon.image = UIImage(named: record.iconName)
 			}
 		}
-	}
-	
-	@IBAction func invisibleRightButtonTapped(_ sender: Any) {
-		self.parentViewController()?.alert(withTitle: "More button", andMessage: "Options under construction")
 	}
 }

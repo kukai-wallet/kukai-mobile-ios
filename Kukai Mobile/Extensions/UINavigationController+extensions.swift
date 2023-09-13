@@ -47,4 +47,18 @@ public extension UINavigationController {
 		
 		return self.viewControllers[self.viewControllers.count-2]
 	}
+	
+	func isInSideMenuSecurityFlow() -> Bool {
+		if let _ = self.viewControllers.first(where: { $0 is SideMenuSecurityViewController }) {
+			return true
+		}
+		
+		return false
+	}
+	
+	func popToSecuritySettings() {
+		if let vc = self.viewControllers.first(where: { $0 is SideMenuSecurityViewController }) {
+			self.popToViewController(vc, animated: true)
+		}
+	}
 }

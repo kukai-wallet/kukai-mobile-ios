@@ -86,7 +86,7 @@ class CollectibleDetailNameCell: UICollectionViewCell {
 						return
 					}
 					
-					MediaProxyService.imageCache().retrieveImage(forKey: imageURL.absoluteString, options: []) { [weak self] result in
+					MediaProxyService.imageCache(forType: .temporary).retrieveImage(forKey: imageURL.absoluteString, options: []) { [weak self] result in
 						guard let res = try? result.get() else {
 							self?.delegate?.errorMessage(message: "Unable to locate image in cache, please make sure the image is displayed correctly")
 							return

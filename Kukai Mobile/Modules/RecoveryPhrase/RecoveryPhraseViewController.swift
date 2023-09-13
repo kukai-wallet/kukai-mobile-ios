@@ -45,14 +45,24 @@ class RecoveryPhraseViewController: UIViewController {
 	private var writtenItDown = false
 	private var presentedCopyAlert = false
 	
+	public var sideMenuOption_address: String? = nil
+	public var sideMenuOption_isBackedUp: Bool? = nil
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
 		viewSeedWordsButton.customButtonType = .primary
 		nextButton.customButtonType = .primary
+    }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
-		guard let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+		
+		
+		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
 			self.navigationController?.previousViewController()?.alert(errorWithMessage: "Unable to locate wallet information. Please try again")
 			self.navigationController?.popViewController(animated: true)
 			return
@@ -64,12 +74,11 @@ class RecoveryPhraseViewController: UIViewController {
 				label.accessibilityIdentifier = "word\(index+1)"
 			}
 		}
-    }
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
 		
-		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
+		if sideMenuOption_isBackedUp == true {
+			nextButton.isHidden = true
+		}
+		
 		
 		// Hide the cover view, take screenshot, blur it, display it and cover again
 		if !writtenItDown {

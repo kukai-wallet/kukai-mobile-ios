@@ -77,12 +77,12 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var sections: [Int] = []
 		var sectionData: [[AnyHashable]] = []
 		
-		
+		/*
 		let contactsHeaderImage = UIImage(named: "Contacts") ?? UIImage()
 		let contactsHeader = SendHeaderObj(icon: contactsHeaderImage, title: "Contacts")
 		sections.append(sections.count)
 		sectionData.append([contactsHeader, NoContacts()])
-		
+		*/
 		
 		// Social
 		var walletsToAdd: [WalletObj] = []

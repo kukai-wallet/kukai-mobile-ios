@@ -209,6 +209,10 @@ class SharedHelpers: XCTestCase {
 		app.buttons["tertiary-button"].tap()
 	}
 	
+	func tapDescructiveButton(app: XCUIApplication) {
+		app.buttons["destructive-button"].tap()
+	}
+	
 	
 	
 	// MARK: - value checks

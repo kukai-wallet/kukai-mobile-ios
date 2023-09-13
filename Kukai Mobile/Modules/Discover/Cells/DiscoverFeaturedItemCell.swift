@@ -15,13 +15,15 @@ class DiscoverFeaturedItemCell: UICollectionViewCell {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var descriptionLabel: UILabel!
 	
-	func setup(categories: [String], imageURL: URL?, title: String, description: String, pageWidth: CGFloat) {
+	func setup(categories: [String], title: String, description: String, pageWidth: CGFloat) {
 		self.imageViewWidthConstraint.constant = pageWidth
 		iconView.accessibilityIdentifier = "discover-featured-cell-image"
 		
-		MediaProxyService.load(url: imageURL, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
-		
 		self.titleLabel.text = title
 		self.descriptionLabel.text = description
+	}
+	
+	func setupImage(imageURL: URL?) {
+		MediaProxyService.load(url: imageURL, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownGroup())
 	}
 }

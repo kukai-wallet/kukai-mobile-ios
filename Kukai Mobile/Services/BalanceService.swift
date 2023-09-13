@@ -235,6 +235,7 @@ public class BalanceService {
 		let _ = DiskService.delete(fileName: BalanceService.cacheLastRefreshDates)
 		
 		lastFullRefreshDates = [:]
+		lastExchangeDataRefreshDate = nil
 		let _ = DiskService.write(encodable: lastFullRefreshDates, toFileName: BalanceService.cacheLastRefreshDates)
 		
 		account = Account(walletAddress: "")

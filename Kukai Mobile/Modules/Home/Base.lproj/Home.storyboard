@@ -106,13 +106,11 @@
                         <segue destination="ERx-el-q4i" kind="relationship" relationship="viewControllers" id="ZJL-mW-czn"/>
                         <segue destination="TIR-Qd-Mky" kind="relationship" relationship="viewControllers" id="9Hz-0m-X40"/>
                         <segue destination="Thj-8Y-lSQ" kind="show" identifier="side-menu-wallet-connect" customClass="BottomSheetMediumUpToLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="ru4-xg-n5x"/>
-                        <segue destination="ItM-db-Hb6" kind="show" identifier="side-menu-currency" id="IHW-dh-XAr"/>
                         <segue destination="x5O-gF-kn4" kind="custom" identifier="wallet-connect-sign" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="81X-tM-ax1"/>
                         <segue destination="2yu-Z9-dT9" kind="custom" identifier="wallet-connect-contract" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b1M-i3-0pZ"/>
-                        <segue destination="2RW-iN-awh" kind="custom" identifier="theme" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Rde-C9-IN6"/>
-                        <segue destination="fCs-nt-4bZ" kind="custom" identifier="side-menu-network" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Jw3-79-lQf"/>
                         <segue destination="PDR-kB-1E3" kind="custom" identifier="side-menu-show-qr" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ewk-V5-Km6"/>
-                        <segue destination="A7t-0K-yAD" kind="custom" identifier="biometric" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Wux-25-qhP"/>
+                        <segue destination="gdi-7W-77M" kind="show" identifier="side-menu-settings" id="N38-pa-9HH"/>
+                        <segue destination="3St-ke-ea9" kind="show" identifier="side-menu-security" id="QP8-i8-wcO"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -157,7 +155,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOT-Rd-hYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-168" y="-2876"/>
+            <point key="canvasLocation" x="-172" y="-2982"/>
         </scene>
         <!--Wallets-->
         <scene sceneID="jFg-Wn-X5b">
@@ -559,27 +557,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2vh-QR-loL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-128" y="-3151"/>
-        </scene>
-        <!--currency-->
-        <scene sceneID="CLD-JP-zJb">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="currency" id="ItM-db-Hb6" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="sjv-nJ-Yc0"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jyt-aE-ajl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-154" y="-3112"/>
-        </scene>
-        <!--network-->
-        <scene sceneID="Fud-U0-MtG">
-            <objects>
-                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="network" id="fCs-nt-4bZ" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="F8J-dS-3X8"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sNW-DA-rih" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-157" y="-3072"/>
+            <point key="canvasLocation" x="-121" y="-3079"/>
         </scene>
         <!--existing-->
         <scene sceneID="WYi-fI-sbH">
@@ -1252,13 +1230,25 @@
             </objects>
             <point key="canvasLocation" x="2493.8461538461538" y="-1981.2796208530806"/>
         </scene>
-        <!--theme-->
-        <scene sceneID="iMN-jM-q2C">
+        <!--side-menu-settings-->
+        <scene sceneID="1Qf-I9-ybK">
             <objects>
-                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="theme" id="2RW-iN-awh" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="a6c-2I-f8X" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="side-menu-settings" id="gdi-7W-77M" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="ktP-ee-99d"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pZT-PC-lgQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-165" y="-3033"/>
+            <point key="canvasLocation" x="-105" y="-3172"/>
+        </scene>
+        <!--side-menu-security-->
+        <scene sceneID="mlQ-eq-zVG">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="side-menu-security" id="3St-ke-ea9" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Qpt-4M-hNA"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="d2D-su-le0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-105" y="-3127"/>
         </scene>
         <!--show_qr-->
         <scene sceneID="tjN-oi-Jxh">
@@ -1266,15 +1256,7 @@
                 <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="show_qr" id="PDR-kB-1E3" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="15N-Ox-E57" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-165" y="-2996"/>
-        </scene>
-        <!--biometric-->
-        <scene sceneID="9XM-b5-ibS">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Onboarding" referencedIdentifier="biometric" id="A7t-0K-yAD" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="H9e-D1-ZO9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-150" y="-2951"/>
+            <point key="canvasLocation" x="-159" y="-3031"/>
         </scene>
     </scenes>
     <designables>
