@@ -584,6 +584,8 @@ public class BalanceService {
 			
 			if hiddenCount == nftGroup.nfts?.count {
 				nftGroup.isHidden = true
+			} else {
+				nftGroup.isHidden = false
 			}
 		}
 		

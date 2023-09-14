@@ -49,7 +49,7 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: .icon)
 				MediaProxyService.load(url: url, to: cell.tokenIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.name
-				cell.balanceLabel.text = obj.parentAlias ?? obj.parentContract
+				cell.balanceLabel.text = obj.parentAlias ?? obj.parentContract.truncateTezosAddress()
 				
 				return cell
 				
