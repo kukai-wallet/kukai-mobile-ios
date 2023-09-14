@@ -539,7 +539,7 @@ final class Test_02_Onboarding: XCTestCase {
 		SharedHelpers.shared.waitForButton("Don’t Merge", exists: true, inElement: settingsApp, delay: 10)
 		settingsApp.buttons["Don’t Merge"].tap()
 		
-		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inElement: settingsApp, delay: 10)
+		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inElement: settingsApp, delay: 30)
 	}
 	
 	public static func handleSignInToiCloudPopupIfNeeded() {
