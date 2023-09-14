@@ -15,7 +15,7 @@ final class Test_06_Collectibles: XCTestCase {
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
-		continueAfterFailure = false
+		continueAfterFailure = true
 		
 		SharedHelpers.shared.application().launch()
 	}
