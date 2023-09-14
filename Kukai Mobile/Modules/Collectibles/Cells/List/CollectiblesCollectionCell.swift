@@ -24,6 +24,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	
 	private var gradientLayer: CAGradientLayer? = nil
 	private var totalCount: Int?
+	private var previousGradientBounds = CGRect.zero
 	
 	func setup(title: String, totalCount: Int?) {
 		self.collectionName.text = title
@@ -122,11 +123,21 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		}
 	}
 	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		if self.previousGradientBounds.width != self.contentView.bounds.width {
+			addGradientBackground() // Strange loading issue. First time it loads these cells, width is 50% of what it should be
+		}
+	}
+	
 	public func addGradientBackground() {
 		contentView.customCornerRadius = 8
 		contentView.maskToBounds = true
 		gradientLayer?.removeFromSuperlayer()
 		gradientLayer = self.contentView.addGradientPanelRows(withFrame: self.contentView.bounds)
+		
+		self.previousGradientBounds = self.contentView.bounds
 	}
 	
 	private func emptyStyle(forImageView imageView: UIImageView?) {
