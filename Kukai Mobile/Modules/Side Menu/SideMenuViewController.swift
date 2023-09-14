@@ -33,6 +33,7 @@ class SideMenuViewController: UIViewController {
 	public let viewModel = SideMenuViewModel()
 	private var bag = [AnyCancellable]()
 	private var previousPanX: CGFloat = 0
+	private var panGestureRecognizer: UIPanGestureRecognizer? = nil
 	
 	public weak var homeTabBarController: HomeTabBarController? = nil
 	
@@ -41,7 +42,10 @@ class SideMenuViewController: UIViewController {
 		
 		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
-		self.view.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(touched(_:))))
+		panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(touched(_:)))
+		if let g = panGestureRecognizer {
+			UIApplication.shared.currentWindow?.addGestureRecognizer(g)
+		}
 		
 		scanButton.configuration?.imagePlacement = .trailing
 		scanButton.configuration?.imagePadding = 6
@@ -114,6 +118,9 @@ class SideMenuViewController: UIViewController {
 			self?.homeTabBarController?.sideMenuTintView.removeFromSuperview()
 			self?.view.removeFromSuperview()
 			
+			if let g = self?.panGestureRecognizer {
+				UIApplication.shared.currentWindow?.removeGestureRecognizer(g)
+			}
 			DependencyManager.shared.sideMenuOpen = false
 		}
 	}
