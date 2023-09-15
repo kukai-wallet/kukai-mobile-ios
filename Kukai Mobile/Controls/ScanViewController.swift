@@ -28,7 +28,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	let modalBackButton = CustomisableButton()
 	
 	public var withTextField: Bool = false
-	let textfield = UITextField()
+	let textfield = ValidatorTextField()
 	let pasteButton = CustomisableButton(configuration: .plain(), primaryAction: nil)
 	
 	weak var delegate: ScanViewControllerDelegate?
@@ -135,6 +135,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			textfield.translatesAutoresizingMaskIntoConstraints = false
 			textfield.customCornerRadius = 8
 			textfield.placeholder = "Paste Code Here"
+			textfield.placeholderColor = .colorNamed("Txt10")
 			textfield.addDoneToolbar(onDone: (target: self, action: #selector(textFieldDone)))
 			textfield.autocorrectionType = .no
 			textfield.textContentType = .none

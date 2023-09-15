@@ -214,7 +214,6 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
 		searchCell?.searchBar.text = ""
 		searchCell?.cancelButton.isHidden = true
-		searchCell?.searchBar.resignFirstResponder()
 		
 		UIView.animate(withDuration: 0.3) {
 			searchCell?.contentView.layoutIfNeeded()

@@ -27,6 +27,6 @@ class CollectiblesSearchCell: UICollectionViewCell {
 	}
 	
 	@IBAction func cancelButtonTapped(_ sender: Any) {
-		searchBar.delegate?.textFieldDidEndEditing?(searchBar)
+		searchBar.resignFirstResponder()
 	}
 }
