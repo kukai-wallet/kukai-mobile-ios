@@ -147,6 +147,8 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(4)
 		
 		safari.textFields["Address"].tap()
+		sleep(2)
+		
 		let fullURL1 = (safari.textFields["Address"].value as? String) ?? ""
 		let prefix1 = String(fullURL1.prefix(19))
 		XCTAssert(prefix1 == "https://twitter.com", prefix1)
@@ -165,6 +167,8 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(4)
 		
 		safari.textFields["Address"].tap()
+		sleep(2)
+		
 		let fullURL2 = (safari.textFields["Address"].value as? String) ?? ""
 		let prefix2 = String(fullURL2.prefix(19))
 		XCTAssert(prefix2 == "https://discord.com", prefix2)
@@ -183,6 +187,8 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(4)
 		
 		safari.textFields["Address"].tap()
+		sleep(2)
+		
 		let fullURL3 = (safari.textFields["Address"].value as? String) ?? ""
 		XCTAssert(fullURL3 == "https://t.me/KukaiWallet", fullURL3)
 	}

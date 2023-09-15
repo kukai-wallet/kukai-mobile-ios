@@ -22,12 +22,11 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 		bakerButton?.accessibilityIdentifier = "token-detials-baker-button"
 		
 		if data.isStaked {
+			bakerButton?.customButtonType = .none
 			bakerButton?.setTitle(data.bakerName, for: .normal)
 			
 		} else {
-			bakerButton?.borderWidth = 1
-			bakerButton?.borderColor = UIColor.colorNamed("BtnStrokeSec1")
-			bakerButton?.customCornerRadius = 8
+			bakerButton?.customButtonType = .secondary
 		}
 	}
 }
