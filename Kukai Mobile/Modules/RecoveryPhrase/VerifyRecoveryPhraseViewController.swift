@@ -85,12 +85,16 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		let realIndex = Int.random(in: 0..<3)
 		realWordIndexes.append(realIndex)
 		
+		var previousWord: String? = nil
 		for index in 0..<3 {
+			
 			if let button = value(forKey: "selection\(selectionIndex)Button\(index+1)") as? UIButton {
 				if index == realIndex {
 					button.setTitle(realWord, for: .normal)
 				} else {
-					button.setTitle(randomMnemonicWord(exlcuding: realWord), for: .normal)
+					let newWord = randomMnemonicWord(excluding: realWord, previousWord: previousWord)
+					button.setTitle(newWord, for: .normal)
+					previousWord = newWord
 				}
 			}
 		}
@@ -114,9 +118,9 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		selection4Button3.accessibilityIdentifier = "selection-4-option-3"
 	}
 	
-	private func randomMnemonicWord(exlcuding: String) -> String {
-		var word = exlcuding
-		while word == exlcuding {
+	private func randomMnemonicWord(excluding: String, previousWord: String?) -> String {
+		var word = excluding
+		while word == excluding || word == previousWord {
 			word = MnemonicWordList_English[Int.random(in: 0..<MnemonicWordList_English.count)]
 		}
 		

@@ -473,8 +473,6 @@ final class Test_02_Onboarding: XCTestCase {
 			
 			for word in seedWords {
 				let minusLastCharacter = String(word.prefix(word.count-1))
-				print("minusLastCharacter: \(minusLastCharacter)")
-				
 				app.typeText(minusLastCharacter)
 				customAutoCompleteView.staticTexts[word].tap()
 			}
@@ -524,7 +522,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		
 		settingsApp.staticTexts["Sign in to your iPhone"].tap()
-		settingsApp.textFields["Email"].tap()
+		settingsApp.textFields.firstMatch.tap()
 		settingsApp.typeText(EnvironmentVariables.shared.config().gmailAddress)
 		
 		settingsApp.buttons["Next"].tap()
@@ -603,20 +601,20 @@ final class Test_02_Onboarding: XCTestCase {
 		let wrongWord3 = Test_02_Onboarding.findWrongWord(forSection: 3, inApp: app, realWord: seedWord3)
 		let wrongWord4 = Test_02_Onboarding.findWrongWord(forSection: 4, inApp: app, realWord: seedWord4)
 		
-		app.buttons[wrongWord1].tap()
-		app.buttons[wrongWord2].tap()
-		app.buttons[wrongWord3].tap()
-		app.buttons[wrongWord4].tap()
+		app.buttons[wrongWord1].firstMatch.tap()
+		app.buttons[wrongWord2].firstMatch.tap()
+		app.buttons[wrongWord3].firstMatch.tap()
+		app.buttons[wrongWord4].firstMatch.tap()
 		
 		sleep(2)
 		XCTAssert(app.staticTexts[wrongWord1].exists) // Shouldn't have moved
 		
 		
 		// Tap correct words in order on verification screen
-		app.staticTexts[seedWord1].tap()
-		app.staticTexts[seedWord2].tap()
-		app.staticTexts[seedWord3].tap()
-		app.staticTexts[seedWord4].tap()
+		app.staticTexts[seedWord1].firstMatch.tap()
+		app.staticTexts[seedWord2].firstMatch.tap()
+		app.staticTexts[seedWord3].firstMatch.tap()
+		app.staticTexts[seedWord4].firstMatch.tap()
 		
 		sleep(2)
 		XCTAssert(!app.staticTexts[wrongWord1].exists) // Should have moved

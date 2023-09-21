@@ -39,6 +39,7 @@ final class Test_04_Account: XCTestCase {
 		
 		// Go to Tez token details
 		let tablesQuery = app.tables
+		SharedHelpers.shared.waitForStaticText("Tez", exists: true, inElement: tablesQuery, delay: 10)
 		tablesQuery.staticTexts["Tez"].tap()
 		
 		// Check baker rewards loads correctly
@@ -372,7 +373,7 @@ final class Test_04_Account: XCTestCase {
 		bakerButton.tap()
 		sleep(2)
 		
-		app.tables.staticTexts[" Baking Benjamins"].tap()
+		app.tables.staticTexts["Baking Benjamins"].tap()
 		sleep(2)
 		
 		SharedHelpers.shared.tapPrimaryButton(app: app)

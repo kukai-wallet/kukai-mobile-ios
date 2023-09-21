@@ -15,12 +15,6 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 	@IBOutlet weak var bakerButton: CustomisableButton?
 	
 	func setup(data: TokenDetailsBalanceAndBakerData) {
-		balance.text = data.balance
-		balance.accessibilityIdentifier = "token-detials-balance"
-		value.text = data.value
-		value.accessibilityIdentifier = "token-detials-balance-value"
-		bakerButton?.accessibilityIdentifier = "token-detials-baker-button"
-		
 		if data.isStaked {
 			bakerButton?.customButtonType = .none
 			bakerButton?.setTitle(data.bakerName, for: .normal)
@@ -28,5 +22,11 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 		} else {
 			bakerButton?.customButtonType = .secondary
 		}
+		
+		balance.text = data.balance
+		balance.accessibilityIdentifier = "token-detials-balance"
+		value.text = data.value
+		value.accessibilityIdentifier = "token-detials-balance-value"
+		bakerButton?.accessibilityIdentifier = "token-detials-baker-button"
 	}
 }

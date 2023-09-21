@@ -145,6 +145,10 @@ class SharedHelpers: XCTestCase {
 		app.keys["space"].tap()
 	}
 	
+	func typeReturn(app: XCUIApplication) {
+		app.keyboards.buttons["return"].tap()
+	}
+	
 	func typeBackspace(app: XCUIApplication, times: Int = 1) {
 		var key: XCUIElement? = nil
 		
