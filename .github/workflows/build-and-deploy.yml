@@ -69,7 +69,12 @@ jobs:
       - name: Auto update build number
         if: github.ref == 'refs/heads/develop'
         run: agvtool next-version -all
-
+      
+      # Setup CodeQL before building
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: "swift"
 
       # Build and archive for main or develop
       - name: Build and Archive
@@ -79,7 +84,12 @@ jobs:
       - name: Build and Archive
         if: github.ref == 'refs/heads/develop'
         run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
-
+      
+      #Analyse code after build
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:swift"
 
       # Export .ipa for main or develop
       - name: Export .ipa
