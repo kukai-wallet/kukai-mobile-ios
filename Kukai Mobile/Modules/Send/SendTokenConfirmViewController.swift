@@ -87,7 +87,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
-				self.alert(errorWithMessage: "Unable to locate requested account")
+				self.windowError(withTitle: "Error", description: "Unable to locate requested account")
 				self.walletConnectRespondOnReject()
 				self.dismissBottomSheet()
 				return
@@ -195,7 +195,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		self.showLoadingModal(invisible: true)
 		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.alert(errorWithMessage: "Unable to find wallet")
+			self.windowError(withTitle: "Error", description: "Unable to locate requested account")
 			self.slideButton.resetSlider()
 			return
 		}
@@ -218,7 +218,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 						}
 						
 					case .failure(let sendError):
-						self?.alert(errorWithMessage: sendError.description)
+						self?.windowError(withTitle: "Error", description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
@@ -260,7 +260,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
-				self.alert(withTitle: "Insufficient Funds", andMessage: "Your balance is \(token.balance.normalisedRepresentation) and the required fee to make this transaction is \(fee.normalisedRepresentation)")
+				self.windowError(withTitle: "Insufficient Funds", description: "Your balance is \(token.balance.normalisedRepresentation) and the required fee to make this transaction is \(fee.normalisedRepresentation)")
 				updateAmountDisplay(withValue: .zero())
 				slideButton.isUserInteractionEnabled = false
 				slideButton.alpha = 0.6
@@ -339,7 +339,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	private func walletConnectRespondOnSign(opHash: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
-			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
 			self.dismissAndReturn()
 			return
 		}
@@ -353,7 +353,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				
 			} catch {
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
-				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
 				self.dismissAndReturn()
 			}
 		}
@@ -363,7 +363,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	private func walletConnectRespondOnReject() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
-			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
 			self.dismissAndReturn()
 			return
 		}
@@ -377,7 +377,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
-				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
 				self.dismissAndReturn()
 			}
 		}

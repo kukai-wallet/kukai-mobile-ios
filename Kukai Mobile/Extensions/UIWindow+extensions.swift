@@ -73,6 +73,10 @@ extension UIWindow {
 			setupErrorView()
 		}
 		
+		if UIWindow.errorView.superview != nil {
+			return
+		}
+		
 		UIWindow.errorViewTitleLabel.text = title
 		UIWindow.errorViewDescriptionLabel.text = description
 		UIWindow.errorViewTitleLabel.setNeedsLayout()

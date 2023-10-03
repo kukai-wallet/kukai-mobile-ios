@@ -35,7 +35,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -112,7 +112,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 			
 			guard let res = try? result.get() else {
 				self?.hideLoadingModal(completion: {
-					self?.alert(errorWithMessage: result.getFailure().description)
+					self?.windowError(withTitle: "Error fetching address", description: result.getFailure().description)
 				})
 				return
 			}
