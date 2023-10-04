@@ -119,7 +119,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 			self.dismissBottomSheet()
 			
 		} else {
-			self.alert(errorWithMessage: "Unable to set custom name on wallet")
+			self.windowError(withTitle: "Error", description: "Unable to set custom name on wallet")
 		}
 	}
 	

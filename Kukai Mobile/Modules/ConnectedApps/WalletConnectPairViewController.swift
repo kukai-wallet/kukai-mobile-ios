@@ -123,7 +123,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.alert(errorWithMessage: message)
+					self?.windowError(withTitle: "Error", description: message)
 				})
 			}
 		}
@@ -145,7 +145,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				
 			} catch (let error) {
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.alert(errorWithMessage: "Error: \(error)")
+					self?.windowError(withTitle: "Error", description: error.localizedDescription)
 				})
 			}
 		}

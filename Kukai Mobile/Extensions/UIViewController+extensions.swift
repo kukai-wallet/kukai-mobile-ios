@@ -153,7 +153,7 @@ extension UIViewController {
 	// MARK: - UIAlertViewController Utils
 	
 	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 3) {
-		UIApplication.shared.currentWindow?.displayError(title: withTitle, description: description, autoDismiss: nil)
+		UIApplication.shared.currentWindow?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
 	}
 	
 	func alert(errorWithMessage message: String) {
@@ -202,7 +202,7 @@ extension UIViewController {
 	
 	
 	
-	// MARK: - Storybaord Utils
+	// MARK: - Storyboard Utils
 	
 	@IBAction func modalCloseButtonTapped(_ sender: Any) {
 		self.dismiss(animated: true, completion: nil)

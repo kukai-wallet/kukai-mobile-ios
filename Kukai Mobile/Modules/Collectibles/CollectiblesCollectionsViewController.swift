@@ -41,7 +41,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -137,13 +137,13 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	func sortMenu() -> MenuViewController {
 		let choices: [MenuChoice] = [
 			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents"), identifier: nil, handler: { [weak self] action in
-				self?.alert(errorWithMessage: "Recent sort not functional yet")
+				self?.windowError(withTitle: "Error", description: "Recent sort not functional yet")
 			})),
 			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical"), identifier: nil, handler: { [weak self] action in
-				self?.alert(errorWithMessage: "Alphabetical sort not functional yet")
+				self?.windowError(withTitle: "Error", description: "Alphabetical sort not functional yet")
 			})),
 			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView"), identifier: nil, handler: { [weak self] action in
-				self?.alert(errorWithMessage: "CollectionGroupView sort not functional yet")
+				self?.windowError(withTitle: "Error", description: "Collection Group View sort not functional yet")
 			}))
 		]
 		

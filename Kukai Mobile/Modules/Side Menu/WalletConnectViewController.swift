@@ -34,7 +34,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -87,7 +87,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.pairingToChangeAccount = nil
-						self?.alert(errorWithMessage: "\(error)")
+						self?.windowError(withTitle: "Error", description: error.localizedDescription)
 					}
 				}
 			}
@@ -108,7 +108,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				
 				self?.hideLoadingModal(completion: {
 					if let err = error {
-						self?.alert(errorWithMessage: "Unable to reconnect: \(err)")
+						self?.windowError(withTitle: "Error", description: "Unable to reconnect: \(err.localizedDescription)")
 					}
 				})
 			}
@@ -151,7 +151,7 @@ extension WalletConnectViewController: UITableViewDelegate {
 					}
 				} catch {
 					DispatchQueue.main.async { [weak self] in
-						self?.alert(errorWithMessage: "\(error)")
+						self?.windowError(withTitle: "Error", description: error.localizedDescription)
 					}
 				}
 			}

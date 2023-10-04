@@ -213,21 +213,21 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.isPreviousAccountUsed(forAddress: walletMetadata.address, completion: { isUsed in
 				guard isUsed else {
 					vc.hideLoadingView()
-					vc.alert(withTitle: "Previous Account empty", andMessage: "The main wallet or the previous account is empty, you can only have 1 empty account per wallet at a time")
+					vc.windowError(withTitle: "Previous Account empty", description: "The main wallet or the previous account is empty, you can only have 1 empty account per wallet at a time")
 					return
 				}
 				
 				guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
 					  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
 					vc.hideLoadingView()
-					vc.alert(errorWithMessage: "Unable to add child")
+					vc.windowError(withTitle: "Error", description: "Unable to add child")
 					return
 				}
 				
 				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
 					guard success else {
 						vc.hideLoadingView()
-						vc.alert(withTitle: "Error", andMessage: "Unable to cache")
+						vc.windowError(withTitle: "Error", description: "Unable to cache")
 						return
 					}
 					

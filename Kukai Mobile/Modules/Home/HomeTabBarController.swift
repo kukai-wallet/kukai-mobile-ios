@@ -481,19 +481,25 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			
 		if let m = message {
 			var message = "\(m)"
-			if let e = error {
-				message += ". Due to error: \n\n\(e)"
+			if let e = error as? KukaiError {
+				message += ". Due to error: \(e.description)"
+			} else if let e = error {
+				message += ". Due to error: \(e.localizedDescription)"
 			}
 			
-			self.alert(errorWithMessage: message)
+			self.windowError(withTitle: "Error", description: message)
 			self.respondOnReject(withMessage: m)
 			
-		} else if let e = error {
-			self.alert(errorWithMessage: "\(e)")
-			self.respondOnReject(withMessage: "An error occurred on the wallet")
+		} else if let e = error as? KukaiError {
+			self.windowError(withTitle: "Error", description: e.description)
+			self.respondOnReject(withMessage: "Error: \(e.description)")
+			
+		} else if let e = error{
+			self.windowError(withTitle: "Error", description: e.localizedDescription)
+			self.respondOnReject(withMessage: "Error: \(e.localizedDescription)")
 			
 		} else {
-			self.alert(errorWithMessage: "Unknown Wallet Connect error occured")
+			self.windowError(withTitle: "Error", description: "Unknown Wallet Connect error occured")
 			self.respondOnReject(withMessage: "Unknown error occurred")
 		}
 	}
@@ -537,7 +543,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.alert(errorWithMessage: "Error: \(error)")
+				self.windowError(withTitle: "Error", description: error.localizedDescription)
 			}
 			
 		} else if let _ = presentationController.presentedViewController as? WalletConnectSignViewController, !didApproveSigning {
@@ -554,7 +560,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.alert(errorWithMessage: "Error: \(error)")
+				self.windowError(withTitle: "Error", description: error.localizedDescription)
 			}
 		}
 	}

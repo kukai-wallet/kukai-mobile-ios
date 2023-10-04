@@ -23,11 +23,6 @@ extension UIWindow {
 		UIWindow.errorViewTitleLabel.translatesAutoresizingMaskIntoConstraints = false
 		UIWindow.errorViewDescriptionLabel.translatesAutoresizingMaskIntoConstraints = false
 		
-		UIWindow.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(touched(_:)))
-		if let g = UIWindow.panGestureRecognizer {
-			UIWindow.errorView.addGestureRecognizer(g)
-		}
-		
 		UIWindow.errorView.frame = CGRect(x: 16, y: -100, width: self.bounds.width-32, height: 100)
 		UIWindow.errorView.backgroundColor = .colorNamed("BGAlert0")
 		UIWindow.errorView.borderColor = .colorNamed("BGAlert6")
@@ -77,6 +72,13 @@ extension UIWindow {
 			return
 		}
 		
+		if UIWindow.panGestureRecognizer == nil {
+			UIWindow.panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(touched(_:)))
+			if let g = UIWindow.panGestureRecognizer {
+				UIWindow.errorView.addGestureRecognizer(g)
+			}
+		}
+		
 		UIWindow.errorViewTitleLabel.text = title
 		UIWindow.errorViewDescriptionLabel.text = description
 		UIWindow.errorViewTitleLabel.setNeedsLayout()
@@ -123,6 +125,7 @@ extension UIWindow {
 			
 			if let g = UIWindow.panGestureRecognizer {
 				UIWindow.errorView.removeGestureRecognizer(g)
+				UIWindow.panGestureRecognizer = nil
 			}
 			
 			// Causing animation jitter running it regularly in completion

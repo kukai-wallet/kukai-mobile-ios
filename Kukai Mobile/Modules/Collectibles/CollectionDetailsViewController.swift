@@ -51,7 +51,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)

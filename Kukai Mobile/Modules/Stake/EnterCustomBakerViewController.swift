@@ -46,7 +46,7 @@ class EnterCustomBakerViewController: UIViewController, EnterAddressComponentDel
 			
 			guard let res = try? result.get() else {
 				self?.hideLoadingView()
-				self?.alert(errorWithMessage: result.getFailure().description)
+				self?.windowError(withTitle: "Error", description: result.getFailure().description)
 				return
 			}
 			

@@ -43,7 +43,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 					
 				case .failure(_, let errorString):
 					self?.refreshControl.endRefreshing()
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
@@ -144,7 +144,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 				UIPasteboard.general.string = address
 				
 			default:
-				self.alert(errorWithMessage: "oppsie woopsie")
+				self.windowError(withTitle: "Error", description: "Unsupported action")
 		}
 	}
 }

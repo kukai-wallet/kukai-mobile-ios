@@ -31,7 +31,7 @@ class CurrencyViewController: UIViewController, UITableViewDelegate {
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingModal(completion: {
-						self?.alert(withTitle: "Error", andMessage: errorString)
+						self?.windowError(withTitle: "Error", description: errorString)
 					})
 				
 				case .success(let message):

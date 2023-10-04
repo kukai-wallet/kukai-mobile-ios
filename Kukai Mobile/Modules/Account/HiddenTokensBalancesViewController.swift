@@ -29,7 +29,7 @@ class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate 
 					let _ = ""
 					
 				case .failure(_, let errorString):
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "Error", description: errorString)
 					
 				case .success:
 					let _ = ""

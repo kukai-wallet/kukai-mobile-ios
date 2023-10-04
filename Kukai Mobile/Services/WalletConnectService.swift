@@ -349,12 +349,12 @@ public class WalletConnectService {
 				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-				self.delegate?.error(message: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				self.delegate?.error(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				return
 			}
 			
 			guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-				self.delegate?.error(message: "Processing WalletConnect request, unable to parse response or locate wallet", error: nil)
+				self.delegate?.error(message: "Unable to parse response or locate wallet", error: nil)
 				return
 			}
 			
@@ -366,7 +366,7 @@ public class WalletConnectService {
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 				guard let estimationResult = try? result.get() else {
-					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: result.getFailure())
+					self?.delegate?.error(message: "Unable to estimate fees", error: result.getFailure())
 					return
 				}
 				

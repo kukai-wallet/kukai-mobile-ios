@@ -100,7 +100,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func appleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
-			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "Error", description: "Unsupported, due to missing verifier")
 			return
 		}
 		
@@ -112,7 +112,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func googleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
-			self.alert(withTitle: "Error", andMessage: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "Error", description: "Unsupported, due to missing verifier")
 			return
 		}
 		
@@ -122,35 +122,35 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func discordTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func twitchTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func lineTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func githubTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func continueWithEmailTapped(_ sender: Any) {
-		self.alert(withTitle: "Not yet supported", andMessage: "This feature is not yet enabled. Please wait for another release")
+		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
 	}
 	
 	@IBAction func viewMoreOptionsTapped(_ sender: Any) {
@@ -182,7 +182,7 @@ class CreateWithSocialViewController: UIViewController {
 						
 					} else {
 						self?.hideLoadingView()
-						self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+						self?.windowError(withTitle: "Error", description: "Unable to cache")
 					}
 				}
 				
@@ -191,7 +191,7 @@ class CreateWithSocialViewController: UIViewController {
 				
 				// Ignore apple sign in cancelled error
 				if error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001 {
-					self.alert(withTitle: "Error", andMessage: error.description)
+					self.windowError(withTitle: "Error", description: error.description)
 				}
 		}
 	}

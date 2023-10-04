@@ -66,7 +66,7 @@ class SideMenuViewController: UIViewController {
 					let _ = ""
 					
 				case .failure(_, let message):
-					self.alert(withTitle: "Error", andMessage: message)
+					self.windowError(withTitle: "Error", description: message)
 			}
 		}.store(in: &bag)
 		
