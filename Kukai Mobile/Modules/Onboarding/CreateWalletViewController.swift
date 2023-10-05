@@ -31,10 +31,10 @@ class CreateWalletViewController: UIViewController {
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
 				self.navigate()
 			} else {
-				self.windowError(withTitle: "error".localized(), description: "Unable to cache")
+				self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 			}
 		} else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to create wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-cant-create-wallet".localized())
 		}
 	}
 	

@@ -148,7 +148,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			wallet.sign(str, isOperation: false) { [weak self] result in
 				guard let signature = try? result.get() else {
 					self?.hideLoadingModal(completion: { [weak self] in
-						self?.windowError(withTitle: "error".localized(), description: "Unable to sign with wallet: \(result.getFailure().description)")
+						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
 					})
 					return
 				}

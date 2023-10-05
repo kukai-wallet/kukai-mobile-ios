@@ -106,7 +106,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		super.viewDidAppear(animated)
 		
 		guard let baker = self.currentDelegateData.chosenBaker else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to process baker")
+			self.windowError(withTitle: "error".localized(), description: "error-chosen-baker".localized())
 			self.dismissBottomSheet()
 			return
 		}
@@ -132,7 +132,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		self.showLoadingModal(invisible: true)
 		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to find wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 			self.slideButton.resetSlider()
 			return
 		}

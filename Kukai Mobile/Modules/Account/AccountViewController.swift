@@ -144,7 +144,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 				UIPasteboard.general.string = address
 				
 			default:
-				self.windowError(withTitle: "error".localized(), description: "Unsupported action")
+				self.windowError(withTitle: "error".localized(), description: "error-unsupport-action".localized())
 		}
 	}
 }

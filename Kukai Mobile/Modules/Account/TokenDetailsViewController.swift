@@ -232,7 +232,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 							self?.dismiss(animated: true)
 						} else {
-							self?.windowError(withTitle: "error".localized(), description: "Unable to unhide token")
+							self?.windowError(withTitle: "error".localized(), description: "error-hide-token".localized())
 						}
 					})
 				)
@@ -250,7 +250,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							self?.dismiss(animated: true)
 							
 						} else {
-							self?.windowError(withTitle: "error".localized(), description: "Unable to hide token")
+							self?.windowError(withTitle: "error".localized(), description: "error-hide-token".localized())
 						}
 					})
 				)

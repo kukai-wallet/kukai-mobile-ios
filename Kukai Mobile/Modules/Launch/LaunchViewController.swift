@@ -41,7 +41,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
 			cloudKitService.fetchConfigItems { [weak self] error in
 				if let e = error {
-					self?.windowError(withTitle: "error".localized(), description: "Unable to fetch config settings: \(e.localizedDescription)")
+					self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))
 					
 				} else {
 					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]

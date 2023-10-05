@@ -108,7 +108,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				
 				self?.hideLoadingModal(completion: {
 					if let err = error {
-						self?.windowError(withTitle: "error".localized(), description: "Unable to reconnect: \(err.localizedDescription)")
+						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-reconnect"), withArguments: err.localizedDescription) )
 					}
 				})
 			}

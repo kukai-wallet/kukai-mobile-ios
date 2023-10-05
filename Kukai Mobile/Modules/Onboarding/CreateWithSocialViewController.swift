@@ -100,7 +100,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func appleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
-			self.windowError(withTitle: "error".localized(), description: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
 			return
 		}
 		
@@ -112,7 +112,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func googleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
-			self.windowError(withTitle: "error".localized(), description: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
 			return
 		}
 		
@@ -182,7 +182,7 @@ class CreateWithSocialViewController: UIViewController {
 						
 					} else {
 						self?.hideLoadingView()
-						self?.windowError(withTitle: "error".localized(), description: "Unable to cache")
+						self?.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 					}
 				}
 				

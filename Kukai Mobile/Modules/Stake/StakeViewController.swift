@@ -82,7 +82,7 @@ class StakeViewController: UIViewController {
 	
 	func createOperationsAndConfirm(toAddress: String) {
 		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to locate wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 			return
 		}
 		

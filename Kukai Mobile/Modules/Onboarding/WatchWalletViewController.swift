@@ -101,7 +101,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 	func findDomainsAndCache(forMetadata metadata: WalletMetadata, completion: @escaping (() -> Void)) {
 		let walletCache = WalletCacheService()
 		guard walletCache.cacheWatchWallet(metadata: metadata) else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to cache wallet details")
+			self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 			completion()
 			return
 		}

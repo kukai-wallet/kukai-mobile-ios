@@ -482,9 +482,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		if let m = message {
 			var message = "\(m)"
 			if let e = error as? KukaiError {
-				message += ". Due to error: \(e.description)"
+				message += ". \(e.description)"
 			} else if let e = error {
-				message += ". Due to error: \(e.localizedDescription)"
+				message += ". \(e.localizedDescription)"
 			}
 			
 			self.windowError(withTitle: "error".localized(), description: message)
@@ -492,15 +492,15 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			
 		} else if let e = error as? KukaiError {
 			self.windowError(withTitle: "error".localized(), description: e.description)
-			self.respondOnReject(withMessage: "Error: \(e.description)")
+			self.respondOnReject(withMessage: e.description)
 			
 		} else if let e = error{
 			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
-			self.respondOnReject(withMessage: "Error: \(e.localizedDescription)")
+			self.respondOnReject(withMessage: e.localizedDescription)
 			
 		} else {
-			self.windowError(withTitle: "error".localized(), description: "Unknown Wallet Connect error occured")
-			self.respondOnReject(withMessage: "Unknown error occurred")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
+			self.respondOnReject(withMessage: "error-unknwon-wc2".localized())
 		}
 	}
 	
