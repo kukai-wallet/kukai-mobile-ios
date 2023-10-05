@@ -220,14 +220,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
 					  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
 					vc.hideLoadingView()
-					vc.windowError(withTitle: "Error", description: "Unable to add child")
+					vc.windowError(withTitle: "error".localized(), description: "Unable to add child")
 					return
 				}
 				
 				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
 					guard success else {
 						vc.hideLoadingView()
-						vc.windowError(withTitle: "Error", description: "Unable to cache")
+						vc.windowError(withTitle: "error".localized(), description: "Unable to cache")
 						return
 					}
 					

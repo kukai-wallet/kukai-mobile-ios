@@ -80,7 +80,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
-				self.windowError(withTitle: "Error", description: "Unable to locate requested account")
+				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 				self.walletConnectRespondOnReject()
 				self.dismissBottomSheet()
 				return
@@ -216,7 +216,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		self.showLoadingModal(invisible: true)
 		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.windowError(withTitle: "Error", description: "Unable to locate requested account")
+			self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 			self.slideButton.resetSlider()
 			return
 		}
@@ -239,7 +239,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 						}
 						
 					case .failure(let sendError):
-						self?.windowError(withTitle: "Error", description: sendError.description)
+						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
@@ -297,7 +297,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	private func walletConnectRespondOnSign(opHash: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
-			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
@@ -311,7 +311,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 				
 			} catch {
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
-				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}
@@ -321,7 +321,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	private func walletConnectRespondOnReject() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
-			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
@@ -335,7 +335,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 				
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
-				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}

@@ -63,7 +63,7 @@ class RecoveryPhraseViewController: UIViewController {
 		
 		
 		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
-			self.windowError(withTitle: "Error", description: "Unable to locate wallet information. Please try again")
+			self.windowError(withTitle: "error".localized(), description: "Unable to locate wallet information. Please try again")
 			self.navigationController?.popViewController(animated: true)
 			return
 		}

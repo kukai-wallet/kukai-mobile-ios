@@ -46,7 +46,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingView(completion: nil)
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					self?.hideLoadingView(completion: nil)
@@ -92,7 +92,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
 	
 	func errorMessage(message: String) {
-		self.windowError(withTitle: "Error", description: message)
+		self.windowError(withTitle: "error".localized(), description: message)
 	}
 	
 	func tokenContractDisplayRequested() {

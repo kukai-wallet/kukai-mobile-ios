@@ -38,7 +38,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 					
 				case .failure(_, let errorString):
 					self?.refreshControl.endRefreshing()
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					self?.refreshControl.endRefreshing()

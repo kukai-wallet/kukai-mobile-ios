@@ -65,7 +65,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		guard let ds = dataSource, let selectedAddress = DependencyManager.shared.selectedWalletAddress else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to locate datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		

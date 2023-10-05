@@ -29,7 +29,7 @@ class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 					let _ = ""
 					
 				case .failure(_, let errorString):
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					let _ = ""

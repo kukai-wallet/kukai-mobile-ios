@@ -53,7 +53,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
 			self.dismissBottomSheet()
 			
 		} else {
-			self.windowError(withTitle: "Error", description: "Unable to set custom name on wallet")
+			self.windowError(withTitle: "error".localized(), description: "Unable to set custom name on wallet")
 		}
 	}
 }

@@ -53,7 +53,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 			
 			guard let res = try? result.get() else {
 				self?.hideLoadingModal(completion: {
-					self?.windowError(withTitle: "Error", description: result.getFailure().description)
+					self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
 				})
 				return
 			}
@@ -101,7 +101,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 	func findDomainsAndCache(forMetadata metadata: WalletMetadata, completion: @escaping (() -> Void)) {
 		let walletCache = WalletCacheService()
 		guard walletCache.cacheWatchWallet(metadata: metadata) else {
-			self.windowError(withTitle: "Error", description: "Unable to cache wallet details")
+			self.windowError(withTitle: "error".localized(), description: "Unable to cache wallet details")
 			completion()
 			return
 		}

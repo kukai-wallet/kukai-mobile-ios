@@ -42,7 +42,7 @@ class SideMenuSettingsViewController: UIViewController {
 					let _ = ""
 					
 				case .failure(_, let message):
-					self.windowError(withTitle: "Error", description: message)
+					self.windowError(withTitle: "error".localized(), description: message)
 			}
 		}.store(in: &bag)
 		

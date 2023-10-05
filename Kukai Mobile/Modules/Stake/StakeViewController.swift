@@ -37,7 +37,7 @@ class StakeViewController: UIViewController {
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingView(completion: nil)
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success(_):
 					self?.hideLoadingView(completion: nil)
@@ -82,7 +82,7 @@ class StakeViewController: UIViewController {
 	
 	func createOperationsAndConfirm(toAddress: String) {
 		guard let selectedWallet = DependencyManager.shared.selectedWallet else {
-			self.windowError(withTitle: "Error", description: "Unable to locate wallet")
+			self.windowError(withTitle: "error".localized(), description: "Unable to locate wallet")
 			return
 		}
 		
@@ -100,7 +100,7 @@ class StakeViewController: UIViewController {
 					
 				case .failure(let estimationError):
 					self?.hideLoadingView()
-					self?.windowError(withTitle: "Error", description: estimationError.description)
+					self?.windowError(withTitle: "error".localized(), description: estimationError.description)
 			}
 		}
 	}

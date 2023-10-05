@@ -43,7 +43,7 @@ class FaceIdViewController: UIViewController {
 		if toggle.isOn {
 			FaceIdViewController.biometric { errorMessage in
 				if let err = errorMessage {
-					self.windowError(withTitle: "Error", description: err)
+					self.windowError(withTitle: "error".localized(), description: err)
 				} else {
 					self.performSegue(withIdentifier: "home", sender: nil)
 				}

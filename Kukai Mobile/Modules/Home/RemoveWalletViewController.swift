@@ -78,14 +78,14 @@ class RemoveWalletViewController: UIViewController {
 			if RemoveWalletViewController.deleteCaches(forWatchAddress: metadata.address) {
 				self.dismiss(animated: true)
 			} else {
-				self.windowError(withTitle: "Error", description: "Unable to delete wallet")
+				self.windowError(withTitle: "error".localized(), description: "Unable to delete wallet")
 			}
 			
 		} else {
 			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
 				self.dismiss(animated: true)
 			} else {
-				self.windowError(withTitle: "Error", description: "Unable to delete wallet")
+				self.windowError(withTitle: "error".localized(), description: "Unable to delete wallet")
 			}
 		}
 	}

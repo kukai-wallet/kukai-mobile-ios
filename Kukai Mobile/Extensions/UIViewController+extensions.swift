@@ -157,7 +157,7 @@ extension UIViewController {
 	}
 	
 	func alert(errorWithMessage message: String) {
-		alert(withTitle: "Error", andMessage: message)
+		alert(withTitle: "error".localized(), andMessage: message)
 	}
 	
 	func alert(withTitle title: String, andMessage message: String) {

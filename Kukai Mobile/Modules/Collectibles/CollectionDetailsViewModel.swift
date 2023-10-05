@@ -95,7 +95,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		

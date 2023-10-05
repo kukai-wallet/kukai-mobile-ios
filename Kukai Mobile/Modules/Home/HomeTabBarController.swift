@@ -487,19 +487,19 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				message += ". Due to error: \(e.localizedDescription)"
 			}
 			
-			self.windowError(withTitle: "Error", description: message)
+			self.windowError(withTitle: "error".localized(), description: message)
 			self.respondOnReject(withMessage: m)
 			
 		} else if let e = error as? KukaiError {
-			self.windowError(withTitle: "Error", description: e.description)
+			self.windowError(withTitle: "error".localized(), description: e.description)
 			self.respondOnReject(withMessage: "Error: \(e.description)")
 			
 		} else if let e = error{
-			self.windowError(withTitle: "Error", description: e.localizedDescription)
+			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
 			self.respondOnReject(withMessage: "Error: \(e.localizedDescription)")
 			
 		} else {
-			self.windowError(withTitle: "Error", description: "Unknown Wallet Connect error occured")
+			self.windowError(withTitle: "error".localized(), description: "Unknown Wallet Connect error occured")
 			self.respondOnReject(withMessage: "Unknown error occurred")
 		}
 	}
@@ -543,7 +543,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.windowError(withTitle: "Error", description: error.localizedDescription)
+				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
 			
 		} else if let _ = presentationController.presentedViewController as? WalletConnectSignViewController, !didApproveSigning {
@@ -560,7 +560,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.windowError(withTitle: "Error", description: error.localizedDescription)
+				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
 		}
 	}

@@ -151,7 +151,7 @@ class ImportWalletViewController: UIViewController {
 		}
 		
 		guard let wal = wallet else {
-			self.windowError(withTitle: "Error", description: "Unable to create wallet from details supplied. Please check and try again")
+			self.windowError(withTitle: "error".localized(), description: "Unable to create wallet from details supplied. Please check and try again")
 			return
 		}
 		
@@ -163,7 +163,7 @@ class ImportWalletViewController: UIViewController {
 			conintue(withWallet: wal)
 			
 		} else {
-			self.windowError(withTitle: "Error", description: "Supplied wallet address, does not match wallet created. Please ensure you have entered the correct details")
+			self.windowError(withTitle: "error".localized(), description: "Supplied wallet address, does not match wallet created. Please ensure you have entered the correct details")
 		}
 	}
 	
@@ -188,7 +188,7 @@ class ImportWalletViewController: UIViewController {
 					}
 					
 				} else {
-					self.windowError(withTitle: "Error", description: "Unable to cache")
+					self.windowError(withTitle: "error".localized(), description: "Unable to cache")
 				}
 			}
 			
@@ -200,7 +200,7 @@ class ImportWalletViewController: UIViewController {
 					self?.navigate()
 					
 				} else {
-					self?.windowError(withTitle: "Error", description: "Unable to cache")
+					self?.windowError(withTitle: "error".localized(), description: "Unable to cache")
 				}
 			}
 		}

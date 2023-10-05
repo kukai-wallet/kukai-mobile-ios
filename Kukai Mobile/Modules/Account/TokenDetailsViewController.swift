@@ -57,7 +57,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -223,7 +223,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 				actions.append(
 					UIAction(title: "Unhide Token", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
-							self?.windowError(withTitle: "Error", description: "Unable to locate token info")
+							self?.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 							return
 						}
 						
@@ -232,7 +232,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 							self?.dismiss(animated: true)
 						} else {
-							self?.windowError(withTitle: "Error", description: "Unable to unhide token")
+							self?.windowError(withTitle: "error".localized(), description: "Unable to unhide token")
 						}
 					})
 				)
@@ -240,7 +240,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 				actions.append(
 					UIAction(title: "Hide Token", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
 						guard let token = TransactionService.shared.sendData.chosenToken else {
-							self?.windowError(withTitle: "Error", description: "Unable to locate token info")
+							self?.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 							return
 						}
 						
@@ -250,7 +250,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 							self?.dismiss(animated: true)
 							
 						} else {
-							self?.windowError(withTitle: "Error", description: "Unable to hide token")
+							self?.windowError(withTitle: "error".localized(), description: "Unable to hide token")
 						}
 					})
 				)

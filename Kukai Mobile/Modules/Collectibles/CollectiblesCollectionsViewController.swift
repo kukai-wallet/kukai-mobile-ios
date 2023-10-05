@@ -41,7 +41,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.windowError(withTitle: "Error", description: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -137,13 +137,13 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	func sortMenu() -> MenuViewController {
 		let choices: [MenuChoice] = [
 			MenuChoice(isSelected: true, action: UIAction(title: "Recent", image: UIImage(named: "Recents"), identifier: nil, handler: { [weak self] action in
-				self?.windowError(withTitle: "Error", description: "Recent sort not functional yet")
+				self?.windowError(withTitle: "error".localized(), description: "Recent sort not functional yet")
 			})),
 			MenuChoice(isSelected: false, action: UIAction(title: "Name", image: UIImage(named: "Alphabetical"), identifier: nil, handler: { [weak self] action in
-				self?.windowError(withTitle: "Error", description: "Alphabetical sort not functional yet")
+				self?.windowError(withTitle: "error".localized(), description: "Alphabetical sort not functional yet")
 			})),
 			MenuChoice(isSelected: false, action: UIAction(title: "Collection", image: UIImage(named: "CollectionGroupView"), identifier: nil, handler: { [weak self] action in
-				self?.windowError(withTitle: "Error", description: "Collection Group View sort not functional yet")
+				self?.windowError(withTitle: "error".localized(), description: "Collection Group View sort not functional yet")
 			}))
 		]
 		

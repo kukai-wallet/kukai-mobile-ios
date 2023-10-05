@@ -100,7 +100,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func appleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
-			self.windowError(withTitle: "Error", description: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "error".localized(), description: "Unsupported, due to missing verifier")
 			return
 		}
 		
@@ -112,7 +112,7 @@ class CreateWithSocialViewController: UIViewController {
 	
 	@IBAction func googleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
-			self.windowError(withTitle: "Error", description: "Unsupported, due to missing verifier")
+			self.windowError(withTitle: "error".localized(), description: "Unsupported, due to missing verifier")
 			return
 		}
 		
@@ -182,7 +182,7 @@ class CreateWithSocialViewController: UIViewController {
 						
 					} else {
 						self?.hideLoadingView()
-						self?.windowError(withTitle: "Error", description: "Unable to cache")
+						self?.windowError(withTitle: "error".localized(), description: "Unable to cache")
 					}
 				}
 				
@@ -191,7 +191,7 @@ class CreateWithSocialViewController: UIViewController {
 				
 				// Ignore apple sign in cancelled error
 				if error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001 {
-					self.windowError(withTitle: "Error", description: error.description)
+					self.windowError(withTitle: "error".localized(), description: error.description)
 				}
 		}
 	}

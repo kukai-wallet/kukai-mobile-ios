@@ -44,7 +44,7 @@ class RemoveLiquidityViewController: UIViewController {
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingModal()
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.alert(withTitle: "error".localized(), andMessage: errorString)
 					self?.updateUI()
 					
 				case .success:

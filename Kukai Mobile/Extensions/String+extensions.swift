@@ -43,4 +43,20 @@ extension String {
 		guard self.hasPrefix(prefix) else { return self }
 		return String(self.dropFirst(prefix.count))
 	}
+	
+	
+	
+	// MARK: - Localization
+	
+	static func localized(_ key: String) -> String {
+		return NSLocalizedString(key, comment: "")
+	}
+	
+	static func localized(_ key: String, withArguments: CVarArg...) -> String {
+		return String(format: String.localized(key), withArguments)
+	}
+	
+	func localized() -> String {
+		return NSLocalizedString(self, comment: "")
+	}
 }

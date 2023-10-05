@@ -38,7 +38,7 @@ class CollectiblesViewControllerOld: UIViewController, UICollectionViewDelegate 
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.alert(withTitle: "error".localized(), andMessage: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)

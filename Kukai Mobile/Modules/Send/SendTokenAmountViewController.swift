@@ -38,7 +38,7 @@ class SendTokenAmountViewController: UIViewController {
 		
 		selectedToken = TransactionService.shared.sendData.chosenToken
 		guard let token = selectedToken else {
-			self.windowError(withTitle: "Error", description: "Unable to locate token info")
+			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			return
 		}
 		
@@ -95,7 +95,7 @@ class SendTokenAmountViewController: UIViewController {
 	
 	func estimateFeeAndNavigate() {
 		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
-			self.windowError(withTitle: "Error", description: "Unable to locate destiantion address")
+			self.windowError(withTitle: "error".localized(), description: "error-no-destination".localized())
 			return
 		}
 		
@@ -117,7 +117,7 @@ class SendTokenAmountViewController: UIViewController {
 						
 					case .failure(let estimationError):
 						self?.hideLoadingView()
-						self?.windowError(withTitle: "Error", description: estimationError.description)
+						self?.windowError(withTitle: "error".localized(), description: estimationError.description)
 				}
 			}
 		}

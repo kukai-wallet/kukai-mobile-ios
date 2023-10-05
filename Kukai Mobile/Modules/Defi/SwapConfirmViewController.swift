@@ -174,7 +174,7 @@ extension SwapConfirmViewController: SlideButtonDelegate {
 					self?.navigationController?.popViewController(animated: true)
 					
 				case .failure(let error):
-					self?.alert(withTitle: "Error", andMessage: error.description)
+					self?.alert(withTitle: "error".localized(), andMessage: error.description)
 			}
 		}
 	}

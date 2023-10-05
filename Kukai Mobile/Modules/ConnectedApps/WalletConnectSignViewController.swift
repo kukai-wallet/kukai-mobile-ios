@@ -63,7 +63,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
 			self.hideLoadingModal(completion: { [weak self] in
-				self?.windowError(withTitle: "Error", description: "Unable to find request object")
+				self?.windowError(withTitle: "error".localized(), description: "Unable to find request object")
 			})
 			return
 		}
@@ -83,7 +83,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			} catch {
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.windowError(withTitle: "Error", description: error.localizedDescription)
+					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 				})
 			}
 		}
@@ -94,7 +94,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
 			self.hideLoadingModal(completion: { [weak self] in
-				self?.windowError(withTitle: "Error", description: "Unable to find request object")
+				self?.windowError(withTitle: "error".localized(), description: "Unable to find request object")
 			})
 			return
 		}
@@ -111,7 +111,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.windowError(withTitle: "Error", description: error.localizedDescription)
+					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 				})
 			}
 		}
@@ -123,7 +123,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	
 	func didCompleteSlide() {
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
-			self.windowError(withTitle: "Error", description: "Can't find requested wallet: \(accountToSign)")
+			self.windowError(withTitle: "error".localized(), description: "Can't find requested wallet: \(accountToSign)")
 			return
 		}
 		
@@ -148,7 +148,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			wallet.sign(str, isOperation: false) { [weak self] result in
 				guard let signature = try? result.get() else {
 					self?.hideLoadingModal(completion: { [weak self] in
-						self?.windowError(withTitle: "Error", description: "Unable to sign with wallet: \(result.getFailure().description)")
+						self?.windowError(withTitle: "error".localized(), description: "Unable to sign with wallet: \(result.getFailure().description)")
 					})
 					return
 				}

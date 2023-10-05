@@ -156,7 +156,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
 		guard let ds = dataSource, let nft = nft else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		
@@ -444,7 +444,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	func replace(existingMediaContent oldMediaContent: MediaContent, with newMediaContent: MediaContent) {
 		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		
@@ -462,7 +462,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	func openOrCloseGroup(forCollectionView collectionView: UICollectionView, atIndexPath indexPath: IndexPath) {
 		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		

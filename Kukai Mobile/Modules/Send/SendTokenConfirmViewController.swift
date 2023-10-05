@@ -87,7 +87,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
-				self.windowError(withTitle: "Error", description: "Unable to locate requested account")
+				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 				self.walletConnectRespondOnReject()
 				self.dismissBottomSheet()
 				return
@@ -195,7 +195,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		self.showLoadingModal(invisible: true)
 		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.windowError(withTitle: "Error", description: "Unable to locate requested account")
+			self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 			self.slideButton.resetSlider()
 			return
 		}
@@ -218,7 +218,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 						}
 						
 					case .failure(let sendError):
-						self?.windowError(withTitle: "Error", description: sendError.description)
+						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
@@ -260,7 +260,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
-				self.windowError(withTitle: "Insufficient Funds", description: "Your balance is \(token.balance.normalisedRepresentation) and the required fee to make this transaction is \(fee.normalisedRepresentation)")
+				self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
 				updateAmountDisplay(withValue: .zero())
 				slideButton.isUserInteractionEnabled = false
 				slideButton.alpha = 0.6
@@ -339,7 +339,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	private func walletConnectRespondOnSign(opHash: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
-			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
@@ -353,7 +353,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				
 			} catch {
 				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
-				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}
@@ -363,7 +363,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	private func walletConnectRespondOnReject() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
-			self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
@@ -377,7 +377,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				
 			} catch {
 				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
-				self.windowError(withTitle: "Error", description: "Unable to respond to Wallet Connect: \(error.domain) - \(error.code)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}
