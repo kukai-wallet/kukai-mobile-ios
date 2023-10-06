@@ -37,6 +37,18 @@ extension UITableViewCell: UITableViewCellGradient {
 			cell.gradientLayer = toView.addUnconfirmedGradientPanelRows(withFrame: toView.bounds)
 		}
 	}
+	
+	func addFailedGradientBackground(withFrame: CGRect, toView: UIView) {
+		toView.customCornerRadius = 8
+		toView.borderColor = .colorNamed("BGAlert2")
+		toView.borderWidth = 1
+		toView.maskToBounds = true
+		
+		if let cell = self as? UITableViewCellContainerView {
+			cell.gradientLayer.removeFromSuperlayer()
+			cell.gradientLayer = toView.addAlertGradientPanelRows(withFrame: toView.bounds)
+		}
+	}
 }
 
 

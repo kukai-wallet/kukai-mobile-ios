@@ -5,7 +5,7 @@
 //  Created by Simon Mcloughlin on 25/11/2022.
 //
 
-import Foundation
+import UIKit
 import KukaiCoreSwift
 import OSLog
 
@@ -147,6 +147,13 @@ public class ActivityService {
 			
 			for group in comparedToGroups {
 				if pendingGroup.hash == group.hash {
+					
+					// If we are removing a pending item, for something that has failed, display the window error for it
+					if group.status == .failed || group.status == .backtracked {
+						let fallbackErrorString = String(format: "error-generic-transaction-failure".localized(), address.truncateTezosAddress())
+						UIApplication.shared.currentWindow?.displayError(title: "error".localized(), description: group.transactions.first?.errorString() ?? fallbackErrorString)
+					}
+					
 					indexesToRemove.append(index)
 					break
 				}
