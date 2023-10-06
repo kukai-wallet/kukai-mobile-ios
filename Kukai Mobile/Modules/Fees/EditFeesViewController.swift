@@ -279,12 +279,15 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		if !validated {
 			if textfield == feeTextField {
+				feeErrorLabel.text = "Invalid amount"
 				feeErrorLabel.isHidden = false
 				
 			} else if textfield == gasLimitTextField {
+				gasErrorLabel.text = "Invalid amount. Must be a positive whole number"
 				gasErrorLabel.isHidden = false
 				
 			} else if textfield == storageLimitTextField {
+				storageErrorLabel.text = "Invalid amount. Must be a positive whole number"
 				storageErrorLabel.isHidden = false
 			}
 		} else {
