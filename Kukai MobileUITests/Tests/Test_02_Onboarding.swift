@@ -34,7 +34,7 @@ final class Test_02_Onboarding: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		SharedHelpers.shared.tapTertiaryButton(app: app)
 		
-		// Confirm tersm and conditions and create a passcode
+		// Confirm terms and conditions and create a passcode
 		app.buttons["checkmark"].tap()
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
@@ -48,6 +48,8 @@ final class Test_02_Onboarding: XCTestCase {
 		// Confirm correct passcode
 		Test_02_Onboarding.handlePasscode(app: app)
 		
+		// Backup later
+		SharedHelpers.shared.tapDescructiveButton(app: app)
 		
 		
 		// App state verification
@@ -99,6 +101,40 @@ final class Test_02_Onboarding: XCTestCase {
 		sleep(2)
 		
 		Test_09_SideMenu.handleResetAppFromTabBar(app: app)
+	}
+	
+	func test_02_backupInOnboarding() {
+		let app = XCUIApplication()
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		SharedHelpers.shared.tapTertiaryButton(app: app)
+		
+		// Confirm terms and conditions and create a passcode
+		app.buttons["checkmark"].tap()
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		
+		// Create passcode
+		Test_02_Onboarding.handlePasscode(app: app)
+		
+		// Enter wrong passcode
+		Test_02_Onboarding.handlePasscode(app: app, passcode: "012345")
+		SharedHelpers.shared.waitForStaticText("Incorrect passcode try again", exists: true, inElement: app, delay: 2)
+		
+		// Confirm correct passcode
+		Test_02_Onboarding.handlePasscode(app: app)
+		
+		// Backup Now
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(2)
+		Test_02_Onboarding.handleSeedWordVerification(app: app)
+		
+		
+		// App state verification
+		Test_04_Account.waitForInitalLoad(app: app)
+		
+		Test_04_Account.check(app: app, estimatedTotalExists: false)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
+		Test_04_Account.check(app: app, displayingBackup: false)
+		Test_04_Account.check(app: app, displayingGettingStarted: true)
 	}
 	
 	func testImportHDWallet() {

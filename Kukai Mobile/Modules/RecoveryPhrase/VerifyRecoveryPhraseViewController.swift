@@ -293,7 +293,8 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
 			
 		} else {
-			self.navigationController?.popToHome()
+			StorageService.setCompletedOnboarding(true)
+			self.performSegue(withIdentifier: "home", sender: nil)
 		}
 	}
 }

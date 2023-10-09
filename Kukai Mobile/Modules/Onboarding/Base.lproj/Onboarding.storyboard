@@ -1258,12 +1258,12 @@ for your Digital Assets</string>
                         <outlet property="biometricLabel" destination="dL1-a7-cL2" id="Mw6-Mo-MgF"/>
                         <outlet property="nextButton" destination="rXX-Jd-YOc" id="8qw-zP-0e6"/>
                         <outlet property="toggle" destination="75D-Uf-Nij" id="qBa-sm-1rh"/>
-                        <segue destination="hND-lY-eEF" kind="show" identifier="home" id="FF9-Oi-fDw"/>
+                        <segue destination="GeW-4V-19M" kind="show" identifier="next" id="hUH-VA-Y94"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Mbt-Ke-bWQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1644" y="81"/>
+            <point key="canvasLocation" x="-1620" y="-255"/>
         </scene>
         <!--Home-->
         <scene sceneID="BqK-IB-sUw">
@@ -1273,7 +1273,17 @@ for your Digital Assets</string>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="975-WW-Pxa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1645" y="615"/>
+            <point key="canvasLocation" x="-410" y="640"/>
+        </scene>
+        <!--RecoveryPhrase-->
+        <scene sceneID="Y2z-vE-YXp">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RecoveryPhrase" id="ZJz-W0-Wyj" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="4S2-uM-IMD"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SWG-vR-sh6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-360" y="591"/>
         </scene>
         <!--Already Have a Wallet-->
         <scene sceneID="le8-RJ-Ee2">
@@ -2039,12 +2049,128 @@ for your Digital Assets</string>
                         <outlet property="errorLabel" destination="mRz-Mx-H8d" id="hNI-Lm-ROa"/>
                         <outlet property="hiddenTextfield" destination="zTe-bp-NGr" id="zjP-Th-r1G"/>
                         <segue destination="oPP-HT-01f" kind="show" identifier="biometric" id="4F5-bS-Dgf"/>
-                        <segue destination="hND-lY-eEF" kind="show" identifier="home" id="vTi-wo-kbD"/>
+                        <segue destination="GeW-4V-19M" kind="show" identifier="next" id="Uyr-Mh-l7I"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uqa-Y8-b4E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2697" y="617"/>
+        </scene>
+        <!--Backup View Controller-->
+        <scene sceneID="Tcy-UJ-CW1">
+            <objects>
+                <viewController id="GeW-4V-19M" customClass="BackupViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ce8-u2-Ybb">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6s-4i-43F">
+                                <rect key="frame" x="50" y="106" width="275" height="281"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back up Your Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqa-zR-1Np">
+                                        <rect key="frame" x="0.0" y="192" width="275" height="35"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back up your wallet so you can recover it if you lose this device!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lR7-9j-Pin">
+                                        <rect key="frame" x="0.0" y="239" width="275" height="42"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
+                                        <color key="textColor" name="Txt8"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photos" translatesAutoresizingMaskIntoConstraints="NO" id="WNq-o8-ZgG">
+                                        <rect key="frame" x="37.5" y="0.0" width="200" height="160"/>
+                                        <color key="tintColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="160" id="9cS-wb-ZbX"/>
+                                            <constraint firstAttribute="width" constant="200" id="tjR-Oy-aPY"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="Sqa-zR-1Np" secondAttribute="trailing" id="2Av-c6-AdC"/>
+                                    <constraint firstItem="WNq-o8-ZgG" firstAttribute="centerX" secondItem="g6s-4i-43F" secondAttribute="centerX" id="2eg-nY-MFH"/>
+                                    <constraint firstItem="WNq-o8-ZgG" firstAttribute="top" secondItem="g6s-4i-43F" secondAttribute="top" id="5On-KO-kCM"/>
+                                    <constraint firstItem="lR7-9j-Pin" firstAttribute="leading" secondItem="g6s-4i-43F" secondAttribute="leading" id="6bt-eS-MZl"/>
+                                    <constraint firstItem="lR7-9j-Pin" firstAttribute="top" secondItem="Sqa-zR-1Np" secondAttribute="bottom" constant="12" id="E0v-1f-ozN"/>
+                                    <constraint firstAttribute="bottom" secondItem="lR7-9j-Pin" secondAttribute="bottom" id="XjP-82-EyF"/>
+                                    <constraint firstItem="Sqa-zR-1Np" firstAttribute="leading" secondItem="g6s-4i-43F" secondAttribute="leading" id="dPd-dF-qqy"/>
+                                    <constraint firstAttribute="trailing" secondItem="lR7-9j-Pin" secondAttribute="trailing" id="gdN-cY-caj"/>
+                                    <constraint firstItem="Sqa-zR-1Np" firstAttribute="top" secondItem="WNq-o8-ZgG" secondAttribute="bottom" constant="32" id="sGH-J4-pnM"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIg-ad-QmA" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="45" y="441" width="285" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="3tn-0b-V3t"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="tintColor" name="TxtBtnPrim1"/>
+                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Send" image="ArrowUp-right"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Back up now">
+                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backupNowTapped:" destination="GeW-4V-19M" eventType="touchUpInside" id="haZ-uF-HU1"/>
+                                    <segue destination="ZJz-W0-Wyj" kind="show" id="4lG-ii-kKX"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c29-Q0-bhN" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="45" y="521" width="285" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="jri-Gb-JOC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="tintColor" name="TxtBtnPrim1"/>
+                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Send" image="ArrowUp-right"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Back up later">
+                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="backupLaterTapped:" destination="GeW-4V-19M" eventType="touchUpInside" id="KnY-PY-coS"/>
+                                    <segue destination="hND-lY-eEF" kind="show" id="3EI-51-3pR"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SvC-hX-cUY"/>
+                        <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="SvC-hX-cUY" firstAttribute="trailing" secondItem="EIg-ad-QmA" secondAttribute="trailing" constant="45" id="2dU-Pu-dwS"/>
+                            <constraint firstItem="c29-Q0-bhN" firstAttribute="trailing" secondItem="EIg-ad-QmA" secondAttribute="trailing" id="7KS-wy-Pfc"/>
+                            <constraint firstItem="EIg-ad-QmA" firstAttribute="leading" secondItem="SvC-hX-cUY" secondAttribute="leading" constant="45" id="Faq-WX-KU0"/>
+                            <constraint firstItem="c29-Q0-bhN" firstAttribute="top" secondItem="EIg-ad-QmA" secondAttribute="bottom" constant="24" id="V77-Md-th2"/>
+                            <constraint firstItem="g6s-4i-43F" firstAttribute="trailing" secondItem="SvC-hX-cUY" secondAttribute="trailing" constant="-50" id="ftv-5b-jnS"/>
+                            <constraint firstItem="g6s-4i-43F" firstAttribute="leading" secondItem="SvC-hX-cUY" secondAttribute="leading" constant="50" id="gme-j2-WNP"/>
+                            <constraint firstItem="Sqa-zR-1Np" firstAttribute="centerY" secondItem="SvC-hX-cUY" secondAttribute="centerY" constant="-50" id="ma3-TO-1V0"/>
+                            <constraint firstItem="EIg-ad-QmA" firstAttribute="top" secondItem="g6s-4i-43F" secondAttribute="bottom" constant="54" id="nG9-SB-ubq"/>
+                            <constraint firstItem="c29-Q0-bhN" firstAttribute="leading" secondItem="EIg-ad-QmA" secondAttribute="leading" id="nLL-jy-nDO"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="b7E-3u-ToT"/>
+                    <connections>
+                        <outlet property="backupLaterButton" destination="c29-Q0-bhN" id="8H5-xL-hIA"/>
+                        <outlet property="backupNowButton" destination="EIg-ad-QmA" id="vjd-Hs-MPh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CAK-by-aaz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1620" y="617"/>
         </scene>
     </scenes>
     <designables>
@@ -2053,6 +2179,9 @@ for your Digital Assets</string>
         </designable>
         <designable name="5t4-7b-ZSi">
             <size key="intrinsicContentSize" width="185.5" height="37.5"/>
+        </designable>
+        <designable name="EIg-ad-QmA">
+            <size key="intrinsicContentSize" width="141.5" height="37.5"/>
         </designable>
         <designable name="EX4-MC-WXt">
             <size key="intrinsicContentSize" width="110.5" height="34.5"/>
@@ -2086,6 +2215,9 @@ for your Digital Assets</string>
         </designable>
         <designable name="bRr-0r-cKe">
             <size key="intrinsicContentSize" width="202" height="37.5"/>
+        </designable>
+        <designable name="c29-Q0-bhN">
+            <size key="intrinsicContentSize" width="143" height="37.5"/>
         </designable>
         <designable name="c2S-hk-v1m">
             <size key="intrinsicContentSize" width="30" height="34"/>
@@ -2131,7 +2263,7 @@ for your Digital Assets</string>
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="vTi-wo-kbD"/>
+        <segue reference="hUH-VA-Y94"/>
         <segue reference="Vsi-Lk-yGP"/>
         <segue reference="v51-jF-ffS"/>
     </inferredMetricsTieBreakers>
