@@ -64,6 +64,12 @@ extension UIWindow {
 	}
 	
 	public func displayError(title: String, description: String, autoDismiss: TimeInterval? = 3) {
+		DispatchQueue.main.async { [weak self] in
+			self?.innerDisplayError(title: title, description: description, autoDismiss: autoDismiss)
+		}
+	}
+	
+	private func innerDisplayError(title: String, description: String, autoDismiss: TimeInterval? = 3) {
 		if UIWindow.errorView.frame.width == 0 {
 			setupErrorView()
 		}

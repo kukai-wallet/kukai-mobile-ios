@@ -27,6 +27,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		self.navigationController?.removeOnboardingScreens()
+		
 		addButtonContainer.accessibilityIdentifier = "accounts-nav-add"
 		editButtonContainer.accessibilityIdentifier = "accounts-nav-edit"
 		doneButtonContainer.accessibilityIdentifier = "accounts-nav-done"

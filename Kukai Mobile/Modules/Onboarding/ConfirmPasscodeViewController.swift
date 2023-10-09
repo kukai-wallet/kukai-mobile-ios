@@ -52,9 +52,21 @@ class ConfirmPasscodeViewController: UIViewController {
 		StorageService.setCompletedOnboarding(true)
 		
 		if CurrentDevice.biometricTypeAuthorized() == .unavailable {
-			self.performSegue(withIdentifier: "next", sender: nil)
+			self.navigateNonBiometric()
 		} else {
 			self.performSegue(withIdentifier: "biometric", sender: nil)
+		}
+	}
+	
+	func navigateNonBiometric() {
+		let importVc = self.navigationController?.viewControllers.filter({ $0 is ImportWalletViewController }).first
+		let socialVc = self.navigationController?.viewControllers.filter({ $0 is CreateWithSocialViewController }).first
+		let watchVc = self.navigationController?.viewControllers.filter({ $0 is WatchWalletViewController }).first
+		
+		if importVc != nil || socialVc != nil || watchVc != nil {
+			self.performSegue(withIdentifier: "home", sender: self)
+		} else {
+			self.performSegue(withIdentifier: "next", sender: nil)
 		}
 	}
 	

@@ -45,13 +45,25 @@ class FaceIdViewController: UIViewController {
 				if let err = errorMessage {
 					self.windowError(withTitle: "error".localized(), description: err)
 				} else {
-					self.performSegue(withIdentifier: "next", sender: nil)
+					self.navigateNext()
 				}
 			}
 			
 		} else {
 			StorageService.setBiometricEnabled(false)
 			StorageService.setCompletedOnboarding(true)
+			self.navigateNext()
+		}
+	}
+	
+	func navigateNext() {
+		let importVc = self.navigationController?.viewControllers.filter({ $0 is ImportWalletViewController }).first
+		let socialVc = self.navigationController?.viewControllers.filter({ $0 is CreateWithSocialViewController }).first
+		let watchVc = self.navigationController?.viewControllers.filter({ $0 is WatchWalletViewController }).first
+		
+		if importVc != nil || socialVc != nil || watchVc != nil {
+			self.performSegue(withIdentifier: "home", sender: self)
+		} else {
 			self.performSegue(withIdentifier: "next", sender: nil)
 		}
 	}

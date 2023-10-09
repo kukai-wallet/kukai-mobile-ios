@@ -61,4 +61,27 @@ public extension UINavigationController {
 			self.popToViewController(vc, animated: true)
 		}
 	}
+	
+	/// Onboarding logic needs to run some checks to decide which screen to display. Need to clear these when we get to home to avoid any confusion when inside wallet management screens
+	func removeOnboardingScreens() {
+		self.viewControllers.removeAll { vc in
+			if vc is WatchWalletViewController {
+				return true
+				
+			} else if vc is ImportWalletViewController {
+				return true
+				
+			} else if vc is CreateWithSocialViewController {
+				return true
+				
+			} else if vc is RecoveryPhraseViewController {
+				return true
+				
+			} else if vc is VerifyRecoveryPhraseViewController {
+				return true
+			}
+			
+			return false
+		}
+	}
 }
