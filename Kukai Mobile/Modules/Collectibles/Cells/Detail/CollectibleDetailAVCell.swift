@@ -16,52 +16,41 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	@IBOutlet var mediaIconView: UIImageView!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!
-	@IBOutlet weak var playPauseButton: UIButton!
-	@IBOutlet weak var airPlayPlaceholderView: UIView!
-	@IBOutlet weak var scrubber: UISlider!
-	@IBOutlet weak var startTimeLabel: UILabel!
-	@IBOutlet weak var endTimeLabel: UILabel!
 	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
-	@IBOutlet weak var scrubberActivityView: UIActivityIndicatorView!
 	@IBOutlet var aspectRatioConstraint: NSLayoutConstraint!
 	
-	private var imageView: UIImageView? = nil
-	private var avPlayer: AVPlayer? = nil
-	private var avPlayerLayer: AVPlayerLayer? = nil
-	private var airPlayTextLayer: CATextLayer? = nil
-	private var isPlaying = false
-	private var periodicTimeObserver: Any? = nil
-	private var playbackReadyObservation: NSKeyValueObservation? = nil
-	private var airplayObservation: NSKeyValueObservation? = nil
-	private var rateChangeObservation: NSKeyValueObservation? = nil
-	private var airPlayButton = AVRoutePickerView()
-	private var didSetNowPlaying = false
 	private var isAudio = false
-	private var nowPlayingInfo: [String: Any] = [:] {
-		didSet {
-			MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
-		}
-	}
+	private var isImageDownloaded = false
+	private var isPlaybackReady = false
+	private var isPlaying = false
+	private var imageView: UIImageView? = nil
+	private var playbackLikelyToKeepUpContext = 0
+	private var playbackRateContext = 0
+	private var playerController: CustomAVPlayerViewController? = nil
+	
+	private var airPlayName: String = ""
+	private var airPlayArtist: String = ""
+	private var airPlayAlbum: String = ""
+	private var hasSetupNowPlaying = false
 	
 	public var setup = false
+	public var timer: Timer? = nil
 	
-	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, player: AVPlayer, playerLayer: AVPlayerLayer?, layoutOnly: Bool) {
-		self.setup = true
-		self.avPlayer = player
-		self.showScrubberLoading()
-		
-		// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
+	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, avplayerController: CustomAVPlayerViewController, layoutOnly: Bool) {
 		if mediaContent.width > mediaContent.height {
 			self.aspectRatioConstraint.isActive = false
 			placeholderView.widthAnchor.constraint(equalTo: placeholderView.heightAnchor, multiplier: mediaContent.width/mediaContent.height).isActive = true
 		}
 		
-		// Load image if not only perfroming collectionview layout logic
-		if layoutOnly {
-			return
-		}
 		
-		// Quantity
+		// Ignore everything else if only setting up the collectionview layout
+		if layoutOnly { return }
+		
+		
+		self.airPlayName = airPlayName
+		self.airPlayArtist = airPlayArtist
+		self.airPlayAlbum = airPlayAlbum
+		
 		if let quantity = mediaContent.quantity {
 			quantityView.isHidden = false
 			quantityLabel.text = quantity
@@ -71,15 +60,30 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			quantityView.isHidden = true
 		}
 		
+		mediaActivityView.startAnimating()
+		self.playerController = avplayerController
+		placeholderView.addSubview(avplayerController.view)
+		avplayerController.view.frame = placeholderView.bounds
+		avplayerController.view.backgroundColor = .clear
+		avplayerController.player?.addObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", options: .new, context: &playbackLikelyToKeepUpContext)
+		avplayerController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: &playbackRateContext)
+		avplayerController.updatesNowPlayingInfoCenter = false
+		avplayerController.customDelegate = self
 		
-		// Audio + image
+		placeholderView.bringSubviewToFront(quantityView)
+		placeholderView.bringSubviewToFront(mediaIconView)
+		
+		
+		// if allowsExternalPlayback set to false, during airplay via the command centre, iOS correctly picks up that its a song and shows the album artwork + title + album
+		// With this setup, videos however do not cast to the external device
+		// if allowsExternalPlayback set to true, audio will play and it will show the title, but no album artwork
+		// it seems as though this feature was only meant for videos. For now, its disabled for audio and enabled for video
+		
+		
+		// Audio + image only work
 		if let audioImageURL = mediaContent.mediaURL2 {
 			isAudio = true
-			if mediaContent.isThumbnail {
-				mediaActivityView.startAnimating()
-			} else {
-				mediaActivityView.isHidden = true
-			}
+			avplayerController.player?.allowsExternalPlayback = false
 			
 			imageView = UIImageView(frame: placeholderView.bounds)
 			imageView?.contentMode = .scaleAspectFit
@@ -87,15 +91,16 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				return
 			}
 			
-			placeholderView.addSubview(audioImageView)
+			guard let contentView = avplayerController.contentOverlayView else { return }
+			
+			contentView.addSubview(audioImageView)
 			audioImageView.translatesAutoresizingMaskIntoConstraints = false
 			NSLayoutConstraint.activate([
-				audioImageView.leadingAnchor.constraint(equalTo: placeholderView.leadingAnchor),
-				audioImageView.trailingAnchor.constraint(equalTo: placeholderView.trailingAnchor),
-				audioImageView.topAnchor.constraint(equalTo: placeholderView.topAnchor),
-				audioImageView.bottomAnchor.constraint(equalTo: placeholderView.bottomAnchor)
+				audioImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+				audioImageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+				audioImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+				audioImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
 			])
-			
 			
 			MediaProxyService.imageCache(forType: .temporary).retrieveImage(forKey: audioImageURL.absoluteString, options: []) { [weak self] result in
 				guard let res = try? result.get() else {
@@ -103,174 +108,100 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				}
 				
 				audioImageView.image = res.image
-				player.allowsExternalPlayback = false
-				
-				self?.nowPlayingInfo = [
-					MPMediaItemPropertyTitle: airPlayName,
-					MPMediaItemPropertyArtist: airPlayArtist,
-					MPMediaItemPropertyAlbumTitle: airPlayAlbum,
-					MPNowPlayingInfoPropertyPlaybackRate: 1.0,
-					MPMediaItemPropertyArtwork: MPMediaItemArtwork(boundsSize: res.image?.size ?? CGSize(width: 50, height: 50)) { size in
-						return res.image?.resizedImage(size: size) ?? UIImage.unknownToken()
-					}
-				]
+				self?.isImageDownloaded = true
+				self?.checkAudioImageStatus()
 			}
-			
-			
-		} else if let pLayer = playerLayer {
+		}
+		// Video only work
+		else {
 			isAudio = false
-			mediaActivityView.startAnimating()
-			
-			let attributedString = NSAttributedString(string: "Playing on external device", attributes: [
-				NSAttributedString.Key.foregroundColor: UIColor.colorNamed("Txt2"),
-				NSAttributedString.Key.font: UIFont.custom(ofType: .bold, andSize: 14)
-			])
-			airPlayTextLayer = CATextLayer()
-			airPlayTextLayer?.string = attributedString
-			airPlayTextLayer?.contentsScale = UIScreen.main.scale
-			airPlayTextLayer?.frame = CGRect(x: 0, y: placeholderView.frame.height/2 - 10, width: placeholderView.frame.width, height: 20)
-			airPlayTextLayer?.alignmentMode = .center
-			airPlayTextLayer?.isHidden = true
-			
-			pLayer.frame = placeholderView.bounds
-			
-			placeholderView.layer.addSublayer(airPlayTextLayer ?? CATextLayer())
-			placeholderView.layer.addSublayer(pLayer)
-			self.avPlayerLayer = pLayer
-			
-			self.nowPlayingInfo = [
-				MPMediaItemPropertyTitle: airPlayName,
-				MPMediaItemPropertyArtist: airPlayArtist,
-				MPMediaItemPropertyAlbumTitle: airPlayAlbum,
-				MPNowPlayingInfoPropertyPlaybackRate: 1.0
-			]
+			avplayerController.player?.allowsExternalPlayback = true
+			avplayerController.player?.isMuted = true
 		}
 		
-		scrubber.value = 0
-		setupScrubber()
-		setupAirPlay()
+		setup = true
 	}
 	
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if let layer = avPlayerLayer {
-			layer.frame = placeholderView.bounds
-			airPlayTextLayer?.frame = CGRect(x: 0, y: placeholderView.frame.height/2 - 10, width: placeholderView.frame.width, height: 20)
-		}
-	}
-	
-	private func setupScrubber() {
-		guard let avPlayer = avPlayer else {
-			return
-		}
-		
-		if isAudio {
-			scrubberActivityView.isHidden = false
-			scrubberActivityView.startAnimating()
-		} else {
-			scrubberActivityView.isHidden = true
-		}
-		
-		playbackReadyObservation = avPlayer.currentItem?.observe(\.status, changeHandler: { [weak self] item, value in
-			if item.status == .readyToPlay {
-				self?.hideScrubberLoading()
+	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		if context == &playbackLikelyToKeepUpContext {
+			if self.playerController?.player?.currentItem?.isPlaybackLikelyToKeepUp == true {
+				isPlaybackReady = true
 				
-				let duration = avPlayer.currentItem?.duration ?? CMTime()
-				self?.scrubber.minimumValue = 0
-				self?.scrubber.maximumValue = Float(CMTimeGetSeconds(duration))
-				
-				self?.nowPlayingInfo[MPMediaItemPropertyPlaybackDuration] = CMTimeGetSeconds(duration)
-				
-				self?.startTimeLabel.text = avPlayer.currentItem?.currentTime().durationText
-				self?.endTimeLabel.text = duration.durationText
-				
-				if self?.isAudio == false {
-					// If video, make sure we stop the spinner when the video is ready
-					self?.mediaActivityView.stopAnimating()
-					self?.mediaActivityView.isHidden = true
+				if !isAudio {
+					mediaActivityView.stopAnimating()
+					mediaActivityView.isHidden = true
+					self.playerController?.player?.play()
+					
+					
+				} else {
+					checkAudioImageStatus()
 				}
 			}
-		})
-		
-		airplayObservation = avPlayer.observe(\.isExternalPlaybackActive) { [weak self] avPlayer, value in
-			print("isExternalPlaybackActive: \(avPlayer.isExternalPlaybackActive)")
-			self?.airPlayTextLayer?.isHidden = !avPlayer.isExternalPlaybackActive
-		}
-		
-		rateChangeObservation = avPlayer.observe(\.rate) { [weak self] avPlayer, value in
-			if avPlayer.rate == 0 && self?.isPlaying == true {
+		} else if context == &playbackRateContext, let playRate = playerController?.player?.rate {
+			if playRate == 0.0 {
+				updateNowPlaying(isPause: true)
 				
-				print("calling reset")
-				self?.commandReset()
+			} else if hasSetupNowPlaying {
+				updateNowPlaying(isPause: false)
+				
+			} else {
+				setupNowPlaying()
+			}
+		}
+	}
+	
+	deinit {
+		playerController?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", context: &playbackLikelyToKeepUpContext)
+		playerController?.removeObserver(self, forKeyPath: "rate", context: &playbackRateContext)
+		
+		let commandCenter = MPRemoteCommandCenter.shared()
+		commandCenter.togglePlayPauseCommand.removeTarget(self)
+		commandCenter.stopCommand.removeTarget(self)
+		commandCenter.playCommand.removeTarget(self)
+		commandCenter.pauseCommand.removeTarget(self)
+	}
+	
+	private func setupNowPlaying() {
+		let elapsedTime = CMTimeGetSeconds(playerController?.player?.currentTime() ?? CMTime(value: 0, timescale: CMTimeScale()))
+		let duration = CMTimeGetSeconds(playerController?.player?.currentItem?.duration ?? CMTime(value: 0, timescale: CMTimeScale()))
+		
+		MPNowPlayingInfoCenter.default().nowPlayingInfo = [
+			MPMediaItemPropertyAlbumTitle: airPlayAlbum,
+			MPNowPlayingInfoPropertyPlaybackRate: 1.0,
+			MPMediaItemPropertyTitle: airPlayName,
+			MPMediaItemPropertyArtist: airPlayArtist,
+			MPNowPlayingInfoPropertyElapsedPlaybackTime: elapsedTime,
+			MPMediaItemPropertyPlaybackDuration: duration,
+			MPNowPlayingInfoPropertyMediaType: isAudio ? 1 : 2
+		]
+		
+		if let image = imageView?.image {
+			MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: image.size) { size in
+				return image.resizedImage(size: size) ?? UIImage.unknownToken()
 			}
 		}
 		
-		periodicTimeObserver = avPlayer.addPeriodicTimeObserver(forInterval: .init(seconds: 1, preferredTimescale: 1), queue: nil) { [weak self] time in
-			guard self?.scrubber.isTracking == false else { return }
-			
-			//if slider is not being touched, then update the slider from here
-			self?.updateScrubber(with: time)
-		}
+		setupCommands()
+		hasSetupNowPlaying = true
 	}
 	
-	private func showScrubberLoading() {
-		playPauseButton.isHidden = true
-		scrubber.isHidden = true
-		airPlayPlaceholderView.isHidden = true
-		startTimeLabel.isHidden = true
-		endTimeLabel.isHidden = true
-	}
-	
-	private func hideScrubberLoading() {
-		if !scrubberActivityView.isHidden {
-			scrubberActivityView.stopAnimating()
-			scrubberActivityView.isHidden = true
-		}
+	func updateNowPlaying(isPause: Bool) {
+		let elapsedTime = CMTimeGetSeconds(playerController?.player?.currentTime() ?? CMTime(value: 0, timescale: CMTimeScale()))
 		
-		playPauseButton.isHidden = false
-		scrubber.isHidden = false
-		airPlayPlaceholderView.isHidden = false
-		startTimeLabel.isHidden = false
-		endTimeLabel.isHidden = false
+		var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+		nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+		nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = isPause ? 0 : 1
+		MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
 	}
 	
-	private func setupAirPlay() {
-		airPlayButton.frame = airPlayPlaceholderView.frame
-		airPlayButton.tintColor = .colorNamed("playerIconSlider")
-		airPlayButton.activeTintColor = .colorNamed("playerIconSlider")
-		airPlayButton.translatesAutoresizingMaskIntoConstraints = false
-		airPlayPlaceholderView.addSubview(airPlayButton)
-		
-		NSLayoutConstraint.activate([
-			airPlayButton.leadingAnchor.constraint(equalTo: airPlayPlaceholderView.leadingAnchor),
-			airPlayButton.trailingAnchor.constraint(equalTo: airPlayPlaceholderView.trailingAnchor),
-			airPlayButton.topAnchor.constraint(equalTo: airPlayPlaceholderView.topAnchor),
-			airPlayButton.bottomAnchor.constraint(equalTo: airPlayPlaceholderView.bottomAnchor)
-		])
-	}
-	
-	private func updateScrubber(with: CMTime) {
-		let currentTime = avPlayer?.currentItem?.currentTime() ?? CMTime()
-		scrubber.value = Float(CMTimeGetSeconds(currentTime))
-		startTimeLabel.text = currentTime.durationText
-	}
-	
-	@IBAction func playPauseButtonTapped(_ sender: Any) {
-		if !isPlaying {
-			commandPlay()
-			
-		} else {
-			commandPause()
+	private func checkAudioImageStatus() {
+		if isImageDownloaded && isPlaybackReady {
+			mediaActivityView.stopAnimating()
+			mediaActivityView.isHidden = true
 		}
 	}
 	
-	private func setNowPlaying() {
-		if didSetNowPlaying {
-			return
-		}
-		didSetNowPlaying = true
-		
+	private func setupCommands() {
 		if let _ = try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: isAudio ? .longFormAudio : .longFormVideo) {
 			let commandCenter = MPRemoteCommandCenter.shared()
 			commandCenter.stopCommand.addTarget { [weak self] commandEvent in
@@ -301,14 +232,8 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	private func commandPlay() {
-		playPauseButton.setImage(UIImage(systemName: "pause.fill"), for: .normal)
-		avPlayer?.play()
-		setNowPlaying()
+		playerController?.player?.play()
 		let _ = try? AVAudioSession.sharedInstance().setActive(true)
-		
-		if let player = avPlayer {
-			self.nowPlayingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
-		}
 		
 		isPlaying = !isPlaying
 	}
@@ -316,37 +241,32 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private func commandPause() {
 		isPlaying = !isPlaying
 		
-		playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-		avPlayer?.pause()
+		playerController?.player?.pause()
 		let _ = try? AVAudioSession.sharedInstance().setActive(false)
 	}
+}
+
+extension CollectibleDetailAVCell: CustomAVPlayerViewControllerDelegate {
 	
-	private func commandReset() {
-		playPauseButton.setImage(UIImage(systemName: "play.fill"), for: .normal)
-		avPlayer?.seek(to: CMTime.zero)
-		
-		isPlaying = !isPlaying
+	func playbackControlsChanged(visible: Bool) {
+		if visible {
+			hideAdditionalViews()
+		} else {
+			showAdditionalViews()
+		}
 	}
 	
-	@IBAction func scrubberDidChange(_ sender: Any) {
-		let percentage = scrubber.value / scrubber.maximumValue
-		let positionInSeconds = Double(scrubber.maximumValue * percentage)
-		avPlayer?.seek(to: CMTimeMakeWithSeconds(positionInSeconds, preferredTimescale: 1), toleranceBefore: CMTime.zero, toleranceAfter: CMTime.zero)
+	func showAdditionalViews() {
+		UIView.animate(withDuration: 0.3) { [weak self] in
+			self?.quantityView.alpha = 1
+			self?.mediaIconView.alpha = 1
+		}
 	}
 	
-	deinit {
-		if let ob = periodicTimeObserver {
-			playbackReadyObservation = nil
-			rateChangeObservation = nil
-			avPlayer?.removeTimeObserver(ob)
-			
-			let commandCenter = MPRemoteCommandCenter.shared()
-			commandCenter.togglePlayPauseCommand.removeTarget(self)
-			commandCenter.stopCommand.removeTarget(self)
-			commandCenter.playCommand.removeTarget(self)
-			commandCenter.pauseCommand.removeTarget(self)
-			
-			didSetNowPlaying = false
+	func hideAdditionalViews() {
+		UIView.animate(withDuration: 0.3) { [weak self] in
+			self?.quantityView.alpha = 0
+			self?.mediaIconView.alpha = 0
 		}
 	}
 }

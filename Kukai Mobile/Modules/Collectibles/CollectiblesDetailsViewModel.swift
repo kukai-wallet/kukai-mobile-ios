@@ -8,7 +8,6 @@
 import UIKit
 import KukaiCoreSwift
 import AVKit
-import MediaPlayer
 import OSLog
 
 
@@ -78,8 +77,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
-	private var avPlayer: AVPlayer? = nil
-	private var avPlayerLayer: AVPlayerLayer? = nil
+	//private var avPlayer: AVPlayer? = nil
+	//private var avPlayerLayer: AVPlayerLayer? = nil
+	private var playerController: CustomAVPlayerViewController? = nil
+	private var playerLooper: AVPlayerLooper? = nil
+
+	
+	
 	private var sendData = SendContent(enabled: true)
 	private var descriptionData = DescriptionContent(description: "")
 	
@@ -525,19 +529,25 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return parsedCell
 			
 		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailAVCell {
-			if !parsedCell.setup, let url = obj.mediaURL {
-				let player = AVPlayer(url: url)
-				self.avPlayer = player
+
+			if !parsedCell.setup, let url = obj.mediaURL, !layoutOnly {
 				
-				if obj.mediaURL2 == nil {
-					// then its a video and needs a layer
-					self.avPlayerLayer = AVPlayerLayer(player: avPlayer)
+				// Make sure we only register the player controller once
+				if self.playerController == nil {
+					self.playerController = CustomAVPlayerViewController()
+					
+					let playerItem = AVPlayerItem(url: url)
+					let player = AVQueuePlayer(playerItem: playerItem)
+					self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+					self.playerController?.player = player
 				}
 				
-				let title = self.nft?.name ?? ""
-				let artist = self.nft?.parentAlias ?? ""
-				let album = self.nft?.parentContract ?? ""
-				parsedCell.setup(mediaContent: obj, airPlayName: title, airPlayArtist: artist, airPlayAlbum: album, player: player, playerLayer: self.avPlayerLayer, layoutOnly: layoutOnly)
+				if let pvc = self.playerController {
+					let title = self.nft?.name ?? ""
+					let artist = self.nft?.parentAlias ?? ""
+					let album = self.nft?.parentContract ?? ""
+					parsedCell.setup(mediaContent: obj, airPlayName: title, airPlayArtist: artist, airPlayAlbum: album, avplayerController: pvc, layoutOnly: layoutOnly)
+				}
 			}
 			
 			return parsedCell
@@ -635,4 +645,8 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 			return self.configure(cell: nil, withItem: item, layoutOnly: true)
 		}
 	}
+}
+
+extension CollectiblesDetailsViewModel {
+	
 }
