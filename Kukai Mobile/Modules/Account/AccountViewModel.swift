@@ -51,7 +51,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
-	var hasPassedNewUserStage = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.hasPassedNewUserStage)
 	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
@@ -208,12 +207,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let balanceService = DependencyManager.shared.balanceService
 		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
 			
-			runNewUserCheck()
-			if hasPassedNewUserStage {
-				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
+			if isEmptyAccount() {
+				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 				
 			} else {
-				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
+				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
 			}
 			
 		} else {
@@ -243,16 +241,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	private func runNewUserCheck() {
-		if !hasPassedNewUserStage {
-			let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-			let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
-			
-			if xtzBalance > .zero() || tokenCount > 0 {
-				hasPassedNewUserStage = true
-				UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.hasPassedNewUserStage)
-			}
-		}
+	private func isEmptyAccount() -> Bool {
+		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
+		let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
+		
+		return (xtzBalance == .zero() && tokenCount == 0)
 	}
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
