@@ -181,20 +181,27 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		var section1Content: [CellDataType] = []
 		
 		let objktCollectionData = DependencyManager.shared.objktClient.collections[nft.parentContract]
-		let allPosisbleTokens = DependencyManager.shared.balanceService.account.nfts.filter({ $0.tokenContractAddress == nft.parentContract })
-		var tokenObj: Token? = nil
-		
-		for token in allPosisbleTokens {
-			for innerNft in token.nfts ?? [] {
-				if nft == innerNft {
-					tokenObj = token
-					break
+		if let exploreItem = DependencyManager.shared.exploreService.item(forAddress: nft.parentContract) {
+			
+			let nameIcon = MediaProxyService.url(fromUri: exploreItem.thumbnailImageUrl, ofFormat: .icon)
+			nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: exploreItem.name, collectionLink: nil, showcaseCount: 2)
+			
+		} else {
+			let allPosisbleTokens = DependencyManager.shared.balanceService.account.nfts.filter({ $0.tokenContractAddress == nft.parentContract })
+			var tokenObj: Token? = nil
+			
+			for token in allPosisbleTokens {
+				for innerNft in token.nfts ?? [] {
+					if nft == innerNft {
+						tokenObj = token
+						break
+					}
 				}
 			}
+			
+			let nameIcon = MediaProxyService.url(fromUri: tokenObj?.thumbnailURL, ofFormat: .icon)
+			nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: tokenObj?.name ?? tokenObj?.tokenContractAddress?.truncateTezosAddress(), collectionLink: nil, showcaseCount: 2)
 		}
-		
-		let nameIcon = MediaProxyService.url(fromUri: tokenObj?.thumbnailURL, ofFormat: .icon)
-		nameContent = NameContent(name: nft.name, collectionIcon: nameIcon, collectionName: tokenObj?.name ?? tokenObj?.tokenContractAddress?.truncateTezosAddress(), collectionLink: nil, showcaseCount: 2)
 		
 		mediaContentForInitialLoad(forNFT: self.nft, quantityString: self.quantityString(forNFT: self.nft)) { [weak self] response in
 			guard let self = self else {

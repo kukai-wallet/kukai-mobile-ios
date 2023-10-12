@@ -108,6 +108,9 @@ public class ExploreService {
 	public init(networkService: NetworkService) {
 		self.networkService = networkService
 		self.requestIfService = RequestIfService(networkService: networkService)
+		
+		let lastCache = self.requestIfService.lastCache(forKey: exploreCacheKey, responseType: [ExploreItem].self)
+		processRawData(items: lastCache ?? [])
 	}
 	
 	
@@ -134,6 +137,15 @@ public class ExploreService {
 		}
 	}
 	
+	private func processRawData(items: [ExploreItem]) {
+		for (index, item) in items.enumerated() {
+			var temp = item
+			temp.sortIndex = index
+			self.items[item.primaryKey] = temp
+		}
+		
+		self.processQuickFindList(items: items)
+	}
 	
 	
 	// MARK: - Network functions
@@ -152,13 +164,7 @@ public class ExploreService {
 				return
 			}
 			
-			for (index, item) in response.enumerated() {
-				var temp = item
-				temp.sortIndex = index
-				self?.items[item.primaryKey] = temp
-			}
-			
-			self?.processQuickFindList(items: response)
+			self?.processRawData(items: response)
 			
 			completion(Result.success(true))
 		}
