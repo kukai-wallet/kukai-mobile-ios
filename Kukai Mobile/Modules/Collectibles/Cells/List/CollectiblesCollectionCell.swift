@@ -42,7 +42,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	func setupCollectionImage(url: URL?) {
 		let dimension = collectionIcon.frame.size.width
 		let updated = dimension * UIScreen.main.scale
-		MediaProxyService.load(url: url, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken(), downSampleSize: CGSize(width: updated, height: updated))
+		MediaProxyService.load(url: url, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken(), downSampleSize: nil)
 	}
 	
 	func setupImages(imageURLs: [URL?]) {
