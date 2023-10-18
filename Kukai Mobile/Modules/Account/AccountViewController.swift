@@ -87,6 +87,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isBackUpCell(atIndexPath: indexPath) {
 			self.performSegue(withIdentifier: "recover", sender: self)
+			
+		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
+			UIApplication.shared.open(AppUpdateService.appStoreURL)
 		}
 	}
 	

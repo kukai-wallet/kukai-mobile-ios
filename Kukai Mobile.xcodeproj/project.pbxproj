@@ -136,6 +136,9 @@
 		C049E73E28819E2800887B64 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049E73D28819E2800887B64 /* DiscoverViewController.swift */; };
 		C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049E73F28819E3800887B64 /* DiscoverViewModel.swift */; };
 		C04B20A52930E1AF00C008CD /* ActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B20A42930E1AF00C008CD /* ActivityService.swift */; };
+		C04E0EB22ADE7EE7001BF56F /* UpdateWarningCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E0EB12ADE7EE7001BF56F /* UpdateWarningCell.swift */; };
+		C04E0EB42ADE9216001BF56F /* RequiredUpdateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E0EB32ADE9216001BF56F /* RequiredUpdateViewController.swift */; };
+		C04E0EB62ADE92CA001BF56F /* AppUpdateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E0EB52ADE92CA001BF56F /* AppUpdateService.swift */; };
 		C04E2860293F940E00DC4171 /* TokenDetailsChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E285F293F940E00DC4171 /* TokenDetailsChartCell.swift */; };
 		C04E2862293F94A800DC4171 /* TokenDetailsButtonsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E2861293F94A800DC4171 /* TokenDetailsButtonsCell.swift */; };
 		C04E2864293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04E2863293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift */; };
@@ -541,6 +544,9 @@
 		C049E73D28819E2800887B64 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C049E73F28819E3800887B64 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewModel.swift; sourceTree = "<group>"; };
 		C04B20A42930E1AF00C008CD /* ActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityService.swift; sourceTree = "<group>"; };
+		C04E0EB12ADE7EE7001BF56F /* UpdateWarningCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateWarningCell.swift; sourceTree = "<group>"; };
+		C04E0EB32ADE9216001BF56F /* RequiredUpdateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequiredUpdateViewController.swift; sourceTree = "<group>"; };
+		C04E0EB52ADE92CA001BF56F /* AppUpdateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateService.swift; sourceTree = "<group>"; };
 		C04E285F293F940E00DC4171 /* TokenDetailsChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsChartCell.swift; sourceTree = "<group>"; };
 		C04E2861293F94A800DC4171 /* TokenDetailsButtonsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsButtonsCell.swift; sourceTree = "<group>"; };
 		C04E2863293F94C500DC4171 /* TokenDetailsBalanceAndBakerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsBalanceAndBakerCell.swift; sourceTree = "<group>"; };
@@ -887,6 +893,7 @@
 				C080C4DA2A1E271C00B372EB /* ExploreService.swift */,
 				C00C39902A28AA5900C431EB /* LookupService.swift */,
 				C083E6532A6EB03300B3BEBE /* DiscoverService.swift */,
+				C04E0EB52ADE92CA001BF56F /* AppUpdateService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -903,6 +910,7 @@
 				C0F5A8DD29ED85580061DBBD /* EditWalletViewController.swift */,
 				C06C529A29FC00C30073A2FE /* RenameWalletGroupdViewController.swift */,
 				C06C529C29FC09EF0073A2FE /* RemoveWalletViewController.swift */,
+				C04E0EB32ADE9216001BF56F /* RequiredUpdateViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1602,6 +1610,7 @@
 			isa = PBXGroup;
 			children = (
 				C054BCA32A682B6F006BDFBB /* BackUpCell.swift */,
+				C04E0EB12ADE7EE7001BF56F /* UpdateWarningCell.swift */,
 				C0D921D1293E49A20020E0BF /* TokenBalanceHeaderCell.swift */,
 				C08694DD27BD1B84000A4909 /* TokenBalanceCell.swift */,
 				C08694DF27BD1B9B000A4909 /* EstimatedTotalCell.swift */,
@@ -1859,6 +1868,7 @@
 				C06BC5412A5EE50E00A0D979 /* SearchResultsCountCell.swift in Sources */,
 				C0FA74D82A4AF79300CA845B /* LoadingGroupModeCell.swift in Sources */,
 				C0172A042A98AD5400163179 /* UITableViewCellButtonDelegate.swift in Sources */,
+				C04E0EB42ADE9216001BF56F /* RequiredUpdateViewController.swift in Sources */,
 				C0239BA12886C5C600E0C973 /* DefiViewModel.swift in Sources */,
 				C0B8C8A329DC355400C8AFD5 /* RecoveryPhraseViewController.swift in Sources */,
 				C0BB8BA1293F5E6200C0E1DD /* CustomisableButton.swift in Sources */,
@@ -2095,10 +2105,12 @@
 				C0D6A9362955C510002BE8DA /* AddressTypeCell.swift in Sources */,
 				C006176A29DB33C8005A1330 /* WalletCreatedViewController.swift in Sources */,
 				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
+				C04E0EB22ADE7EE7001BF56F /* UpdateWarningCell.swift in Sources */,
 				C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */,
 				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
 				C065AF112AB0A6690061CC64 /* SideMenuBackupViewModel.swift in Sources */,
 				C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */,
+				C04E0EB62ADE92CA001BF56F /* AppUpdateService.swift in Sources */,
 				C0BAFEB328A165110045832E /* ChooseLiquidityTokenViewController.swift in Sources */,
 				C080C4DB2A1E271C00B372EB /* ExploreService.swift in Sources */,
 				C04E286E293F952800DC4171 /* TokenDetailsLoadingCell.swift in Sources */,
