@@ -4,6 +4,7 @@ on:
     branches:
       - main
       - develop
+      - audit-target
 
 jobs:
   deploy:
@@ -31,7 +32,7 @@ jobs:
           echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" >> $GITHUB_ENV
       
       - name: Setup env varibales for develop
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
         run: |
           echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BETA_BASE64 }}" >> $GITHUB_ENV
       
@@ -67,7 +68,7 @@ jobs:
 
       # Auto increment build number on Dev builds only to avoid mismatch between TestFlight setups
       - name: Auto update build number
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
         run: agvtool next-version -all
       
       # Setup CodeQL before building
@@ -82,7 +83,7 @@ jobs:
         run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       - name: Build and Archive
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
         run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
       
       #Analyse code after build
@@ -97,7 +98,7 @@ jobs:
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
       - name: Export .ipa
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
 

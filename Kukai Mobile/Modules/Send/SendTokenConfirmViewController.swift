@@ -192,11 +192,18 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true)
-		
+		self.showLoadingModal(invisible: true) { [weak self] in
+			self?.fetchWalletAndSend()
+		}
+	}
+	
+	private func fetchWalletAndSend() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.alert(errorWithMessage: "Unable to find wallet")
-			self.slideButton.resetSlider()
+			self.hideLoadingModal {
+				self.alert(errorWithMessage: "Unable to find wallet")
+				self.slideButton.resetSlider()
+			}
+			
 			return
 		}
 		
