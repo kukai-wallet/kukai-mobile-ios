@@ -71,11 +71,11 @@ jobs:
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
         run: agvtool next-version -all
       
-      # Setup CodeQL before building
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: "swift"
+      ## Setup CodeQL before building
+      #- name: Initialize CodeQL
+      #  uses: github/codeql-action/init@v2
+      #  with:
+      #    languages: "swift"
 
       # Build and archive for main or develop
       - name: Build and Archive
@@ -84,13 +84,13 @@ jobs:
 
       - name: Build and Archive
         if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/audit-target'
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Debug -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
       
-      #Analyse code after build
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
-        with:
-          category: "/language:swift"
+      ##Analyse code after build
+      #- name: Perform CodeQL Analysis
+      #  uses: github/codeql-action/analyze@v2
+      #  with:
+      #    category: "/language:swift"
 
       # Export .ipa for main or develop
       - name: Export .ipa

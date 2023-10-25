@@ -39,6 +39,15 @@ public class CloudKitService {
 		}
 	}
 	
+	public func temporarilyHardcodeGoogle() -> [TorusAuthProvider: SubverifierWrapper] {
+		var verifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
+		let details = SubVerifierDetails(loginType: .installed, loginProvider: .google, clientId: "952872982551-mtrcpgj8ccfecnflf9bk5c161rt1dmmr.apps.googleusercontent.com", verifier: "kukai-mobile", redirectURL: "com.googleusercontent.apps.952872982551-mtrcpgj8ccfecnflf9bk5c161rt1dmmr:/oauthredirect")
+		let wrapper = SubverifierWrapper(aggregateVerifierName: "tezos-google", networkType: .mainnet, subverifier: details)
+		verifiers[TorusAuthProvider.google] = wrapper
+		
+		return verifiers
+	}
+	
 	public func extractTorusConfig() -> [TorusAuthProvider: SubverifierWrapper] {
 		var verifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
 		

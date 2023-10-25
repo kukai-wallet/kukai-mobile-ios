@@ -38,7 +38,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		dispatchGroup.enter() // animation to finish
 		
 		// Check to see if we need to fetch torus verfier config
-		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
+		/*if DependencyManager.shared.torusVerifiers.keys.count == 0 {
 			cloudKitService.fetchConfigItems { [weak self] error in
 				if let e = error {
 					self?.alert(errorWithMessage: "Unable to fetch config settings: \(e)")
@@ -51,7 +51,19 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			}
 		} else {
 			self.dispatchGroup.leave()
-		}
+		}*/
+		
+		// TODO: remove after testing
+		DependencyManager.shared.torusVerifiers = self.cloudKitService.temporarilyHardcodeGoogle()
+		self.dispatchGroup.leave()
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// When everything done, perform transition
 		dispatchGroup.notify(queue: .main) { [weak self] in
