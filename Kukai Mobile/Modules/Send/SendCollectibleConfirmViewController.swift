@@ -213,11 +213,18 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true)
-		
+		self.showLoadingModal(invisible: true) { [weak self] in
+			self?.fetchWalletAndSend()
+		}
+	}
+	
+	private func fetchWalletAndSend() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
-			self.slideButton.resetSlider()
+			self.hideLoadingModal {
+				self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				self.slideButton.resetSlider()
+			}
+			
 			return
 		}
 		
@@ -239,7 +246,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 						}
 						
 					case .failure(let sendError):
-						self?.windowError(withTitle: "error".localized(), description: sendError.description)
+						self?.alert(errorWithMessage: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
