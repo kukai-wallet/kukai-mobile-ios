@@ -101,7 +101,8 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	}
 	
 	@IBAction func reconnectTapped(_ sender: Any) {
-
+		
+		/*
 		self.showLoadingModal { [weak self] in
 			
 			WalletConnectService.shared.reconnect { error in
@@ -113,6 +114,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				})
 			}
 		}
+		*/
 	}
 }
 

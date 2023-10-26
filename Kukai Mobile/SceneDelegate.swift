@@ -51,7 +51,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		ThemeManager.shared.updateSystemInterfaceStyle()
 		
 		// Manually open WC2 connection
-		WalletConnectService.shared.connectOnAppOpen()
+		//WalletConnectService.shared.connectOnAppOpen()
 		
 		// Remove any old assets to avoid clogging up users device too much
 		MediaProxyService.clearExpiredImages()
@@ -64,7 +64,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		showPrivacyProtectionWindow()
 		
 		// Manually close WC2 connection
-		WalletConnectService.shared.disconnectForAppClose()
+		//WalletConnectService.shared.disconnectForAppClose()
 		
 		DispatchQueue.global(qos: .background).async {
 			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()

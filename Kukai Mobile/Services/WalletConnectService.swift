@@ -7,6 +7,7 @@
 
 import Foundation
 import KukaiCoreSwift
+import Starscream
 import WalletConnectNetworking
 import WalletConnectPairing
 import WalletConnectSign
@@ -34,6 +35,18 @@ public struct WalletConnectGetAccountObj: Codable {
 	let pubkey: String
 }
 
+extension WebSocket: WebSocketConnecting {}
+
+struct DefaultSocketFactory: WebSocketFactory {
+	
+	func create(with url: URL) -> WebSocketConnecting {
+		let socket = WebSocket(url: url)
+		let queue = DispatchQueue(label: "com.walletconnect.sdk.sockets", attributes: .concurrent)
+		socket.callbackQueue = queue
+		return socket
+	}
+}
+
 public class WalletConnectService {
 	
 	private var bag = [AnyCancellable]()
@@ -57,10 +70,11 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: NativeSocketFactory(), socketConnectionType: .manual)
+		//Networking.configure(projectId: WalletConnectService.projectId, socketFactory: NativeSocketFactory(), socketConnectionType: .manual)
+		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
 		
-		try? Networking.instance.connect()
+		//try? Networking.instance.connect()
 		
 		// Callbacks
 		Sign.instance.sessionRequestPublisher
@@ -112,6 +126,7 @@ public class WalletConnectService {
 			}.store(in: &bag)
 	}
 	
+	/*
 	public func reconnect(completion: @escaping ((Error?) -> Void)) {
 		bag.forEach({ $0.cancel() })
 		bag = []
@@ -150,6 +165,7 @@ public class WalletConnectService {
 			}
 		}
 	}
+	*/
 	
 	
 	
