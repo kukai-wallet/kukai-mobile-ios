@@ -267,7 +267,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// TODO: replace with API check
-		data.append(UpdateWarningCellData())
+		//data.append(UpdateWarningCellData())
 		
 		
 		// Else build arrays of acutal data

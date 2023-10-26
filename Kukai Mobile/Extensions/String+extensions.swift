@@ -44,6 +44,10 @@ extension String {
 		return String(self.dropFirst(prefix.count))
 	}
 	
+	func versionCompare(_ otherVersion: String) -> ComparisonResult {
+		return self.compare(otherVersion, options: .numeric)
+	}
+	
 	
 	
 	// MARK: - Localization

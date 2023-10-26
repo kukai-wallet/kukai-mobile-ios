@@ -35,5 +35,10 @@ public class AppUpdateService {
 		let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
 		let currentAppVersionString = "\(version).\(build)"
 		
+		requiredVersion = data.ios.required
+		isRequiredUpdate = (data.ios.required.versionCompare(currentAppVersionString) == .orderedAscending)
+
+		recommendedVersion = data.ios.recommended
+		isRecommendedUpdate = (data.ios.recommended.versionCompare(currentAppVersionString) == .orderedAscending)
 	}
 }
