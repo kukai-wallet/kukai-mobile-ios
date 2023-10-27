@@ -26,7 +26,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var imageView: UIImageView? = nil
 	private var playbackLikelyToKeepUpContext = 0
 	private var playbackRateContext = 0
-	private var playerController: CustomAVPlayerViewController? = nil
+	private weak var playerController: CustomAVPlayerViewController? = nil
 	
 	private var airPlayName: String = ""
 	private var airPlayArtist: String = ""
@@ -151,8 +151,8 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	}
 	
 	deinit {
-		playerController?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", context: &playbackLikelyToKeepUpContext)
-		playerController?.removeObserver(self, forKeyPath: "rate", context: &playbackRateContext)
+		playerController?.player?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", context: &playbackLikelyToKeepUpContext)
+		playerController?.player?.removeObserver(self, forKeyPath: "rate", context: &playbackRateContext)
 		
 		let commandCenter = MPRemoteCommandCenter.shared()
 		commandCenter.togglePlayPauseCommand.removeTarget(self)

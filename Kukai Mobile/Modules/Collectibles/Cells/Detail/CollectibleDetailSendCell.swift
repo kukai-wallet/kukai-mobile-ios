@@ -7,17 +7,27 @@
 
 import UIKit
 
+protocol CollectibleDetailSendDelegate: AnyObject {
+	func sendTapped()
+}
+
 class CollectibleDetailSendCell: UICollectionViewCell {
 
 	@IBOutlet weak var sendButton: CustomisableButton!
 	
-	func setup(target: Any?, action: Selector) {
+	weak var delegate: CollectibleDetailSendDelegate? = nil
+	
+	func setup(delegate: CollectibleDetailSendDelegate?) {
 		
 		sendButton.customButtonType = .primary
+		self.delegate = delegate
 		
 		if let image = sendButton.imageView {
 			sendButton.bringSubviewToFront(image)
 		}
-		sendButton.addTarget(target, action: action, for: .touchUpInside)
+	}
+	
+	@IBAction func sendTapped(_ sender: Any) {
+		self.delegate?.sendTapped()
 	}
 }

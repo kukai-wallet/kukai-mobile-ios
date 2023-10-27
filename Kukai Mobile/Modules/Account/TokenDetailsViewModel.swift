@@ -81,7 +81,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
 	weak var chartDelegate: ChartHostingControllerDelegate? = nil
 	var token: Token? = nil
-	var buttonDelegate: TokenDetailsButtonsCellDelegate? = nil
+	weak var buttonDelegate: TokenDetailsButtonsCellDelegate? = nil
 	
 	// Set by VM
 	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()

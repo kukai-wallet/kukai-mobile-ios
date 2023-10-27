@@ -26,13 +26,13 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		}
 		
 		viewModel.nft = nft
-		viewModel.sendTarget = self
-		viewModel.sendAction = #selector(self.sendTapped)
+		viewModel.sendDelegate = self
 		viewModel.actionsDelegate = self
 		viewModel.menuSourceController = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
+		
 		
 		let layout = CollectibleDetailLayout()
 		layout.delegate = viewModel
@@ -42,14 +42,16 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					self?.showLoadingView(completion: nil)
+					//self?.showLoadingView(completion: nil)
+					let _ = ""
 					
 				case .failure(_, let errorString):
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
 					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
-					self?.hideLoadingView(completion: nil)
+					//self?.hideLoadingView(completion: nil)
+					let _ = ""
 			}
 		}
 	}
@@ -81,12 +83,6 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		self.dismiss(animated: true)
 	}
-	
-	@objc func sendTapped() {
-		TransactionService.shared.sendData.chosenNFT = viewModel.nft
-		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
-		self.performSegue(withIdentifier: "send", sender: nil)
-	}
 }
 
 extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
@@ -101,5 +97,14 @@ extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
 	
 	func shouldDismiss() {
 		self.navigationController?.popViewController(animated: true)
+	}
+}
+
+extension CollectiblesDetailsViewController: CollectibleDetailSendDelegate {
+	
+	func sendTapped() {
+		TransactionService.shared.sendData.chosenNFT = viewModel.nft
+		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 }

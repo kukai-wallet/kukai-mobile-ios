@@ -77,20 +77,15 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
 	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
-	//private var avPlayer: AVPlayer? = nil
-	//private var avPlayerLayer: AVPlayerLayer? = nil
 	private var playerController: CustomAVPlayerViewController? = nil
 	private var playerLooper: AVPlayerLooper? = nil
-
-	
 	
 	private var sendData = SendContent(enabled: true)
 	private var descriptionData = DescriptionContent(description: "")
 	
 	var nft: NFT? = nil
-	var sendTarget: Any? = nil
-	var sendAction: Selector? = nil
-	var actionsDelegate: CollectibleDetailNameCellDelegate? = nil
+	weak var sendDelegate: CollectibleDetailSendDelegate? = nil
+	weak var actionsDelegate: CollectibleDetailNameCellDelegate? = nil
 	var isImage = false
 	var isFavourited = false
 	var isHidden = false
@@ -310,6 +305,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				self.dataSource?.apply(self.currentSnapshot, animatingDifferences: animate)
 			}
 		}
+	}
+	
+	deinit {
+		playerController = nil
+		playerLooper = nil
+		menuSourceController = nil
+		actionsDelegate = nil
 	}
 	
 	
@@ -543,6 +545,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				if self.playerController == nil {
 					self.playerController = CustomAVPlayerViewController()
 					
+					os_log("Loading video url: %@", url.absoluteString)
+					
 					let playerItem = AVPlayerItem(url: url)
 					let player = AVQueuePlayer(playerItem: playerItem)
 					self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
@@ -577,9 +581,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
 			parsedCell.sendButton.isEnabled = obj.enabled
-			if let target = sendTarget, let action = sendAction {
-				parsedCell.setup(target: target, action: action)
-			}
+			parsedCell.setup(delegate: self.sendDelegate)
 			
 			return parsedCell
 			
