@@ -70,11 +70,8 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		//Networking.configure(projectId: WalletConnectService.projectId, socketFactory: NativeSocketFactory(), socketConnectionType: .manual)
 		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
-		
-		//try? Networking.instance.connect()
 		
 		// Callbacks
 		Sign.instance.sessionRequestPublisher
@@ -125,47 +122,6 @@ public class WalletConnectService {
 				}
 			}.store(in: &bag)
 	}
-	
-	/*
-	public func reconnect(completion: @escaping ((Error?) -> Void)) {
-		bag.forEach({ $0.cancel() })
-		bag = []
-		
-		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
-			completion(nil)
-			
-			self?.temporaryBag.forEach({ $0.cancel() })
-			
-		}.store(in: &temporaryBag)
-		
-		do {
-			try Networking.instance.disconnect(closeCode: .normalClosure)
-			self.setup()
-			
-		} catch (let error) {
-			completion(error)
-		}
-	}
-	
-	public func disconnectForAppClose() {
-		if delegate != nil {
-			try? Networking.instance.disconnect(closeCode: .normalClosure)
-		}
-	}
-	
-	public func connectOnAppOpen() {
-		if delegate != nil {
-			self.reconnect { _ in
-				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-					
-					if let uri = WalletConnectService.shared.uriToOpenOnAppReturn {
-						WalletConnectService.shared.pairClient(uri: uri)
-					}
-				}
-			}
-		}
-	}
-	*/
 	
 	
 	
