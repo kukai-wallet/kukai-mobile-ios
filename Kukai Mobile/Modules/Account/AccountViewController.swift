@@ -28,6 +28,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		viewModel.estimatedTotalCellDelegate = self
 		viewModel.tableViewButtonDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
+		viewModel.delegate = self
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
@@ -149,5 +150,12 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 			default:
 				self.windowError(withTitle: "error".localized(), description: "error-unsupport-action".localized())
 		}
+	}
+}
+
+extension AccountViewController: AccountViewModelDelegate {
+	
+	func updateRequired() {
+		(self.tabBarController as? HomeTabBarController)?.displayUpdateRequired()
 	}
 }

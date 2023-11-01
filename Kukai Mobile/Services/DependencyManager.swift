@@ -46,6 +46,7 @@ class DependencyManager {
 	var tezosDomainsClient: TezosDomainsClient
 	var exploreService: ExploreService
 	var discoverService: DiscoverService
+	var appUpdateService: AppUpdateService
 	
 	
 	// Properties and helpers
@@ -180,6 +181,7 @@ class DependencyManager {
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
+		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
 		updateKukaiCoreClients(supressUpdateNotification: true)
 	}
@@ -228,6 +230,7 @@ class DependencyManager {
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
+		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
 		if !supressUpdateNotification {
 			networkDidChange = true

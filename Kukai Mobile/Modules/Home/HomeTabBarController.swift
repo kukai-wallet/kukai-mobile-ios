@@ -418,6 +418,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	func sendButtonTapped() {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
+	
+	func displayUpdateRequired() {
+		self.performSegue(withIdentifier: "app-update-required", sender: nil)
+	}
 }
 
 

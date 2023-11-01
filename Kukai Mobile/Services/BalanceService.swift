@@ -260,6 +260,7 @@ public class BalanceService {
 		balanceRequestDispathGroup.enter()
 		balanceRequestDispathGroup.enter()
 		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
 		
 		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
@@ -355,6 +356,11 @@ public class BalanceService {
 		
 		// Make sure we have the latest explore data
 		DependencyManager.shared.exploreService.fetchExploreItems { [weak self] result in
+			self?.balanceRequestDispathGroup.leave()
+		}
+		
+		// Make sure current app version is update to date
+		DependencyManager.shared.appUpdateService.fetchUpdatedVersionDataIfNeeded { [weak self] result in
 			self?.balanceRequestDispathGroup.leave()
 		}
 		

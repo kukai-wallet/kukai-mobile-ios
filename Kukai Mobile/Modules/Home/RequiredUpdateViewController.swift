@@ -9,16 +9,18 @@ import UIKit
 
 class RequiredUpdateViewController: UIViewController {
 	
+	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var updateButton: CustomisableButton!
 	
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		let _ = containerView.addGradientBackgroundModal()
 		
 		updateButton.customButtonType = .primary
     }
 	
 	@IBAction func updateButtonTapped(_ sender: Any) {
-		
+		UIApplication.shared.open(AppUpdateService.appStoreURL)
 	}
 }

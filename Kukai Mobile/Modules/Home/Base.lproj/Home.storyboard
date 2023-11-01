@@ -111,7 +111,7 @@
                         <segue destination="PDR-kB-1E3" kind="custom" identifier="side-menu-show-qr" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ewk-V5-Km6"/>
                         <segue destination="gdi-7W-77M" kind="show" identifier="side-menu-settings" id="N38-pa-9HH"/>
                         <segue destination="3St-ke-ea9" kind="show" identifier="side-menu-security" id="QP8-i8-wcO"/>
-                        <segue destination="70q-lL-8WM" kind="presentation" identifier="app-update-required" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="2kJ-tl-bHi"/>
+                        <segue destination="70q-lL-8WM" kind="presentation" identifier="app-update-required" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="2kJ-tl-bHi"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1268,7 +1268,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4G-Xl-bPf">
-                                <rect key="frame" x="16" y="225.99999999999997" width="358" height="392.33333333333326"/>
+                                <rect key="frame" x="16" y="216.99999999999997" width="358" height="410.33333333333326"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Downloads" translatesAutoresizingMaskIntoConstraints="NO" id="9lH-yf-zcz">
                                         <rect key="frame" x="140" y="50" width="78" height="78"/>
@@ -1297,7 +1297,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4H-Qi-waO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="69" y="315.33333333333337" width="220" height="38"/>
+                                        <rect key="frame" x="60" y="315.33333333333337" width="238" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="nhO-hU-2GE"/>
+                                        </constraints>
                                         <color key="tintColor" name="TxtBtnPrim1"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Update Now">
@@ -1314,12 +1317,12 @@
                                     <constraint firstItem="vkp-B1-RW0" firstAttribute="top" secondItem="9lH-yf-zcz" secondAttribute="bottom" constant="16" id="AEL-yJ-6eL"/>
                                     <constraint firstItem="dhs-IZ-wtB" firstAttribute="top" secondItem="vkp-B1-RW0" secondAttribute="bottom" constant="24" id="FdI-0R-e41"/>
                                     <constraint firstAttribute="trailing" secondItem="vkp-B1-RW0" secondAttribute="trailing" constant="16" id="Gdi-ZJ-jTI"/>
-                                    <constraint firstAttribute="trailing" secondItem="f4H-Qi-waO" secondAttribute="trailing" constant="69" id="Kzd-G5-Afx"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="f4H-Qi-waO" secondAttribute="trailing" constant="60" id="Kzd-G5-Afx"/>
                                     <constraint firstItem="NGh-WG-OQM" firstAttribute="leading" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="16" id="Lmj-Qk-mi0"/>
                                     <constraint firstItem="f4H-Qi-waO" firstAttribute="top" secondItem="NGh-WG-OQM" secondAttribute="bottom" constant="60" id="MG2-vz-BGS"/>
                                     <constraint firstAttribute="trailing" secondItem="NGh-WG-OQM" secondAttribute="trailing" constant="16" id="NJb-nG-rdl"/>
                                     <constraint firstItem="9lH-yf-zcz" firstAttribute="centerX" secondItem="R4G-Xl-bPf" secondAttribute="centerX" id="Qbp-6E-MRY"/>
-                                    <constraint firstItem="f4H-Qi-waO" firstAttribute="leading" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="69" id="QvS-eM-Oxt"/>
+                                    <constraint firstItem="f4H-Qi-waO" firstAttribute="leading" relation="lessThanOrEqual" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="60" id="QvS-eM-Oxt"/>
                                     <constraint firstAttribute="trailing" secondItem="dhs-IZ-wtB" secondAttribute="trailing" constant="16" id="X5N-fx-XTo"/>
                                     <constraint firstAttribute="bottom" secondItem="f4H-Qi-waO" secondAttribute="bottom" constant="39" id="ejZ-iR-Cvc"/>
                                     <constraint firstItem="9lH-yf-zcz" firstAttribute="top" secondItem="R4G-Xl-bPf" secondAttribute="top" constant="50" id="hOD-d5-OY0"/>
@@ -1343,7 +1346,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="containerView" destination="R4G-Xl-bPf" id="rzs-pB-0EI"/>
+                        <outlet property="containerView" destination="R4G-Xl-bPf" id="RsS-3r-elp"/>
                         <outlet property="updateButton" destination="f4H-Qi-waO" id="6Xp-wX-B5C"/>
                     </connections>
                 </viewController>
