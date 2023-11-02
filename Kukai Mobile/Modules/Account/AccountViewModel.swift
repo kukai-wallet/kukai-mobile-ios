@@ -42,11 +42,6 @@ struct AccountButtonData: Hashable {
 	let buttonType: CustomisableButton.customButtonType
 }
 
-protocol AccountViewModelDelegate: AnyObject {
-	
-	func updateRequired()
-}
-
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	struct accessibilityIdentifiers {
@@ -70,7 +65,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
 	
 	weak var tableViewButtonDelegate: UITableViewCellButtonDelegate? = nil
-	weak var delegate: AccountViewModelDelegate? = nil
 	
 	
 	// MARK: - Init
@@ -277,10 +271,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		DependencyManager.shared.appUpdateService.checkVersions()
 		if DependencyManager.shared.appUpdateService.isRecommendedUpdate {
 			data.append(UpdateWarningCellData())
-		}
-		
-		if DependencyManager.shared.appUpdateService.isRequiredUpdate {
-			delegate?.updateRequired()
 		}
 		
 		

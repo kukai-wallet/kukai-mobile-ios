@@ -48,6 +48,7 @@ public class AppUpdateService {
 	public func processVersionData(data: MobileVersionData) {
 		requiredVersion = data.ios.required
 		recommendedVersion = data.ios.recommended
+		
 		checkVersions()
 	}
 	
@@ -74,8 +75,6 @@ public class AppUpdateService {
 	}
 	
 	public func fetchUpdatedVersionDataIfNeeded(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
-		
-		// TODO: increase time duration once inital testing done, no need to be so frequent
 		self.requestIfService.request(url: self.url(), withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.minute.rawValue, forKey: fetchVersionKey, responseType: MobileVersionData.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
