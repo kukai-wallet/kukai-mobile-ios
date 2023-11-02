@@ -110,6 +110,11 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.balanceService.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
+				
+				if DependencyManager.shared.appUpdateService.isRequiredUpdate {
+					self?.displayUpdateRequired()
+				}
+				
 				if address == DependencyManager.shared.selectedWalletAddress {
 					DispatchQueue.global(qos: .background).async {
 						DependencyManager.shared.balanceService.loadCache(address: address)
