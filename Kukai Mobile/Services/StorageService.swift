@@ -12,6 +12,8 @@ public class StorageService {
 	
 	private static let secureLoginInfo = "app.kukai.wallet.login"
 	private static let onboardingComplete = "app.kukai.onboarding.complete"
+	private static let loginWrongGuessCount = "app.kukai.login.count"
+	private static let loginWrongGuessDelay = "app.kukai.login.delay"
 	
 	private class LoginInfo: Codable {
 		var isBiometricEnabled: Bool
@@ -91,6 +93,30 @@ public class StorageService {
 		}
 		
 		return nil
+	}
+	
+	public static func getLoginCount() -> Int? {
+		guard let str = KeychainSwift().get(StorageService.loginWrongGuessCount), let asInt = Int(str)  else {
+			return nil
+		}
+		
+		return asInt
+	}
+	
+	public static func setLoginCount(_ count: Int) {
+		KeychainSwift().set(count.description, forKey: StorageService.loginWrongGuessCount)
+	}
+	
+	public static func getLoginDelay() -> Int? {
+		guard let str = KeychainSwift().get(StorageService.loginWrongGuessDelay), let asInt = Int(str)  else {
+			return nil
+		}
+		
+		return asInt
+	}
+	
+	public static func setLoginDelay(_ count: Int) {
+		KeychainSwift().set(count.description, forKey: StorageService.loginWrongGuessDelay)
 	}
 	
 	public static func hasUserDefaultKeyBeenSet(key: String) -> Bool {
