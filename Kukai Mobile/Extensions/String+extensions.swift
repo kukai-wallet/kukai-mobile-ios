@@ -48,6 +48,31 @@ extension String {
 		return self.compare(otherVersion, options: .numeric)
 	}
 	
+	/**
+	 - Check not all the same number
+	 - Check no more than 3 digits in a row
+	 - Used 3 or more unique digits
+	 */
+	func passcodeComplexitySufficient() -> Bool {
+		let digits = self.map({ Int(String($0)) ?? 0 })
+		
+		let uniqueDigitCount = Set(digits).count
+		var hasTooManySequentialDigits = false
+		
+		for (index, digit) in digits.enumerated() {
+			if index <= 1 {
+				continue
+			}
+			
+			if digit-1 == digits[index-1] && digit-2 == digits[index-2] {
+				hasTooManySequentialDigits = true
+				break
+			}
+		}
+		
+		return (uniqueDigitCount > 3) && !hasTooManySequentialDigits
+	}
+	
 	
 	
 	// MARK: - Localization

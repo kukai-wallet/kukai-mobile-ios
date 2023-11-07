@@ -281,7 +281,7 @@ for your Digital Assets</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EX4-MC-WXt" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="132.5" y="45" width="110.5" height="34"/>
+                                                <rect key="frame" x="129.5" y="45" width="116.5" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="xJV-2O-fg9"/>
                                                 </constraints>
@@ -997,14 +997,17 @@ for your Digital Assets</string>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use this passcode to unlock your Kukai Wallet on this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbD-73-YAy">
-                                <rect key="frame" x="76" y="164" width="223" height="34"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbD-73-YAy">
+                                <rect key="frame" x="76" y="164" width="223" height="101"/>
+                                <string key="text">Use this passcode to unlock your Kukai Wallet on this device
+
+Passcode must have at least 3 unique digits, and no more than 3 sequential digits</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="u1I-vm-vcS">
-                                <rect key="frame" x="76" y="250" width="223" height="16"/>
+                                <rect key="frame" x="76" y="317" width="223" height="16"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hmf-ta-Xo2">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -1093,7 +1096,7 @@ for your Digital Assets</string>
                                 </subviews>
                             </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zt3-Dy-pYo" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="76" y="282" width="223" height="34"/>
+                                <rect key="frame" x="76" y="349" width="223" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
@@ -1103,13 +1106,13 @@ for your Digital Assets</string>
                         <constraints>
                             <constraint firstItem="RbD-73-YAy" firstAttribute="leading" secondItem="Atf-wH-h54" secondAttribute="leading" constant="60" id="13L-Wt-wmm"/>
                             <constraint firstItem="Atf-wH-h54" firstAttribute="leading" secondItem="fUL-8k-UHb" secondAttribute="leading" constant="16" id="5um-f2-AZo"/>
-                            <constraint firstItem="u1I-vm-vcS" firstAttribute="trailing" secondItem="RbD-73-YAy" secondAttribute="trailing" id="bWg-Q4-cea"/>
+                            <constraint firstItem="u1I-vm-vcS" firstAttribute="leading" secondItem="Atf-wH-h54" secondAttribute="leading" constant="60" id="SOH-lu-lnq"/>
                             <constraint firstItem="RbD-73-YAy" firstAttribute="top" secondItem="Atf-wH-h54" secondAttribute="bottom" constant="16" id="bvz-Qx-AqU"/>
                             <constraint firstItem="zt3-Dy-pYo" firstAttribute="leading" secondItem="u1I-vm-vcS" secondAttribute="leading" id="ggq-ED-Kdz"/>
                             <constraint firstItem="RbD-73-YAy" firstAttribute="trailing" secondItem="Atf-wH-h54" secondAttribute="trailing" constant="-60" id="h1K-79-bRj"/>
                             <constraint firstItem="zt3-Dy-pYo" firstAttribute="trailing" secondItem="u1I-vm-vcS" secondAttribute="trailing" id="i1g-TP-u82"/>
                             <constraint firstItem="fUL-8k-UHb" firstAttribute="trailing" secondItem="Atf-wH-h54" secondAttribute="trailing" constant="16" id="mSx-1G-ujI"/>
-                            <constraint firstItem="u1I-vm-vcS" firstAttribute="leading" secondItem="RbD-73-YAy" secondAttribute="leading" id="nbs-h3-dv7"/>
+                            <constraint firstItem="u1I-vm-vcS" firstAttribute="trailing" secondItem="Atf-wH-h54" secondAttribute="trailing" constant="-60" id="sXZ-C4-fDH"/>
                             <constraint firstItem="zt3-Dy-pYo" firstAttribute="top" secondItem="u1I-vm-vcS" secondAttribute="bottom" constant="16" id="ut8-yt-eDV"/>
                             <constraint firstItem="Atf-wH-h54" firstAttribute="top" secondItem="fUL-8k-UHb" secondAttribute="top" constant="48" id="v7Z-lh-8gR"/>
                             <constraint firstItem="u1I-vm-vcS" firstAttribute="top" secondItem="RbD-73-YAy" secondAttribute="bottom" constant="52" id="yCD-1w-S1P"/>
@@ -1129,7 +1132,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FIY-te-EZy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3812" y="617"/>
+            <point key="canvasLocation" x="-3812" y="616.64167916041981"/>
         </scene>
         <!--Face Id View Controller-->
         <scene sceneID="EoA-MV-Kw4">
@@ -2197,25 +2200,25 @@ for your Digital Assets</string>
     </scenes>
     <designables>
         <designable name="1VJ-Ye-1zl">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="5t4-7b-ZSi">
-            <size key="intrinsicContentSize" width="191.5" height="38"/>
+            <size key="intrinsicContentSize" width="211.5" height="38"/>
         </designable>
         <designable name="EIg-ad-QmA">
             <size key="intrinsicContentSize" width="141" height="38"/>
         </designable>
         <designable name="EX4-MC-WXt">
-            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
         <designable name="HYe-6w-BZ5">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="J2v-BG-JDc">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="Loj-qu-Rs8">
-            <size key="intrinsicContentSize" width="203.5" height="38"/>
+            <size key="intrinsicContentSize" width="223.5" height="38"/>
         </designable>
         <designable name="UlV-Fl-sF1">
             <size key="intrinsicContentSize" width="119" height="38"/>
@@ -2227,10 +2230,10 @@ for your Digital Assets</string>
             <size key="intrinsicContentSize" width="227" height="38"/>
         </designable>
         <designable name="XdZ-Fb-GOd">
-            <size key="intrinsicContentSize" width="145" height="31"/>
+            <size key="intrinsicContentSize" width="154" height="31"/>
         </designable>
         <designable name="ZcX-hG-7A3">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="bIm-xp-dm5">
             <size key="intrinsicContentSize" width="185.5" height="34"/>
@@ -2242,25 +2245,25 @@ for your Digital Assets</string>
             <size key="intrinsicContentSize" width="144" height="38"/>
         </designable>
         <designable name="c2S-hk-v1m">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
         <designable name="kBV-Wl-oY1">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="ljI-gW-RKX">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="mM7-0X-VxZ">
-            <size key="intrinsicContentSize" width="106" height="36"/>
+            <size key="intrinsicContentSize" width="124" height="36"/>
         </designable>
         <designable name="qIG-P5-Mvs">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="r2f-ZX-fLU">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="rXX-Jd-YOc">
             <size key="intrinsicContentSize" width="69" height="38"/>
@@ -2286,7 +2289,7 @@ for your Digital Assets</string>
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="Vsi-Lk-yGP"/>
+        <segue reference="nii-SC-NQy"/>
         <segue reference="v51-jF-ffS"/>
     </inferredMetricsTieBreakers>
     <resources>
