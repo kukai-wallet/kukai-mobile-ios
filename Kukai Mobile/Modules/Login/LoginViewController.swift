@@ -225,7 +225,6 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 	
 	private func displayDelay() {
 		self.hiddenTextfield.resignFirstResponder()
-		self.showLoadingModal(invisible: true)
 		self.errorLabel.isHidden = false
 		self.updateErrorMessageSeconds()
 		
@@ -243,7 +242,6 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		} else {
 			self.delayTimer?.invalidate()
 			self.delayTimer = nil
-			self.hideLoadingModal()
 			self.hiddenTextfield.becomeFirstResponder()
 			self.errorLabel.isHidden = true
 			self.errorLabel.text  = defaultErrorMessage
@@ -253,7 +251,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 	private func incrementWrongGuessDelayIfNeeded() {
 		let count = LoginViewController.wrongGuessCount
 		if count > 2 {
-			LoginViewController.wrongGuessDelay = (count * 3)
+			LoginViewController.wrongGuessDelay = Int(pow(Double(1.5), Double(count)))
 			displayDelay()
 		}
 	}
