@@ -130,7 +130,7 @@ extension ConfirmPasscodeViewController: ValidatorTextFieldDelegate {
 		updateDigitViewsWithLength(length: text.count)
 		
 		if validated {
-			if StorageService.validatePassword(text) == true {
+			if StorageService.validatePasscode(text) == true {
 				navigate()
 			} else {
 				displayErrorAndReset()

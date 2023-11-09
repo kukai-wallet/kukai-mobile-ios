@@ -7,6 +7,7 @@
 
 import Foundation
 import KeychainSwift
+import Sodium
 
 public class StorageService {
 	
@@ -18,12 +19,12 @@ public class StorageService {
 	private class LoginInfo: Codable {
 		var isBiometricEnabled: Bool
 		var isPasswordEnabled: Bool
-		var password: String
+		var passcode: String
 		
-		init(isBiometricEnabled: Bool, isPasswordEnabled: Bool, password: String) {
+		init(isBiometricEnabled: Bool, isPasswordEnabled: Bool, passcode: String) {
 			self.isBiometricEnabled = isBiometricEnabled
 			self.isPasswordEnabled = isPasswordEnabled
-			self.password = password
+			self.passcode = passcode
 		}
 	}
 	
@@ -62,7 +63,7 @@ public class StorageService {
 	}
 	
 	public static func setBiometricEnabled(_ enabled: Bool) {
-		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, password: "")
+		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, passcode: "")
 		currentInfo.isBiometricEnabled = enabled
 		setLoginInfo(currentInfo)
 	}
@@ -71,25 +72,31 @@ public class StorageService {
 		return getLoginInfo()?.isBiometricEnabled ?? false
 	}
 	
-	public static func setPasswordEnabled(_ enabled: Bool) {
-		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, password: "")
+	public static func setPasscodeEnabled(_ enabled: Bool) {
+		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, passcode: "")
 		currentInfo.isPasswordEnabled = enabled
 		setLoginInfo(currentInfo)
 	}
 	
-	public static func isPasswordEnabled() -> Bool {
+	public static func isPasscodeEnabled() -> Bool {
 		return getLoginInfo()?.isPasswordEnabled ?? false
 	}
 	
-	public static func setPassword(_ password: String) {
-		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, password: "")
-		currentInfo.password = password
+	public static func setPasscode(_ passcode: String) -> Bool {
+		let currentInfo = getLoginInfo() ?? LoginInfo(isBiometricEnabled: false, isPasswordEnabled: false, passcode: "")
+		guard let hash = Sodium.shared.pwHash.str(passwd: passcode.bytes, opsLimit: Sodium.shared.pwHash.OpsLimitInteractive, memLimit: Sodium.shared.pwHash.MemLimitInteractive) else {
+			return false
+		}
+		
+		currentInfo.passcode = hash
 		setLoginInfo(currentInfo)
+		
+		return true
 	}
 	
-	public static func validatePassword(_ password: String) -> Bool? {
-		if let secret = getLoginInfo()?.password {
-			return password == secret
+	public static func validatePasscode(_ passcode: String) -> Bool? {
+		if let secret = getLoginInfo()?.passcode {
+			return Sodium.shared.pwHash.strVerify(hash: secret, passwd: passcode.bytes)
 		}
 		
 		return nil
