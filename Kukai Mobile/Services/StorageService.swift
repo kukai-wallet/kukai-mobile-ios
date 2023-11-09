@@ -58,7 +58,7 @@ public class StorageService {
 	}
 	
 	public static func deleteKeychainItems() {
-		KeychainSwift().delete(StorageService.secureLoginInfo)
+		KeychainSwift().clear()
 	}
 	
 	public static func setBiometricEnabled(_ enabled: Bool) {
@@ -134,12 +134,5 @@ public class StorageService {
 	
 	public static func didCompleteOnboarding() -> Bool {
 		return UserDefaults.standard.bool(forKey: StorageService.onboardingComplete)
-	}
-	
-	public static func runCleanupChecks() {
-		if didCompleteOnboarding() == false || !loginInfoExists() {
-			setCompletedOnboarding(false)
-			deleteKeychainItems()
-		}
 	}
 }

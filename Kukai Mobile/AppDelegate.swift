@@ -15,7 +15,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		setupTheme()
-		StorageService.runCleanupChecks()
+		
+		// If app launches from fresh without flag to mark completion of onboarding, assume reinstall and reset everything
+		if StorageService.didCompleteOnboarding() == false {
+			SideMenuResetViewController.resetAllData()
+		}
+		
 		
 		#if targetEnvironment(simulator)
 			// If running on simulator, print documents directory to help with debugging

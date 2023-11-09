@@ -107,9 +107,8 @@ public class WalletConnectService {
 		
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { /*[weak self]*/ data in
+			.sink { data in
 				os_log("WC sessionSettlePublisher %@", log: .default, type: .info, data.topic)
-				//self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
 		
 		Sign.instance.sessionDeletePublisher
