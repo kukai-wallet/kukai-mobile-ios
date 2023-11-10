@@ -90,10 +90,26 @@ extension CreatePasscodeViewController: ValidatorTextFieldDelegate {
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
 		updateDigitViewsWithLength(length: text.count)
 		
-		if validated {
-			StorageService.setPasswordEnabled(true)
-			StorageService.setPassword(text)
-			self.performSegue(withIdentifier: "confirm", sender: nil)
+		if validated  {
+			
+			if text.passcodeComplexitySufficient() {
+				if StorageService.setPasscode(text) {
+					self.performSegue(withIdentifier: "confirm", sender: nil)
+				} else {
+					displayError(localisedString: "error-unable-to-store-passcode".localized())
+				}
+				
+			} else {
+				displayError(localisedString: "error-passcode-too-weak".localized())
+			}
+		}
+	}
+	
+	func displayError(localisedString: String) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			self?.hiddenTextfield.text = nil
+			self?.updateDigitViewsWithLength(length: 0)
+			self?.windowError(withTitle: "error".localized(), description: localisedString)
 		}
 	}
 	

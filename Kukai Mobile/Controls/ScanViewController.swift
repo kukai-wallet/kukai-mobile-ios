@@ -149,6 +149,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			self.view.addSubview(textfield)
 			
 			pasteButton.translatesAutoresizingMaskIntoConstraints = false
+			pasteButton.accessibilityIdentifier = "paste-button"
 			pasteButton.imageWidth = 26
 			pasteButton.imageHeight = 26
 			pasteButton.customImage = UIImage(named: "Paste") ?? UIImage()

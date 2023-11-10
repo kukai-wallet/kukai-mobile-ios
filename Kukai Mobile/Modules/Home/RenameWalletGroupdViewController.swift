@@ -23,7 +23,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		customNameTextField.validator = FreeformValidator(allowEmpty: false)
+		customNameTextField.validator = LengthValidator(min: 1, max: 30)
 		customNameTextField.validatorTextFieldDelegate = self
 		
 		cancelButton.customButtonType = .secondary

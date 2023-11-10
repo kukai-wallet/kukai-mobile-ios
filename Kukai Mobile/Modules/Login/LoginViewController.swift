@@ -22,6 +22,27 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var digitView5: UIView!
 	@IBOutlet weak var digitView6: UIView!
 	
+	private static var wrongGuessCount: Int {
+		get {
+			return StorageService.getLoginCount() ?? 0
+		}
+		set {
+			StorageService.setLoginCount(newValue)
+		}
+	}
+	
+	private static var wrongGuessDelay: Int {
+		get {
+			return StorageService.getLoginDelay() ?? 0
+		}
+		set {
+			StorageService.setLoginDelay(newValue)
+		}
+	}
+	
+	private let defaultErrorMessage = "Incorrect passcode try again"
+	private let delayedErrorMessage = "Too many failed attempts. Wait % seconds before trying again"
+	private var delayTimer: Timer? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,14 +114,8 @@ class LoginViewController: UIViewController {
 	}
 	
 	private func validateBiometric() {
-		let context = LAContext()
-		
 		if StorageService.isBiometricEnabled() && CurrentDevice.biometricTypeAuthorized() != .none {
-			let reason = "To allow access to app"
-			
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-				[weak self] success, authenticationError in
-				
+			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
 						self?.next()
@@ -111,7 +126,7 @@ class LoginViewController: UIViewController {
 				}
 			}
 		} else {
-			self.hiddenTextfield.becomeFirstResponder()
+			self.continueWithWrongGuessIfNeeded()
 		}
 	}
 	
@@ -167,7 +182,9 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		updateDigitViewsWithLength(length: text.count)
 		
 		if validated {
-			if StorageService.validatePassword(text) == true {
+			if StorageService.validatePasscode(text) == true {
+				LoginViewController.wrongGuessCount = 0
+				LoginViewController.wrongGuessDelay = 0
 				next()
 			} else {
 				displayErrorAndReset()
@@ -186,6 +203,50 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 			self?.errorLabel.isHidden = false
 			self?.hiddenTextfield.text = ""
 			self?.updateDigitViewsWithLength(length: 0)
+			
+			LoginViewController.wrongGuessCount += 1
+			self?.incrementWrongGuessDelayIfNeeded()
+		}
+	}
+	
+	private func continueWithWrongGuessIfNeeded() {
+		if LoginViewController.wrongGuessDelay > 0 {
+			displayDelay()
+		} else {
+			hiddenTextfield.becomeFirstResponder()
+		}
+	}
+	
+	private func displayDelay() {
+		self.hiddenTextfield.resignFirstResponder()
+		self.errorLabel.isHidden = false
+		self.updateErrorMessageSeconds()
+		
+		self.delayTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] t in
+			self?.updateErrorMessageSeconds()
+		})
+	}
+	
+	private func updateErrorMessageSeconds() {
+		let delay = LoginViewController.wrongGuessDelay
+		if delay > 0 {
+			self.errorLabel.text = self.delayedErrorMessage.replacingOccurrences(of: "%", with: delay.description)
+			LoginViewController.wrongGuessDelay -= 1
+			
+		} else {
+			self.delayTimer?.invalidate()
+			self.delayTimer = nil
+			self.hiddenTextfield.becomeFirstResponder()
+			self.errorLabel.isHidden = true
+			self.errorLabel.text  = defaultErrorMessage
+		}
+	}
+	
+	private func incrementWrongGuessDelayIfNeeded() {
+		let count = LoginViewController.wrongGuessCount
+		if count > 2 {
+			LoginViewController.wrongGuessDelay = Int(pow(Double(1.5), Double(count)))
+			displayDelay()
 		}
 	}
 }
