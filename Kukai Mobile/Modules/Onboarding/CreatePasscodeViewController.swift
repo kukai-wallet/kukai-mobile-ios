@@ -93,8 +93,6 @@ extension CreatePasscodeViewController: ValidatorTextFieldDelegate {
 		if validated  {
 			
 			if text.passcodeComplexitySufficient() {
-				StorageService.setPasscodeEnabled(true)
-				
 				if StorageService.setPasscode(text) {
 					self.performSegue(withIdentifier: "confirm", sender: nil)
 				} else {

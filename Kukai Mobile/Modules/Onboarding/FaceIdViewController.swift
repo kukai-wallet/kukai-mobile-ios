@@ -50,7 +50,7 @@ class FaceIdViewController: UIViewController {
 			}
 			
 		} else {
-			StorageService.setBiometricEnabled(false)
+			let _ = StorageService.setBiometricEnabled(false)
 			StorageService.setCompletedOnboarding(true)
 			self.navigateNext()
 		}
@@ -71,11 +71,12 @@ class FaceIdViewController: UIViewController {
 	public static func handleBiometricChangeTo(isOn: Bool, completion: @escaping ((String?) -> Void)) {
 		if isOn {
 			biometric(completion: completion)
-		} else {
-			StorageService.setBiometricEnabled(false)
+		} else if StorageService.setBiometricEnabled(false) {
 			DispatchQueue.main.asyncAfter(wallDeadline: .now() + 0.5) {
 				completion(nil)
 			}
+		} else {
+			completion("Unable to complete request")
 		}
 	}
 	
@@ -88,12 +89,10 @@ class FaceIdViewController: UIViewController {
 			
 			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) { success, authenticationError in
 				DispatchQueue.main.async {
-					if success {
-						StorageService.setBiometricEnabled(true)
+					if success, StorageService.setBiometricEnabled(true) {
 						completion(nil)
 						
-					} else if success == false && (authenticationError?.code == -6 && (authenticationError?.userInfo["NSDebugDescription"] as? String) == "User has denied the use of biometry for this app.") {
-						StorageService.setBiometricEnabled(false)
+					} else if success == false && (authenticationError?.code == -6 && (authenticationError?.userInfo["NSDebugDescription"] as? String) == "User has denied the use of biometry for this app."), StorageService.setBiometricEnabled(false) {
 						completion(nil)
 						
 					} else {

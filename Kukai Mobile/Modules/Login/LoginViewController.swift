@@ -114,14 +114,8 @@ class LoginViewController: UIViewController {
 	}
 	
 	private func validateBiometric() {
-		let context = LAContext()
-		
 		if StorageService.isBiometricEnabled() && CurrentDevice.biometricTypeAuthorized() != .none {
-			let reason = "To allow access to app"
-			
-			context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason) {
-				[weak self] success, authenticationError in
-				
+			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
 						self?.next()
