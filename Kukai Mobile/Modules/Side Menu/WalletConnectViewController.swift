@@ -47,8 +47,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.sink { [weak self] (sessionTopic: String, namespaces: [String : SessionNamespace]) in
 				self?.pairingToChangeAccount = nil
 				self?.viewModel.refresh(animate: true)
-				
-				print("updating ....")
 			}.store(in: &bag)
 		
 		WalletConnectService.shared.$didCleanAfterDelete
@@ -56,8 +54,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
 				self?.viewModel.refresh(animate: true)
-				
-				print("deleting ....")
 			}.store(in: &bag)
 	}
 	

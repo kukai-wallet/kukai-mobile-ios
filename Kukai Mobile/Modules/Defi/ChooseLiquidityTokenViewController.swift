@@ -22,7 +22,6 @@ class ChooseLiquidityTokenViewController: UITableViewController {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					print("")
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingModal(completion: nil)

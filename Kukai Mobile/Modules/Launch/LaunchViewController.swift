@@ -78,11 +78,11 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		
 		/*
 		bag1 = DependencyManager.shared.balanceService.$addressRefreshed.dropFirst().sink(receiveValue: { address in
-			print("$addressRefreshed: \(address)")
+			
 		})
 		
 		bag2 = DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed.dropFirst().sink(receiveValue: { addresses in
-			print("$addressesWaitingToBeRefreshed: \(addresses)")
+			
 		})
 		
 		

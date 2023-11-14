@@ -461,12 +461,6 @@ public class BalanceService {
 		}
 	}
 	
-	private func printIf(message: String, address: String?) {
-		if address == "KT1BRADdqGk2eLmMqvyWzqVmPQ1RCBCbW5dY" {
-			print(message)
-		}
-	}
-	
 	private func orderGroupAndAliasNFTs(completion: @escaping (() -> Void)) {
 		var modifiedNFTs: [UUID: (token: Token, sortIndex: Int)] = [:]
 		var unmodifiedNFTs: [Token] = []
@@ -481,7 +475,6 @@ public class BalanceService {
 			
 			// If there is no special logic for this token, add it in the order it came down in, and move on
 			guard let exploreItem = DependencyManager.shared.exploreService.item(forAddress: address) else {
-				printIf(message: "- no special -", address: token.tokenContractAddress)
 				unmodifiedNFTs.append(token)
 				continue
 			}
@@ -490,11 +483,9 @@ public class BalanceService {
 			// If there is special logic, we will create a new `Token` object and store it in `modifiedNFTs`
 			// If the token already exists, we will append the nft contents of `Token` to the object and drop the token we got from tzkt
 			if modifiedNFTs[exploreItem.primaryKey] != nil {
-				printIf(message: "- special logic - append -", address: token.tokenContractAddress)
 				modifiedNFTs[exploreItem.primaryKey]?.token.nfts?.append(contentsOf: token.nfts ?? [])
 				
 			} else {
-				printIf(message: "- no special - new -", address: token.tokenContractAddress)
 				let newToken = Token(name: exploreItem.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: TokenAmount.zero(), thumbnailURL: exploreItem.thumbnailImageUrl, tokenContractAddress: token.tokenContractAddress, tokenId: 0, nfts: token.nfts ?? [], mintingTool: token.mintingTool)
 				modifiedNFTs[exploreItem.primaryKey] = (token: newToken, sortIndex: exploreItem.sortIndex)
 			}

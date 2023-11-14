@@ -660,8 +660,6 @@ final class Test_02_Onboarding: XCTestCase {
 		var tempWord = ""
 		for i in 1..<4 {
 			tempWord = app.buttons["selection-\(forSection)-option-\(i)"].label
-			print("tempWord: \(tempWord), realWord: \(realWord)")
-			
 			if tempWord != realWord {
 				return tempWord
 			}
