@@ -44,6 +44,8 @@ class RecoveryPhraseViewController: UIViewController {
 	private var blurryImage: UIImage? = nil
 	private var writtenItDown = false
 	private var presentedCopyAlert = false
+	private var timer: Timer? = nil
+	private var gestureRecognizer: UILongPressGestureRecognizer? = nil
 	
 	public var sideMenuOption_address: String? = nil
 	public var sideMenuOption_isBackedUp: Bool? = nil
@@ -92,6 +94,7 @@ class RecoveryPhraseViewController: UIViewController {
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
+		timer?.invalidate()
 		NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
@@ -131,8 +134,26 @@ class RecoveryPhraseViewController: UIViewController {
 		seedWordCoverContainer.isHidden = true
 		nextButton.isEnabled = true
 		
+		gestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(self.longPressOnWordContainer))
 		wordsContainer.isUserInteractionEnabled = true
-		wordsContainer.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.longPressOnWordContainer)))
+		
+		if let gr = gestureRecognizer {
+			wordsContainer.addGestureRecognizer(gr)
+		}
+		
+		timer = Timer.scheduledTimer(withTimeInterval: 20, repeats: false, block: { [weak self] timer in
+			self?.timer?.invalidate()
+			self?.seedWordCoverContainer.isHidden = false
+			self?.nextButton.isEnabled = false
+			
+			if let gr = self?.gestureRecognizer {
+				self?.wordsContainer.removeGestureRecognizer(gr)
+			}
+		})
+	}
+	
+	private func hideSeedWords() {
+		
 	}
 	
 	@IBAction func nextButtonTapped(_ sender: Any) {
