@@ -27,7 +27,7 @@ class CreateWalletViewController: UIViewController {
 			let walletCache = WalletCacheService()
 			
 			if walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false) {
-				DependencyManager.shared.walletList = walletCache.readNonsensitive()
+				DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
 				self.navigate()
 			} else {

@@ -272,9 +272,9 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			
 			let walletCache = WalletCacheService()
 			let _ = DependencyManager.shared.walletList.update(address: address, with: meta)
-			let _ = walletCache.writeNonsensitive(DependencyManager.shared.walletList)
+			let _ = walletCache.encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 			
-			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 			
 			self.navigate()

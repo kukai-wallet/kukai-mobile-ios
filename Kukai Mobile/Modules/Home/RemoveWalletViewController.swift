@@ -94,7 +94,7 @@ class RemoveWalletViewController: UIViewController {
 		if WalletCacheService().deleteWallet(withAddress: address, parentIndex: parentIndex) {
 			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
 			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			return true
 		}
 		
@@ -105,7 +105,7 @@ class RemoveWalletViewController: UIViewController {
 		if WalletCacheService().deleteWatchWallet(address: address) {
 			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
 			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			return true
 		}
 		

@@ -276,7 +276,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response[address]?.mainnet, ghostnetDomain: response[address]?.ghostnet, forAddress: address)
 					}
 					
-					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					let _ = WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 					if let currentAddress = DependencyManager.shared.selectedWalletAddress {
 						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: currentAddress)
 					}
