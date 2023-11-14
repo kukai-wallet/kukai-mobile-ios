@@ -52,6 +52,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		return true
 	}
 	
+	func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+		return extensionPointIdentifier != .keyboard
+	}
+	
 	
 	
 	// MARK: UISceneSession Lifecycle
