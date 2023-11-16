@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		
 		if let userActivity = connectionOptions.userActivities.first {
-			os_log("Handling user activity", log: .default, type: .info)
+			Logger.app.info("Handling user activity")
 			handle(userActivity: userActivity)
 		}
 	}
@@ -113,7 +113,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private func handle(userActivity: NSUserActivity) {
 		guard let url = userActivity.webpageURL, userActivity.activityType == NSUserActivityTypeBrowsingWeb else { return }
 		
-		os_log("Attempting to handle Wallet Connect pairing", log: .default, type: .info)
+		Logger.app.info("Attempting to handle Wallet Connect pairing")
 		let wcUri = url.absoluteString.deletingPrefix("https://walletconnect.com/wc?uri=")
 		guard let uri = WalletConnectURI(string: wcUri) else { return }
 		

@@ -143,7 +143,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						os_log("Sent: %@", log: .default, type: .default, opHash)
+						Logger.app.info("Sent: \(opHash)")
 						
 						self?.addPendingTransaction(opHash: opHash)
 						self?.dismissAndReturn()
@@ -183,7 +183,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash, type: .delegation, counter: counter, fromWallet: selectedWalletMetadata, newDelegate: TzKTAddress(alias: baker.name, address: baker.address))
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
-		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
+		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 }
 

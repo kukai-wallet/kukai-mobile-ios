@@ -147,7 +147,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: item)
 				
 			} else {
-				os_log("Collectible details unknown type: %@", type: .error, "\(item)")
+				Logger.app.error("Collectible details unknown type: \(item)")
 				return self.configure(cell: nil, withItem: item)
 			}
 		})
@@ -545,7 +545,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				if self.playerController == nil {
 					self.playerController = CustomAVPlayerViewController()
 					
-					os_log("Loading video url: %@", url.absoluteString)
+					Logger.app.info("Loading video url: \(url.absoluteString)")
 					
 					let playerItem = AVPlayerItem(url: url)
 					let player = AVQueuePlayer(playerItem: playerItem)

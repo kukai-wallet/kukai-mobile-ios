@@ -77,7 +77,7 @@ public class WalletConnectService {
 		Sign.instance.sessionRequestPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionRequest in
-				os_log("WC sessionRequestPublisher", log: .default, type: .info)
+				Logger.app.info("WC sessionRequestPublisher")
 				
 				TransactionService.shared.resetWalletConnectState()
 				TransactionService.shared.walletConnectOperationData.request = sessionRequest.request
@@ -100,7 +100,7 @@ public class WalletConnectService {
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
-				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
+				Logger.app.info("WC sessionProposalPublisher")
 				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal.proposal
 				self?.delegate?.pairRequested()
 			}.store(in: &bag)
@@ -108,13 +108,13 @@ public class WalletConnectService {
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { data in
-				os_log("WC sessionSettlePublisher %@", log: .default, type: .info, data.topic)
+				Logger.app.info("WC sessionSettlePublisher \(data.topic)")
 			}.store(in: &bag)
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
-				os_log("WC sessionDeletePublisher %@", log: .default, type: .info, data.0)
+				Logger.app.info("WC sessionDeletePublisher \(data.0)")
 				Task { [weak self] in
 					await WalletConnectService.cleanupSessionlessPairs()
 					self?.didCleanAfterDelete = true
@@ -176,14 +176,14 @@ public class WalletConnectService {
 	
 	@MainActor
 	public func pairClient(uri: WalletConnectURI) {
-		os_log("WC pairing to %@", log: .default, type: .info, uri.absoluteString)
+		Logger.app.info("WC pairing to \(uri.absoluteString)")
 		Task {
 			do {
 				try await Pair.instance.pair(uri: uri)
 				uriToOpenOnAppReturn = nil
 				
 			} catch {
-				os_log("WC Pairing connect error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Pairing connect error: \(error)")
 				self.delegate?.error(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)
 			}
 		}
@@ -192,12 +192,12 @@ public class WalletConnectService {
 	@MainActor
 	public func respondWithAccounts() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Approve Session error: Unable to find request")
 			self.delegate?.error(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
 			return
 		}
 		
-		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Approve Request: \(request.id)")
 		Task {
 			do {
 				/*
@@ -237,7 +237,7 @@ public class WalletConnectService {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
 				
 			} catch {
-				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Approve Session error: \(error)")
 				self.delegate?.error(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
 			}
 		}
@@ -279,7 +279,7 @@ public class WalletConnectService {
 	
 	@MainActor
 	public static func reject(proposalId: String, reason: RejectionReason) throws {
-		os_log("WC Reject Pairing %@", log: .default, type: .info, proposalId)
+		Logger.app.info("WC Reject Pairing \(proposalId)")
 		Task {
 			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
 			await WalletConnectService.cleanupDanglingPairings()
@@ -289,7 +289,7 @@ public class WalletConnectService {
 	
 	@MainActor
 	public static func reject(topic: String, requestId: RPCID) throws {
-		os_log("WC Reject Request topic: %@, id: %@", log: .default, type: .info, topic, requestId.description)
+		Logger.app.info("WC Reject Request topic: \(topic), id: \(requestId.description)")
 		Task {
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
 			TransactionService.shared.resetWalletConnectState()

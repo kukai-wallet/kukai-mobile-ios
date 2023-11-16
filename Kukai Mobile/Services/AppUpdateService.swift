@@ -63,13 +63,13 @@ public class AppUpdateService {
 	
 	public func url() -> URL {
 		#if BETA
-		os_log("Version checker - using BETA", log: .default, type: .default)
+		Logger.app.info("Version checker - using BETA")
 		return stagingURL
 		#elseif DEBUG
-		os_log("Version checker - using DEBUG", log: .default, type: .default)
+		Logger.app.info("Version checker - using DEBUG")
 		return stagingURL
 		#else
-		os_log("Version checker - using PROD", log: .default, type: .default)
+		Logger.app.info("Version checker - using PROD")
 		return prodURL
 		#endif
 	}

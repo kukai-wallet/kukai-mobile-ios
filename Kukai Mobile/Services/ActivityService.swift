@@ -166,11 +166,11 @@ public class ActivityService {
 			if pending.count == 0 {
 				self.updatePendingQueue(forAddress: address)
 			}
-			os_log("Pending transactions checked, removing index: \(indexesToRemove)")
+			Logger.app.info("Pending transactions checked, removing index: \(indexesToRemove)")
 			
 		} else {
 			self.updatePendingQueue(forAddress: address)
-			os_log("Pending transactions checked, none to remove")
+			Logger.app.info("Pending transactions checked, none to remove")
 		}
 	}
 	

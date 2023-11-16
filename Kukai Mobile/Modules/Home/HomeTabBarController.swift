@@ -516,17 +516,17 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	@MainActor
 	private func respondOnReject(withMessage: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Reject Session error: Unable to find request")
 			return
 		}
 		
-		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Reject Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
 				TransactionService.shared.resetWalletConnectState()
 			} catch {
-				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Reject Session error: \(error)")
 			}
 		}
 	}

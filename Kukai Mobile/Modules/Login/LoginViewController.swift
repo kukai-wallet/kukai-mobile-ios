@@ -140,7 +140,7 @@ class LoginViewController: UIViewController {
 		
 		// If part of app login, dimiss
 		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
-			os_log("Can't get scene delegate", log: .default, type: .debug)
+			Logger.app.info("Can't get scene delegate")
 			return
 		}
 		

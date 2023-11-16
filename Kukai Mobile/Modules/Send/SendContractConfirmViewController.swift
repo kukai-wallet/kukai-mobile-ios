@@ -215,7 +215,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						os_log("Sent: %@", log: .default, type: .default, opHash)
+						Logger.app.info("Sent: \(opHash)")
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
@@ -306,19 +306,19 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 																				   primaryToken: nil)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
-		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
+		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 	
 	@MainActor
 	private func walletConnectRespondOnSign(opHash: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Approve Session error: Unable to find request")
 			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
 		
-		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Approve Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["hash": opHash])))
@@ -326,7 +326,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 				self.dismissAndReturn()
 				
 			} catch {
-				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Approve Session error: \(error)")
 				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
@@ -336,13 +336,13 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 	@MainActor
 	private func walletConnectRespondOnReject() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Reject Session error: Unable to find request")
 			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
 		
-		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Reject Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
@@ -350,7 +350,7 @@ class SendContractConfirmViewController: UIViewController, SlideButtonDelegate, 
 				self.dismissAndReturn()
 				
 			} catch {
-				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Reject Session error: \(error)")
 				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
