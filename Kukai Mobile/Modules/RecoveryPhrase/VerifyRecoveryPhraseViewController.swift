@@ -42,6 +42,8 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	private var realWordIndexes: [Int] = []
 	private var selectedIndexes: [Int] = [-1, -1, -1, -1]
 	
+	public var sideMenuOption_address: String? = nil
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -69,7 +71,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		selectionTitle4.text = (selectionTitle4.text ?? "") + "\(randomIndexes[3] + 1)"
 		
 		
-		guard let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
 			self.navigationController?.popViewController(animated: true)
 			return
@@ -259,7 +261,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
-			guard let address = DependencyManager.shared.selectedWalletAddress else {
+			guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress) else {
 				return
 			}
 			

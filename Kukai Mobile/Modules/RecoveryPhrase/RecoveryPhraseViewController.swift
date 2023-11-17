@@ -106,6 +106,12 @@ class RecoveryPhraseViewController: UIViewController {
 		seedWordCoverImageTintView.frame = wordsContainer.bounds
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let vc = segue.destination as? VerifyRecoveryPhraseViewController {
+			vc.sideMenuOption_address = self.sideMenuOption_address
+		}
+	}
+	
 	@objc func longPressOnWordContainer() {
 		if presentedCopyAlert {
 			return
