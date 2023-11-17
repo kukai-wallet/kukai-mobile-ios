@@ -56,19 +56,24 @@ class LoginViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		if CurrentDevice.biometricTypeAuthorized() == .none || StorageService.isBiometricEnabled() == false {
+		// Hide biometric button if its not enabled, or we are in the middle of the edit passcode flow
+		if isEditPasscodeMode() || CurrentDevice.biometricTypeAuthorized() == .none || StorageService.isBiometricEnabled() == false {
 			useBiometricsButton.isHidden = true
-		}
-		
-		if CurrentDevice.biometricTypeAuthorized() == .touchID {
+			
+		} else if CurrentDevice.biometricTypeAuthorized() == .touchID {
 			useBiometricsButton.setTitle("Try Touch ID Again", for: .normal)
 		}
 		
 		
-		if DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
+		if !isEditPasscodeMode() && DependencyManager.shared.walletList.count() > 0 && StorageService.didCompleteOnboarding() {
 			validateBiometric()
-		} else {
+			
+		} else if !isEditPasscodeMode() {
 			self.next()
+			
+		} else {
+			// Edit passcode popup
+			self.hiddenTextfield.becomeFirstResponder()
 		}
 	}
 	
@@ -130,10 +135,14 @@ class LoginViewController: UIViewController {
 		}
 	}
 	
+	private func isEditPasscodeMode() -> Bool {
+		return self.navigationController?.isInSideMenuSecurityFlow() ?? false
+	}
+	
 	private func next() {
 		
 		// If from edit passcode flow, continue to next screen
-		if self.navigationController?.isInSideMenuSecurityFlow() ?? false {
+		if isEditPasscodeMode() {
 			self.performSegue(withIdentifier: "edit-passcode", sender: nil)
 			return
 		}
