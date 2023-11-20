@@ -42,6 +42,8 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	private var realWordIndexes: [Int] = []
 	private var selectedIndexes: [Int] = [-1, -1, -1, -1]
 	
+	public var sideMenuOption_address: String? = nil
+	
     override func viewDidLoad() {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
@@ -63,13 +65,13 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		}
 		randomIndexes.sort(by: { $0 < $1 })
 		
-		selectionTitle1.text = (selectionTitle1.text ?? "") + "\(randomIndexes[0] + 1)"
-		selectionTitle2.text = (selectionTitle2.text ?? "") + "\(randomIndexes[1] + 1)"
-		selectionTitle3.text = (selectionTitle3.text ?? "") + "\(randomIndexes[2] + 1)"
-		selectionTitle4.text = (selectionTitle4.text ?? "") + "\(randomIndexes[3] + 1)"
+		selectionTitle1.text = "Select word #\(randomIndexes[0] + 1)"
+		selectionTitle2.text = "Select word #\(randomIndexes[1] + 1)"
+		selectionTitle3.text = "Select word #\(randomIndexes[2] + 1)"
+		selectionTitle4.text = "Select word #\(randomIndexes[3] + 1)"
 		
 		
-		guard let address = DependencyManager.shared.selectedWalletAddress, let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
 			self.navigationController?.popViewController(animated: true)
 			return
@@ -259,7 +261,7 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
-			guard let address = DependencyManager.shared.selectedWalletAddress else {
+			guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress) else {
 				return
 			}
 			
@@ -272,9 +274,9 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			
 			let walletCache = WalletCacheService()
 			let _ = DependencyManager.shared.walletList.update(address: address, with: meta)
-			let _ = walletCache.writeNonsensitive(DependencyManager.shared.walletList)
+			let _ = walletCache.encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 			
-			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 			
 			self.navigate()

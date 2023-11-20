@@ -12,7 +12,6 @@ public extension UINavigationController {
 	
 	func homeTabBarController() -> HomeTabBarController? {
 		guard let htb = self.viewControllers.first(where: { $0 is HomeTabBarController }) as? HomeTabBarController else {
-			print("Can't find `HomeTabBarController` in \(self.viewControllers)")
 			return nil
 		}
 		
@@ -21,7 +20,6 @@ public extension UINavigationController {
 	
 	func popToHome() {
 		guard let homeTabController = homeTabBarController() else {
-			print("Can't find `HomeTabBarController` in \(self.viewControllers)")
 			return
 		}
 		

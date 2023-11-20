@@ -50,7 +50,7 @@ public class CloudKitService {
 				  let provider = config["loginProvider"],
 				  let type = config["loginType"],
 				  let authProvider = TorusAuthProvider(rawValue: provider) else {
-					  os_log("Skipping invalid torus config item: %@", log: .default, type: .error, record.description)
+					  Logger.app.error("Skipping invalid torus config item: \(record.description)")
 					  continue
 				  }
 			

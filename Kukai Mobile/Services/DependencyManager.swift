@@ -92,7 +92,7 @@ class DependencyManager {
 	
 	// Wallet info / helpers
 	
-	var walletList: WalletMetadataList = WalletCacheService().readNonsensitive()
+	var walletList: WalletMetadataList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 	
 	private var _selectedWalletMetadata: WalletMetadata? = nil
 	var selectedWalletMetadata: WalletMetadata? {

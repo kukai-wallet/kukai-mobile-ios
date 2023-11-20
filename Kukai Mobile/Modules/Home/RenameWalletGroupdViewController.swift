@@ -48,8 +48,8 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
 		
 		let text = customNameTextField.text ?? "HD Wallet"
 		
-		if DependencyManager.shared.walletList.set(hdWalletGroupName: text, forAddress: address), WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+		if DependencyManager.shared.walletList.set(hdWalletGroupName: text, forAddress: address), WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList) {
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			self.dismissBottomSheet()
 			
 		} else {

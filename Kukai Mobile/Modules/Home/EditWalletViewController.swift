@@ -113,8 +113,8 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 			text = nil
 		}
 		
-		if DependencyManager.shared.walletList.set(nickname: text, forAddress: address), WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+		if DependencyManager.shared.walletList.set(nickname: text, forAddress: address), WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList) {
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 			self.dismissBottomSheet()
 			

@@ -17,7 +17,7 @@ class WalletManagementService {
 		
 		// Only wallets not backed up are brand new wallets created via the HD wallet option
 		if walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: true) {
-			DependencyManager.shared.walletList = walletCache.readNonsensitive()
+			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {
 				
@@ -48,7 +48,7 @@ class WalletManagementService {
 				switch result {
 					case .success(let response):
 						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response.mainnet, ghostnetDomain: response.ghostnet, forAddress: wallet.address)
-						let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+						let _ = WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 						
 						LookupService.shared.add(displayText: response.mainnet?.domain.name ?? "", forType: .tezosDomain, forAddress: wallet.address, isMainnet: true)
 						LookupService.shared.add(displayText: response.ghostnet?.domain.name ?? "", forType: .tezosDomain, forAddress: wallet.address, isMainnet: false)

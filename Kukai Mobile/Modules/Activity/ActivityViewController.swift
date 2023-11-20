@@ -84,7 +84,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 			let status = viewModel.statusFor(indexPath: indexPath)
 			
 			if status == .failed || status == .backtracked {
-				print("failed!!!")
 				c.addFailedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 				
 			} else if status == .unconfirmed {

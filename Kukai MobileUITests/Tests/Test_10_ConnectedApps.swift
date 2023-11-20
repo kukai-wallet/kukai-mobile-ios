@@ -193,7 +193,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 	 var wc2Code = fullURL?.replacingOccurrences(of: "https://link.trustwallet.com/wc?uri=", with: "")
 	 wc2Code = wc2Code?.removingPercentEncoding
 	 
-	 print("wc2Code: \(wc2Code)")
 	 
 	 safari.buttons["Cancel"].tap()
 	 
@@ -226,7 +225,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 	 
 	 SharedHelpers.shared.tapPrimaryButton(app: app)
 	 
-	 print("1")
 	 
 	 
 	 

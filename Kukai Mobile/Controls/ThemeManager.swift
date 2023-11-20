@@ -557,7 +557,7 @@ private extension UIColor {
 			  let originalLongMethod = class_getClassMethod(self, originalLongSelector),
 			  let swizzledShortMethod = class_getInstanceMethod(self, swizzledShortSelector),
 			  let swizzledLongMethod = class_getInstanceMethod(self, swizzledLongSelector) else {
-			os_log("Unable to find UIColor methods to swizzle", log: .default, type: .error)
+			Logger.app.error("Unable to find UIColor methods to swizzle")
 			return
 		}
 		

@@ -32,7 +32,7 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 			switch state {
 				case .loading:
 					//self?.showLoadingView(completion: nil)
-					print("loading")
+					let _ = ""
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
