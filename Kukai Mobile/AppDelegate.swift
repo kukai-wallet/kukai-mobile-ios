@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		#if targetEnvironment(simulator)
 			// If running on simulator, print documents directory to help with debugging
 			if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
-				print("Documents Directory: \(documentsPath) \n\n")
+				Logger.app.info("Documents Directory: \(documentsPath)")
 			}
 		
 		#else
