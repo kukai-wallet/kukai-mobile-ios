@@ -11,23 +11,23 @@ import KukaiCoreSwift
 
 class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
-	@IBOutlet weak var headerIcon: UIImageView!
-	@IBOutlet weak var headerIconWidthConstraint: NSLayoutConstraint!
-	@IBOutlet weak var headerIconHeightConstraint: NSLayoutConstraint!
-	@IBOutlet weak var headerSymbol: UILabel!
-	@IBOutlet weak var headerFiat: UILabel!
-	@IBOutlet weak var headerPriceChange: UILabel!
-	@IBOutlet weak var headerPriceChangeArrow: UIImageView!
-	@IBOutlet weak var headerPriceChangeDate: UILabel!
+	//@IBOutlet weak var headerIcon: UIImageView!
+	//@IBOutlet weak var headerIconWidthConstraint: NSLayoutConstraint!
+	//@IBOutlet weak var headerIconHeightConstraint: NSLayoutConstraint!
+	//@IBOutlet weak var headerSymbol: UILabel!
+	//@IBOutlet weak var headerFiat: UILabel!
+	//@IBOutlet weak var headerPriceChange: UILabel!
+	//@IBOutlet weak var headerPriceChangeArrow: UIImageView!
+	//@IBOutlet weak var headerPriceChangeDate: UILabel!
 	
 	@IBOutlet weak var tableView: UITableView!
 	
 	private let viewModel = TokenDetailsViewModel()
 	private var cancellable: AnyCancellable?
-	private var headerAnimator = UIViewPropertyAnimator()
-	private var headerAnimatorStarted = false
-	private let defaultHeaderFiatFontSize: CGFloat = 18
-	private var currentHeaderFiatFontSize: CGFloat = 18
+	//private var headerAnimator = UIViewPropertyAnimator()
+	//private var headerAnimatorStarted = false
+	//private let defaultHeaderFiatFontSize: CGFloat = 18
+	//private var currentHeaderFiatFontSize: CGFloat = 18
 	private var firstLoad = true
 	
 	
@@ -36,18 +36,18 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		headerPriceChangeDate.accessibilityIdentifier = "token-details-selected-date"
+		//headerPriceChangeDate.accessibilityIdentifier = "token-details-selected-date"
 		
 		viewModel.token = TransactionService.shared.sendData.chosenToken
 		viewModel.delegate = self
-		viewModel.chartDelegate = self
+		//viewModel.chartDelegate = self
 		viewModel.buttonDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
 		
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
 		
-		loadPlaceholderUI()
+		//loadPlaceholderUI()
 		
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
@@ -61,8 +61,9 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					self?.loadRealData()
-					self?.updatePriceChange()
+					//self?.loadRealData()
+					//self?.updatePriceChange()
+					let _ = ""
 			}
 		}
 	}
@@ -76,6 +77,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	/*
 	func loadPlaceholderUI() {
 		headerSymbol.text = ""
 		headerFiat.text = ""
@@ -123,6 +125,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 			headerPriceChange.textColor = color
 		}
 	}
+	*/
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let vc = segue.destination as? TokenContractViewController {
@@ -145,6 +148,7 @@ extension TokenDetailsViewController {
 		}
 	}
 	
+	/*
 	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
 		guard headerAnimatorStarted == false else {
 			return
@@ -199,6 +203,7 @@ extension TokenDetailsViewController {
 			}
 		}
 	}
+	*/
 }
 
 
@@ -326,24 +331,5 @@ extension TokenDetailsViewController: TokenDetailsButtonsCellDelegate {
 	
 	func swapTapped() {
 		alert(errorWithMessage: "Swapping not setup yet")
-	}
-}
-
-
-
-// MARK: - ChartHostingControllerDelegate
-
-extension TokenDetailsViewController: ChartHostingControllerDelegate {
-	
-	func didSelectPoint(_ point: ChartViewDataPoint?, ofIndex: Int) {
-		self.viewModel.calculatePriceChange(point: point)
-		self.updatePriceChange()
-		self.headerFiat.text = DependencyManager.shared.coinGeckoService.format(decimal: Decimal(point?.value ?? 0), numberStyle: .currency, maximumFractionDigits: 2)
-	}
-	
-	func didFinishSelectingPoint() {
-		self.viewModel.calculatePriceChange(point: nil)
-		self.updatePriceChange()
-		self.headerFiat.text = viewModel.tokenFiatPrice
 	}
 }

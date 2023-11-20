@@ -24,6 +24,17 @@ struct LoadingData: Hashable, Identifiable {
 	let id = UUID()
 }
 
+struct TokenDetailsHeaderData: Hashable, Identifiable {
+	let id = UUID()
+	var tokenURL: URL?
+	var tokenImage: UIImage?
+	var tokenName: String
+	var fiatAmount: String
+	var priceChangeText: String
+	var isPriceChangePositive: Bool
+	var priceRange: String
+}
+
 struct TokenDetailsButtonData: Hashable, Identifiable {
 	let id = UUID()
 	var isFavourited: Bool
@@ -79,14 +90,17 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	// Set by VC
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
-	weak var chartDelegate: ChartHostingControllerDelegate? = nil
-	var token: Token? = nil
+	//weak var chartDelegate: ChartHostingControllerDelegate? = nil
 	weak var buttonDelegate: TokenDetailsButtonsCellDelegate? = nil
+	
+	var token: Token? = nil
+	var tokenFiatPrice = ""
 	
 	// Set by VM
 	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
+	/*
 	var tokenIcon: UIImage? = nil
 	var tokenIconURL: URL? = nil
 	var tokenSymbol = ""
@@ -94,7 +108,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var tokenPriceChange = ""
 	var tokenPriceChangeIsUp = false
 	var tokenPriceDateText = ""
+	*/
 	
+	weak var weakTokenHeaderCell: TokenDetailsHeaderCell? = nil
+	var tokenHeaderData = TokenDetailsHeaderData(tokenURL: nil, tokenImage: UIImage.unknownToken(), tokenName: "", fiatAmount: "", priceChangeText: "", isPriceChangePositive: true, priceRange: "")
 	var chartController = ChartHostingController()
 	var chartData = AllChartData(day: [], week: [], month: [], year: [])
 	var chartDataUnsucessful = false
@@ -130,14 +147,21 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+			let weakSelf = self
+			
 			guard let self = self else { return UITableViewCell() }
 			
-			if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			if let obj = item as? TokenDetailsHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsHeaderCell") as? TokenDetailsHeaderCell {
+				weakTokenHeaderCell = cell
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				cell.setup()
 				return cell
 				
 			} else if let obj = item as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
-				self.chartController.setDelegate(self.chartDelegate)
+				self.chartController.setDelegate(weakSelf)
 				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
 				return cell
 				
@@ -150,11 +174,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
 					
-					if let tokenURL = self.tokenIconURL {
+					if let tokenURL = self.tokenHeaderData.tokenURL {
 						MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 						
 					} else {
-						cell.tokenIcon.image = self.tokenIcon
+						cell.tokenIcon.image = self.tokenHeaderData.tokenImage
 					}
 					
 					if DependencyManager.shared.selectedWalletMetadata?.isWatchOnly == false {
@@ -212,6 +236,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		
 		var data: [AnyHashable] = [
+			tokenHeaderData,
 			chartData,
 			buttonData,
 			balanceAndBakerData,
@@ -259,6 +284,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
 					
 					self.calculatePriceChange(point: nil)
+					self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					self.state = .success(nil)
@@ -304,16 +330,17 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func loadTokenData(token: Token) {
 		self.token = token
-		tokenSymbol = token.symbol
+		self.tokenHeaderData.tokenName = token.symbol
 		
 		let tokenBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.balance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 		
 		if token.isXTZ() {
-			tokenIcon = UIImage.tezosToken()
-			tokenSymbol = "Tezos"
+			self.tokenHeaderData.tokenImage = UIImage.tezosToken()
+			self.tokenHeaderData.tokenName = "Tezos"
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			//tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			self.tokenHeaderData.fiatAmount = tokenFiatPrice
 			
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
@@ -324,16 +351,17 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: bakerString)
 			
 		} else {
-			tokenIconURL = token.thumbnailURL
-			tokenSymbol = token.symbol
+			self.tokenHeaderData.tokenURL = token.thumbnailURL
+			self.tokenHeaderData.tokenName = token.symbol
 			
 			let isFav = token.isFavourite
 			let isHidden = token.isHidden
 			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			
 			let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] ?? (xtzValue: .zero(), marketRate: 0)
-			//let fiatPerToken = tokenValueAndRate.marketRate
-			//tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			let fiatPerToken = tokenValueAndRate.marketRate
+			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+			self.tokenHeaderData.fiatAmount = tokenFiatPrice
 			
 			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
@@ -481,14 +509,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let difference = first.value - dataPoint.value
 			let percentage = Decimal(difference / first.value).rounded(scale: 2, roundingMode: .bankers)
 			
-			tokenPriceChange = "\(abs(percentage))%"
-			tokenPriceChangeIsUp = dataPoint.value > first.value
-			tokenPriceDateText = (point == nil) ? "Today" : chartDateFormatter.string(from: dataPoint.date)
+			self.tokenHeaderData.priceChangeText = "\(abs(percentage))%"
+			self.tokenHeaderData.isPriceChangePositive = dataPoint.value > first.value
+			self.tokenHeaderData.priceRange = (point == nil) ? "Today" : chartDateFormatter.string(from: dataPoint.date)
 			
 		} else {
-			tokenPriceChange = ""
-			tokenPriceChangeIsUp = false
-			tokenPriceDateText = ""
+			self.tokenHeaderData.priceChangeText = ""
+			self.tokenHeaderData.isPriceChangePositive = false
+			self.tokenHeaderData.priceRange = ""
 		}
 	}
 	
@@ -508,5 +536,26 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		]
 		
 		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
+	}
+}
+
+
+
+// MARK: - ChartHostingControllerDelegate
+
+extension TokenDetailsViewModel: ChartHostingControllerDelegate {
+	
+	func didSelectPoint(_ point: ChartViewDataPoint?, ofIndex: Int) {
+		self.calculatePriceChange(point: point)
+		
+		self.tokenHeaderData.fiatAmount = DependencyManager.shared.coinGeckoService.format(decimal: Decimal(point?.value ?? 0), numberStyle: .currency, maximumFractionDigits: 2)
+		self.weakTokenHeaderCell?.changePriceDisplay(data: tokenHeaderData)
+	}
+	
+	func didFinishSelectingPoint() {
+		self.calculatePriceChange(point: nil)
+		
+		self.tokenHeaderData.fiatAmount = self.tokenFiatPrice
+		self.weakTokenHeaderCell?.changePriceDisplay(data: tokenHeaderData)
 	}
 }
