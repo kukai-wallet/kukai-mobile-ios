@@ -72,7 +72,6 @@ struct TokenDetailsMessageData: Hashable {
 
 
 @objc protocol TokenDetailsViewModelDelegate: AnyObject {
-	func moreMenu() -> MenuViewController
 	func setBakerTapped()
 	func sendTapped()
 	func stakingRewardsInfoTapped()
@@ -90,8 +89,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	// Set by VC
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
-	//weak var chartDelegate: ChartHostingControllerDelegate? = nil
-	weak var buttonDelegate: TokenDetailsButtonsCellDelegate? = nil
 	
 	var token: Token? = nil
 	var tokenFiatPrice = ""
@@ -99,16 +96,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	// Set by VM
 	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
-	
-	/*
-	var tokenIcon: UIImage? = nil
-	var tokenIconURL: URL? = nil
-	var tokenSymbol = ""
-	var tokenFiatPrice = ""
-	var tokenPriceChange = ""
-	var tokenPriceChangeIsUp = false
-	var tokenPriceDateText = ""
-	*/
 	
 	weak var weakTokenHeaderCell: TokenDetailsHeaderCell? = nil
 	var tokenHeaderData = TokenDetailsHeaderData(tokenURL: nil, tokenImage: UIImage.unknownToken(), tokenName: "", fiatAmount: "", priceChangeText: "", isPriceChangePositive: true, priceRange: "")
@@ -133,7 +120,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		tableView.register(UINib(nibName: "TokenDetailsChartCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsChartCell")
-		tableView.register(UINib(nibName: "TokenDetailsButtonsCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsButtonsCell")
 		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_baker", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_baker")
 		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_nobaker", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_nobaker")
 		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_nostaking", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_nostaking")
@@ -163,10 +149,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			} else if let obj = item as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				self.chartController.setDelegate(weakSelf)
 				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
-				return cell
-				
-			} else if let obj = item as? TokenDetailsButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsButtonsCell", for: indexPath) as? TokenDetailsButtonsCell {
-				cell.setup(buttonData: obj, moreMenu: self.delegate?.moreMenu(), delegate: self.buttonDelegate)
 				return cell
 				
 			} else if let obj = item as? TokenDetailsBalanceAndBakerData {
@@ -522,20 +504,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func chartRangeChanged(to: TokenDetailsChartCellRange) {
 		currentChartRange = to
-	}
-	
-	func menuFor(transaction: TzKTTransactionGroup) -> UIMenu {
-		let actions: [UIAction] = [
-			UIAction(title: "View on TzKT", image: UIImage.unknownToken(), identifier: nil, handler: { [weak self] action in
-				guard let url = URL(string: "https://tzkt.io/\(transaction.transactions[0].hash)") else {
-					return
-				}
-				
-				self?.delegate?.launchExternalBrowser(withURL: url)
-			})
-		]
-		
-		return UIMenu(title: "", image: nil, identifier: nil, options: [], children: actions)
 	}
 }
 
