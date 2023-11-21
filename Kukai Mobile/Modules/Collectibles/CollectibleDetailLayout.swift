@@ -9,7 +9,6 @@ import UIKit
 import KukaiCoreSwift
 
 protocol CollectibleDetailLayoutDataDelegate: AnyObject {
-	func reusableAttributeCell() -> CollectibleDetailAttributeItemCell?
 	func attributeFor(indexPath: IndexPath) -> AttributeItem
 	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell
 }
@@ -17,7 +16,8 @@ protocol CollectibleDetailLayoutDataDelegate: AnyObject {
 class CollectibleDetailLayout: UICollectionViewLayout {
 	
 	fileprivate var cellPadding: CGFloat = 4
-	fileprivate var columnPadding: CGFloat = 8
+	fileprivate var attributeColumnPadding: CGFloat = 16
+	fileprivate var attributeVerticalPadding: CGFloat = 16
 	fileprivate var cache: [[UICollectionViewLayoutAttributes]] = [[], []]
 	fileprivate var contentHeight: CGFloat = 0
 	
@@ -34,11 +34,8 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			return 0
 		}
 		
-		return Int(collectionView.bounds.width / minimumCellWidth)
+		return Int(collectionView.bounds.width / 170)
 	}
-	
-	private let minimumCellWidth: CGFloat = 120
-	private var defaultAttributeCellHeight: CGFloat = 0
 	
 	public weak var delegate: CollectibleDetailLayoutDataDelegate?
 	
@@ -84,129 +81,33 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			return sectionOffset
 		}
 		
-		guard let reusableAttributeCell = delegate?.reusableAttributeCell() else {
-			return sectionOffset
-		}
-		
-		defaultAttributeCellHeight = reusableAttributeCell.contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: 44), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-		
-		var cellSizes: [CGSize] = []
-		for cellIndex in 0 ..< (numberOfCellsInSection) {
-			let indexPath = IndexPath(row: cellIndex, section: 1)
-			guard let attribute = delegate?.attributeFor(indexPath: indexPath) else {
-				continue
-			}
-			
-			reusableAttributeCell.keyLabel.text = attribute.name
-			reusableAttributeCell.valueLabel.text = attribute.value
-			reusableAttributeCell.percentLabel.text = attribute.percentage
-			
-			let minimumSize = CGSize(width: minimumCellWidth, height: defaultAttributeCellHeight)
-			let requiredWidth = reusableAttributeCell.contentView.systemLayoutSizeFitting(minimumSize, withHorizontalFittingPriority: .fittingSizeLevel, verticalFittingPriority: .required).width
-			var cellSize: CGSize = minimumSize
-			
-			
-			// if fits into smallest box (taking into account padding for horizontal gap between next cell), record attributes
-			if (requiredWidth + columnPadding) <= minimumCellWidth {
-				cellSize = CGSize(width: minimumSize.width, height: minimumSize.height)
-			}
-			
-			// if fits into in more than 1 column, but less than max, record as min multiple
-			else if (requiredWidth + columnPadding) <= (contentWidth - minimumCellWidth) {
-				let multiple = (requiredWidth / minimumCellWidth).rounded(.up)
-				cellSize = CGSize(width: minimumCellWidth * multiple, height: minimumSize.height)
-			}
-			
-			// if wider than content width, limit to content width and resize height
-			else {
-				let newHeight = reusableAttributeCell.contentView.systemLayoutSizeFitting(CGSize(width: contentWidth, height: defaultAttributeCellHeight), withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel).height
-				cellSize = CGSize(width: contentWidth, height: newHeight)
-			}
-			
-			cellSizes.append(cellSize)
-		}
-		
-		
-		// Now that we have calcualted all the sizes, lets group them into rows (as many per row as possible)
-		// If we have blank space, expand the items width wise to consume the full space
 		var yOffset = sectionOffset
-		var startIndex = 0
-		var cellIndex = 0
-		let maxWidth = minimumCellWidth * CGFloat(numberOfColumns)
 		
-		repeat {
-			var numberOfItems = 0
-			var runningTotalWidth: CGFloat = 0
+		let widthOfCell: CGFloat = (contentWidth - (attributeColumnPadding * CGFloat(numberOfColumns))) / CGFloat(numberOfColumns)
+		let heightOfCell: CGFloat = 102
+		let reusableSize = CGSize(width: widthOfCell, height: heightOfCell)
+		
+		var numberOfCells = 0
+		var xOffset: CGFloat = 0
+		for cellIndex in 0 ..< (numberOfCellsInSection) {
 			
-			// loop through all cells, until we reach content width
-			repeat {
-				runningTotalWidth += cellSizes[startIndex+numberOfItems].width
-				numberOfItems += 1
-				
-				if (startIndex + numberOfItems) > cellSizes.count-1 {
-					break
-				}
+			let indexPath = IndexPath(row: cellIndex, section: 1)
+			let frame = CGRect(x: xOffset, y: yOffset, width: reusableSize.width, height: reusableSize.height)
+			let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+			attributes.frame = frame
+			cache[1].append(attributes)
+			
+			xOffset += (reusableSize.width + attributeColumnPadding)
+			numberOfCells += 1
+			
+			if numberOfCells == numberOfColumns {
+				numberOfCells = 0
+				xOffset = 0
+				yOffset += (heightOfCell + attributeVerticalPadding)
 			}
-			while (runningTotalWidth + (cellSizes[safe: startIndex+numberOfItems]?.width ?? maxWidth)) <= maxWidth
-					
-			// take all the current sizes, make sure they fit the width
-			let nextRow = Array(cellSizes[startIndex..<(numberOfItems + startIndex)])
-			let updatedSizes = increase(sizes: nextRow, toConsumeWidth: contentWidth)
-					
-			// make cache items for them
-			var xOffset: CGFloat = 0
-			for item in updatedSizes {
-				let indexPath = IndexPath(row: cellIndex, section: 1)
-				let frame = CGRect(x: xOffset, y: yOffset, width: item.width, height: item.height)
-				let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-				attributes.frame = frame
-				cache[1].append(attributes)
-				
-				xOffset = xOffset + item.width + columnPadding
-				cellIndex += 1
-			}
-			
-			yOffset += updatedSizes[0].height + columnPadding
-			startIndex += numberOfItems
-			
-		} while startIndex < cellSizes.count
-		
-		return yOffset
-	}
-	
-	private func increase(sizes: [CGSize], toConsumeWidth: CGFloat) -> [CGSize] {
-		
-		// If only 1, apply full width
-		if sizes.count == 1 {
-			var temp = sizes[0]
-			temp.width = toConsumeWidth
-			
-			return [temp]
 		}
 		
-		
-		// Check to see if everything is a match already
-		let total = sizes.map({ $0.width }).reduce(0, +)
-		if total == toConsumeWidth {
-			return sizes
-		}
-		
-		
-		// If not an exact match, split the remaining space between the elements proportionally
-		var tempSizes = sizes
-		let toConsumeWidthMinusGaps = (toConsumeWidth - (columnPadding * CGFloat(sizes.count-1)))
-		let remainingSpace = (toConsumeWidthMinusGaps - total)
-		// If inputs correspond to the correct number of columns, then we divide by columns. Its theres one or more missing columns, we divide by number of inputs so theres no missing piece
-		let demoninator = Int(total / minimumCellWidth) == numberOfColumns ? numberOfColumns : sizes.count
-		
-		for (index, size) in tempSizes.enumerated() {
-			let columnsToOccupy = CGFloat(Int(size.width / minimumCellWidth))
-			let portion = (remainingSpace * (columnsToOccupy / CGFloat(demoninator)))
-			
-			tempSizes[index].width += portion
-		}
-		
-		return tempSizes
+		return (yOffset + heightOfCell + 25)
 	}
 	
 	override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {

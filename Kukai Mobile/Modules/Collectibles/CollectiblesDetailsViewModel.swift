@@ -78,7 +78,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
-	private var reusableAttributeSizingCell: CollectibleDetailAttributeItemCell? = nil
 	private var playerController: CustomAVPlayerViewController? = nil
 	private var playerLooper: AVPlayerLooper? = nil
 	
@@ -162,11 +161,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
-		
-		reusableAttributeSizingCell = UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self)
-		reusableAttributeSizingCell?.keyLabel.text = "a"
-		reusableAttributeSizingCell?.valueLabel.text = "b"
-		reusableAttributeSizingCell?.percentLabel.text = "c"
 		
 		isFavourited = nft.isFavourite
 		isHidden = nft.isHidden
@@ -613,10 +607,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 // MARK: - Custom layout delegate
 
 extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
-	
-	func reusableAttributeCell() -> CollectibleDetailAttributeItemCell? {
-		return reusableAttributeSizingCell
-	}
 	
 	func attributeFor(indexPath: IndexPath) -> AttributeItem {
 		return attributes[indexPath.row]
