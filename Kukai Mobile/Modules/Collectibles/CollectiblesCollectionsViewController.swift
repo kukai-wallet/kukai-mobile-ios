@@ -19,6 +19,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	private var refreshingFromParent = true
 	private var movingToDetails = false
 	private var textFieldDone = false
+	private var lastSearchedTerm: String? = nil
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -68,6 +69,10 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		
 		if !viewModel.isSearching {
 			viewModel.refresh(animate: false)
+			
+		} else if let lastTerm = lastSearchedTerm {
+			viewModel.refresh(animate: false)
+			viewModel.searchFor(lastTerm)
 		}
 	}
 	
@@ -174,6 +179,7 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
+		lastSearchedTerm = text
 		viewModel.searchFor(text)
 	}
 	

@@ -95,7 +95,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 				setFavState(isFav: false)
 				
 			} else {
-				windowError(withTitle: "error".localized(), description: "error-cant-fav".localized())
+				windowError(withTitle: "error".localized(), description: "error-cant-unfav".localized())
 			}
 			
 		} else {
@@ -151,7 +151,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 							self?.dismiss(animated: true)
 						} else {
-							self?.windowError(withTitle: "error".localized(), description: "error-hide-token".localized())
+							self?.windowError(withTitle: "error".localized(), description: "error-unhide-token".localized())
 						}
 					})
 				)

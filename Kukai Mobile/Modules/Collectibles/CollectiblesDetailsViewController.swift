@@ -20,10 +20,14 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	
 	private let viewModel = CollectiblesDetailsViewModel()
 	private var cancellable: AnyCancellable?
+	private var menu: MenuViewController? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		favouriteButton.accessibilityIdentifier = "button-favourite"
+		moreButton.accessibilityIdentifier = "button-more"
 		
 		guard let nft = TransactionService.shared.sendData.chosenNFT else {
 			return
@@ -53,7 +57,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
-					let _ = ""
+					self?.setFavState(isFav: self?.viewModel.isFavourited ?? false)
 			}
 		}
 	}
@@ -71,10 +75,40 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		}
 	}
 	
-	@IBAction func favouriteButtonTapped(_ sender: Any) {
+	@IBAction func favouriteButtonTapped(_ sender: CustomisableButton) {
+		guard let nft = viewModel.nft else {
+			return
+		}
+		
+		let address = DependencyManager.shared.selectedWalletAddress ?? ""
+		
+		if viewModel.isFavourited {
+			if TokenStateService.shared.removeFavourite(forAddress: address, nft: nft) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
+				viewModel.isFavourited = false
+				setFavState(isFav: false)
+				favouriteButton.updateCustomImage()
+				
+			} else {
+				self.windowError(withTitle: "error".localized(), description: "error-cant-unfav".localized())
+			}
+			
+		} else {
+			if TokenStateService.shared.addFavourite(forAddress: address, nft: nft) {
+				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
+				viewModel.isFavourited = true
+				setFavState(isFav: true)
+				favouriteButton.updateCustomImage()
+				
+			} else {
+				self.windowError(withTitle: "error".localized(), description: "error-cant-fav".localized())
+			}
+		}
 	}
 	
-	@IBAction func moreButtonTapped(_ sender: Any) {
+	@IBAction func moreButtonTapped(_ sender: CustomisableButton) {
+		menu = moreMenu()
+		menu?.display(attachedTo: sender)
 	}
 	
 	
@@ -92,24 +126,127 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		self.dismiss(animated: true)
 	}
+	
+	private func setFavState(isFav: Bool) {
+		if isFav {
+			favouriteButton.customImage = UIImage(named: "FavoritesOn") ?? UIImage()
+			favouriteButton.accessibilityValue = "On"
+		} else {
+			favouriteButton.customImage = UIImage(named: "FavoritesOff") ?? UIImage()
+			favouriteButton.accessibilityValue = "Off"
+		}
+		
+		favouriteButton.updateCustomImage()
+	}
+	
+	func moreMenu() -> MenuViewController {
+		guard let nft = viewModel.nft else {
+			return MenuViewController()
+		}
+		
+		var actions: [[UIAction]] = []
+		actions.append([])
+		let objktCollectionInfo = DependencyManager.shared.objktClient.collections[nft.parentContract]
+		
+		if viewModel.isImage {
+			actions[0].append(
+				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
+					guard let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
+						return
+					}
+					
+					MediaProxyService.imageCache(forType: .temporary).retrieveImage(forKey: imageURL.absoluteString, options: []) { [weak self] result in
+						guard let res = try? result.get() else {
+							self?.windowError(withTitle: "error".localized(), description: "error-image-not-in-cahce".localized())
+							return
+						}
+						
+						if let img = res.image {
+							UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
+							
+						} else {
+							self?.windowError(withTitle: "error".localized(), description: "error-image-not-in-cahce".localized())
+						}
+					}
+				})
+			)
+		}
+		
+		actions[0].append(UIAction(title: "Token Contract", image: UIImage(named: "About"), identifier: nil, handler: { [weak self] action in
+			self?.performSegue(withIdentifier: "tokenContract", sender: nil)
+		}))
+		
+		if viewModel.isHidden {
+			actions[0].append(
+				UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
+					let address = DependencyManager.shared.selectedWalletAddress ?? ""
+					if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
+						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
+						self?.navigationController?.popViewController(animated: true)
+						
+					} else {
+						self?.windowError(withTitle: "error".localized(), description: "error-unhide-token".localized())
+					}
+				})
+			)
+		} else {
+			actions[0].append(
+				UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
+					let address = DependencyManager.shared.selectedWalletAddress ?? ""
+					if TokenStateService.shared.addHidden(forAddress: address, nft: nft) {
+						DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
+						self?.navigationController?.popViewController(animated: true)
+						
+					} else {
+						self?.windowError(withTitle: "error".localized(), description: "error-hide-token".localized())
+					}
+				})
+			)
+		}
+		
+		
+		
+		// Social section
+		if let twitterURL = objktCollectionInfo?.twitterURL() {
+			let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
+				
+				let path = twitterURL.path()
+				let pathIndex = path.index(after: path.startIndex)
+				let twitterUsername = path.suffix(from: pathIndex)
+				if let deeplinkURL = URL(string: "twitter://user?screen_name=\(twitterUsername)"), UIApplication.shared.canOpenURL(deeplinkURL) {
+					UIApplication.shared.open(deeplinkURL)
+				} else {
+					UIApplication.shared.open(twitterURL)
+				}
+			}
+			
+			actions.append([action])
+		}
+		
+		
+		// Web section
+		var webActions: [UIAction] = []
+		
+		
+		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
+			if let url = URL(string: "https://objkt.com/collection/\(nft.parentContract)") {
+				UIApplication.shared.open(url)
+			}
+		}
+		webActions.append(action)
+		
+		if let websiteURL = objktCollectionInfo?.websiteURL() {
+			let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
+				UIApplication.shared.open(websiteURL)
+			}
+			
+			webActions.append(action)
+		}
+		actions.append(webActions)
+		
+		return MenuViewController(actions: actions, header: objktCollectionInfo?.name ?? nft.parentAlias, sourceViewController: self)
+	}
 }
-
-/*
-extension CollectiblesDetailsViewController: CollectibleDetailNameCellDelegate {
-	
-	func errorMessage(message: String) {
-		self.windowError(withTitle: "error".localized(), description: message)
-	}
-	
-	func tokenContractDisplayRequested() {
-		self.performSegue(withIdentifier: "tokenContract", sender: nil)
-	}
-	
-	func shouldDismiss() {
-		self.navigationController?.popViewController(animated: true)
-	}
-}
-*/
 
 extension CollectiblesDetailsViewController: CollectibleDetailSendDelegate {
 	
@@ -119,188 +256,3 @@ extension CollectiblesDetailsViewController: CollectibleDetailSendDelegate {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 }
-
-
-
-
-
-/*
- favouriteButton.accessibilityIdentifier = "button-favourite"
- moreButton.accessibilityIdentifier = "button-more"
- 
- 
- 
-private func setFavState(isFav: Bool) {
-	if isFav {
-		favouriteButton.customImage = UIImage(named: "FavoritesOn") ?? UIImage()
-		favouriteButton.accessibilityValue = "On"
-	} else {
-		favouriteButton.customImage = UIImage(named: "FavoritesOff") ?? UIImage()
-		favouriteButton.accessibilityValue = "Off"
-	}
-	
-	favouriteButton.updateCustomImage()
-}
-
-@IBAction func moreTapped(_ sender: UIButton) {
-	menuVc?.display(attachedTo: sender)
-}
-
-func menuForMore(sourceViewController: UIViewController) -> MenuViewController {
-	guard let nft = nft else {
-		return MenuViewController()
-	}
-	
-	var actions: [[UIAction]] = []
-	actions.append([])
-	let objktCollectionInfo = DependencyManager.shared.objktClient.collections[nft.parentContract]
-	
-	if isImage {
-		actions[0].append(
-			UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
-				guard let nft = self?.nft, let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
-					return
-				}
-				
-				MediaProxyService.imageCache(forType: .temporary).retrieveImage(forKey: imageURL.absoluteString, options: []) { [weak self] result in
-					guard let res = try? result.get() else {
-						self?.delegate?.errorMessage(message: "Unable to locate image in cache, please make sure the image is displayed correctly")
-						return
-					}
-					
-					if let img = res.image {
-						UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
-						
-					} else {
-						self?.delegate?.errorMessage(message: "Unable to locate image in cache, please make sure the image is displayed correctly")
-					}
-				}
-			})
-		)
-	}
-	
-	actions[0].append(UIAction(title: "Token Contract", image: UIImage(named: "About"), identifier: nil, handler: { [weak self] action in
-		self?.delegate?.tokenContractDisplayRequested()
-	}))
-	
-	if isHiddenNft {
-		actions[0].append(
-			UIAction(title: "Unhide Collectible", image: UIImage(named: "HiddenOff"), identifier: nil, handler: { [weak self] action in
-				guard let nft = self?.nft else {
-					return
-				}
-				
-				let address = DependencyManager.shared.selectedWalletAddress ?? ""
-				if TokenStateService.shared.removeHidden(forAddress: address, nft: nft) {
-					DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-					self?.delegate?.shouldDismiss()
-					
-				} else {
-					self?.delegate?.errorMessage(message: "Unable to unhide collectible")
-				}
-			})
-		)
-	} else {
-		actions[0].append(
-			UIAction(title: "Hide Collectible", image: UIImage(named: "HiddenOn"), identifier: nil, handler: { [weak self] action in
-				guard let nft = self?.nft else {
-					return
-				}
-				
-				let address = DependencyManager.shared.selectedWalletAddress ?? ""
-				if TokenStateService.shared.addHidden(forAddress: address, nft: nft) {
-					DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-					self?.delegate?.shouldDismiss()
-					
-				} else {
-					self?.delegate?.errorMessage(message: "Unable to hide collectible")
-				}
-			})
-		)
-	}
-	
-	
-	
-	// Social section
-	if let twitterURL = objktCollectionInfo?.twitterURL() {
-		let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
-			
-			let path = twitterURL.path()
-			let pathIndex = path.index(after: path.startIndex)
-			let twitterUsername = path.suffix(from: pathIndex)
-			if let deeplinkURL = URL(string: "twitter://user?screen_name=\(twitterUsername)"), UIApplication.shared.canOpenURL(deeplinkURL) {
-				UIApplication.shared.open(deeplinkURL)
-			} else {
-				UIApplication.shared.open(twitterURL)
-			}
-		}
-		
-		actions.append([action])
-	}
-	
-	
-	// Web section
-	var webActions: [UIAction] = []
-	
-	
-	let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
-		if let url = URL(string: "https://objkt.com/collection/\(nft.parentContract)") {
-			UIApplication.shared.open(url)
-		}
-	}
-	webActions.append(action)
-	
-	if let websiteURL = objktCollectionInfo?.websiteURL() {
-		let action = UIAction(title: "Collection Website", image: UIImage(named: "ArrowWeb")) { action in
-			UIApplication.shared.open(websiteURL)
-		}
-		
-		webActions.append(action)
-	}
-	actions.append(webActions)
-	
-	return MenuViewController(actions: actions, header: objktCollectionInfo?.name ?? nft.parentAlias, sourceViewController: sourceViewController)
-}
-
-
-@IBAction func favouriteTapped(_ sender: Any) {
-	guard let nft = nft else {
-		return
-	}
-	
-	let address = DependencyManager.shared.selectedWalletAddress ?? ""
-	
-	if isFavouritedNft {
-		if TokenStateService.shared.removeFavourite(forAddress: address, nft: nft) {
-			DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-			favouriteButton.isSelected = false
-			isFavouritedNft = false
-			setFavState(isFav: false)
-			favouriteButton.updateCustomImage()
-			
-		} else {
-			self.delegate?.errorMessage(message: "Unable to unfavorite collectible")
-		}
-		
-	} else {
-		if TokenStateService.shared.addFavourite(forAddress: address, nft: nft) {
-			DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-			favouriteButton.isSelected = true
-			isFavouritedNft = true
-			setFavState(isFav: true)
-			favouriteButton.updateCustomImage()
-			
-		} else {
-			self.delegate?.errorMessage(message: "Unable to favorite collectible")
-		}
-	}
-}
-
-@IBAction func shareTapped(_ sender: Any) {
-	self.delegate?.errorMessage(message: "Share sheet not ready yet")
-}
-
-@IBAction func showcaseTapped(_ sender: Any) {
-	self.delegate?.errorMessage(message: "Showcase not ready yet")
-}
-*/
