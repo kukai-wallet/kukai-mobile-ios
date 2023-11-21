@@ -72,6 +72,9 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if let vc = segue.destination as? TokenContractViewController {
 			vc.setup(tokenId: viewModel.nft?.tokenId.description ?? "0", contractAddress: viewModel.nft?.parentContract ?? "")
+			
+		} else if let vc = segue.destination as? CollectibleAttributeDetailViewController, let item = sender as? AttributeItem {
+			vc.attributeItem = item
 		}
 	}
 	
@@ -120,6 +123,10 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		let numberOfRowsFirstSection = collectionView.numberOfItems(inSection: 0)
 		if indexPath.section == 0 && indexPath.row == numberOfRowsFirstSection-1 {
 			viewModel.openOrCloseGroup(forCollectionView: collectionView, atIndexPath: indexPath)
+			
+		} else if indexPath.section == 1 {
+			let attribute = viewModel.attributeFor(indexPath: indexPath)
+			self.performSegue(withIdentifier: "attributeDetail", sender: attribute)
 		}
 	}
 	
