@@ -12,8 +12,6 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var imageView: UIImageView!
-	@IBOutlet weak var quantityView: UIView!
-	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var aspectRatioConstraint: NSLayoutConstraint!
 	
 	public var setup = false
@@ -36,14 +34,6 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {
 			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-			
-			if let quantity = mediaContent.quantity {
-				quantityView.isHidden = false
-				quantityLabel.text = quantity
-				
-			} else {
-				quantityView.isHidden = true
-			}
 		}
 		
 		setup = true

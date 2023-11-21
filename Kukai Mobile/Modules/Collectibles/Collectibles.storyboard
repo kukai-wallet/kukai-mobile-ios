@@ -225,16 +225,103 @@
                             <constraint firstItem="D8m-yg-0QC" firstAttribute="trailing" secondItem="BmB-t3-AoJ" secondAttribute="trailing" id="Qf7-jd-HeQ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="pLd-oE-F0n"/>
+                    <navigationItem key="navigationItem" id="pLd-oE-F0n">
+                        <rightBarButtonItems>
+                            <barButtonItem id="cmi-aK-aIC">
+                                <view key="customView" contentMode="scaleToFill" id="XxX-Ne-aT3">
+                                    <rect key="frame" x="334" y="7" width="40" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxl-v0-paf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="0.0" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="30" id="Pnd-Ij-McR"/>
+                                                <constraint firstAttribute="height" constant="30" id="Si9-Fo-YwP"/>
+                                            </constraints>
+                                            <color key="tintColor" name="BGB4"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnEllipseOutline_Dark"/>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                    <color key="value" name="BGB4"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                    <real key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                    <real key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="moreButtonTapped:" destination="xby-4c-wEc" eventType="touchUpInside" id="Kkn-vA-Eua"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="trailing" secondItem="yxl-v0-paf" secondAttribute="trailing" id="23K-Tq-brN"/>
+                                        <constraint firstItem="yxl-v0-paf" firstAttribute="top" secondItem="XxX-Ne-aT3" secondAttribute="top" id="6RC-qU-vZ0"/>
+                                        <constraint firstAttribute="bottom" secondItem="yxl-v0-paf" secondAttribute="bottom" id="IKV-Q9-54b"/>
+                                        <constraint firstItem="yxl-v0-paf" firstAttribute="leading" secondItem="XxX-Ne-aT3" secondAttribute="leading" constant="10" id="Wum-zQ-G7V"/>
+                                    </constraints>
+                                </view>
+                            </barButtonItem>
+                            <barButtonItem id="o4E-TO-vnW">
+                                <view key="customView" contentMode="scaleToFill" id="7DH-Y1-lD4">
+                                    <rect key="frame" x="286" y="7" width="40" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJi-ls-hKZ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <rect key="frame" x="10" y="0.0" width="30" height="30"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="UVD-sH-cJA"/>
+                                                <constraint firstAttribute="width" constant="30" id="eqN-Rc-pfh"/>
+                                            </constraints>
+                                            <color key="tintColor" name="BGB4"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="plain"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="FavoritesOff"/>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                    <color key="value" name="BGB4"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                    <real key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                    <real key="value" value="30"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="favouriteButtonTapped:" destination="xby-4c-wEc" eventType="touchUpInside" id="usJ-9t-UnW"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="oJi-ls-hKZ" firstAttribute="top" secondItem="7DH-Y1-lD4" secondAttribute="top" id="8KG-xT-PZL"/>
+                                        <constraint firstAttribute="bottom" secondItem="oJi-ls-hKZ" secondAttribute="bottom" id="Prn-V8-Oeo"/>
+                                        <constraint firstItem="oJi-ls-hKZ" firstAttribute="leading" secondItem="7DH-Y1-lD4" secondAttribute="leading" constant="10" id="UN1-0U-LWz"/>
+                                        <constraint firstAttribute="trailing" secondItem="oJi-ls-hKZ" secondAttribute="trailing" id="hel-p5-OKt"/>
+                                    </constraints>
+                                </view>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="collectionView" destination="D8m-yg-0QC" id="NwR-md-06n"/>
+                        <outlet property="favouriteButton" destination="oJi-ls-hKZ" id="fl5-64-ld9"/>
+                        <outlet property="favouriteButtonBarItem" destination="o4E-TO-vnW" id="1nz-mV-5iK"/>
+                        <outlet property="moreButton" destination="yxl-v0-paf" id="dHV-YH-dcI"/>
+                        <outlet property="moreButtonBarItem" destination="cmi-aK-aIC" id="JvF-Mn-c7a"/>
                         <segue destination="JdE-iM-nJZ" kind="custom" identifier="tokenContract" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="MCW-sJ-eyP"/>
                         <segue destination="FE5-Ks-oHm" kind="show" identifier="send" id="CzY-ee-j75"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tWj-Sf-i5j" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-29" y="-1420"/>
+            <point key="canvasLocation" x="-29.23076923076923" y="-1420.3791469194312"/>
         </scene>
         <!--Send-->
         <scene sceneID="SJr-kZ-cHn">
@@ -499,6 +586,12 @@
         <designable name="RJp-GD-j8b">
             <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
+        <designable name="oJi-ls-hKZ">
+            <size key="intrinsicContentSize" width="54" height="44"/>
+        </designable>
+        <designable name="yxl-v0-paf">
+            <size key="intrinsicContentSize" width="54" height="44"/>
+        </designable>
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="qYR-8Y-gaw"/>
@@ -508,6 +601,8 @@
         <image name="Collectibles" width="26" height="26"/>
         <image name="CollectiblesOn" width="26" height="26"/>
         <image name="Ellipses" width="24" height="24"/>
+        <image name="FavoritesOff" width="24" height="24"/>
+        <image name="btnEllipseOutline_Dark" width="36" height="36"/>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

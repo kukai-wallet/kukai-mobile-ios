@@ -13,9 +13,6 @@ import MediaPlayer
 class CollectibleDetailAVCell: UICollectionViewCell {
 
 	@IBOutlet weak var placeholderView: UIView!
-	@IBOutlet var mediaIconView: UIImageView!
-	@IBOutlet weak var quantityView: UIView!
-	@IBOutlet weak var quantityLabel: UILabel!
 	@IBOutlet weak var mediaActivityView: UIActivityIndicatorView!
 	@IBOutlet var aspectRatioConstraint: NSLayoutConstraint!
 	
@@ -51,15 +48,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		self.airPlayArtist = airPlayArtist
 		self.airPlayAlbum = airPlayAlbum
 		
-		if let quantity = mediaContent.quantity {
-			quantityView.isHidden = false
-			quantityLabel.text = quantity
-			quantityView.layer.zPosition = 100
-			
-		} else {
-			quantityView.isHidden = true
-		}
-		
 		mediaActivityView.startAnimating()
 		self.playerController = avplayerController
 		placeholderView.addSubview(avplayerController.view)
@@ -68,10 +56,6 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		avplayerController.player?.addObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", options: .new, context: &playbackLikelyToKeepUpContext)
 		avplayerController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: &playbackRateContext)
 		avplayerController.updatesNowPlayingInfoCenter = false
-		avplayerController.customDelegate = self
-		
-		placeholderView.bringSubviewToFront(quantityView)
-		placeholderView.bringSubviewToFront(mediaIconView)
 		
 		
 		// if allowsExternalPlayback set to false, during airplay via the command centre, iOS correctly picks up that its a song and shows the album artwork + title + album
@@ -243,30 +227,5 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		
 		playerController?.player?.pause()
 		let _ = try? AVAudioSession.sharedInstance().setActive(false)
-	}
-}
-
-extension CollectibleDetailAVCell: CustomAVPlayerViewControllerDelegate {
-	
-	func playbackControlsChanged(visible: Bool) {
-		if visible {
-			hideAdditionalViews()
-		} else {
-			showAdditionalViews()
-		}
-	}
-	
-	func showAdditionalViews() {
-		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.quantityView.alpha = 1
-			self?.mediaIconView.alpha = 1
-		}
-	}
-	
-	func hideAdditionalViews() {
-		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.quantityView.alpha = 0
-			self?.mediaIconView.alpha = 0
-		}
 	}
 }
