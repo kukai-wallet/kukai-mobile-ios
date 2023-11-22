@@ -25,6 +25,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
 	private var sideMenuVc: SideMenuViewController? = nil
+	private var walletConnectActivity = UIActivityIndicatorView()
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
@@ -449,6 +450,21 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 // MARK: Wallet Connect
 
 extension HomeTabBarController: WalletConnectServiceDelegate {
+	
+	public func connectionStatusChanged(status: SocketConnectionStatus) {
+		if status == .disconnected {
+			self.scanButton.isEnabled = false
+			self.walletConnectActivity.frame = self.scanButton.frame
+			self.scanButton.addSubview(self.walletConnectActivity)
+			
+			self.walletConnectActivity.startAnimating()
+			
+		} else {
+			self.scanButton.isEnabled = true
+			self.walletConnectActivity.stopAnimating()
+			self.walletConnectActivity.removeFromSuperview()
+		}
+	}
 	
 	public func pairRequested() {
 		self.performSegue(withIdentifier: "wallet-connect-pair", sender: nil)

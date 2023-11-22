@@ -27,6 +27,7 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func provideAccountList()
 	func error(message: String?, error: Error?)
+	func connectionStatusChanged(status: SocketConnectionStatus)
 }
 
 public struct WalletConnectGetAccountObj: Codable {
@@ -72,6 +73,15 @@ public class WalletConnectService {
 		// Objects and metadata
 		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
+		
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				self?.delegate?.connectionStatusChanged(status: status)
+			}
+		}.store(in: &bag)
+		
 		
 		// Callbacks
 		Sign.instance.sessionRequestPublisher
