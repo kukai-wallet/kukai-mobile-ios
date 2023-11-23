@@ -20,7 +20,7 @@ class AccountScanningViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
-		numberLabel.text = "0"
+		numberLabel.text = "1"
     }
 	
 	public func hideAllText() {
@@ -43,7 +43,7 @@ class AccountScanningViewController: UIViewController {
 	
 	public func updateFound(_ found: Int) {
 		DispatchQueue.main.async { [weak self] in
-			self?.numberLabel.text = found.description
+			self?.numberLabel.text = (found + 1).description // Now including the default account in the total, not just the additional accounts found
 		}
 	}
 	

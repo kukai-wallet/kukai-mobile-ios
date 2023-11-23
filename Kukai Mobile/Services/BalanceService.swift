@@ -53,6 +53,7 @@ public class BalanceService {
 	
 	@Published public var addressesWaitingToBeRefreshed: [String] = []
 	@Published public var addressRefreshed: String = ""
+	@Published public var addressErrored: (address: String, error: KukaiError)? = nil
 	
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
@@ -111,6 +112,10 @@ public class BalanceService {
 			self?.fetchAllBalancesTokensAndPrices(forAddress: currentFetchRequest.address, refreshType: currentFetchRequest.type, completion: { error in
 				
 				DispatchQueue.main.async { [weak self] in
+					if let err = error {
+						self?.addressErrored = (address: currentFetchRequest.address, error: err)
+					}
+					
 					// If an address on the list of to be refreshed, has had anything done at all, remove it from list
 					if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: currentFetchRequest.address) {
 						self?.addressesWaitingToBeRefreshed.remove(at: index)
@@ -403,10 +408,12 @@ public class BalanceService {
 		// When everything fetched, process data
 		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
 			if let err = error {
+				self?.updateCacheDate(forAddress: address)
 				DispatchQueue.main.async { completion(err) }
 				
 			} else {
 				guard let self = self else {
+					self?.updateCacheDate(forAddress: address)
 					DispatchQueue.main.async { completion(KukaiError.unknown()) }
 					return
 				}

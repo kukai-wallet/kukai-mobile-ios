@@ -129,6 +129,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 			}.store(in: &bag)
 		
+		DependencyManager.shared.balanceService.$addressErrored
+			.dropFirst()
+			.sink { [weak self] obj in
+				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
+					DispatchQueue.main.async {
+						self?.windowError(withTitle: "error".localized(), description: obj.error.description)
+					}
+				}
+			}.store(in: &bag)
+		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
