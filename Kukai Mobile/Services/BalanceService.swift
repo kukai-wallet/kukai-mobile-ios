@@ -372,7 +372,9 @@ public class BalanceService {
 		// Get latest Tezos USD price
 		DependencyManager.shared.coinGeckoService.fetchTezosPrice { [weak self] result in
 			guard let _ = try? result.get() else {
-				error = result.getFailure()
+				// We don't want to block access to the app due to a third party pricing API. Will revist with a better strategy
+				//error = result.getFailure()
+				DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
 				self?.balanceRequestDispathGroup.leave()
 				return
 			}
