@@ -191,7 +191,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		updateDigitViewsWithLength(length: text.count)
 		
 		if validated {
-			if StorageService.validatePasscode(text) == true {
+			if StorageService.validatePasscode(text, withUserPresence: false) == true {
 				LoginViewController.wrongGuessCount = 0
 				LoginViewController.wrongGuessDelay = 0
 				next()

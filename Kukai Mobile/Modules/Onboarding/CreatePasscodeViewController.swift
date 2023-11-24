@@ -93,7 +93,7 @@ extension CreatePasscodeViewController: ValidatorTextFieldDelegate {
 		if validated  {
 			
 			if text.passcodeComplexitySufficient() {
-				if StorageService.setPasscode(text) {
+				if StorageService.recordTempPasscode(text) {
 					self.performSegue(withIdentifier: "confirm", sender: nil)
 				} else {
 					displayError(localisedString: "error-unable-to-store-passcode".localized())
