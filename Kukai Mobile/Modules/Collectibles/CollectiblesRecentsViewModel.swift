@@ -105,7 +105,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		normalSnapshot.appendSections([0])
 		
-		
+		imageURLsForCollectibles = []
 		var hashableData: [AnyHashable] = []
 		
 		// If needs shimmers

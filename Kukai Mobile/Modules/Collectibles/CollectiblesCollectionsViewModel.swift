@@ -158,16 +158,16 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		imageURLsForCollectionGroups = []
-		imageURLsForCollectibles = []
-		nftCollectionTotalCounts = []
-		
 		guard let ds = dataSource else {
 			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		
 		// Build snapshot data
+		imageURLsForCollectionGroups = []
+		imageURLsForCollectibles = []
+		nftCollectionTotalCounts = []
+		
 		var hashableData: [AnyHashable] = []
 		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 		
