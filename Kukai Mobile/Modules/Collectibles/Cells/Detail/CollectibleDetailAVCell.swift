@@ -29,6 +29,10 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var airPlayArtist: String = ""
 	private var airPlayAlbum: String = ""
 	private var hasSetupNowPlaying = false
+	private var commandCentreTargetStop: Any? = nil
+	private var commandCentreTargetToggle: Any? = nil
+	private var commandCentreTargetPlay: Any? = nil
+	private var commandCentreTargetPause: Any? = nil
 	
 	public var setup = false
 	public var timer: Timer? = nil
@@ -138,11 +142,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		playerController?.player?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", context: &playbackLikelyToKeepUpContext)
 		playerController?.player?.removeObserver(self, forKeyPath: "rate", context: &playbackRateContext)
 		
-		let commandCenter = MPRemoteCommandCenter.shared()
-		commandCenter.togglePlayPauseCommand.removeTarget(self)
-		commandCenter.stopCommand.removeTarget(self)
-		commandCenter.playCommand.removeTarget(self)
-		commandCenter.pauseCommand.removeTarget(self)
+		clearCommandCenterCommands()
 	}
 	
 	private func setupNowPlaying() {
@@ -188,12 +188,15 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private func setupCommands() {
 		if let _ = try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: isAudio ? .longFormAudio : .longFormVideo) {
 			let commandCenter = MPRemoteCommandCenter.shared()
-			commandCenter.stopCommand.addTarget { [weak self] commandEvent in
+			
+			commandCenter.stopCommand.isEnabled = true
+			commandCentreTargetStop = commandCenter.stopCommand.addTarget { [weak self] commandEvent in
 				self?.commandPause()
 				return .success
 			}
 			
-			commandCenter.togglePlayPauseCommand.addTarget { [weak self] commandEvent in
+			commandCenter.togglePlayPauseCommand.isEnabled = true
+			commandCentreTargetToggle = commandCenter.togglePlayPauseCommand.addTarget { [weak self] commandEvent in
 				if self?.isPlaying ?? true {
 					self?.commandPause()
 					
@@ -203,16 +206,32 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				return .success
 			}
 			
-			commandCenter.playCommand.addTarget { [weak self] commandEvent in
+			commandCenter.playCommand.isEnabled = true
+			commandCentreTargetPlay = commandCenter.playCommand.addTarget { [weak self] commandEvent in
 				self?.commandPlay()
 				return .success
 			}
 			
-			commandCenter.pauseCommand.addTarget { [weak self] commandEvent in
+			commandCenter.pauseCommand.isEnabled = true
+			commandCentreTargetPause = commandCenter.pauseCommand.addTarget { [weak self] commandEvent in
 				self?.commandPause()
 				return .success
 			}
 		}
+	}
+	
+	private func clearCommandCenterCommands() {
+		let commandCenter = MPRemoteCommandCenter.shared()
+		
+		commandCenter.stopCommand.isEnabled = false
+		commandCenter.togglePlayPauseCommand.isEnabled = false
+		commandCenter.playCommand.isEnabled = false
+		commandCenter.pauseCommand.isEnabled = false
+		
+		commandCenter.stopCommand.removeTarget(commandCentreTargetStop)
+		commandCenter.togglePlayPauseCommand.removeTarget(commandCentreTargetToggle)
+		commandCenter.playCommand.removeTarget(commandCentreTargetPlay)
+		commandCenter.pauseCommand.removeTarget(commandCentreTargetPause)
 	}
 	
 	private func commandPlay() {

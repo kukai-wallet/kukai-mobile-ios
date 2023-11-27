@@ -105,35 +105,44 @@ public class StorageService {
 		return status == 0
 	}
 	
-	private static func getPasscode(withUserPresence: Bool) -> String? {
+	private static func getPasscode(withUserPresence: Bool, completion: @escaping ((String?) -> Void)){
 		if withUserPresence {
-			let searchQuery = [
-				kSecClass: kSecClassGenericPassword,
-				kSecAttrAccount: StorageService.KeychainKeys.passcodeBiometric,
-				kSecMatchLimit: kSecMatchLimitOne,
-				kSecReturnData: true,
-			] as [CFString : Any] as CFDictionary
 			
-			var item: AnyObject?
-			let status = SecItemCopyMatching(searchQuery, &item)
-			
-			guard status == 0, let data = (item as? Data) else {
-				return nil
+			/// SecItemCopyMatching blocks the calling thread, must be moved to background thread
+			DispatchQueue.global(qos: .background).async {
+				let searchQuery = [
+					kSecClass: kSecClassGenericPassword,
+					kSecAttrAccount: StorageService.KeychainKeys.passcodeBiometric,
+					kSecMatchLimit: kSecMatchLimitOne,
+					kSecReturnData: true,
+				] as [CFString : Any] as CFDictionary
+				
+				
+				var item: AnyObject?
+				let status = SecItemCopyMatching(searchQuery, &item)
+				
+				guard status == 0, let data = (item as? Data) else {
+					DispatchQueue.main.async { completion(nil) }
+					return
+				}
+				
+				DispatchQueue.main.async { completion(String(data: data, encoding: .utf8)) }
 			}
 			
-			return String(data: data, encoding: .utf8)
-			
 		} else {
-			return KeychainSwift().get(StorageService.KeychainKeys.passcode)
+			completion(KeychainSwift().get(StorageService.KeychainKeys.passcode))
 		}
 	}
 	
-	public static func validatePasscode(_ passcode: String, withUserPresence: Bool) -> Bool {
-		guard let hash = getPasscode(withUserPresence: withUserPresence) else {
-			return false
+	public static func validatePasscode(_ passcode: String, withUserPresence: Bool, completion: @escaping ((Bool) -> Void)) {
+		getPasscode(withUserPresence: withUserPresence) { hash in
+			guard let h = hash else {
+				completion(false)
+				return
+			}
+			
+			completion( Sodium.shared.pwHash.strVerify(hash: h, passwd: passcode.bytes) )
 		}
-		
-		return Sodium.shared.pwHash.strVerify(hash: hash, passwd: passcode.bytes)
 	}
 	
 	public static func setBiometricEnabled(_ enabled: Bool) -> Bool {
@@ -146,8 +155,9 @@ public class StorageService {
 	
 	public static func authWithBiometric(completion: @escaping ((Bool) -> Void)) {
 		if isBiometricEnabled() {
-			let rawPasscodeWithUserPresence = getPasscode(withUserPresence: true)
-			completion(rawPasscodeWithUserPresence != nil)
+			getPasscode(withUserPresence: true) { rawPasscodeWithUserPresence in
+				completion(rawPasscodeWithUserPresence != nil)
+			}
 		} else {
 			completion(false)
 		}

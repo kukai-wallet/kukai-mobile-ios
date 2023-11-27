@@ -17,9 +17,11 @@ public protocol ValidatorTextFieldDelegate: AnyObject {
 
 @IBDesignable
 public class ValidatorTextField: UITextField {
-
+	
 	public var validator: Validator?
 	public var isValid: Bool = false
+	public var numericOnly = false
+	public var numericAndSeperatorOnly = false
 	public weak var validatorTextFieldDelegate: ValidatorTextFieldDelegate?
 	
 	private var didSetupCustomImage = false
@@ -137,6 +139,19 @@ public class ValidatorTextField: UITextField {
 extension ValidatorTextField: UITextFieldDelegate {
 	
 	public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+		
+		// For fields that only expect numeric only (or numeric + speerator) disallow any other characters
+		if numericOnly && !CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: string)) {
+			return false
+			
+		} else if numericAndSeperatorOnly {
+			let currentSeperator = Locale.current.decimalSeparator ?? "."
+			let both = CharacterSet.decimalDigits.union(CharacterSet(charactersIn: currentSeperator))
+			
+			if !both.isSuperset(of: CharacterSet(charactersIn: string)) {
+				return false
+			}
+		}
 		
 		// If return key is "done", automatically have the textfield resign responder and not type anything
 		if self.returnKeyType == .done, string.rangeOfCharacter(from: CharacterSet.newlines) != nil {

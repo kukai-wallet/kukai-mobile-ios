@@ -43,9 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			}
 		#endif
 		
-		// Airplay audio/video support
-		application.beginReceivingRemoteControlEvents()
-		
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()
 		

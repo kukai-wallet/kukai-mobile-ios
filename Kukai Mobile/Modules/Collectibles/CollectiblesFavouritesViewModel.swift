@@ -101,6 +101,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 			return
 		}
 		
+		imageURLsForCollectibles = []
 		var hashableData: [AnyHashable] = []
 		
 		// If needs shimmers
