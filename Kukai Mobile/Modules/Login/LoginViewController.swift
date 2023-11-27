@@ -119,7 +119,7 @@ class LoginViewController: UIViewController {
 	}
 	
 	private func validateBiometric() {
-		if StorageService.isBiometricEnabled() && CurrentDevice.biometricTypeAuthorized() != .none {
+		if StorageService.isBiometricEnabled() && (CurrentDevice.biometricTypeAuthorized() != .none && CurrentDevice.biometricTypeAuthorized() != .unavailable) {
 			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
@@ -191,12 +191,14 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 		updateDigitViewsWithLength(length: text.count)
 		
 		if validated {
-			if StorageService.validatePasscode(text, withUserPresence: false) == true {
-				LoginViewController.wrongGuessCount = 0
-				LoginViewController.wrongGuessDelay = 0
-				next()
-			} else {
-				displayErrorAndReset()
+			StorageService.validatePasscode(text, withUserPresence: false) { [weak self] result in
+				if result {
+					LoginViewController.wrongGuessCount = 0
+					LoginViewController.wrongGuessDelay = 0
+					self?.next()
+				} else {
+					self?.displayErrorAndReset()
+				}
 			}
 		} else if text.count > 0 {
 			errorLabel.isHidden = true
