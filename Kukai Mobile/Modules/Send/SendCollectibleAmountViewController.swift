@@ -74,6 +74,7 @@ class SendCollectibleAmountViewController: UIViewController {
 		quantityTextField.validatorTextFieldDelegate = self
 		quantityTextField.validator = NumberValidator(min: 1, max: token.balance, decimalPlaces: 0)
 		quantityTextField.addDoneToolbar()
+		quantityTextField.numericAndSeperatorOnly = true
 		
 		reviewButton.customButtonType = .primary
 	}

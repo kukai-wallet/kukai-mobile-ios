@@ -51,6 +51,7 @@ class LoginViewController: UIViewController {
 		errorLabel.isHidden = true
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
+		hiddenTextfield.numericOnly = true
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

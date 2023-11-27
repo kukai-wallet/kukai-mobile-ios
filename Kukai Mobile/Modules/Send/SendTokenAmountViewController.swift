@@ -66,6 +66,7 @@ class SendTokenAmountViewController: UIViewController {
 		textfield.validatorTextFieldDelegate = self
 		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
+		textfield.numericAndSeperatorOnly = true
 		
 		errorLabel.isHidden = true
 		maxWarningLabel.isHidden = true
