@@ -102,9 +102,9 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return baker.stakingCapacity > xtzBalanceAsDecimal && baker.openForDelegation && baker.serviceHealth != .dead
 			}
 			
-			filteredResults.sort { lhs, rhs in
+			let sortedResults = filteredResults.sorted(by: { lhs, rhs in
 				lhs.estimatedRoi > rhs.estimatedRoi
-			}
+			})
 			
 			
 			// Build snapshot
@@ -126,11 +126,11 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				nextSectionIndex = count
 			}
 			
-			self?.currentSnapshot.appendSections(Array(nextSectionIndex..<(filteredResults.count + nextSectionIndex + 1)))
+			self?.currentSnapshot.appendSections(Array(nextSectionIndex..<(sortedResults.count + nextSectionIndex + 1)))
 			self?.currentSnapshot.appendItems([StakeHeaderData(title: "SELECT BAKER", actionTitle: "Enter Custom Baker")], toSection: nextSectionIndex)
 			nextSectionIndex += 1
 			
-			for baker in filteredResults {
+			for baker in sortedResults {
 				self?.currentSnapshot.appendItems([baker], toSection: nextSectionIndex)
 				nextSectionIndex += 1
 			}
