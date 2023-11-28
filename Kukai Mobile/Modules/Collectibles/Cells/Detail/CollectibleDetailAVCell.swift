@@ -21,14 +21,15 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var isPlaybackReady = false
 	private var isPlaying = false
 	private var imageView: UIImageView? = nil
-	private var playbackLikelyToKeepUpContext = 0
-	private var playbackRateContext = 0
 	private weak var playerController: CustomAVPlayerViewController? = nil
 	
 	private var airPlayName: String = ""
 	private var airPlayArtist: String = ""
 	private var airPlayAlbum: String = ""
 	private var hasSetupNowPlaying = false
+	
+	private var playbackWillKeepUpObserver: NSKeyValueObservation? = nil
+	private var rateObserver: NSKeyValueObservation? = nil
 	private var commandCentreTargetStop: Any? = nil
 	private var commandCentreTargetToggle: Any? = nil
 	private var commandCentreTargetPlay: Any? = nil
@@ -57,9 +58,34 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		placeholderView.addSubview(avplayerController.view)
 		avplayerController.view.frame = placeholderView.bounds
 		avplayerController.view.backgroundColor = .clear
-		avplayerController.player?.addObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", options: .new, context: &playbackLikelyToKeepUpContext)
-		avplayerController.player?.addObserver(self, forKeyPath: "rate", options: .new, context: &playbackRateContext)
 		avplayerController.updatesNowPlayingInfoCenter = false
+		
+		self.playbackWillKeepUpObserver = avplayerController.player?.observe(\.currentItem?.isPlaybackLikelyToKeepUp, changeHandler: { [weak self] player, change in
+			if player.currentItem?.isPlaybackLikelyToKeepUp == true {
+				self?.isPlaybackReady = true
+				
+				if self?.isAudio == false {
+					self?.mediaActivityView.stopAnimating()
+					self?.mediaActivityView.isHidden = true
+					self?.playerController?.player?.play()
+					
+				} else {
+					self?.checkAudioImageStatus()
+				}
+			}
+		})
+		
+		self.rateObserver = avplayerController.player?.observe(\.rate, changeHandler: { [weak self] player, change in
+			if player.rate == 0.0 {
+				self?.updateNowPlaying(isPause: true)
+				
+			} else if self?.hasSetupNowPlaying == true {
+				self?.updateNowPlaying(isPause: false)
+				
+			} else {
+				self?.setupNowPlaying()
+			}
+		})
 		
 		
 		// if allowsExternalPlayback set to false, during airplay via the command centre, iOS correctly picks up that its a song and shows the album artwork + title + album
@@ -110,37 +136,12 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		setup = true
 	}
 	
-	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		if context == &playbackLikelyToKeepUpContext {
-			if self.playerController?.player?.currentItem?.isPlaybackLikelyToKeepUp == true {
-				isPlaybackReady = true
-				
-				if !isAudio {
-					mediaActivityView.stopAnimating()
-					mediaActivityView.isHidden = true
-					self.playerController?.player?.play()
-					
-					
-				} else {
-					checkAudioImageStatus()
-				}
-			}
-		} else if context == &playbackRateContext, let playRate = playerController?.player?.rate {
-			if playRate == 0.0 {
-				updateNowPlaying(isPause: true)
-				
-			} else if hasSetupNowPlaying {
-				updateNowPlaying(isPause: false)
-				
-			} else {
-				setupNowPlaying()
-			}
-		}
-	}
-	
 	deinit {
-		playerController?.player?.removeObserver(self, forKeyPath: "currentItem.playbackLikelyToKeepUp", context: &playbackLikelyToKeepUpContext)
-		playerController?.player?.removeObserver(self, forKeyPath: "rate", context: &playbackRateContext)
+		playbackWillKeepUpObserver?.invalidate()
+		playbackWillKeepUpObserver = nil
+		
+		rateObserver?.invalidate()
+		rateObserver = nil
 		
 		clearCommandCenterCommands()
 	}
