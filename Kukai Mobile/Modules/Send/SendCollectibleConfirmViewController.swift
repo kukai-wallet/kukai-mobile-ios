@@ -200,7 +200,11 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		self.dismissBottomSheet()
+		if isWalletConnectOp {
+			walletConnectRespondOnReject()
+		} else {
+			self.dismissBottomSheet()
+		}
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
@@ -264,6 +268,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	func dismissAndReturn() {
 		if isWalletConnectOp {
 			TransactionService.shared.resetWalletConnectState()
+			HomeTabBarController.recordWalletConnectOperationAsComplete()
 		} else {
 			TransactionService.shared.resetAllState()
 		}
@@ -338,6 +343,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
 				try? await Sign.instance.extend(topic: request.topic)
+				self.didSend = true
 				self.dismissAndReturn()
 				
 			} catch {

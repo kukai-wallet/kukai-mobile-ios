@@ -490,6 +490,12 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		self.showLoadingView()
 	}
 	
+	public static func recordWalletConnectOperationAsComplete() {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+			WalletConnectService.shared.requestDidComplete = true
+		}
+	}
+	
 	public func processedOperations(ofType: WalletConnectOperationType) {
 		self.loadingViewHideActivity()
 		
@@ -512,7 +518,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func error(message: String?, error: Error?) {
-		self.hideLoadingView()
+		Logger.app.error("WC2 error message: \(message) - error: \(error)")
+		
+		self.hideLoadingView {
+			WalletConnectService.shared.requestDidComplete = true
+		}
 			
 		if let m = message {
 			var message = "\(m)"
@@ -597,6 +607,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				self.hideLoadingView()
 				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
+			
 		}
 	}
 }
