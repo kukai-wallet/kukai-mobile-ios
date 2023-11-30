@@ -32,9 +32,15 @@ public struct EnvironmentVariables {
 	private var extractedConfigs: [Int: TestConfig] = [:]
 	
 	private init() {
-		config1 = ProcessInfo.processInfo.environment["CONFIG_1"] ?? ""
-		config2 = ProcessInfo.processInfo.environment["CONFIG_2"] ?? ""
-		config3 = ProcessInfo.processInfo.environment["CONFIG_3"] ?? ""
+		//config1 = ProcessInfo.processInfo.environment["CONFIG_1"] ?? ""
+		//config2 = ProcessInfo.processInfo.environment["CONFIG_2"] ?? ""
+		//config3 = ProcessInfo.processInfo.environment["CONFIG_3"] ?? ""
+		
+		config1 = "display bicycle powder festival suggest fire sunny nice tribe mammal hybrid merge merit inquiry dice rose area hover entry casino ranch seat banner there;abc123def456;tz1Z8E2gMHLXFcGGzW68B5e1Vk49FpHQd7xc;tz1eDdsp1d27kortm5LuoRqD6aKrdxmTiTSQ;tz1UFXQksYB11kzfuVczhg6ktqiJTuyMSBtB;tz1KiZDCQecjGjM314tFVW44R9pxu1q8zynu;tz1Koy9d5Bd6Ap8nW3riS2g77rGm6rLLj4mF;tz1RozkfZuEcDYmYKbHybhULthDSzwfKqAYQ;kukaiautomatedtesting;Tr7LvNOt4xHXDNlLpMB6"
+		
+		config2 = "display bicycle powder festival suggest fire sunny nice tribe mammal hybrid merge merit inquiry dice rose area hover entry casino ranch seat banner there;abc123def456;tz1Z8E2gMHLXFcGGzW68B5e1Vk49FpHQd7xc;tz1eDdsp1d27kortm5LuoRqD6aKrdxmTiTSQ;tz1UFXQksYB11kzfuVczhg6ktqiJTuyMSBtB;tz1KiZDCQecjGjM314tFVW44R9pxu1q8zynu;tz1Koy9d5Bd6Ap8nW3riS2g77rGm6rLLj4mF;tz1RozkfZuEcDYmYKbHybhULthDSzwfKqAYQ;kukaiautomatedtesting;Tr7LvNOt4xHXDNlLpMB6"
+		
+		config3 = "display bicycle powder festival suggest fire sunny nice tribe mammal hybrid merge merit inquiry dice rose area hover entry casino ranch seat banner there;abc123def456;tz1Z8E2gMHLXFcGGzW68B5e1Vk49FpHQd7xc;tz1eDdsp1d27kortm5LuoRqD6aKrdxmTiTSQ;tz1UFXQksYB11kzfuVczhg6ktqiJTuyMSBtB;tz1KiZDCQecjGjM314tFVW44R9pxu1q8zynu;tz1Koy9d5Bd6Ap8nW3riS2g77rGm6rLLj4mF;tz1RozkfZuEcDYmYKbHybhULthDSzwfKqAYQ;kukaiautomatedtesting;Tr7LvNOt4xHXDNlLpMB6"
 		
 		extractedConfigs = [
 			1: convertStringToConfig(config1),

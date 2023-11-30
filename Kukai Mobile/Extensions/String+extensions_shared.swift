@@ -10,6 +10,6 @@ import UIKit
 extension String {
 	
 	func truncateTezosAddress() -> String {
-		return "\(self.prefix(6))...\(self.suffix(4))"
+		return "\(self.prefix(7))...\(self.suffix(4))"
 	}
 }

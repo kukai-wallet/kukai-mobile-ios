@@ -98,7 +98,7 @@ public class WalletConnectService {
 				return self.processIncoming(request: sessionRequest.request)
 			}
 			.sink(receiveValue: { success in
-				Logger.app.info("WC2 request completed with success: \(success)")
+				Logger.app.info("WC request completed with success: \(success)")
 			})
 			.store(in: &bag)
 		
