@@ -77,6 +77,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				
 				self.hideLoadingModal(completion: { [weak self] in
 					TransactionService.shared.resetWalletConnectState()
+					HomeTabBarController.recordWalletConnectOperationAsComplete()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				
@@ -105,6 +106,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
 				self.hideLoadingModal(completion: { [weak self] in
 					TransactionService.shared.resetWalletConnectState()
+					HomeTabBarController.recordWalletConnectOperationAsComplete()
 					self?.presentingViewController?.dismiss(animated: true)
 				})
 				

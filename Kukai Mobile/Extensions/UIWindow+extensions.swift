@@ -35,6 +35,7 @@ extension UIWindow {
 		UIWindow.errorView.addSubview(UIWindow.errorViewImage)
 		
 		UIWindow.errorViewTitleLabel.text = "Error"
+		UIWindow.errorViewTitleLabel.accessibilityIdentifier = "window-error-title"
 		UIWindow.errorViewTitleLabel.numberOfLines = 1
 		UIWindow.errorViewTitleLabel.font = UIFont.custom(ofType: .bold, andSize: 14)
 		UIWindow.errorViewTitleLabel.textColor = .colorNamed("Txt0")

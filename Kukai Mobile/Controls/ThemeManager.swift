@@ -195,7 +195,7 @@ public class ThemeManager {
 				
 				// Gradient
 				"gradBgFull-1": UIColor("#FFFFFF"),
-				"gradBgFull-2": UIColor("#F5F6FF"),
+				"gradBgFull-2": UIColor("#E9EAF2"),
 				"gradBgFull-3": UIColor("#E9EAF2"),
 				"gradModal-1": UIColor("#FFFFFF"),
 				"gradModal-2": UIColor("#EEEFF7"),
@@ -408,7 +408,7 @@ public class ThemeManager {
 				
 				// Gradient
 				"gradBgFull-1": UIColor("#1B1C2B"),
-				"gradBgFull-2": UIColor("#0E0F17"),
+				"gradBgFull-2": UIColor("#12121C"),
 				"gradBgFull-3": UIColor("#0A0A0F"),
 				"gradModal-1": UIColor("#1B1C2B"),
 				"gradModal-2": UIColor("#1B1C2B"),

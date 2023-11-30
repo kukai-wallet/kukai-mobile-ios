@@ -288,12 +288,17 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		self.dismissBottomSheet()
+		if isWalletConnectOp {
+			walletConnectRespondOnReject()
+		} else {
+			self.dismissBottomSheet()
+		}
 	}
 	
 	func dismissAndReturn() {
 		if isWalletConnectOp {
 			TransactionService.shared.resetWalletConnectState()
+			HomeTabBarController.recordWalletConnectOperationAsComplete()
 		} else {
 			TransactionService.shared.resetAllState()
 		}
@@ -380,6 +385,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
 				try? await Sign.instance.extend(topic: request.topic)
+				self.didSend = true
 				self.dismissAndReturn()
 				
 			} catch {

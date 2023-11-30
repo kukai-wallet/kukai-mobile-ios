@@ -58,14 +58,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	}
 	
 	func bottomSheetDataChanged() {
-		viewModel.refresh(animate: true)
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		viewModel.refresh(animate: true)
-		
+		self.showLoadingView()
 		
 		// Change account for the given pairing
 		if let pairing = pairingToChangeAccount {
@@ -79,15 +72,24 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			Task {
 				do {
 					try await Sign.instance.update(topic: existingSession.topic, namespaces: newNamespaces)
+					viewModel.refresh(animate: true)
+					self.hideLoadingView()
 					
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.pairingToChangeAccount = nil
+						self?.hideLoadingModal()
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
 				}
 			}
 		}
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		viewModel.refresh(animate: true)
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -490,7 +490,7 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_04_Account.waitForInitalLoad(app: app)
 	}
 	
-	public static func handlePasscode(app: XCUIApplication, passcode: String = "000000") {
+	public static func handlePasscode(app: XCUIApplication, passcode: String = "147963") {
 		sleep(2)
 		SharedHelpers.shared.type(app: app, text: passcode)
 	}

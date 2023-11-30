@@ -65,6 +65,7 @@ public class WalletConnectService {
 											  redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
 	
 	@Published public var didCleanAfterDelete: Bool = false
+	@Published public var requestDidComplete: Bool = false
 	
 	private init() {}
 	
@@ -84,28 +85,22 @@ public class WalletConnectService {
 		
 		
 		// Callbacks
+		
 		Sign.instance.sessionRequestPublisher
-			.receive(on: DispatchQueue.main)
-			.sink { [weak self] sessionRequest in
-				Logger.app.info("WC sessionRequestPublisher")
-				
-				TransactionService.shared.resetWalletConnectState()
-				TransactionService.shared.walletConnectOperationData.request = sessionRequest.request
-				
-				if sessionRequest.request.method == "tezos_send" {
-					self?.processWalletConnectRequest()
-					
-				} else if sessionRequest.request.method == "tezos_sign" {
-					self?.delegate?.signRequested()
-					
-				} else if sessionRequest.request.method == "tezos_getAccounts" {
-					self?.delegate?.provideAccountList()
-					
-				} else {
-					self?.delegate?.error(message: "Unsupported WC method: \(sessionRequest.request.method)", error: nil)
+			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
+			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
+				guard let self = self else {
+					return Future<Bool, Never>() { promise in
+						promise(.success(true))
+					}
 				}
 				
-			}.store(in: &bag)
+				return self.processIncoming(request: sessionRequest.request)
+			}
+			.sink(receiveValue: { success in
+				Logger.app.info("WC request completed with success: \(success)")
+			})
+			.store(in: &bag)
 		
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
@@ -130,6 +125,53 @@ public class WalletConnectService {
 					self?.didCleanAfterDelete = true
 				}
 			}.store(in: &bag)
+	}
+	
+	
+	
+	// MARK: - Queue Management
+	
+	private func processIncoming(request: WalletConnectSign.Request) -> Future<Bool, Never> {
+		Future() { [weak self] promise in
+			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
+			
+			guard let self = self else {
+				Logger.app.info("Unable to find self, cancelling")
+				
+				promise(.success(false))
+				return
+			}
+			
+			// Setup listener for completion status
+			self.$requestDidComplete
+				.dropFirst()
+				.sink(receiveValue: { _ in
+					promise(.success(true))
+				})
+				.store(in: &self.bag)
+			
+			
+			// Process the request
+			handleRequestLogic(request)
+		}
+	}
+	
+	private func handleRequestLogic(_ request: WalletConnectSign.Request) {
+		TransactionService.shared.resetWalletConnectState()
+		TransactionService.shared.walletConnectOperationData.request = request
+		
+		if request.method == "tezos_send" {
+			processWalletConnectRequest()
+			
+		} else if request.method == "tezos_sign" {
+			delegate?.signRequested()
+			
+		} else if request.method == "tezos_getAccounts" {
+			delegate?.provideAccountList()
+			
+		} else {
+			delegate?.error(message: "Unsupported WC method: \(request.method)", error: nil)
+		}
 	}
 	
 	
@@ -303,6 +345,7 @@ public class WalletConnectService {
 		Task {
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
 			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.shared.requestDidComplete = true
 		}
 	}
 	
@@ -318,6 +361,11 @@ public class WalletConnectService {
 	}
 	
 	private func processWalletConnectRequest() {
+		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request else {
+			self.delegate?.error(message: "Unable to process wallet connect request", error: nil)
+			return
+		}
+		
 		DependencyManager.shared.tezosNodeClient.getNetworkInformation { _, error in
 			if let err = error {
 				self.delegate?.error(message: "Unable to fetch info from the Tezos node, please try again", error: err)
@@ -325,8 +373,7 @@ public class WalletConnectService {
 			}
 			
 			
-			guard let wcRequest = TransactionService.shared.walletConnectOperationData.request,
-				  let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
 				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
