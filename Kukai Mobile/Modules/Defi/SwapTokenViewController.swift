@@ -33,11 +33,10 @@ class SwapTokenViewController: UITableViewController, UISearchResultsUpdating {
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					print("")
 					
 				case .failure(_, let errorString):
 					self?.hideLoadingModal(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.alert(withTitle: "error".localized(), andMessage: errorString)
 					
 				case .success:
 					self?.hideLoadingModal(completion: nil)

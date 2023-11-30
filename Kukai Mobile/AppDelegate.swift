@@ -15,12 +15,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		setupTheme()
-		StorageService.runCleanupChecks()
+		
+		// If app launches from fresh without flag to mark completion of onboarding, assume reinstall and reset everything
+		if StorageService.didCompleteOnboarding() == false {
+			SideMenuResetViewController.resetAllData()
+		}
+		
 		
 		#if targetEnvironment(simulator)
 			// If running on simulator, print documents directory to help with debugging
 			if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
-				print("Documents Directory: \(documentsPath) \n\n")
+				Logger.app.info("Documents Directory: \(documentsPath)")
 			}
 		
 		#else
@@ -38,13 +43,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			}
 		#endif
 		
-		// Airplay audio/video support
-		application.beginReceivingRemoteControlEvents()
-		
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()
 		
 		return true
+	}
+	
+	func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool {
+		return extensionPointIdentifier != .keyboard
 	}
 	
 	

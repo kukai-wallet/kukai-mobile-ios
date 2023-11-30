@@ -78,14 +78,14 @@ class RemoveWalletViewController: UIViewController {
 			if RemoveWalletViewController.deleteCaches(forWatchAddress: metadata.address) {
 				self.dismiss(animated: true)
 			} else {
-				self.alert(errorWithMessage: "Unable to delete wallet")
+				self.windowError(withTitle: "error".localized(), description: "error-delete-wallet".localized())
 			}
 			
 		} else {
 			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
 				self.dismiss(animated: true)
 			} else {
-				self.alert(errorWithMessage: "Unable to delete wallet")
+				self.windowError(withTitle: "error".localized(), description: "error-delete-wallet".localized())
 			}
 		}
 	}
@@ -94,7 +94,7 @@ class RemoveWalletViewController: UIViewController {
 		if WalletCacheService().deleteWallet(withAddress: address, parentIndex: parentIndex) {
 			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
 			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			return true
 		}
 		
@@ -105,7 +105,7 @@ class RemoveWalletViewController: UIViewController {
 		if WalletCacheService().deleteWatchWallet(address: address) {
 			DependencyManager.shared.balanceService.deleteAccountCachcedData(forAddress: address)
 			DependencyManager.shared.activityService.deleteAccountCachcedData(forAddress: address)
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			return true
 		}
 		

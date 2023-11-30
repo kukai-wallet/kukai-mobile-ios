@@ -30,7 +30,7 @@ public class DiscoverService {
 	
 	private let discoverURL = "https://services.kukaiwallet.workers.dev/v1/discover"
 	
-	private let discoverCacheKey = "discover-cahce-key"
+	private let discoverCacheKey = "discover-cache-key"
 	
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService

@@ -40,7 +40,7 @@ class SendCollectibleAmountViewController: UIViewController {
 		
 		selectedToken = TransactionService.shared.sendData.chosenNFT
 		guard let token = selectedToken else {
-			self.alert(errorWithMessage: "Error finding token info")
+			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			return
 		}
 		
@@ -74,6 +74,7 @@ class SendCollectibleAmountViewController: UIViewController {
 		quantityTextField.validatorTextFieldDelegate = self
 		quantityTextField.validator = NumberValidator(min: 1, max: token.balance, decimalPlaces: 0)
 		quantityTextField.addDoneToolbar()
+		quantityTextField.numericAndSeperatorOnly = true
 		
 		reviewButton.customButtonType = .primary
 	}
@@ -105,7 +106,7 @@ class SendCollectibleAmountViewController: UIViewController {
 		quantityTextField.resignFirstResponder()
 		
 		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
-			self.alert(errorWithMessage: "Can't find destination")
+			self.windowError(withTitle: "error".localized(), description: "error-no-destination".localized())
 			return
 		}
 		
@@ -128,7 +129,7 @@ class SendCollectibleAmountViewController: UIViewController {
 						
 					case .failure(let estimationError):
 						self?.hideLoadingView()
-						self?.alert(errorWithMessage: "\(estimationError)")
+						self?.windowError(withTitle: "error".localized(), description: estimationError.description)
 				}
 			}
 		}

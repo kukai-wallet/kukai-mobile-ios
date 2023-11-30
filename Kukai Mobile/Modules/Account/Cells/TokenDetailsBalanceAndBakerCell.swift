@@ -17,7 +17,7 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 	func setup(data: TokenDetailsBalanceAndBakerData) {
 		if data.isStaked {
 			bakerButton?.customButtonType = .none
-			bakerButton?.setTitle(data.bakerName, for: .normal)
+			bakerButton?.setTitle(data.bakerName + " ", for: .normal)
 			
 		} else {
 			bakerButton?.customButtonType = .secondary

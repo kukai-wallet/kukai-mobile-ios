@@ -41,7 +41,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		/*if DependencyManager.shared.torusVerifiers.keys.count == 0 {
 			cloudKitService.fetchConfigItems { [weak self] error in
 				if let e = error {
-					self?.alert(errorWithMessage: "Unable to fetch config settings: \(e)")
+					self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))
 					
 				} else {
 					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
@@ -90,11 +90,11 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		
 		/*
 		bag1 = DependencyManager.shared.balanceService.$addressRefreshed.dropFirst().sink(receiveValue: { address in
-			print("$addressRefreshed: \(address)")
+			
 		})
 		
 		bag2 = DependencyManager.shared.balanceService.$addressesWaitingToBeRefreshed.dropFirst().sink(receiveValue: { addresses in
-			print("$addressesWaitingToBeRefreshed: \(addresses)")
+			
 		})
 		
 		

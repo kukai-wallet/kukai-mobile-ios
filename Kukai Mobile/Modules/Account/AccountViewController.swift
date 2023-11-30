@@ -43,7 +43,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 					
 				case .failure(_, let errorString):
 					self?.refreshControl.endRefreshing()
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
@@ -87,6 +87,9 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isBackUpCell(atIndexPath: indexPath) {
 			self.performSegue(withIdentifier: "recover", sender: self)
+			
+		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
+			UIApplication.shared.open(AppUpdateService.appStoreURL)
 		}
 	}
 	
@@ -144,7 +147,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 				UIPasteboard.general.string = address
 				
 			default:
-				self.alert(errorWithMessage: "oppsie woopsie")
+				self.windowError(withTitle: "error".localized(), description: "error-unsupport-action".localized())
 		}
 	}
 }

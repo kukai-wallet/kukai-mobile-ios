@@ -53,7 +53,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 			
 			guard let res = try? result.get() else {
 				self?.hideLoadingModal(completion: {
-					self?.alert(errorWithMessage: result.getFailure().description)
+					self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
 				})
 				return
 			}
@@ -101,17 +101,17 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 	func findDomainsAndCache(forMetadata metadata: WalletMetadata, completion: @escaping (() -> Void)) {
 		let walletCache = WalletCacheService()
 		guard walletCache.cacheWatchWallet(metadata: metadata) else {
-			self.alert(withTitle: "Error", andMessage: "Unable to cache wallet details")
+			self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 			completion()
 			return
 		}
 		
-		DependencyManager.shared.walletList = walletCache.readNonsensitive()
+		DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 		DependencyManager.shared.tezosDomainsClient.getMainAndGhostDomainFor(address: metadata.address, completion: { result in
 			switch result {
 				case .success(let response):
 					let _ = DependencyManager.shared.walletList.set(mainnetDomain: response.mainnet, ghostnetDomain: response.ghostnet, forAddress: metadata.address)
-					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					let _ = WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 					DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: metadata.address)
 					
 					LookupService.shared.add(displayText: response.mainnet?.domain.name ?? "", forType: .tezosDomain, forAddress: metadata.address, isMainnet: true)

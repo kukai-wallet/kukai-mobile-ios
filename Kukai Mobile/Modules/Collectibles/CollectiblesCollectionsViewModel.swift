@@ -158,15 +158,16 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		imageURLsForCollectionGroups = []
-		imageURLsForCollectibles = []
-		
 		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "Unable to locate datasource"), "Unable to find datasource")
+			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
 		
 		// Build snapshot data
+		imageURLsForCollectionGroups = []
+		imageURLsForCollectibles = []
+		nftCollectionTotalCounts = []
+		
 		var hashableData: [AnyHashable] = []
 		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 		
@@ -226,6 +227,15 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		itemCount = hashableData.count
 		
 		ds.applySnapshotUsingReloadData(normalSnapshot)
+		
+		/*
+		if forceRefresh {
+			ds.applySnapshotUsingReloadData(normalSnapshot)
+			forceRefresh = false
+		} else {
+			ds.apply(normalSnapshot, animatingDifferences: animate)
+		}
+		*/
 		
 		let currentLayoutType = getLayoutType()
 		if currentLayoutType != previousLayout {

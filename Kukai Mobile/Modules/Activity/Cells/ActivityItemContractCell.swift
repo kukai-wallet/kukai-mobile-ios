@@ -18,8 +18,6 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
-	@IBOutlet weak var invisibleRightButton: UIButton!
-	
 	var gradientLayer = CAGradientLayer()
 	
 	func setup(data: TzKTTransaction) {
@@ -57,9 +55,5 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 			confirmedLabel.isHidden = false
 			confirmedIcon.isHidden = false
 		}
-	}
-	
-	@IBAction func invisibleRightButtonTapped(_ sender: Any) {
-		self.parentViewController()?.alert(withTitle: "More button", andMessage: "Options under construction")
 	}
 }

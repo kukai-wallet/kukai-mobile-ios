@@ -37,7 +37,7 @@ class SideMenuResetViewController: UIViewController {
 		}
 	}
 	
-	public static func resetAllDataAndCaches(completion: @escaping (() -> Void)) {
+	public static func resetAllData() {
 		let _ = WalletCacheService().deleteAllCacheAndKeys()
 		
 		TransactionService.shared.resetAllState()
@@ -52,14 +52,15 @@ class SideMenuResetViewController: UIViewController {
 		DependencyManager.shared.objktClient.deleteCache()
 		DependencyManager.shared.exploreService.deleteCache()
 		DependencyManager.shared.discoverService.deleteCache()
+	}
+	
+	public static func resetAllDataAndCaches(completion: @escaping (() -> Void)) {
+		resetAllData()
 		
 		DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
 		
-		// TODO: default image cache lcear is only necessary temporarily, as we've moved the image cache. Can be removed before prod release
-		ImageCache.default.clearCache {
-			MediaProxyService.imageCache(forType: .temporary).clearCache {
-				MediaProxyService.imageCache(forType: .permanent).clearCache(completion: completion)
-			}
+		MediaProxyService.imageCache(forType: .temporary).clearCache {
+			MediaProxyService.imageCache(forType: .permanent).clearCache(completion: completion)
 		}
 	}
 	

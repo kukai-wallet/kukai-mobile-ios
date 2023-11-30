@@ -99,6 +99,7 @@ class CustomisableButton: UIButton {
 		
 		switch self.customButtonType {
 			case .primary:
+				self.borderWidth = 0
 				
 				if isEnabled && !isHighlighted {
 					gradientLayer = self.addGradientButtonPrimary(withFrame: self.bounds)
@@ -127,6 +128,7 @@ class CustomisableButton: UIButton {
 				}
 				
 			case .tertiary:
+				self.borderWidth = 0
 				
 				if isEnabled && !isHighlighted  {
 					gradientLayer = self.addGradientButtonTertiaryBorder()
@@ -142,6 +144,7 @@ class CustomisableButton: UIButton {
 				}
 				
 			case .destructive:
+				self.borderWidth = 1
 				
 				if isEnabled && !isHighlighted  {
 					self.borderColor = UIColor.colorNamed("BtnStrokeAlert1")

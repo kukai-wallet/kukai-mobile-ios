@@ -29,7 +29,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		
 		if let userActivity = connectionOptions.userActivities.first {
-			os_log("Handling user activity", log: .default, type: .info)
+			Logger.app.info("Handling user activity")
 			handle(userActivity: userActivity)
 		}
 	}
@@ -50,9 +50,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
 		
-		// Manually open WC2 connection
-		WalletConnectService.shared.connectOnAppOpen()
-		
 		// Remove any old assets to avoid clogging up users device too much
 		MediaProxyService.clearExpiredImages()
 	}
@@ -62,9 +59,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
 		// They will auto trigger themselves based on `viewDidAppear` methods
 		showPrivacyProtectionWindow()
-		
-		// Manually close WC2 connection
-		WalletConnectService.shared.disconnectForAppClose()
 		
 		DispatchQueue.global(qos: .background).async {
 			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
@@ -119,7 +113,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	private func handle(userActivity: NSUserActivity) {
 		guard let url = userActivity.webpageURL, userActivity.activityType == NSUserActivityTypeBrowsingWeb else { return }
 		
-		os_log("Attempting to handle Wallet Connect pairing", log: .default, type: .info)
+		Logger.app.info("Attempting to handle Wallet Connect pairing")
 		let wcUri = url.absoluteString.deletingPrefix("https://walletconnect.com/wc?uri=")
 		guard let uri = WalletConnectURI(string: wcUri) else { return }
 		

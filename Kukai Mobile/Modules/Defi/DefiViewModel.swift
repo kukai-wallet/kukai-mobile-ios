@@ -48,7 +48,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			// Otherwise, calculate current value and display
 			guard let self = self, let position = item as? DipDupPositionData, let cell = tableView.dequeueReusableCell(withIdentifier: "LiquidityTokenCell", for: indexPath) as? LiquidityTokenCell else {
-				os_log("Invalid Hashable or cell: %@", log: .default, type: .debug, "\(item)")
+				Logger.app.info("Invalid Hashable or cell: \(item)")
 				return UITableViewCell()
 			}
 			

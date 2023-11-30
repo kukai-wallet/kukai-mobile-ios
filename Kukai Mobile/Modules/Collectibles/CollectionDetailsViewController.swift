@@ -47,11 +47,11 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 			switch state {
 				case .loading:
 					//self?.showLoadingView(completion: nil)
-					print("loading")
+					let _ = ""
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)

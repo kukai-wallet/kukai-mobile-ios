@@ -23,7 +23,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		customNameTextField.validator = FreeformValidator(allowEmpty: false)
+		customNameTextField.validator = LengthValidator(min: 1, max: 30)
 		customNameTextField.validatorTextFieldDelegate = self
 		
 		cancelButton.customButtonType = .secondary
@@ -48,12 +48,12 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
 		
 		let text = customNameTextField.text ?? "HD Wallet"
 		
-		if DependencyManager.shared.walletList.set(hdWalletGroupName: text, forAddress: address), WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+		if DependencyManager.shared.walletList.set(hdWalletGroupName: text, forAddress: address), WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList) {
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			self.dismissBottomSheet()
 			
 		} else {
-			self.alert(errorWithMessage: "Unable to set custom name on wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-custom-name".localized())
 		}
 	}
 }

@@ -37,7 +37,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		customNameTextField.validator = FreeformValidator(allowEmpty: true)
+		customNameTextField.validator = LengthValidator(min: 0, max: 30)
 		customNameTextField.validatorTextFieldDelegate = self
 		
 		customNameCancelButton.customButtonType = .secondary
@@ -113,13 +113,13 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 			text = nil
 		}
 		
-		if DependencyManager.shared.walletList.set(nickname: text, forAddress: address), WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList) {
-			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+		if DependencyManager.shared.walletList.set(nickname: text, forAddress: address), WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList) {
+			DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 			self.dismissBottomSheet()
 			
 		} else {
-			self.alert(errorWithMessage: "Unable to set custom name on wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-custom-name".localized())
 		}
 	}
 	

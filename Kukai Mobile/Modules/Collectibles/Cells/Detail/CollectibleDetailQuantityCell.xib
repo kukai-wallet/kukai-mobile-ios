@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectibleDetailQuantityCell" id="gTV-IL-0wX" customClass="CollectibleDetailQuantityCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="446" height="50"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="446" height="50"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;quantity&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHL-C0-otz">
+                        <rect key="frame" x="373.33333333333331" y="12" width="72.666666666666686" height="38"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                        <color key="textColor" name="Txt2"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="GUC-Fd-C1m">
+                        <rect key="frame" x="0.0" y="20.666666666666668" width="153" height="21.000000000000004"/>
+                        <subviews>
+                            <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Az-wl-IZv">
+                                <rect key="frame" x="0.0" y="0.0" width="66" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="66" id="LA5-ZR-zYR"/>
+                                    <constraint firstAttribute="height" constant="21" id="y5o-Hp-kUT"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="10"/>
+                                <color key="tintColor" name="BGSale"/>
+                                <inset key="contentEdgeInsets" minX="8" minY="8" maxX="8" maxY="8"/>
+                                <inset key="titleEdgeInsets" minX="-4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="ON SALE" backgroundImage="OnSaleTag">
+                                    <color key="titleColor" name="TxtSale"/>
+                                </state>
+                            </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Audio" translatesAutoresizingMaskIntoConstraints="NO" id="lbN-8w-FK5">
+                                <rect key="frame" x="74" y="0.0" width="24" height="21"/>
+                                <color key="tintColor" name="BG6"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3D" translatesAutoresizingMaskIntoConstraints="NO" id="dVB-JH-an3">
+                                <rect key="frame" x="106" y="0.0" width="24" height="21"/>
+                                <color key="tintColor" name="BG6"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="Rty-6H-W87">
+                                <rect key="frame" x="138" y="1.9999999999999982" width="15" height="17"/>
+                                <color key="tintColor" name="BG6"/>
+                            </imageView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="xAn-Lu-vDM"/>
+                        </constraints>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Quantity:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c6v-vE-SRe">
+                        <rect key="frame" x="307.66666666666669" y="22.666666666666668" width="61.666666666666686" height="17.000000000000004"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="c6v-vE-SRe" firstAttribute="centerY" secondItem="aHL-C0-otz" secondAttribute="centerY" id="76u-9F-lt3"/>
+                <constraint firstItem="aHL-C0-otz" firstAttribute="leading" secondItem="c6v-vE-SRe" secondAttribute="trailing" constant="4" id="UKE-LG-KAO"/>
+                <constraint firstAttribute="trailing" secondItem="aHL-C0-otz" secondAttribute="trailing" id="VJN-j0-YSV"/>
+                <constraint firstAttribute="bottom" secondItem="aHL-C0-otz" secondAttribute="bottom" id="Vi5-VM-LaG"/>
+                <constraint firstItem="GUC-Fd-C1m" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="dSM-cw-G38"/>
+                <constraint firstItem="aHL-C0-otz" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="gbv-qI-AJP"/>
+                <constraint firstItem="c6v-vE-SRe" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="GUC-Fd-C1m" secondAttribute="trailing" constant="16" id="iui-0T-ybd"/>
+                <constraint firstItem="GUC-Fd-C1m" firstAttribute="centerY" secondItem="aHL-C0-otz" secondAttribute="centerY" id="yXW-x4-pLM"/>
+            </constraints>
+            <size key="customSize" width="446" height="50"/>
+            <connections>
+                <outlet property="audioIndicator" destination="lbN-8w-FK5" id="ciN-2e-E9s"/>
+                <outlet property="interactableModelIndicator" destination="dVB-JH-an3" id="CLJ-eA-vVh"/>
+                <outlet property="mediaIndicator" destination="Rty-6H-W87" id="JUu-Pq-JYs"/>
+                <outlet property="onSaleIndicator" destination="0Az-wl-IZv" id="KSR-St-pKM"/>
+                <outlet property="quantityLabel" destination="aHL-C0-otz" id="IaD-nA-mzT"/>
+            </connections>
+            <point key="canvasLocation" x="103.81679389312977" y="50.70422535211268"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="3D" width="24" height="24"/>
+        <image name="Audio" width="24" height="24"/>
+        <image name="OnSaleTag" width="67" height="21"/>
+        <image name="play.fill" catalog="system" width="117" height="128"/>
+        <namedColor name="BG6">
+            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGSale">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtSale">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

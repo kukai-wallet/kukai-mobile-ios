@@ -106,7 +106,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		super.viewDidAppear(animated)
 		
 		guard let baker = self.currentDelegateData.chosenBaker else {
-			self.alert(errorWithMessage: "Unable to process baker")
+			self.windowError(withTitle: "error".localized(), description: "error-chosen-baker".localized())
 			self.dismissBottomSheet()
 			return
 		}
@@ -132,7 +132,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		self.showLoadingModal(invisible: true)
 		
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.alert(errorWithMessage: "Unable to find wallet")
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 			self.slideButton.resetSlider()
 			return
 		}
@@ -143,13 +143,13 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						os_log("Sent: %@", log: .default, type: .default, opHash)
+						Logger.app.info("Sent: \(opHash)")
 						
 						self?.addPendingTransaction(opHash: opHash)
 						self?.dismissAndReturn()
 						
 					case .failure(let sendError):
-						self?.alert(errorWithMessage: sendError.description)
+						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
@@ -183,7 +183,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash, type: .delegation, counter: counter, fromWallet: selectedWalletMetadata, newDelegate: TzKTAddress(alias: baker.name, address: baker.address))
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
-		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
+		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 }
 

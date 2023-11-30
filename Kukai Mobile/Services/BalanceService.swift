@@ -53,6 +53,7 @@ public class BalanceService {
 	
 	@Published public var addressesWaitingToBeRefreshed: [String] = []
 	@Published public var addressRefreshed: String = ""
+	@Published public var addressErrored: (address: String, error: KukaiError)? = nil
 	
 	private static let cacheFilenameAccount = "balance-service-"
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
@@ -111,6 +112,10 @@ public class BalanceService {
 			self?.fetchAllBalancesTokensAndPrices(forAddress: currentFetchRequest.address, refreshType: currentFetchRequest.type, completion: { error in
 				
 				DispatchQueue.main.async { [weak self] in
+					if let err = error {
+						self?.addressErrored = (address: currentFetchRequest.address, error: err)
+					}
+					
 					// If an address on the list of to be refreshed, has had anything done at all, remove it from list
 					if let index = self?.addressesWaitingToBeRefreshed.firstIndex(of: currentFetchRequest.address) {
 						self?.addressesWaitingToBeRefreshed.remove(at: index)
@@ -260,6 +265,7 @@ public class BalanceService {
 		balanceRequestDispathGroup.enter()
 		balanceRequestDispathGroup.enter()
 		balanceRequestDispathGroup.enter()
+		balanceRequestDispathGroup.enter()
 		
 		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
@@ -358,10 +364,17 @@ public class BalanceService {
 			self?.balanceRequestDispathGroup.leave()
 		}
 		
+		// Make sure current app version is update to date
+		DependencyManager.shared.appUpdateService.fetchUpdatedVersionDataIfNeeded { [weak self] result in
+			self?.balanceRequestDispathGroup.leave()
+		}
+		
 		// Get latest Tezos USD price
 		DependencyManager.shared.coinGeckoService.fetchTezosPrice { [weak self] result in
 			guard let _ = try? result.get() else {
-				error = result.getFailure()
+				// We don't want to block access to the app due to a third party pricing API. Will revist with a better strategy
+				//error = result.getFailure()
+				DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
 				self?.balanceRequestDispathGroup.leave()
 				return
 			}
@@ -397,10 +410,12 @@ public class BalanceService {
 		// When everything fetched, process data
 		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
 			if let err = error {
+				self?.updateCacheDate(forAddress: address)
 				DispatchQueue.main.async { completion(err) }
 				
 			} else {
 				guard let self = self else {
+					self?.updateCacheDate(forAddress: address)
 					DispatchQueue.main.async { completion(KukaiError.unknown()) }
 					return
 				}

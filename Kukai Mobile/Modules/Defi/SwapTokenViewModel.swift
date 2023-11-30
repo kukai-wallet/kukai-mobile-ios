@@ -30,7 +30,7 @@ class SwapTokenViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			guard let exchange = item as? DipDupExchange else {
-				os_log("Invalid Hashable: %@", log: .default, type: .debug, "\(item)")
+				Logger.app.error("Invalid Hashable: \(item)")
 				return UITableViewCell()
 			}
 			

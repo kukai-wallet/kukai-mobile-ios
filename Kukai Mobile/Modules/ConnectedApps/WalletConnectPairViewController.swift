@@ -87,7 +87,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	@MainActor
 	private func approve(proposalId: String, namespaces: [String: SessionNamespace]) {
-		os_log("WC Approve Session %@", log: .default, type: .info, proposalId)
+		Logger.app.info("WC Approve Session \(proposalId)")
 		Task {
 			do {
 				let currentAccount = DependencyManager.shared.selectedWalletMetadata
@@ -121,9 +121,9 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
 				}
 				
-				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Approve Session error: \(error)")
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.alert(errorWithMessage: message)
+					self?.windowError(withTitle: "error".localized(), description: message)
 				})
 			}
 		}
@@ -145,7 +145,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				
 			} catch (let error) {
 				self.hideLoadingModal(completion: { [weak self] in
-					self?.alert(errorWithMessage: "Error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 				})
 			}
 		}

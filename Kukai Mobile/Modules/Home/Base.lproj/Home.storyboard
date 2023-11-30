@@ -111,6 +111,8 @@
                         <segue destination="PDR-kB-1E3" kind="custom" identifier="side-menu-show-qr" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Ewk-V5-Km6"/>
                         <segue destination="gdi-7W-77M" kind="show" identifier="side-menu-settings" id="N38-pa-9HH"/>
                         <segue destination="3St-ke-ea9" kind="show" identifier="side-menu-security" id="QP8-i8-wcO"/>
+                        <segue destination="70q-lL-8WM" kind="presentation" identifier="app-update-required" modalPresentationStyle="overFullScreen" modalTransitionStyle="crossDissolve" id="2kJ-tl-bHi"/>
+                        <segue destination="wXr-c8-sbt" kind="show" identifier="side-menu-show-onramp" id="yB4-OA-Mg2"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -156,6 +158,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOT-Rd-hYx" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-172" y="-2982"/>
+        </scene>
+        <!--onramp-->
+        <scene sceneID="tkh-s7-BiT">
+            <objects>
+                <viewControllerPlaceholder storyboardName="SideMenu" referencedIdentifier="onramp" id="wXr-c8-sbt" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="Pfo-yA-jn8"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="BVc-h2-Mbv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-162" y="-2932"/>
         </scene>
         <!--Wallets-->
         <scene sceneID="jFg-Wn-X5b">
@@ -1258,6 +1270,101 @@
             </objects>
             <point key="canvasLocation" x="-159" y="-3031"/>
         </scene>
+        <!--Required Update View Controller-->
+        <scene sceneID="Q7v-8w-euW">
+            <objects>
+                <viewController id="70q-lL-8WM" customClass="RequiredUpdateViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="6A3-Q3-BFl">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R4G-Xl-bPf">
+                                <rect key="frame" x="16" y="216.99999999999997" width="358" height="410.33333333333326"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Downloads" translatesAutoresizingMaskIntoConstraints="NO" id="9lH-yf-zcz">
+                                        <rect key="frame" x="140" y="50" width="78" height="78"/>
+                                        <color key="tintColor" name="BGAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="vsg-sh-nn6"/>
+                                            <constraint firstAttribute="height" constant="78" id="zb6-JG-vGe"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Update Available!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vkp-B1-RW0">
+                                        <rect key="frame" x="16" y="144" width="326" height="26.666666666666657"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="REQUIRED:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhs-IZ-wtB">
+                                        <rect key="frame" x="16" y="194.66666666666669" width="326" height="17"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="TxtAlert2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This is a new update available for Kukai. You MUST update your app to continue using your wallets." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NGh-WG-OQM">
+                                        <rect key="frame" x="16" y="221.66666666666669" width="326" height="33.666666666666657"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt6"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f4H-Qi-waO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="60" y="315.33333333333337" width="238" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="nhO-hU-2GE"/>
+                                        </constraints>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Update Now">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="updateButtonTapped:" destination="70q-lL-8WM" eventType="touchUpInside" id="4os-yd-WDt"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="vkp-B1-RW0" firstAttribute="leading" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="16" id="70m-xK-G9c"/>
+                                    <constraint firstItem="vkp-B1-RW0" firstAttribute="top" secondItem="9lH-yf-zcz" secondAttribute="bottom" constant="16" id="AEL-yJ-6eL"/>
+                                    <constraint firstItem="dhs-IZ-wtB" firstAttribute="top" secondItem="vkp-B1-RW0" secondAttribute="bottom" constant="24" id="FdI-0R-e41"/>
+                                    <constraint firstAttribute="trailing" secondItem="vkp-B1-RW0" secondAttribute="trailing" constant="16" id="Gdi-ZJ-jTI"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="f4H-Qi-waO" secondAttribute="trailing" constant="60" id="Kzd-G5-Afx"/>
+                                    <constraint firstItem="NGh-WG-OQM" firstAttribute="leading" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="16" id="Lmj-Qk-mi0"/>
+                                    <constraint firstItem="f4H-Qi-waO" firstAttribute="top" secondItem="NGh-WG-OQM" secondAttribute="bottom" constant="60" id="MG2-vz-BGS"/>
+                                    <constraint firstAttribute="trailing" secondItem="NGh-WG-OQM" secondAttribute="trailing" constant="16" id="NJb-nG-rdl"/>
+                                    <constraint firstItem="9lH-yf-zcz" firstAttribute="centerX" secondItem="R4G-Xl-bPf" secondAttribute="centerX" id="Qbp-6E-MRY"/>
+                                    <constraint firstItem="f4H-Qi-waO" firstAttribute="leading" relation="lessThanOrEqual" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="60" id="QvS-eM-Oxt"/>
+                                    <constraint firstAttribute="trailing" secondItem="dhs-IZ-wtB" secondAttribute="trailing" constant="16" id="X5N-fx-XTo"/>
+                                    <constraint firstAttribute="bottom" secondItem="f4H-Qi-waO" secondAttribute="bottom" constant="39" id="ejZ-iR-Cvc"/>
+                                    <constraint firstItem="9lH-yf-zcz" firstAttribute="top" secondItem="R4G-Xl-bPf" secondAttribute="top" constant="50" id="hOD-d5-OY0"/>
+                                    <constraint firstItem="NGh-WG-OQM" firstAttribute="top" secondItem="dhs-IZ-wtB" secondAttribute="bottom" constant="10" id="suT-ar-9fH"/>
+                                    <constraint firstItem="dhs-IZ-wtB" firstAttribute="leading" secondItem="R4G-Xl-bPf" secondAttribute="leading" constant="16" id="vsk-rb-Jhd"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="U1q-3R-g29"/>
+                        <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="R4G-Xl-bPf" firstAttribute="centerY" secondItem="U1q-3R-g29" secondAttribute="centerY" id="8Mp-x6-Oxl"/>
+                            <constraint firstItem="R4G-Xl-bPf" firstAttribute="leading" secondItem="U1q-3R-g29" secondAttribute="leading" constant="16" id="q8F-9Y-hMf"/>
+                            <constraint firstItem="U1q-3R-g29" firstAttribute="trailing" secondItem="R4G-Xl-bPf" secondAttribute="trailing" constant="16" id="yXV-jY-OFa"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="R4G-Xl-bPf" id="RsS-3r-elp"/>
+                        <outlet property="updateButton" destination="f4H-Qi-waO" id="6Xp-wX-B5C"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="itd-rL-a9e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1305" y="-1756"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="0Rb-3x-STy">
@@ -1299,6 +1406,9 @@
         <designable name="abB-kP-P9Y">
             <size key="intrinsicContentSize" width="119" height="20"/>
         </designable>
+        <designable name="f4H-Qi-waO">
+            <size key="intrinsicContentSize" width="140" height="38"/>
+        </designable>
         <designable name="j1h-E1-Rkf">
             <size key="intrinsicContentSize" width="64" height="36"/>
         </designable>
@@ -1313,6 +1423,7 @@
         <image name="Alert" width="24" height="24"/>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="Delete" width="24" height="24"/>
+        <image name="Downloads" width="24" height="24"/>
         <image name="Edit" width="24" height="24"/>
         <image name="Ellipses" width="24" height="24"/>
         <image name="Hamburger" width="24" height="24"/>
@@ -1356,6 +1467,9 @@
         </namedColor>
         <namedColor name="Txt6">
             <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtAlert2">
+            <color red="0.62352941176470589" green="0.15294117647058825" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

@@ -7,6 +7,7 @@
 
 import Foundation
 import KukaiCoreSwift
+import Starscream
 import WalletConnectNetworking
 import WalletConnectPairing
 import WalletConnectSign
@@ -26,12 +27,25 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func provideAccountList()
 	func error(message: String?, error: Error?)
+	func connectionStatusChanged(status: SocketConnectionStatus)
 }
 
 public struct WalletConnectGetAccountObj: Codable {
 	let algo: String
 	let address: String
 	let pubkey: String
+}
+
+extension WebSocket: WebSocketConnecting {}
+
+struct DefaultSocketFactory: WebSocketFactory {
+	
+	func create(with url: URL) -> WebSocketConnecting {
+		let socket = WebSocket(url: url)
+		let queue = DispatchQueue(label: "com.walletconnect.sdk.sockets", attributes: .concurrent)
+		socket.callbackQueue = queue
+		return socket
+	}
 }
 
 public class WalletConnectService {
@@ -57,16 +71,23 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: NativeSocketFactory(), socketConnectionType: .manual)
+		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
 		
-		try? Networking.instance.connect()
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				self?.delegate?.connectionStatusChanged(status: status)
+			}
+		}.store(in: &bag)
+		
 		
 		// Callbacks
 		Sign.instance.sessionRequestPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionRequest in
-				os_log("WC sessionRequestPublisher", log: .default, type: .info)
+				Logger.app.info("WC sessionRequestPublisher")
 				
 				TransactionService.shared.resetWalletConnectState()
 				TransactionService.shared.walletConnectOperationData.request = sessionRequest.request
@@ -89,66 +110,26 @@ public class WalletConnectService {
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
-				os_log("WC sessionProposalPublisher %@", log: .default, type: .info)
+				Logger.app.info("WC sessionProposalPublisher")
 				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal.proposal
 				self?.delegate?.pairRequested()
 			}.store(in: &bag)
 		
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
-			.sink { /*[weak self]*/ data in
-				os_log("WC sessionSettlePublisher %@", log: .default, type: .info, data.topic)
-				//self?.viewModel.refresh(animate: true)
+			.sink { data in
+				Logger.app.info("WC sessionSettlePublisher \(data.topic)")
 			}.store(in: &bag)
 		
 		Sign.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
-				os_log("WC sessionDeletePublisher %@", log: .default, type: .info, data.0)
+				Logger.app.info("WC sessionDeletePublisher \(data.0)")
 				Task { [weak self] in
 					await WalletConnectService.cleanupSessionlessPairs()
 					self?.didCleanAfterDelete = true
 				}
 			}.store(in: &bag)
-	}
-	
-	public func reconnect(completion: @escaping ((Error?) -> Void)) {
-		bag.forEach({ $0.cancel() })
-		bag = []
-		
-		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
-			completion(nil)
-			
-			self?.temporaryBag.forEach({ $0.cancel() })
-			
-		}.store(in: &temporaryBag)
-		
-		do {
-			try Networking.instance.disconnect(closeCode: .normalClosure)
-			self.setup()
-			
-		} catch (let error) {
-			completion(error)
-		}
-	}
-	
-	public func disconnectForAppClose() {
-		if delegate != nil {
-			try? Networking.instance.disconnect(closeCode: .normalClosure)
-		}
-	}
-	
-	public func connectOnAppOpen() {
-		if delegate != nil {
-			self.reconnect { _ in
-				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-					
-					if let uri = WalletConnectService.shared.uriToOpenOnAppReturn {
-						WalletConnectService.shared.pairClient(uri: uri)
-					}
-				}
-			}
-		}
 	}
 	
 	
@@ -205,14 +186,14 @@ public class WalletConnectService {
 	
 	@MainActor
 	public func pairClient(uri: WalletConnectURI) {
-		os_log("WC pairing to %@", log: .default, type: .info, uri.absoluteString)
+		Logger.app.info("WC pairing to \(uri.absoluteString)")
 		Task {
 			do {
 				try await Pair.instance.pair(uri: uri)
 				uriToOpenOnAppReturn = nil
 				
 			} catch {
-				os_log("WC Pairing connect error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Pairing connect error: \(error)")
 				self.delegate?.error(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)
 			}
 		}
@@ -221,12 +202,12 @@ public class WalletConnectService {
 	@MainActor
 	public func respondWithAccounts() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Approve Session error: Unable to find request")
 			self.delegate?.error(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
 			return
 		}
 		
-		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Approve Request: \(request.id)")
 		Task {
 			do {
 				/*
@@ -266,7 +247,7 @@ public class WalletConnectService {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
 				
 			} catch {
-				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Approve Session error: \(error)")
 				self.delegate?.error(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
 			}
 		}
@@ -308,7 +289,7 @@ public class WalletConnectService {
 	
 	@MainActor
 	public static func reject(proposalId: String, reason: RejectionReason) throws {
-		os_log("WC Reject Pairing %@", log: .default, type: .info, proposalId)
+		Logger.app.info("WC Reject Pairing \(proposalId)")
 		Task {
 			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
 			await WalletConnectService.cleanupDanglingPairings()
@@ -318,7 +299,7 @@ public class WalletConnectService {
 	
 	@MainActor
 	public static func reject(topic: String, requestId: RPCID) throws {
-		os_log("WC Reject Request topic: %@, id: %@", log: .default, type: .info, topic, requestId.description)
+		Logger.app.info("WC Reject Request topic: \(topic), id: \(requestId.description)")
 		Task {
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
 			TransactionService.shared.resetWalletConnectState()
@@ -349,12 +330,12 @@ public class WalletConnectService {
 				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-				self.delegate?.error(message: "Processing WalletConnect request, request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				self.delegate?.error(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				return
 			}
 			
 			guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-				self.delegate?.error(message: "Processing WalletConnect request, unable to parse response or locate wallet", error: nil)
+				self.delegate?.error(message: "Unable to parse response or locate wallet", error: nil)
 				return
 			}
 			
@@ -366,7 +347,7 @@ public class WalletConnectService {
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 				guard let estimationResult = try? result.get() else {
-					self?.delegate?.error(message: "Processing WalletConnect request, unable to estimate fees", error: result.getFailure())
+					self?.delegate?.error(message: "Unable to estimate fees", error: result.getFailure())
 					return
 				}
 				

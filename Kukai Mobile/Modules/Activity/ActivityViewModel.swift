@@ -243,6 +243,14 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return false
 	}
 	
+	public func statusFor(indexPath: IndexPath) -> TzKTTransaction.TransactionStatus {
+		if let item = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup {
+			return item.status
+		}
+		
+		return .unknown
+	}
+	
 	private func openGroup(forTableView tableView: UITableView?, atIndexPath indexPath: IndexPath) {
 		if let cell = tableView?.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setOpen()

@@ -151,7 +151,7 @@ class ImportWalletViewController: UIViewController {
 		}
 		
 		guard let wal = wallet else {
-			self.alert(errorWithMessage: "Unable to create wallet from details supplied. Please check and try again")
+			self.windowError(withTitle: "error".localized(), description: "error-new-wallet-details".localized())
 			return
 		}
 		
@@ -163,7 +163,7 @@ class ImportWalletViewController: UIViewController {
 			conintue(withWallet: wal)
 			
 		} else {
-			self.alert(errorWithMessage: "Supplied wallet address, does not match wallet created. Please ensure you have entered the correct details")
+			self.windowError(withTitle: "error".localized(), description: "error-new-wallet-address".localized())
 		}
 	}
 	
@@ -188,7 +188,7 @@ class ImportWalletViewController: UIViewController {
 					}
 					
 				} else {
-					self.alert(withTitle: "Error", andMessage: "Unable to cache")
+					self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 				}
 			}
 			
@@ -200,7 +200,7 @@ class ImportWalletViewController: UIViewController {
 					self?.navigate()
 					
 				} else {
-					self?.alert(withTitle: "Error", andMessage: "Unable to cache")
+					self?.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 				}
 			}
 		}
@@ -349,7 +349,7 @@ extension ImportWalletViewController: ValidatorTextFieldDelegate {
 		if !isValid && textfield == walletAddressTextField {
 			textfield.resignFirstResponder()
 			walletAddressErrorLabel.isHidden = false
-			walletAddressErrorLabel.text = "Invalid wallet address"
+			walletAddressErrorLabel.text = "error-wrong-address".localized()
 			
 		} else if isValid && textfield == walletAddressTextField {
 			walletAddressErrorLabel.isHidden = true

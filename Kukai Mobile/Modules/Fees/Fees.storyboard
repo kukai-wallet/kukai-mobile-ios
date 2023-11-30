@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -132,7 +133,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;gasLimit&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pfX-zJ-QUN" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="253" y="221" width="145" height="26"/>
+                                <rect key="frame" x="253" y="220" width="145" height="26"/>
                                 <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="7gh-Tj-fBy"/>
@@ -164,7 +165,7 @@
                                 </userDefinedRuntimeAttributes>
                             </textField>
                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="&lt;storageLimit&gt;" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xbO-bZ-r3K" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="253" y="282" width="145" height="26"/>
+                                <rect key="frame" x="253" y="280" width="145" height="26"/>
                                 <color key="backgroundColor" name="BG4"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="26" id="Mbb-cV-zPi"/>
@@ -204,7 +205,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TlC-dR-JTf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="16" y="225.5" width="205" height="17"/>
+                                <rect key="frame" x="16" y="224.5" width="205" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <color key="tintColor" name="BG10"/>
                                 <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -228,7 +229,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RY5-dt-g9M" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="16" y="286.5" width="205" height="17"/>
+                                <rect key="frame" x="16" y="284.5" width="205" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <color key="tintColor" name="BG10"/>
                                 <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -252,34 +253,34 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;feeError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bgU-kb-d9w">
-                                <rect key="frame" x="16" y="190" width="382" height="15"/>
+                                <rect key="frame" x="16" y="190" width="382" height="14"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                 <color key="textColor" name="TxtAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;gasError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h8J-NQ-nrc">
-                                <rect key="frame" x="16" y="251" width="382" height="15"/>
+                                <rect key="frame" x="16" y="250" width="382" height="14"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                 <color key="textColor" name="TxtAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;storageError&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K9f-DD-FOo">
-                                <rect key="frame" x="215" y="312" width="183" height="15"/>
+                                <rect key="frame" x="215.5" y="310" width="182.5" height="14"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                 <color key="textColor" name="TxtAlert4"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rnn-3H-Rsw">
-                                <rect key="frame" x="16" y="311.5" width="183" height="14.5"/>
+                                <rect key="frame" x="16" y="309.5" width="183.5" height="14"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Storage Cost" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qit-Eg-Wvz">
-                                        <rect key="frame" x="0.0" y="0.0" width="96.5" height="14.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="97.5" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;maxStorage&gt;" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="om3-MQ-wmM">
-                                        <rect key="frame" x="102.5" y="0.0" width="80.5" height="14.5"/>
+                                        <rect key="frame" x="103.5" y="0.0" width="80" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt10"/>
                                         <nil key="highlightedColor"/>
@@ -572,22 +573,22 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
     </scenes>
     <designables>
         <designable name="67P-1Z-wq0">
-            <size key="intrinsicContentSize" width="39" height="18.5"/>
+            <size key="intrinsicContentSize" width="36" height="18"/>
         </designable>
         <designable name="Jyl-eL-Wbd">
             <size key="intrinsicContentSize" width="38" height="17"/>
         </designable>
         <designable name="RY5-dt-g9M">
-            <size key="intrinsicContentSize" width="102" height="17"/>
+            <size key="intrinsicContentSize" width="98" height="17"/>
         </designable>
         <designable name="TlC-dR-JTf">
-            <size key="intrinsicContentSize" width="75" height="17"/>
+            <size key="intrinsicContentSize" width="74" height="17"/>
         </designable>
         <designable name="pfX-zJ-QUN">
-            <size key="intrinsicContentSize" width="74" height="18.5"/>
+            <size key="intrinsicContentSize" width="70" height="18"/>
         </designable>
         <designable name="xbO-bZ-r3K">
-            <size key="intrinsicContentSize" width="100" height="18.5"/>
+            <size key="intrinsicContentSize" width="95" height="18"/>
         </designable>
     </designables>
     <resources>

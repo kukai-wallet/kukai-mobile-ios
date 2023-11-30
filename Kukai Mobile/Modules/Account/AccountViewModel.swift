@@ -11,9 +11,17 @@ import Combine
 import OSLog
 import Kingfisher
 
-struct TotalEstiamtedValue: Hashable {
+struct TotalEstimatedValue: Hashable {
 	let tez: XTZAmount
 	let value: String
+}
+
+struct BackupCellData: Hashable {
+	let id = UUID()
+}
+
+struct UpdateWarningCellData: Hashable {
+	let id = UUID()
 }
 
 struct AccountGettingStartedData: Hashable {
@@ -51,7 +59,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
-	var hasPassedNewUserStage = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.hasPassedNewUserStage)
 	var forceRefresh = false
 	var tokensToDisplay: [Token] = []
 	var balancesMenuVC: MenuViewController? = nil
@@ -101,7 +108,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
-			if let _ = item as? Bool, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+			if let _ = item as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+				return cell
+				
+			} else if let _ = item as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
 				return cell
 				
 			} else if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
@@ -145,7 +155,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let total = item as? TotalEstiamtedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
+			} else if let total = item as? TotalEstimatedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
 				
 				if total.tez.normalisedRepresentation == "-1" {
 					cell.balanceLabel.text = "--- tez"
@@ -208,18 +218,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let balanceService = DependencyManager.shared.balanceService
 		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
 			
-			runNewUserCheck()
-			if hasPassedNewUserStage {
-				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
+			if isEmptyAccount() {
+				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 				
 			} else {
-				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
+				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
 			}
 			
 		} else {
 			let hashableData: [AnyHashable] = [
 				balancesMenuVC,
-				TotalEstiamtedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
+				TotalEstimatedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
 				LoadingContainerCellObject(),
 				LoadingContainerCellObject(),
 				LoadingContainerCellObject()
@@ -243,24 +252,27 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	private func runNewUserCheck() {
-		if !hasPassedNewUserStage {
-			let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-			let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
-			
-			if xtzBalance > .zero() || tokenCount > 0 {
-				hasPassedNewUserStage = true
-				UserDefaults.standard.set(true, forKey: StorageService.settingsKeys.hasPassedNewUserStage)
-			}
-		}
+	private func isEmptyAccount() -> Bool {
+		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
+		let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
+		
+		return (xtzBalance == .zero() && tokenCount == 0)
 	}
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
 		var data = startingData
 		
 		if metadata?.backedUp == false {
-			data.append(true)
+			data.append(BackupCellData())
 		}
+		
+		
+		// App update logic
+		DependencyManager.shared.appUpdateService.checkVersions()
+		if DependencyManager.shared.appUpdateService.isRecommendedUpdate {
+			data.append(UpdateWarningCellData())
+		}
+		
 		
 		// Else build arrays of acutal data
 		let totalXTZ = DependencyManager.shared.balanceService.estimatedTotalXtz(forAddress: selectedAddress)
@@ -290,7 +302,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		data.append(balancesMenuVC)
 		
 		if tokensToDisplay.count > 0 {
-			data.append(TotalEstiamtedValue(tez: totalXTZ, value: totalCurrencyString))
+			data.append(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString))
 		}
 		
 		data.append(DependencyManager.shared.balanceService.account.xtzBalance)
@@ -344,7 +356,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func isBackUpCell(atIndexPath: IndexPath) -> Bool {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)
 		
-		return obj is Bool
+		return obj is BackupCellData
+	}
+	
+	func isUpdateWarningCell(atIndexPath: IndexPath) -> Bool {
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		
+		return obj is UpdateWarningCellData
 	}
 	
 	static func setupAccountActivityListener() {

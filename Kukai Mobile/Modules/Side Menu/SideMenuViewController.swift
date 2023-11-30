@@ -66,7 +66,7 @@ class SideMenuViewController: UIViewController {
 					let _ = ""
 					
 				case .failure(_, let message):
-					self.alert(withTitle: "Error", andMessage: message)
+					self.windowError(withTitle: "error".localized(), description: message)
 			}
 		}.store(in: &bag)
 		
@@ -106,6 +106,8 @@ class SideMenuViewController: UIViewController {
 			regularIcon.image = media.image
 			regularTitle.text = media.title
 		}
+		
+		getTezButton.isEnabled = !wallet.isWatchOnly
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
@@ -178,7 +180,8 @@ class SideMenuViewController: UIViewController {
 	}
 	
 	@IBAction func getTezTapped(_ sender: Any) {
-		self.alert(errorWithMessage: "Under construction")
+		self.closeTapped(self)
+		homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {

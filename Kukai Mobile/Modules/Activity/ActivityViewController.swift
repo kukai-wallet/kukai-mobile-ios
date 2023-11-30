@@ -38,7 +38,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 					
 				case .failure(_, let errorString):
 					self?.refreshControl.endRefreshing()
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					self?.refreshControl.endRefreshing()
@@ -80,11 +80,18 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		
-		if let c = cell as? UITableViewCellContainerView, viewModel.isUnconfirmed(indexPath: indexPath) {
-			c.addUnconfirmedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+		if let c = cell as? UITableViewCellContainerView {
+			let status = viewModel.statusFor(indexPath: indexPath)
 			
-		} else if let c = cell as? UITableViewCellContainerView, viewModel.expandedIndex != indexPath {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+			if status == .failed || status == .backtracked {
+				c.addFailedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+				
+			} else if status == .unconfirmed {
+				c.addUnconfirmedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+				
+			} else {
+				c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
+			}
 		}
 	}
 	

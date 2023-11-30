@@ -38,7 +38,7 @@ class SendTokenAmountViewController: UIViewController {
 		
 		selectedToken = TransactionService.shared.sendData.chosenToken
 		guard let token = selectedToken else {
-			self.alert(errorWithMessage: "Error finding token info")
+			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			return
 		}
 		
@@ -66,6 +66,7 @@ class SendTokenAmountViewController: UIViewController {
 		textfield.validatorTextFieldDelegate = self
 		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
+		textfield.numericAndSeperatorOnly = true
 		
 		errorLabel.isHidden = true
 		maxWarningLabel.isHidden = true
@@ -95,7 +96,7 @@ class SendTokenAmountViewController: UIViewController {
 	
 	func estimateFeeAndNavigate() {
 		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
-			self.alert(errorWithMessage: "Can't find destination")
+			self.windowError(withTitle: "error".localized(), description: "error-no-destination".localized())
 			return
 		}
 		
@@ -117,7 +118,7 @@ class SendTokenAmountViewController: UIViewController {
 						
 					case .failure(let estimationError):
 						self?.hideLoadingView()
-						self?.alert(errorWithMessage: "\(estimationError)")
+						self?.windowError(withTitle: "error".localized(), description: estimationError.description)
 				}
 			}
 		}

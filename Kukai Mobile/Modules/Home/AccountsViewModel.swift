@@ -213,21 +213,21 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self?.isPreviousAccountUsed(forAddress: walletMetadata.address, completion: { isUsed in
 				guard isUsed else {
 					vc.hideLoadingView()
-					vc.alert(withTitle: "Previous Account empty", andMessage: "The main wallet or the previous account is empty, you can only have 1 empty account per wallet at a time")
+					vc.windowError(withTitle: "error-previous-account-title".localized(), description: "error-previous-account-empty".localized())
 					return
 				}
 				
 				guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
 					  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
 					vc.hideLoadingView()
-					vc.alert(errorWithMessage: "Unable to add child")
+					vc.windowError(withTitle: "error".localized(), description: "error-cant-add-account".localized())
 					return
 				}
 				
 				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
 					guard success else {
 						vc.hideLoadingView()
-						vc.alert(withTitle: "Error", andMessage: "Unable to cache")
+						vc.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 						return
 					}
 					
@@ -276,7 +276,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						let _ = DependencyManager.shared.walletList.set(mainnetDomain: response[address]?.mainnet, ghostnetDomain: response[address]?.ghostnet, forAddress: address)
 					}
 					
-					let _ = WalletCacheService().writeNonsensitive(DependencyManager.shared.walletList)
+					let _ = WalletCacheService().encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 					if let currentAddress = DependencyManager.shared.selectedWalletAddress {
 						DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: currentAddress)
 					}

@@ -34,7 +34,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 					
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)
@@ -47,8 +47,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.sink { [weak self] (sessionTopic: String, namespaces: [String : SessionNamespace]) in
 				self?.pairingToChangeAccount = nil
 				self?.viewModel.refresh(animate: true)
-				
-				print("updating ....")
 			}.store(in: &bag)
 		
 		WalletConnectService.shared.$didCleanAfterDelete
@@ -56,8 +54,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
 				self?.viewModel.refresh(animate: true)
-				
-				print("deleting ....")
 			}.store(in: &bag)
 	}
 	
@@ -87,7 +83,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.pairingToChangeAccount = nil
-						self?.alert(errorWithMessage: "\(error)")
+						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
 				}
 			}
@@ -101,18 +97,20 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	}
 	
 	@IBAction func reconnectTapped(_ sender: Any) {
-
+		
+		/*
 		self.showLoadingModal { [weak self] in
 			
 			WalletConnectService.shared.reconnect { error in
 				
 				self?.hideLoadingModal(completion: {
 					if let err = error {
-						self?.alert(errorWithMessage: "Unable to reconnect: \(err)")
+						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-reconnect"), withArguments: err.localizedDescription) )
 					}
 				})
 			}
 		}
+		*/
 	}
 }
 
@@ -151,7 +149,7 @@ extension WalletConnectViewController: UITableViewDelegate {
 					}
 				} catch {
 					DispatchQueue.main.async { [weak self] in
-						self?.alert(errorWithMessage: "\(error)")
+						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
 				}
 			}

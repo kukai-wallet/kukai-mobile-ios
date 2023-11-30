@@ -27,6 +27,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		self.navigationController?.removeOnboardingScreens()
+		
 		addButtonContainer.accessibilityIdentifier = "accounts-nav-add"
 		editButtonContainer.accessibilityIdentifier = "accounts-nav-edit"
 		doneButtonContainer.accessibilityIdentifier = "accounts-nav-done"
@@ -60,7 +62,7 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 				case .failure(_, let errorString):
 					//self?.hideLoadingView(completion: nil)
 					self?.refreshControl.endRefreshing()
-					self?.alert(withTitle: "Error", andMessage: errorString)
+					self?.windowError(withTitle: "error".localized(), description: errorString)
 					
 				case .success:
 					//self?.hideLoadingView(completion: nil)

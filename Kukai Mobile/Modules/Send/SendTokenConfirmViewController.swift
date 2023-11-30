@@ -87,7 +87,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
-				self.alert(errorWithMessage: "Unable to locate requested account")
+				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 				self.walletConnectRespondOnReject()
 				self.dismissBottomSheet()
 				return
@@ -200,7 +200,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	private func fetchWalletAndSend() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.hideLoadingModal {
-				self.alert(errorWithMessage: "Unable to find wallet")
+				self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 				self.slideButton.resetSlider()
 			}
 			
@@ -213,7 +213,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
 				switch sendResult {
 					case .success(let opHash):
-						os_log("Sent: %@", log: .default, type: .default, opHash)
+						Logger.app.info("Sent: \(opHash)")
 						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
@@ -267,7 +267,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
-				self.alert(withTitle: "Insufficient Funds", andMessage: "Your balance is \(token.balance.normalisedRepresentation) and the required fee to make this transaction is \(fee.normalisedRepresentation)")
+				self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
 				updateAmountDisplay(withValue: .zero())
 				slideButton.isUserInteractionEnabled = false
 				slideButton.alpha = 0.6
@@ -339,19 +339,19 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
-		os_log("Recorded pending transaction: %@", "\(addPendingResult)")
+		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 	
 	@MainActor
 	private func walletConnectRespondOnSign(opHash: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Approve Session error: Unable to find request", log: .default, type: .error)
-			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			Logger.app.error("WC Approve Session error: Unable to find request")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
 		
-		os_log("WC Approve Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Approve Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
@@ -359,8 +359,8 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				self.dismissAndReturn()
 				
 			} catch {
-				os_log("WC Approve Session error: %@", log: .default, type: .error, "\(error)")
-				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				Logger.app.error("WC Approve Session error: \(error)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}
@@ -369,13 +369,13 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	@MainActor
 	private func walletConnectRespondOnReject() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
-			self.alert(errorWithMessage: "Unable to respond to Wallet Connect")
+			Logger.app.error("WC Reject Session error: Unable to find request")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
 			self.dismissAndReturn()
 			return
 		}
 		
-		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Reject Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
@@ -383,8 +383,8 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				self.dismissAndReturn()
 				
 			} catch {
-				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
-				self.alert(errorWithMessage: "Error responding to Wallet Connect: \(error)")
+				Logger.app.error("WC Reject Session error: \(error)")
+				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
 				self.dismissAndReturn()
 			}
 		}

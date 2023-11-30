@@ -70,7 +70,7 @@ struct WalletConnectRequestParams: Codable {
 			return convertedOp
 			
 		} catch (let error) {
-			os_log("Failed to parse WalletConnectOperation into KukaiOperation: %@", log: .default, type: .error, "\(error)")
+			Logger.app.error("Failed to parse WalletConnectOperation into KukaiOperation: \(error)")
 		}
 		
 		return nil

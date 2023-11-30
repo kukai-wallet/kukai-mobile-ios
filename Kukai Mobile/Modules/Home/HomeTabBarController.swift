@@ -25,6 +25,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
 	private var sideMenuVc: SideMenuViewController? = nil
+	private var walletConnectActivity = UIActivityIndicatorView()
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
@@ -110,6 +111,11 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.balanceService.$addressRefreshed
 			.dropFirst()
 			.sink { [weak self] address in
+				
+				if DependencyManager.shared.appUpdateService.isRequiredUpdate {
+					self?.displayUpdateRequired()
+				}
+				
 				if address == DependencyManager.shared.selectedWalletAddress {
 					DispatchQueue.global(qos: .background).async {
 						DependencyManager.shared.balanceService.loadCache(address: address)
@@ -121,6 +127,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 					}
 				}
 				
+			}.store(in: &bag)
+		
+		DependencyManager.shared.balanceService.$addressErrored
+			.dropFirst()
+			.sink { [weak self] obj in
+				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
+					DispatchQueue.main.async {
+						self?.windowError(withTitle: "error".localized(), description: obj.error.description)
+					}
+				}
 			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
@@ -418,6 +434,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	func sendButtonTapped() {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
+	
+	func displayUpdateRequired() {
+		self.performSegue(withIdentifier: "app-update-required", sender: nil)
+	}
 }
 
 
@@ -440,6 +460,21 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 // MARK: Wallet Connect
 
 extension HomeTabBarController: WalletConnectServiceDelegate {
+	
+	public func connectionStatusChanged(status: SocketConnectionStatus) {
+		if status == .disconnected {
+			self.scanButton.isEnabled = false
+			self.walletConnectActivity.frame = self.scanButton.frame
+			self.scanButton.addSubview(self.walletConnectActivity)
+			
+			self.walletConnectActivity.startAnimating()
+			
+		} else {
+			self.scanButton.isEnabled = true
+			self.walletConnectActivity.stopAnimating()
+			self.walletConnectActivity.removeFromSuperview()
+		}
+	}
 	
 	public func pairRequested() {
 		self.performSegue(withIdentifier: "wallet-connect-pair", sender: nil)
@@ -481,37 +516,43 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			
 		if let m = message {
 			var message = "\(m)"
-			if let e = error {
-				message += ". Due to error: \n\n\(e)"
+			if let e = error as? KukaiError {
+				message += ". \(e.description)"
+			} else if let e = error {
+				message += ". \(e.localizedDescription)"
 			}
 			
-			self.alert(errorWithMessage: message)
+			self.windowError(withTitle: "error".localized(), description: message)
 			self.respondOnReject(withMessage: m)
 			
-		} else if let e = error {
-			self.alert(errorWithMessage: "\(e)")
-			self.respondOnReject(withMessage: "An error occurred on the wallet")
+		} else if let e = error as? KukaiError {
+			self.windowError(withTitle: "error".localized(), description: e.description)
+			self.respondOnReject(withMessage: e.description)
+			
+		} else if let e = error{
+			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
+			self.respondOnReject(withMessage: e.localizedDescription)
 			
 		} else {
-			self.alert(errorWithMessage: "Unknown Wallet Connect error occured")
-			self.respondOnReject(withMessage: "Unknown error occurred")
+			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
+			self.respondOnReject(withMessage: "error-unknwon-wc2".localized())
 		}
 	}
 	
 	@MainActor
 	private func respondOnReject(withMessage: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			os_log("WC Reject Session error: Unable to find request", log: .default, type: .error)
+			Logger.app.error("WC Reject Session error: Unable to find request")
 			return
 		}
 		
-		os_log("WC Reject Request: %@", log: .default, type: .info, "\(request.id)")
+		Logger.app.info("WC Reject Request: \(request.id)")
 		Task {
 			do {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
 				TransactionService.shared.resetWalletConnectState()
 			} catch {
-				os_log("WC Reject Session error: %@", log: .default, type: .error, "\(error)")
+				Logger.app.error("WC Reject Session error: \(error)")
 			}
 		}
 	}
@@ -537,7 +578,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.alert(errorWithMessage: "Error: \(error)")
+				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
 			
 		} else if let _ = presentationController.presentedViewController as? WalletConnectSignViewController, !didApproveSigning {
@@ -554,7 +595,7 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				
 			} catch (let error) {
 				self.hideLoadingView()
-				self.alert(errorWithMessage: "Error: \(error)")
+				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
 		}
 	}

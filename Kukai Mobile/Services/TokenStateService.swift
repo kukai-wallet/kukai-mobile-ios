@@ -155,14 +155,8 @@ public class TokenStateService {
 		let tokenId = balanceId(from: token)
 		account[tokenId] = toIndex
 		
-		print("token: \(token.symbol), moved to: \(toIndex)")
-		
 		for key in account.keys {
-			print("for key: \(key)")
-			print("isMovedKey: \(key != tokenId)")
-			
 			if key != tokenId, (account[key] ?? 1) >= toIndex {
-				print("moving")
 				account[key] = ((account[key] ?? 1) + 1)
 			}
 		}
