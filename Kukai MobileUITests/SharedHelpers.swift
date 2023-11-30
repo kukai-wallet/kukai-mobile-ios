@@ -97,7 +97,7 @@ class SharedHelpers: XCTestCase {
 	
 	// MARK: - Scroll to find
 	
-	func scrollUntilButton(app: XCUIApplication, button: String, showsIn element: XCUIElementTypeQueryProvider, directionUp: Bool = true, maxSwipe: Int = 10) -> Bool {
+	func scrollUntilButton(app: XCUIApplication, button: String, showsIn element: XCUIElement, directionUp: Bool = true, maxSwipe: Int = 10) -> Bool {
 		var found = false
 		
 		for _ in 0..<maxSwipe {
@@ -106,9 +106,9 @@ class SharedHelpers: XCTestCase {
 				break
 				
 			} else if directionUp {
-				app.swipeUp()
+				element.swipeUp()
 			} else {
-				app.swipeDown()
+				element.swipeDown()
 			}
 		}
 		

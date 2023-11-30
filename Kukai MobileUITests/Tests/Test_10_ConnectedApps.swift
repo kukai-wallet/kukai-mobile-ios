@@ -33,7 +33,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
-		//handlePasteSetting()
+		handlePasteSetting()
 		
 		
 		// Go to safari -> ghostnet website
@@ -246,7 +246,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		safari.activate()
 		SharedHelpers.shared.waitForButton("Submit Wrap", exists: true, inElement: webview, delay: 10)
 		
-		if SharedHelpers.shared.scrollUntilButton(app: app, button: "Gas", showsIn: webview) {
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "GAS", showsIn: webview) {
 			sleep(2)
 		} else {
 			XCTFail("Unable to find `Submit Expression 2`")
@@ -256,7 +256,9 @@ final class Test_10_ConnectedApps: XCTestCase {
 		webview.buttons["ENTRYPOINT"].tap()
 		
 		app.activate()
-		sleep(1)
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
 		SharedHelpers.shared.waitForStaticText("window-error-title", exists: true, inElement: app, delay: 5)
 		sleep(2)
 	}
@@ -280,7 +282,10 @@ final class Test_10_ConnectedApps: XCTestCase {
 		webview.swipeDown()
 		webview.swipeDown()
 		
-		if !webview.buttons["connect"].exists {
+		let connectExists = webview.buttons["connect"].exists
+		let disconnectedWithNone = (webview.buttons["Change"].exists && webview.staticTexts["None"].exists)
+		
+		if !connectExists && !disconnectedWithNone {
 			XCTFail("Connect button is not present, haven't disconnected")
 		}
 	}

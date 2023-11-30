@@ -153,7 +153,9 @@ extension UIViewController {
 	// MARK: - UIAlertViewController Utils
 	
 	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 10) {
-		UIApplication.shared.currentWindow?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+		if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
+			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+		}
 	}
 	
 	func alert(errorWithMessage message: String) {
