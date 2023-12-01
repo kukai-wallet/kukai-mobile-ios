@@ -55,14 +55,13 @@ public class WalletConnectService {
 	
 	public static let shared = WalletConnectService()
 	public weak var delegate: WalletConnectServiceDelegate? = nil
-	public var uriToOpenOnAppReturn: WalletConnectURI? = nil
 	
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
 											  description: "Kukai iOS",
 											  url: "https://wallet.kukai.app",
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
-											  redirect: AppMetadata.Redirect(native: "kukai://app", universal: nil))
+											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
 	
 	@Published public var didCleanAfterDelete: Bool = false
 	@Published public var requestDidComplete: Bool = false
@@ -232,7 +231,6 @@ public class WalletConnectService {
 		Task {
 			do {
 				try await Pair.instance.pair(uri: uri)
-				uriToOpenOnAppReturn = nil
 				
 			} catch {
 				Logger.app.error("WC Pairing connect error: \(error)")

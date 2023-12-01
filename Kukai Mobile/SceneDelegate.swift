@@ -70,14 +70,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
-		if url.absoluteString.prefix(12) == "kukai://wc2/" {
-			let wc2URI = url.absoluteString.dropFirst(12)
+		if url.absoluteString.prefix(10) == "kukai://wc" {
+			var wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
+			wc2URI = wc2URI.removingPercentEncoding ?? ""
 			
 			if let uri = WalletConnectURI(string: String(wc2URI)) {
-				WalletConnectService.shared.uriToOpenOnAppReturn = uri
+				WalletConnectService.shared.pairClient(uri: uri)
+				return
 			}
-		} else {
-			WalletConnectService.shared.uriToOpenOnAppReturn = nil
 		}
 		
 		CustomAuth.handle(url: url)
