@@ -21,7 +21,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var isPlaybackReady = false
 	private var isPlaying = false
 	private var imageView: UIImageView? = nil
-	private weak var playerController: CustomAVPlayerViewController? = nil
+	private weak var playerController: AVPlayerViewController? = nil
 	
 	private var airPlayName: String = ""
 	private var airPlayArtist: String = ""
@@ -38,7 +38,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	public var setup = false
 	public var timer: Timer? = nil
 	
-	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, avplayerController: CustomAVPlayerViewController, layoutOnly: Bool) {
+	func setup(mediaContent: MediaContent, airPlayName: String, airPlayArtist: String, airPlayAlbum: String, avplayerController: AVPlayerViewController, layoutOnly: Bool) {
 		if mediaContent.width > mediaContent.height {
 			self.aspectRatioConstraint.isActive = false
 			placeholderView.widthAnchor.constraint(equalTo: placeholderView.heightAnchor, multiplier: mediaContent.width/mediaContent.height).isActive = true
