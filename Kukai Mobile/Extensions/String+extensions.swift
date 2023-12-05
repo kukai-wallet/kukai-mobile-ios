@@ -9,11 +9,16 @@ import UIKit
 
 extension String {
 	
+	/*
+	 05 = micheline expression
+	 01 = string
+	 00000042 = number of characters (66 in this example)
+	 */
 	public func humanReadableStringFromMichelson() -> String {
-		if String(self.prefix(6)) == "050100" {
-			return processString(fromIndex: 10)
+		if String(self.prefix(4)) == "0501" {
+			return processString(fromIndex: 12)
 			
-		} else if String(self.prefix(8)) == "0x050100" {
+		} else if String(self.prefix(6)) == "0x0501" {
 			return processString(fromIndex: 14)
 		}
 		
