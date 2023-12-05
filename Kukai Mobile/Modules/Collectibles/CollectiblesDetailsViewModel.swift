@@ -78,7 +78,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
-	private var playerController: CustomAVPlayerViewController? = nil
+	private var playerController: AVPlayerViewController? = nil
 	private var playerLooper: AVPlayerLooper? = nil
 	
 	private var sendData = SendContent(enabled: true)
@@ -540,7 +540,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				
 				// Make sure we only register the player controller once
 				if self.playerController == nil {
-					self.playerController = CustomAVPlayerViewController()
+					self.playerController = AVPlayerViewController()
 					
 					Logger.app.info("Loading video url: \(url.absoluteString)")
 					
