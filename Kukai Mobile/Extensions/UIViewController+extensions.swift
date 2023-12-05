@@ -67,6 +67,9 @@ extension UIViewController {
 	func hideLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityView.removeFromSuperview()
+		if let comp = completion {
+			comp()
+		}
 	}
 	
 	static func createLoadingModal() -> UIViewController {
