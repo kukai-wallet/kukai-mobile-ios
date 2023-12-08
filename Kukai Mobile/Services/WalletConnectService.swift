@@ -414,7 +414,7 @@ public class WalletConnectService {
 			TransactionService.shared.walletConnectOperationData.contractCallData = TransactionService.ContractCallData(chosenToken: Token.xtz(), chosenAmount: totalXTZ, contractAddress: contractDetails.address, operationCount: operations.count, mainEntrypoint: contractDetails.entrypoint)
 			mainThreadProcessedOperations(ofType: .contractCall)
 			
-		} else if OperationFactory.Extractor.isTezTransfer(operations: operations), let transactionOperation = operations.first as? OperationTransaction {
+		}/* else if let transactionOperation = OperationFactory.Extractor.isTezTransfer(operations: operations) as? OperationTransaction {
 			
 			DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
 				let xtzAmount = XTZAmount(fromRpcAmount: transactionOperation.amount) ?? .zero()
@@ -428,7 +428,7 @@ public class WalletConnectService {
 				self?.mainThreadProcessedOperations(ofType: .sendToken)
 			}
 			
-		} else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: operationsObj.selectedOperationsAndFees()),
+		}*/ else if let result = OperationFactory.Extractor.faTokenDetailsFrom(operations: operationsObj.selectedOperationsAndFees()),
 				  let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
 			
 			TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
@@ -445,8 +445,27 @@ public class WalletConnectService {
 			}
 			
 		} else {
-			TransactionService.shared.walletConnectOperationData.currentTransactionType = .contractCall
-			mainThreadProcessedOperations(ofType: .contractCall)
+			var firstTransaction: OperationTransaction? = nil
+			let totalAmount = operations.compactMap({ ($0 as? OperationTransaction)?.amount }).compactMap({ XTZAmount(fromRpcAmount: $0) }).reduce(XTZAmount.zero(), +)
+			
+			if let transactionOperation = OperationFactory.Extractor.isTezTransfer(operations: operations) as? OperationTransaction {
+				firstTransaction = transactionOperation
+			} else {
+				firstTransaction = operations.first(where: { ($0 as? OperationTransaction)?.destination != nil }) as? OperationTransaction
+			}
+			
+			
+			
+			DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
+				let accountBalance = (try? res.get()) ?? totalAmount
+				let selectedToken = Token.xtz(withAmount: accountBalance)
+				
+				TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
+				TransactionService.shared.walletConnectOperationData.sendData.chosenToken = selectedToken
+				TransactionService.shared.walletConnectOperationData.sendData.chosenAmount = totalAmount
+				TransactionService.shared.walletConnectOperationData.sendData.destination = firstTransaction?.destination ?? ""
+				self?.mainThreadProcessedOperations(ofType: .sendToken)
+			}
 		}
 	}
 	
