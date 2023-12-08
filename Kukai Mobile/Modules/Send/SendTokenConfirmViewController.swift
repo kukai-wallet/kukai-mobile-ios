@@ -234,6 +234,10 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	
 	func updateAmountDisplay(withValue value: TokenAmount) {
 		guard let token = currentSendData.chosenToken else {
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.image = UIImage.unknownToken()
+			smallDisplayAmount.text = "0"
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
