@@ -19,13 +19,13 @@ class DependencyManager {
 	
 	static let shared = DependencyManager()
 	
-	static let defaultNodeURL_mainnet = URL(string: "https://mainnet.kukai.network")!
+	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://mainnet.smartpy.io")!, URL(string: "https://rpc.tzbeta.net")!]
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://ghostnet.ecadinfra.com")!
+	static let defaultNodeURLs_testnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://ghostnet.smartpy.io")!, URL(string: "https://rpc.ghostnet.tzboot.net")!]
 	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
@@ -58,9 +58,27 @@ class DependencyManager {
 	}
 	
 	// Stored URL's and network info
-	var currentNodeURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.node.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.node.url") ?? "") ?? DependencyManager.defaultNodeURL_mainnet }
+	var currentNodeURLs: [URL] {
+		set {
+			let arrayOfStrings = newValue.map({ $0.absoluteString })
+			UserDefaults.standard.setValue(arrayOfStrings, forKey: "app.kukai.mobile.node.url")
+		}
+		get {
+			let arrayOfString = UserDefaults.standard.array(forKey: "app.kukai.mobile.node.url") as? [String] ?? []
+			var urls: [URL] = []
+			
+			for str in arrayOfString {
+				if let url = URL(string: str) {
+					urls.append(url)
+				}
+			}
+			
+			if urls.count == 0 {
+				urls = DependencyManager.defaultNodeURLs_mainnet
+			}
+			
+			return urls
+		}
 	}
 	
 	var currentTzktURL: URL {
@@ -187,7 +205,7 @@ class DependencyManager {
 	}
 	
 	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURL = DependencyManager.defaultNodeURL_mainnet
+		currentNodeURLs = DependencyManager.defaultNodeURLs_mainnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
@@ -198,7 +216,7 @@ class DependencyManager {
 	}
 	
 	func setDefaultTestnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURL = DependencyManager.defaultNodeURL_testnet
+		currentNodeURLs = DependencyManager.defaultNodeURLs_testnet
 		currentTzktURL = DependencyManager.defaultTzktURL_testnet
 		currentBcdURL = DependencyManager.defaultBcdURL_testnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
@@ -212,7 +230,7 @@ class DependencyManager {
 		tzktClient.stopListeningForAccountChanges()
 		
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
-			primaryNodeURL: currentNodeURL,
+			nodeURLs: currentNodeURLs,
 			tzktURL: currentTzktURL,
 			betterCallDevURL: currentBcdURL,
 			tezosDomainsURL: currentTezosDomainsURL,
