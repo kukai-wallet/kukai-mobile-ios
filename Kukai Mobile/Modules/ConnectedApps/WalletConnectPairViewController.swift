@@ -68,12 +68,21 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 	}
 	
+	private func unrecoverableError() {
+		self.hideLoadingModal(completion: { [weak self] in
+			TransactionService.shared.resetWalletConnectState()
+			self?.windowError(withTitle: "error".localized(), description: "error-wc2-unrecoverable".localized())
+			self?.presentingViewController?.dismiss(animated: true)
+		})
+	}
+	
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		rejectTapped("")
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal, let account = DependencyManager.shared.selectedWalletAddress else {
+			unrecoverableError()
 			return
 		}
 		
@@ -131,6 +140,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	@IBAction func rejectTapped(_ sender: Any) {
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
+			unrecoverableError()
 			return
 		}
 		
