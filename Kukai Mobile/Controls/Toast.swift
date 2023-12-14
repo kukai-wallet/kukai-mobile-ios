@@ -17,9 +17,7 @@ class Toast {
 	private init() {
 		toastView = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
 		//toastView.translatesAutoresizingMaskIntoConstraints = false
-		toastView.backgroundColor = .colorNamed("BG2")
-		toastView.borderColor = .colorNamed("BG4")
-		toastView.borderWidth = 1
+		toastView.backgroundColor = .colorNamed("BG12")
 		toastView.customCornerRadius = 8
 		
 		toastLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 34))
@@ -27,7 +25,7 @@ class Toast {
 		toastLabel.textAlignment = .center
 		toastLabel.numberOfLines = 1
 		toastLabel.font = .custom(ofType: .bold, andSize: 12)
-		toastLabel.textColor = .colorNamed("Txt6")
+		toastLabel.textColor = .colorNamed("Txt14")
 		
 		toastView.addSubview(toastLabel)
 		NSLayoutConstraint.activate([
@@ -62,6 +60,11 @@ class Toast {
 		window.addSubview(toastView)
 		toastView.setNeedsLayout()
 		toastView.layoutIfNeeded()
+		
+		if let first = toastView.layer.sublayers?.first, first.shadowPath != nil {
+			first.removeFromSuperlayer()
+		}
+		toastView.addShadow(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.23), opacity: 1, offset: CGSize(width: 1, height: 2), radius: 5)
 		
 		attachedTo.isUserInteractionEnabled = false
 		// Animate view appeareance in
