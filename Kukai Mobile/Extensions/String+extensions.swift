@@ -28,6 +28,14 @@ extension String {
 		return readable ?? ""
 	}
 	
+	public func isMichelsonEncodedString() -> Bool {
+		if String(self.prefix(2)) == "05" || String(self.prefix(4)) == "0x05"  {
+			return true
+		}
+		
+		return false
+	}
+	
 	private func processString(fromIndex: Int) -> String {
 		let index = self.index(self.startIndex, offsetBy: fromIndex)
 		let subString = String(self.suffix(from: index))

@@ -163,13 +163,29 @@ public class WalletConnectService {
 			processWalletConnectRequest()
 			
 		} else if request.method == "tezos_sign" {
-			delegate?.signRequested()
+			
+			// Check for valid type
+			if let params = try? request.params.get([String: String].self), let expression = params["payload"], expression.isMichelsonEncodedString(), expression.humanReadableStringFromMichelson() != "" {
+				delegate?.signRequested()
+			} else {
+				Task {
+					try? await WalletConnectService.reject(topic: request.topic, requestId: request.id)
+					TransactionService.shared.resetWalletConnectState()
+				}
+				delegateErrorOnMain(message: "error-unsupported-sign".localized(), error: nil)
+			}
 			
 		} else if request.method == "tezos_getAccounts" {
 			delegate?.provideAccountList()
 			
 		} else {
-			delegate?.error(message: "Unsupported WC method: \(request.method)", error: nil)
+			delegateErrorOnMain(message: "Unsupported WC method: \(request.method)", error: nil)
+		}
+	}
+	
+	private func delegateErrorOnMain(message: String, error: Error?) {
+		DispatchQueue.main.async { [weak self] in
+			self?.delegate?.error(message: message, error: error)
 		}
 	}
 	
@@ -234,7 +250,7 @@ public class WalletConnectService {
 				
 			} catch {
 				Logger.app.error("WC Pairing connect error: \(error)")
-				self.delegate?.error(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)
+				delegateErrorOnMain(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)
 			}
 		}
 	}
@@ -243,7 +259,7 @@ public class WalletConnectService {
 	public func respondWithAccounts() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC Approve Session error: Unable to find request")
-			self.delegate?.error(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
+			delegateErrorOnMain(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
 			return
 		}
 		
@@ -288,7 +304,7 @@ public class WalletConnectService {
 				
 			} catch {
 				Logger.app.error("WC Approve Session error: \(error)")
-				self.delegate?.error(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
+				delegateErrorOnMain(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
 			}
 		}
 	}
@@ -360,13 +376,13 @@ public class WalletConnectService {
 	
 	private func processWalletConnectRequest() {
 		guard let wcRequest = TransactionService.shared.walletConnectOperationData.request else {
-			self.delegate?.error(message: "Unable to process wallet connect request", error: nil)
+			self.delegateErrorOnMain(message: "Unable to process wallet connect request", error: nil)
 			return
 		}
 		
 		DependencyManager.shared.tezosNodeClient.getNetworkInformation { _, error in
 			if let err = error {
-				self.delegate?.error(message: "Unable to fetch info from the Tezos node, please try again", error: err)
+				self.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
 				return
 			}
 			
@@ -375,12 +391,12 @@ public class WalletConnectService {
 				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-				self.delegate?.error(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				self.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				return
 			}
 			
 			guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-				self.delegate?.error(message: "Unable to parse response or locate wallet", error: nil)
+				self.delegateErrorOnMain(message: "Unable to parse response or locate wallet", error: nil)
 				return
 			}
 			
@@ -392,7 +408,7 @@ public class WalletConnectService {
 			
 			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
 				guard let estimationResult = try? result.get() else {
-					self?.delegate?.error(message: "Unable to estimate fees", error: result.getFailure())
+					self?.delegateErrorOnMain(message: "Unable to estimate fees", error: result.getFailure())
 					return
 				}
 				
