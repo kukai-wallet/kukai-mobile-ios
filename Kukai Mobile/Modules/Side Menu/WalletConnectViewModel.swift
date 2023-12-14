@@ -66,10 +66,10 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Get data
-		pairs = Pair.instance.getPairings().map({ pair -> PairObj in
+		pairs = Pair.instance.getPairings().compactMap({ pair -> PairObj? in
 			
 			if pair.peer == nil {
-				return PairObj(icon: nil, site: "Pending ...", address: nil, network: nil, topic: pair.topic)
+				return nil
 				
 			} else {
 				let firstSession = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic }).first

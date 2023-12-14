@@ -324,31 +324,11 @@ public class WalletConnectService {
 		})
 	}
 	
-	
-	@MainActor
-	public static func cleanupDanglingPairings() async {
-		var pairsToClean: [Pairing] = []
-		Pair.instance.getPairings().forEach({ pair in
-			if pair.peer == nil {
-				pairsToClean.append(pair)
-			}
-		})
-		
-		await pairsToClean.asyncForEach({ pair in
-			try? await Pair.instance.disconnect(topic: pair.topic)
-			
-			await Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic }).asyncForEach({ session in
-				try? await Sign.instance.disconnect(topic: session.topic)
-			})
-		})
-	}
-	
 	@MainActor
 	public static func reject(proposalId: String, reason: RejectionReason) throws {
 		Logger.app.info("WC Reject Pairing \(proposalId)")
 		Task {
 			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
-			await WalletConnectService.cleanupDanglingPairings()
 			TransactionService.shared.resetWalletConnectState()
 		}
 	}
