@@ -71,6 +71,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	private func unrecoverableError() {
 		self.hideLoadingModal(completion: { [weak self] in
 			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.shared.requestDidComplete = false
 			self?.windowError(withTitle: "error".localized(), description: "error-wc2-unrecoverable".localized())
 			self?.presentingViewController?.dismiss(animated: true)
 		})
