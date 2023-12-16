@@ -68,11 +68,13 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Get data
 		pairs = Pair.instance.getPairings().compactMap({ pair -> PairObj? in
 			
-			if pair.peer == nil {
+			let sessions = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic })
+			
+			if pair.peer == nil || sessions.count == 0 {
 				return nil
 				
 			} else {
-				let firstSession = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic }).first
+				let firstSession = sessions.first
 				let firstAccount = firstSession?.accounts.first
 				let address = firstAccount?.address
 				let network = firstAccount?.blockchain.reference == "ghostnet" ? "Ghostnet" : "Mainnet"
