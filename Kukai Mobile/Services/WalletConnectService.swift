@@ -54,6 +54,8 @@ public class WalletConnectService {
 	private var temporaryBag = [AnyCancellable]()
 	
 	public static let shared = WalletConnectService()
+	public var deepLinkPairingToConnect: WalletConnectURI? = nil
+	public var hasBeenSetup = false
 	public weak var delegate: WalletConnectServiceDelegate? = nil
 	
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
@@ -62,6 +64,8 @@ public class WalletConnectService {
 											  url: "https://wallet.kukai.app",
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
+	
+	//private var incomingRequestPublisher = PassthroughSubject<Any, Never>()
 	
 	@Published public var didCleanAfterDelete: Bool = false
 	@Published public var requestDidComplete: Bool = false
@@ -84,6 +88,18 @@ public class WalletConnectService {
 		
 		
 		// Callbacks
+		
+		/*
+		incomingRequestPublisher
+			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
+			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
+				
+			}
+			.sink(receiveValue: { success in
+				Logger.app.info("WC request completed with success: \(success)")
+			})
+			.store(in: &bag)
+		*/
 		
 		Sign.instance.sessionRequestPublisher
 			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
@@ -119,11 +135,20 @@ public class WalletConnectService {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
 				Logger.app.info("WC sessionDeletePublisher \(data.0)")
-				Task { [weak self] in
-					await WalletConnectService.cleanupSessionlessPairs()
+				//Task { [weak self] in
+					//await WalletConnectService.cleanupSessionlessPairs()
 					self?.didCleanAfterDelete = true
-				}
+				//}
 			}.store(in: &bag)
+		
+		hasBeenSetup = true
+		
+		if let uri = deepLinkPairingToConnect {
+			Task {
+				await pairClient(uri: uri)
+				deepLinkPairingToConnect = nil
+			}
+		}
 	}
 	
 	
@@ -309,6 +334,7 @@ public class WalletConnectService {
 		}
 	}
 	
+	/*
 	@MainActor
 	public static func cleanupSessionlessPairs() async {
 		var pairsToClean: [Pairing] = []
@@ -323,6 +349,7 @@ public class WalletConnectService {
 			try? await Pair.instance.disconnect(topic: pair.topic)
 		})
 	}
+	*/
 	
 	@MainActor
 	public static func reject(proposalId: String, reason: RejectionReason) throws {

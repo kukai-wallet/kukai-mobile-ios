@@ -28,9 +28,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			window.overrideUserInterfaceStyle = ThemeManager.shared.currentInterfaceStyle()
 		}
 		
-		if let userActivity = connectionOptions.userActivities.first {
-			Logger.app.info("Handling user activity")
-			handle(userActivity: userActivity)
+		if let url = connectionOptions.urlContexts.first?.url {
+			handleDeeplink(url: url)
+		} else {
+			Logger.app.info("Launching without URL")
 		}
 	}
 
@@ -70,17 +71,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
-		if url.absoluteString.prefix(10) == "kukai://wc" {
-			var wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
-			wc2URI = wc2URI.removingPercentEncoding ?? ""
-			
-			if let uri = WalletConnectURI(string: String(wc2URI)) {
-				WalletConnectService.shared.pairClient(uri: uri)
-				return
-			}
-		}
-		
-		CustomAuth.handle(url: url)
+		handleDeeplink(url: url)
 	}
 	
 	
@@ -110,15 +101,24 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 	}
 	
-	private func handle(userActivity: NSUserActivity) {
-		guard let url = userActivity.webpageURL, userActivity.activityType == NSUserActivityTypeBrowsingWeb else { return }
+	private func handleDeeplink(url: URL) {
+		Logger.app.info("Attempting to handle deeplink \(url.absoluteString)")
 		
-		Logger.app.info("Attempting to handle Wallet Connect pairing")
-		let wcUri = url.absoluteString.deletingPrefix("https://walletconnect.com/wc?uri=")
-		guard let uri = WalletConnectURI(string: wcUri) else { return }
-		
-		Task(priority: .high) {
-			try? await Pair.instance.pair(uri: uri)
+		if url.absoluteString.prefix(10) == "kukai://wc" {
+			var wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
+			wc2URI = wc2URI.removingPercentEncoding ?? ""
+			
+			if let uri = WalletConnectURI(string: String(wc2URI)) {
+				
+				if WalletConnectService.shared.hasBeenSetup {
+					WalletConnectService.shared.pairClient(uri: uri)
+					
+				} else {
+					WalletConnectService.shared.deepLinkPairingToConnect = uri
+				}
+			}
+		} else {
+			CustomAuth.handle(url: url)
 		}
 	}
 }
