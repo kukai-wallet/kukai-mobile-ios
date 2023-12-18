@@ -135,10 +135,7 @@ public class WalletConnectService {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
 				Logger.app.info("WC sessionDeletePublisher \(data.0)")
-				//Task { [weak self] in
-					//await WalletConnectService.cleanupSessionlessPairs()
-					self?.didCleanAfterDelete = true
-				//}
+				self?.didCleanAfterDelete = true
 			}.store(in: &bag)
 		
 		hasBeenSetup = true
