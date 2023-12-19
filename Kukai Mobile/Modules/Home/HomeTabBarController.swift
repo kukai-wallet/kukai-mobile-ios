@@ -493,6 +493,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	public static func recordWalletConnectOperationAsComplete() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
 			WalletConnectService.shared.requestDidComplete = true
+			WalletConnectService.shared.requestInProgress = false
 		}
 	}
 	
@@ -522,6 +523,8 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		
 		self.hideLoadingView {
 			WalletConnectService.shared.requestDidComplete = true
+			WalletConnectService.shared.proposalInProgress = false
+			WalletConnectService.shared.requestInProgress = false
 		}
 			
 		if let m = message {

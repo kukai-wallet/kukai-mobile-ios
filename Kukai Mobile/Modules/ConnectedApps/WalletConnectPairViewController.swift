@@ -71,9 +71,11 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	private func unrecoverableError() {
 		self.hideLoadingModal(completion: { [weak self] in
 			TransactionService.shared.resetWalletConnectState()
-			WalletConnectService.shared.requestDidComplete = false
 			self?.windowError(withTitle: "error".localized(), description: "error-wc2-unrecoverable".localized())
-			self?.presentingViewController?.dismiss(animated: true)
+			self?.presentingViewController?.dismiss(animated: true, completion: {
+				WalletConnectService.shared.requestDidComplete = false
+				WalletConnectService.shared.proposalInProgress = false
+			})
 		})
 	}
 	
@@ -122,7 +124,9 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				
 				self.hideLoadingModal(completion: { [weak self] in
 					TransactionService.shared.resetWalletConnectState()
-					self?.presentingViewController?.dismiss(animated: true)
+					self?.presentingViewController?.dismiss(animated: true, completion: {
+						WalletConnectService.shared.proposalInProgress = false
+					})
 				})
 				
 			} catch {
@@ -134,6 +138,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 				Logger.app.error("WC Approve Session error: \(error)")
 				self.hideLoadingModal(completion: { [weak self] in
 					self?.windowError(withTitle: "error".localized(), description: message)
+					WalletConnectService.shared.proposalInProgress = false
 				})
 			}
 		}

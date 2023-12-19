@@ -57,6 +57,8 @@ public class WalletConnectService {
 	public var deepLinkPairingToConnect: WalletConnectURI? = nil
 	public var hasBeenSetup = false
 	public weak var delegate: WalletConnectServiceDelegate? = nil
+	public var proposalInProgress = false
+	public var requestInProgress = false
 	
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
@@ -64,8 +66,6 @@ public class WalletConnectService {
 											  url: "https://wallet.kukai.app",
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
-	
-	//private var incomingRequestPublisher = PassthroughSubject<Any, Never>()
 	
 	@Published public var didCleanAfterDelete: Bool = false
 	@Published public var requestDidComplete: Bool = false
@@ -88,41 +88,11 @@ public class WalletConnectService {
 		
 		
 		// Callbacks
-		
-		/*
-		incomingRequestPublisher
-			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
-			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
-				
-			}
-			.sink(receiveValue: { success in
-				Logger.app.info("WC request completed with success: \(success)")
-			})
-			.store(in: &bag)
-		*/
-		
-		Sign.instance.sessionRequestPublisher
-			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
-			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
-				guard let self = self else {
-					return Future<Bool, Never>() { promise in
-						promise(.success(true))
-					}
-				}
-				
-				return self.processIncoming(request: sessionRequest.request)
-			}
-			.sink(receiveValue: { success in
-				Logger.app.info("WC request completed with success: \(success)")
-			})
-			.store(in: &bag)
-		
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
 				Logger.app.info("WC sessionProposalPublisher")
-				TransactionService.shared.walletConnectOperationData.proposal = sessionProposal.proposal
-				self?.delegate?.pairRequested()
+				self?.proposalPrechecks(sessionProposal.proposal)
 			}.store(in: &bag)
 		
 		Sign.instance.sessionSettlePublisher
@@ -135,11 +105,24 @@ public class WalletConnectService {
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
 				Logger.app.info("WC sessionDeletePublisher \(data.0)")
-				//Task { [weak self] in
-					//await WalletConnectService.cleanupSessionlessPairs()
-					self?.didCleanAfterDelete = true
-				//}
+				self?.didCleanAfterDelete = true
 			}.store(in: &bag)
+		
+		Sign.instance.sessionRequestPublisher
+			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
+			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
+				guard let self = self else {
+					return Future<Bool, Never>() { promise in
+						promise(.success(true))
+					}
+				}
+				
+				return self.requestPrechecks(sessionRequest.request)
+			}
+			.sink(receiveValue: { success in
+				Logger.app.info("WC request completed with success: \(success)")
+			})
+			.store(in: &bag)
 		
 		hasBeenSetup = true
 		
@@ -155,13 +138,41 @@ public class WalletConnectService {
 	
 	// MARK: - Queue Management
 	
+	private func proposalPrechecks(_ proposal: Session.Proposal) {
+		if proposalInProgress == true || requestInProgress {
+			Task {
+				Logger.app.error("WC incoming proposal while proposal or request already in progress. Rejecting")
+				try? await WalletConnectService.reject(proposalId: proposal.id, reason: RejectionReason.userRejected, clearState: false)
+			}
+		} else {
+			proposalInProgress = true
+			TransactionService.shared.walletConnectOperationData.proposal = proposal
+			delegate?.pairRequested()
+		}
+	}
+	
+	private func requestPrechecks(_ request: WalletConnectSign.Request) -> Future<Bool, Never> {
+		if proposalInProgress == true {
+			return Future<Bool, Never>() { promise in
+				Task {
+					Logger.app.error("WC incoming request while proposal already in progress. Rejecting")
+					try? await WalletConnectService.reject(topic: request.topic, requestId: request.id, clearState: false)
+					promise(.success(false))
+				}
+			}
+		} else {
+			requestInProgress = true
+			return self.processIncoming(request: request)
+		}
+	}
+	
 	private func processIncoming(request: WalletConnectSign.Request) -> Future<Bool, Never> {
 		Future() { [weak self] promise in
 			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
 			
 			guard let self = self else {
 				Logger.app.info("Unable to find self, cancelling")
-				
+				self?.requestInProgress = false
 				promise(.success(false))
 				return
 			}
@@ -169,7 +180,8 @@ public class WalletConnectService {
 			// Setup listener for completion status
 			self.$requestDidComplete
 				.dropFirst()
-				.sink(receiveValue: { _ in
+				.sink(receiveValue: { [weak self] _ in
+					self?.requestInProgress = false
 					promise(.success(true))
 				})
 				.store(in: &self.bag)
@@ -334,39 +346,32 @@ public class WalletConnectService {
 		}
 	}
 	
-	/*
 	@MainActor
-	public static func cleanupSessionlessPairs() async {
-		var pairsToClean: [Pairing] = []
-		Pair.instance.getPairings().forEach({ pair in
-			let sessions = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic })
-			if sessions.count == 0 {
-				pairsToClean.append(pair)
-			}
-		})
-		
-		await pairsToClean.asyncForEach({ pair in
-			try? await Pair.instance.disconnect(topic: pair.topic)
-		})
-	}
-	*/
-	
-	@MainActor
-	public static func reject(proposalId: String, reason: RejectionReason) throws {
+	public static func reject(proposalId: String, reason: RejectionReason, clearState: Bool = true) throws {
 		Logger.app.info("WC Reject Pairing \(proposalId)")
 		Task {
 			try await Sign.instance.reject(proposalId: proposalId, reason: reason)
-			TransactionService.shared.resetWalletConnectState()
+			
+			if clearState {
+				TransactionService.shared.resetWalletConnectState()
+			}
+			
+			WalletConnectService.shared.proposalInProgress = false
 		}
 	}
 	
 	@MainActor
-	public static func reject(topic: String, requestId: RPCID) throws {
+	public static func reject(topic: String, requestId: RPCID, clearState: Bool = true) throws {
 		Logger.app.info("WC Reject Request topic: \(topic), id: \(requestId.description)")
 		Task {
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
-			TransactionService.shared.resetWalletConnectState()
+			
+			if clearState {
+				TransactionService.shared.resetWalletConnectState()
+			}
+			
 			WalletConnectService.shared.requestDidComplete = true
+			WalletConnectService.shared.requestInProgress = false
 		}
 	}
 	
