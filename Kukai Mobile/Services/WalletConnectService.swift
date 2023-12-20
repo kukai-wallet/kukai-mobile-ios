@@ -75,7 +75,7 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
 		
 		
@@ -106,6 +106,12 @@ public class WalletConnectService {
 			.sink { [weak self] data in 
 				Logger.app.info("WC sessionDeletePublisher \(data.0)")
 				self?.didCleanAfterDelete = true
+			}.store(in: &bag)
+		
+		(Pair.instance as? PairingClient)?.pairingDeletePublisher
+			.receive(on: DispatchQueue.main)
+			.sink { data in
+				Logger.app.info("WC pairingDeletePublisher \(data.code), \(data.message)")
 			}.store(in: &bag)
 		
 		Sign.instance.sessionRequestPublisher
