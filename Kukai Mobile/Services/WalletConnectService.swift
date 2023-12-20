@@ -344,10 +344,12 @@ public class WalletConnectService {
 				
 				let obj = WalletConnectGetAccountObj(algo: algo, address: currentAccount?.address ?? "", pubkey: currentAccount?.bas58EncodedPublicKey ?? "")
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
+				requestDidComplete = true
 				
 			} catch {
 				Logger.app.error("WC Approve Session error: \(error)")
 				delegateErrorOnMain(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
+				requestDidComplete = false
 			}
 		}
 	}
