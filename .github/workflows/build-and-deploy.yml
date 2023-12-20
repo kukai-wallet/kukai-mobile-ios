@@ -40,6 +40,13 @@ jobs:
       # Upload Base64 copies of apple certs to github following these instructions: 
       # Note: Use app store distribution certs
       # https://docs.github.com/en/actions/guides/installing-an-apple-certificate-on-macos-runners-for-xcode-development
+      # 
+      # Every time we update certs / profiles or they expire, we need to update the following github actions secrets
+      # BUILD_CERTIFICATE_BASE64              = exported distribution cert from inside Xcode account settings, copied with `base64 -i <file-path> | pbcopy`
+      # P12_PASSWORD                          = whatever new password created for previous file
+      # BUILD_PROVISION_PROFILE_BASE64        = download "Kukai Mobile Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      # BUILD_PROVISION_PROFILE_BETA_BASE64   = download "Kukai Mobile Beta Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      #
       - name: Install the Apple certificate and provisioning profile
         run: |
           # create variables
