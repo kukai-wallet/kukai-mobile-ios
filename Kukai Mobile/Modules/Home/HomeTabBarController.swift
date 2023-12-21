@@ -522,7 +522,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		Logger.app.error("WC2 error message: \(message) - error: \(error)")
 		
 		self.hideLoadingView {
-			WalletConnectService.shared.requestDidComplete = true
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+				WalletConnectService.shared.requestDidComplete = true
+			}
 			WalletConnectService.shared.proposalInProgress = false
 			WalletConnectService.shared.requestInProgress = false
 		}

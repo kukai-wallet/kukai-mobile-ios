@@ -364,12 +364,14 @@ public class WalletConnectService {
 				TransactionService.shared.resetWalletConnectState()
 			}
 			
-			WalletConnectService.shared.proposalInProgress = false
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+				WalletConnectService.shared.proposalInProgress = false
+			}
 		}
 	}
 	
 	@MainActor
-	public static func reject(topic: String, requestId: RPCID, clearState: Bool = true) throws {
+	public static func reject(topic: String, requestId: RPCID, clearState: Bool = true, autoMarkOpComplete: Bool = true) throws {
 		Logger.app.info("WC Reject Request topic: \(topic), id: \(requestId.description)")
 		Task {
 			try await Sign.instance.respond(topic: topic, requestId: requestId, response: .error(.init(code: 0, message: "")))
@@ -378,8 +380,12 @@ public class WalletConnectService {
 				TransactionService.shared.resetWalletConnectState()
 			}
 			
-			WalletConnectService.shared.requestDidComplete = true
-			WalletConnectService.shared.requestInProgress = false
+			if autoMarkOpComplete {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+					WalletConnectService.shared.requestDidComplete = true
+					WalletConnectService.shared.requestInProgress = false
+				}
+			}
 		}
 	}
 	
