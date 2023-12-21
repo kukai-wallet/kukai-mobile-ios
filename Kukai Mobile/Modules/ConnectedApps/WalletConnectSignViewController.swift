@@ -77,8 +77,9 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				
 				self.hideLoadingModal(completion: { [weak self] in
 					TransactionService.shared.resetWalletConnectState()
-					HomeTabBarController.recordWalletConnectOperationAsComplete()
-					self?.presentingViewController?.dismiss(animated: true)
+					self?.presentingViewController?.dismiss(animated: true, completion: {
+						HomeTabBarController.recordWalletConnectOperationAsComplete()
+					})
 				})
 				
 			} catch {
@@ -103,11 +104,12 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		Logger.app.info("WC Reject Request: \(request.id)")
 		Task {
 			do {
-				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
+				try WalletConnectService.reject(topic: request.topic, requestId: request.id, autoMarkOpComplete: false)
 				self.hideLoadingModal(completion: { [weak self] in
 					TransactionService.shared.resetWalletConnectState()
-					HomeTabBarController.recordWalletConnectOperationAsComplete()
-					self?.presentingViewController?.dismiss(animated: true)
+					self?.presentingViewController?.dismiss(animated: true, completion: {
+						HomeTabBarController.recordWalletConnectOperationAsComplete()
+					})
 				})
 				
 			} catch {

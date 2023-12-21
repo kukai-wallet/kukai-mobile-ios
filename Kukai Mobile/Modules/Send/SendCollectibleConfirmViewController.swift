@@ -266,14 +266,17 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	}
 	
 	func dismissAndReturn() {
-		if isWalletConnectOp {
-			TransactionService.shared.resetWalletConnectState()
-			HomeTabBarController.recordWalletConnectOperationAsComplete()
-		} else {
+		if !isWalletConnectOp {
 			TransactionService.shared.resetAllState()
 		}
 		
-		self.dismiss(animated: true, completion: nil)
+		self.dismiss(animated: true) { [weak self] in
+			if self?.isWalletConnectOp == true {
+				TransactionService.shared.resetWalletConnectState()
+				HomeTabBarController.recordWalletConnectOperationAsComplete()
+			}
+		}
+		
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
