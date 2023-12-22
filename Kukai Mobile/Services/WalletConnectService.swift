@@ -48,6 +48,10 @@ struct DefaultSocketFactory: WebSocketFactory {
 	}
 }
 
+struct RequestOperation: Codable {
+	let account: String
+}
+
 public class WalletConnectService {
 	
 	private var bag = [AnyCancellable]()
@@ -153,7 +157,16 @@ public class WalletConnectService {
 		} else {
 			proposalInProgress = true
 			TransactionService.shared.walletConnectOperationData.proposal = proposal
-			delegate?.pairRequested()
+			
+			self.checkValidNetwork(forProposal: proposal) { [weak self] isValid in
+				guard isValid else {
+					Logger.app.info("Request is for the wrong network, rejecting")
+					self?.proposalInProgress = false
+					return
+				}
+				
+				self?.delegate?.pairRequested()
+			}
 		}
 	}
 	
@@ -172,35 +185,117 @@ public class WalletConnectService {
 		}
 	}
 	
+	/// Check if the proposal network matches the current one the app is pointing too. Return false in completion block if its not, and fire off a message to delegate error hanlder if so. Calling code only needs to check for if true
+	private func checkValidNetwork(forProposal proposal: WalletConnectSign.Session.Proposal, completion: @escaping ((Bool) -> Void)) {
+		DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] _, error in
+			if let err = error {
+				self?.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
+				completion(false)
+				return
+			}
+			
+			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+				  let namespace = proposal.requiredNamespaces["tezos"],
+				  let chain = namespace.chains?.first,
+				  (chain.absoluteString == "tezos:\(tezosChainName)" || (chain.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+			else {
+				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				completion(false)
+				return
+			}
+			
+			completion(true)
+		}
+	}
+	
+	/// Check if the request network matches the current one the app is pointing too. Return false in completion block if its not, and fire off a message to delegate error hanlder if so. Calling code only needs to check for if true
+	private func checkValidNetworkAndAccount(forRequest request: WalletConnectSign.Request, completion: @escaping ((Bool) -> Void)) {
+		DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] _, error in
+			if let err = error {
+				self?.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
+				completion(false)
+				return
+			}
+			
+			
+			// Check the chain is the current chain
+			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
+				  (request.chainId.absoluteString == "tezos:\(tezosChainName)" || (request.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+			else {
+				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
+				completion(false)
+				return
+			}
+			
+			
+			// Check the requested account and method were previously allowed
+			let session = Sign.instance.getSessions().filter({ $0.topic == request.topic }).first
+			let allowedAccounts = session?.namespaces["tezos"]?.accounts.map({ $0.absoluteString }) ?? []
+			let allowedMethods = session?.namespaces["tezos"]?.methods ?? []
+			
+			let requestedAccount = (try? request.params.get(RequestOperation.self).account) ?? ""
+			let normalisedChainName = (tezosChainName == "ithacanet") ? "ghostnet" : tezosChainName
+			let fullRequestedAccount = "tezos:\(normalisedChainName):\(requestedAccount)"
+			let requestedMethod = request.method
+		
+			guard allowedAccounts.contains(fullRequestedAccount) else {
+				self?.delegateErrorOnMain(message: "The requested account \(requestedAccount.truncateTezosAddress()), was not authorised to perform this action. Please ensure you have paired this account with the remote application.", error: nil)
+				completion(false)
+				return
+			}
+			
+			guard allowedMethods.contains(requestedMethod) else {
+				self?.delegateErrorOnMain(message: "The requested method \(requestedMethod), was not authorised for this account. Please ensure you have paired this account with the remote application.", error: nil)
+				completion(false)
+				return
+			}
+			
+			completion(true)
+		}
+	}
+	
 	private func processIncoming(request: WalletConnectSign.Request) -> Future<Bool, Never> {
 		Future() { [weak self] promise in
 			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
 			
-			guard let self = self else {
-				Logger.app.info("Unable to find self, cancelling")
-				self?.requestInProgress = false
-				promise(.success(false))
-				return
-			}
+			TransactionService.shared.resetWalletConnectState()
+			TransactionService.shared.walletConnectOperationData.request = request
 			
-			// Setup listener for completion status
-			self.$requestDidComplete
-				.dropFirst()
-				.sink(receiveValue: { [weak self] _ in
+			self?.checkValidNetworkAndAccount(forRequest: request) { [weak self] isValid in
+				
+				guard isValid else {
+					Logger.app.info("Request is for the wrong network, rejecting")
 					self?.requestInProgress = false
-					promise(.success(true))
-				})
-				.store(in: &self.bag)
-			
-			
-			// Process the request
-			handleRequestLogic(request)
+					promise(.success(false))
+					return
+				}
+				
+				guard let self = self else {
+					Logger.app.info("Unable to find self, cancelling")
+					self?.requestInProgress = false
+					promise(.success(false))
+					return
+				}
+				
+				// Setup listener for completion status
+				self.$requestDidComplete
+					.dropFirst()
+					.sink(receiveValue: { [weak self] _ in
+						self?.requestInProgress = false
+						promise(.success(true))
+					})
+					.store(in: &self.bag)
+				
+				
+				// Process the request
+				self.handleRequestLogic(request)
+			}
 		}
 	}
 	
 	private func handleRequestLogic(_ request: WalletConnectSign.Request) {
-		TransactionService.shared.resetWalletConnectState()
-		TransactionService.shared.walletConnectOperationData.request = request
 		
 		if request.method == "tezos_send" {
 			processWalletConnectRequest()
@@ -406,40 +501,24 @@ public class WalletConnectService {
 			return
 		}
 		
-		DependencyManager.shared.tezosNodeClient.getNetworkInformation { _, error in
-			if let err = error {
-				self.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
+		guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
+			self.delegateErrorOnMain(message: "Unable to parse response or locate wallet", error: nil)
+			return
+		}
+		
+		TransactionService.shared.walletConnectOperationData.requestParams = params
+		self.delegate?.processingIncomingOperations()
+		
+		// Map all wallet connect objects to kuaki objects
+		let convertedOps = params.kukaiOperations()
+		
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
+			guard let estimationResult = try? result.get() else {
+				self?.delegateErrorOnMain(message: "Unable to estimate fees", error: result.getFailure())
 				return
 			}
 			
-			
-			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
-				  (wcRequest.chainId.absoluteString == "tezos:\(tezosChainName)" || (wcRequest.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
-			else {
-				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-				self.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
-				return
-			}
-			
-			guard let params = try? wcRequest.params.get(WalletConnectRequestParams.self), let wallet = WalletCacheService().fetchWallet(forAddress: params.account) else {
-				self.delegateErrorOnMain(message: "Unable to parse response or locate wallet", error: nil)
-				return
-			}
-			
-			TransactionService.shared.walletConnectOperationData.requestParams = params
-			self.delegate?.processingIncomingOperations()
-			
-			// Map all wallet connect objects to kuaki objects
-			let convertedOps = params.kukaiOperations()
-			
-			DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
-				guard let estimationResult = try? result.get() else {
-					self?.delegateErrorOnMain(message: "Unable to estimate fees", error: result.getFailure())
-					return
-				}
-				
-				self?.processTransactions(estimationResult: estimationResult, forWallet: wallet)
-			}
+			self?.processTransactions(estimationResult: estimationResult, forWallet: wallet)
 		}
 	}
 	
