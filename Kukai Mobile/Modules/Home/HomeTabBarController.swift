@@ -518,15 +518,17 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		WalletConnectService.shared.respondWithAccounts()
 	}
 	
-	public func error(message: String?, error: Error?) {
+	public func error(message: String?, error: Error?, messageOnly: Bool) {
 		Logger.app.error("WC2 error message: \(message) - error: \(error)")
 		
-		self.hideLoadingView {
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-				WalletConnectService.shared.requestDidComplete = true
+		if !messageOnly {
+			self.hideLoadingView {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+					WalletConnectService.shared.requestDidComplete = true
+				}
+				WalletConnectService.shared.proposalInProgress = false
+				WalletConnectService.shared.requestInProgress = false
 			}
-			WalletConnectService.shared.proposalInProgress = false
-			WalletConnectService.shared.requestInProgress = false
 		}
 			
 		if let m = message {
@@ -538,19 +540,19 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 			
 			self.windowError(withTitle: "error".localized(), description: message)
-			self.respondOnReject(withMessage: m)
+			if !messageOnly { self.respondOnReject(withMessage: m) }
 			
 		} else if let e = error as? KukaiError {
 			self.windowError(withTitle: "error".localized(), description: e.description)
-			self.respondOnReject(withMessage: e.description)
+			if !messageOnly {self.respondOnReject(withMessage: e.description) }
 			
 		} else if let e = error{
 			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
-			self.respondOnReject(withMessage: e.localizedDescription)
+			if !messageOnly { self.respondOnReject(withMessage: e.localizedDescription) }
 			
 		} else {
 			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			self.respondOnReject(withMessage: "error-unknwon-wc2".localized())
+			if !messageOnly { self.respondOnReject(withMessage: "error-unknwon-wc2".localized()) }
 		}
 	}
 	

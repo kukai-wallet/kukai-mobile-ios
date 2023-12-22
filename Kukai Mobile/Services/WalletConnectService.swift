@@ -26,7 +26,7 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processingIncomingOperations()
 	func processedOperations(ofType: WalletConnectOperationType)
 	func provideAccountList()
-	func error(message: String?, error: Error?)
+	func error(message: String?, error: Error?, messageOnly: Bool)
 	func connectionStatusChanged(status: SocketConnectionStatus)
 }
 
@@ -321,9 +321,9 @@ public class WalletConnectService {
 		}
 	}
 	
-	private func delegateErrorOnMain(message: String, error: Error?) {
+	private func delegateErrorOnMain(message: String, error: Error?, messageOnly: Bool = false) {
 		DispatchQueue.main.async { [weak self] in
-			self?.delegate?.error(message: message, error: error)
+			self?.delegate?.error(message: message, error: error, messageOnly: messageOnly)
 		}
 	}
 	
@@ -388,7 +388,9 @@ public class WalletConnectService {
 				
 			} catch {
 				Logger.app.error("WC Pairing connect error: \(error)")
-				delegateErrorOnMain(message: "Unable to connect to: \(uri.absoluteString), due to: \(error)", error: error)
+				
+				let messageOnly = "\(error)".prefix(19) == "pairingAlreadyExist" // TODO: consider removing after beacon update. Was only added to deal with a bug
+				delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error, messageOnly: messageOnly)
 			}
 		}
 	}
