@@ -239,8 +239,8 @@ public class WalletConnectService {
 			let normalisedChainName = (tezosChainName == "ithacanet") ? "ghostnet" : tezosChainName
 			let fullRequestedAccount = "tezos:\(normalisedChainName):\(requestedAccount)"
 			let requestedMethod = request.method
-		
-			guard allowedAccounts.contains(fullRequestedAccount) else {
+			
+			guard requestedMethod == "tezos_getAccounts" || allowedAccounts.contains(fullRequestedAccount) else {
 				self?.delegateErrorOnMain(message: "The requested account \(requestedAccount.truncateTezosAddress()), was not authorised to perform this action. Please ensure you have paired this account with the remote application.", error: nil)
 				completion(false)
 				return
