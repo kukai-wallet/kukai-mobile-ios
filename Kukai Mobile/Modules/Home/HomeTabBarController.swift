@@ -32,7 +32,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
 	
-	public var didApprovePairing = false
+	public var didHandlePairing = false
 	public var didApproveSigning = false
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -296,7 +296,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 		
 		if let vc = segue.destination as? WalletConnectPairViewController {
-			didApprovePairing = false
+			didHandlePairing = false
 			vc.presenter = self
 			
 		} else if let vc = segue.destination as? WalletConnectSignViewController {
@@ -514,10 +514,6 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
-	public func provideAccountList() {
-		WalletConnectService.shared.respondWithAccounts()
-	}
-	
 	public func error(message: String?, error: Error?, messageOnly: Bool) {
 		Logger.app.error("WC2 error message: \(message) - error: \(error)")
 		
@@ -581,8 +577,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 extension HomeTabBarController: UISheetPresentationControllerDelegate {
 	
 	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-		if let _ = presentationController.presentedViewController as? WalletConnectPairViewController, !didApprovePairing {
-			didApprovePairing = false
+		// TODO: replace with new logic
+		/*if let _ = presentationController.presentedViewController as? WalletConnectPairViewController, !didHandlePairing {
+			didHandlePairing = false
 			
 			guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 				return
@@ -615,6 +612,6 @@ extension HomeTabBarController: UISheetPresentationControllerDelegate {
 				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 			}
 			
-		}
+		}*/
 	}
 }

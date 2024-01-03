@@ -25,7 +25,6 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func signRequested()
 	func processingIncomingOperations()
 	func processedOperations(ofType: WalletConnectOperationType)
-	func provideAccountList()
 	func error(message: String?, error: Error?, messageOnly: Bool)
 	func connectionStatusChanged(status: SocketConnectionStatus)
 }
@@ -74,6 +73,25 @@ public class WalletConnectService {
 	@Published public var didCleanAfterDelete: Bool = false
 	@Published public var requestDidComplete: Bool = false
 	
+	
+	
+	
+	
+	
+	/// This publisher serves as a means to combine WalletConnect's`sessionProposalPublisherSubject` and `sessionRequestPublisherSubject`,
+	/// the subjects action output will either be a `WalletConnectSign.Session.Proposal` or a `WalletConnectSign.Request`.
+	/// This will enable the ability to apply a buffer to all events that a user must interact with, so they can be presented/handled one at a time without the need for multiple async delays, guessing when everything is finished, and simplifying the code
+	private let sessionActionRequiredPublisherSubject = PassthroughSubject<(action: Any, context: VerifyContext?), Never>()
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	private init() {}
 	
 	public func setup() {
@@ -92,12 +110,14 @@ public class WalletConnectService {
 		
 		
 		// Callbacks
+		/*
 		Sign.instance.sessionProposalPublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] sessionProposal in
 				Logger.app.info("WC sessionProposalPublisher")
 				self?.proposalPrechecks(sessionProposal.proposal)
 			}.store(in: &bag)
+		*/
 		
 		Sign.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
@@ -118,6 +138,7 @@ public class WalletConnectService {
 				Logger.app.info("WC pairingDeletePublisher \(data.code), \(data.message)")
 			}.store(in: &bag)
 		
+		/*
 		Sign.instance.sessionRequestPublisher
 			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
 			.flatMap(maxPublishers: .max(1)) { [weak self] sessionRequest in
@@ -133,6 +154,59 @@ public class WalletConnectService {
 				Logger.app.info("WC request completed with success: \(success)")
 			})
 			.store(in: &bag)
+		*/
+		
+		
+		// Setup central buffered publisher for items that require user input and can't be handled more than 1 at a time
+		// Each item will be wrapped in a future, that is listening to a published var waiting for a user action to mark it as handled (either success or reject)
+		sessionActionRequiredPublisherSubject
+			.receive(on: DispatchQueue.main)
+			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
+			.flatMap(maxPublishers: .max(1)) { [weak self] userActionItem in
+				
+				guard let self = self else {
+					Logger.app.error("WC sessionActionRequiredPublisherSubject can't find self, skipping action")
+					return Future<Bool, Never>() { $0(.success(false)) }
+				}
+				
+				if let proposal = userActionItem.action as? Session.Proposal {
+					Logger.app.error("WC sessionActionRequiredPublisherSubject received a proposal")
+					return self.wrapProposalAsFuture(proposal: proposal)
+					
+				} else if let request = userActionItem.action as? Request {
+					Logger.app.error("WC sessionActionRequiredPublisherSubject received a request")
+					return self.wrapRequestAsFuture(request: request)
+					
+				} else {
+					Logger.app.error("WC sessionActionRequiredPublisherSubject received an unknown type, skipping")
+					return Future<Bool, Never>() { $0(.success(false)) }
+				}
+			}
+			.sink(receiveValue: { success in
+				Logger.app.info("WC request completed with success: \(success)")
+			})
+			.store(in: &bag)
+		
+		
+		
+		// Pass WC2 objects to central buffered publisher, as they require identical UI/UX management (displying bottom sheet, requesting user interaction)
+		Sign.instance.sessionProposalPublisher
+			.sink { [weak self] incomingProposalObj in
+				Logger.app.info("WC sessionProposalPublisher")
+				self?.sessionActionRequiredPublisherSubject.send((action: incomingProposalObj.proposal, context: incomingProposalObj.context))
+			}.store(in: &bag)
+		
+		Sign.instance.sessionRequestPublisher
+			.sink { [weak self] incomingProposalObj in
+				Logger.app.info("WC sessionRequestPublisher")
+				self?.sessionActionRequiredPublisherSubject.send((action: incomingProposalObj.request, context: incomingProposalObj.context))
+				
+			}.store(in: &bag)
+		
+		
+		
+		
+		
 		
 		hasBeenSetup = true
 		
@@ -148,6 +222,109 @@ public class WalletConnectService {
 	
 	// MARK: - Queue Management
 	
+	private func wrapProposalAsFuture(proposal: Session.Proposal) -> Future<Bool, Never> {
+		return Future<Bool, Never>() { [weak self] promise in
+			
+			guard let self = self else {
+				Logger.app.error("WC wrapProposalAsFuture failed to find self, returning false")
+				promise(.success(false))
+				return
+			}
+			
+			
+			// Record proposal in shared state so it can be accessed by various methods and screens
+			Logger.app.info("Processing WC2 proposal: \(proposal.id)")
+			TransactionService.shared.walletConnectOperationData.proposal = proposal
+			
+			
+			// Check if the proposal is for the network the app is currently on
+			self.checkValidNetwork(forProposal: proposal) { [weak self] isValid in
+				guard isValid else {
+					Logger.app.info("Request is for the wrong network, rejecting")
+					promise(.success(false))
+					return
+				}
+				
+				self?.delegate?.pairRequested()
+			}
+			
+			
+			// Setup listener for user action confirming the proposal has been handled or rejected
+			self.$requestDidComplete
+				.dropFirst()
+				.sink(receiveValue: { value in
+					promise(.success(value))
+				})
+				.store(in: &self.bag)
+		}
+	}
+	
+	private func wrapRequestAsFuture(request: Request) -> Future<Bool, Never> {
+		return Future<Bool, Never>() { [weak self] promise in
+			
+			guard let self = self else {
+				Logger.app.error("WC wrapRequestAsFuture failed to find self, returning false")
+				promise(.success(false))
+				return
+			}
+			
+			
+			// Record request in shared state so it can be accessed by various methods and screens
+			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
+			TransactionService.shared.walletConnectOperationData.request = request
+			
+			
+			// Check if the request is for the correct network, and requesting for the correct account
+			// TODO: The tezos provider should be performing the account check at a minimum, when the provider is replaced, remove this check
+			self.checkValidNetworkAndAccount(forRequest: request) { [weak self] isValid in
+				
+				guard isValid else {
+					Logger.app.info("Request is for the wrong network, rejecting")
+					promise(.success(false))
+					return
+				}
+				
+				guard let self = self else {
+					Logger.app.info("Unable to find self, cancelling")
+					promise(.success(false))
+					return
+				}
+				
+				// Setup listener for completion status
+				self.$requestDidComplete
+					.dropFirst()
+					.sink(receiveValue: { value in
+						promise(.success(value))
+					})
+					.store(in: &self.bag)
+				
+				
+				// Process the request
+				self.handleRequestLogic(request)
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	private func proposalPrechecks(_ proposal: Session.Proposal) {
 		if proposalInProgress == true || requestInProgress {
 			Task {
@@ -169,7 +346,9 @@ public class WalletConnectService {
 			}
 		}
 	}
+	*/
 	
+	/*
 	private func requestPrechecks(_ request: WalletConnectSign.Request) -> Future<Bool, Never> {
 		if proposalInProgress == true {
 			return Future<Bool, Never>() { promise in
@@ -184,6 +363,7 @@ public class WalletConnectService {
 			return self.processIncoming(request: request)
 		}
 	}
+	*/
 	
 	/// Check if the proposal network matches the current one the app is pointing too. Return false in completion block if its not, and fire off a message to delegate error hanlder if so. Calling code only needs to check for if true
 	private func checkValidNetwork(forProposal proposal: WalletConnectSign.Session.Proposal, completion: @escaping ((Bool) -> Void)) {
@@ -256,6 +436,7 @@ public class WalletConnectService {
 		}
 	}
 	
+	/*
 	private func processIncoming(request: WalletConnectSign.Request) -> Future<Bool, Never> {
 		Future() { [weak self] promise in
 			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
@@ -294,6 +475,7 @@ public class WalletConnectService {
 			}
 		}
 	}
+	*/
 	
 	private func handleRequestLogic(_ request: WalletConnectSign.Request) {
 		
@@ -314,7 +496,7 @@ public class WalletConnectService {
 			}
 			
 		} else if request.method == "tezos_getAccounts" {
-			delegate?.provideAccountList()
+			WalletConnectService.shared.respondWithAccounts()
 			
 		} else {
 			delegateErrorOnMain(message: "Unsupported WC method: \(request.method)", error: nil)
@@ -377,7 +559,7 @@ public class WalletConnectService {
 	
 	
 	
-	// MARK: - Pairing
+	// MARK: - Pairing and WC2 responses
 	
 	@MainActor
 	public func pairClient(uri: WalletConnectURI) {
@@ -395,7 +577,6 @@ public class WalletConnectService {
 		}
 	}
 	
-	@MainActor
 	public func respondWithAccounts() {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC Approve Session error: Unable to find request")
@@ -451,6 +632,104 @@ public class WalletConnectService {
 		}
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static func completeRequest(withDelay delay: TimeInterval = 0.5) {
+		DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+			WalletConnectService.shared.requestDidComplete = true
+		}
+	}
+	
+	@MainActor
+	public static func rejectCurrentProposal(completion: @escaping ((Bool, Error?) -> Void)) {
+		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
+			Logger.app.error("WC rejectCurrentProposal can't find current prposal")
+			completion(false, nil)
+			return
+		}
+		
+		Logger.app.info("WC Reject proposal: \(proposal.id)")
+		Task {
+			do {
+				try await Sign.instance.reject(proposalId: proposal.id, reason: .userRejected)
+				Logger.app.info("WC rejectCurrentProposal success")
+				completion(true, nil)
+				
+			} catch (let error) {
+				Logger.app.error("WC rejectCurrentProposal error: \(error)")
+				completion(false, error)
+			}
+			
+			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.completeRequest()
+		}
+	}
+	
+	@MainActor
+	public static func approveCurrentProposal(completion: @escaping ((Bool, Error?) -> Void)) {
+		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal,
+			  let currentAccount = DependencyManager.shared.selectedWalletMetadata,
+			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
+			Logger.app.error("WC approveCurrentProposal can't find current prposal or current state")
+			completion(false, nil)
+			return
+		}
+		
+		let prefix = currentAccount.address.prefix(3).lowercased()
+		var algo = ""
+		if prefix == "tz1" {
+			algo = "ed25519"
+		} else if prefix == "tz2" {
+			algo = "secp256k1"
+		} else {
+			algo = "unknown"
+		}
+		
+		let sessionProperties = [
+			"algo": algo,
+			"address": currentAccount.address,
+			"pubkey": currentAccount.bas58EncodedPublicKey
+		]
+		
+		
+		Logger.app.info("WC Approve proposal: \(proposal.id)")
+		Task {
+			do {
+				try await Sign.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
+				Logger.app.info("WC approveCurrentProposal success")
+				completion(true, nil)
+				
+			} catch (let error) {
+				Logger.app.error("WC approveCurrentProposal error: \(error)")
+				completion(false, error)
+			}
+			
+			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.completeRequest()
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
 	@MainActor
 	public static func reject(proposalId: String, reason: RejectionReason, clearState: Bool = true) throws {
 		Logger.app.info("WC Reject Pairing \(proposalId)")
@@ -466,6 +745,7 @@ public class WalletConnectService {
 			}
 		}
 	}
+	*/
 	
 	@MainActor
 	public static func reject(topic: String, requestId: RPCID, clearState: Bool = true, autoMarkOpComplete: Bool = true) throws {

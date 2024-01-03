@@ -7,7 +7,6 @@
 
 import UIKit
 import KukaiCoreSwift
-import WalletConnectSign
 import OSLog
 
 class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol, BottomSheetContainerDelegate {
@@ -63,20 +62,10 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		if let proposal = TransactionService.shared.walletConnectOperationData.proposal, let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
 			let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
 			MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			
 		} else {
 			self.iconView.image = UIImage.unknownToken()
 		}
-	}
-	
-	private func unrecoverableError() {
-		self.hideLoadingModal(completion: { [weak self] in
-			TransactionService.shared.resetWalletConnectState()
-			self?.windowError(withTitle: "error".localized(), description: "error-wc2-unrecoverable".localized())
-			self?.presentingViewController?.dismiss(animated: true, completion: {
-				WalletConnectService.shared.requestDidComplete = false
-				WalletConnectService.shared.proposalInProgress = false
-			})
-		})
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
@@ -84,86 +73,61 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
-		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal, let account = DependencyManager.shared.selectedWalletAddress else {
-			unrecoverableError()
-			return
-		}
-		
-		self.showLoadingModal()
-		if let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: account, currentNetworkType: DependencyManager.shared.currentNetworkType) {
-			approve(proposalId: proposal.id, namespaces: namespaces)
-		} else {
-			rejectTapped(proposal.id)
+		self.showLoadingModal { [weak self] in
+			self?.handleApproval()
 		}
 	}
 	
-	@MainActor
-	private func approve(proposalId: String, namespaces: [String: SessionNamespace]) {
-		Logger.app.info("WC Approve Session \(proposalId)")
-		Task {
-			do {
-				let currentAccount = DependencyManager.shared.selectedWalletMetadata
-				let prefix = currentAccount?.address.prefix(3).lowercased() ?? ""
-				var algo = ""
-				if prefix == "tz1" {
-					algo = "ed25519"
-				} else if prefix == "tz2" {
-					algo = "secp256k1"
+	private func handleApproval() {
+		WalletConnectService.approveCurrentProposal { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					self?.presenter?.didHandlePairing = true
+					self?.presentingViewController?.dismiss(animated: true)
+					
 				} else {
-					algo = "unknown"
-				}
-				
-				let sessionProperties = [
-					"algo": algo,
-					"address": currentAccount?.address ?? "",
-					"pubkey": currentAccount?.bas58EncodedPublicKey ?? ""
-				]
-				
-				try await Sign.instance.approve(proposalId: proposalId, namespaces: namespaces, sessionProperties: sessionProperties)
-				presenter?.didApprovePairing = true
-				
-				self.hideLoadingModal(completion: { [weak self] in
-					TransactionService.shared.resetWalletConnectState()
-					self?.presentingViewController?.dismiss(animated: true, completion: {
-						WalletConnectService.shared.proposalInProgress = false
-					})
-				})
-				
-			} catch {
-				var message = "\(error)"
-				if error.localizedDescription == "Unsupported or empty accounts for namespace" {
-					message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
-				}
-				
-				Logger.app.error("WC Approve Session error: \(error)")
-				self.hideLoadingModal(completion: { [weak self] in
+					var message = "error-wc2-unrecoverable".localized()
+					
+					if let err = error {
+						if err.localizedDescription == "Unsupported or empty accounts for namespace" {
+							message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
+						} else {
+							message = "\(err)"
+						}
+					}
+					
+					Logger.app.error("WC Approve error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
-					WalletConnectService.shared.proposalInProgress = false
-				})
-			}
+				}
+			})
 		}
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
-			unrecoverableError()
-			return
+		self.showLoadingModal { [weak self] in
+			self?.handleRejection()
 		}
-		
-		self.showLoadingModal {
-			do {
-				try WalletConnectService.reject(proposalId: proposal.id, reason: .userRejected)
-				
-				self.hideLoadingModal(completion: { [weak self] in
-					TransactionService.shared.resetWalletConnectState()
+	}
+	
+	private func handleRejection() {
+		WalletConnectService.rejectCurrentProposal { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					self?.presenter?.didHandlePairing = true
 					self?.presentingViewController?.dismiss(animated: true)
-				})
-				
-			} catch (let error) {
-				self.hideLoadingModal(completion: { [weak self] in
-					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
-				})
-			}
+					
+				} else {
+					var message = ""
+					if let err = error {
+						message = err.localizedDescription
+					} else {
+						message = "error-wc2-unrecoverable".localized()
+					}
+					
+					Logger.app.error("WC Rejction error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: message)
+				}
+			})
 		}
 	}
 }
