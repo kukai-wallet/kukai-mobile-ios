@@ -32,8 +32,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
 	
-	public var didHandlePairing = false
-	public var didApproveSigning = false
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
 	
@@ -290,21 +288,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.present(scanner, animated: true)
 	}
 	
-	public override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let dest = segue.destination.presentationController as? UISheetPresentationController {
-			dest.delegate = self
-		}
-		
-		if let vc = segue.destination as? WalletConnectPairViewController {
-			didHandlePairing = false
-			vc.presenter = self
-			
-		} else if let vc = segue.destination as? WalletConnectSignViewController {
-			didApproveSigning = false
-			vc.presenter = self
-		}
-	}
-	
 	
 	
 	
@@ -481,24 +464,15 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func signRequested() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-			self.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
-		}
+		self.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
 	}
 	
 	public func processingIncomingOperations() {
 		self.showLoadingView()
 	}
 	
-	public static func recordWalletConnectOperationAsComplete() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-			WalletConnectService.shared.requestDidComplete = true
-			WalletConnectService.shared.requestInProgress = false
-		}
-	}
-	
 	public func processedOperations(ofType: WalletConnectOperationType) {
-		self.loadingViewHideActivity()
+		self.loadingViewHideActivityAndFade(withDuration: 0.5)
 		
 		if self.presentedViewController == nil {
 			switch ofType {
@@ -536,22 +510,23 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 			
 			self.windowError(withTitle: "error".localized(), description: message)
-			if !messageOnly { self.respondOnReject(withMessage: m) }
+			//if !messageOnly { self.respondOnReject(withMessage: m) }
 			
 		} else if let e = error as? KukaiError {
 			self.windowError(withTitle: "error".localized(), description: e.description)
-			if !messageOnly {self.respondOnReject(withMessage: e.description) }
+			//if !messageOnly {self.respondOnReject(withMessage: e.description) }
 			
 		} else if let e = error{
 			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
-			if !messageOnly { self.respondOnReject(withMessage: e.localizedDescription) }
+			//if !messageOnly { self.respondOnReject(withMessage: e.localizedDescription) }
 			
 		} else {
 			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			if !messageOnly { self.respondOnReject(withMessage: "error-unknwon-wc2".localized()) }
+			//if !messageOnly { self.respondOnReject(withMessage: "error-unknwon-wc2".localized()) }
 		}
 	}
 	
+	/*
 	@MainActor
 	private func respondOnReject(withMessage: String) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
@@ -569,49 +544,5 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 		}
 	}
-}
-
-
-// MARK: - UISheetPresentationControllerDelegate
-
-extension HomeTabBarController: UISheetPresentationControllerDelegate {
-	
-	public func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-		// TODO: replace with new logic
-		/*if let _ = presentationController.presentedViewController as? WalletConnectPairViewController, !didHandlePairing {
-			didHandlePairing = false
-			
-			guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
-				return
-			}
-			
-			self.showLoadingView()
-			do {
-				try WalletConnectService.reject(proposalId: proposal.id, reason: .userRejected)
-				self.hideLoadingView()
-				
-			} catch (let error) {
-				self.hideLoadingView()
-				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
-			}
-			
-		} else if let _ = presentationController.presentedViewController as? WalletConnectSignViewController, !didApproveSigning {
-			didApproveSigning = false
-			
-			guard let request = TransactionService.shared.walletConnectOperationData.request else {
-				return
-			}
-			
-			self.showLoadingView()
-			do {
-				try WalletConnectService.reject(topic: request.topic, requestId: request.id)
-				self.hideLoadingView()
-				
-			} catch (let error) {
-				self.hideLoadingView()
-				self.windowError(withTitle: "error".localized(), description: error.localizedDescription)
-			}
-			
-		}*/
-	}
+	*/
 }

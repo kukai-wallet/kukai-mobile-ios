@@ -23,7 +23,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	var bottomSheetMaxHeight: CGFloat = 450
 	var dimBackground: Bool = true
-	weak var presenter: HomeTabBarController? = nil
+	private var didSend = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -68,6 +68,14 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 	}
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didSend {
+			handleRejection(andDismiss: false)
+		}
+	}
+	
 	@IBAction func closeButtonTapped(_ sender: Any) {
 		rejectTapped("")
 	}
@@ -82,7 +90,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		WalletConnectService.approveCurrentProposal { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
-					self?.presenter?.didHandlePairing = true
+					self?.didSend = true
 					self?.presentingViewController?.dismiss(animated: true)
 					
 				} else {
@@ -109,12 +117,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 	}
 	
-	private func handleRejection() {
+	private func handleRejection(andDismiss: Bool = true) {
 		WalletConnectService.rejectCurrentProposal { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
-					self?.presenter?.didHandlePairing = true
-					self?.presentingViewController?.dismiss(animated: true)
+					self?.didSend = true
+					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 					
 				} else {
 					var message = ""

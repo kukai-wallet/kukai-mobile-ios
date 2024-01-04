@@ -64,6 +64,17 @@ extension UIViewController {
 		UIViewController.activityViewActivityIndicator.isHidden = false
 	}
 	
+	func loadingViewHideActivityAndFade(withDuration duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
+		loadingViewHideActivity()
+		
+		UIView.animate(withDuration: duration) {
+			UIViewController.activityView.alpha = 0
+		} completion: { _ in
+			UIViewController.activityView.removeFromSuperview()
+			completion?()
+		}
+	}
+	
 	func hideLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityView.removeFromSuperview()

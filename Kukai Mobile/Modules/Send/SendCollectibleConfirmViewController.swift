@@ -273,7 +273,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		self.dismiss(animated: true) { [weak self] in
 			if self?.isWalletConnectOp == true {
 				TransactionService.shared.resetWalletConnectState()
-				HomeTabBarController.recordWalletConnectOperationAsComplete()
+				//HomeTabBarController.recordWalletConnectOperationAsComplete()
 			}
 		}
 		

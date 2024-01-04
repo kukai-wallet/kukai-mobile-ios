@@ -488,10 +488,7 @@ public class WalletConnectService {
 			if let params = try? request.params.get([String: String].self), let expression = params["payload"], expression.isMichelsonEncodedString(), expression.humanReadableStringFromMichelson() != "" {
 				delegate?.signRequested()
 			} else {
-				Task {
-					try? await WalletConnectService.reject(topic: request.topic, requestId: request.id)
-					TransactionService.shared.resetWalletConnectState()
-				}
+				WalletConnectService.rejectCurrentRequest(completion: nil)
 				delegateErrorOnMain(message: "error-unsupported-sign".localized(), error: nil)
 			}
 			
@@ -640,8 +637,10 @@ public class WalletConnectService {
 	
 	
 	
-	
-	public static func completeRequest(withDelay delay: TimeInterval = 0.5) {
+	/// WalletConnectService puts every user-action-required request into a queue, so that we can manage them 1 at a time. This function delays the marking of the current request as complete, by the given delay.
+	/// Each bottom sheet has to deal with up to 2 dismissal animations (a fullscreen spinner / loader) followed by the sheet itself. Each of these should take the standard 0.3 to complete. We double that by default to ensure nothing goes wrong
+	// TODO: could all bottom sheets move to showLoadingView instead of modal, so that its removal and the sheets dismissal can be done together, reducing this time
+	public static func completeRequest(withDelay delay: TimeInterval = 1.2) {
 		DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
 			WalletConnectService.shared.requestDidComplete = true
 		}
@@ -717,6 +716,65 @@ public class WalletConnectService {
 	}
 	
 	
+	//@MainActor
+	public static func rejectCurrentRequest(withMessage: String = "", completion: ((Bool, Error?) -> Void)?) {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			Logger.app.error("WC rejectCurrentRequest can't find current request")
+			completion?(false, nil)
+			return
+		}
+		
+		Logger.app.info("WC Reject request: \(request.id)")
+		Task {
+			do {
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
+				Logger.app.info("WC rejectCurrentRequest success")
+				completion?(true, nil)
+				
+			} catch (let error) {
+				Logger.app.error("WC rejectCurrentRequest error: \(error)")
+				completion?(false, error)
+			}
+			
+			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.completeRequest()
+		}
+	}
+	
+	@MainActor
+	public static func approveCurrentRequest(signature: String?, opHash: String?, completion: @escaping ((Bool, Error?) -> Void)) {
+		guard let request = TransactionService.shared.walletConnectOperationData.request else {
+			Logger.app.error("WC approveCurrentRequest can't find current request or current state")
+			completion(false, nil)
+			return
+		}
+		
+		Logger.app.info("WC Approve request: \(request.id)")
+		Task {
+			do {
+				// Check whether response should be a signature or an opHash. Default to an error if none provided
+				var response: RPCResult = RPCResult.error(.init(code: -1, message: "No signature or operation hash provided as response. UNable to determine success or failure of operation"))
+				if let sig = signature {
+					response = .response(AnyCodable(["signature": sig]))
+					
+				} else if let hash = opHash {
+					response = .response(AnyCodable(any: hash))
+				}
+				
+				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: response)
+				try? await Sign.instance.extend(topic: request.topic)
+				Logger.app.info("WC approveCurrentRequest success")
+				completion(true, nil)
+				
+			} catch (let error) {
+				Logger.app.error("WC approveCurrentRequest error: \(error)")
+				completion(false, error)
+			}
+			
+			TransactionService.shared.resetWalletConnectState()
+			WalletConnectService.completeRequest()
+		}
+	}
 	
 	
 	
@@ -747,6 +805,7 @@ public class WalletConnectService {
 	}
 	*/
 	
+	/*
 	@MainActor
 	public static func reject(topic: String, requestId: RPCID, clearState: Bool = true, autoMarkOpComplete: Bool = true) throws {
 		Logger.app.info("WC Reject Request topic: \(topic), id: \(requestId.description)")
@@ -765,7 +824,7 @@ public class WalletConnectService {
 			}
 		}
 	}
-	
+	*/
 	
 	// MARK: - Operations
 	

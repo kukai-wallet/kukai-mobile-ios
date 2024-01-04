@@ -88,7 +88,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
 				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
-				self.walletConnectRespondOnReject()
+				self.handleRejection()
 				self.dismissBottomSheet()
 				return
 			}
@@ -175,10 +175,9 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
-		self.hideLoadingView()
 		
 		if !didSend && isWalletConnectOp {
-			walletConnectRespondOnReject()
+			handleRejection(andDismiss: false)
 		}
 	}
 	
@@ -214,15 +213,9 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				switch sendResult {
 					case .success(let opHash):
 						Logger.app.info("Sent: \(opHash)")
-						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if self?.isWalletConnectOp == true {
-							self?.walletConnectRespondOnSign(opHash: opHash)
-							
-						} else {
-							self?.dismissAndReturn()
-						}
+						self?.handleApproval(opHash: opHash)
 						
 					case .failure(let sendError):
 						self?.alert(errorWithMessage: sendError.description)
@@ -292,11 +285,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		if isWalletConnectOp {
-			walletConnectRespondOnReject()
-		} else {
-			self.dismissBottomSheet()
-		}
+		handleRejection()
 	}
 	
 	func dismissAndReturn() {
@@ -304,13 +293,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 			TransactionService.shared.resetAllState()
 		}
 		
-		self.dismiss(animated: true) { [weak self] in
-			if self?.isWalletConnectOp == true {
-				TransactionService.shared.resetWalletConnectState()
-				HomeTabBarController.recordWalletConnectOperationAsComplete()
-			}
-		}
-		
+		self.dismiss(animated: true)
 		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
@@ -354,53 +337,61 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 	
-	@MainActor
-	private func walletConnectRespondOnSign(opHash: String) {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Approve Session error: Unable to find request")
-			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			self.dismissAndReturn()
+	private func handleRejection(andDismiss: Bool = true) {
+		if !isWalletConnectOp {
+			if andDismiss { self.dismissAndReturn() }
 			return
 		}
 		
-		Logger.app.info("WC Approve Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
-				try? await Sign.instance.extend(topic: request.topic)
-				self.dismissAndReturn()
-				
-			} catch {
-				Logger.app.error("WC Approve Session error: \(error)")
-				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
-				self.dismissAndReturn()
-			}
-		}
+		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					if andDismiss { self?.dismissAndReturn() }
+					
+				} else {
+					var message = ""
+					if let err = error {
+						message = err.localizedDescription
+					} else {
+						message = "error-wc2-unrecoverable".localized()
+					}
+					
+					Logger.app.error("WC Rejction error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: message)
+					self?.dismissAndReturn()
+				}
+			})
+		})
 	}
 	
-	@MainActor
-	private func walletConnectRespondOnReject() {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Reject Session error: Unable to find request")
-			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
+	private func handleApproval(opHash: String) {
+		if !isWalletConnectOp {
 			self.dismissAndReturn()
 			return
 		}
 		
-		Logger.app.info("WC Reject Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
-				try? await Sign.instance.extend(topic: request.topic)
-				self.didSend = true
-				self.dismissAndReturn()
-				
-			} catch {
-				Logger.app.error("WC Reject Session error: \(error)")
-				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
-				self.dismissAndReturn()
-			}
-		}
+		WalletConnectService.approveCurrentRequest(signature: nil, opHash: opHash, completion: { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					self?.dismissAndReturn()
+					
+				} else {
+					var message = "error-wc2-unrecoverable".localized()
+					
+					if let err = error {
+						if err.localizedDescription == "Unsupported or empty accounts for namespace" {
+							message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
+						} else {
+							message = "\(err)"
+						}
+					}
+					
+					Logger.app.error("WC Approve error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: message)
+					self?.dismissAndReturn()
+				}
+			})
+		})
 	}
 }
 

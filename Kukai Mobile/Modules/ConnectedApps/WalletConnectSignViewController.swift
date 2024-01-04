@@ -7,7 +7,6 @@
 
 import UIKit
 import WalletConnectSign
-import WalletConnectUtils
 import KukaiCoreSwift
 import KukaiCryptoSwift
 import Combine
@@ -26,7 +25,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	
 	var bottomSheetMaxHeight: CGFloat = 500
 	var dimBackground: Bool = true
-	weak var presenter: HomeTabBarController? = nil
+	private var didSend = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -54,75 +53,44 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		slideButton.delegate = self
 	}
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didSend {
+			handleRejection(andDismiss: false)
+		}
+	}
+	
 	@IBAction func copyButtonTapped(_ sender: Any) {
 		UIPasteboard.general.string = payloadTextView.text
 	}
 	
-	@MainActor
-	private func respondOnSign(signature: String) {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Approve Session error: Unable to find request")
-			self.hideLoadingModal(completion: { [weak self] in
-				self?.windowError(withTitle: "error".localized(), description: "Unable to find request object")
-			})
-			return
-		}
-		
-		Logger.app.info("WC Approve Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(["signature": signature])))
-				self.slideButton.markComplete(withText: "Complete")
-				self.presenter?.didApproveSigning = true
-				
-				self.hideLoadingModal(completion: { [weak self] in
-					TransactionService.shared.resetWalletConnectState()
-					self?.presentingViewController?.dismiss(animated: true, completion: {
-						HomeTabBarController.recordWalletConnectOperationAsComplete()
-					})
-				})
-				
-			} catch {
-				Logger.app.error("WC Approve Session error: \(error)")
-				self.hideLoadingModal(completion: { [weak self] in
-					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
-				})
-			}
-		}
-	}
-	
-	@MainActor
-	private func respondOnReject() {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Reject Session error: Unable to find request")
-			self.hideLoadingModal(completion: { [weak self] in
-				self?.windowError(withTitle: "error".localized(), description: "Unable to find request object")
-			})
-			return
-		}
-		
-		Logger.app.info("WC Reject Request: \(request.id)")
-		Task {
-			do {
-				try WalletConnectService.reject(topic: request.topic, requestId: request.id, autoMarkOpComplete: false)
-				self.hideLoadingModal(completion: { [weak self] in
-					TransactionService.shared.resetWalletConnectState()
-					self?.presentingViewController?.dismiss(animated: true, completion: {
-						HomeTabBarController.recordWalletConnectOperationAsComplete()
-					})
-				})
-				
-			} catch {
-				Logger.app.error("WC Reject Session error: \(error)")
-				self.hideLoadingModal(completion: { [weak self] in
-					self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
-				})
-			}
-		}
-	}
-	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		respondOnReject()
+		self.showLoadingModal { [weak self] in
+			self?.handleRejection()
+		}
+	}
+	
+	private func handleRejection(andDismiss: Bool = true) {
+		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					self?.didSend = true
+					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
+					
+				} else {
+					var message = ""
+					if let err = error {
+						message = err.localizedDescription
+					} else {
+						message = "error-wc2-unrecoverable".localized()
+					}
+					
+					Logger.app.error("WC Rejction error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: message)
+				}
+			})
+		})
 	}
 	
 	func didCompleteSlide() {
@@ -158,8 +126,34 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				}
 				
 				let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
-				self?.respondOnSign(signature: updatedSignature)
+				self?.handleApproval(signature: updatedSignature)
 			}
 		}
+	}
+	
+	private func handleApproval(signature: String) {
+		WalletConnectService.approveCurrentRequest(signature: signature, opHash: nil, completion: { [weak self] success, error in
+			self?.hideLoadingModal(completion: { [weak self] in
+				if success {
+					self?.slideButton.markComplete(withText: "Complete")
+					self?.didSend = true
+					self?.presentingViewController?.dismiss(animated: true)
+					
+				} else {
+					var message = "error-wc2-unrecoverable".localized()
+					
+					if let err = error {
+						if err.localizedDescription == "Unsupported or empty accounts for namespace" {
+							message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
+						} else {
+							message = "\(err)"
+						}
+					}
+					
+					Logger.app.error("WC Approve error: \(error)")
+					self?.windowError(withTitle: "error".localized(), description: message)
+				}
+			})
+		})
 	}
 }
