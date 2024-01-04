@@ -488,18 +488,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
-	public func error(message: String?, error: Error?, messageOnly: Bool) {
+	public func error(message: String?, error: Error?) {
 		Logger.app.error("WC2 error message: \(message) - error: \(error)")
-		
-		if !messageOnly {
-			self.hideLoadingView {
-				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-					WalletConnectService.shared.requestDidComplete = true
-				}
-				WalletConnectService.shared.proposalInProgress = false
-				WalletConnectService.shared.requestInProgress = false
-			}
-		}
+		self.hideLoadingView()
 			
 		if let m = message {
 			var message = "\(m)"
@@ -510,39 +501,15 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 			
 			self.windowError(withTitle: "error".localized(), description: message)
-			//if !messageOnly { self.respondOnReject(withMessage: m) }
 			
 		} else if let e = error as? KukaiError {
 			self.windowError(withTitle: "error".localized(), description: e.description)
-			//if !messageOnly {self.respondOnReject(withMessage: e.description) }
 			
 		} else if let e = error{
 			self.windowError(withTitle: "error".localized(), description: e.localizedDescription)
-			//if !messageOnly { self.respondOnReject(withMessage: e.localizedDescription) }
 			
 		} else {
 			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			//if !messageOnly { self.respondOnReject(withMessage: "error-unknwon-wc2".localized()) }
 		}
 	}
-	
-	/*
-	@MainActor
-	private func respondOnReject(withMessage: String) {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Reject Session error: Unable to find request")
-			return
-		}
-		
-		Logger.app.info("WC Reject Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
-				TransactionService.shared.resetWalletConnectState()
-			} catch {
-				Logger.app.error("WC Reject Session error: \(error)")
-			}
-		}
-	}
-	*/
 }

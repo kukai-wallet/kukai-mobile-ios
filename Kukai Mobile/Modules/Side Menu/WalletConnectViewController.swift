@@ -49,7 +49,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 				self?.viewModel.refresh(animate: true)
 			}.store(in: &bag)
 		
-		WalletConnectService.shared.$didCleanAfterDelete
+		WalletConnectService.shared.$pairsAndSessionsUpdated
 			.dropFirst()
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
