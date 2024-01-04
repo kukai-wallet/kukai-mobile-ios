@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
 	
@@ -62,11 +62,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 	@IBOutlet weak var testnetWarningView: UIView!
 	
 	private var isSendingMaxTez = false
-	private var isWalletConnectOp = false
-	private var didSend = false
-	private var connectedAppURL: URL? = nil
-	private var currentSendData: TransactionService.SendData = TransactionService.SendData()
-	private var selectedMetadata: WalletMetadata? = nil
 	
 	var dimBackground: Bool = false
 	
@@ -89,7 +84,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
 				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
 				self.handleRejection()
-				self.dismissBottomSheet()
 				return
 			}
 			
@@ -173,14 +167,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		}
 	}
 	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		
-		if !didSend && isWalletConnectOp {
-			handleRejection(andDismiss: false)
-		}
-	}
-	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
 		if isWalletConnectOp {
 			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()
@@ -218,7 +204,7 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 						self?.handleApproval(opHash: opHash)
 						
 					case .failure(let sendError):
-						self?.alert(errorWithMessage: sendError.description)
+						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
@@ -288,15 +274,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		handleRejection()
 	}
 	
-	func dismissAndReturn() {
-		if !isWalletConnectOp {
-			TransactionService.shared.resetAllState()
-		}
-		
-		self.dismiss(animated: true)
-		(self.presentingViewController as? UINavigationController)?.popToHome()
-	}
-	
 	func addPendingTransaction(opHash: String) {
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
@@ -335,63 +312,6 @@ class SendTokenConfirmViewController: UIViewController, SlideButtonDelegate, Edi
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
-	}
-	
-	private func handleRejection(andDismiss: Bool = true) {
-		if !isWalletConnectOp {
-			if andDismiss { self.dismissAndReturn() }
-			return
-		}
-		
-		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
-				if success {
-					if andDismiss { self?.dismissAndReturn() }
-					
-				} else {
-					var message = ""
-					if let err = error {
-						message = err.localizedDescription
-					} else {
-						message = "error-wc2-unrecoverable".localized()
-					}
-					
-					Logger.app.error("WC Rejction error: \(error)")
-					self?.windowError(withTitle: "error".localized(), description: message)
-					self?.dismissAndReturn()
-				}
-			})
-		})
-	}
-	
-	private func handleApproval(opHash: String) {
-		if !isWalletConnectOp {
-			self.dismissAndReturn()
-			return
-		}
-		
-		WalletConnectService.approveCurrentRequest(signature: nil, opHash: opHash, completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
-				if success {
-					self?.dismissAndReturn()
-					
-				} else {
-					var message = "error-wc2-unrecoverable".localized()
-					
-					if let err = error {
-						if err.localizedDescription == "Unsupported or empty accounts for namespace" {
-							message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
-						} else {
-							message = "\(err)"
-						}
-					}
-					
-					Logger.app.error("WC Approve error: \(error)")
-					self?.windowError(withTitle: "error".localized(), description: message)
-					self?.dismissAndReturn()
-				}
-			})
-		})
 	}
 }
 
