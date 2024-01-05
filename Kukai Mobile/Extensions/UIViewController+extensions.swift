@@ -49,6 +49,7 @@ extension UIViewController {
 	func showLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityView.frame = UIScreen.main.bounds
+		UIViewController.activityView.alpha = 1
 		UIApplication.shared.currentWindow?.addSubview(UIViewController.activityView)
 		
 		loadingViewShowActivity()
@@ -57,11 +58,13 @@ extension UIViewController {
 	func loadingViewHideActivity() {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = true
+		UIViewController.activityView.alpha = 1
 	}
 	
 	func loadingViewShowActivity() {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = false
+		UIViewController.activityView.alpha = 1
 	}
 	
 	func loadingViewHideActivityAndFade(withDuration duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {

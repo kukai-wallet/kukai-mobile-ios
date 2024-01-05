@@ -177,6 +177,7 @@ public class WalletConnectService {
 			
 			guard let self = self else {
 				Logger.app.error("WC wrapProposalAsFuture failed to find self, returning false")
+				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
 				promise(.success(false))
 				return
 			}
@@ -214,6 +215,7 @@ public class WalletConnectService {
 			
 			guard let self = self else {
 				Logger.app.error("WC wrapRequestAsFuture failed to find self, returning false")
+				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
 				promise(.success(false))
 				return
 			}
@@ -222,7 +224,7 @@ public class WalletConnectService {
 			// Record request in shared state so it can be accessed by various methods and screens
 			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
 			TransactionService.shared.walletConnectOperationData.request = request
-			
+			self.delegate?.processingIncomingOperations()
 			
 			// Check if the request is for the correct network, and requesting for the correct account
 			// TODO: The tezos provider should be performing the account check at a minimum, when the provider is replaced, remove this check
@@ -236,6 +238,7 @@ public class WalletConnectService {
 				
 				guard let self = self else {
 					Logger.app.info("Unable to find self, cancelling")
+					self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
 					promise(.success(false))
 					return
 				}
@@ -653,7 +656,6 @@ public class WalletConnectService {
 		}
 		
 		TransactionService.shared.walletConnectOperationData.requestParams = params
-		self.delegate?.processingIncomingOperations()
 		
 		// Map all wallet connect objects to kuaki objects
 		let convertedOps = params.kukaiOperations()
