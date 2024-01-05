@@ -141,7 +141,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 				
 				cell.symbolLabel.text = symbol
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces) // TODO: token is class, setting value stores it everywhere
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {

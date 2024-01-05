@@ -132,6 +132,10 @@ public class WalletConnectService {
 					Logger.app.error("WC sessionActionRequiredPublisherSubject received a request")
 					return self.wrapRequestAsFuture(request: request)
 					
+				} else if let uri = userActionItem.action as? WalletConnectURI {
+					Logger.app.error("WC sessionActionRequiredPublisherSubject received a uri")
+					return self.wrapPairRequestAsFuture(uri: uri)
+					
 				} else {
 					Logger.app.error("WC sessionActionRequiredPublisherSubject received an unknown type, skipping")
 					return Future<Bool, Never>() { $0(.success(false)) }
@@ -161,10 +165,7 @@ public class WalletConnectService {
 		hasBeenSetup = true
 		
 		if let uri = deepLinkPairingToConnect {
-			Task {
-				await pairClient(uri: uri)
-				deepLinkPairingToConnect = nil
-			}
+			pairClient(uri: uri)
 		}
 	}
 	
@@ -254,6 +255,26 @@ public class WalletConnectService {
 				
 				// Process the request
 				self.handleRequestLogic(request)
+			}
+		}
+	}
+	
+	private func wrapPairRequestAsFuture(uri: WalletConnectURI) -> Future<Bool, Never> {
+		return Future<Bool, Never>() { [weak self] promise in
+			Logger.app.info("WC pairing to \(uri.absoluteString)")
+			
+			Task { [weak self] in
+				do {
+					try await Pair.instance.pair(uri: uri)
+					promise(.success(true))
+					
+				} catch {
+					Logger.app.error("WC Pairing connect error: \(error)")
+					self?.delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error)
+					promise(.success(false))
+				}
+				
+				self?.deepLinkPairingToConnect = nil
 			}
 		}
 	}
@@ -417,19 +438,10 @@ public class WalletConnectService {
 	
 	// MARK: - Pairing and WC2 responses
 	
-	@MainActor
-	// TODO: move this into queue so that it happens after the current request
+	/// Due to Beacon incorrectly triggering this all incoming uri's get treated the same as a incoming proposal or a request.
+	/// The URI pairing function is wrapped up inside a Future and passed into the user action queue, to ensure only 1 thing is processed at a time
 	public func pairClient(uri: WalletConnectURI) {
-		Logger.app.info("WC pairing to \(uri.absoluteString)")
-		Task {
-			do {
-				try await Pair.instance.pair(uri: uri)
-				
-			} catch {
-				Logger.app.error("WC Pairing connect error: \(error)")
-				delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error)
-			}
-		}
+		self.sessionActionRequiredPublisherSubject.send((action: uri, context: nil))
 	}
 	
 	public func respondWithAccounts() {
