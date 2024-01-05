@@ -175,19 +175,16 @@ public class WalletConnectService {
 	
 	private func wrapProposalAsFuture(proposal: Session.Proposal) -> Future<Bool, Never> {
 		return Future<Bool, Never>() { [weak self] promise in
+			Logger.app.info("Processing WC2 proposal: \(proposal.id)")
+			TransactionService.shared.walletConnectOperationData.proposal = proposal
 			
 			guard let self = self else {
 				Logger.app.error("WC wrapProposalAsFuture failed to find self, returning false")
+				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
 				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
 				promise(.success(false))
 				return
 			}
-			
-			
-			// Record proposal in shared state so it can be accessed by various methods and screens
-			Logger.app.info("Processing WC2 proposal: \(proposal.id)")
-			TransactionService.shared.walletConnectOperationData.proposal = proposal
-			
 			
 			// Check if the proposal is for the network the app is currently on
 			self.checkValidNetwork(forProposal: proposal) { [weak self] isValid in
@@ -213,18 +210,17 @@ public class WalletConnectService {
 	
 	private func wrapRequestAsFuture(request: Request) -> Future<Bool, Never> {
 		return Future<Bool, Never>() { [weak self] promise in
+			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
+			TransactionService.shared.walletConnectOperationData.request = request
 			
 			guard let self = self else {
 				Logger.app.error("WC wrapRequestAsFuture failed to find self, returning false")
+				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
 				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
 				promise(.success(false))
 				return
 			}
 			
-			
-			// Record request in shared state so it can be accessed by various methods and screens
-			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
-			TransactionService.shared.walletConnectOperationData.request = request
 			self.delegate?.processingIncomingOperations()
 			
 			// Check if the request is for the correct network, and requesting for the correct account
@@ -237,25 +233,18 @@ public class WalletConnectService {
 					return
 				}
 				
-				guard let self = self else {
-					Logger.app.info("Unable to find self, cancelling")
-					self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
-					promise(.success(false))
-					return
-				}
-				
-				// Setup listener for completion status
-				self.$requestDidComplete
-					.dropFirst()
-					.sink(receiveValue: { value in
-						promise(.success(value))
-					})
-					.store(in: &self.bag)
-				
-				
 				// Process the request
-				self.handleRequestLogic(request)
+				self?.handleRequestLogic(request)
 			}
+			
+			
+			// Setup listener for completion status
+			self.$requestDidComplete
+				.dropFirst()
+				.sink(receiveValue: { value in
+					promise(.success(value))
+				})
+				.store(in: &self.bag)
 		}
 	}
 	
