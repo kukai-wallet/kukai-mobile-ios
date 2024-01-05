@@ -464,11 +464,20 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	}
 	
 	public func signRequested() {
+		self.loadingViewHideActivityAndFade(withDuration: 0.5)
 		self.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
 	}
 	
 	public func processingIncomingOperations() {
-		self.showLoadingView()
+		DispatchQueue.main.async {
+			self.showLoadingView()
+		}
+	}
+	
+	public func processingIncomingDone() {
+		DispatchQueue.main.async {
+			self.hideLoadingView()
+		}
 	}
 	
 	public func processedOperations(ofType: WalletConnectOperationType) {

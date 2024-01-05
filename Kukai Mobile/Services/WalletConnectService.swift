@@ -24,6 +24,7 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func pairRequested()
 	func signRequested()
 	func processingIncomingOperations()
+	func processingIncomingDone()
 	func processedOperations(ofType: WalletConnectOperationType)
 	func error(message: String?, error: Error?)
 	func connectionStatusChanged(status: SocketConnectionStatus)
@@ -241,7 +242,8 @@ public class WalletConnectService {
 			// Setup listener for completion status
 			self.$requestDidComplete
 				.dropFirst()
-				.sink(receiveValue: { value in
+				.sink(receiveValue: { [weak self] value in
+					self?.delegate?.processingIncomingDone()
 					promise(.success(value))
 				})
 				.store(in: &self.bag)
@@ -741,8 +743,8 @@ public class WalletConnectService {
 	}
 	
 	private func mainThreadProcessedOperations(ofType type: WalletConnectOperationType) {
-		DispatchQueue.main.async {
-			self.delegate?.processedOperations(ofType: type)
+		DispatchQueue.main.async { [weak self] in
+			self?.delegate?.processedOperations(ofType: type)
 		}
 	}
 }
