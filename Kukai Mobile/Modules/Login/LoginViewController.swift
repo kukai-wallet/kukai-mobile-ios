@@ -124,6 +124,7 @@ class LoginViewController: UIViewController {
 			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
+						StorageService.setLastLogin()
 						self?.next()
 						
 					} else {
@@ -149,13 +150,17 @@ class LoginViewController: UIViewController {
 		}
 		
 		// If part of app login, dimiss
+		hiddenTextfield.resignFirstResponder()
+		LoginViewController.reconnectAndDismiss()
+	}
+	
+	public static func reconnectAndDismiss() {
 		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
 			Logger.app.info("Can't get scene delegate")
 			return
 		}
 		
 		reestablishConnectionsAfterLogin()
-		hiddenTextfield.resignFirstResponder()
 		sceneDelegate.hidePrivacyProtectionWindow()
 	}
 	
@@ -163,7 +168,7 @@ class LoginViewController: UIViewController {
 		super.viewDidDisappear(animated)
 	}
 	
-	private func reestablishConnectionsAfterLogin() {
+	private static func reestablishConnectionsAfterLogin() {
 		if !DependencyManager.shared.tzktClient.isListening {
 			AccountViewModel.setupAccountActivityListener()
 		}
@@ -196,6 +201,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 				if result {
 					LoginViewController.wrongGuessCount = 0
 					LoginViewController.wrongGuessDelay = 0
+					StorageService.setLastLogin()
 					self?.next()
 				} else {
 					self?.displayErrorAndReset()

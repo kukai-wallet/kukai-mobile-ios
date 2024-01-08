@@ -14,6 +14,7 @@ import OSLog
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
+	var firstLoad = true
 	
 	private var privacyProtectionWindow: UIWindow?
 
