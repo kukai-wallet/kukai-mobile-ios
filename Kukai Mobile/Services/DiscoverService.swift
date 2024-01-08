@@ -7,6 +7,13 @@
 
 import Foundation
 import KukaiCoreSwift
+import KukaiCryptoSwift
+import OSLog
+
+public struct DiscoverSecureServiceObject: Codable {
+	let data: [DiscoverGroup]
+	let signature: String
+}
 
 public struct DiscoverGroup: Codable, Hashable, Identifiable {
 	@DefaultUUID public var id: UUID
@@ -28,7 +35,7 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 
 public class DiscoverService {
 	
-	private let discoverURL = "https://services.kukaiwallet.workers.dev/v1/discover"
+	private let discoverURL = "https://services.kukai.app/v2/discover"
 	
 	private let discoverCacheKey = "discover-cache-key"
 	
@@ -54,18 +61,40 @@ public class DiscoverService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: discoverCacheKey, responseType: [DiscoverGroup].self) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: discoverCacheKey, responseType: DiscoverSecureServiceObject.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self?.items = response
+			self?.items = response.data
+			
+			let _ = self?.validate(secureObject: response)
+			self?.deleteCache()
+			
 			completion(Result.success(true))
 		}
 	}
 	
 	public func deleteCache() {
 		let _ = self.requestIfService.delete(key: discoverCacheKey)
+	}
+	
+	private func validate(secureObject: DiscoverSecureServiceObject) -> Bool {
+		let encoder = JSONEncoder()
+		
+		guard let jsonData = try? encoder.encode(secureObject.data),
+			  let publicKeyData = try? Data(hexString: "d71729958d14ba994b9bf29816f9710bd944d0ed7dc3e5a58a31532ca87e06f6"),
+			  let signatureData = try? Data(hexString: secureObject.signature)
+		else {
+			Logger.app.error("DiscoverService unable to setup validation data")
+			return false
+		}
+		
+		let publicKey = PublicKey(publicKeyData.bytes, signingCurve: .ed25519)
+		let valid = publicKey.verify(message: jsonData.bytes, signature: signatureData.bytes)
+		
+		print("valid: \(valid)")
+		return valid
 	}
 }
