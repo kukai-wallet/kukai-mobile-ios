@@ -613,7 +613,7 @@ public class WalletConnectService {
 					response = .response(AnyCodable(["signature": sig]))
 					
 				} else if let hash = opHash {
-					response = .response(AnyCodable(any: hash))
+					response = .response(AnyCodable(["operationHash": hash]))
 				}
 				
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: response)
