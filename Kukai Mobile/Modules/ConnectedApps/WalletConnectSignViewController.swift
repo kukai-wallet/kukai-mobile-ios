@@ -94,11 +94,40 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	func didCompleteSlide() {
-		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
-			self.windowError(withTitle: "error".localized(), description: "Can't find requested wallet: \(accountToSign)")
+		self.showLoadingModal(invisible: true) { [weak self] in
+			self?.performAuth()
+		}
+	}
+	
+	public func performAuth() {
+		guard let loginVc = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(identifier: "LoginViewController") as? LoginViewController else {
 			return
 		}
 		
+		loginVc.delegate = self
+		
+		// Artifical delay purely for UX to add a little buffer between letting go of finger on slider, and login showing up
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			if self?.presentedViewController != nil {
+				self?.presentedViewController?.present(loginVc, animated: true)
+				
+			} else {
+				self?.present(loginVc, animated: true)
+			}
+		}
+	}
+	
+	public func authSuccessful() {
+		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
+			self.hideLoadingModal { [weak self] in
+				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				self?.slideButton.resetSlider()
+			}
+			
+			return
+		}
+		
+		/*
 		// Listen for partial success messages from ledger devices (if applicable)
 		LedgerService.shared
 			.$partialSuccessMessageReceived
@@ -107,27 +136,37 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
 			}
 			.store(in: &bag)
-		
+		*/
 		
 		// Sign and continue
-		self.showLoadingModal { [weak self] in
-			var str = self?.stringToSign ?? ""
-			if str.prefix(2) == "0x" {
-				let strIndex = str.index(str.startIndex, offsetBy: 2)
-				str = String(str[strIndex...])
-			}
-			
-			wallet.sign(str, isOperation: false) { [weak self] result in
-				guard let signature = try? result.get() else {
-					self?.hideLoadingModal(completion: { [weak self] in
-						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
-					})
-					return
-				}
+		self.slideButton.markComplete(withText: "Complete")
+		
+		var str = self.stringToSign
+		if str.prefix(2) == "0x" {
+			let strIndex = str.index(str.startIndex, offsetBy: 2)
+			str = String(str[strIndex...])
+		}
+		
+		wallet.sign(str, isOperation: false) { [weak self] result in
+			self?.hideLoadingModal(completion: { [weak self] in
 				
-				let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
-				self?.handleApproval(signature: updatedSignature)
-			}
+				switch result {
+					case .success(let signature):
+						self?.didSend = true
+						let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
+						self?.handleApproval(signature: updatedSignature)
+						
+					case .failure(let sendError):
+						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
+						self?.slideButton?.resetSlider()
+				}
+			})
+		}
+	}
+	
+	public func authFailure() {
+		self.hideLoadingModal { [weak self] in
+			self?.slideButton.resetSlider()
 		}
 	}
 	
@@ -155,5 +194,18 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 				}
 			})
 		})
+	}
+}
+
+extension WalletConnectSignViewController: LoginViewControllerDelegate {
+	
+	func authResults(success: Bool) {
+		
+		if success {
+			authSuccessful()
+			
+		} else {
+			authFailure()
+		}
 	}
 }

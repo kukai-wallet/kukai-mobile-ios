@@ -204,9 +204,9 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	
 	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.hideLoadingModal {
-				self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-				self.slideButton.resetSlider()
+			self.hideLoadingModal { [weak self] in
+				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				self?.slideButton.resetSlider()
 			}
 			
 			return
@@ -232,8 +232,8 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	}
 	
 	override func authFailure() {
-		self.hideLoadingModal {
-			self.slideButton.resetSlider()
+		self.hideLoadingModal { [weak self] in
+			self?.slideButton.resetSlider()
 		}
 	}
 	
