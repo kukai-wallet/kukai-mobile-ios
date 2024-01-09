@@ -63,8 +63,6 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
-	private var currentContractData: TransactionService.ContractCallData = TransactionService.ContractCallData()
-	
 	var dimBackground: Bool = false
 	
 	override func viewDidLoad() {
@@ -181,11 +179,11 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	
 	func didCompleteSlide() {
 		self.showLoadingModal(invisible: true) { [weak self] in
-			self?.fetchWalletAndSend()
+			self?.performAuth()
 		}
 	}
 	
-	private func fetchWalletAndSend() {
+	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
 			self.hideLoadingModal {
 				self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
@@ -212,6 +210,12 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 						self?.slideButton?.resetSlider()
 				}
 			})
+		}
+	}
+	
+	override func authFailure() {
+		self.hideLoadingModal {
+			self.slideButton.resetSlider()
 		}
 	}
 	

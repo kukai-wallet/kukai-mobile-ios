@@ -16,6 +16,7 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	public var connectedAppURL: URL? = nil
 	public var currentSendData: TransactionService.SendData = TransactionService.SendData()
+	public var currentContractData: TransactionService.ContractCallData = TransactionService.ContractCallData()
 	public var selectedMetadata: WalletMetadata? = nil
 	
 	
@@ -102,5 +103,44 @@ class SendAbstractConfirmViewController: UIViewController {
 				}
 			})
 		})
+	}
+	
+	public func performAuth() {
+		guard let loginVc = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(identifier: "LoginViewController") as? LoginViewController else {
+			return
+		}
+		
+		loginVc.delegate = self
+		
+		// Artifical delay purely for UX to add a little buffer between letting go of finger on slider, and login showing up
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			if self?.presentedViewController != nil {
+				self?.presentedViewController?.present(loginVc, animated: true)
+				
+			} else {
+				self?.present(loginVc, animated: true)
+			}
+		}
+	}
+	
+	public func authSuccessful() {
+		fatalError("SendAbstractConfirmViewController.authSuccessful must be overidden")
+	}
+	
+	public func authFailure() {
+		fatalError("SendAbstractConfirmViewController.authFailure must be overidden")
+	}
+}
+
+extension SendAbstractConfirmViewController: LoginViewControllerDelegate {
+	
+	func authResults(success: Bool) {
+		
+		if success {
+			authSuccessful()
+			
+		} else {
+			authFailure()
+		}
 	}
 }

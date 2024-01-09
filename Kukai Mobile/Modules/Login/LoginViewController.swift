@@ -10,6 +10,10 @@ import KukaiCoreSwift
 import LocalAuthentication
 import OSLog
 
+protocol LoginViewControllerDelegate: AnyObject {
+	func authResults(success: Bool)
+}
+
 class LoginViewController: UIViewController {
 	
 	@IBOutlet weak var hiddenTextfield: ValidatorTextField!
@@ -21,6 +25,9 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var digitView4: UIView!
 	@IBOutlet weak var digitView5: UIView!
 	@IBOutlet weak var digitView6: UIView!
+	
+	private var didDelegateCallSuccess = false
+	public weak var delegate: LoginViewControllerDelegate?
 	
 	private static var wrongGuessCount: Int {
 		get {
@@ -75,6 +82,14 @@ class LoginViewController: UIViewController {
 		} else {
 			// Edit passcode popup
 			self.hiddenTextfield.becomeFirstResponder()
+		}
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didDelegateCallSuccess {
+			delegate?.authResults(success: false)
 		}
 	}
 	
@@ -151,7 +166,16 @@ class LoginViewController: UIViewController {
 		
 		// If part of app login, dimiss
 		hiddenTextfield.resignFirstResponder()
-		LoginViewController.reconnectAndDismiss()
+		
+		if delegate != nil {
+			didDelegateCallSuccess = true
+			
+			self.dismiss(animated: true) { [weak self] in
+				self?.delegate?.authResults(success: true)
+			}
+		} else {
+			LoginViewController.reconnectAndDismiss()
+		}
 	}
 	
 	public static func reconnectAndDismiss() {
@@ -162,10 +186,6 @@ class LoginViewController: UIViewController {
 		
 		reestablishConnectionsAfterLogin()
 		sceneDelegate.hidePrivacyProtectionWindow()
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
 	}
 	
 	private static func reestablishConnectionsAfterLogin() {
