@@ -156,7 +156,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 						let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
 						self?.handleApproval(signature: updatedSignature)
 						
-					case .failure(let sendError):
+					case .failure(_):
 						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
 						self?.slideButton?.resetSlider()
 				}

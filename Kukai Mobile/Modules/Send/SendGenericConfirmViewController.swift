@@ -31,6 +31,18 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var fromStackViewRegular: UIStackView!
 	@IBOutlet weak var fromRegularAddress: UILabel!
 	
+	// Send
+	@IBOutlet weak var largeDisplayStackView: UIStackView!
+	@IBOutlet weak var largeDisplayIcon: UIImageView!
+	@IBOutlet weak var largeDisplayAmount: UILabel!
+	@IBOutlet weak var largeDisplaySymbol: UILabel!
+	@IBOutlet weak var largeDisplayFiat: UILabel!
+	
+	@IBOutlet weak var smallDisplayStackView: UIStackView!
+	@IBOutlet weak var smallDisplayIcon: UIImageView!
+	@IBOutlet weak var smallDisplayAmount: UILabel!
+	@IBOutlet weak var smallDisplayFiat: UILabel!
+	
 	// Operation
 	@IBOutlet weak var moreButton: CustomisableButton!
 	@IBOutlet weak var operationTextView: UITextView!
@@ -69,7 +81,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 			}
 			
 			self.isWalletConnectOp = true
-			self.currentContractData = TransactionService.shared.walletConnectOperationData.contractCallData
+			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
 			self.selectedMetadata = walletMetadataForRequestedAccount
 			self.connectedAppNameLabel.text = session.peer.name
 			
@@ -91,7 +103,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 			
 		} else {
 			self.isWalletConnectOp = false
-			self.currentContractData = TransactionService.shared.contractCallData
+			self.currentSendData = TransactionService.shared.sendData
 			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
 			
 			connectedAppMetadataStackView.isHidden = true
@@ -101,6 +113,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		
 		// Display JSON
+		updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
 		updateOperationDisplay()
 
 		
@@ -188,6 +201,33 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		}
 	}
 	
+	func updateAmountDisplay(withValue value: TokenAmount) {
+		guard let token = currentSendData.chosenToken else {
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.image = UIImage.unknownToken()
+			smallDisplayAmount.text = "0"
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
+			return
+		}
+		
+		let amountText = value.normalisedRepresentation
+		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
+			// small display
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.addTokenIcon(token: token)
+			smallDisplayAmount.text = amountText + token.symbol
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
+			
+		} else {
+			// large display
+			smallDisplayStackView.isHidden = true
+			largeDisplayIcon.addTokenIcon(token: token)
+			largeDisplayAmount.text = amountText
+			largeDisplaySymbol.text = token.symbol
+			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
+		}
+	}
+	
 	func updateOperationDisplay() {
 		let ops = selectedOperationsAndFees()
 		
@@ -219,26 +259,18 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	func addPendingTransaction(opHash: String) {
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = currentContractData.contractAddress ?? ""
-		let amount = currentContractData.chosenAmount ?? .zero()
-		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		let contractOp = OperationFactory.Extractor.firstContractCallOperation(operations: currentOps)
-		
-		let entrypoint = (contractOp?.parameters?["entrypoint"] as? String) ?? ""
-		let parameterValueDict = contractOp?.parameters?["value"] as? [String: String] ?? [:]
-		let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
-		let parameters: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
+		let totalAmount = OperationFactory.Extractor.totalTezAmountSent(operations: currentOps)
 		
 		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
-																				   type: .transaction,
+																				   type: .unknown,
 																				   counter: counter,
 																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: destinationAddress,
+																				   destinationAddress: "",
 																				   destinationAlias: nil,
-																				   xtzAmount: amount,
-																				   parameters: parameters,
+																				   xtzAmount: totalAmount,
+																				   parameters: nil,
 																				   primaryToken: nil)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)

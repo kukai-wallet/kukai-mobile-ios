@@ -262,8 +262,8 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		let contractOp = OperationFactory.Extractor.firstContractCallOperation(operations: currentOps)
 		
+		let contractOp = OperationFactory.Extractor.isSingleContractCall(operations: currentOps)?.operation
 		let entrypoint = (contractOp?.parameters?["entrypoint"] as? String) ?? ""
 		let parameterValueDict = contractOp?.parameters?["value"] as? [String: String] ?? [:]
 		let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
