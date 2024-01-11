@@ -493,6 +493,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 					
 				case .contractCall:
 					self.performSegue(withIdentifier: "wallet-connect-contract", sender: nil)
+					
+				case .generic:
+					self.performSegue(withIdentifier: "wallet-connect-generic", sender: nil)
 			}
 		}
 	}
