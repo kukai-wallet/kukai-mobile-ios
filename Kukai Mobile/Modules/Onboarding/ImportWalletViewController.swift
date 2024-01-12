@@ -188,6 +188,7 @@ class ImportWalletViewController: UIViewController {
 					}
 					
 				} else {
+					self.removeScanningVc()
 					self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 				}
 			}
@@ -200,6 +201,7 @@ class ImportWalletViewController: UIViewController {
 					self?.navigate()
 					
 				} else {
+					self?.removeScanningVc()
 					self?.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 				}
 			}

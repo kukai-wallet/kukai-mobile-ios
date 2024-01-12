@@ -10,6 +10,10 @@ import KukaiCoreSwift
 import LocalAuthentication
 import OSLog
 
+protocol LoginViewControllerDelegate: AnyObject {
+	func authResults(success: Bool)
+}
+
 class LoginViewController: UIViewController {
 	
 	@IBOutlet weak var hiddenTextfield: ValidatorTextField!
@@ -21,6 +25,9 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var digitView4: UIView!
 	@IBOutlet weak var digitView5: UIView!
 	@IBOutlet weak var digitView6: UIView!
+	
+	private var didDelegateCallSuccess = false
+	public weak var delegate: LoginViewControllerDelegate?
 	
 	private static var wrongGuessCount: Int {
 		get {
@@ -78,6 +85,14 @@ class LoginViewController: UIViewController {
 		}
 	}
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didDelegateCallSuccess {
+			delegate?.authResults(success: false)
+		}
+	}
+	
 	func updateDigitViewsWithLength(length: Int) {
 		let colorOn = UIColor.colorNamed("BGB4")
 		let colorOff = UIColor.colorNamed("BGB0")
@@ -124,6 +139,7 @@ class LoginViewController: UIViewController {
 			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
+						StorageService.setLastLogin()
 						self?.next()
 						
 					} else {
@@ -149,21 +165,30 @@ class LoginViewController: UIViewController {
 		}
 		
 		// If part of app login, dimiss
+		hiddenTextfield.resignFirstResponder()
+		
+		if delegate != nil {
+			didDelegateCallSuccess = true
+			
+			self.dismiss(animated: true) { [weak self] in
+				self?.delegate?.authResults(success: true)
+			}
+		} else {
+			LoginViewController.reconnectAndDismiss()
+		}
+	}
+	
+	public static func reconnectAndDismiss() {
 		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else {
 			Logger.app.info("Can't get scene delegate")
 			return
 		}
 		
 		reestablishConnectionsAfterLogin()
-		hiddenTextfield.resignFirstResponder()
 		sceneDelegate.hidePrivacyProtectionWindow()
 	}
 	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-	}
-	
-	private func reestablishConnectionsAfterLogin() {
+	private static func reestablishConnectionsAfterLogin() {
 		if !DependencyManager.shared.tzktClient.isListening {
 			AccountViewModel.setupAccountActivityListener()
 		}
@@ -196,6 +221,7 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 				if result {
 					LoginViewController.wrongGuessCount = 0
 					LoginViewController.wrongGuessDelay = 0
+					StorageService.setLastLogin()
 					self?.next()
 				} else {
 					self?.displayErrorAndReset()

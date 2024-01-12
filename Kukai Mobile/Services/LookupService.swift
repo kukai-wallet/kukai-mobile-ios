@@ -7,6 +7,7 @@
 
 import Foundation
 import KukaiCoreSwift
+import OSLog
 
 public enum LookupType: Int, Codable { // in order of priority
 	case addressBook
@@ -37,7 +38,7 @@ public class LookupService {
 	private static let cacheKey = "lookup-service-records"
 	
 	private init() {
-		records = DiskService.read(type: [String: [LookupType: LookupRecord]].self, fromFileName: LookupService.cacheKey) ?? [:]
+		records = readFromDiskAndDecrypt()
 	}
 	
 	public func unresolvedDomains(addresses: [String]) -> [String] {
@@ -82,6 +83,7 @@ public class LookupService {
 		
 		if records[addressKey] == nil { records[addressKey] = [:] }
 		records[addressKey]?[forType] = LookupRecord(displayText: displayText, refreshDate: Date().addingTimeInterval(604800)) // 1 week
+		cacheRecords()
 	}
 	
 	public func lookupFor(address: String) -> LookupResponse {
@@ -107,13 +109,60 @@ public class LookupService {
 	}
 	
 	public func cacheRecords() {
-		let _ = DiskService.write(encodable: self.records, toFileName: LookupService.cacheKey)
+		let _ = encryptAndWriteToDisk(self.records)
 	}
 	
 	public func deleteCache() {
 		self.records = [:]
 		let _ = DiskService.delete(fileName: LookupService.cacheKey)
 	}
+	
+	public func encryptAndWriteToDisk(_ data: [String: [LookupType: LookupRecord]]) -> Bool {
+		do {
+			let jsonData = try JSONEncoder().encode(data)
+			let walletCacheService = WalletCacheService()
+			
+			/// Take the JSON blob, encrypt and store on disk
+			guard walletCacheService.loadOrCreateKeys(),
+				  let plaintext = String(data: jsonData, encoding: .utf8),
+				  let ciphertextData = try? walletCacheService.encrypt(plaintext),
+				  DiskService.write(data: ciphertextData, toFileName: LookupService.cacheKey) else {
+				Logger.app.error("lookupservice encryptAndWriteToDisk - Unable to save wallet items")
+				return false
+			}
+			
+			return true
+			
+		} catch (let error) {
+			Logger.app.error("lookupservice encryptAndWriteToDisk - Unable to save wallet items: \(error)")
+			return false
+		}
+	}
+	
+	public func readFromDiskAndDecrypt() -> [String: [LookupType: LookupRecord]] {
+		guard let data = DiskService.readData(fromFileName: LookupService.cacheKey) else {
+			Logger.app.info("LookupService readFromDiskAndDecrypt - no cache file found, returning empty")
+			return [:] // No such file
+		}
+		
+		let walletCacheService = WalletCacheService()
+		guard walletCacheService.loadOrCreateKeys(),
+			  let plaintext = try? walletCacheService.decrypt(data),
+			  let plaintextData = plaintext.data(using: .utf8) else {
+			Logger.app.error("LookupService readFromDiskAndDecrypt - Unable to read wallet items")
+			return [:]
+		}
+		
+		do {
+			let data = try JSONDecoder().decode([String: [LookupType: LookupRecord]].self, from: plaintextData)
+			return data
+			
+		} catch (let error) {
+			Logger.app.error("LookupService readFromDiskAndDecrypt - Unable to read wallet items: \(error)")
+				return [:]
+		}
+	}
+	
 	
 	
 	

@@ -16,6 +16,7 @@ class CustomAVPlayerViewController: AVPlayerViewController {
 	
 	private var viewToMonitor: UIView? = nil
 	private var previousValue = true
+	private var hiddenObserver: NSKeyValueObservation? = nil
 	
 	public weak var customDelegate: CustomAVPlayerViewControllerDelegate? = nil
 	
@@ -27,18 +28,18 @@ class CustomAVPlayerViewController: AVPlayerViewController {
 		previousValue = viewToMonitor?.isHidden ?? true
 		
 		viewToMonitor?.addObserver(self, forKeyPath: "hidden", context: nil)
+		
+		self.hiddenObserver = viewToMonitor?.observe(\.isHidden, changeHandler: { [weak self] view, change in
+			if self?.previousValue != view.isHidden {
+				self?.previousValue = view.isHidden
+				self?.customDelegate?.playbackControlsChanged(visible: !view.isHidden)
+			}
+		})
+		
 	}
 	
 	deinit {
-		viewToMonitor?.removeObserver(self, forKeyPath: "hidden")
-	}
-	
-	override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		
-		// Check if its the correct element and avoid double trigger
-		if keyPath == "hidden", let v = viewToMonitor, previousValue != v.isHidden {
-			previousValue = v.isHidden
-			customDelegate?.playbackControlsChanged(visible: !v.isHidden)
-		}
+		hiddenObserver?.invalidate()
+		hiddenObserver = nil
 	}
 }

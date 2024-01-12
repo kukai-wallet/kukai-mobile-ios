@@ -20,6 +20,7 @@ struct SideMenuResponse {
 	let segue: String?
 	let collapseAndNavigate: Bool?
 	let url: URL?
+	let isSecure: Bool
 }
 
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -88,13 +89,13 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		switch obj.id {
 			case "settings":
-				return SideMenuResponse(segue: "side-menu-settings", collapseAndNavigate: true, url: nil)
+				return SideMenuResponse(segue: "side-menu-settings", collapseAndNavigate: true, url: nil, isSecure: false)
 				
 			case "security":
-				return SideMenuResponse(segue: "side-menu-security", collapseAndNavigate: true, url: nil)
+				return SideMenuResponse(segue: "side-menu-security", collapseAndNavigate: true, url: nil, isSecure: true)
 			
 			case "connected":
-				return SideMenuResponse(segue: "side-menu-wallet-connect", collapseAndNavigate: false, url: nil)
+				return SideMenuResponse(segue: "side-menu-wallet-connect", collapseAndNavigate: false, url: nil, isSecure: false)
 				
 			case "feedback":
 				let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -106,11 +107,11 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				let body = "\n\n\n\n\n ==================== \nApp Version: v\(version) (\(build)) \nOS Version: \(os) \nModel: \(device)"
 				let coded = "mailto:contact@kukai.app?subject=\(subject)&body=\(body)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
 				if let emailURL = URL(string: coded) {
-					return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: emailURL)
+					return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: emailURL, isSecure: false)
 				}
 				
 			case "share":
-				return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: nil)
+				return SideMenuResponse(segue: nil, collapseAndNavigate: false, url: nil, isSecure: false)
 				
 			default:
 				return nil

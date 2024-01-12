@@ -22,6 +22,8 @@ public class StorageService {
 		
 		static let loginWrongGuessCount = "app.kukai.login.count"
 		static let loginWrongGuessDelay = "app.kukai.login.delay"
+		
+		static let lastLogin = "app.kukai.login.last"
 	}
 	
 	private struct UserDefaultKeys {
@@ -146,7 +148,7 @@ public class StorageService {
 	}
 	
 	public static func setBiometricEnabled(_ enabled: Bool) -> Bool {
-		return KeychainSwift().set(enabled, forKey: StorageService.KeychainKeys.isBiometricEnabled)
+		return KeychainSwift().set(enabled, forKey: StorageService.KeychainKeys.isBiometricEnabled, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
 	}
 	
 	public static func isBiometricEnabled() -> Bool {
@@ -176,7 +178,7 @@ public class StorageService {
 	}
 	
 	public static func setLoginCount(_ count: Int) {
-		KeychainSwift().set(count.description, forKey: StorageService.KeychainKeys.loginWrongGuessCount)
+		KeychainSwift().set(count.description, forKey: StorageService.KeychainKeys.loginWrongGuessCount, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
 	}
 	
 	public static func getLoginDelay() -> Int? {
@@ -188,7 +190,37 @@ public class StorageService {
 	}
 	
 	public static func setLoginDelay(_ count: Int) {
-		KeychainSwift().set(count.description, forKey: StorageService.KeychainKeys.loginWrongGuessDelay)
+		KeychainSwift().set(count.description, forKey: StorageService.KeychainKeys.loginWrongGuessDelay, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
+	}
+	
+	
+	
+	
+	// MARK: - Last login checks
+	
+	/// Check if we are able to skip the login (last login was less than X seconds ago). Also double check that no login delay is in place as a safety check
+	public static func canSkipLogin() -> Bool {
+		if (getLoginDelay() ?? 0) > 0 {
+			return false
+		}
+		
+		let lastTimestamp = getLastLogin()
+		let currentTimestamp = Date().timeIntervalSince1970
+		
+		return (currentTimestamp - lastTimestamp) < 60
+	}
+	
+	public static func setLastLogin() {
+		let timestamp = Date().timeIntervalSince1970
+		KeychainSwift().set(timestamp.description, forKey: StorageService.KeychainKeys.lastLogin, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
+	}
+	
+	public static func getLastLogin() -> TimeInterval {
+		guard let string = KeychainSwift().get(StorageService.KeychainKeys.lastLogin) else {
+			return 0
+		}
+		
+		return Double(string) ?? 0
 	}
 	
 	

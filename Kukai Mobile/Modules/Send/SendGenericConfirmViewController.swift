@@ -1,8 +1,8 @@
 //
-//  SendContractConfirmViewController.swift
+//  SendGenericConfirmViewController.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 17/05/2023.
+//  Created by Simon Mcloughlin on 11/01/2024.
 //
 
 import UIKit
@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class SendContractConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class SendGenericConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
 	
@@ -43,16 +43,9 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	@IBOutlet weak var smallDisplayAmount: UILabel!
 	@IBOutlet weak var smallDisplayFiat: UILabel!
 	
-	// To
-	@IBOutlet weak var toBatchView: UIView!
-	@IBOutlet weak var toBatchContractLabel: UILabel!
-	@IBOutlet weak var toBatchCountLabel: UILabel!
-	
-	@IBOutlet weak var toSingleView: UIView!
-	@IBOutlet weak var toSingleContractLabel: UILabel!
-	
-	@IBOutlet weak var entrypointStackView: UIStackView!
-	@IBOutlet weak var entrypointLabel: UILabel!
+	// Operation
+	@IBOutlet weak var moreButton: CustomisableButton!
+	@IBOutlet weak var operationTextView: UITextView!
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -65,8 +58,8 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	
 	var dimBackground: Bool = false
 	
-	override func viewDidLoad() {
-		super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
 		feeButton.accessibilityIdentifier = "fee-button"
@@ -88,7 +81,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			}
 			
 			self.isWalletConnectOp = true
-			self.currentContractData = TransactionService.shared.walletConnectOperationData.contractCallData
+			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
 			self.selectedMetadata = walletMetadataForRequestedAccount
 			self.connectedAppNameLabel.text = session.peer.name
 			
@@ -110,7 +103,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			
 		} else {
 			self.isWalletConnectOp = false
-			self.currentContractData = TransactionService.shared.contractCallData
+			self.currentSendData = TransactionService.shared.sendData
 			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
 			
 			connectedAppMetadataStackView.isHidden = true
@@ -118,22 +111,11 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			fromContainer.isHidden = true
 		}
 		
-		// Amount view configuration
-		updateAmountDisplay()
 		
-		
-		// Destination view configuration
-		if let count = currentContractData.operationCount, count > 1 {
-			toSingleView.isHidden = true
-			toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-			toBatchCountLabel.text = "\(count)"
-			
-		} else {
-			toBatchView.isHidden = true
-			toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-		}
-		entrypointLabel.text = currentContractData.mainEntrypoint
-		
+		// Display JSON
+		updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
+		updateOperationDisplay()
+
 		
 		// Fees
 		feeValueLabel.accessibilityIdentifier = "fee-amount"
@@ -156,7 +138,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		}
 		
 		slideButton.delegate = self
-	}
+    }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -219,18 +201,22 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		}
 	}
 	
-	func updateAmountDisplay() {
-		guard let token = currentContractData.chosenToken, let amount = currentContractData.chosenAmount else {
+	func updateAmountDisplay(withValue value: TokenAmount) {
+		guard let token = currentSendData.chosenToken else {
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.image = UIImage.unknownToken()
+			smallDisplayAmount.text = "0"
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
-		let amountText = amount.normalisedRepresentation
+		let amountText = value.normalisedRepresentation
 		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
 			// small display
 			largeDisplayStackView.isHidden = true
 			smallDisplayIcon.addTokenIcon(token: token)
 			smallDisplayAmount.text = amountText + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 			
 		} else {
 			// large display
@@ -238,8 +224,19 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			largeDisplayIcon.addTokenIcon(token: token)
 			largeDisplayAmount.text = amountText
 			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
+			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 		}
+	}
+	
+	func updateOperationDisplay() {
+		let ops = selectedOperationsAndFees()
+		
+		let encoder = JSONEncoder()
+		encoder.outputFormatting = .prettyPrinted
+		
+		let data = (try? encoder.encode(ops)) ?? Data()
+		let string = String(data: data, encoding: .utf8)
+		operationTextView.text = string
 	}
 	
 	func updateFees() {
@@ -254,29 +251,26 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		handleRejection()
 	}
 	
+	@IBAction func copyTapped(_ sender: UIButton) {
+		Toast.shared.show(withMessage: "copied!", attachedTo: sender)
+		UIPasteboard.general.string = operationTextView.text
+	}
+	
 	func addPendingTransaction(opHash: String) {
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = currentContractData.contractAddress ?? ""
-		let amount = currentContractData.chosenAmount ?? .zero()
-		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		
-		let contractOp = OperationFactory.Extractor.isSingleContractCall(operations: currentOps)?.operation
-		let entrypoint = (contractOp?.parameters?["entrypoint"] as? String) ?? ""
-		let parameterValueDict = contractOp?.parameters?["value"] as? [String: String] ?? [:]
-		let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
-		let parameters: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
+		let totalAmount = OperationFactory.Extractor.totalTezAmountSent(operations: currentOps)
 		
 		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
-																				   type: .transaction,
+																				   type: .unknown,
 																				   counter: counter,
 																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: destinationAddress,
+																				   destinationAddress: "",
 																				   destinationAlias: nil,
-																				   xtzAmount: amount,
-																				   parameters: parameters,
+																				   xtzAmount: totalAmount,
+																				   parameters: nil,
 																				   primaryToken: nil)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
@@ -284,7 +278,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	}
 }
 
-extension SendContractConfirmViewController: BottomSheetCustomCalculateProtocol {
+extension SendGenericConfirmViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()

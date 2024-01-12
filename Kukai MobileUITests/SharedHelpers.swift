@@ -95,6 +95,29 @@ class SharedHelpers: XCTestCase {
 	
 	
 	
+	// MARK: - Scroll to find
+	
+	func scrollUntilButton(app: XCUIApplication, button: String, showsIn element: XCUIElement, directionUp: Bool = true, maxSwipe: Int = 10) -> Bool {
+		var found = false
+		
+		for _ in 0..<maxSwipe {
+			if element.buttons[button].exists {
+				found = true
+				break
+				
+			} else if directionUp {
+				element.swipeUp()
+			} else {
+				element.swipeDown()
+			}
+		}
+		
+		return found
+	}
+	
+	
+	
+	
 	// MARK: - Keyboard
 	
 	func type(app: XCUIApplication, text: String) {
@@ -215,6 +238,13 @@ class SharedHelpers: XCTestCase {
 	
 	func tapDescructiveButton(app: XCUIApplication) {
 		app.buttons["destructive-button"].tap()
+	}
+	
+	func dismissBottomSheetByDraggging(staticText: String, app: XCUIApplication) {
+		let query = app.staticTexts[staticText].firstMatch
+		let start = query.coordinate(withNormalizedOffset:  CGVector(dx: 0.0, dy: 0.0))
+		let finish = query.coordinate(withNormalizedOffset: CGVector(dx: 0.0, dy: 50.0))
+		start.press(forDuration: 0.5, thenDragTo: finish)
 	}
 	
 	

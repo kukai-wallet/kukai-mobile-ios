@@ -94,7 +94,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		} else if isBiometricCell(forIndexPath: forIndexPath) {
 			return (segue: nil, url: nil)
 			
-		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData{
+		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData {
 			return (segue: obj.id, url: nil)
 		}
 		

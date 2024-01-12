@@ -93,7 +93,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			var filteredResults = res.filter { baker in
+			let filteredResults = res.filter { baker in
 				if baker.address == currentDelegate?.address {
 					currentBaker = baker
 					return false

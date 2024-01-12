@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
 	
@@ -55,12 +55,6 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
-	private var isWalletConnectOp = false
-	private var didSend = false
-	private var connectedAppURL: URL? = nil
-	private var currentSendData: TransactionService.SendData = TransactionService.SendData()
-	private var selectedMetadata: WalletMetadata? = nil
-	
 	var dimBackground: Bool = false
 	
     override func viewDidLoad() {
@@ -81,8 +75,7 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
 				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
-				self.walletConnectRespondOnReject()
-				self.dismissBottomSheet()
+				self.handleRejection()
 				return
 			}
 			
@@ -190,17 +183,8 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		}
 	}
 	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		self.hideLoadingView()
-		
-		if !didSend && isWalletConnectOp {
-			walletConnectRespondOnReject()
-		}
-	}
-	
 	@IBAction func closeTapped(_ sender: Any) {
-		self.dismissBottomSheet()
+		handleRejection()
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
@@ -214,15 +198,15 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 	
 	func didCompleteSlide() {
 		self.showLoadingModal(invisible: true) { [weak self] in
-			self?.fetchWalletAndSend()
+			self?.performAuth()
 		}
 	}
 	
-	private func fetchWalletAndSend() {
+	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.hideLoadingModal {
-				self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-				self.slideButton.resetSlider()
+			self.hideLoadingModal { [weak self] in
+				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				self?.slideButton.resetSlider()
 			}
 			
 			return
@@ -235,21 +219,21 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 				switch sendResult {
 					case .success(let opHash):
 						Logger.app.info("Sent: \(opHash)")
-						
 						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						if self?.isWalletConnectOp == true {
-							self?.walletConnectRespondOnSign(opHash: opHash)
-							
-						} else {
-							self?.dismissAndReturn()
-						}
+						self?.handleApproval(opHash: opHash)
 						
 					case .failure(let sendError):
-						self?.alert(errorWithMessage: sendError.description)
+						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
+		}
+	}
+	
+	override func authFailure() {
+		self.hideLoadingModal { [weak self] in
+			self?.slideButton.resetSlider()
 		}
 	}
 	
@@ -259,17 +243,6 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		feeValueLabel.text = fee.normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
-	}
-	
-	func dismissAndReturn() {
-		if isWalletConnectOp {
-			TransactionService.shared.resetWalletConnectState()
-		} else {
-			TransactionService.shared.resetAllState()
-		}
-		
-		self.dismiss(animated: true, completion: nil)
-		(self.presentingViewController as? UINavigationController)?.popToHome()
 	}
 	
 	func addPendingTransaction(opHash: String) {
@@ -298,54 +271,6 @@ class SendCollectibleConfirmViewController: UIViewController, SlideButtonDelegat
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		Logger.app.info("Recorded pending transaction: \(result)")
-	}
-	
-	@MainActor
-	private func walletConnectRespondOnSign(opHash: String) {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Approve Session error: Unable to find request")
-			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			self.dismissAndReturn()
-			return
-		}
-		
-		Logger.app.info("WC Approve Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(any: opHash)))
-				try? await Sign.instance.extend(topic: request.topic)
-				self.dismissAndReturn()
-				
-			} catch {
-				Logger.app.error("WC Approve Session error: \(error)")
-				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
-				self.dismissAndReturn()
-			}
-		}
-	}
-	
-	@MainActor
-	private func walletConnectRespondOnReject() {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Reject Session error: Unable to find request")
-			self.windowError(withTitle: "error".localized(), description: "error-unknwon-wc2".localized())
-			self.dismissAndReturn()
-			return
-		}
-		
-		Logger.app.info("WC Reject Request: \(request.id)")
-		Task {
-			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: "")))
-				try? await Sign.instance.extend(topic: request.topic)
-				self.dismissAndReturn()
-				
-			} catch {
-				Logger.app.error("WC Reject Session error: \(error)")
-				self.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-errorcode"), withArguments: error.domain, error.code))
-				self.dismissAndReturn()
-			}
-		}
 	}
 }
 

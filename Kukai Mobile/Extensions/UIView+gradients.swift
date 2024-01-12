@@ -95,8 +95,8 @@ extension UIView {
 				UIColor.colorNamed("gradBgFull-2").cgColor,
 				UIColor.colorNamed("gradBgFull-3").cgColor,
 			],
-			locations: [0.01, 0.23, 0.66],
-			degress: cssDegreesToIOS(169.5))
+			locations: [0.01, 0.34, 0.74],
+			degress: cssDegreesToIOS(170))
 	}
 	
 	func addGradientBackgroundModal() -> CAGradientLayer {

@@ -107,19 +107,6 @@ final class Test_09_SideMenu: XCTestCase {
 		// FaceId / TouchID can't be tested
 	}
 	
-	/*
-	// Blocked by AirGap ... as usual
-	func testConnectedApps() {
-		
-	}
-	*/
-	
-	/*
-	 // Email app not available on simulator
-	func testFeedBack() {
-	}
-	*/
-	
 	func testShare() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)

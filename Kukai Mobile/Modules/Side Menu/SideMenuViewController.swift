@@ -34,6 +34,7 @@ class SideMenuViewController: UIViewController {
 	private var bag = [AnyCancellable]()
 	private var previousPanX: CGFloat = 0
 	private var panGestureRecognizer: UIPanGestureRecognizer? = nil
+	private var pendingSideMenuOption: SideMenuResponse? = nil
 	
 	public weak var homeTabBarController: HomeTabBarController? = nil
 	
@@ -198,6 +199,46 @@ class SideMenuViewController: UIViewController {
 	@IBAction func swapTapped(_ sender: Any) {
 		
 	}
+	
+	public func performAuth() {
+		guard let loginVc = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(identifier: "LoginViewController") as? LoginViewController else {
+			return
+		}
+		
+		loginVc.delegate = self
+		if self.presentedViewController != nil {
+			self.presentedViewController?.present(loginVc, animated: true)
+				
+		} else {
+			self.present(loginVc, animated: true)
+		}
+	}
+	
+	public func authSuccessful() {
+		guard let pending = pendingSideMenuOption else {
+			return
+		}
+		
+		handleDetails(pending)
+		pendingSideMenuOption = nil
+	}
+	
+	public func authFailure() {
+		
+	}
+}
+
+extension SideMenuViewController: LoginViewControllerDelegate {
+	
+	func authResults(success: Bool) {
+		
+		if success {
+			authSuccessful()
+			
+		} else {
+			authFailure()
+		}
+	}
 }
 
 extension SideMenuViewController: UITableViewDelegate {
@@ -210,18 +251,29 @@ extension SideMenuViewController: UITableViewDelegate {
 		if let url = details.url, UIApplication.shared.canOpenURL(url) {
 			UIApplication.shared.open(url)
 			
-		} else if let segue = details.segue {
-			if details.collapseAndNavigate == true {
-				
-				self.closeTapped(self)
-				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+		} else if let _ = details.segue {
+			if details.isSecure {
+				pendingSideMenuOption = details
+				performAuth()
 				
 			} else {
-				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+				handleDetails(details)
 			}
 			
 		} else {
 			shareURL()
+		}
+	}
+	
+	func handleDetails(_ details: SideMenuResponse) {
+		if let segue = details.segue {
+			if details.collapseAndNavigate == true {
+				self.closeTapped(self)
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+												   
+			} else {
+				homeTabBarController?.performSegue(withIdentifier: segue, sender: nil)
+			}
 		}
 	}
 	

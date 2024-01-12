@@ -49,6 +49,7 @@ extension UIViewController {
 	func showLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityView.frame = UIScreen.main.bounds
+		UIViewController.activityView.alpha = 1
 		UIApplication.shared.currentWindow?.addSubview(UIViewController.activityView)
 		
 		loadingViewShowActivity()
@@ -57,16 +58,32 @@ extension UIViewController {
 	func loadingViewHideActivity() {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = true
+		UIViewController.activityView.alpha = 1
 	}
 	
 	func loadingViewShowActivity() {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = false
+		UIViewController.activityView.alpha = 1
+	}
+	
+	func loadingViewHideActivityAndFade(withDuration duration: TimeInterval = 0.3, completion: (() -> Void)? = nil) {
+		loadingViewHideActivity()
+		
+		UIView.animate(withDuration: duration) {
+			UIViewController.activityView.alpha = 0
+		} completion: { _ in
+			UIViewController.activityView.removeFromSuperview()
+			completion?()
+		}
 	}
 	
 	func hideLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityView.removeFromSuperview()
+		if let comp = completion {
+			comp()
+		}
 	}
 	
 	static func createLoadingModal() -> UIViewController {
@@ -152,8 +169,10 @@ extension UIViewController {
 	
 	// MARK: - UIAlertViewController Utils
 	
-	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 3) {
-		UIApplication.shared.currentWindow?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 10) {
+		if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
+			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+		}
 	}
 	
 	func alert(errorWithMessage message: String) {

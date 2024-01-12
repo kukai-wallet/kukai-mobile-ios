@@ -28,14 +28,12 @@ final class Test_10_ConnectedApps: XCTestCase {
 	
 	// MARK: - Test functions
 	
-	/*
-	Commented out until accessibility identifers added to example dApp
 	func test_01_connectAndTest() throws {
 		let app = XCUIApplication()
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
-		//handlePasteSetting()
+		handlePasteSetting()
 		
 		
 		// Go to safari -> ghostnet website
@@ -53,12 +51,18 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(2)
 		
 		
+		// Check if already logged in, if so disconnect
+		let menuButton = webview.buttons["menu"]
+		if menuButton.exists {
+			menuButton.tap()
+			sleep(1)
+			
+			webview.buttons["disconnect"].tap()
+			sleep(1)
+		}
 		
-		// Tap connect button
-		let normalized = webview.coordinate(withNormalizedOffset: CGVector(dx: 0, dy: 0))
-		let coordinate = normalized.withOffset(CGVector(dx: 340, dy: 75))
-		coordinate.tap()
-		
+		// Connect
+		webview.buttons["connect"].tap()
 		SharedHelpers.shared.waitForStaticText("QR Code", exists: true, inElement: webview, delay: 10)
 		sleep(2)
 		
@@ -71,7 +75,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		
 		// Open app to pair
-		app.launch()
+		app.activate()
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		sleep(2)
 		
@@ -82,7 +86,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		let cameraAlert = springboard.alerts.firstMatch
 		if cameraAlert.exists {
-			cameraAlert.scrollViews.buttons["Ok"].tap()
+			cameraAlert.scrollViews.buttons["OK"].tap()
 		}
 		
 		app.buttons["paste-button"].tap()
@@ -96,17 +100,50 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(5)
 		
 		
-		handleSignExpression()
-		handleWrapXTZ()
-		handleSimulatedErrors()
+		handleSignAndWrapTogether(app: app, safari: safari, webview: webview)
+		handleSimulatedErrors(app: app, safari: safari, webview: webview)
 	}
 	
 	func test_02_switchAccount() throws {
+		let app = XCUIApplication()
+		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+		let webview = safari.webViews["WebView"]
 		
-	}
-	
-	func test_03_backgroundingAndForegrounding() throws {
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
 		
+		Test_03_Home.handleOpenSideMenu(app: app)
+		
+		app.tables.staticTexts["Connected Apps"].tap()
+		sleep(1)
+		
+		app.staticTexts["Test Dapp"].tap()
+		sleep(2)
+		
+		app.staticTexts["Switch Wallet"].tap()
+		sleep(2)
+		
+		let secondAddress = EnvironmentVariables.shared.config().walletAddress_HD_account_1.truncateTezosAddress()
+		app.staticTexts[secondAddress].tap()
+		sleep(2)
+		
+		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: app, delay: 10)
+		sleep(2)
+		SharedHelpers.shared.dismissBottomSheetByDraggging(staticText: "Test Dapp", app: app)
+		sleep(2)
+		
+		
+		
+		safari.activate()
+		sleep(2)
+		
+		if !webview.staticTexts[secondAddress].exists {
+			XCTFail("Hasn't updated to correct account")
+		}
+		
+		
+		handleSign(app: app, safari: safari, webview: webview)
+		disconnectFromSideMenuAndVerify(app: app, safari: safari, webview: webview)
 	}
 	
 	
@@ -132,22 +169,126 @@ final class Test_10_ConnectedApps: XCTestCase {
 		}
 	}
 	
-	func handleSignExpression() {
+	func handleSign(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "Submit Expression", showsIn: webview) {
+			sleep(2)
+			webview.buttons["Submit Expression"].tap()
+			sleep(2)
+		} else {
+			XCTFail("Unable to find `Submit Expression 2`")
+			return
+		}
 		
+		app.activate()
+		sleep(2)
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
+		// Should see sign expression first
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: true, inElement: app, delay: 10)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: false, inElement: app, delay: 10)
+		sleep(1)
+		SharedHelpers.shared.waitForStaticText("window-error-title", exists: false, inElement: app, delay: 5)
+		sleep(2)
 	}
 	
-	func handleWrapXTZ() {
+	func handleSignAndWrapTogether(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
+		safari.activate()
+		SharedHelpers.shared.waitForButton("Submit Wrap", exists: true, inElement: webview, delay: 10)
 		
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "Submit Expression", showsIn: webview) {
+			sleep(2)
+			webview.buttons["Submit Expression"].tap()
+			sleep(2)
+		} else {
+			XCTFail("Unable to find `Submit Expression 2`")
+			return
+		}
+		
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "Submit Wrap", showsIn: webview) {
+			sleep(2)
+			webview.buttons["Submit Wrap"].tap()
+			sleep(2)
+		} else {
+			XCTFail("Unable to find `Submit Wrap 2`")
+			return
+		}
+		
+		
+		app.activate()
+		sleep(2)
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
+		// Should see sign expression first
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: true, inElement: app, delay: 10)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: false, inElement: app, delay: 10)
+		sleep(1)
+		SharedHelpers.shared.waitForStaticText("window-error-title", exists: false, inElement: app, delay: 5)
+		sleep(2)
+		
+		
+		// Should then see a request to wrap XTZ
+		SharedHelpers.shared.waitForStaticText("Confirm Send", exists: true, inElement: app, delay: 25)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+			
+		SharedHelpers.shared.waitForStaticText("Confirm Send", exists: false, inElement: app, delay: 25)
+		sleep(1)
+		SharedHelpers.shared.waitForStaticText("window-error-title", exists: false, inElement: app, delay: 5)
+		sleep(2)
 	}
 	
-	func handleSimulatedErrors() {
+	func handleSimulatedErrors(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
+		safari.activate()
+		SharedHelpers.shared.waitForButton("Submit Wrap", exists: true, inElement: webview, delay: 10)
 		
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "GAS", showsIn: webview) {
+			sleep(2)
+		} else {
+			XCTFail("Unable to find `Submit Expression 2`")
+			return
+		}
+		
+		webview.buttons["ENTRYPOINT"].tap()
+		
+		app.activate()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
+		SharedHelpers.shared.waitForStaticText("window-error-title", exists: true, inElement: app, delay: 5)
+		sleep(2)
 	}
 	
-	func handleDisconnect() {
+	func disconnectFromSideMenuAndVerify(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
+		app.tables.staticTexts["Connected Apps"].tap()
+		sleep(1)
 		
+		app.staticTexts["Test Dapp"].tap()
+		sleep(2)
+		
+		app.staticTexts["Disconnect"].tap()
+		sleep(2)
+		
+		
+		safari.activate()
+		sleep(2)
+		
+		
+		SharedHelpers.shared.waitForButton("Submit Expression", exists: true, inElement: webview, delay: 10)
+		webview.swipeDown()
+		webview.swipeDown()
+		
+		let connectExists = webview.buttons["connect"].exists
+		let disconnectedWithNone = (webview.buttons["Change"].exists && webview.staticTexts["None"].exists)
+		
+		if !connectExists && !disconnectedWithNone {
+			XCTFail("Connect button is not present, haven't disconnected")
+		}
 	}
-	*/
 	
 	
 	/*
