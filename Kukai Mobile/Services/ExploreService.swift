@@ -8,40 +8,20 @@
 import Foundation
 import KukaiCoreSwift
 
-public enum ShouldDisplayLink: String, Codable {
-	case all
-	case none
+
+public struct ExploreResponse: Codable {
+	let environment: ExploreEnvironments
 }
 
-public struct RemoteDiscoverItem: Codable {
-	let dappUrl: URL?
-	let category: [String]?
-	let discoverImageUrl: URL?
-	let hasZoomDiscoverImage: Bool?
-	
-	enum CodingKeys: String, CodingKey {
-		case dappUrl
-		case category
-		case discoverImageUrl
-		case hasZoomDiscoverImage
-	}
-	
-	public init(from decoder: Decoder) throws {
-		let container = try decoder.container(keyedBy: CodingKeys.self)
-		
-		if let urlString = try container.decodeIfPresent(String.self, forKey: .dappUrl) { dappUrl = URL(string: urlString) } else { dappUrl = nil }
-		if let urlString = try container.decodeIfPresent(String.self, forKey: .discoverImageUrl) { discoverImageUrl = URL(string: urlString) } else { discoverImageUrl = nil }
-		category = try container.decodeIfPresent([String].self, forKey: .category)
-		hasZoomDiscoverImage = try container.decodeIfPresent(Bool.self, forKey: .hasZoomDiscoverImage)
-	}
-	
-	public func encode(to encoder: Encoder) throws {
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(dappUrl?.absoluteString, forKey: .dappUrl)
-		try container.encode(category, forKey: .category)
-		try container.encode(discoverImageUrl?.absoluteString, forKey: .discoverImageUrl)
-		try container.encode(hasZoomDiscoverImage, forKey: .hasZoomDiscoverImage)
-	}
+public struct ExploreEnvironments: Codable {
+	let mainnet: ExploreEnvironment
+	let ghostnet: ExploreEnvironment
+}
+
+public struct ExploreEnvironment: Codable {
+	let blockList: [String]
+	let model3DAllowList: [String]
+	let contractAliases: [ExploreItem]
 }
 
 public struct ExploreItem: Codable {
@@ -93,24 +73,61 @@ public struct ExploreItem: Codable {
 	}
 }
 
+public struct RemoteDiscoverItem: Codable {
+	let dappUrl: URL?
+	let category: [String]?
+	let discoverImageUrl: URL?
+	let hasZoomDiscoverImage: Bool?
+	
+	enum CodingKeys: String, CodingKey {
+		case dappUrl
+		case category
+		case discoverImageUrl
+		case hasZoomDiscoverImage
+	}
+	
+	public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		
+		if let urlString = try container.decodeIfPresent(String.self, forKey: .dappUrl) { dappUrl = URL(string: urlString) } else { dappUrl = nil }
+		if let urlString = try container.decodeIfPresent(String.self, forKey: .discoverImageUrl) { discoverImageUrl = URL(string: urlString) } else { discoverImageUrl = nil }
+		category = try container.decodeIfPresent([String].self, forKey: .category)
+		hasZoomDiscoverImage = try container.decodeIfPresent(Bool.self, forKey: .hasZoomDiscoverImage)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(dappUrl?.absoluteString, forKey: .dappUrl)
+		try container.encode(category, forKey: .category)
+		try container.encode(discoverImageUrl?.absoluteString, forKey: .discoverImageUrl)
+		try container.encode(hasZoomDiscoverImage, forKey: .hasZoomDiscoverImage)
+	}
+}
+
+
+
+
+
 public class ExploreService {
 	
-	private let exploreURL = "https://services.kukaiwallet.workers.dev/v1/explore"
+	private let exploreURL = "https://services.kukai.app/v2/explore?encode=true"
 	
 	private let exploreCacheKey = "explore-cahce-key"
 	
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService
+	private let networkType: TezosNodeClientConfig.NetworkType
 	
 	public var contractAddressToPrimaryKeyMap: [String: UUID] = [:]
 	public var items: [UUID: ExploreItem] = [:]
 	
-	public init(networkService: NetworkService) {
+	public init(networkService: NetworkService, networkType: TezosNodeClientConfig.NetworkType) {
 		self.networkService = networkService
 		self.requestIfService = RequestIfService(networkService: networkService)
+		self.networkType = networkType
 		
-		let lastCache = self.requestIfService.lastCache(forKey: exploreCacheKey, responseType: [ExploreItem].self)
-		processRawData(items: lastCache ?? [])
+		let lastCache = self.requestIfService.lastCache(forKey: exploreCacheKey, responseType: ExploreResponse.self)
+		processRawData(item: lastCache, networkType: networkType)
 	}
 	
 	
@@ -137,14 +154,25 @@ public class ExploreService {
 		}
 	}
 	
-	private func processRawData(items: [ExploreItem]) {
-		for (index, item) in items.enumerated() {
+	private func processRawData(item: ExploreResponse?, networkType: TezosNodeClientConfig.NetworkType) {
+		guard let exploreItem = item else {
+			return
+		}
+		
+		var exploreItemsToProcess: [ExploreItem] = []
+		if networkType == .mainnet {
+			exploreItemsToProcess = exploreItem.environment.mainnet.contractAliases
+		} else {
+			exploreItemsToProcess = exploreItem.environment.ghostnet.contractAliases
+		}
+		
+		for (index, item) in exploreItemsToProcess.enumerated() {
 			var temp = item
 			temp.sortIndex = index
 			self.items[item.primaryKey] = temp
 		}
 		
-		self.processQuickFindList(items: items)
+		self.processQuickFindList(items: exploreItemsToProcess)
 	}
 	
 	
@@ -158,13 +186,13 @@ public class ExploreService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: exploreCacheKey, responseType: [ExploreItem].self) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.second.rawValue, forKey: exploreCacheKey, responseType: ExploreResponse.self, isSecure: true) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self?.processRawData(items: response)
+			self?.processRawData(item: response, networkType: self?.networkType ?? .mainnet)
 			
 			completion(Result.success(true))
 		}
