@@ -197,7 +197,7 @@ class DependencyManager {
 		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: .mainnet)
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
@@ -246,7 +246,7 @@ class DependencyManager {
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		exploreService = ExploreService(networkService: tezosNodeClient.networkService)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: currentNetworkType)
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		

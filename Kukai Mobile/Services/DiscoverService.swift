@@ -7,6 +7,8 @@
 
 import Foundation
 import KukaiCoreSwift
+import KukaiCryptoSwift
+import OSLog
 
 public struct DiscoverGroup: Codable, Hashable, Identifiable {
 	@DefaultUUID public var id: UUID
@@ -28,7 +30,7 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 
 public class DiscoverService {
 	
-	private let discoverURL = "https://services.kukaiwallet.workers.dev/v1/discover"
+	private let discoverURL = "https://services.kukai.app/v2/discover?encode=true"
 	
 	private let discoverCacheKey = "discover-cache-key"
 	
@@ -54,7 +56,7 @@ public class DiscoverService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: discoverCacheKey, responseType: [DiscoverGroup].self) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: discoverCacheKey, responseType: [DiscoverGroup].self, isSecure: true) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
