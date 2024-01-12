@@ -186,7 +186,7 @@ public class ExploreService {
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.second.rawValue, forKey: exploreCacheKey, responseType: ExploreResponse.self, isSecure: true) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: exploreCacheKey, responseType: ExploreResponse.self, isSecure: true) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
