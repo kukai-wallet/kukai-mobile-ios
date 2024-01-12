@@ -51,7 +51,7 @@ struct WalletConnectRequestParams: Codable {
 				case "delegation":
 					convertedOp = WalletConnectRequestParams.convert(json: opJson, toKukaiOpType: OperationDelegation.self, forAccount: account)
 				default:
-					convertedOp = nil
+					convertedOp = WalletConnectRequestParams.convert(json: opJson, toKukaiOpType: OperationUnknown.self, forAccount: account)
 			}
 			
 			// If it worked, add to array

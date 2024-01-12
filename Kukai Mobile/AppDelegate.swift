@@ -43,6 +43,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			}
 		#endif
 		
+		
+		// Setup any necessary settings, such as RAM limits
+		MediaProxyService.setupKingfisher()
+		
+		
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()
 		
