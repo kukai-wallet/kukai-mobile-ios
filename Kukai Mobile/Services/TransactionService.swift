@@ -345,7 +345,18 @@ public class TransactionService {
 		// Second Early exit if non-social wallet without domain
 		if metadata.type != .social {
 			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
-			return (image: image, title: metadata.walletNickname ?? metadata.address.truncateTezosAddress(), subtitle: nil)
+			var title = ""
+			var subtitle: String? = ""
+			
+			if  let nickname = metadata.walletNickname {
+				title = nickname
+				subtitle =  metadata.address.truncateTezosAddress()
+			} else {
+				title =  metadata.address.truncateTezosAddress()
+				subtitle = nil
+			}
+			
+			return (image: image, title: title, subtitle: subtitle)
 		}
 		
 		// Iterate through social
