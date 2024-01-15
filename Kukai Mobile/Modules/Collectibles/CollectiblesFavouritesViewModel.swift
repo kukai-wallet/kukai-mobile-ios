@@ -145,6 +145,10 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	}
 	
 	func willDisplayImages(forIndexPath: IndexPath) -> [URL?] {
-		return imageURLsForCollectibles[forIndexPath.row]
+		if forIndexPath.row < imageURLsForCollectibles.count {
+			return imageURLsForCollectibles[forIndexPath.row]
+		}
+		
+		return []
 	}
 }

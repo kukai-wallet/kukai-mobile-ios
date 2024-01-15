@@ -347,13 +347,21 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func willDisplayCollectionImage(forIndexPath: IndexPath) -> URL? {
-		return imageURLsForCollectionGroups[forIndexPath.row]
+		if forIndexPath.row < imageURLsForCollectionGroups.count {
+			return imageURLsForCollectionGroups[forIndexPath.row]
+		}
+		
+		return nil
 	}
 	
 	func willDisplayImages(forIndexPath: IndexPath) -> [URL?] {
 		
 		if isGroupMode && !isSearching {
-			return self.imageURLsForCollectibles[forIndexPath.row]
+			if forIndexPath.row < imageURLsForCollectibles.count {
+				return self.imageURLsForCollectibles[forIndexPath.row]
+			} else {
+				return []
+			}
 			
 		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? NFT {
 			let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
