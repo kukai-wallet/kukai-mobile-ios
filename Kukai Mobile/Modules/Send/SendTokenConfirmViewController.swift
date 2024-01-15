@@ -63,7 +63,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	private var isSendingMaxTez = false
 	
-	var dimBackground: Bool = false
+	var dimBackground: Bool = true
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()

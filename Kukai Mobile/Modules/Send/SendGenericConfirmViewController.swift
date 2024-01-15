@@ -56,7 +56,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
-	var dimBackground: Bool = false
+	var dimBackground: Bool = true
 	
     override func viewDidLoad() {
         super.viewDidLoad()
