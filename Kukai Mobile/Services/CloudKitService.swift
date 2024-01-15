@@ -31,10 +31,11 @@ public class CloudKitService {
 						
 						return res
 					}.compactMap({ $0 })
-					completion(nil)
+					
+					DispatchQueue.main.async { completion(nil) }
 					
 				case .failure(let e):
-					completion(KukaiError.internalApplicationError(error: e))
+					DispatchQueue.main.async { completion(KukaiError.internalApplicationError(error: e))  }
 			}
 		}
 	}

@@ -35,6 +35,7 @@ class CreateWithSocialViewController: UIViewController {
 	@IBOutlet var viewMoreOptionsButton: CustomisableButton!
 	
 	
+	private let cloudKitService = CloudKitService()
 	private var appleGradient = CAGradientLayer()
 	private var googleGradient = CAGradientLayer()
 	private var torusObserver: NSObjectProtocol?
@@ -85,6 +86,24 @@ class CreateWithSocialViewController: UIViewController {
 		super.viewWillAppear(animated)
 		self.scrollView.setupAutoScroll(focusView: continueWIthEmailButton, parentView: self.view)
 		self.scrollView.autoScrollDelegate = self
+		
+		
+		// Check to see if we need to fetch torus verfier config
+		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
+			self.showLoadingView()
+			
+			cloudKitService.fetchConfigItems { [weak self] error in
+				self?.hideLoadingView()
+				
+				if let e = error {
+					self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))
+					self?.navigationController?.popViewController(animated: true)
+					
+				} else {
+					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
+				}
+			}
+		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {

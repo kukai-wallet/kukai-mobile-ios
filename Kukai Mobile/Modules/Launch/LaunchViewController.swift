@@ -23,7 +23,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
 	private var runOnce = false
 	private var hasWallet = DependencyManager.shared.walletList.count() > 0
-	private let cloudKitService = CloudKitService()
 	private var dispatchGroup = DispatchGroup()
 	
 	//var bag1: AnyCancellable? = nil
@@ -34,24 +33,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		let _ = self.view.addGradientBackgroundFull()
 		
 		dispatchGroup = DispatchGroup()
-		dispatchGroup.enter() // cloud config to download
 		dispatchGroup.enter() // animation to finish
-		
-		// Check to see if we need to fetch torus verfier config
-		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
-			cloudKitService.fetchConfigItems { [weak self] error in
-				if let e = error {
-					self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))
-					
-				} else {
-					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
-				}
-				
-				self?.dispatchGroup.leave()
-			}
-		} else {
-			self.dispatchGroup.leave()
-		}
 		
 		// When everything done, perform transition
 		dispatchGroup.notify(queue: .main) { [weak self] in
