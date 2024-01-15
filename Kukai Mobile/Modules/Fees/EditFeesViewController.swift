@@ -292,9 +292,11 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 			}
 		} else {
 			if textfield == feeTextField {
+				feeErrorLabel.text = ""
 				feeErrorLabel.isHidden = true
 				
 			} else if textfield == gasLimitTextField {
+				gasErrorLabel.text = ""
 				gasErrorLabel.isHidden = true
 				
 				var forgedString = ""
@@ -311,6 +313,7 @@ extension EditFeesViewController: ValidatorTextFieldDelegate {
 				feeTextField.text = newFee.normalisedRepresentation
 				
 			} else if textfield == storageLimitTextField {
+				storageErrorLabel.text = ""
 				storageErrorLabel.isHidden = true
 				
 				if let networkConstants = DependencyManager.shared.tezosNodeClient.networkConstants {
