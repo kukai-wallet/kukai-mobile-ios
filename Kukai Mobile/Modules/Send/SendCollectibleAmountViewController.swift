@@ -124,7 +124,7 @@ class SendCollectibleAmountViewController: UIViewController {
 					case .success(let result):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: result.operations)
 						TransactionService.shared.currentForgedString = result.forgedString
-						self?.loadingViewHideActivity()
+						self?.loadingViewHideActivityAndFade()
 						self?.performSegue(withIdentifier: "confirm", sender: nil)
 						
 					case .failure(let estimationError):

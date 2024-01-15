@@ -113,7 +113,7 @@ class SendTokenAmountViewController: UIViewController {
 					case .success(let estimationResult):
 						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
 						TransactionService.shared.currentForgedString = estimationResult.forgedString
-						self?.loadingViewHideActivity()
+						self?.loadingViewHideActivityAndFade()
 						self?.performSegue(withIdentifier: "confirm", sender: nil)
 						
 					case .failure(let estimationError):
