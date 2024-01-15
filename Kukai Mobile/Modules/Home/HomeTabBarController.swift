@@ -497,6 +497,8 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				case .generic:
 					self.performSegue(withIdentifier: "wallet-connect-generic", sender: nil)
 			}
+		} else {
+			WalletConnectService.rejectCurrentRequest(completion: nil)
 		}
 	}
 	
