@@ -137,11 +137,19 @@ public class TokenStateService {
 	}
 	
 	public func removeFavourite(forAddress address: String, token: Token) -> Bool {
-		favouriteBalances[address]?.removeValue(forKey: balanceId(from: token))
+		let balanceId = balanceId(from: token)
+		let currentSortIndex = favouriteBalances[address]?[balanceId] ?? -1
+		reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
+		
+		favouriteBalances[address]?.removeValue(forKey: balanceId)
 		return writeFavouriteBalances()
 	}
 	
 	public func removeFavourite(forAddress address: String, nft: NFT) -> Bool {
+		let balanceId = nftId(from: nft)
+		let currentSortIndex = favouriteCollectibles[address]?[balanceId] ?? -1
+		reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
+		
 		favouriteCollectibles[address]?.removeValue(forKey: nftId(from: nft))
 		return writeFavouriteCollectibles()
 	}
@@ -151,32 +159,35 @@ public class TokenStateService {
 	// MARK: Reorder
 	
 	public func moveFavouriteBalance(forAddress address: String, forToken token: Token, toIndex: Int) -> Bool {
-		var account = favouriteBalances[address] ?? [:]
-		let tokenId = balanceId(from: token)
-		account[tokenId] = toIndex
+		let balanceId = balanceId(from: token)
+		let currentSortIndex = favouriteBalances[address]?[balanceId] ?? -1
 		
-		for key in account.keys {
-			if key != tokenId, (account[key] ?? 1) >= toIndex {
-				account[key] = ((account[key] ?? 1) + 1)
-			}
+		if currentSortIndex < toIndex {
+			// moving down, decrease others
+			reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
+		} else {
+			// moving up, increase others
+			increaseSortIndex(beforeIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
 		}
 		
-		favouriteBalances[address] = account
+		favouriteBalances[address]?[balanceId] = toIndex
 		return writeFavouriteBalances()
 	}
 	
 	public func moveFavouriteCollectible(forAddress address: String, forNft nft: NFT, toIndex: Int) -> Bool {
-		var account = favouriteCollectibles[address] ?? [:]
-		account[nftId(from: nft)] = toIndex
+		let balanceId = nftId(from: nft)
+		let currentSortIndex = favouriteCollectibles[address]?[balanceId] ?? -1
 		
-		for key in account.keys {
-			if (account[key] ?? 1) >= toIndex {
-				account[key] = ((account[key] ?? 1) + 1)
-			}
+		if currentSortIndex < toIndex {
+			// moving down, decrease others
+			reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
+		} else {
+			// moving up, increase others
+			increaseSortIndex(beforeIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
 		}
 		
-		favouriteCollectibles[address] = account
-		return writeHiddenCollectibles()
+		favouriteCollectibles[address]?[balanceId] = toIndex
+		return writeFavouriteCollectibles()
 	}
 	
 	
@@ -203,6 +214,30 @@ public class TokenStateService {
 	
 	private func writeFavouriteCollectibles() -> Bool  {
 		return DiskService.write(encodable: favouriteCollectibles, toFileName: TokenStateService.favouriteCollectiblesFilename)
+	}
+	
+	private func reduceSortIndex(afterIndex: Int, inDict dict: inout [String: [String: Int]], withAddress address: String) {
+		var tempDict: [String: Int] = (dict[address] ?? [:])
+		
+		for key in tempDict.keys {
+			if let val = tempDict[key], val > afterIndex {
+				tempDict[key] = val-1
+			}
+		}
+		
+		dict[address] = tempDict
+	}
+	
+	private func increaseSortIndex(beforeIndex: Int, inDict dict: inout [String: [String: Int]], withAddress address: String) {
+		var tempDict: [String: Int] = (dict[address] ?? [:])
+		
+		for key in tempDict.keys {
+			if let val = tempDict[key], val < beforeIndex {
+				tempDict[key] = val+1
+			}
+		}
+		
+		dict[address] = tempDict
 	}
 	
 	
