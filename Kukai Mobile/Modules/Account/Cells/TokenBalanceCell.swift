@@ -10,6 +10,7 @@ import UIKit
 class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 
 	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var favCorner: UIImageView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!

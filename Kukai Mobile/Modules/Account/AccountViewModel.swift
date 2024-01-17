@@ -122,6 +122,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "Tez"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
+				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -134,6 +135,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if symbol == "" {
 					symbol = " "
 				}
+				
+				cell.favCorner.isHidden = !token.isFavourite
 				
 				cell.iconView.backgroundColor = .colorNamed("BG4")
 				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
