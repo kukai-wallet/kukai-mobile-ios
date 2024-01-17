@@ -367,11 +367,11 @@ public class TransactionService {
 				
 			case .twitter:
 				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUsername ?? metadata.socialUserId ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .google:
 				let image = UIImage(named: "Social_Google_color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: metadata.socialUserId ?? metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .reddit:
 				let image = UIImage(named: "Social_Reddit_Color")?.resizedImage(size: imageSize) ?? UIImage()
@@ -394,6 +394,10 @@ public class TransactionService {
 				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .github:
+				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			case .email:
 				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				

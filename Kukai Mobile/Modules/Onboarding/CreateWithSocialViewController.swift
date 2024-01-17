@@ -118,26 +118,11 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	@IBAction func appleTapped(_ sender: Any) {
-		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
-			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
-			return
-		}
-		
-		self.showLoadingView() // uses differetn callback structure to rest, need to pop loading here
-		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
-			self?.handleResult(result: result)
-		}
+		createWallet(withVerifier: .apple)
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
-		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
-			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
-			return
-		}
-		
-		DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
-			self?.handleResult(result: result)
-		}
+		createWallet(withVerifier: .google)
 	}
 	
 	@IBAction func facebookTapped(_ sender: Any) {
@@ -145,11 +130,11 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	@IBAction func twitterTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
+		createWallet(withVerifier: .twitter)
 	}
 	
 	@IBAction func redditTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
+		createWallet(withVerifier: .reddit)
 	}
 	
 	@IBAction func discordTapped(_ sender: Any) {
@@ -169,7 +154,18 @@ class CreateWithSocialViewController: UIViewController {
 	}
 	
 	@IBAction func continueWithEmailTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
+		createWallet(withVerifier: .email)
+	}
+	
+	private func createWallet(withVerifier verifier: TorusAuthProvider) {
+		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
+			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
+			return
+		}
+		
+		DependencyManager.shared.torusAuthService.createWallet(from: verifier, displayOver: self) { [weak self] result in
+			self?.handleResult(result: result)
+		}
 	}
 	
 	@IBAction func viewMoreOptionsTapped(_ sender: Any) {
