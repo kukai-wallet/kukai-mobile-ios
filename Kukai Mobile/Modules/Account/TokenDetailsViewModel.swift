@@ -220,7 +220,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		var data: [AnyHashable] = [
 			tokenHeaderData,
 			chartData,
-			buttonData,
 			balanceAndBakerData,
 			sendData
 		]
@@ -263,7 +262,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				case .success(let data):
 					self.currentSnapshot.deleteItems([self.chartData])
 					self.chartData = data
-					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
+					self.currentSnapshot.insertItems([self.chartData], afterItem: self.tokenHeaderData)
 					
 					self.calculatePriceChange(point: nil)
 					self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
@@ -275,7 +274,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.currentSnapshot.deleteItems([self.chartData])
 					self.chartDataUnsucessful = true
 					self.chartData = AllChartData(day: [], week: [], month: [], year: [])
-					self.currentSnapshot.insertItems([self.chartData], beforeItem: self.buttonData)
+					self.currentSnapshot.insertItems([self.chartData], afterItem: self.tokenHeaderData)
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					self.state = .success(nil)
