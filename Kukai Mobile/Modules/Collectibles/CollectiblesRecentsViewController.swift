@@ -105,6 +105,6 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 }

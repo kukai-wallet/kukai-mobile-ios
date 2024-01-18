@@ -105,6 +105,6 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 }

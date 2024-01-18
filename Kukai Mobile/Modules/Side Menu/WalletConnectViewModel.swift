@@ -36,7 +36,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return tableView.dequeueReusableCell(withIdentifier: "empty", for: indexPath)
 				
 			} else if let obj = item as? PairObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
-				let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: .icon)
+				let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.siteLabel.text = obj.site
 				cell.networkLabel.text = obj.network

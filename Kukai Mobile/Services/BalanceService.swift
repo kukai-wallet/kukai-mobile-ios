@@ -540,7 +540,7 @@ public class BalanceService {
 			if let address = token.tokenContractAddress, let objktData = DependencyManager.shared.objktClient.collections[address] {
 				var url: URL? = nil
 				if let logo = objktData.logo {
-					url = MediaProxyService.url(fromUri: URL(string: logo), ofFormat: .icon)
+					url = MediaProxyService.url(fromUri: URL(string: logo), ofFormat: MediaProxyService.Format.icon.rawFormat())
 				}
 				
 				let token = Token(name: objktData.name, symbol: "", tokenType: .nonfungible, faVersion: .fa2, balance: token.balance, thumbnailURL: url, tokenContractAddress: address, tokenId: token.tokenId, nfts: token.nfts, mintingTool: token.mintingTool)

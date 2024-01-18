@@ -7,7 +7,7 @@
 
 import UIKit
 import Combine
-import Kingfisher
+import SDWebImage
 
 class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 	
@@ -70,6 +70,6 @@ class HiddenCollectiblesViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 }

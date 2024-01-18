@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import Kingfisher
 
 class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTotalCellDelegate {
 	
@@ -106,7 +105,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 	
 	func menuVCForBalancesMore() -> MenuViewController {

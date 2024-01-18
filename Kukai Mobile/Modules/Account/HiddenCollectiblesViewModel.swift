@@ -46,7 +46,7 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
-				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: .icon)
+				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: MediaProxyService.Format.small.rawFormat())
 				MediaProxyService.load(url: url, to: cell.tokenIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.name
 				cell.balanceLabel.text = obj.parentAlias ?? obj.parentContract.truncateTezosAddress()

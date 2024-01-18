@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import Kingfisher
 
 class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate {
 
@@ -70,6 +69,6 @@ class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate 
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 }

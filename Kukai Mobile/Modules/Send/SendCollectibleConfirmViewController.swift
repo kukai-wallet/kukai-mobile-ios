@@ -85,7 +85,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 			self.connectedAppNameLabel.text = session.peer.name
 			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				connectedAppURL = smallIconURL
 			}
 			
@@ -170,7 +170,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		}
 		
 		feeValueLabel?.text = "0 tez"
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: MediaProxyService.Format.small.rawFormat()), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -252,7 +252,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		let destinationAlias = currentSendData.destinationAlias
 		let amount = currentSendData.chosenAmount ?? .zero()
 		
-		let mediaURL = MediaProxyService.thumbnailURL(forNFT: nft)
+		let mediaURL = MediaProxyService.smallURL(forNFT: nft)
 		let token = Token.placeholder(fromNFT: nft, amount: amount, thumbnailURL: mediaURL)
 		
 		let currentOps = selectedOperationsAndFees()

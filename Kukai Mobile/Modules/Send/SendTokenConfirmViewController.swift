@@ -93,7 +93,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			self.connectedAppNameLabel.text = session.peer.name
 			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				connectedAppURL = smallIconURL
 			}
 			

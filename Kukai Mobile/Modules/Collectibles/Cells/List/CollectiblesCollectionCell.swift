@@ -7,18 +7,18 @@
 
 import UIKit
 import KukaiCoreSwift
-import Kingfisher
+import SDWebImage
 
 class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var collectionIcon: UIImageView!
 	@IBOutlet weak var collectionName: UILabel!
 	
-	@IBOutlet weak var collectionImage1: AnimatedImageView!
-	@IBOutlet weak var collectionImage2: AnimatedImageView!
-	@IBOutlet weak var collectionImage3: AnimatedImageView!
-	@IBOutlet weak var collectionImage4: AnimatedImageView!
-	@IBOutlet weak var collectionImage5: AnimatedImageView!
+	@IBOutlet weak var collectionImage1: SDAnimatedImageView!
+	@IBOutlet weak var collectionImage2: SDAnimatedImageView!
+	@IBOutlet weak var collectionImage3: SDAnimatedImageView!
+	@IBOutlet weak var collectionImage4: SDAnimatedImageView!
+	@IBOutlet weak var collectionImage5: SDAnimatedImageView!
 	
 	@IBOutlet weak var lastImageTitle: UILabel!
 	

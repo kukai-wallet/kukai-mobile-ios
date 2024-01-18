@@ -60,7 +60,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		super.viewDidAppear(animated)
 		
 		if let proposal = TransactionService.shared.walletConnectOperationData.proposal, let iconString = proposal.proposer.icons.first, let iconUrl = URL(string: iconString) {
-			let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+			let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 			MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			
 		} else {

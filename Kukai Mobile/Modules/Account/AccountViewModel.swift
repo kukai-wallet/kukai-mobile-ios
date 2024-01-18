@@ -9,7 +9,6 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 import OSLog
-import Kingfisher
 
 struct TotalEstimatedValue: Hashable {
 	let tez: XTZAmount
