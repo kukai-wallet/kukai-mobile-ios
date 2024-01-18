@@ -253,7 +253,7 @@ extension CreateWithSocialViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		continueWIthEmailButton.isEnabled = validated
+		//continueWIthEmailButton.isEnabled = validated
 	}
 	
 	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {

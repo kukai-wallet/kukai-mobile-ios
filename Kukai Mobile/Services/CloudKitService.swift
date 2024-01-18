@@ -45,143 +45,68 @@ public class CloudKitService {
 		
 		for record in configItemRecords where record.stringForKey("serviceId") == "torus" {
 			
-			guard let networkStr = record.stringForKey("network"),
-				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkStr),
-				  let config = record.doubleStringArrayToDict(key1: "keys", key2: "values"),
-				  let loginProviderString = config["loginProvider"],
+			// record.stringForKey returns nil, haven't got the slightest clue why. Can only get the `json` key value by fetching all values and parsing
+			var jsonString = (record.value(forKey: "values") as? [Any])?[0] as? String
+			jsonString = jsonString?.replacingOccurrences(of: "\n", with: "")
+			jsonString = jsonString?.replacingOccurrences(of: "\t", with: "")
+			
+			guard let jsonData = jsonString?.data(using: .utf8),
+				  let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+				  let verifierTypeString = jsonObject["verifierType"] as? String,
+				  let verifierType = verifierTypes(rawValue: verifierTypeString),
+				  let networkString = record.stringForKey("network"),
+				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkString),
+				  let loginProviderString = jsonObject["loginProvider"] as? String,
 				  let loginProvider = LoginProviders(rawValue: loginProviderString),
-				  let authProviderString = config["authProvider"],
+				  let authProviderString = jsonObject["authProvider"] as? String,
 				  let authProvider = TorusAuthProvider(rawValue: authProviderString),
-				  let type = config["loginType"] else {
-					  Logger.app.error("Skipping invalid torus config item: \(record.description)")
-					  continue
-				  }
-			
-			// Option 1:
-			// Required: loginType, loginProvider, verifierName, redirectURL
-			// Optional: aggregateVerifierName, clientId
-			if config["jwtDomain"] == nil, let loginType = SubVerifierType(rawValue: type), let verifierName = config["verifierName"], let redirectURL = config["redirectURL"] {
-				let details = SubVerifierDetails(loginType: loginType, loginProvider: loginProvider, clientId: config["clientId"] ?? "", verifier: verifierName, redirectURL: redirectURL)
-				let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-				verifiers[authProvider] = wrapper
+				  let loginTypeString = jsonObject["loginType"] as? String,
+				  let loginType = SubVerifierType(rawValue: loginTypeString),
+				  let clientId = jsonObject["clientId"] as? String,
+				  let verifierName = jsonObject["verifierName"] as? String,
+				  let redirectURL = jsonObject["redirectURL"] as? String
+			else {
+				Logger.app.error("Skipping invalid torus config item: \(record.description)")
+				continue
 			}
 			
-			// Option 2:
-			// Required: loginType, loginProvider, verifierName, redirectURL
-			// Optional: aggregateVerifierName, clientId, browserRedirectURL, jwtDomain
-			else if let loginType = SubVerifierType(rawValue: type), let verifierName = config["verifierName"], let redirectURL = config["redirectURL"] {
+			var subVerifier: SubVerifierDetails? = nil
+			var wrapper: SubverifierWrapper? = nil
+			
+			
+			// Check if we have a jwt dictionary, to decide which subVerfier to create
+			if let jwtDict = jsonObject["jwt"] as? [String: String] {
+				subVerifier = SubVerifierDetails(loginType: loginType, 
+												 loginProvider: loginProvider,
+												 clientId: clientId,
+												 verifier: verifierName,
+												 redirectURL: redirectURL,
+												 browserRedirectURL: jsonObject["browserRedirectURL"] as? String, // Think this is unused, just adding in case its needed in the future
+												 jwtParams: jwtDict)
+			} else {
+				subVerifier = SubVerifierDetails(loginType: loginType, 
+												 loginProvider: loginProvider,
+												 clientId: clientId, 
+												 verifier: verifierName,
+												 redirectURL: redirectURL)
+			}
+			
+			
+			// Check what type of login is being requested, so we can decide what to do with the required aggregate param, that might not be needed
+			if let sub = subVerifier, verifierType == .singleLogin {
+				wrapper = SubverifierWrapper(aggregateVerifierName: verifierName, verifierType: verifierType, networkType: network, subverifier: sub) // Non-aggregate
 				
-				if let jwtDomain = config["jwtDomain"] {
-					var tempParams: [String: String] = [:]
-					tempParams["domain"] = jwtDomain
-					
-					// Check for other optional JWT params
-					if let jwtConnection = config["jwtConnection"] {
-						tempParams["connection"] = jwtConnection == " " ? "" : jwtConnection // CloudKit dashboard doesn't allow an empty string, Torus needs an empty string for some reason
-					}
-					if let jwtVerifierIdField = config["jwtVerifierIdField"] {
-						tempParams["verifierIdField"] = jwtVerifierIdField
-					}
-					
-					
-					let details = SubVerifierDetails(loginType: loginType,
-													 loginProvider: loginProvider,
-													 clientId: config["clientId"] ?? "",
-													 verifier: verifierName,
-													 redirectURL: redirectURL,
-													 browserRedirectURL: config["browserRedirectURL"],
-													 jwtParams: tempParams)
-					let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-					verifiers[authProvider] = wrapper
-					
-				} else {
-					let details = SubVerifierDetails(loginType: loginType,
-													 loginProvider: loginProvider,
-													 clientId: config["clientId"] ?? "",
-													 verifier: verifierName,
-													 redirectURL: redirectURL,
-													 browserRedirectURL: config["browserRedirectURL"])
-					let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-					verifiers[authProvider] = wrapper
-				}
+			} else if let sub = subVerifier, let aggregateVerfifier = jsonObject["aggregateVerifierName"] as? String {
+				wrapper = SubverifierWrapper(aggregateVerifierName: aggregateVerfifier, verifierType: verifierType, networkType: network, subverifier: sub) // Aggregate
+				
+			} else {
+				Logger.app.error("Skipping invalid torus config item: \(record.description)")
+				continue
 			}
+			
+			verifiers[authProvider] = wrapper
 		}
 		
 		return verifiers
 	}
-	
-	
-	
-	// MARK: - CloudKit dashboard helpers tools
-	
-	/*
-	 CloudKit dashboard offers no means of exporting / importing data. Below functions are a way to copy the contents of 1 env to another.
-	 
-	 Requires setting this setting in entitlements: https://stackoverflow.com/questions/30182521/use-production-cloudkit-during-development
-	 
-	 not working yet, upload fails. Ignoring for now
-	 */
-	
-	/*
-	private func writeRecordsTemporarily() {
-		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-		let docsDirectoryURL = urls[0]
-		let ckStyleURL = docsDirectoryURL.appendingPathComponent("ckstylerecords.data")
-		
-		do {
-			let data = try NSKeyedArchiver.archivedData(withRootObject: configItemRecords, requiringSecureCoding: true)
-			
-			try data.write(to: ckStyleURL, options: .atomic)
-			Logger.app.info("CKRecords written to disk")
-			
-		} catch {
-			Logger.app.error("Could not write CKRecords to disk")
-		}
-	}
-	
-	private func uploadRecordsIfAvaialble() {
-		let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-		let docsDirectoryURL = urls[0]
-		let ckStyleURL = docsDirectoryURL.appendingPathComponent("ckstylerecords.data")
-		let dispatchGroup = DispatchGroup()
-		
-		var newRecords: [CKRecord] = []
-		if FileManager.default.fileExists(atPath: ckStyleURL.path) {
-			
-			do {
-				
-				// unarchive
-				let data = try Data(contentsOf:ckStyleURL)
-				if let theRecords: [CKRecord] = try NSKeyedUnarchiver.unarchiveObject(with: data) as? [CKRecord] {
-					newRecords = theRecords
-					Logger.app.info("CKRecords unarchived. Count is \(newRecords.count)")
-				}
-				
-				
-				// upload
-				dispatchGroup.enter()
-				for record in newRecords {
-					dispatchGroup.enter()
-					
-					database.save(record) { record, error in
-						Logger.app.info("Record upload - error: \(error)")
-						dispatchGroup.leave()
-					}
-				}
-				dispatchGroup.leave()
-				
-			} catch {
-				Logger.app.error("Could not read CKRecords: \(error)")
-			}
-		}
-		
-		dispatchGroup.notify(queue: .main) {
-			Logger.app.info("All uploaded")
-		}
-	}
-	
-	private func deleteTempRecords() {
-		let _ = DiskService.delete(fileName: "ckstylerecords.data")
-	}
-	*/
 }
