@@ -451,11 +451,22 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			self.scanButton.addSubview(self.walletConnectActivity)
 			
 			self.walletConnectActivity.startAnimating()
+			recheckConnectionIn3Seconds()
 			
 		} else {
 			self.scanButton.isEnabled = true
 			self.walletConnectActivity.stopAnimating()
 			self.walletConnectActivity.removeFromSuperview()
+		}
+	}
+	
+	private func recheckConnectionIn3Seconds() {
+		DispatchQueue.main.asyncAfter(wallDeadline: .now() + 3) { [weak self] in
+			WalletConnectService.shared.isConnected { [weak self] connected in
+				if connected {
+					self?.connectionStatusChanged(status: .connected)
+				}
+			}
 		}
 	}
 	
