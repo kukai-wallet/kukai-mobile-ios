@@ -8,7 +8,6 @@
 import UIKit
 import KukaiCoreSwift
 import Combine
-import Kingfisher
 
 class CollectionDetailsViewController: UIViewController, UICollectionViewDelegate, UIScrollViewDelegate {
 	
@@ -143,6 +142,6 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad()})
 	}
 }

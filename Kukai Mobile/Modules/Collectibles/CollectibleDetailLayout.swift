@@ -72,7 +72,12 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			yOffset += requiredSize.height + cellPadding
 		}
 		
-		return yOffset
+		if collectionView.numberOfItems(inSection: 1) == 0 {
+			return yOffset + 25
+			
+		} else {
+			return yOffset
+		}
 	}
 	
 	private func prepareSection1(forCollectionView collectionView: UICollectionView, withOffset sectionOffset: CGFloat) -> CGFloat {

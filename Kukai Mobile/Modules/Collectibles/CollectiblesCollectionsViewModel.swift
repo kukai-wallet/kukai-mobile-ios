@@ -191,10 +191,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 						totalCount = (nftGroup.nfts?.count ?? 4) - 4
 					}
 					
-					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: .icon)
+					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
 					self.imageURLsForCollectionGroups.append(groupURL)
 					
-					let urls = visibleNfts.compactMap({ MediaProxyService.thumbnailURL(forNFT: $0, keepGif: true) })
+					let urls = visibleNfts.compactMap({ MediaProxyService.smallURL(forNFT: $0) })
 					self.imageURLsForCollectibles.append(urls)
 					self.nftCollectionTotalCounts.append(totalCount)
 				}
@@ -364,7 +364,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			}
 			
 		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? NFT {
-			let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
+			let url = MediaProxyService.smallURL(forNFT: obj)
 			return [url]
 		}
 		

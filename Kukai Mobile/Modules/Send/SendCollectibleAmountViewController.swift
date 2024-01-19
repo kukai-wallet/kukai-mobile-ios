@@ -65,7 +65,7 @@ class SendCollectibleAmountViewController: UIViewController {
 			maxButton.setTitle("Max \(amountDisplay)", for: .normal)
 		}
 		
-		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: .small), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
+		MediaProxyService.load(url: MediaProxyService.url(fromUri: selectedToken?.displayURI, ofFormat: MediaProxyService.Format.small.rawFormat()), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 		collectibleName.text = selectedToken?.name ?? ""
 		
 		

@@ -7,7 +7,6 @@
 
 import UIKit
 import KukaiCoreSwift
-import Kingfisher
 
 class SideMenuResetViewController: UIViewController {
 
@@ -59,9 +58,7 @@ class SideMenuResetViewController: UIViewController {
 		
 		DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
 		
-		MediaProxyService.imageCache(forType: .temporary).clearCache {
-			MediaProxyService.imageCache(forType: .permanent).clearCache(completion: completion)
-		}
+		MediaProxyService.removeAllImages(completion: completion)
 	}
 	
 	@IBAction func noButtonTapped(_ sender: Any) {

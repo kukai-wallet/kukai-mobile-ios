@@ -22,18 +22,7 @@ class CreateWithSocialViewController: UIViewController {
 	@IBOutlet var twitterButton: CustomisableButton!
 	@IBOutlet var redditButton: CustomisableButton!
 	
-	@IBOutlet var socialOptions2: UIStackView!
-	@IBOutlet var discordButton: CustomisableButton!
-	@IBOutlet var twitchButton: CustomisableButton!
-	@IBOutlet var lineButton: CustomisableButton!
-	
-	@IBOutlet var socialOptions3: UIStackView!
-	@IBOutlet var githubButton: CustomisableButton!
-	
-	@IBOutlet var emailTextField: ValidatorTextField!
 	@IBOutlet var continueWIthEmailButton: CustomisableButton!
-	@IBOutlet var viewMoreOptionsButton: CustomisableButton!
-	
 	
 	private let cloudKitService = CloudKitService()
 	private var appleGradient = CAGradientLayer()
@@ -45,11 +34,6 @@ class CreateWithSocialViewController: UIViewController {
         super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		scrollView.addGestureRecognizer(UITapGestureRecognizer(target: emailTextField, action: #selector(resignFirstResponder)))
-		
-		socialOptions2.isHidden = true
-		socialOptions3.isHidden = true
-		
 		appleButton.customButtonType = .primary
 		appleButton.configuration?.imagePadding = 8
 		googleButton.customButtonType = .tertiary
@@ -60,19 +44,8 @@ class CreateWithSocialViewController: UIViewController {
 		twitterButton.customButtonType = .secondary
 		redditButton.customButtonType = .secondary
 		
-		discordButton.customButtonType = .secondary
-		twitchButton.customButtonType = .secondary
-		lineButton.customButtonType = .secondary
-		
-		githubButton.customButtonType = .secondary
-		
 		learnMoreButton.configuration?.imagePlacement = .trailing
 		learnMoreButton.configuration?.imagePadding = 8
-		viewMoreOptionsButton.configuration?.imagePlacement = .trailing
-		viewMoreOptionsButton.configuration?.imagePadding = 8
-		
-		emailTextField.validator = EmailValidator()
-		emailTextField.validatorTextFieldDelegate = self
 		
 		
 		// Can't detect certain events from Torus presented modals (e.g. when a user clicks cancel). Adding a second listener to the notification they use so I can trigger a loading modal
@@ -123,70 +96,40 @@ class CreateWithSocialViewController: UIViewController {
 			return
 		}
 		
-		self.showLoadingView() // uses differetn callback structure to rest, need to pop loading here
+		self.showLoadingView() // uses different callback structure to rest, need to pop loading here
 		DependencyManager.shared.torusAuthService.createWallet(from: .apple, displayOver: self.presentedViewController) { [weak self] result in
 			self?.handleResult(result: result)
 		}
 	}
 	
 	@IBAction func googleTapped(_ sender: Any) {
-		guard DependencyManager.shared.torusVerifiers[.google] != nil else {
+		createWallet(withVerifier: .google)
+	}
+	
+	@IBAction func facebookTapped(_ sender: Any) {
+		createWallet(withVerifier: .facebook)
+	}
+	
+	@IBAction func twitterTapped(_ sender: Any) {
+		createWallet(withVerifier: .twitter)
+	}
+	
+	@IBAction func redditTapped(_ sender: Any) {
+		createWallet(withVerifier: .reddit)
+	}
+	
+	@IBAction func continueWithEmailTapped(_ sender: Any) {
+		createWallet(withVerifier: .email)
+	}
+	
+	private func createWallet(withVerifier verifier: TorusAuthProvider) {
+		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
 			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())
 			return
 		}
 		
-		DependencyManager.shared.torusAuthService.createWallet(from: .google, displayOver: self) { [weak self] result in
+		DependencyManager.shared.torusAuthService.createWallet(from: verifier, displayOver: self) { [weak self] result in
 			self?.handleResult(result: result)
-		}
-	}
-	
-	@IBAction func facebookTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func twitterTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func redditTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func discordTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func twitchTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func lineTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func githubTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func continueWithEmailTapped(_ sender: Any) {
-		self.windowError(withTitle: "Not yet supported", description: "This feature is not yet enabled. Please wait for another release")
-	}
-	
-	@IBAction func viewMoreOptionsTapped(_ sender: Any) {
-		
-		if socialOptions2.isHidden {
-			socialOptions2.isHidden = false
-			socialOptions3.isHidden = false
-			viewMoreOptionsButton.imageView?.rotate(degrees: 180, duration: 0.3)
-			
-		} else {
-			socialOptions2.isHidden = true
-			socialOptions3.isHidden = true
-			viewMoreOptionsButton.imageView?.rotateBack(duration: 0.3)
-		}
-		
-		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.view.layoutIfNeeded()
 		}
 	}
 	
@@ -239,28 +182,5 @@ extension CreateWithSocialViewController: AutoScrollViewDelegate {
 	func keyboardWillHide() {
 		self.topSectionContainer.alpha = 1
 		self.topSectionContainer.isUserInteractionEnabled = true
-	}
-}
-
-extension CreateWithSocialViewController: ValidatorTextFieldDelegate {
-	
-	func textFieldDidBeginEditing(_ textField: UITextField) {
-		
-	}
-	
-	func textFieldDidEndEditing(_ textField: UITextField) {
-		
-	}
-	
-	func textFieldShouldClear(_ textField: UITextField) -> Bool {
-		return true
-	}
-	
-	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		continueWIthEmailButton.isEnabled = validated
-	}
-	
-	func doneOrReturnTapped(isValid: Bool, textfield: ValidatorTextField, forText text: String?) {
-		
 	}
 }

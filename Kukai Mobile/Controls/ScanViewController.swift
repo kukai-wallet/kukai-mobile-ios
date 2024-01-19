@@ -70,7 +70,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	@objc func textFieldDone() {
-		found(code: textfield.text ?? "")
+		checkForBeaconAndReport(stringToCheck: textfield.text ?? "")
 	}
 	
 	func setupNav() {
@@ -329,13 +329,23 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-		captureSession.stopRunning()
 		
 		if let metadataObject = metadataObjects.first {
 			guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
 			guard let stringValue = readableObject.stringValue else { return }
 			AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-			found(code: stringValue)
+			checkForBeaconAndReport(stringToCheck: stringValue)
+		}
+	}
+	
+	private func checkForBeaconAndReport(stringToCheck: String) {
+		if let data = stringToCheck.base58CheckDecodedData, let json = try? JSONSerialization.jsonObject(with: data) as? [String: String], let _ = json["relayServer"], let _ = json["publicKey"] {
+			self.windowError(withTitle: "error".localized(), description: "error-beacon-not-supported".localized())
+			self.textfield.text = ""
+			
+		} else {
+			captureSession.stopRunning()
+			found(code: stringToCheck)
 		}
 	}
 	

@@ -100,7 +100,7 @@ extension UIView {
 		rotateAnimation.toValue = CGFloat(Double.pi * 2)
 		rotateAnimation.isRemovedOnCompletion = false
 		rotateAnimation.duration = duration
-		rotateAnimation.repeatCount=Float.infinity
+		rotateAnimation.repeatCount = Float.infinity
 		self.layer.add(rotateAnimation, forKey: nil)
 	}
 	

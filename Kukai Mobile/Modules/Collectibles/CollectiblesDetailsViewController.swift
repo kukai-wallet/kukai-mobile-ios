@@ -158,22 +158,14 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		if viewModel.isImage {
 			actions[0].append(
 				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
-					guard let imageURL = MediaProxyService.displayURL(forNFT: nft) else {
+					guard let imageURL = MediaProxyService.largeURL(forNFT: nft) else {
 						return
 					}
 					
-					MediaProxyService.imageCache(forType: .temporary).retrieveImage(forKey: imageURL.absoluteString, options: []) { [weak self] result in
-						guard let res = try? result.get() else {
-							self?.windowError(withTitle: "error".localized(), description: "error-image-not-in-cahce".localized())
-							return
-						}
-						
-						if let img = res.image {
-							UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil)
-							
-						} else {
-							self?.windowError(withTitle: "error".localized(), description: "error-image-not-in-cahce".localized())
-						}
+					if let image = MediaProxyService.imageCache(forType: .temporary).imageFromCache(forKey: imageURL.absoluteString) {
+						UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+					} else {
+						self?.windowError(withTitle: "error".localized(), description: "error-image-not-in-cahce".localized())
 					}
 				})
 			)

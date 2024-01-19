@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import os.log
 
 /**
@@ -507,7 +508,10 @@ public class ThemeManager {
 	}
 	
 	public func updateSystemInterfaceStyle() {
-		UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = currentInterfaceStyle()
+		let current = currentInterfaceStyle()
+		
+		UIApplication.shared.currentWindow?.overrideUserInterfaceStyle = current
+		MediaProxyService.isDarkMode = (current == .dark)
 	}
 	
 	public func currentInterfaceStyle() -> UIUserInterfaceStyle {

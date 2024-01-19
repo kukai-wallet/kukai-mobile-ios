@@ -86,7 +86,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 			self.connectedAppNameLabel.text = session.peer.name
 			
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: .icon)
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				connectedAppURL = smallIconURL
 			}
 			
@@ -113,7 +113,6 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		
 		// Display JSON
-		updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
 		updateOperationDisplay()
 
 		
@@ -201,33 +200,6 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		}
 	}
 	
-	func updateAmountDisplay(withValue value: TokenAmount) {
-		guard let token = currentSendData.chosenToken else {
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.image = UIImage.unknownToken()
-			smallDisplayAmount.text = "0"
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
-			return
-		}
-		
-		let amountText = value.normalisedRepresentation
-		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
-			// small display
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-			
-		} else {
-			// large display
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-		}
-	}
-	
 	func updateOperationDisplay() {
 		let ops = selectedOperationsAndFees()
 		
@@ -245,6 +217,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		feeValueLabel.text = fee.normalisedRepresentation + " tez"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
+		updateOperationDisplay()
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {

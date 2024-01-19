@@ -7,7 +7,6 @@
 
 import UIKit
 import Combine
-import Kingfisher
 
 class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 	
@@ -120,6 +119,6 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 			return
 		}
 		
-		cell.downloadingImageViews().forEach({ $0.kf.cancelDownloadTask() })
+		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
 }

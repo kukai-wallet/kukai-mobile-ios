@@ -245,6 +245,6 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func willDisplayImage(forIndexPath: IndexPath) -> URL? {
 		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? DiscoverItem else { return nil }
 		
-		return MediaProxyService.url(fromUri: obj.imageUri, ofFormat: .icon, keepGif: true)
+		return MediaProxyService.url(fromUri: obj.imageUri, ofFormat: MediaProxyService.Format.small.rawFormat())
 	}
 }

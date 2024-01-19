@@ -71,7 +71,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
 			if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
-				let url = MediaProxyService.displayURL(forNFT: obj, keepGif: true)
+				let url = MediaProxyService.mediumURL(forNFT: obj)
 				self?.imageURLsForCollectibles.append([url])
 				
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil

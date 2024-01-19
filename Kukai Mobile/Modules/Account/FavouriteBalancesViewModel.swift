@@ -64,10 +64,25 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				return
 			}
 			
+			// Record the new state on disk
 			if let address = DependencyManager.shared.selectedWalletAddress,
 			   let token = (itemIdentifier(for: sourceIndexPath) as? Token),
-			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section-1) {
+			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section) {
 				
+				// We have 1 row per section (to acheive a certain UI). By default, move tries to take a row and move it to another section. We need to modify this to move sections around instead
+				// Get the section that its trying to be added too. If its at index 0, then user wants to move source, above destination, so instead assign it to the previous section
+				// If index is greater, then user wants it to be below destination section
+				var currentSnapshot = self.snapshot()
+				if destinationIndexPath.row == 0 {
+					// previous section
+					currentSnapshot.moveSection(sourceIndexPath.section, beforeSection: destinationIndexPath.section)
+					
+				} else {
+					// next section
+					currentSnapshot.moveSection(sourceIndexPath.section, afterSection: destinationIndexPath.section)
+				}
+				
+				self.apply(currentSnapshot)
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				
 			} else {
@@ -175,6 +190,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				cell.setup(isFav: false, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				favouriteCount -= 1
+				self.refresh(animate: true)
 				
 			} else {
 				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to remove favorite"), "Unable to remove favorite")
@@ -185,6 +201,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				cell.setup(isFav: true, isLocked: false)
 				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 				favouriteCount += 1
+				self.refresh(animate: true)
 				
 			} else {
 				self.state = .failure(KukaiError.internalApplicationError(error: "Unable to add favorite"), "Unable to add favorite")

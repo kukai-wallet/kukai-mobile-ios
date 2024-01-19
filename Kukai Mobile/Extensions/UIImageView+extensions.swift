@@ -6,14 +6,9 @@
 //
 
 import UIKit
-import Kingfisher
 import KukaiCoreSwift
 
 extension UIImageView {
-	
-	func setImageToCurrentSize(url: URL?) {
-		self.kf.setImage(with: url, options: [.processor( DownsamplingImageProcessor(size: CGSize(width: self.frame.width, height: self.frame.height)) )])
-	}
 	
 	func tint(color: UIColor) {
 		self.image = self.image?.withRenderingMode(.alwaysTemplate)
