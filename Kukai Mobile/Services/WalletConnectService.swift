@@ -61,6 +61,7 @@ public class WalletConnectService {
 	public weak var delegate: WalletConnectServiceDelegate? = nil
 	
 	private var bag = [AnyCancellable]()
+	private var tempConnectionSubscription: AnyCancellable? = nil
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
 											  description: "Kukai iOS",
@@ -169,6 +170,16 @@ public class WalletConnectService {
 		if let uri = deepLinkPairingToConnect {
 			pairClient(uri: uri)
 		}
+	}
+	
+	public func isConnected(completion: @escaping ((Bool) -> Void)) {
+		tempConnectionSubscription = Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			completion(status == .connected)
+			
+			self?.tempConnectionSubscription?.cancel()
+		}
+		
+		tempConnectionSubscription?.store(in: &bag)
 	}
 	
 	
