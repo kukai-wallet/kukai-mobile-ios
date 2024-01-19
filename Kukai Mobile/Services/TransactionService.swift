@@ -394,11 +394,11 @@ public class TransactionService {
 				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .github:
-				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
+				let image = UIImage(named: "Social_Github_Color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .email:
-				let image = UIImage(named: "Social_Github_color")?.resizedImage(size: imageSize) ?? UIImage()
+				let image = UIImage(named: "Social_Email_Outlined")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.socialUsername ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .none:
