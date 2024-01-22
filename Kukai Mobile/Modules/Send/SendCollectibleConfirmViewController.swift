@@ -184,7 +184,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		handleRejection()
+		handleRejection(collapseOnly: true)
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
