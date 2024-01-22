@@ -174,35 +174,37 @@ class ImportWalletViewController: UIViewController {
 		
 		if wallet is HDWallet, let hd = wallet as? HDWallet {
 			Task {
-				if await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd, progress: { [weak self] found in
+				let errorString = await WalletManagementService.cacheWalletAndScanForAccounts(wallet: hd, progress: { [weak self] found in
 					if found == 1 {
 						self?.accountScanningVc?.showAllText()
 					}
 					
 					self?.accountScanningVc?.updateFound(found)
 					
-				}) {
+				})
+				
+				if let eString = errorString {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+						self?.hideLoadingView()
+						self?.windowError(withTitle: "error".localized(), description: eString)
+					}
+				} else {
 					DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 						self?.removeScanningVc()
 						self?.navigate()
 					}
-					
-				} else {
-					self.removeScanningVc()
-					self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 				}
 			}
 			
 		} else {
 			accountScanningVc?.hideAllText()
-			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
-				if success {
+			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] errorString in
+				if let eString = errorString {
 					self?.removeScanningVc()
-					self?.navigate()
-					
+					self?.windowError(withTitle: "error".localized(), description: eString)
 				} else {
 					self?.removeScanningVc()
-					self?.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
+					self?.navigate()
 				}
 			}
 		}

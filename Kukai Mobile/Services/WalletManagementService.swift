@@ -12,13 +12,13 @@ import Combine
 class WalletManagementService {
 	
 	/// Cache a new wallet, run tezos domains checks, and update records in DependencyManager correctly
-	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool, completion: @escaping ((Bool) -> Void)) {
+	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool, completion: @escaping ((String?) -> Void)) {
 		let walletCache = WalletCacheService()
 		
-		// Only wallets not backed up are brand new wallets created via the HD wallet option
-		if walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: true) {
-			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
+		do {
+			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: true)
 			
+			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {
 				
 				var lookupType: LookupType = .address
@@ -28,7 +28,7 @@ class WalletManagementService {
 						
 					case .reddit:
 						lookupType = .reddit
-					
+						
 					case .twitter:
 						lookupType = .twitter
 						
@@ -67,15 +67,24 @@ class WalletManagementService {
 				}
 				
 				LookupService.shared.cacheRecords()
-				completion(true)
+				completion(nil)
+				return
 			})
 			
-		} else {
-			return completion(false)
+		} catch let error as WalletCacheError {
+			
+			if error == WalletCacheError.walletAlreadyExists {
+				completion("error-wallet-already-exists".localized())
+			} else {
+				completion("error-cant-cache".localized())
+			}
+			
+		} catch {
+			completion("error-cant-cache".localized())
 		}
 	}
 	
-	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool) async -> Bool {
+	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool) async -> String? {
 		return await withCheckedContinuation({ continuation in
 			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: forChildOfIndex, markSelected: markSelected) { result in
 				continuation.resume(returning: result)
@@ -103,31 +112,32 @@ class WalletManagementService {
 		})
 	}
 	
-	public static func cacheWalletAndScanForAccounts(wallet: HDWallet, progress: ((Int) -> Void)? = nil) async -> Bool {
-		guard await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true),
-				let hdIndex = DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == wallet.address }) else {
-			return false
-		}
-		
-		var childIndex = 1
-		var isUsedAccount = true
-		
-		while isUsedAccount {
-			guard let child = wallet.createChild(accountIndex: childIndex) else {
-				isUsedAccount = false
-				continue
+	public static func cacheWalletAndScanForAccounts(wallet: HDWallet, progress: ((Int) -> Void)? = nil) async -> String? {
+		if let errorString = await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) {
+			return errorString
+			
+		} else {
+			let hdIndex = DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == wallet.address })
+			var childIndex = 1
+			var isUsedAccount = true
+			
+			while isUsedAccount {
+				guard let child = wallet.createChild(accountIndex: childIndex) else {
+					isUsedAccount = false
+					continue
+				}
+				
+				if await WalletManagementService.isUsedAccount(address: child.address) {
+					progress?(childIndex)
+					let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, markSelected: false)
+				} else {
+					isUsedAccount = false
+				}
+				
+				childIndex += 1
 			}
 			
-			if await WalletManagementService.isUsedAccount(address: child.address) {
-				progress?(childIndex)
-				let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, markSelected: false)
-			} else {
-				isUsedAccount = false
-			}
-			
-			childIndex += 1
+			return nil
 		}
-		
-		return true
 	}
 }
