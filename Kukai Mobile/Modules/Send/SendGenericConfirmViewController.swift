@@ -221,7 +221,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		handleRejection()
+		handleRejection(collapseOnly: true)
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {

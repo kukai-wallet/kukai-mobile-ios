@@ -138,13 +138,12 @@ class CreateWithSocialViewController: UIViewController {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
 				
-				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] success in
-					if success {
-						self?.navigate()
-						
-					} else {
+				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] errorString in
+					if let eString = errorString {
 						self?.hideLoadingView()
-						self?.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
+						self?.windowError(withTitle: "error".localized(), description: eString)
+					} else {
+						self?.navigate()
 					}
 				}
 				

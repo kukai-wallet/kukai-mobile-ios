@@ -224,15 +224,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return
 				}
 				
-				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] success in
-					guard success else {
+				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] errorString in
+					if let eString = errorString {
 						vc.hideLoadingView()
-						vc.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
-						return
+						vc.windowError(withTitle: "error".localized(), description: eString)
+					} else {
+						self?.refresh(animate: true)
+						vc.hideLoadingView()
 					}
-					
-					self?.refresh(animate: true)
-					vc.hideLoadingView()
 				}
 			})
 		}

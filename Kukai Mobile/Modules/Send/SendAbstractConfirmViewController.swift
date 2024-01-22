@@ -35,29 +35,33 @@ class SendAbstractConfirmViewController: UIViewController {
 		}
 	}
 	
-	func dismissAndReturn() {
+	func dismissAndReturn(collapseOnly: Bool) {
 		if !isWalletConnectOp {
 			TransactionService.shared.resetAllState()
 		}
 		
 		self.dismiss(animated: true)
-		(self.presentingViewController as? UINavigationController)?.popToHome()
+		
+		if collapseOnly == false {
+			(self.presentingViewController as? UINavigationController)?.popToHome()
+		}
 	}
 	
 	
 	
 	// MARK: - WC2 functions
 	
-	func handleRejection(andDismiss: Bool = true) {
+	func handleRejection(andDismiss: Bool = true, collapseOnly: Bool = false) {
 		if !isWalletConnectOp {
-			if andDismiss { self.dismissAndReturn() }
+			if andDismiss { self.dismissAndReturn(collapseOnly: collapseOnly) }
 			return
 		}
 		
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
-					if andDismiss { self?.dismissAndReturn() }
+					self?.didSend = true
+					if andDismiss { self?.dismissAndReturn(collapseOnly: collapseOnly) }
 					
 				} else {
 					var message = ""
@@ -69,7 +73,7 @@ class SendAbstractConfirmViewController: UIViewController {
 					
 					Logger.app.error("WC Rejction error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
-					self?.dismissAndReturn()
+					self?.dismissAndReturn(collapseOnly: collapseOnly)
 				}
 			})
 		})
@@ -77,14 +81,14 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	func handleApproval(opHash: String) {
 		if !isWalletConnectOp {
-			self.dismissAndReturn()
+			self.dismissAndReturn(collapseOnly: false)
 			return
 		}
 		
 		WalletConnectService.approveCurrentRequest(signature: nil, opHash: opHash, completion: { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
-					self?.dismissAndReturn()
+					self?.dismissAndReturn(collapseOnly: false)
 					
 				} else {
 					var message = "error-wc2-unrecoverable".localized()
@@ -99,7 +103,7 @@ class SendAbstractConfirmViewController: UIViewController {
 					
 					Logger.app.error("WC Approve error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
-					self?.dismissAndReturn()
+					self?.dismissAndReturn(collapseOnly: true)
 				}
 			})
 		})

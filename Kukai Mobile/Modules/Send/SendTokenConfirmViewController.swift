@@ -277,7 +277,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		handleRejection()
+		handleRejection(collapseOnly: true)
 	}
 	
 	func addPendingTransaction(opHash: String) {

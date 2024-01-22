@@ -345,7 +345,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			if mediaType == nil && !isCached {
 				
 				// Check to see if we have a cached thumbnail. If so load that (using its dimensions for the correct layout), then load real image later
-				let cacheURL = MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: MediaProxyService.Format.small.rawFormat())
+				let cacheURL = MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: MediaProxyService.Format.medium.rawFormat())
 				MediaProxyService.sizeForImageIfCached(url: cacheURL) { size in
 					let finalSize = (size ?? CGSize(width: 300, height: 300))
 					let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: cacheURL, mediaURL2: nil, width: finalSize.width, height: finalSize.height)
@@ -393,7 +393,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			// Fallback
 			else {
-				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: MediaProxyService.Format.small.rawFormat()), mediaURL2: nil, width: 300, height: 300)
+				let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: MediaProxyService.Format.medium.rawFormat()), mediaURL2: nil, width: 300, height: 300)
 				completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
 			}
 		}
@@ -431,7 +431,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		MediaProxyService.sizeForImageIfCached(url: cacheURL) { size in
 			let finalSize = (size ?? CGSize(width: 300, height: 300))
 			if mediaType == .imageOnly {
-				let url = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI ?? nft?.artifactURI, ofFormat: MediaProxyService.Format.small.rawFormat()) : MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
+				let url = loadingThumbnailFirst ? MediaProxyService.url(fromUri: nft?.thumbnailURI ?? nft?.artifactURI, ofFormat: MediaProxyService.Format.medium.rawFormat()) : MediaProxyService.url(fromUri: nft?.displayURI ?? nft?.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
 				let mediaContent = MediaContent(isImage: true, isThumbnail: loadingThumbnailFirst, mediaURL: url, mediaURL2: nil, width: finalSize.width, height: finalSize.height)
 				completion((mediaContent: mediaContent, needsToDownloadFullImage: loadingThumbnailFirst, needsMediaTypeVerification: false))
 				
@@ -452,7 +452,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return
 		}
 		
-		currentSnapshot.insertItems([newMediaContent], beforeItem: quantityContent)
+		currentSnapshot.insertItems([newMediaContent], beforeItem: oldMediaContent)
 		currentSnapshot.deleteItems([oldMediaContent])
 		
 		DispatchQueue.main.async { [weak self] in

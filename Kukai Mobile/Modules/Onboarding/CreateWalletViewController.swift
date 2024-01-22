@@ -26,11 +26,21 @@ class CreateWalletViewController: UIViewController {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: "") {
 			let walletCache = WalletCacheService()
 			
-			if walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false) {
+			do {
+				try walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false)
 				DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
 				self.navigate()
-			} else {
+				
+			} catch let error as WalletCacheError {
+				
+				if error == WalletCacheError.walletAlreadyExists {
+					self.windowError(withTitle: "error".localized(), description: "error-wallet-already-exists".localized())
+				} else {
+					self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
+				}
+				
+			} catch {
 				self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
 			}
 		} else {

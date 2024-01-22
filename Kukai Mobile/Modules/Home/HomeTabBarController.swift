@@ -464,7 +464,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		DispatchQueue.main.asyncAfter(wallDeadline: .now() + 3) { [weak self] in
 			WalletConnectService.shared.isConnected { [weak self] connected in
 				if connected {
-					self?.connectionStatusChanged(status: .connected)
+					DispatchQueue.main.async {
+						self?.connectionStatusChanged(status: .connected)
+					}
 				}
 			}
 		}

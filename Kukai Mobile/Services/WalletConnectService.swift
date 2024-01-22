@@ -69,6 +69,8 @@ public class WalletConnectService {
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
 	
+	private var pairingTimer: Timer? = nil
+	
 	@Published public var requestDidComplete: Bool = false
 	@Published public var pairsAndSessionsUpdated: Bool = false
 	
@@ -155,6 +157,11 @@ public class WalletConnectService {
 			.sink { [weak self] incomingProposalObj in
 				Logger.app.info("WC sessionProposalPublisher")
 				self?.sessionActionRequiredPublisherSubject.send((action: incomingProposalObj.proposal, context: incomingProposalObj.context))
+				
+				self?.delegate?.processingIncomingDone()
+				self?.pairingTimer?.invalidate()
+				self?.pairingTimer = nil
+				
 			}.store(in: &bag)
 		
 		Sign.instance.sessionRequestPublisher
@@ -266,6 +273,12 @@ public class WalletConnectService {
 		return Future<Bool, Never>() { [weak self] promise in
 			Logger.app.info("WC pairing to \(uri.absoluteString)")
 			
+			self?.delegate?.processingIncomingOperations()
+			self?.pairingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { [weak self] timer in
+				self?.delegateErrorOnMain(message: "No response from application. Please refresh the webpage, and try to connect again", error: nil)
+				self?.delegate?.processingIncomingDone()
+			})
+			
 			Task { [weak self] in
 				do {
 					try await Pair.instance.pair(uri: uri)
@@ -274,6 +287,9 @@ public class WalletConnectService {
 				} catch {
 					Logger.app.error("WC Pairing connect error: \(error)")
 					self?.delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error)
+					self?.delegate?.processingIncomingDone()
+					self?.pairingTimer?.invalidate()
+					self?.pairingTimer = nil
 					promise(.success(false))
 				}
 				

@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import CloudKit
 
 public enum AddressType: String, CaseIterable {
 	case tezosAddress = "Tezos Address"
@@ -14,6 +15,7 @@ public enum AddressType: String, CaseIterable {
 	case gmail = "Google"
 	case reddit = "Reddit"
 	case twitter = "Twitter"
+	case email = "Email"
 }
 
 public protocol AddressTypeDelegate: AnyObject {
@@ -30,7 +32,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	public var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
 	
 	public var headerText: String = "Recipient Address"
-	public var supportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail]
+	public var supportedAddressTypes: [AddressType] = [.tezosAddress, .tezosDomain, .gmail, .reddit, .twitter, .email]
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -72,6 +74,9 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 				
 			case .twitter:
 				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .twitter, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				
+			case .email:
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .email, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
 		}
 		
 		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .size_22).image
