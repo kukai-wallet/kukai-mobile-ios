@@ -336,22 +336,26 @@ public class TransactionService {
 		let imageSize = TransactionService.sizeForWalletIcon(walletIconSize: size)
 		let currentNetwork = DependencyManager.shared.currentNetworkType
 		
-		// Early exit if tezos domain
-		if metadata.hasDomain(onNetwork: currentNetwork) {
-			let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
-			return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
-		}
-		
-		// Second Early exit if non-social wallet without domain
 		if metadata.type != .social {
 			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
 			var title = ""
 			var subtitle: String? = ""
 			
 			if  let nickname = metadata.walletNickname {
+				
+				// If non social, check for nicknames first
 				title = nickname
 				subtitle =  metadata.address.truncateTezosAddress()
+				
+			} else if metadata.hasDomain(onNetwork: currentNetwork) {
+				
+				// If no nicknames, check for tezos domains
+				let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
+				return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
 			} else {
+				
+				// Use address
 				title =  metadata.address.truncateTezosAddress()
 				subtitle = nil
 			}

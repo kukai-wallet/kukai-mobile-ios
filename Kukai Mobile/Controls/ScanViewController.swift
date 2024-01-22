@@ -344,7 +344,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			self.textfield.text = ""
 			
 		} else {
-			captureSession.stopRunning()
 			found(code: stringToCheck)
 		}
 	}
