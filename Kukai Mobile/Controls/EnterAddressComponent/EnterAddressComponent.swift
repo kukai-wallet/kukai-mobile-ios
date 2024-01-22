@@ -37,6 +37,7 @@ public class EnterAddressComponent: UIView {
 	private let addressTypeVC = UIStoryboard(name: "SendAddressType", bundle: nil).instantiateInitialViewController() as? AddressTypeViewController
 	private var addressTypeHeader = "Recipient Address"
 	private let nibName = "EnterAddressComponent"
+	private let cloudKitService = CloudKitService()
 	
 	private var currentSelectedType: AddressType = .tezosAddress
 	
@@ -127,7 +128,7 @@ public class EnterAddressComponent: UIView {
 				completion(Result.success(string))
 				
 			case .tezosDomain:
-				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string, completion: { result in
+				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string.lowercased(), completion: { result in
 					switch result {
 						case .success(let response):
 							if let add = response.data?.domain.address {
@@ -150,10 +151,31 @@ public class EnterAddressComponent: UIView {
 				
 			case .twitter:
 				handleTorus(verifier: .twitter, string: string, completion: completion)
+				
+			case .email:
+				handleTorus(verifier: .email, string: string, completion: completion)
 		}
 	}
 	
 	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+		
+		// Check to see if we need to fetch torus verfier config
+		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
+			cloudKitService.fetchConfigItems { [weak self] error in
+				if let e = error {
+					completion(Result.failure(KukaiError.unknown(withString: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))))
+					
+				} else {
+					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
+					self?.performTorusLookup(verifier: verifier, string: string, completion: completion)
+				}
+			}
+		} else {
+			performTorusLookup(verifier: verifier, string: string, completion: completion)
+		}
+	}
+	
+	private func performTorusLookup(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
 		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
 			let error = KukaiError.unknown(withString: "No \(verifier.rawValue) verifier details found")
 			completion(Result.failure(error))
@@ -162,8 +184,6 @@ public class EnterAddressComponent: UIView {
 		
 		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string, completion: completion)
 	}
-	
-	
 	
 	
 	
@@ -248,6 +268,9 @@ extension EnterAddressComponent: ValidatorTextFieldDelegate {
 				
 			case .twitter:
 				return "Invalid Twitter username"
+				
+			case .email:
+				return "Invalid email address"
 		}
 	}
 	
@@ -301,6 +324,12 @@ extension EnterAddressComponent: AddressTypeDelegate {
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Twitter", for: .normal)
 				textField.placeholder = "@ Enter Twitter Handle"
+				textField.validator = NoWhiteSpaceStringValidator()
+				
+			case .email:
+				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
+				addressTypeButton.setTitle("Email", for: .normal)
+				textField.placeholder = "Enter email address"
 				textField.validator = NoWhiteSpaceStringValidator()
 		}
 		
