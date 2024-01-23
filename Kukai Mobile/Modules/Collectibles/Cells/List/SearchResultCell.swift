@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SearchResultCell: UICollectionViewCell {
 	
-	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var quantityView: UIView!
 	@IBOutlet weak var quantityLabel: UILabel!

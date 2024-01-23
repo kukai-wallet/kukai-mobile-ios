@@ -98,6 +98,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				case .failed:
 					self?.mediaActivityView.stopAnimating()
 					self?.mediaActivityView.isHidden = true
+					self?.parentViewController()?.windowError(withTitle: "error".localized(), description: "error-collectible-media-generic".localized())
 					Logger.app.error("AVPlayer - Error: \(String(describing: item.error)), Message: \(String(describing: item.error?.localizedDescription))")
 					
 				case .unknown:

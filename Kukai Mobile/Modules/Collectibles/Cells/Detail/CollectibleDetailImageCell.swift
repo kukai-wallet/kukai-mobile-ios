@@ -7,11 +7,12 @@
 
 import UIKit
 import KukaiCoreSwift
+import SDWebImage
 
 class CollectibleDetailImageCell: UICollectionViewCell {
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-	@IBOutlet weak var imageView: UIImageView!
+	@IBOutlet weak var imageView: SDAnimatedImageView!
 	@IBOutlet weak var aspectRatioConstraint: NSLayoutConstraint!
 	
 	public var setup = false
