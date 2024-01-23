@@ -8,6 +8,7 @@
 import UIKit
 import Combine
 import KukaiCoreSwift
+import SDWebImage
 
 class CollectiblesCollectionsViewController: UIViewController, UICollectionViewDelegate, CollectiblesViewControllerChild {
 	
