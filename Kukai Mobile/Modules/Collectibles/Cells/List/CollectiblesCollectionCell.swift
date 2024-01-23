@@ -46,7 +46,6 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	func setupImages(imageURLs: [URL?]) {
 		
 		// Images 1-4 display if urls present
-		
 		emptyStyle(forImageView: collectionImage1)
 		if imageURLs.count > 0 {
 			MediaProxyService.load(url: imageURLs[0], to: collectionImage1, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in

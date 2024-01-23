@@ -312,7 +312,7 @@ extension EnterAddressComponent: AddressTypeDelegate {
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Google", for: .normal)
 				textField.placeholder = "Enter Google Account"
-				textField.validator = GmailValidator()
+				textField.validator = EmailValidator()
 				
 			case .reddit:
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
@@ -330,7 +330,7 @@ extension EnterAddressComponent: AddressTypeDelegate {
 				sendToIcon.image = AddressTypeViewController.imageFor(addressType: type)
 				addressTypeButton.setTitle("Email", for: .normal)
 				textField.placeholder = "Enter email address"
-				textField.validator = NoWhiteSpaceStringValidator()
+				textField.validator = EmailValidator()
 		}
 		
 		if !textField.revalidateTextfield() {

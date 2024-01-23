@@ -7,11 +7,12 @@
 
 import UIKit
 import KukaiCoreSwift
+import SDWebImage
 
 class CollectibleDetailImageCell: UICollectionViewCell {
 
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-	@IBOutlet weak var imageView: UIImageView!
+	@IBOutlet weak var imageView: SDAnimatedImageView!
 	@IBOutlet weak var aspectRatioConstraint: NSLayoutConstraint!
 	
 	public var setup = false
@@ -33,7 +34,9 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 		
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {
-			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage.unknownThumb()) { [weak self] _ in
+				self?.activityIndicator.isHidden = true
+			}
 		}
 		
 		setup = true

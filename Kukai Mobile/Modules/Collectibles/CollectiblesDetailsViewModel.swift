@@ -220,41 +220,40 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			section1Content.append(self.descriptionData)
 			self.currentSnapshot.appendItems(section1Content, toSection: 0)
 			
-			ds.apply(self.currentSnapshot, animatingDifferences: animate)
-			self.state = .success(nil)
-			
-			
-			// If unbale to determine contentn type, we need to do a network request to find it
-			if response.needsMediaTypeVerification {
-				self.mediaContentForFailedOfflineFetch(forNFT: self.nft) { [weak self] mediaContent in
+			ds.apply(self.currentSnapshot, animatingDifferences: animate) {
+				
+				// If unbale to determine content type, we need to do a network request to find it
+				if response.needsMediaTypeVerification {
+					self.mediaContentForFailedOfflineFetch(forNFT: self.nft) { [weak self] mediaContent in
+						
+						if let newMediaContent = mediaContent {
+							self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
+						} else {
+							// Unbale to determine type and unable to locate URL, or fetch packet from URL. Default to missing image palceholder
+							let blankMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nil, mediaURL2: nil, width: 100, height: 100)
+							self?.replace(existingMediaContent: response.mediaContent, with: blankMediaContent)
+						}
+					}
+				}
+				
+				// If we don't have the full image cached, download it and replace the thumbnail with the real thing
+				else if response.needsToDownloadFullImage {
+					let newURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: MediaProxyService.Format.large.rawFormat())
+					let isDualURL = (response.mediaContent.mediaURL2 != nil)
 					
-					if let newMediaContent = mediaContent {
+					MediaProxyService.cacheImage(url: newURL) { [weak self] size in
+						let mediaURL1 = isDualURL ? response.mediaContent.mediaURL : newURL
+						let mediaURL2 = isDualURL ? newURL : nil
+						let width = Double(size?.width ?? 300)
+						let height = Double(size?.height ?? 300)
+						let newMediaContent = MediaContent(isImage: response.mediaContent.isImage, isThumbnail: false, mediaURL: mediaURL1, mediaURL2: mediaURL2, width: width, height: height)
 						self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
-					} else {
-						// Unbale to determine type and unable to locate URL, or fetch packet from URL. Default to missing image palceholder
-						let blankMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nil, mediaURL2: nil, width: 100, height: 100)
-						self?.replace(existingMediaContent: response.mediaContent, with: blankMediaContent)
 					}
 				}
 			}
 			
-			// If we don't have the full image cached, download it and replace the thumbnail with the real thing
-			else if response.needsToDownloadFullImage {
-				let newURL = MediaProxyService.url(fromUri: self.nft?.displayURI, ofFormat: MediaProxyService.Format.large.rawFormat())
-				let isDualURL = (response.mediaContent.mediaURL2 != nil)
-				
-				MediaProxyService.cacheImage(url: newURL) { [weak self] size in
-					let mediaURL1 = isDualURL ? response.mediaContent.mediaURL : newURL
-					let mediaURL2 = isDualURL ? newURL : nil
-					let width = Double(size?.width ?? 300)
-					let height = Double(size?.height ?? 300)
-					let newMediaContent = MediaContent(isImage: response.mediaContent.isImage, isThumbnail: false, mediaURL: mediaURL1, mediaURL2: mediaURL2, width: width, height: height)
-					self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
-				}
-			}
+			self.state = .success(nil)
 		}
-		
-		ds.apply(self.currentSnapshot, animatingDifferences: animate)
 		
 		
 		// Load remote data after UI

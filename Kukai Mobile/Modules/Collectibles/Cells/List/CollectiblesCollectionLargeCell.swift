@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CollectiblesCollectionLargeCell: UICollectionViewCell {
 	
-	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet var quantityView: UIView!
 	@IBOutlet var quantityLabel: UILabel!
