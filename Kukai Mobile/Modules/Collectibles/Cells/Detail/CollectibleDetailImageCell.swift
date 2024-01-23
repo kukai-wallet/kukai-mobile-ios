@@ -33,7 +33,9 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 		
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {
-			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: .temporary, fallback: UIImage.unknownThumb()) { [weak self] _ in
+				self?.activityIndicator.isHidden = true
+			}
 		}
 		
 		setup = true

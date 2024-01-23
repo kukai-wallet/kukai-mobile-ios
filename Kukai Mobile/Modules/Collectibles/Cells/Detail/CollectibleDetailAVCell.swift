@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 import KukaiCoreSwift
 import MediaPlayer
+import OSLog
 
 class CollectibleDetailAVCell: UICollectionViewCell {
 
@@ -30,6 +31,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	
 	private var playbackWillKeepUpObserver: NSKeyValueObservation? = nil
 	private var rateObserver: NSKeyValueObservation? = nil
+	private var errorObserver: NSKeyValueObservation? = nil
 	private var commandCentreTargetStop: Any? = nil
 	private var commandCentreTargetToggle: Any? = nil
 	private var commandCentreTargetPlay: Any? = nil
@@ -87,6 +89,29 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			}
 		})
 		
+		self.errorObserver = avplayerController.player?.currentItem?.observe(\.status, changeHandler: { [weak self] item, change in
+			switch item.status {
+				case .readyToPlay:
+					// Handled elsewhere
+					break
+					
+				case .failed:
+					self?.mediaActivityView.stopAnimating()
+					self?.mediaActivityView.isHidden = true
+					Logger.app.error("AVPlayer - Error: \(String(describing: item.error)), Message: \(String(describing: item.error?.localizedDescription))")
+					
+				case .unknown:
+					self?.mediaActivityView.stopAnimating()
+					self?.mediaActivityView.isHidden = true
+					Logger.app.error("AVPlayer - unknown: \(String(describing: item.error)), Message: \(String(describing: item.error?.localizedDescription))")
+					
+				@unknown default:
+					self?.mediaActivityView.stopAnimating()
+					self?.mediaActivityView.isHidden = true
+					Logger.app.error("AVPlayer - default/unknown: \(String(describing: item.error)), Message: \(String(describing: item.error?.localizedDescription))")
+			}
+		})
+		
 		
 		// if allowsExternalPlayback set to false, during airplay via the command centre, iOS correctly picks up that its a song and shows the album artwork + title + album
 		// With this setup, videos however do not cast to the external device
@@ -136,6 +161,9 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		
 		rateObserver?.invalidate()
 		rateObserver = nil
+		
+		errorObserver?.invalidate()
+		errorObserver = nil
 		
 		clearCommandCenterCommands()
 	}
