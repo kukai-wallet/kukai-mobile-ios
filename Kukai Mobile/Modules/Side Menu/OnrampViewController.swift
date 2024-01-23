@@ -6,48 +6,51 @@
 //
 
 import UIKit
+import Combine
+import SafariServices
 
-class OnrampViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class OnrampViewController: UIViewController, UITableViewDelegate {
 
 	@IBOutlet weak var tableView: UITableView!
 	
-	private let ramps = [
-		(title: "Coinbase", subtitle: "Transfer from Coinbase", image: "coinbase"),
-		(title: "Transak", subtitle: "Bank transfers & local payment methods in 120+ countries", image: "transak"),
-		(title: "Moonpay", subtitle: "Cards & banks transfers", image: "moonpay")
-	]
+	public let viewModel = OnrampViewModel()
+	
+	private var bag = [AnyCancellable]()
+	private var safariViewController: SFSafariViewController? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		let _ =  self.view.addGradientBackgroundFull()
 		
-		tableView.dataSource = self
+		// Setup data
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
+		
+		viewModel.$state.sink { [weak self] state in
+			guard let self = self else { return }
+			
+			switch state {
+				case .loading:
+					let _ = ""
+					
+				case .success(_):
+					let _ = ""
+					
+				case .failure(_, let message):
+					self.windowError(withTitle: "error".localized(), description: message)
+			}
+		}.store(in: &bag)
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		viewModel.refresh(animate: true)
+	}
 	
 	@IBAction func infoButtonTapped(_ sender: Any) {
 		self.alert(errorWithMessage: "Under Construction")
-	}
-	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return ramps.count
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "TitleSubtitleImageContainerCell", for: indexPath) as? TitleSubtitleImageContainerCell else {
-			return UITableViewCell()
-		}
-		
-		let ramp = ramps[indexPath.row]
-		cell.iconView.image = UIImage(named: ramp.image)
-		cell.titleLabel.text = ramp.title
-		cell.subtitleLabel.text = ramp.subtitle
-		
-		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -59,6 +62,21 @@ class OnrampViewController: UIViewController, UITableViewDataSource, UITableView
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		self.alert(errorWithMessage: "Under Construction")
+		self.showLoadingView()
+		
+		viewModel.url(forIndexPath: indexPath) { [weak self] result in
+			self?.hideLoadingView()
+			guard let res = try? result.get() else {
+				self?.windowError(withTitle: "error".localized(), description: "error-onramp-generic".localized())
+				return
+			}
+			
+			self?.safariViewController = SFSafariViewController(url: res)
+			
+			if let vc = self?.safariViewController {
+				vc.modalPresentationStyle = .pageSheet
+				self?.present(vc, animated: true)
+			}
+		}
 	}
 }
