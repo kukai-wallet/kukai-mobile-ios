@@ -9,6 +9,7 @@ import UIKit
 import AVKit
 import KukaiCoreSwift
 import MediaPlayer
+import SDWebImage
 import OSLog
 
 class CollectibleDetailAVCell: UICollectionViewCell {
@@ -21,7 +22,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var isImageDownloaded = false
 	private var isPlaybackReady = false
 	private var isPlaying = false
-	private var imageView: UIImageView? = nil
+	private var imageView: SDAnimatedImageView? = nil
 	private weak var playerController: AVPlayerViewController? = nil
 	
 	private var airPlayName: String = ""
@@ -125,7 +126,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			isAudio = true
 			avplayerController.player?.allowsExternalPlayback = false
 			
-			imageView = UIImageView(frame: placeholderView.bounds)
+			imageView = SDAnimatedImageView(frame: placeholderView.bounds)
 			imageView?.contentMode = .scaleAspectFit
 			guard let audioImageView = imageView else {
 				return
