@@ -144,7 +144,7 @@ public class EnterAddressComponent: UIView {
 				})
 				
 			case .gmail:
-				handleTorus(verifier: .google, string: string, completion: completion)
+				handleTorus(verifier: .google, string: string.lowercased(), completion: completion)
 				
 			case .reddit:
 				handleTorus(verifier: .reddit, string: string, completion: completion)
@@ -153,7 +153,7 @@ public class EnterAddressComponent: UIView {
 				handleTorus(verifier: .twitter, string: string, completion: completion)
 				
 			case .email:
-				handleTorus(verifier: .email, string: string, completion: completion)
+				handleTorus(verifier: .email, string: string.lowercased(), completion: completion)
 		}
 	}
 	
