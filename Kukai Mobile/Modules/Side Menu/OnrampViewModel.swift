@@ -52,7 +52,7 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		snapshot.appendSections([0])
 		
 		snapshot.appendItems([
-			OnrampOption(title: "Coinbase", subtitle: "Transfer from Coinbase", imageName: "coinbase", key: "coinbase"),
+			OnrampOption(title: "Coinbase", subtitle: "Transfer from your Coinbase account", imageName: "coinbase", key: "coinbase"),
 			OnrampOption(title: "Transak", subtitle: "Bank transfers & local payment methods in 120+ countries", imageName: "transak", key: "transak"),
 			OnrampOption(title: "Moonpay", subtitle: "Cards & banks transfers", imageName: "moonpay", key: "moonpay")
 		], toSection: 0)
