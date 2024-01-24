@@ -45,10 +45,12 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	
 	func setupImages(imageURLs: [URL?]) {
 		
+		let halfMegaByte: UInt = 500000
+		
 		// Images 1-4 display if urls present
 		emptyStyle(forImageView: collectionImage1)
 		if imageURLs.count > 0 {
-			MediaProxyService.load(url: imageURLs[0], to: collectionImage1, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in
+			MediaProxyService.load(url: imageURLs[0], to: collectionImage1, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
 				if imageSize != nil {
 					self?.collectionImage1.backgroundColor = .colorNamed("BGThumbNFT")
 					self?.collectionImage1.borderWidth = 0
@@ -60,7 +62,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		
 		emptyStyle(forImageView: collectionImage2)
 		if imageURLs.count > 1 {
-			MediaProxyService.load(url: imageURLs[1], to: collectionImage2, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in
+			MediaProxyService.load(url: imageURLs[1], to: collectionImage2, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
 				if imageSize != nil {
 					self?.collectionImage2.backgroundColor = .colorNamed("BGThumbNFT")
 					self?.collectionImage2.borderWidth = 0
@@ -72,7 +74,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		
 		emptyStyle(forImageView: collectionImage3)
 		if imageURLs.count > 2 {
-			MediaProxyService.load(url: imageURLs[2], to: collectionImage3, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in
+			MediaProxyService.load(url: imageURLs[2], to: collectionImage3, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
 				if imageSize != nil {
 					self?.collectionImage3.backgroundColor = .colorNamed("BGThumbNFT")
 					self?.collectionImage3.borderWidth = 0
@@ -84,7 +86,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		
 		emptyStyle(forImageView: collectionImage4)
 		if imageURLs.count > 3 {
-			MediaProxyService.load(url: imageURLs[3], to: collectionImage4, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in
+			MediaProxyService.load(url: imageURLs[3], to: collectionImage4, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
 				if imageSize != nil {
 					self?.collectionImage4.backgroundColor = .colorNamed("BGThumbNFT")
 					self?.collectionImage4.borderWidth = 0
@@ -104,7 +106,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 			lastImageTitle.isHidden = false
 			
 		} else if imageURLs.count > 4 {
-			MediaProxyService.load(url: imageURLs[4], to: collectionImage5, withCacheType: .temporary, fallback: UIImage.unknownGroup()) { [weak self] imageSize in
+			MediaProxyService.load(url: imageURLs[4], to: collectionImage5, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
 				if imageSize != nil {
 					self?.collectionImage5.backgroundColor = .colorNamed("BGThumbNFT")
 					self?.collectionImage5.borderWidth = 0

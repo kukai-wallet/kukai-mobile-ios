@@ -104,13 +104,16 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 			c.setupImages(imageURLs: viewModel.willDisplayImages(forIndexPath: indexPath))
 			
 		} else if let c = cell as? CollectiblesCollectionLargeCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			let halfMegaByte: UInt = 500000
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
 			
 		} else if let c = cell as? CollectiblesCollectionSinglePageCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			let oneHundredMegabyte: UInt = 100000000
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: oneHundredMegabyte)
 			
 		} else if let c = cell as? SearchResultCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
-			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+			let halfMegaByte: UInt = 500000
+			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
 			
 		} else if let c = cell as? LoadingGroupModeCell {
 			c.addGradientBackground()

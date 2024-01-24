@@ -76,7 +76,8 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 				
 			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionItemLargeWithTextCell", for: indexPath) as? CollectiblesCollectionItemLargeWithTextCell {
 				let url = MediaProxyService.mediumURL(forNFT: obj)
-				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+				let halfMegaByte: UInt = 500000
+				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
