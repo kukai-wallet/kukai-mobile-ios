@@ -22,12 +22,17 @@ struct QuantityContent: Hashable {
 }
 
 struct MediaContent: Hashable {
+	let id = UUID()
 	let isImage: Bool
 	let isThumbnail: Bool
 	let mediaURL: URL?
 	let mediaURL2: URL?
 	let width: Double
 	let height: Double
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 struct NameContent: Hashable {

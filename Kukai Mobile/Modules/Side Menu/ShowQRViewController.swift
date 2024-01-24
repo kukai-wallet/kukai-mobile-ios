@@ -44,7 +44,21 @@ class ShowQRViewController: UIViewController {
 	}
 	
 	@IBAction func shareButtonTapped(_ sender: Any) {
-		self.alert(errorWithMessage: "Under Construction")
+		guard let address = DependencyManager.shared.selectedWalletMetadata?.address else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
+			return
+		}
+		
+		// set up activity view controller
+		let textToShare = [ address  ]
+		let activityViewController = UIActivityViewController(activityItems: textToShare, applicationActivities: nil)
+		activityViewController.popoverPresentationController?.sourceView = self.view
+		
+		// exclude some activity types from the list (optional)
+		activityViewController.excludedActivityTypes = [ UIActivity.ActivityType.airDrop, UIActivity.ActivityType.postToFacebook ]
+		
+		// present the view controller
+		self.present(activityViewController, animated: true, completion: nil)
 	}
 	
 	@IBAction func infoButtonTapped(_ sender: Any) {
