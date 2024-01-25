@@ -38,7 +38,7 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 		
 		// Load image if not only perfroming collectionview layout logic
 		if !layoutOnly {
-			let maxSize: UInt = 1000000000 // 1000 
+			let maxSize: UInt = 1000000000 // 1000
 			MediaProxyService.load(url: mediaContent.mediaURL, to: imageView, withCacheType: mediaContent.isThumbnail ? .temporary : .detail, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: maxSize)
 		}
 		

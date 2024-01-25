@@ -85,6 +85,10 @@ public class BalanceService {
 	
 	// MARK: - Queue Processing
 	
+	public func setLoadingWallet() {
+		cacheLoadingInProgress = true
+	}
+	
 	public func fetch(records: [FetchRequestRecord]) {
 		let uniqueRecords = self.uniqueRecords(records: records)
 		self.addressesWaitingToBeRefreshed.append(contentsOf: uniqueRecords.map({ $0.address }) )

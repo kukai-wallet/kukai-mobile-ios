@@ -116,6 +116,7 @@ class DependencyManager {
 	var selectedWalletMetadata: WalletMetadata? {
 		set {
 			_selectedWalletMetadata = newValue
+			DependencyManager.shared.balanceService.setLoadingWallet()
 			
 			let encoded = try? JSONEncoder().encode(newValue)
 			UserDefaults.standard.setValue(encoded, forKey: "app.kukai.mobile.selected.wallet")
