@@ -109,15 +109,8 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func buildTransakURL(withBaseURL: String, andAddress address: String, completion: @escaping ((Result<URL, KukaiError>) -> Void)) {
 		let apiKey = "f1336570-699b-4181-9bd1-cdd57206981f" // "3b0e81f3-37dc-41f3-9837-bd8d2c350313" : "f1336570-699b-4181-9bd1-cdd57206981f"
-		let walletData: [String: Any] = [
-			"coins": [
-				"XTZ": [ address ]
-			]
-		]
-		
-		guard let jsonData = try? JSONSerialization.data(withJSONObject: walletData),
-				let jsonString = String(data: jsonData, encoding: .utf8),
-				let url = URL(string: "\(withBaseURL)?apiKey=\(apiKey)&cryptoCurrencyCode=XTZ&walletAddressesData=\(jsonString)&disableWalletAddressForm=true") else {
+
+		guard let url = URL(string: "\(withBaseURL)?apiKey=\(apiKey)&cryptoCurrencyCode=XTZ&walletAddressesData={\"coins\":{\"XTZ\":{\"address\":\"\(address)\"}}}&disableWalletAddressForm=true}") else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
@@ -141,7 +134,7 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let data = try? JSONSerialization.data(withJSONObject: params)
 		DependencyManager.shared.tezosNodeClient.networkService.request(url: kukaiServiceURL, isPOST: true, withBody: data, forReturnType: Data.self) { result in
-			guard let res = try? result.get(), let sigString = String(data: res, encoding: .utf8), let sanitised = sigString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) else {
+			guard let res = try? result.get(), let sigString = String(data: res, encoding: .utf8), let sanitised = sigString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
