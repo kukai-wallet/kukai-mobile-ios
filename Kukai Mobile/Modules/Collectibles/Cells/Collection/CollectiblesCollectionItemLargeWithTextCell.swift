@@ -35,7 +35,7 @@ class CollectiblesCollectionItemLargeWithTextCell: UICollectionViewCell, UITable
 		iconView.accessibilityIdentifier = "collection-item-icon"
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
 }

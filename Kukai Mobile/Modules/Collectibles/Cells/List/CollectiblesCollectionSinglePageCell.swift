@@ -46,7 +46,7 @@ class CollectiblesCollectionSinglePageCell: UICollectionViewCell {
 		iconView.accessibilityIdentifier = "collecibtles-single-page-icon"
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
 }

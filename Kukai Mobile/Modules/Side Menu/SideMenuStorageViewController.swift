@@ -24,7 +24,8 @@ class SideMenuStorageViewController: UIViewController {
     }
 	
 	func setup() {
-		let imageCacheSize = MediaProxyService.sizeOf(cache: .temporary).description
+		let total = (MediaProxyService.sizeOf(cache: .temporary) + MediaProxyService.sizeOf(cache: .detail))
+		let imageCacheSize = total.description
 		let int64 = Int64(imageCacheSize) ?? 0
 		let collectibleStorageSize = ByteCountFormatter().string(fromByteCount: int64)
 		
@@ -34,11 +35,13 @@ class SideMenuStorageViewController: UIViewController {
 	@IBAction func clearButtonTapped(_ sender: Any) {
 		self.showLoadingModal()
 		
-		MediaProxyService.removeAllImages(fromCache: .temporary) { [weak self] in
-			self?.setup()
-			self?.hideLoadingModal(completion: { [weak self] in
-				self?.dismissBottomSheet()
-			})
+		MediaProxyService.removeAllImages(fromCache: .temporary) {
+			MediaProxyService.removeAllImages(fromCache: .detail) { [weak self] in
+				self?.setup()
+				self?.hideLoadingModal(completion: { [weak self] in
+					self?.dismissBottomSheet()
+				})
+			}
 		}
 	}
 }

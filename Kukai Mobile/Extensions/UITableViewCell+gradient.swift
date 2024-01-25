@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol UITableViewCellContainerView: UITableViewCell {
 	var containerView: UIView! { get set }
@@ -57,5 +58,5 @@ extension UITableViewCell: UITableViewCellGradient {
 
 
 protocol UITableViewCellImageDownloading {
-	func downloadingImageViews() -> [UIImageView]
+	func downloadingImageViews() -> [SDAnimatedImageView]
 }
