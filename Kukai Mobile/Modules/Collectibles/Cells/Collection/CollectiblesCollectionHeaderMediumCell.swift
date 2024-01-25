@@ -6,14 +6,15 @@
 //
 
 import UIKit
+import SDWebImage
 
 class CollectiblesCollectionHeaderMediumCell: UICollectionViewCell, UITableViewCellImageDownloading {
 	
-	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var creatorLabel: UILabel!
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
 }

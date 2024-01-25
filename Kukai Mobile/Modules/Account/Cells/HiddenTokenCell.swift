@@ -6,11 +6,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var hiddenIcon: UIImageView!
-	@IBOutlet weak var tokenIcon: UIImageView!
+	@IBOutlet weak var tokenIcon: SDAnimatedImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var containerView: UIView!
@@ -21,7 +22,7 @@ class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView, UITableVie
 		super.awakeFromNib()
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [tokenIcon]
 	}
 }

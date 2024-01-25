@@ -7,10 +7,11 @@
 
 import UIKit
 import KukaiCoreSwift
+import SDWebImage
 
 class PublicBakerCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
-	@IBOutlet weak var bakerIcon: UIImageView!
+	@IBOutlet weak var bakerIcon: SDAnimatedImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
 	@IBOutlet weak var splitLabel: UILabel!
 	@IBOutlet weak var spaceLabel: UILabel!
@@ -30,7 +31,7 @@ class PublicBakerCell: UITableViewCell, UITableViewCellContainerView, UITableVie
 		bakerNameLabel.accessibilityIdentifier = "baker-list-name"
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [bakerIcon]
 	}
 }

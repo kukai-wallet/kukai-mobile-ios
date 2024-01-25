@@ -182,7 +182,13 @@ class SideMenuViewController: UIViewController {
 	
 	@IBAction func getTezTapped(_ sender: Any) {
 		self.closeTapped(self)
-		homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)
+		
+		if DependencyManager.shared.currentNetworkType == .testnet {
+			UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
+			
+		} else {
+			homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)
+		}
 	}
 	
 	@IBAction func copyTapped(_ sender: UIButton) {

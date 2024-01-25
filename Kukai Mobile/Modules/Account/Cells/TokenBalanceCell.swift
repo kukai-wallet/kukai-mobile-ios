@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import SDWebImage
 
 class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var favCorner: UIImageView!
-	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var valuelabel: UILabel!
@@ -45,7 +46,7 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		}
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
 }

@@ -118,21 +118,22 @@ public class EnterAddressComponent: UIView {
 			}
 			
 			let image = AddressTypeViewController.imageFor(addressType: self?.currentSelectedType ?? .tezosAddress)
-			completion( Result.success(FindAddressResponse(alias: text, address: res, icon: image)) )
+			completion( Result.success(FindAddressResponse(alias: res.formattedText, address: res.address, icon: image)) )
 		}
 	}
 	
-	public func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+	public func convertStringToAddress(string: String, type: AddressType, completion: @escaping ((Result<(formattedText: String, address: String), KukaiError>) -> Void)) {
 		switch type {
 			case .tezosAddress:
-				completion(Result.success(string))
+				completion(Result.success((formattedText: string, address: string)))
 				
 			case .tezosDomain:
+				let formatted = string.lowercased()
 				DependencyManager.shared.tezosDomainsClient.getAddressFor(domain: string.lowercased(), completion: { result in
 					switch result {
 						case .success(let response):
 							if let add = response.data?.domain.address {
-								completion(Result.success(add))
+								completion(Result.success((formattedText: formatted, address: add)))
 								
 							} else {
 								completion(Result.failure(KukaiError.unknown()))
@@ -157,7 +158,7 @@ public class EnterAddressComponent: UIView {
 		}
 	}
 	
-	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+	private func handleTorus(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<(formattedText: String, address: String), KukaiError>) -> Void)) {
 		
 		// Check to see if we need to fetch torus verfier config
 		if DependencyManager.shared.torusVerifiers.keys.count == 0 {
@@ -175,14 +176,21 @@ public class EnterAddressComponent: UIView {
 		}
 	}
 	
-	private func performTorusLookup(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<String, KukaiError>) -> Void)) {
+	private func performTorusLookup(verifier: TorusAuthProvider, string: String, completion: @escaping ((Result<(formattedText: String, address: String), KukaiError>) -> Void)) {
 		guard DependencyManager.shared.torusVerifiers[verifier] != nil else {
 			let error = KukaiError.unknown(withString: "No \(verifier.rawValue) verifier details found")
 			completion(Result.failure(error))
 			return
 		}
 		
-		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string, completion: completion)
+		DependencyManager.shared.torusAuthService.getAddress(from: verifier, for: string) { result in
+			guard let res = try? result.get() else {
+				completion(Result.failure(result.getFailure()))
+				return
+			}
+			
+			completion(Result.success((formattedText: string, address: res)))
+		}
 	}
 	
 	

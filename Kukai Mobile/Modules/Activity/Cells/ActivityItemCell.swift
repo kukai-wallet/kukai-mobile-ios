@@ -7,11 +7,12 @@
 
 import UIKit
 import KukaiCoreSwift
+import SDWebImage
 
 class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var containerView: UIView!
-	@IBOutlet weak var iconView: UIImageView!
+	@IBOutlet weak var iconView: SDAnimatedImageView!
 	
 	@IBOutlet weak var typeIcon: UIImageView!
 	@IBOutlet weak var typeLabel: UILabel!
@@ -135,7 +136,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		}
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
 	

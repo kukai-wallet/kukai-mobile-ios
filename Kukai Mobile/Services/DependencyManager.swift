@@ -31,6 +31,8 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_testnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
+	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
+	
 	
 	// Kukai Core clients and properties
 	var tezosClientConfig: TezosNodeClientConfig
@@ -116,6 +118,7 @@ class DependencyManager {
 	var selectedWalletMetadata: WalletMetadata? {
 		set {
 			_selectedWalletMetadata = newValue
+			DependencyManager.shared.balanceService.setLoadingWallet()
 			
 			let encoded = try? JSONEncoder().encode(newValue)
 			UserDefaults.standard.setValue(encoded, forKey: "app.kukai.mobile.selected.wallet")

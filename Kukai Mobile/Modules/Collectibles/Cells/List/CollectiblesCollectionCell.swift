@@ -160,7 +160,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		collectionImage5.backgroundColor = .clear
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [collectionImage1, collectionImage2, collectionImage3, collectionImage4, collectionImage5]
 	}
 }

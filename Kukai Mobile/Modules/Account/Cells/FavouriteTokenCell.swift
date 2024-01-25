@@ -6,12 +6,13 @@
 //
 
 import UIKit
+import SDWebImage
 
 class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var favIconStackview: UIStackView!
-	@IBOutlet weak var tokenIcon: UIImageView!
+	@IBOutlet weak var tokenIcon: SDAnimatedImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var lockContainer: UIStackView!
@@ -74,7 +75,7 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView, UITable
 		}
 	}
 	
-	func downloadingImageViews() -> [UIImageView] {
+	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [tokenIcon]
 	}
 }
