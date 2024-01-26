@@ -512,6 +512,7 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			}
 		} else {
 			WalletConnectService.rejectCurrentRequest(completion: nil)
+			self.windowError(withTitle: "error".localized(), description: "error-wc2-cant-open-more-modals".localized())
 		}
 	}
 	
