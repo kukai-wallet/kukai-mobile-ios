@@ -121,28 +121,28 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			fromContainer.isHidden = true
 		}
 		
-		// Amount view configuration
+		
+		// Update main amount
 		updateAmountDisplay()
+		
 		
 		
 		// Destination view configuration
 		
-		// TODO: needs to be based on current op
-		/*
-		if let count = currentContractData.operationCount, count > 1 {
-			toSingleView.isHidden = true
-			toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-			toBatchCountLabel.text = "\(count)"
-			
-		} else {
-			toBatchView.isHidden = true
-			toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-		}
-		*/
+		 if let count = currentContractData.operationCount, count > 1 {
+		 toSingleView.isHidden = true
+		 toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
+		 toBatchCountLabel.text = "\(count)"
+		 
+		 } else {
+		 toBatchView.isHidden = true
+		 toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
+		 }
 		
 		
-		// TODO: needs to be set based off current op and also needs to set main type
-		//entrypointLabel.text = currentContractData.mainEntrypoint
+		// TODO: I think this should be removed, its confusing to have identical ui for contract call and batch.
+		// Just stick to 1 display always with details in another screen
+		typeStackView.isHidden = true
 		
 		
 		// Fees
@@ -230,10 +230,7 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func updateAmountDisplay() {
-		
-		// TODO: needs to be updated based on selected op
-		/*
-		guard let token = currentContractData.chosenToken, let amount = currentContractData.chosenAmount else {
+		guard let token = self.currentBatchData.mainDisplayToken, let amount = self.currentBatchData.mainDisplayAmount else {
 			return
 		}
 		
@@ -253,7 +250,6 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			largeDisplaySymbol.text = token.symbol
 			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 		}
-		*/
 	}
 	
 	func updateFees() {

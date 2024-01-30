@@ -210,6 +210,8 @@ public class TransactionService {
 	}
 	
 	public struct BatchData {
+		var mainDisplayToken: Token?
+		var mainDisplayAmount: TokenAmount?
 		var operationCount: Int?
 		var selectedOp: Int?
 		var opSummaries: [BatchOpSummary]?
@@ -254,7 +256,7 @@ public class TransactionService {
 	public var batchData: BatchData
 	public var walletConnectOperationData: WalletConnectOperationData
 	
-	
+	// TODO: make sure to reset all batch data
 	private init() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
@@ -316,7 +318,7 @@ public class TransactionService {
 																						destination: nil,
 																						destinationAlias: nil,
 																						destinationIcon: nil),
-																	 batchData: BatchData(operationCount: nil, 
+																	 batchData: BatchData(operationCount: nil,
 																						  selectedOp: nil,
 																						  opSummaries: nil))
 	}
