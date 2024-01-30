@@ -2695,10 +2695,10 @@
             </objects>
             <point key="canvasLocation" x="2434" y="964"/>
         </scene>
-        <!--Send Contract Confirm View Controller-->
+        <!--Send Batch Confirm View Controller-->
         <scene sceneID="8Tl-fq-EmY">
             <objects>
-                <viewController storyboardIdentifier="confirm-contract" id="GZH-Se-TFf" customClass="SendContractConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirm-contract" id="GZH-Se-TFf" customClass="SendBatchConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mo1-xi-Uo1">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3125,11 +3125,23 @@
                                                                         <color key="textColor" name="Txt2"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cZ-OY-n3p">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain"/>
+                                                                        <connections>
+                                                                            <segue destination="Fc5-fq-e26" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Whr-AV-poK"/>
+                                                                        </connections>
+                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" name="BG4"/>
                                                                 <constraints>
+                                                                    <constraint firstItem="7cZ-OY-n3p" firstAttribute="top" secondItem="BJz-mh-HUG" secondAttribute="top" id="0j9-K0-Zng"/>
                                                                     <constraint firstAttribute="bottom" secondItem="ZTl-au-5A5" secondAttribute="bottom" constant="16" id="7Yd-pp-d7q"/>
+                                                                    <constraint firstItem="7cZ-OY-n3p" firstAttribute="leading" secondItem="BJz-mh-HUG" secondAttribute="leading" id="Dxw-vE-MeU"/>
                                                                     <constraint firstItem="ORN-nd-f75" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DWJ-zK-gZy" secondAttribute="trailing" constant="16" id="G7G-0W-8mS"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="7cZ-OY-n3p" secondAttribute="bottom" id="ONB-Aq-88m"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="7cZ-OY-n3p" secondAttribute="trailing" id="VB3-h0-Iur"/>
                                                                     <constraint firstAttribute="trailing" secondItem="ZTl-au-5A5" secondAttribute="trailing" constant="10" id="Z28-HX-Y2O"/>
                                                                     <constraint firstItem="ZTl-au-5A5" firstAttribute="leading" secondItem="BEr-8f-xdZ" secondAttribute="trailing" constant="8" id="ZKN-Zn-U8c"/>
                                                                     <constraint firstItem="ORN-nd-f75" firstAttribute="centerY" secondItem="BJz-mh-HUG" secondAttribute="centerY" id="aie-DN-wV1"/>
@@ -3171,6 +3183,14 @@
                                                                         <color key="textColor" name="Txt2"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
+                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hSK-ua-uB8">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="325" height="50"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain"/>
+                                                                        <connections>
+                                                                            <segue destination="Fc5-fq-e26" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="44g-Pg-Caa"/>
+                                                                        </connections>
+                                                                    </button>
                                                                 </subviews>
                                                                 <color key="backgroundColor" name="BG4"/>
                                                                 <constraints>
@@ -3178,11 +3198,15 @@
                                                                     <constraint firstItem="Dq0-tI-gPK" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8zW-pk-GbR" secondAttribute="trailing" constant="16" id="8nu-mc-jmU"/>
                                                                     <constraint firstItem="8zW-pk-GbR" firstAttribute="centerY" secondItem="vrj-Wy-4Lg" secondAttribute="centerY" id="9fb-zX-yxX"/>
                                                                     <constraint firstItem="8zW-pk-GbR" firstAttribute="centerX" secondItem="vrj-Wy-4Lg" secondAttribute="centerX" id="ACZ-E3-0WS"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="hSK-ua-uB8" secondAttribute="trailing" id="FCU-Qz-T0t"/>
                                                                     <constraint firstAttribute="trailing" secondItem="Dq0-tI-gPK" secondAttribute="trailing" constant="10" id="JVG-AR-kVm"/>
                                                                     <constraint firstItem="Y4S-7d-ChE" firstAttribute="leading" secondItem="vrj-Wy-4Lg" secondAttribute="leading" constant="10" id="UOP-EJ-dIQ"/>
                                                                     <constraint firstItem="Dq0-tI-gPK" firstAttribute="top" secondItem="vrj-Wy-4Lg" secondAttribute="top" constant="16" id="byZ-Ll-PVC"/>
                                                                     <constraint firstAttribute="bottom" secondItem="Dq0-tI-gPK" secondAttribute="bottom" constant="16" id="g8J-Eo-otg"/>
+                                                                    <constraint firstItem="hSK-ua-uB8" firstAttribute="top" secondItem="vrj-Wy-4Lg" secondAttribute="top" id="lhb-6t-JOr"/>
                                                                     <constraint firstItem="8zW-pk-GbR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="Y4S-7d-ChE" secondAttribute="trailing" constant="16" id="qeD-lw-faQ"/>
+                                                                    <constraint firstItem="hSK-ua-uB8" firstAttribute="leading" secondItem="vrj-Wy-4Lg" secondAttribute="leading" id="wB5-Ev-TUD"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="hSK-ua-uB8" secondAttribute="bottom" id="zD2-Jr-Z6q"/>
                                                                 </constraints>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -3449,8 +3473,6 @@
                         <outlet property="connectedAppLabel" destination="lnj-PN-Z4L" id="EKD-UU-M8w"/>
                         <outlet property="connectedAppMetadataStackView" destination="Epm-X9-3ju" id="LpG-x4-7Co"/>
                         <outlet property="connectedAppNameLabel" destination="2VJ-Ae-aTX" id="NZI-ou-OaU"/>
-                        <outlet property="entrypointLabel" destination="3sf-sH-LX1" id="tB1-zc-n4K"/>
-                        <outlet property="entrypointStackView" destination="h95-sL-9BW" id="sQr-Rf-BM7"/>
                         <outlet property="errorLabel" destination="Sgt-Wf-ocZ" id="NfX-Ii-8nf"/>
                         <outlet property="feeButton" destination="KLt-HO-0E1" id="xjE-w7-VGm"/>
                         <outlet property="feeValueLabel" destination="xpk-Z9-fHl" id="sRm-gn-9Mm"/>
@@ -3477,14 +3499,34 @@
                         <outlet property="testnetWarningView" destination="ec5-sj-s0o" id="lfE-ol-kDF"/>
                         <outlet property="toBatchContractLabel" destination="ORN-nd-f75" id="ZJW-Iq-MkL"/>
                         <outlet property="toBatchCountLabel" destination="BEr-8f-xdZ" id="Hkg-ci-o7o"/>
+                        <outlet property="toBatchDetailsButton" destination="7cZ-OY-n3p" id="atk-iw-zq7"/>
                         <outlet property="toBatchView" destination="BJz-mh-HUG" id="EcF-2m-RId"/>
                         <outlet property="toSingleContractLabel" destination="8zW-pk-GbR" id="Djp-SE-Iu2"/>
+                        <outlet property="toSingleDetailsButton" destination="hSK-ua-uB8" id="CUv-O4-FNe"/>
                         <outlet property="toSingleView" destination="vrj-Wy-4Lg" id="aOW-Sz-hPe"/>
+                        <outlet property="typeDetailLabel" destination="3sf-sH-LX1" id="Pyd-FI-ueo"/>
+                        <outlet property="typeLabel" destination="gjT-NW-5UK" id="Rym-ja-mvX"/>
+                        <outlet property="typeStackView" destination="h95-sL-9BW" id="Bfc-uA-eJk"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d8Z-pJ-QSE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2690.8396946564885" y="1536.6197183098593"/>
+        </scene>
+        <!--Send Batch Details View Controller-->
+        <scene sceneID="27v-lU-SVs">
+            <objects>
+                <viewController id="Fc5-fq-e26" customClass="SendBatchDetailsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qMA-TD-ewL">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="gkP-vU-1xS"/>
+                        <color key="backgroundColor" name="BG2"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MN1-Ad-ACf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3627" y="1537"/>
         </scene>
         <!--Fees-->
         <scene sceneID="swW-Ai-NTB">
@@ -4165,6 +4207,9 @@
             <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
     </designables>
+    <inferredMetricsTieBreakers>
+        <segue reference="Whr-AV-poK"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="ArrowDown" width="24" height="24"/>

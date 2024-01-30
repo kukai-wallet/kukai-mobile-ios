@@ -1,5 +1,5 @@
 //
-//  SendContractConfirmViewController.swift
+//  SendBatchConfirmViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 17/05/2023.
@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import WalletConnectSign
 import OSLog
 
-class SendContractConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
 	
@@ -47,12 +47,15 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	@IBOutlet weak var toBatchView: UIView!
 	@IBOutlet weak var toBatchContractLabel: UILabel!
 	@IBOutlet weak var toBatchCountLabel: UILabel!
+	@IBOutlet weak var toBatchDetailsButton: UIButton!
 	
 	@IBOutlet weak var toSingleView: UIView!
 	@IBOutlet weak var toSingleContractLabel: UILabel!
+	@IBOutlet weak var toSingleDetailsButton: UIButton!
 	
-	@IBOutlet weak var entrypointStackView: UIStackView!
-	@IBOutlet weak var entrypointLabel: UILabel!
+	@IBOutlet weak var typeStackView: UIStackView!
+	@IBOutlet weak var typeLabel: UILabel!
+	@IBOutlet weak var typeDetailLabel: UILabel!
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -88,7 +91,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			}
 			
 			self.isWalletConnectOp = true
-			self.currentContractData = TransactionService.shared.walletConnectOperationData.contractCallData
+			self.currentBatchData = TransactionService.shared.walletConnectOperationData.batchData
 			self.selectedMetadata = walletMetadataForRequestedAccount
 			self.connectedAppNameLabel.text = session.peer.name
 			
@@ -110,7 +113,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			
 		} else {
 			self.isWalletConnectOp = false
-			self.currentContractData = TransactionService.shared.contractCallData
+			self.currentBatchData = TransactionService.shared.batchData
 			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
 			
 			connectedAppMetadataStackView.isHidden = true
@@ -123,6 +126,9 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		
 		
 		// Destination view configuration
+		
+		// TODO: needs to be based on current op
+		/*
 		if let count = currentContractData.operationCount, count > 1 {
 			toSingleView.isHidden = true
 			toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
@@ -132,7 +138,11 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			toBatchView.isHidden = true
 			toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
 		}
-		entrypointLabel.text = currentContractData.mainEntrypoint
+		*/
+		
+		
+		// TODO: needs to be set based off current op and also needs to set main type
+		//entrypointLabel.text = currentContractData.mainEntrypoint
 		
 		
 		// Fees
@@ -220,6 +230,9 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	}
 	
 	func updateAmountDisplay() {
+		
+		// TODO: needs to be updated based on selected op
+		/*
 		guard let token = currentContractData.chosenToken, let amount = currentContractData.chosenAmount else {
 			return
 		}
@@ -240,6 +253,7 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 			largeDisplaySymbol.text = token.symbol
 			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 		}
+		*/
 	}
 	
 	func updateFees() {
@@ -255,6 +269,8 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 	}
 	
 	func addPendingTransaction(opHash: String) {
+		// TODO: likely need new kind of pending
+		/*
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
 		let destinationAddress = currentContractData.contractAddress ?? ""
@@ -281,10 +297,11 @@ class SendContractConfirmViewController: SendAbstractConfirmViewController, Slid
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
+		*/
 	}
 }
 
-extension SendContractConfirmViewController: BottomSheetCustomCalculateProtocol {
+extension SendBatchConfirmViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()

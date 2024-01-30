@@ -16,7 +16,7 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	public var connectedAppURL: URL? = nil
 	public var currentSendData: TransactionService.SendData = TransactionService.SendData()
-	public var currentContractData: TransactionService.ContractCallData = TransactionService.ContractCallData()
+	public var currentBatchData: TransactionService.BatchData = TransactionService.BatchData()
 	public var selectedMetadata: WalletMetadata? = nil
 	
 	
