@@ -11,7 +11,7 @@ import KukaiCoreSwift
 class SendBatchDetailsViewController: UIViewController {
 	
 	@IBOutlet weak var headerLabel: UILabel!
-	@IBOutlet weak var tableView: UITableView!
+	@IBOutlet weak var tableView: UITableView?
 	
 	@IBOutlet weak var descriptionStackViews: UIStackView!
 	@IBOutlet weak var transferAmountStackView: UIStackView!
@@ -36,8 +36,8 @@ class SendBatchDetailsViewController: UIViewController {
 		
 		updateDisplay()
 		
-		tableView.dataSource = self
-		tableView.delegate = self
+		tableView?.dataSource = self
+		tableView?.delegate = self
     }
 	
 	private func updateDisplay() {

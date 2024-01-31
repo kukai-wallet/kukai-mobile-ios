@@ -166,6 +166,15 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		}
 	}
 	
+	@IBAction func detailsTapped(_ sender: UIButton) {
+		
+		if self.currentBatchData.opSummaries?.count == 1 {
+			self.performSegue(withIdentifier: "details-medium", sender: nil)
+		} else {
+			self.performSegue(withIdentifier: "details-large", sender: nil)
+		}
+	}
+	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
 		if isWalletConnectOp {
 			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()

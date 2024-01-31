@@ -682,13 +682,13 @@ public class BalanceService {
 	}
 	
 	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {
-		for token in currentlyRefreshingAccount.tokens {
+		for token in account.tokens {
 			if token.tokenContractAddress == address, (token.tokenId ?? (andTokenId ?? 0)) == (andTokenId ?? 0) {
 				return (token: token, isNFT: false)
 			}
 		}
 		
-		for nftGroup in currentlyRefreshingAccount.nfts {
+		for nftGroup in account.nfts {
 			if nftGroup.tokenContractAddress == address {
 				return (token: nftGroup, isNFT: true)
 			}

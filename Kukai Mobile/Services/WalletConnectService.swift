@@ -755,7 +755,7 @@ public class WalletConnectService {
 						summary.chosenToken = Token.xtz()
 						summary.chosenAmount = xtzAmount
 						
-					} else if let tokenDetials = OperationFactory.Extractor.faTokenDetailsFrom(transaction: opTrans),
+					} else if let tokenDetials = OperationFactory.Extractor.faTokenDetailsFromTransfer(transaction: opTrans),
 					   let token = DependencyManager.shared.balanceService.token(forAddress: tokenDetials.tokenContract, andTokenId: tokenDetials.tokenId),
 					   let tokenAmount = TokenAmount(fromRpcAmount: tokenDetials.rpcAmount, decimalPlaces: token.token.decimalPlaces)
 					{
@@ -794,7 +794,7 @@ public class WalletConnectService {
 					self?.mainThreadProcessedOperations(ofType: .batch)
 				}
 				
-			} else if let firstTokenDetails = OperationFactory.Extractor.firstTokenTransferAmount(operations: operations),
+			} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: operations),
 					  let token = DependencyManager.shared.balanceService.token(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
 				
 				// If theres no XTZ, check for a token
