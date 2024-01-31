@@ -49,6 +49,7 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var toBatchCountLabel: UILabel!
 	@IBOutlet weak var toBatchDetailsButton: UIButton!
 	
+	/*
 	@IBOutlet weak var toSingleView: UIView!
 	@IBOutlet weak var toSingleContractLabel: UILabel!
 	@IBOutlet weak var toSingleDetailsButton: UIButton!
@@ -56,6 +57,7 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var typeStackView: UIStackView!
 	@IBOutlet weak var typeLabel: UILabel!
 	@IBOutlet weak var typeDetailLabel: UILabel!
+	*/
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -126,23 +128,9 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		updateAmountDisplay()
 		
 		
-		
 		// Destination view configuration
-		
-		 if let count = currentContractData.operationCount, count > 1 {
-		 toSingleView.isHidden = true
-		 toBatchContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-		 toBatchCountLabel.text = "\(count)"
-		 
-		 } else {
-		 toBatchView.isHidden = true
-		 toSingleContractLabel.text = currentContractData.contractAddress?.truncateTezosAddress()
-		 }
-		
-		
-		// TODO: I think this should be removed, its confusing to have identical ui for contract call and batch.
-		// Just stick to 1 display always with details in another screen
-		typeStackView.isHidden = true
+		toBatchContractLabel.text = currentBatchData.opSummaries?.first?.contractAddress?.truncateTezosAddress() ?? ""
+		toBatchCountLabel.text = "\( currentBatchData.operationCount ?? 1 )"
 		
 		
 		// Fees

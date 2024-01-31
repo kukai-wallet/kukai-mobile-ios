@@ -21,7 +21,7 @@ public class TransactionService {
 		case exchange
 		case addLiquidity
 		case removeLiquidity
-		case contractCall
+		case batch
 		case none
 	}
 	
@@ -221,8 +221,8 @@ public class TransactionService {
 		var chosenToken: Token?
 		var chosenAmount: TokenAmount?
 		var contractAddress: String?
-		var operationCount: Int?
 		var mainEntrypoint: String?
+		var operationTypeString: String?
 	}
 	
 	public struct WalletConnectOperationData {
