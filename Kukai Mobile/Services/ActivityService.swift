@@ -9,6 +9,14 @@ import UIKit
 import KukaiCoreSwift
 import OSLog
 
+public struct PendingBatchInfo {
+	let type: TzKTTransaction.TransactionType
+	let destination: TzKTAddress
+	let xtzAmount: TokenAmount
+	let parameters: [String: String]?
+	let primaryToken: Token?
+}
+
 public class ActivityService {
 	
 	public var pendingTransactionGroups: [TzKTTransactionGroup] = []
@@ -105,6 +113,27 @@ public class ActivityService {
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
+			if fromWallet.address == DependencyManager.shared.selectedWalletAddress {
+				pendingTransactionGroups.insert(group, at: 0)
+				DependencyManager.shared.addressRefreshed = fromWallet.address
+			}
+			
+			return DiskService.write(encodable: pendingTransactionGroups, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: fromWallet.address))
+		}
+		
+		return false
+	}
+	
+	public func addPendingBatch(opHash: String, counter: Decimal, fromWallet: WalletMetadata, batchInfo: [PendingBatchInfo]) -> Bool {
+		var transactions: [TzKTTransaction] = []
+		for info in batchInfo {
+			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken)
+			temp.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
+			
+			transactions.append(temp)
+		}
+		
+		if let group = TzKTTransactionGroup(withTransactions: transactions, currentWalletAddress: fromWallet.address) {
 			if fromWallet.address == DependencyManager.shared.selectedWalletAddress {
 				pendingTransactionGroups.insert(group, at: 0)
 				DependencyManager.shared.addressRefreshed = fromWallet.address
