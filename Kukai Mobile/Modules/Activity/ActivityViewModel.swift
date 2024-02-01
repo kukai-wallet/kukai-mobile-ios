@@ -252,6 +252,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	private func openGroup(forTableView tableView: UITableView?, atIndexPath indexPath: IndexPath) {
+		guard statusFor(indexPath: indexPath) != .unconfirmed else {
+			return
+		}
+		
 		if let cell = tableView?.cellForRow(at: indexPath) as? ActivityItemBatchCell {
 			cell.setOpen()
 		}

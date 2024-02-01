@@ -743,26 +743,68 @@ public class WalletConnectService {
 			
 		} else {
 			
-			// Compute opSummaries
+			// Compute opSummaries for Batch UI
 			var opSummaries: [TransactionService.BatchOpSummary] = []
+			var firstOpSummaryWithToken: TransactionService.BatchOpSummary? = nil
+			var previousEmptyToken: Token? = nil
+			
 			for op in operations {
 				
 				var summary = TransactionService.BatchOpSummary(chosenToken: nil, chosenAmount: nil, contractAddress: nil, mainEntrypoint: nil)
 				if let opTrans = op as? OperationTransaction {
 					
-					let xtzAmount = OperationFactory.Extractor.totalTezAmountSent(operations: [opTrans])
-					if xtzAmount > XTZAmount.zero() {
+					// Loop through each op and see is it a transaction operation, if so does it send XTZ or a token, if so record it
+					let totalXTZ = OperationFactory.Extractor.totalTezAmountSent(operations: [opTrans])
+					if totalXTZ > XTZAmount.zero() {
 						summary.chosenToken = Token.xtz()
-						summary.chosenAmount = xtzAmount
+						summary.chosenAmount = totalXTZ
+						if firstOpSummaryWithToken == nil { firstOpSummaryWithToken = summary }
 						
-					} else if let tokenDetials = OperationFactory.Extractor.faTokenDetailsFromTransfer(transaction: opTrans),
-					   let token = DependencyManager.shared.balanceService.token(forAddress: tokenDetials.tokenContract, andTokenId: tokenDetials.tokenId),
-					   let tokenAmount = TokenAmount(fromRpcAmount: tokenDetials.rpcAmount, decimalPlaces: token.token.decimalPlaces)
-					{
-						summary.chosenToken = token.token
-						summary.chosenAmount = tokenAmount
+					} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: [opTrans]) {
+						
+						var token: Token? = nil
+						if let t = DependencyManager.shared.balanceService.dexToken(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
+							token = t
+							
+						} else if let t = DependencyManager.shared.balanceService.token(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
+							token = t.token
+							
+						} else {
+							token = Token(name: nil,
+										  symbol: "",
+										  tokenType: .fungible,
+										  faVersion: firstTokenDetails.tokenId != nil ? .fa2 : .fa1_2,
+										  balance: TokenAmount.zeroBalance(decimalPlaces: 0),
+										  thumbnailURL: TzKTClient.avatarURL(forToken: firstTokenDetails.tokenContract),
+										  tokenContractAddress: firstTokenDetails.tokenContract,
+										  tokenId: 0,
+										  nfts: nil,
+										  mintingTool: nil)
+						}
+						
+						if firstTokenDetails.rpcAmount == "" || firstTokenDetails.rpcAmount == "0" {
+							
+							// When doing 3Route calls, the tokenId is only available in the first op, and the amount in the second
+							// So if we got a token, but no amount, ignore it for now and hold onto it
+							previousEmptyToken = token
+							
+						} else {
+							
+							// If we have a token and an amount, check to see if we are missing any info from token, and apply it from `previousEmptyToken` if possible
+							// Then make sure we compute tokenAmount again, to make sure it reflects decimals etc
+							if token?.symbol == "" && previousEmptyToken?.symbol != nil && previousEmptyToken?.symbol != "" {
+								summary.chosenToken = previousEmptyToken
+								summary.chosenAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: previousEmptyToken?.decimalPlaces ?? 0)
+							} else {
+								summary.chosenToken = token
+								summary.chosenAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: token?.decimalPlaces ?? 0)
+							}
+							
+							if firstOpSummaryWithToken == nil { firstOpSummaryWithToken = summary }
+						}
 					}
 					
+					// Also check for contract call details
 					if let contractDetails = OperationFactory.Extractor.isContractCall(operation: opTrans) {
 						summary.contractAddress = contractDetails.address
 						summary.mainEntrypoint = contractDetails.entrypoint
@@ -785,66 +827,37 @@ public class WalletConnectService {
 				summary.operationTypeString = op.operationKind.rawValue
 				opSummaries.append(summary)
 			}
+			
+			// Add rest of required data to batch data
 			TransactionService.shared.walletConnectOperationData.batchData.opSummaries = opSummaries
 			TransactionService.shared.walletConnectOperationData.batchData.operationCount = operations.count
+			TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
 			
-			
-			// Check for which token to display
-			let totalXTZ = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
-			if totalXTZ > XTZAmount.zero() {
+			if firstOpSummaryWithToken == nil || firstOpSummaryWithToken?.chosenToken?.isXTZ() == true {
 				
-				// Prioritise XTZ display
+				// Check if we need to display XTZ balance (falls back to zero XTZ balance)
+				// If its XTZ we check all summaries and sum it together
+				var XTZAmount = XTZAmount.zero()
+				opSummaries.forEach { summary in
+					if summary.chosenToken?.isXTZ() == true {
+						XTZAmount += (summary.chosenAmount as? XTZAmount) ?? .zero()
+					}
+				}
+				
 				DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-					let accountBalance = (try? res.get()) ?? totalXTZ
+					let accountBalance = (try? res.get()) ?? XTZAmount
 					let selectedToken = Token.xtz(withAmount: accountBalance)
 					
-					TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
 					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
-					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = totalXTZ
+					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount
 					self?.mainThreadProcessedOperations(ofType: .batch)
 				}
-				
-			} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: operations) {
-				
-				var token: Token? = nil
-				if let t = DependencyManager.shared.balanceService.dexToken(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
-					token = t
-					
-				} else if let t = DependencyManager.shared.balanceService.token(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
-					token = t.token
-					
-				} else {
-					token = Token(name: nil,
-								  symbol: "",
-								  tokenType: .fungible,
-								  faVersion: firstTokenDetails.tokenId != nil ? .fa2 : .fa1_2,
-								  balance: TokenAmount.zeroBalance(decimalPlaces: 0),
-								  thumbnailURL: TzKTClient.avatarURL(forToken: firstTokenDetails.tokenContract),
-								  tokenContractAddress: firstTokenDetails.tokenContract,
-								  tokenId: 0,
-								  nfts: nil,
-								  mintingTool: nil)
-				}
-				
-				
-				// If theres no XTZ, check for a token
-				TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = token
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: token?.decimalPlaces ?? 0)
-				mainThreadProcessedOperations(ofType: .batch)
-				
 			} else {
 				
-				// Fallback to empty XTZ
-				DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-					let accountBalance = (try? res.get()) ?? totalXTZ
-					let selectedToken = Token.xtz(withAmount: accountBalance)
-					
-					TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
-					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
-					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = totalXTZ
-					self?.mainThreadProcessedOperations(ofType: .batch)
-				}
+				// If not, we have a FA token, display that instead
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = firstOpSummaryWithToken?.chosenToken
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = firstOpSummaryWithToken?.chosenAmount
+				mainThreadProcessedOperations(ofType: .batch)
 			}
 		}
 	}

@@ -262,35 +262,95 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func addPendingTransaction(opHash: String) {
-		// TODO: likely need new kind of pending
-		/*
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = currentContractData.contractAddress ?? ""
-		let amount = currentContractData.chosenAmount ?? .zero()
+		let token = currentBatchData.mainDisplayToken
+		let amount = currentBatchData.mainDisplayAmount ?? .zero()
+		token?.balance = amount
 		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
 		
-		let contractOp = OperationFactory.Extractor.isSingleContractCall(operations: currentOps)?.operation
-		let entrypoint = (contractOp?.parameters?["entrypoint"] as? String) ?? ""
-		let parameterValueDict = contractOp?.parameters?["value"] as? [String: String] ?? [:]
-		let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
-		let parameters: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
+		if let contractOp = OperationFactory.Extractor.isSingleContractCall(operations: currentOps)?.operation {
+			
+			// Add pending contract call UI
+			let entrypoint = (contractOp.parameters?["entrypoint"] as? String) ?? ""
+			let parameterValueDict = contractOp.parameters?["value"] as? [String: String] ?? [:]
+			let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
+			let parameters: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
+			
+			let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
+																					   type: .transaction,
+																					   counter: counter,
+																					   fromWallet: selectedWalletMetadata,
+																					   destinationAddress: contractOp.destination,
+																					   destinationAlias: nil,
+																					   xtzAmount: (token?.isXTZ() == true) ? (amount as? XTZAmount) ?? .zero() : .zero(),
+																					   parameters: parameters,
+																					   primaryToken: (token?.isXTZ() == false) ? token : nil)
+			Logger.app.info("Recorded pending transaction: \(addPendingResult)")
+			
+		} else {
+			// Add pending batch UI
+			var pendingInfo: [PendingBatchInfo] = []
+			for (index, op) in currentOps.enumerated() {
+				var type: TzKTTransaction.TransactionType = .unknown
+				var destination: String = ""
+				var xtzAmount: XTZAmount = .zero()
+				var parameters: [String: String]? = nil
+				var primaryToken: Token? = nil
+				
+				switch op.operationKind {
+					case .transaction:
+						type = .transaction
+						let opTrans = (op as? OperationTransaction)
+						destination = opTrans?.destination ?? ""
+						
+						if let entrypoint = (opTrans?.parameters?["entrypoint"] as? String) {
+							let parameterValueDict = opTrans?.parameters?["value"] as? [String: String] ?? [:]
+							let parameterValueString = String(data: (try? JSONEncoder().encode(parameterValueDict)) ?? Data(), encoding: .utf8)
+							let params: [String: String] = ["entrypoint": entrypoint, "value": parameterValueString ?? ""]
+							
+							parameters = params
+						}
+						
+						let summary = currentBatchData.opSummaries?[index]
+						if summary?.chosenToken?.isXTZ() == true {
+							xtzAmount = (summary?.chosenAmount as? XTZAmount) ?? .zero()
+						} else {
+							let token = summary?.chosenToken
+							token?.balance = summary?.chosenAmount ?? .zero()
+							primaryToken = token
+						}
+						
+					case .delegation:
+						type = .delegation
+						destination = (op as? OperationDelegation)?.delegate ?? ""
+						
+					case .origination:
+						type = .origination
+						destination = selectedWalletMetadata.address
+					
+					case .reveal:
+						type = .reveal
+						destination = selectedWalletMetadata.address
+						
+					default:
+						type = .unknown
+						destination = selectedWalletMetadata.address
+				}
+				
+				
+				let temp = PendingBatchInfo(type: type, destination: TzKTAddress(alias: nil, address: destination), xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
+				pendingInfo.append(temp)
+			}
+			
+			let addPendingResult = DependencyManager.shared.activityService.addPendingBatch(opHash: opHash, counter: counter, fromWallet: selectedWalletMetadata, batchInfo: pendingInfo.reversed())
+			Logger.app.info("Recorded pending transaction: \(addPendingResult)")
+		}
 		
-		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
-																				   type: .transaction,
-																				   counter: counter,
-																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: destinationAddress,
-																				   destinationAlias: nil,
-																				   xtzAmount: amount,
-																				   parameters: parameters,
-																				   primaryToken: nil)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
-		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
-		*/
 	}
 }
 

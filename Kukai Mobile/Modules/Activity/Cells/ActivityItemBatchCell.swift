@@ -33,13 +33,16 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 		if data.transactions[0].status == .unconfirmed {
 			hasTime(true)
 			timeLabel.text = "UNCONFIRMED"
+			chevronImage.isHidden = true
 			
 		} else if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
 			hasTime(false)
+			chevronImage.isHidden = false
 			
 		} else {
 			hasTime(true)
 			timeLabel.text = data.transactions[0].date?.timeAgoDisplay() ?? ""
+			chevronImage.isHidden = false
 		}
 		
 		
