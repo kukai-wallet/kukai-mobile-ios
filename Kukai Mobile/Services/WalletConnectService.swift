@@ -770,9 +770,19 @@ public class WalletConnectService {
 						summary.contractAddress = forWallet.address // If theres no contract address, its likely an action such as reveal or delegate where you perform an operation on your own account
 					}
 					
-					summary.operationTypeString = op.operationKind.rawValue
+				} else {
+					
+					// If its not an OperationTransaction, add something to the summary.contractAddress to act as a display string
+					switch op.operationKind {
+						case .delegation:
+							summary.contractAddress = (op as? OperationDelegation)?.delegate ?? forWallet.address
+							
+						default:
+							summary.contractAddress = forWallet.address
+					}
 				}
 				
+				summary.operationTypeString = op.operationKind.rawValue
 				opSummaries.append(summary)
 			}
 			TransactionService.shared.walletConnectOperationData.batchData.opSummaries = opSummaries
@@ -794,13 +804,33 @@ public class WalletConnectService {
 					self?.mainThreadProcessedOperations(ofType: .batch)
 				}
 				
-			} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: operations),
-					  let token = DependencyManager.shared.balanceService.token(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
+			} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: operations) {
+				
+				var token: Token? = nil
+				if let t = DependencyManager.shared.balanceService.dexToken(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
+					token = t
+					
+				} else if let t = DependencyManager.shared.balanceService.token(forAddress: firstTokenDetails.tokenContract, andTokenId: firstTokenDetails.tokenId) {
+					token = t.token
+					
+				} else {
+					token = Token(name: nil,
+								  symbol: "",
+								  tokenType: .fungible,
+								  faVersion: firstTokenDetails.tokenId != nil ? .fa2 : .fa1_2,
+								  balance: TokenAmount.zeroBalance(decimalPlaces: 0),
+								  thumbnailURL: TzKTClient.avatarURL(forToken: firstTokenDetails.tokenContract),
+								  tokenContractAddress: firstTokenDetails.tokenContract,
+								  tokenId: 0,
+								  nfts: nil,
+								  mintingTool: nil)
+				}
+				
 				
 				// If theres no XTZ, check for a token
 				TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = token.token
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: token.token.decimalPlaces)
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = token
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: token?.decimalPlaces ?? 0)
 				mainThreadProcessedOperations(ofType: .batch)
 				
 			} else {

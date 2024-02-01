@@ -696,4 +696,23 @@ public class BalanceService {
 		
 		return nil
 	}
+	
+	func dexToken(forAddress address: String, andTokenId: Decimal? = nil) -> Token? {
+		for token in exchangeData {
+			if token.address == address, token.tokenId == (andTokenId ?? 0) {
+				return Token(name: nil,
+							 symbol: token.symbol,
+							 tokenType: .fungible,
+							 faVersion: andTokenId != nil ? .fa2 : .fa1_2,
+							 balance: TokenAmount.zeroBalance(decimalPlaces: token.decimals),
+							 thumbnailURL: MediaProxyService.url(fromUri: URL(string: token.thumbnailUri ?? ""), ofFormat: MediaProxyService.Format.icon.rawFormat()),
+							 tokenContractAddress: token.address,
+							 tokenId: token.tokenId,
+							 nfts: nil,
+							 mintingTool: nil)
+			}
+		}
+		
+		return nil
+	}
 }
