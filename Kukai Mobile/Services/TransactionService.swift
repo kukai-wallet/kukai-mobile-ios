@@ -21,7 +21,7 @@ public class TransactionService {
 		case exchange
 		case addLiquidity
 		case removeLiquidity
-		case contractCall
+		case batch
 		case none
 	}
 	
@@ -209,12 +209,20 @@ public class TransactionService {
 		var calculationResult: DexRemoveCalculationResult?
 	}
 	
-	public struct ContractCallData {
+	public struct BatchData {
+		var mainDisplayToken: Token?
+		var mainDisplayAmount: TokenAmount?
+		var operationCount: Int?
+		var selectedOp: Int?
+		var opSummaries: [BatchOpSummary]?
+	}
+	
+	public struct BatchOpSummary {
 		var chosenToken: Token?
 		var chosenAmount: TokenAmount?
 		var contractAddress: String?
-		var operationCount: Int?
 		var mainEntrypoint: String?
+		var operationTypeString: String?
 	}
 	
 	public struct WalletConnectOperationData {
@@ -224,7 +232,7 @@ public class TransactionService {
 		var requestParams: WalletConnectRequestParams?
 		
 		var sendData: SendData
-		var contractCallData: ContractCallData
+		var batchData: BatchData
 	}
 	
 	
@@ -245,10 +253,10 @@ public class TransactionService {
 	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
 	public var removeLiquidityData: RemoveLiquidityData
-	public var contractCallData: ContractCallData
+	public var batchData: BatchData
 	public var walletConnectOperationData: WalletConnectOperationData
 	
-	
+	// TODO: make sure to reset all batch data
 	private init() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
@@ -260,7 +268,7 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
-		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
+		self.batchData = BatchData(operationCount: nil, selectedOp: nil, opSummaries: nil)
 		self.walletConnectOperationData = WalletConnectOperationData(currentTransactionType: .none,
 																	 proposal: nil,
 																	 request: nil,
@@ -271,11 +279,9 @@ public class TransactionService {
 																						destination: nil,
 																						destinationAlias: nil,
 																						destinationIcon: nil),
-																	 contractCallData: ContractCallData(chosenToken: nil,
-																										chosenAmount: nil,
-																										contractAddress: nil,
-																										operationCount: nil,
-																										mainEntrypoint: nil)
+																	 batchData: BatchData(operationCount: nil,
+																						  selectedOp: nil,
+																						  opSummaries: nil)
 		)
 	}
 	
@@ -296,7 +302,7 @@ public class TransactionService {
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
-		self.contractCallData = ContractCallData(chosenToken: nil, chosenAmount: nil, contractAddress: nil, operationCount: nil, mainEntrypoint: nil)
+		self.batchData = BatchData(operationCount: nil, selectedOp: nil, opSummaries: nil)
 		
 		self.resetWalletConnectState()
 	}
@@ -312,11 +318,9 @@ public class TransactionService {
 																						destination: nil,
 																						destinationAlias: nil,
 																						destinationIcon: nil),
-																	 contractCallData: ContractCallData(chosenToken: nil,
-																										chosenAmount: nil,
-																										contractAddress: nil,
-																										operationCount: nil,
-																										mainEntrypoint: nil))
+																	 batchData: BatchData(operationCount: nil,
+																						  selectedOp: nil,
+																						  opSummaries: nil))
 	}
 	
 	public func recordChosen(exchange: DipDupExchange) {

@@ -682,15 +682,34 @@ public class BalanceService {
 	}
 	
 	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {
-		for token in currentlyRefreshingAccount.tokens {
+		for token in account.tokens {
 			if token.tokenContractAddress == address, (token.tokenId ?? (andTokenId ?? 0)) == (andTokenId ?? 0) {
 				return (token: token, isNFT: false)
 			}
 		}
 		
-		for nftGroup in currentlyRefreshingAccount.nfts {
+		for nftGroup in account.nfts {
 			if nftGroup.tokenContractAddress == address {
 				return (token: nftGroup, isNFT: true)
+			}
+		}
+		
+		return nil
+	}
+	
+	func dexToken(forAddress address: String, andTokenId: Decimal? = nil) -> Token? {
+		for token in exchangeData {
+			if token.address == address, token.tokenId == (andTokenId ?? 0) {
+				return Token(name: nil,
+							 symbol: token.symbol,
+							 tokenType: .fungible,
+							 faVersion: andTokenId != nil ? .fa2 : .fa1_2,
+							 balance: TokenAmount.zeroBalance(decimalPlaces: token.decimals),
+							 thumbnailURL: MediaProxyService.url(fromUri: URL(string: token.thumbnailUri ?? ""), ofFormat: MediaProxyService.Format.icon.rawFormat()),
+							 tokenContractAddress: token.address,
+							 tokenId: token.tokenId,
+							 nfts: nil,
+							 mintingTool: nil)
 			}
 		}
 		

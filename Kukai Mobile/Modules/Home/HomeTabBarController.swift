@@ -514,8 +514,8 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				case .sendNft:
 					self.performSegue(withIdentifier: "wallet-connect-send-nft", sender: nil)
 					
-				case .contractCall:
-					self.performSegue(withIdentifier: "wallet-connect-contract", sender: nil)
+				case .batch:
+					self.performSegue(withIdentifier: "wallet-connect-batch", sender: nil)
 					
 				case .generic:
 					self.performSegue(withIdentifier: "wallet-connect-generic", sender: nil)

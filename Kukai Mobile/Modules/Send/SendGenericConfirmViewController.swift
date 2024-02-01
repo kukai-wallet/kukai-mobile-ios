@@ -204,7 +204,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		let ops = selectedOperationsAndFees()
 		
 		let encoder = JSONEncoder()
-		encoder.outputFormatting = .prettyPrinted
+		encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
 		
 		let data = (try? encoder.encode(ops)) ?? Data()
 		let string = String(data: data, encoding: .utf8)
