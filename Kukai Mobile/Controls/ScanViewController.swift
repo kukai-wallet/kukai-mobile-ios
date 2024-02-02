@@ -35,6 +35,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	
 	private var bag = [AnyCancellable]()
 	private var gradient = CAGradientLayer()
+	private var previousString = ""
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -334,7 +335,11 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
 			guard let stringValue = readableObject.stringValue else { return }
 			AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-			checkForBeaconAndReport(stringToCheck: stringValue)
+			
+			if previousString != stringValue {
+				previousString = stringValue
+				checkForBeaconAndReport(stringToCheck: stringValue)
+			}
 		}
 	}
 	
