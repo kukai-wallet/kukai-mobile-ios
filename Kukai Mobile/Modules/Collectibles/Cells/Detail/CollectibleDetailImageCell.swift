@@ -18,6 +18,8 @@ class CollectibleDetailImageCell: UICollectionViewCell {
 	public var setup = false
 	
 	func setup(mediaContent: MediaContent, layoutOnly: Bool) {
+		activityIndicator.isHidden = true
+		
 		
 		// If landscape image, remove the existing square image constraint and repalce with smaller height aspect ratio image
 		if mediaContent.width > mediaContent.height {
