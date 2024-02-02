@@ -77,7 +77,6 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		
 		// Fees and amount view config
 		feeButton.customButtonType = .secondary
-		updateFees()
 		
 		
 		// Ledger check
@@ -100,6 +99,8 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		let _ = containerView.addGradientPanelRows(withFrame: containerView.bounds)
+		
+		updateFees(isFirstCall: true)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -156,7 +157,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		}
 	}
 	
-	func updateFees() {
+	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		

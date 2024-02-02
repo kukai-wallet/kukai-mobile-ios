@@ -133,7 +133,6 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		// Fees
 		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
-		updateFees()
 		
 		
 		// Ledger check
@@ -152,6 +151,12 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		
 		slideButton.delegate = self
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		updateFees(isFirstCall: true)
+	}
 	
 	func updateAmountDisplay() {
 		guard let token = currentSendData.chosenNFT, let amount = currentSendData.chosenAmount else {
@@ -237,7 +242,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		}
 	}
 	
-	func updateFees() {
+	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		

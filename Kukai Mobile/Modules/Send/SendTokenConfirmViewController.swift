@@ -137,7 +137,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		// Fees and amount view config
 		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
-		updateFees()
 		
 		
 		// Ledger check
@@ -155,6 +154,12 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		}
 		
 		slideButton.delegate = self
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		updateFees(isFirstCall: true)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -244,7 +249,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		}
 	}
 	
-	func updateFees() {
+	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
@@ -256,10 +261,18 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
-				self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
 				updateAmountDisplay(withValue: .zero())
 				slideButton.isUserInteractionEnabled = false
 				slideButton.alpha = 0.6
+				
+				if isFirstCall {
+					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+						self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
+					}
+				} else {
+					self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
+				}
+				
 			} else {
 				updateAmountDisplay(withValue: updatedValue)
 				slideButton.isUserInteractionEnabled = true

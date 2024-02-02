@@ -119,7 +119,6 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		// Fees
 		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
-		updateFees()
 		
 		
 		// Ledger check
@@ -138,6 +137,12 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		slideButton.delegate = self
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		updateFees(isFirstCall: true)
+	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
@@ -211,7 +216,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		operationTextView.text = string
 	}
 	
-	func updateFees() {
+	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		

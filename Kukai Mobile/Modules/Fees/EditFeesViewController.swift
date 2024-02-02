@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 
 protocol EditFeesViewControllerDelegate {
-	func updateFees()
+	func updateFees(isFirstCall: Bool)
 }
 
 class EditFeesViewController: UIViewController {
@@ -143,14 +143,15 @@ class EditFeesViewController: UIViewController {
 		
 		// Check if a previous bototm sheet is displaying a transaction, and update its fee
 		if let parentVC = self.presentingViewController as? EditFeesViewControllerDelegate {
-			parentVC.updateFees()
+			parentVC.updateFees(isFirstCall: false)
 		}
 		
 		// Check if there is a full screen (possibly as well as above) displaying a transaction, and update its fee
 		if let parentVC = (self.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
-			parentVC.updateFees()
+			parentVC.updateFees(isFirstCall: false)
+			
 		} else if let parentVC = (self.presentingViewController?.presentingViewController as? UINavigationController)?.viewControllers.last as? EditFeesViewControllerDelegate {
-			parentVC.updateFees()
+			parentVC.updateFees(isFirstCall: false)
 		}
 	}
 	
