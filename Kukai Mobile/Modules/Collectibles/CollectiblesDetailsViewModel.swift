@@ -88,6 +88,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	private var sendData = SendContent(enabled: true)
 	private var descriptionData = DescriptionContent(description: "")
+	private var oldMediaContent: MediaContent? = nil
 	
 	weak var weakQuantityCell: CollectibleDetailQuantityCell? = nil
 	weak var sendDelegate: CollectibleDetailSendDelegate? = nil
@@ -208,6 +209,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return
 			}
 			
+			self.oldMediaContent = response.mediaContent
 			self.updateQuantityContent(with: response.mediaContent, andOnSale: self.quantityContent.isOnSale)
 			
 			self.isImage = response.mediaContent.isImage
@@ -232,7 +234,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 					self.mediaContentForFailedOfflineFetch(forNFT: self.nft) { [weak self] mediaContent in
 						
 						if let newMediaContent = mediaContent {
-							self?.replace(existingMediaContent: response.mediaContent, with: newMediaContent)
+							self?.replace(existingMediaContent: self?.oldMediaContent ?? response.mediaContent, with: newMediaContent)
 						} else {
 							// Unbale to determine type and unable to locate URL, or fetch packet from URL. Default to missing image palceholder
 							let blankMediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nil, mediaURL2: nil, width: 100, height: 100)
@@ -351,9 +353,15 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				// Check to see if we have a cached thumbnail. If so load that (using its dimensions for the correct layout), then load real image later
 				let cacheURL = MediaProxyService.url(fromUri: nft?.thumbnailURI, ofFormat: MediaProxyService.Format.medium.rawFormat())
 				MediaProxyService.sizeForImageIfCached(url: cacheURL) { size in
-					let finalSize = (size ?? CGSize(width: 300, height: 300))
-					let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: cacheURL, mediaURL2: nil, width: finalSize.width, height: finalSize.height)
-					completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+					
+					if let s = size {
+						let mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: cacheURL, mediaURL2: nil, width: s.width, height: s.height)
+						completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+						
+					} else {
+						let mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: cacheURL, mediaURL2: nil, width: 300, height: 300)
+						completion((mediaContent: mediaContent, needsToDownloadFullImage: false, needsMediaTypeVerification: true))
+					}
 					return
 				}
 			}
