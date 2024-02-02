@@ -36,10 +36,6 @@ class SendAbstractConfirmViewController: UIViewController {
 	}
 	
 	func dismissAndReturn(collapseOnly: Bool) {
-		if !isWalletConnectOp {
-			TransactionService.shared.resetAllState()
-		}
-		
 		self.dismiss(animated: true)
 		
 		if collapseOnly == false {

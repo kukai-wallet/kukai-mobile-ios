@@ -172,6 +172,10 @@ extension UIViewController {
 	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 10) {
 		if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
 			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+			
+		} else if let sceneDelgate = (self.parent?.view.window?.windowScene?.delegate as? SceneDelegate) {
+			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
+			
 		}
 	}
 	
