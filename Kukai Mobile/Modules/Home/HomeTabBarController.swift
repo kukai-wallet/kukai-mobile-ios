@@ -26,6 +26,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var highlightedGradient = CAGradientLayer()
 	private var sideMenuVc: SideMenuViewController? = nil
 	private var walletConnectActivity = UIActivityIndicatorView()
+	private var walletConnectActivityGesture: UITapGestureRecognizer? = nil
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
@@ -446,9 +447,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func connectionStatusChanged(status: SocketConnectionStatus) {
 		if status == .disconnected {
-			self.scanButton.isEnabled = false
 			self.walletConnectActivity.frame = self.scanButton.frame
 			self.scanButton.addSubview(self.walletConnectActivity)
+			self.addTapGestureToWC2Spinner()
 			
 			self.walletConnectActivity.startAnimating()
 			recheckConnectionIn3Seconds()
@@ -456,7 +457,33 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		} else {
 			self.scanButton.isEnabled = true
 			self.walletConnectActivity.stopAnimating()
+			self.removeTapGestureFromWC2Spinner()
 			self.walletConnectActivity.removeFromSuperview()
+		}
+	}
+	
+	private func addTapGestureToWC2Spinner() {
+		walletConnectActivityGesture = UITapGestureRecognizer(target: self, action: #selector(HomeTabBarController.wc2ActivityTap))
+		
+		if let ges = walletConnectActivityGesture {
+			walletConnectActivity.addGestureRecognizer(ges)
+		}
+	}
+	
+	@objc
+	private func wc2ActivityTap() {
+		WalletConnectService.shared.isConnected { [weak self] connected in
+			if connected {
+				DispatchQueue.main.async {
+					self?.connectionStatusChanged(status: .connected)
+				}
+			}
+		}
+	}
+	
+	private func removeTapGestureFromWC2Spinner() {
+		if let ges = walletConnectActivityGesture {
+			walletConnectActivity.removeGestureRecognizer(ges)
 		}
 	}
 	
