@@ -68,12 +68,9 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
 		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
 			if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
-				let url = MediaProxyService.mediumURL(forNFT: obj)
-				self?.imageURLsForCollectibles.append([url])
-				
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
@@ -115,7 +112,13 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
 			
 		} else {
-			hashableData = DependencyManager.shared.balanceService.account.recentNFTs.filter({ $0.isHidden == false })
+			
+			let recentNFTs = DependencyManager.shared.balanceService.account.recentNFTs.filter({ $0.isHidden == false })
+			for nft in recentNFTs {
+				let url = MediaProxyService.mediumURL(forNFT: nft)
+				imageURLsForCollectibles.append([url])
+			}
+			hashableData = recentNFTs
 		}
 		
 		normalSnapshot.appendItems(hashableData, toSection: 0)
