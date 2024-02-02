@@ -710,19 +710,31 @@ public class WalletConnectService {
 		TransactionService.shared.currentRemoteOperationsAndFeesData = operationsObj
 		TransactionService.shared.currentRemoteForgedString = estimationResult.forgedString
 		
+		DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
+			let xtzBalance = (try? res.get()) ?? .zero()
+			
+			if operationsObj.fee > (try? res.get()) ?? .zero() {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, operationsObj.fee.normalisedRepresentation), error: nil)
+				
+			} else {
+				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance)
+			}
+		}
+	}
+	
+	private func processTransactionsAfterBalance(operationsObj: TransactionService.OperationsAndFeesData, operations: [KukaiCoreSwift.Operation], forWallet: Wallet, xtzBalance: XTZAmount) {
 		
 		if let op = OperationFactory.Extractor.isTezTransfer(operations: operations) {
-			DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-				let xtzAmount = XTZAmount(fromRpcAmount: op.amount) ?? .zero()
-				let accountBalance = (try? res.get()) ?? xtzAmount
-				let selectedToken = Token.xtz(withAmount: accountBalance)
-				
-				TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
-				TransactionService.shared.walletConnectOperationData.sendData.chosenToken = selectedToken
-				TransactionService.shared.walletConnectOperationData.sendData.chosenAmount = xtzAmount
-				TransactionService.shared.walletConnectOperationData.sendData.destination = op.destination
-				self?.mainThreadProcessedOperations(ofType: .sendToken)
-			}
+			let xtzAmount = XTZAmount(fromRpcAmount: op.amount) ?? .zero()
+			let accountBalance = xtzBalance
+			let selectedToken = Token.xtz(withAmount: accountBalance)
+			
+			TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
+			TransactionService.shared.walletConnectOperationData.sendData.chosenToken = selectedToken
+			TransactionService.shared.walletConnectOperationData.sendData.chosenAmount = xtzAmount
+			TransactionService.shared.walletConnectOperationData.sendData.destination = op.destination
+			mainThreadProcessedOperations(ofType: .sendToken)
 			
 		} else if let result = OperationFactory.Extractor.isFaTokenTransfer(operations: operations), let token = DependencyManager.shared.balanceService.token(forAddress: result.tokenContract, andTokenId: result.tokenId) {
 			TransactionService.shared.walletConnectOperationData.currentTransactionType = .send
@@ -844,14 +856,12 @@ public class WalletConnectService {
 					}
 				}
 				
-				DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-					let accountBalance = (try? res.get()) ?? XTZAmount
-					let selectedToken = Token.xtz(withAmount: accountBalance)
-					
-					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
-					TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount
-					self?.mainThreadProcessedOperations(ofType: .batch)
-				}
+				let accountBalance = xtzBalance
+				let selectedToken = Token.xtz(withAmount: accountBalance)
+				
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount
+				mainThreadProcessedOperations(ofType: .batch)
 			} else {
 				
 				// If not, we have a FA token, display that instead
