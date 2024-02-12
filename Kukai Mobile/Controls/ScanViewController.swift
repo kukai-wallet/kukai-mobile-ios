@@ -167,13 +167,15 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			 ] ))*/
 			
 			pasteButton.addAction(UIAction(handler: { [weak self] _ in
-				DispatchQueue.main.async {
+				DispatchQueue.global(qos: .background).async {
 					guard let paste = UIPasteboard.general.string else {
 						return
 					}
 					
-					self?.textfield.text = paste
-					self?.textFieldDone()
+					DispatchQueue.main.async {
+						self?.textfield.text = paste
+						self?.textFieldDone()
+					}
 				}
 			}), for: .touchUpInside)
 			
