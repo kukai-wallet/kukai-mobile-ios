@@ -210,7 +210,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		guard let group = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup else {
+		guard let group = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup, !isUnconfirmed(indexPath: indexPath) else {
 			return
 		}
 		
