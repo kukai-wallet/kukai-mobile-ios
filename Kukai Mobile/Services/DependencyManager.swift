@@ -19,7 +19,7 @@ class DependencyManager {
 	
 	static let shared = DependencyManager()
 	
-	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://mainnet.smartpy.io")!, URL(string: "https://rpc.tzbeta.net")!]
+	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://mainnet.smartpy.io")!/*, URL(string: "https://rpc.tzbeta.net")!*/]
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!

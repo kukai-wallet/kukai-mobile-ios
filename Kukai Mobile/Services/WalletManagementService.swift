@@ -76,11 +76,11 @@ class WalletManagementService {
 			if error == WalletCacheError.walletAlreadyExists {
 				completion("error-wallet-already-exists".localized())
 			} else {
-				completion("error-cant-cache".localized())
+				completion( String.localized(String.localized("error-cant-cache-cause"), withArguments: error.rawValue) )
 			}
 			
 		} catch {
-			completion("error-cant-cache".localized())
+			completion( String.localized(String.localized("error-cant-cache-cause"), withArguments: error.localizedDescription) )
 		}
 	}
 	

@@ -170,7 +170,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		// Start listening for Wallet connect operation requests
 		scanner.withTextField = true
 		scanner.delegate = self
-		WalletConnectService.shared.setup()
 		WalletConnectService.shared.delegate = self
 	}
 	
