@@ -51,6 +51,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()
 		
+		// Reset server URL list cache, incase its edited between versions
+		if DependencyManager.shared.currentNetworkType == .mainnet {
+			DependencyManager.shared.setDefaultMainnetURLs()
+		} else {
+			DependencyManager.shared.setDefaultTestnetURLs()
+		}
+		
 		return true
 	}
 	
