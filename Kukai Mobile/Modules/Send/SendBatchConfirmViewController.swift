@@ -248,7 +248,13 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			// large display
 			smallDisplayStackView.isHidden = true
 			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
+			
+			if (amountText.components(separatedBy: ".").first?.count ?? amountText.count) > 5 {
+				largeDisplayAmount.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
+			} else {
+				largeDisplayAmount.text = amountText
+			}
+			
 			largeDisplaySymbol.text = token.symbol
 			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 		}
