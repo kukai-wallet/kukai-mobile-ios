@@ -18,6 +18,7 @@ public enum WalletConnectOperationType {
 	case sendToken
 	case sendNft
 	case batch
+	case delegate
 	case generic
 }
 
@@ -750,6 +751,16 @@ public class WalletConnectService {
 				mainThreadProcessedOperations(ofType: .sendToken)
 			}
 			
+		} else if let delegateOperation = OperationFactory.Extractor.isDelegate(operations: operations) {
+			DependencyManager.shared.tzktClient.bakers { [weak self] result in
+				guard let res = try? result.get() else {
+					self?.checkForBaker(delegateOperation: delegateOperation, bakers: nil)
+					return
+				}
+				
+				self?.checkForBaker(delegateOperation: delegateOperation, bakers: res)
+			}
+			
 		} else if OperationFactory.Extractor.containsAnUnknownOperation(operations: operations) {
 			mainThreadProcessedOperations(ofType: .generic)
 			
@@ -870,6 +881,40 @@ public class WalletConnectService {
 				mainThreadProcessedOperations(ofType: .batch)
 			}
 		}
+	}
+	
+	private func checkForBaker(delegateOperation: OperationDelegation, bakers: [TzKTBaker]?) {
+		if delegateOperation.delegate == nil {
+			TransactionService.shared.delegateData.isAdd = false
+			
+			if let currentDelegate = DependencyManager.shared.balanceService.account.delegate {
+				
+				if let matchingBaker = (bakers ?? []).filter({ $0.address == currentDelegate.address }).first {
+					TransactionService.shared.delegateData.chosenBaker = matchingBaker
+				} else {
+					let baker = TzKTBaker(address: currentDelegate.address, name: currentDelegate.alias ?? currentDelegate.address.truncateTezosAddress(), logo: nil)
+					TransactionService.shared.delegateData.chosenBaker = baker
+				}
+				
+			} else {
+				let baker = TzKTBaker(address: "", name: "", logo: nil)
+				TransactionService.shared.delegateData.chosenBaker = baker
+			}
+			
+		} else {
+			TransactionService.shared.delegateData.isAdd = true
+			let operationAddress = delegateOperation.delegate ?? ""
+			
+			if let matchingBaker = (bakers ?? []).filter({ $0.address == (operationAddress) }).first {
+				TransactionService.shared.delegateData.chosenBaker = matchingBaker
+				
+			} else {
+				let baker = TzKTBaker(address: operationAddress, name: operationAddress.truncateTezosAddress(), logo: nil)
+				TransactionService.shared.delegateData.chosenBaker = baker
+			}
+		}
+		
+		mainThreadProcessedOperations(ofType: .delegate)
 	}
 	
 	private func mainThreadProcessedOperations(ofType type: WalletConnectOperationType) {
