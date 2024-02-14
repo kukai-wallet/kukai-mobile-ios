@@ -82,6 +82,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		}
 		
 		TransactionService.shared.currentTransactionType = .send
+		enterAddressComponent.textField.resignFirstResponder()
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 			

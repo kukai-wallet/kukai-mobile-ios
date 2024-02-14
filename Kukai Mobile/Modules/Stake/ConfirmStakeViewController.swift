@@ -7,9 +7,16 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectSign
 import os.log
 
-class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+	
+	// Connected app
+	@IBOutlet weak var connectedAppLabel: UILabel!
+	@IBOutlet weak var connectedAppIcon: UIImageView!
+	@IBOutlet weak var connectedAppNameLabel: UILabel!
+	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
 	
 	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var confirmBakerAddView: UIView!
@@ -33,7 +40,6 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 	@IBOutlet weak var testnetWarningView: UIView!
 	
 	private var currentDelegateData: TransactionService.DelegateData = TransactionService.DelegateData()
-	private var selectedMetadata: WalletMetadata? = nil
 	
 	var dimBackground: Bool = false
 	
@@ -46,10 +52,36 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 		}
 		
 		self.currentDelegateData = TransactionService.shared.delegateData
-		self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
-		
 		guard let baker = self.currentDelegateData.chosenBaker else {
 			return
+		}
+		
+		// Handle wallet connect data
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
+		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+			
+			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
+				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
+				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
+				self.handleRejection()
+				return
+			}
+			
+			self.isWalletConnectOp = true
+			self.selectedMetadata = walletMetadataForRequestedAccount
+			self.connectedAppNameLabel.text = session.peer.name
+			
+			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
+				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
+				connectedAppURL = smallIconURL
+			}
+			
+		} else {
+			self.isWalletConnectOp = false
+			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
+			
+			connectedAppMetadataStackView.isHidden = true
+			connectedAppLabel.isHidden = true
 		}
 		
 		
@@ -112,6 +144,12 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 			return
 		}
 		
+		if let connectedAppURL = connectedAppURL {
+			MediaProxyService.load(url: connectedAppURL, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		} else {
+			self.connectedAppIcon.image = UIImage.unknownToken()
+		}
+		
 		if self.currentDelegateData.isAdd == true {
 			MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerAddIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			
@@ -126,15 +164,27 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
-		return TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		if isWalletConnectOp {
+			return TransactionService.shared.currentRemoteOperationsAndFeesData.selectedOperationsAndFees()
+			
+		} else {
+			return TransactionService.shared.currentOperationsAndFeesData.selectedOperationsAndFees()
+		}
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true)
-		
+		self.showLoadingModal(invisible: true) { [weak self] in
+			self?.performAuth()
+		}
+	}
+	
+	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-			self.slideButton.resetSlider()
+			self.hideLoadingModal { [weak self] in
+				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				self?.slideButton.resetSlider()
+			}
+			
 			return
 		}
 		
@@ -145,15 +195,21 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 				switch sendResult {
 					case .success(let opHash):
 						Logger.app.info("Sent: \(opHash)")
-						
+						self?.didSend = true
 						self?.addPendingTransaction(opHash: opHash)
-						self?.dismissAndReturn()
+						self?.handleApproval(opHash: opHash)
 						
 					case .failure(let sendError):
 						self?.windowError(withTitle: "error".localized(), description: sendError.description)
 						self?.slideButton?.resetSlider()
 				}
 			})
+		}
+	}
+	
+	override func authFailure() {
+		self.hideLoadingModal { [weak self] in
+			self?.slideButton.resetSlider()
 		}
 	}
 	
@@ -166,14 +222,7 @@ class ConfirmStakeViewController: UIViewController, SlideButtonDelegate, EditFee
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
-		self.dismissBottomSheet()
-	}
-	
-	func dismissAndReturn() {
-		TransactionService.shared.resetAllState()
-		
-		self.dismiss(animated: true, completion: nil)
-		(self.presentingViewController as? UINavigationController)?.popToHome()
+		handleRejection(collapseOnly: true)
 	}
 	
 	func addPendingTransaction(opHash: String) {

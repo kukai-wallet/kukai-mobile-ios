@@ -538,6 +538,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 				case .batch:
 					self.performSegue(withIdentifier: "wallet-connect-batch", sender: nil)
 					
+				case .delegate:
+					self.performSegue(withIdentifier: "wallet-connect-delegate", sender: nil)
+					
 				case .generic:
 					self.performSegue(withIdentifier: "wallet-connect-generic", sender: nil)
 			}
