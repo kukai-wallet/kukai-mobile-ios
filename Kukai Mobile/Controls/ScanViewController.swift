@@ -20,6 +20,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	var captureSession: AVCaptureSession!
 	var previewLayer: AVCaptureVideoPreviewLayer! = AVCaptureVideoPreviewLayer()
 	
+	let scrollView = AutoScrollView()
 	let titleLabel = UILabel()
 	let previewContainerView = UIView()
 	let blurEffectView = UIVisualEffectView()
@@ -66,6 +67,34 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			}.store(in: &bag)
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		textfield.text = nil
+		
+		if (captureSession?.isRunning == false) {
+			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
+			DispatchQueue.global(qos: .background).async { [weak self] in
+				self?.captureSession.startRunning()
+			}
+		}
+		
+		scrollView.setupAutoScroll(focusView: textfield, parentView: self.view)
+		scrollView.autoScrollDelegate = self
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		scrollView.stopAutoScroll()
+		
+		if (captureSession?.isRunning == true) {
+			DispatchQueue.global(qos: .background).async { [weak self] in
+				self?.captureSession.stopRunning()
+			}
+		}
+	}
+	
 	@objc func back() {
 		self.dismiss(animated: true, completion: nil)
 	}
@@ -92,6 +121,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		modalBackButton.addTarget(self, action: #selector(back), for: .touchUpInside)
 		self.view.addSubview(modalBackButton)
 		
+		scrollView.translatesAutoresizingMaskIntoConstraints = false
+		self.view.addSubview(scrollView)
+		
 		NSLayoutConstraint.activate([
 			titleLabel.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 24),
 			titleLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
@@ -101,13 +133,18 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			modalBackButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -24),
 			modalBackButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
 			modalBackButton.heightAnchor.constraint(equalToConstant: 44),
-			modalBackButton.widthAnchor.constraint(equalToConstant: 44)
+			modalBackButton.widthAnchor.constraint(equalToConstant: 44),
+			
+			scrollView.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 16),
+			scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 0),
+			scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: 0),
+			scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
 		])
 	}
 	
 	func setupPreviewView() {
 		previewContainerView.translatesAutoresizingMaskIntoConstraints = false
-		self.view.addSubview(previewContainerView)
+		scrollView.addSubview(previewContainerView)
 		
 		blurEffectView.translatesAutoresizingMaskIntoConstraints = false
 		blurEffectView.frame = previewContainerView.bounds
@@ -116,7 +153,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		previewContainerView.addSubview(blurEffectView)
 		
 		NSLayoutConstraint.activate([
-			previewContainerView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 50),
+			previewContainerView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 50),
+			previewContainerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+			previewContainerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
 			previewContainerView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
 			previewContainerView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
 			previewContainerView.heightAnchor.constraint(equalTo: previewContainerView.widthAnchor),
@@ -147,7 +186,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			textfield.leftView = paddingView
 			textfield.font = .custom(ofType: .bold, andSize: 14)
 			textfield.textColor = .colorNamed("Txt2")
-			self.view.addSubview(textfield)
+			scrollView.addSubview(textfield)
 			
 			pasteButton.translatesAutoresizingMaskIntoConstraints = false
 			pasteButton.accessibilityIdentifier = "paste-button"
@@ -179,15 +218,15 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				}
 			}), for: .touchUpInside)
 			
-			self.view.addSubview(pasteButton)
+			scrollView.addSubview(pasteButton)
 			
 			NSLayoutConstraint.activate([
-				textfield.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 16),
+				textfield.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
 				textfield.trailingAnchor.constraint(equalTo: self.pasteButton.leadingAnchor, constant: -16),
 				textfield.topAnchor.constraint(equalTo: self.previewContainerView.bottomAnchor, constant: 24),
 				textfield.heightAnchor.constraint(equalToConstant: 36),
 				
-				pasteButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -16),
+				pasteButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
 				pasteButton.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor, constant: 0),
 				pasteButton.widthAnchor.constraint(equalToConstant: 36),
 				pasteButton.heightAnchor.constraint(equalToConstant: 36),
@@ -308,29 +347,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		captureSession = nil
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		textfield.text = nil
-		
-		if (captureSession?.isRunning == false) {
-			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
-			DispatchQueue.global(qos: .background).async { [weak self] in
-				self?.captureSession.startRunning()
-			}
-		}
-	}
-	
-	override func viewWillDisappear(_ animated: Bool) {
-		super.viewWillDisappear(animated)
-		
-		if (captureSession?.isRunning == true) {
-			DispatchQueue.global(qos: .background).async { [weak self] in
-				self?.captureSession.stopRunning()
-			}
-		}
-	}
-	
 	func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
 		
 		if let metadataObject = metadataObjects.first {
@@ -374,5 +390,18 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	
 	override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
 		return .portrait
+	}
+}
+
+extension ScanViewController: AutoScrollViewDelegate {
+	
+	func keyboardWillShow() {
+		//self.topSectionContainer.alpha = 0.2
+		//self.topSectionContainer.isUserInteractionEnabled = false
+	}
+	
+	func keyboardWillHide() {
+		//self.topSectionContainer.alpha = 1
+		//self.topSectionContainer.isUserInteractionEnabled = true
 	}
 }

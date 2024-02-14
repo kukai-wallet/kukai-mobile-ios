@@ -23,7 +23,9 @@ class AutoScrollView: UIScrollView {
 	func refocus() {
 		guard let parentView = parentView, let viewToFocusOn = viewToFocusOn else { return }
 		
-		let whereKeyboardWillGoToo = ((self.frame.height + parentView.safeAreaInsets.bottom) - previousKeyboardHeight)
+		let toolbar = (viewToFocusOn as? UITextField)?.inputAccessoryView
+		let toolbarAddition = toolbar != nil ? toolbar?.frame.height ?? 0 : 0
+		let whereKeyboardWillGoToo = (((self.frame.height + parentView.safeAreaInsets.bottom) - toolbarAddition) - previousKeyboardHeight)
 		let whereNeedsToBeDisplayed = (viewToFocusOn.convert(CGPoint(x: 0, y: 0), to: self).y + viewToFocusOn.frame.height + 8).rounded(.up)
 		
 		if whereKeyboardWillGoToo < whereNeedsToBeDisplayed {
