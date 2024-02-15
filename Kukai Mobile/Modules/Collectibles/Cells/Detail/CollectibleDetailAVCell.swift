@@ -143,9 +143,10 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				audioImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
 			])
 			
-			audioImageView.image = MediaProxyService.imageCache(forType: .temporary).imageFromCache(forKey: audioImageURL.absoluteString)
-			self.isImageDownloaded = true
-			self.checkAudioImageStatus()
+			MediaProxyService.load(url: audioImageURL, to: audioImageView, withCacheType: .temporary, fallback: UIImage.unknownThumb()) {[weak self] _ in
+				self?.isImageDownloaded = true
+				self?.checkAudioImageStatus()
+			}
 		}
 		// Video only work
 		else {

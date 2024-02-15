@@ -115,12 +115,13 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		
 		// Build snapshot data
 		let title = (tokenToView?.name ?? tokenToView?.tokenContractAddress?.truncateTezosAddress()) ?? ""
+		let url = MediaProxyService.url(fromUri: tokenToView?.thumbnailURL, ofFormat: MediaProxyService.Format.small.rawFormat())
 		
 		if let creator = DependencyManager.shared.objktClient.collections[tokenToView?.tokenContractAddress ?? ""]?.creator?.alias {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: tokenToView?.thumbnailURL, title: title, creator: creator) ], toSection: 0)
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: url, title: title, creator: creator) ], toSection: 0)
 			
 		} else {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: tokenToView?.thumbnailURL, title: title, creator: nil) ], toSection: 0)
+			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: url, title: title, creator: nil) ], toSection: 0)
 		}
 		
 		let visibleNfts = (tokenToView?.nfts ?? []).filter({ !$0.isHidden })

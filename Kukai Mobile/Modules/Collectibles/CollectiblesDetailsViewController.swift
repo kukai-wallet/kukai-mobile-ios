@@ -155,7 +155,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		actions.append([])
 		let objktCollectionInfo = DependencyManager.shared.objktClient.collections[nft.parentContract]
 		
-		if viewModel.isImage {
+		if viewModel.mediaContent.isImage {
 			actions[0].append(
 				UIAction(title: "Save to Photos", image: UIImage(named: "SavetoPhotos"), identifier: nil, handler: { [weak self] action in
 					guard let imageURL = MediaProxyService.largeURL(forNFT: nft) else {
