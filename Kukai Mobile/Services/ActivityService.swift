@@ -109,7 +109,8 @@ public class ActivityService {
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, destinationAddress: String, destinationAlias: String?, xtzAmount: TokenAmount, parameters: [String: String]?, primaryToken: Token?) -> Bool {
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
-		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
+		let previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
@@ -125,9 +126,12 @@ public class ActivityService {
 	}
 	
 	public func addPendingBatch(opHash: String, counter: Decimal, fromWallet: WalletMetadata, batchInfo: [PendingBatchInfo]) -> Bool {
+		var previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		
 		var transactions: [TzKTTransaction] = []
 		for info in batchInfo {
-			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken)
+			previousId += 1
+			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken)
 			temp.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 			
 			transactions.append(temp)
@@ -146,7 +150,8 @@ public class ActivityService {
 	}
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, newDelegate: TzKTAddress?) -> Bool {
-		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, newDelegate: newDelegate)
+		let previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, newDelegate: newDelegate)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
 			if fromWallet.address == DependencyManager.shared.selectedWalletAddress {
