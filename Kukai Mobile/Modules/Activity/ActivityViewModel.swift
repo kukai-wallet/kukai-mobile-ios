@@ -137,6 +137,8 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let currentAddress = DependencyManager.shared.selectedWalletAddress
 		var full = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
 		full.append(contentsOf: DependencyManager.shared.activityService.transactionGroups)
+		
+		full.sort(by: { ($0.transactions.first?.counter) ?? 0 > ($1.transactions.first?.counter) ?? 0 })
 			
 		self.groups = full
 		self.loadGroups(animate: animate)
