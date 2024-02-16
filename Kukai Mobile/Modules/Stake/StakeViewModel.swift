@@ -99,7 +99,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return false
 				}
 				
-				return baker.stakingCapacity > xtzBalanceAsDecimal && baker.openForDelegation && baker.serviceHealth != .dead
+				return baker.stakingCapacity > xtzBalanceAsDecimal && baker.openForDelegation && baker.serviceHealth != .dead && baker.serviceType != "exchange"
 			}
 			
 			let sortedResults = filteredResults.sorted(by: { lhs, rhs in
