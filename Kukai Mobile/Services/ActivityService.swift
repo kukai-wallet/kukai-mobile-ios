@@ -109,7 +109,7 @@ public class ActivityService {
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, destinationAddress: String, destinationAlias: String?, xtzAmount: TokenAmount, parameters: [String: String]?, primaryToken: Token?) -> Bool {
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
-		let previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
@@ -126,7 +126,7 @@ public class ActivityService {
 	}
 	
 	public func addPendingBatch(opHash: String, counter: Decimal, fromWallet: WalletMetadata, batchInfo: [PendingBatchInfo]) -> Bool {
-		var previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		var previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		
 		var transactions: [TzKTTransaction] = []
 		for info in batchInfo {
@@ -150,7 +150,7 @@ public class ActivityService {
 	}
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, newDelegate: TzKTAddress?) -> Bool {
-		let previousId = transactionGroups.first?.transactions.first?.id ?? 0
+		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, newDelegate: newDelegate)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
