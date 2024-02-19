@@ -10,6 +10,10 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
+public struct CollectionEmptyObj: Hashable {
+	let id = UUID()
+}
+
 class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
@@ -92,11 +96,15 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		collectionView.register(UINib(nibName: "LoadingGroupModeCell", bundle: nil), forCellWithReuseIdentifier: "LoadingGroupModeCell")
 		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		collectionView.register(UINib(nibName: "MessageCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "MessageCollectionViewCell")
+		collectionView.register(UINib(nibName: "EmptyCollectionCell", bundle: nil), forCellWithReuseIdentifier: "EmptyCollectionCell")
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			guard let self = self else { return UICollectionViewCell() }
 			
-			if let sortMenu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+			if let _ = item as? CollectionEmptyObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCollectionCell", for: indexPath) as? EmptyCollectionCell {
+				return cell
+				
+			} else if let sortMenu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
 				cell.searchBar.validator = FreeformValidator(allowEmpty: true)
 				cell.searchBar.validatorTextFieldDelegate = self.validatorTextfieldDelegate
 				cell.setup(sortMenu: sortMenu)
@@ -223,7 +231,13 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		normalSnapshot.appendSections([0, 1])
 		normalSnapshot.appendItems([sortMenu], toSection: 0)
-		normalSnapshot.appendItems(hashableData, toSection: 1)
+		
+		if hashableData.count > 0 {
+			normalSnapshot.appendItems(hashableData, toSection: 1)
+		} else {
+			normalSnapshot.appendItems([CollectionEmptyObj()], toSection: 1)
+		}
+		
 		itemCount = hashableData.count
 		
 		ds.applySnapshotUsingReloadData(normalSnapshot)
