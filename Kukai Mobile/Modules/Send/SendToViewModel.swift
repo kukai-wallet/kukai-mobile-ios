@@ -116,7 +116,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			if walletsToAdd.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([SendHeaderObj(icon: walletImage, title: "HD Wallet \(index + 1)")])
+				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "")])
 				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 			}
 		}
