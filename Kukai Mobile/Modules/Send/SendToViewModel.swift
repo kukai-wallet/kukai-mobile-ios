@@ -98,7 +98,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
+		for (_, metadata) in wallets.hdWallets.enumerated() {
 			walletsToAdd = []
 			if metadata.address == selectedAddress && metadata.children.count == 0 {
 				continue
@@ -116,7 +116,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			if walletsToAdd.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([SendHeaderObj(icon: walletImage, title: "HD Wallet \(index + 1)")])
+				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "")])
 				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 			}
 		}

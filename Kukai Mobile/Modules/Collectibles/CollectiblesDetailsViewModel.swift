@@ -169,7 +169,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		isFavourited = nft.isFavourite
 		isHidden = nft.isHidden
-		quantityContent = QuantityContent(isOnSale: false, isAudio: false, isInteractableModel: false, isVideo: false, quantity: quantityString(forNFT: nft))
 		
 		
 		// Build snapshot
@@ -233,6 +232,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: videoURL, mediaURL2: nil, width: 0, height: 0)
 		}
 		
+		let isAudio =  mainType == .imageAndAudio || mainType == .audioOnly
+		let isVideo =  mainType == .videoOnly
+		quantityContent = QuantityContent(isOnSale: false, isAudio: isAudio, isInteractableModel: false, isVideo: isVideo, quantity: quantityString(forNFT: nft))
 		
 		section1Content.append(mediaContent)
 		section1Content.append(quantityContent)
