@@ -98,7 +98,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
+		for (_, metadata) in wallets.hdWallets.enumerated() {
 			walletsToAdd = []
 			if metadata.address == selectedAddress && metadata.children.count == 0 {
 				continue
