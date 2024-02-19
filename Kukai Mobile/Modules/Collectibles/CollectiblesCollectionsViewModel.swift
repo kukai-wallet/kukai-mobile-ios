@@ -402,15 +402,20 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		if isSearching {
 			return createSearchLayout()
 		} else {
-			switch getLayoutType() {
-				case .single:
-					return createSingleLayout()
-					
-				case .column:
-					return createColumnLayout()
-					
-				case .grouped:
-					return createGroupLayout()
+			
+			if dataSource?.itemIdentifier(for: IndexPath(row: 0, section: 1)) is CollectionEmptyObj {
+				return createGroupLayout()
+			} else {
+				switch getLayoutType() {
+					case .single:
+						return createSingleLayout()
+						
+					case .column:
+						return createColumnLayout()
+						
+					case .grouped:
+						return createGroupLayout()
+				}
 			}
 		}
 	}
