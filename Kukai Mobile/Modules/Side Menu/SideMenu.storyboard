@@ -57,7 +57,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iM6-NV-SVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="321.33333333333331" y="63" width="55.666666666666686" height="36"/>
+                                <rect key="frame" x="297.33333333333331" y="63" width="79.666666666666686" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="oRt-ll-jgQ"/>
@@ -638,6 +638,7 @@
                         <segue destination="fhg-2r-jif" kind="custom" identifier="network" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="0SU-rb-AND"/>
                         <segue destination="8I7-vb-gkS" kind="show" identifier="currency" id="CCk-O3-a8o"/>
                         <segue destination="heM-cy-KHc" kind="custom" identifier="storage" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="NEf-Gx-58P"/>
+                        <segue destination="xWo-TO-RHt" kind="custom" identifier="lookup" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Hx0-JI-3ln"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BjC-7I-htw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1427,7 +1428,7 @@
             </objects>
             <point key="canvasLocation" x="8270" y="1720"/>
         </scene>
-        <!--Choose Network-->
+        <!--Storage-->
         <scene sceneID="Zk0-5G-2ln">
             <objects>
                 <viewController storyboardIdentifier="storage" id="heM-cy-KHc" customClass="SideMenuStorageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
@@ -1492,7 +1493,7 @@
                             <constraint firstItem="Pkt-6I-VYl" firstAttribute="trailing" secondItem="14Q-Li-NMN" secondAttribute="trailing" constant="50" id="wld-wr-EJJ"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Choose Network" id="jgJ-aS-Rd9"/>
+                    <navigationItem key="navigationItem" title="Storage" id="jgJ-aS-Rd9"/>
                     <connections>
                         <outlet property="clearButton" destination="14Q-Li-NMN" id="8kF-z9-PYH"/>
                         <outlet property="storageLabel" destination="2or-lD-nm0" id="X6K-SK-8MD"/>
@@ -1500,7 +1501,68 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bVW-dN-fO5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1387" y="1720"/>
+            <point key="canvasLocation" x="1294" y="1720"/>
+        </scene>
+        <!--Side Menu Lookup View Controller-->
+        <scene sceneID="Shf-44-uuJ">
+            <objects>
+                <viewController storyboardIdentifier="lookup" id="xWo-TO-RHt" customClass="SideMenuLookupViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="m2P-gZ-bEc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity Domains and Aliases" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOt-OF-gyD">
+                                <rect key="frame" x="16" y="91" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4oQ-5i-7VC">
+                                <rect key="frame" x="16" y="139" width="361" height="192"/>
+                                <string key="text">The activity screen will attempt to use cached data from various sources to display more user firendly information about where outgoing funds are going to, or incoming funds are coming from
+
+Sometimes it can be necessary to clear this list manually in order to remove stale data. Performing this action will have no negative impacts on your wallets or funds, only display data in activity screen</string>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Uoh-oV-NMX" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="50" y="363" width="293" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="LLz-n5-spU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Clear Cache">
+                                    <color key="titleColor" name="TxtBtnSec1"/>
+                                </state>
+                                <connections>
+                                    <action selector="clearButtonTapped:" destination="xWo-TO-RHt" eventType="touchUpInside" id="QlZ-Q1-bJo"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5d2-Z1-n2e"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4oQ-5i-7VC" firstAttribute="leading" secondItem="5d2-Z1-n2e" secondAttribute="leading" constant="16" id="3u0-Mc-eq0"/>
+                            <constraint firstItem="LOt-OF-gyD" firstAttribute="top" secondItem="5d2-Z1-n2e" secondAttribute="top" constant="32" id="6g2-gu-ce5"/>
+                            <constraint firstItem="Uoh-oV-NMX" firstAttribute="leading" secondItem="5d2-Z1-n2e" secondAttribute="leading" constant="50" id="IWS-QB-iAH"/>
+                            <constraint firstItem="Uoh-oV-NMX" firstAttribute="top" secondItem="4oQ-5i-7VC" secondAttribute="bottom" constant="32" id="Q2D-M0-8DT"/>
+                            <constraint firstItem="5d2-Z1-n2e" firstAttribute="trailing" secondItem="4oQ-5i-7VC" secondAttribute="trailing" constant="16" id="Rai-iZ-Emz"/>
+                            <constraint firstItem="5d2-Z1-n2e" firstAttribute="trailing" secondItem="Uoh-oV-NMX" secondAttribute="trailing" constant="50" id="Wvo-SR-5A4"/>
+                            <constraint firstItem="4oQ-5i-7VC" firstAttribute="top" secondItem="LOt-OF-gyD" secondAttribute="bottom" constant="24" id="dqj-Pi-eBD"/>
+                            <constraint firstItem="LOt-OF-gyD" firstAttribute="leading" secondItem="5d2-Z1-n2e" secondAttribute="leading" constant="16" id="mFA-yy-FGa"/>
+                            <constraint firstAttribute="trailing" secondItem="LOt-OF-gyD" secondAttribute="trailing" constant="16" id="sMo-Xk-6ju"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="o0W-qk-7iR"/>
+                    <connections>
+                        <outlet property="clearButton" destination="Uoh-oV-NMX" id="Xkm-fg-hLB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pOt-m0-aT0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2010" y="1720"/>
         </scene>
         <!--Security-->
         <scene sceneID="KmM-Bn-Wh7">
@@ -1890,43 +1952,46 @@
             <size key="intrinsicContentSize" width="214" height="36"/>
         </designable>
         <designable name="38w-Rp-6HC">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="6n3-6W-xs4">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="7hS-5P-Vf4">
             <size key="intrinsicContentSize" width="30" height="36"/>
         </designable>
         <designable name="Afd-eu-CxP">
-            <size key="intrinsicContentSize" width="47" height="34"/>
+            <size key="intrinsicContentSize" width="67" height="22"/>
         </designable>
         <designable name="BKb-vr-vGU">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="JOj-kz-zuN">
-            <size key="intrinsicContentSize" width="43" height="34"/>
+            <size key="intrinsicContentSize" width="63" height="22"/>
         </designable>
         <designable name="KWZ-cC-lvU">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="Nzm-zE-JrN">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
+        </designable>
+        <designable name="Uoh-oV-NMX">
+            <size key="intrinsicContentSize" width="113" height="36"/>
         </designable>
         <designable name="VdS-Ic-j1F">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="W4f-J6-VHc">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="iM6-NV-SVb">
-            <size key="intrinsicContentSize" width="55.666666666666664" height="31"/>
+            <size key="intrinsicContentSize" width="79.666666666666671" height="38"/>
         </designable>
         <designable name="j6C-A9-dec">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="n7h-lU-KVu">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="vT4-cL-ycF">
             <size key="intrinsicContentSize" width="32" height="36"/>
@@ -1942,7 +2007,7 @@
         <image name="Social_Discord_1color" width="30" height="30"/>
         <image name="Social_TZ_Ovalcolor" width="30" height="30"/>
         <image name="Social_Telegram_1color" width="30" height="30"/>
-        <image name="Social_Twitter_1color" width="31" height="30"/>
+        <image name="Social_Twitter_1color" width="30" height="30"/>
         <image name="btnAddKnockout" width="36" height="36"/>
         <image name="btnCopyKnockout" width="36" height="36"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
