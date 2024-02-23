@@ -29,8 +29,13 @@ class SideMenuLookupViewController: UIViewController {
 		let metadataList = WalletCacheService().readMetadataFromDiskAndDecrypt()
 		for social in metadataList.socialWallets {
 			if let username = social.socialUsername, let type = LookupService.shared.authTypeToLookupType(authType: social.socialType) {
-				LookupService.shared.add(displayText: username, forType: type, forAddress: social.address, isMainnet: true)
-				LookupService.shared.add(displayText: username, forType: type, forAddress: social.address, isMainnet: false)
+				if type == .google {
+					LookupService.shared.add(displayText: social.socialUserId ?? username, forType: type, forAddress: social.address, isMainnet: true)
+					LookupService.shared.add(displayText: social.socialUserId ?? username, forType: type, forAddress: social.address, isMainnet: false)
+				} else {
+					LookupService.shared.add(displayText: username, forType: type, forAddress: social.address, isMainnet: true)
+					LookupService.shared.add(displayText: username, forType: type, forAddress: social.address, isMainnet: false)
+				}
 			}
 		}
 		
