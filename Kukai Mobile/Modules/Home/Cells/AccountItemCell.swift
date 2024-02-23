@@ -15,6 +15,7 @@ class AccountItemCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet var subtitleLabel: UILabel!
 	@IBOutlet var checkedImageView: UIImageView!
 	@IBOutlet var chevronImageView: UIImageView!
+	@IBOutlet weak var newIndicatorView: UIView!
 	
 	var gradientLayer = CAGradientLayer()
 	

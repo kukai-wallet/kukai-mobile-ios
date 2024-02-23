@@ -26,7 +26,6 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
 		self.navigationController?.removeOnboardingScreens()
 		
 		addButtonContainer.accessibilityIdentifier = "accounts-nav-add"
@@ -67,6 +66,10 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 				case .success:
 					//self?.hideLoadingView(completion: nil)
 					self?.refreshControl.endRefreshing()
+					
+					if self?.viewModel.scrollToSelected() == true {
+						self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
+					}
 			}
 		}
 	}
@@ -142,6 +145,12 @@ extension AccountsViewController: UITableViewDelegate {
 			
 		} else {
 			cell.setSelected(false, animated: true)
+		}
+		
+		if let c = cell as? AccountItemCell, c.newIndicatorView.isHidden == false {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+				c.newIndicatorView.shake()
+			}
 		}
 	}
 	
