@@ -36,7 +36,11 @@ class WalletManagementService {
 						lookupType = .address
 				}
 				
-				if lookupType != .address {
+				if lookupType == .google {
+					LookupService.shared.add(displayText: tWallet.socialUserId ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: true)
+					LookupService.shared.add(displayText: tWallet.socialUserId ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: false)
+					
+				} else if lookupType != .address {
 					LookupService.shared.add(displayText: tWallet.socialUsername ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: true)
 					LookupService.shared.add(displayText: tWallet.socialUsername ?? "", forType: lookupType, forAddress: wallet.address, isMainnet: false)
 				}

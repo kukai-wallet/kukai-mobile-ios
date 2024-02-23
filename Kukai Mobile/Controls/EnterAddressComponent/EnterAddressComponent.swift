@@ -117,6 +117,17 @@ public class EnterAddressComponent: UIView {
 				return
 			}
 			
+			// Add record to lookup service so it can be used in activity service
+			if self?.currentSelectedType == .tezosDomain {
+				let isMainnet = DependencyManager.shared.currentNetworkType == .mainnet
+				LookupService.shared.add(displayText: text, forType: .tezosDomain, forAddress: res.address, isMainnet: isMainnet)
+				
+			} else if self?.currentSelectedType != .tezosAddress, let lookupType = self?.addressTypeToLookupType(addressType: self?.currentSelectedType) {
+				LookupService.shared.add(displayText: text, forType: lookupType, forAddress: res.address, isMainnet: true)
+				LookupService.shared.add(displayText: text, forType: lookupType, forAddress: res.address, isMainnet: false)
+			}
+			
+			
 			let image = AddressTypeViewController.imageFor(addressType: self?.currentSelectedType ?? .tezosAddress)
 			completion( Result.success(FindAddressResponse(alias: res.formattedText, address: res.address, icon: image)) )
 		}
@@ -193,6 +204,26 @@ public class EnterAddressComponent: UIView {
 		}
 	}
 	
+	private func addressTypeToLookupType(addressType: AddressType?) -> LookupType? {
+		guard let addressType = addressType else {
+			return nil
+		}
+		
+		switch addressType {
+			case .tezosAddress:
+				return .address
+			case .tezosDomain:
+				return .tezosDomain
+			case .gmail:
+				return .google
+			case .reddit:
+				return .reddit
+			case .twitter:
+				return .twitter
+			case .email:
+				return .email
+		}
+	}
 	
 	
 	

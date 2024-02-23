@@ -9,12 +9,14 @@ import Foundation
 import KukaiCoreSwift
 import OSLog
 
-public enum LookupType: Int, Codable { // in order of priority
+public enum LookupType: String, Codable { // in order of priority
 	case addressBook
 	case tezosDomain
 	case google
+	case email
 	case reddit
 	case twitter
+	case facebook
 	case alias
 	case address
 }
@@ -97,14 +99,49 @@ public class LookupService {
 		} else if let record = subRecord[.google] {
 			return LookupResponse(displayText: record.displayText, type: .google, iconName: "Social_Google_color")
 			
+		} else if let record = subRecord[.email] {
+			return LookupResponse(displayText: record.displayText, type: .email, iconName: "Social_Email_Outlined")
+			
 		} else if let record = subRecord[.reddit] {
 			return LookupResponse(displayText: record.displayText, type: .reddit, iconName: "Social_Reddit_Color")
 			
 		} else if let record = subRecord[.twitter] {
 			return LookupResponse(displayText: record.displayText, type: .twitter, iconName: "Social_Twitter_color")
 			
+		} else if let record = subRecord[.facebook] {
+			return LookupResponse(displayText: record.displayText, type: .facebook, iconName: "Social_Facebook_color")
+			
 		} else {
 			return LookupResponse(displayText: address, type: .address, iconName: "Social_TZ_1color")
+		}
+	}
+	
+	public func authTypeToLookupType(authType: TorusAuthProvider?) -> LookupType? {
+		guard let authType = authType else {
+			return nil
+		}
+		
+		switch authType {
+			case .apple:
+				return nil
+			case .google:
+				return .google
+			case .facebook:
+				return .facebook
+			case .twitter:
+				return .twitter
+			case .reddit:
+				return .reddit
+			case .discord:
+				return nil
+			case .twitch:
+				return nil
+			case .line:
+				return nil
+			case .github:
+				return nil
+			case .email:
+				return .email
 		}
 	}
 	

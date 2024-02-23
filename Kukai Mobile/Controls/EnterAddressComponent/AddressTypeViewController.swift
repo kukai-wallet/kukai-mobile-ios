@@ -48,7 +48,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 		super.viewWillAppear(animated)
 		
 		if let sheetController = self.presentationController as? UISheetPresentationController {
-			sheetController.detents = [.medium(), .large()]
+			sheetController.detents = [.large()]
 			sheetController.prefersGrabberVisible = true
 			sheetController.preferredCornerRadius = 30
 			sheetController.prefersScrollingExpandsWhenScrolledToEdge = true

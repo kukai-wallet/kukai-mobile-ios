@@ -30,7 +30,11 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
 	public var addressToMarkAsSelected: String? = nil
+	
 	private var newWalletAutoSelected = false
+	private var previousAddresses: [String] = []
+	private var newlyAddedAddress: String? = nil
+	private var shouldScrollToSelected = true
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -43,7 +47,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
@@ -56,6 +60,12 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.iconView.image = walletMedia.image
 				cell.titleLabel.text = walletMedia.title
 				cell.subtitleLabel.text = walletMedia.subtitle
+				
+				if let newAddress = self?.newlyAddedAddress, obj.address == newAddress {
+					cell.newIndicatorView.isHidden = false
+				} else {
+					cell.newIndicatorView.isHidden = true
+				}
 				
 				return cell
 				
@@ -87,6 +97,13 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var sections: [Int] = []
 		var sectionData: [[AnyHashable]] = []
 		
+		
+		// used later to detect newly added addresses
+		if previousAddresses.count == 0 {
+			previousAddresses = wallets.addresses()
+		}
+		
+		
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
@@ -113,6 +130,12 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				sectionData[sections.count-1].append(childMetadata)
 				
 				if childMetadata.address == currentAddress { selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1) }
+				
+				// Check if we added a new child address, which doesn't get auto selected
+				if !previousAddresses.contains(childMetadata.address) {
+					newlyAddedAddress = childMetadata.address
+					previousAddresses.append(childMetadata.address)
+				}
 			}
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
@@ -179,7 +202,22 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			newWalletAutoSelected = false
 		}
 		
+		// Check if we created a new wallet and mark it as such
+		if let address = DependencyManager.shared.selectedWalletAddress, !previousAddresses.contains(address) {
+			newlyAddedAddress = address
+			previousAddresses.append(address)
+		}
+		
 		self.state = .success(nil)
+	}
+	
+	// We only want to disable this during the adding of new accounts, via the context menu for HD wallets. Which should only be triggered once
+	// Once thats been triggered, unless another is added, we should resume scrolling to selected
+	func scrollToSelected() -> Bool {
+		let temp = shouldScrollToSelected
+		shouldScrollToSelected = true
+		
+		return temp
 	}
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
@@ -229,6 +267,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						vc.hideLoadingView()
 						vc.windowError(withTitle: "error".localized(), description: eString)
 					} else {
+						self?.shouldScrollToSelected = false
 						self?.refresh(animate: true)
 						vc.hideLoadingView()
 					}

@@ -50,12 +50,13 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		snapshot.appendSections([0, 1, 2, 3])
+		snapshot.appendSections([0, 1, 2, 3, 4])
 		
 		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, subtitleIsWarning: false, id: "network")], toSection: 0)
 		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, subtitleIsWarning: false, id: "currency")], toSection: 1)
 		snapshot.appendItems([SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, subtitleIsWarning: false, id: "theme")], toSection: 2)
 		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Storage", subtitle: collectibleStorageSize, subtitleIsWarning: false, id: "storage")], toSection: 3)
+		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Activity Domains and Aliases", subtitle: "", subtitleIsWarning: false, id: "lookup")], toSection: 4)
 		
 		ds.applySnapshotUsingReloadData(snapshot)
 		
