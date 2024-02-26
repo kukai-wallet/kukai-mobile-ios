@@ -25,6 +25,12 @@ class CreatePasscodeViewController: UIViewController {
 		hiddenTextfield.validatorTextFieldDelegate = self
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		updateDigitViewsWithLength(length: 0)
+	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
