@@ -280,7 +280,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.state = .success(nil)
 			}
 		}
-		
+		 
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
 		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true && DependencyManager.shared.currentNetworkType != .testnet {
 			loadBakerData { [weak self] result in

@@ -18,6 +18,7 @@ class TokenDetailsBalanceAndBakerCell: UITableViewCell {
 		if data.isStaked {
 			bakerButton?.customButtonType = .none
 			bakerButton?.setTitle(data.bakerName + " ", for: .normal)
+			bakerButton?.setTitleColor(.colorNamed("Txt6"), for: .normal)
 			
 		} else {
 			bakerButton?.customButtonType = .secondary
