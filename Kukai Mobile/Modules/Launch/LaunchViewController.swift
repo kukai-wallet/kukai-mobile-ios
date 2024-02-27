@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Sentry
 import os.log
 
 import Combine
@@ -145,6 +146,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			}
 			
 		} else if hasWallet && !didCompleteOnboarding {
+			SentrySDK.capture(message: "Reinstall cache clear - hasWallet & notOnboarded")
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)

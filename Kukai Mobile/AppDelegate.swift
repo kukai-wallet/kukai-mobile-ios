@@ -13,14 +13,14 @@ import os.log
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 	
+	/**
+	 DO NOT RUN ANY CODE HERE THAT TOUCHES USER DEFAULTS
+	 
+	 In iOS 15 apple added pre-warming, which allows the OS to partially load an app while its in a closed state. Despite ambiguity in apple docs, it DOES run willFinishLaunchingWithOptions & didFinishLaunchingWithOptions
+	 With `NSFileProtectionComplete` turned on, values are unreadable inside xxxLaunchingWithOptions. This may result in booleans being returned as false simply because they can't be read, which can lead to broken cache logic
+	 */
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 		setupTheme()
-		
-		// If app launches from fresh without flag to mark completion of onboarding, assume reinstall and reset everything
-		if StorageService.didCompleteOnboarding() == false {
-			SideMenuResetViewController.resetAllData()
-		}
-		
 		
 		#if targetEnvironment(simulator)
 			// If running on simulator, print documents directory to help with debugging

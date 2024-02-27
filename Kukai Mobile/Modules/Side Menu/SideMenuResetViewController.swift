@@ -51,6 +51,7 @@ class SideMenuResetViewController: UIViewController {
 		DependencyManager.shared.objktClient.deleteCache()
 		DependencyManager.shared.exploreService.deleteCache()
 		DependencyManager.shared.discoverService.deleteCache()
+		DependencyManager.shared.walletList = WalletMetadataList(socialWallets: [], hdWallets: [], linearWallets: [], ledgerWallets: [], watchWallets: [])
 	}
 	
 	public static func resetAllDataAndCaches(completion: @escaping (() -> Void)) {
