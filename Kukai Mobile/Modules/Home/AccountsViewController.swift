@@ -68,7 +68,18 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 					self?.refreshControl.endRefreshing()
 					
 					if self?.viewModel.scrollToSelected() == true {
-						self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
+						
+						if self?.bottomSheetContainer != nil {
+							
+							// When displayed inside a bottom sheet, it can't get the correct frame until after its started rendering, resulting in it doing nothing
+							// need to add a slight delay so it picks up the correct sizing and then animates
+							DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+								self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
+							}
+							
+						} else {
+							self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
+						}
 					}
 			}
 		}
