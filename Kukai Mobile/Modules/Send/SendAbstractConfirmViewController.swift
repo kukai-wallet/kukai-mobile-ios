@@ -53,8 +53,11 @@ class SendAbstractConfirmViewController: UIViewController {
 			return
 		}
 		
+		self.showLoadingView()
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
+				self?.hideLoadingView()
+				
 				if success {
 					self?.didSend = true
 					if andDismiss { self?.dismissAndReturn(collapseOnly: collapseOnly) }
