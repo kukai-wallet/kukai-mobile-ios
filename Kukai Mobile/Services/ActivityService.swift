@@ -219,8 +219,6 @@ public class ActivityService {
 	}
 	
 	public func updatePendingQueue(forAddress address: String) {
-		if let index = self.addressesWithPendingOperation.firstIndex(of: address) {
-			self.addressesWithPendingOperation.remove(at: index)
-		}
+		self.addressesWithPendingOperation.removeAll(where: { $0 == address })
 	}
 }

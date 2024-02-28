@@ -61,6 +61,8 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		viewModel.isVisible = true
+		
+		(self.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
 		viewModel.refresh(animate: false)
 	}
 	
