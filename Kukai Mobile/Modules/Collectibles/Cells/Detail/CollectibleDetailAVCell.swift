@@ -33,6 +33,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var playbackWillKeepUpObserver: NSKeyValueObservation? = nil
 	private var rateObserver: NSKeyValueObservation? = nil
 	private var errorObserver: NSKeyValueObservation? = nil
+	private var didEndObserver: NSKeyValueObservation? = nil
 	private var commandCentreTargetStop: Any? = nil
 	private var commandCentreTargetToggle: Any? = nil
 	private var commandCentreTargetPlay: Any? = nil
@@ -67,10 +68,11 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			if player.currentItem?.isPlaybackLikelyToKeepUp == true {
 				self?.isPlaybackReady = true
 				
-				if self?.isAudio == false {
+				if self?.isAudio == false && self?.isPlaying == false {
 					self?.mediaActivityView.stopAnimating()
 					self?.mediaActivityView.isHidden = true
 					self?.playerController?.player?.play()
+					self?.isPlaying = true
 					
 				} else {
 					self?.checkAudioImageStatus()
@@ -80,10 +82,19 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		
 		self.rateObserver = avplayerController.player?.observe(\.rate, changeHandler: { [weak self] player, change in
 			if player.rate == 0.0 {
-				self?.updateNowPlaying(isPause: true)
+				if player.currentTime() == (player.currentItem?.duration ?? CMTime.zero) {
+					player.seek(to: CMTime.zero)
+					player.play()
+				} else {
+					self?.updateNowPlaying(isPause: true)
+				}
 				
 			} else if self?.hasSetupNowPlaying == true {
-				self?.updateNowPlaying(isPause: false)
+				let elapsedTime = CMTimeGetSeconds(player.currentTime())
+				
+				if elapsedTime > 0 {
+					self?.updateNowPlaying(isPause: false)
+				}
 				
 			} else {
 				self?.setupNowPlaying()

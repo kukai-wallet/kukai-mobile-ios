@@ -42,9 +42,13 @@ class TokenDetailsChartCell: UITableViewCell {
 		activityView.isHidden = false
 		
 		dayButton.backgroundColor = chartButtonBackgroundColor
+		dayButton.borderColor = chartButtonBorderColor
 		weekButton.backgroundColor = chartButtonBackgroundColor
+		weekButton.borderColor = chartButtonBorderColor
 		monthButton.backgroundColor = chartButtonBackgroundColor
+		monthButton.borderColor = chartButtonBorderColor
 		yearButton.backgroundColor = chartButtonBackgroundColor
+		yearButton.borderColor = chartButtonBorderColor
 	}
 	
 	func setup(delegate: TokenDetailsChartCellDelegate?, chartController: ChartHostingController, allChartData: AllChartData) {

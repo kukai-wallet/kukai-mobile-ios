@@ -345,17 +345,17 @@ public class TransactionService {
 			var title = ""
 			var subtitle: String? = ""
 			
-			if  let nickname = metadata.walletNickname {
+			if metadata.hasDomain(onNetwork: currentNetwork) {
 				
-				// If non social, check for nicknames first
-				title = nickname
-				subtitle =  metadata.address.truncateTezosAddress()
-				
-			} else if metadata.hasDomain(onNetwork: currentNetwork) {
-				
-				// If no nicknames, check for tezos domains
+				// check for tezos domains first
 				let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
 				return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
+				
+			} else if let nickname = metadata.walletNickname {
+				
+				// If no domains, check for nicknames
+				title = nickname
+				subtitle =  metadata.address.truncateTezosAddress()
 				
 			} else {
 				

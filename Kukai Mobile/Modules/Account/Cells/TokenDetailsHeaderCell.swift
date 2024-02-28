@@ -38,6 +38,11 @@ class TokenDetailsHeaderCell: UITableViewCell {
 	
 	func changePriceDisplay(data: TokenDetailsHeaderData) {
 		fiatLabel.text = data.fiatAmount
+		
+		guard data.priceChangeText != "" else {
+			return
+		}
+		
 		priceChangeArrow.isHidden = false
 		priceChangeLabel.text = data.priceChangeText
 		priceChangeDate.text = data.priceRange

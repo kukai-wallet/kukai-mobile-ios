@@ -84,7 +84,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
 	private var playerController: AVPlayerViewController? = nil
-	private var playerLooper: AVPlayerLooper? = nil
+	//private var playerLooper: AVPlayerLooper? = nil
+	private var player: AVPlayer? = nil
 	
 	private var sendData = SendContent(enabled: true)
 	private var descriptionData = DescriptionContent(description: "")
@@ -211,6 +212,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			let smallImage = MediaProxyService.mediumURL(forNFT: nft)
 			let largeURL = MediaProxyService.largeURL(forNFT: nft)
 			
+			Logger.app.info("Small imageURL: \(smallImage?.absoluteString ?? "-")")
+			Logger.app.info("Large imageURL: \(largeURL?.absoluteString ?? "-")")
+			
 			if let imageSize = MediaProxyService.sizeForImageIfCached(url: largeURL) {
 				mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: largeURL, mediaURL2: nil, width: imageSize.width, height: imageSize.height)
 				
@@ -225,10 +229,16 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			let imageURL = MediaProxyService.url(fromUri: nft.displayURI, ofFormat: MediaProxyService.Format.large.rawFormat())
 			let audioURL =  MediaProxyService.url(fromUri: nft.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
 			
+			Logger.app.info("imageURL: \(imageURL?.absoluteString ?? "-")")
+			Logger.app.info("audioURL: \(audioURL?.absoluteString ?? "-")")
+			
 			mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: audioURL, mediaURL2: imageURL, width: 300, height: 300)
 			
 		} else {
 			let videoURL = MediaProxyService.url(fromUri: nft.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
+			
+			Logger.app.info("videoURL: \(videoURL?.absoluteString ?? "-")")
+			
 			mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: videoURL, mediaURL2: nil, width: 0, height: 0)
 		}
 		
@@ -400,11 +410,15 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				if self.playerController == nil {
 					self.playerController = AVPlayerViewController()
 					
-					Logger.app.info("Loading video url: \(url.absoluteString)")
+					// Player looper is the recommended approach, however a video that is less than 1 second caused numerous issues, and an ugly flash while reloading
+					// Handling the looping ourselves by listening for the end and then seeking back to start, seems smoother
+					// temporarily leaving this here until we get feedback from testers
+					//
+					//let player = AVQueuePlayer(playerItem: playerItem)
+					//self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem1)
 					
 					let playerItem = AVPlayerItem(url: url)
-					let player = AVQueuePlayer(playerItem: playerItem)
-					self.playerLooper = AVPlayerLooper(player: player, templateItem: playerItem)
+					self.player = AVPlayer(playerItem: playerItem)
 					self.playerController?.player = player
 				}
 				
