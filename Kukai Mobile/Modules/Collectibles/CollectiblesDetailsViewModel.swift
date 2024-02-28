@@ -269,7 +269,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	deinit {
 		playerController = nil
-		playerLooper = nil
+		player = nil
+		//playerLooper = nil
 	}
 	
 	
