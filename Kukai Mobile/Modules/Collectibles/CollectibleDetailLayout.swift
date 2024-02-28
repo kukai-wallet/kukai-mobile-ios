@@ -112,6 +112,10 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 			}
 		}
 		
+		if numberOfCellsInSection % 2 == 0 {
+			return (yOffset + 25)
+		}
+		
 		return (yOffset + heightOfCell + 25)
 	}
 	
