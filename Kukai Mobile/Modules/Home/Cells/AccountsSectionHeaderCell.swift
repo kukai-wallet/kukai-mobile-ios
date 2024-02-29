@@ -7,13 +7,20 @@
 
 import UIKit
 
+protocol AccountsSectionHeaderCellDelegate: AnyObject {
+	func lessTapped()
+}
+
 class AccountsSectionHeaderCell: UITableViewCell {
 	
 	@IBOutlet var iconView: UIImageView!
 	@IBOutlet var headingLabel: UILabel!
 	@IBOutlet var menuButton: CustomisableButton!
+	@IBOutlet weak var lessButton: CustomisableButton!
 	
 	private var menu: MenuViewController? = nil
+	
+	public weak var delegate: AccountsSectionHeaderCellDelegate? = nil
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -46,5 +53,9 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	
 	@IBAction func moreTapped(_ sender: UIButton) {
 		menu?.display(attachedTo: sender)
+	}
+	
+	@IBAction func lessTapped(_ sender: Any) {
+		delegate?.lessTapped()
 	}
 }
