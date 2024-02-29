@@ -169,6 +169,7 @@ extension AccountsViewController: UITableViewDelegate {
 		if indexPath.row == 0 { return }
 		
 		if viewModel.handleMoreCellIfNeeded(indexPath: indexPath) {
+			tableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.section), at: .top, animated: true)
 			return
 		}
 		

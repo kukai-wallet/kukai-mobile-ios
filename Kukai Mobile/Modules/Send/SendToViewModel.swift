@@ -33,12 +33,16 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
 	
+	private var expandedSection: Int? = nil
+	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let obj = item as? SendHeaderObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
 				cell.iconView.image = obj.icon
 				cell.headingLabel.text = obj.title
+				cell.lessButton.isHidden = !(indexPath.section == self?.expandedSection)
+				cell.delegate = self
 				return cell
 				
 			} else if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
@@ -49,6 +53,10 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let _ = item as? NoContacts, let cell = tableView.dequeueReusableCell(withIdentifier: "NoContactsCell", for: indexPath) as? NoContactsCell {
+				return cell
+				
+			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
+				cell.setup(obj)
 				return cell
 				
 			} else {
@@ -98,7 +106,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// HD's
-		for (_, metadata) in wallets.hdWallets.enumerated() {
+		for (index, metadata) in wallets.hdWallets.enumerated() {
 			walletsToAdd = []
 			if metadata.address == selectedAddress && metadata.children.count == 0 {
 				continue
@@ -109,9 +117,17 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
 			}
 			
-			for childMetadata in metadata.children where childMetadata.address != selectedAddress {
-				let childWalletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
-				walletsToAdd.append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
+			let isSectionExpanded = (expandedSection == sections.count)
+			var totalChildCount = 0
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				if childMetadata.address == selectedAddress { continue }
+				
+				totalChildCount += 1
+				
+				if isSectionExpanded || (!isSectionExpanded && totalChildCount < 3) {
+					let childWalletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
+					walletsToAdd.append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
+				}
 			}
 			
 			if walletsToAdd.count > 0 {
@@ -119,8 +135,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "")])
 				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 			}
+			
+			// if there are more than 3 items total, display moreCell
+			if totalChildCount > 2 {
+				let moreData = AccountsMoreObject(count: totalChildCount-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(moreData)
+			}
 		}
-		
 		
 		// Linear
 		walletsToAdd = []
@@ -161,5 +182,29 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		guard indexPath.row > 0 else { return nil }
 		
 		return dataSource?.itemIdentifier(for: indexPath) as? WalletObj
+	}
+	
+	func handleMoreCellIfNeeded(indexPath: IndexPath) -> Bool {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? AccountsMoreObject else {
+			return false
+		}
+		
+		if expandedSection == indexPath.section {
+			expandedSection = nil
+			
+		} else {
+			expandedSection = indexPath.section
+		}
+		
+		refresh(animate: true)
+		return true
+	}
+}
+
+extension SendToViewModel: AccountsSectionHeaderCellDelegate {
+	
+	func lessTapped() {
+		expandedSection = nil
+		refresh(animate: true)
 	}
 }

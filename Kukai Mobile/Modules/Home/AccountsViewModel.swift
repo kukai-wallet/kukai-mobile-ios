@@ -281,6 +281,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		reloadFromExpanding = true
+		shouldScrollToSelected = false
 		refresh(animate: true)
 		return true
 	}
