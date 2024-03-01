@@ -41,7 +41,7 @@ class RemoveWalletViewController: UIViewController {
 		
 		walletTypeIcon.image = media.image
 		
-		if selectedWalletMetadata.type == .hd {
+		if selectedWalletMetadata.type == .hd && selectedWalletMetadata.isChild == false {
 			walletTypeLabel.text = selectedWalletMetadata.hdWalletGroupName
 			addresLabel.text = selectedWalletMetadata.address.truncateTezosAddress()
 			
@@ -76,6 +76,7 @@ class RemoveWalletViewController: UIViewController {
 		
 		if metadata.isWatchOnly {
 			if RemoveWalletViewController.deleteCaches(forWatchAddress: metadata.address) {
+				DependencyManager.shared.walletDeleted = true
 				self.dismiss(animated: true)
 			} else {
 				self.windowError(withTitle: "error".localized(), description: "error-delete-wallet".localized())
@@ -83,6 +84,7 @@ class RemoveWalletViewController: UIViewController {
 			
 		} else {
 			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
+				DependencyManager.shared.walletDeleted = true
 				self.dismiss(animated: true)
 			} else {
 				self.windowError(withTitle: "error".localized(), description: "error-delete-wallet".localized())
