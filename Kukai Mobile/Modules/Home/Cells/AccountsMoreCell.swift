@@ -15,10 +15,10 @@ class AccountsMoreCell: UITableViewCell {
 	func setup(_ obj: AccountsMoreObject) {
 		if obj.isExpanded {
 			moreLabel.text = "Less"
-			moreImage.rotate(degrees: 180, duration: 0.3)
+			moreImage.image = UIImage(named: "ChevronUp")
 		} else {
 			moreLabel.text = "More (\(obj.count))"
-			moreImage.rotateBack(duration: 0.3)
+			moreImage.image = UIImage(named: "ChevronDown")
 		}
 	}
 }
