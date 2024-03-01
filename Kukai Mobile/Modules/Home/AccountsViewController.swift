@@ -80,6 +80,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 						} else {
 							self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
 						}
+					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
+						self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)
 					}
 			}
 		}
