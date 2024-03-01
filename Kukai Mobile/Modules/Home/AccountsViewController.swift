@@ -168,15 +168,20 @@ extension AccountsViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if indexPath.row == 0 { return }
 		
+		if viewModel.handleMoreCellIfNeeded(indexPath: indexPath) {
+			tableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.section), at: .top, animated: true)
+			return
+		}
+		
+		guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
+			return
+		}
+		
 		if !tableView.isEditing {
 			deselectCurrentSelection()
 			
 			viewModel.selectedIndex = indexPath
 			tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
-			
-			guard let metadata = viewModel.metadataFor(indexPath: indexPath) else {
-				return
-			}
 			
 			DependencyManager.shared.selectedWalletMetadata = metadata
 			

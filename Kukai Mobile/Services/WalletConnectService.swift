@@ -602,7 +602,7 @@ public class WalletConnectService {
 	}
 	
 	/// Optional `andMarkComplete` needed for some internal situations where we can't continue on our side, so the queue will mark itself complete, but we still need to let WC2 know that something went wrong and the user might need to retry
-	public static func rejectCurrentRequest(withMessage: String = "", andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
+	public static func rejectCurrentRequest(withMessage: String = "User Rejected", andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC rejectCurrentRequest can't find current request")
 			completion?(false, nil)

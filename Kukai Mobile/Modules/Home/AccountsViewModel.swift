@@ -18,6 +18,14 @@ struct AccountsHeaderObject: Hashable {
 	let id = UUID()
 	let header: String
 	let menu: MenuViewController?
+	let showLess: Bool
+}
+
+struct AccountsMoreObject: Hashable {
+	let id = UUID()
+	let count: Int
+	let isExpanded: Bool
+	let hdWalletIndex: Int
 }
 
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -35,6 +43,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var previousAddresses: [String] = []
 	private var newlyAddedAddress: String? = nil
 	private var shouldScrollToSelected = true
+	private var expandedSection: Int? = nil
+	private var reloadFromExpanding = false
 	
 	class EditableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -52,6 +62,8 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
+				cell.delegate = self
+				cell.lessButton.isHidden = !(indexPath.section == self?.expandedSection)
 				
 				return cell
 				
@@ -67,6 +79,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.newIndicatorView.isHidden = true
 				}
 				
+				return cell
+				
+			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
+				cell.setup(obj)
 				return cell
 				
 			} else {
@@ -107,7 +123,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil)])
+			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false)])
 		}
 		for (index, metadata) in wallets.socialWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -121,15 +137,30 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu)])
+				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
 			}
 			
+			let isSectionExpanded = (expandedSection == sections.count-1)
 			sectionData[sections.count-1].append(metadata)
 			
 			for (childIndex, childMetadata) in metadata.children.enumerated() {
-				sectionData[sections.count-1].append(childMetadata)
+				let isSelected = childMetadata.address == currentAddress
 				
-				if childMetadata.address == currentAddress { selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1) }
+				// slected always needs to be displayed whether expanded or collapsed.
+				// If current section is collapsed and the indx is beyond the fold, make selected be the last item in that section instead
+				if isSelected && !isSectionExpanded && childIndex > 1 {
+					sectionData[sections.count-1].removeLast()
+					sectionData[sections.count-1].append(childMetadata)
+					
+				} else if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+					sectionData[sections.count-1].append(childMetadata)
+				}
+				
+				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
+				if isSelected {
+					selectedIndex = IndexPath(row: sectionData[sections.count-1].count-1, section: sections.count-1)
+				}
+				
 				
 				// Check if we added a new child address, which doesn't get auto selected
 				if !previousAddresses.contains(childMetadata.address) {
@@ -139,13 +170,20 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
+			
+			
+			// if there are more than 3 items total, display moreCell
+			if metadata.children.count > 2 {
+				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(moreData)
+			}
 		}
 		
 		
 		// Linear
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil)])
+			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false)])
 		}
 		for (index, metadata) in wallets.linearWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -157,7 +195,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Ledger
 		if wallets.ledgerWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil)])
+			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil, showLess: false)])
 		}
 		for (index, metadata) in wallets.ledgerWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -170,7 +208,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if !isPresentingForConnectedApps {
 			if wallets.watchWallets.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil)])
+				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false)])
 			}
 			for (index, metadata) in wallets.watchWallets.enumerated() {
 				sectionData[sections.count-1].append(metadata)
@@ -193,8 +231,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			newWalletAutoSelected = true
 		}
 		
-		// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
-		ds.applySnapshotUsingReloadData(snapshot)
+		
+		if reloadFromExpanding {
+			ds.apply(snapshot, animatingDifferences: true)
+			reloadFromExpanding = false
+		} else {
+			// Need to use reload for this viewModel as multiple buttons effect the state of options in the list
+			ds.applySnapshotUsingReloadData(snapshot)
+		}
 		
 		// If we had to forcably set a wallet (due to edits / deletions), select the wallet
 		if newWalletAutoSelected {
@@ -222,6 +266,24 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
 		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
+	}
+	
+	func handleMoreCellIfNeeded(indexPath: IndexPath) -> Bool {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? AccountsMoreObject else {
+			return false
+		}
+		
+		if expandedSection == indexPath.section {
+			expandedSection = nil
+			
+		} else {
+			expandedSection = indexPath.section
+		}
+		
+		reloadFromExpanding = true
+		shouldScrollToSelected = false
+		refresh(animate: true)
+		return true
 	}
 	
 	/// Deleting a child index requires a HD parent wallet index (for performance reasons). Return the index of the HD wallet, if relevant
@@ -326,5 +388,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .failure(error, "Error occurred detching tezos domains")
 			}
 		}
+	}
+}
+
+extension AccountsViewModel: AccountsSectionHeaderCellDelegate {
+	
+	func lessTapped() {
+		expandedSection = nil
+		reloadFromExpanding = true
+		refresh(animate: true)
 	}
 }

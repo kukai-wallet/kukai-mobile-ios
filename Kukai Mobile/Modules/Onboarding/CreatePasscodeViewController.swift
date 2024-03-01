@@ -28,6 +28,7 @@ class CreatePasscodeViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		hiddenTextfield.text = ""
 		updateDigitViewsWithLength(length: 0)
 	}
 	

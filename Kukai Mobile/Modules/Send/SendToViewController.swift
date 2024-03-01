@@ -57,6 +57,11 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
+		if viewModel.handleMoreCellIfNeeded(indexPath: indexPath) {
+			tableView.scrollToRow(at: IndexPath(row: 0, section: indexPath.section), at: .top, animated: true)
+			return
+		}
+		
 		guard indexPath.row > 0, let walletObj = viewModel.walletObj(forIndexPath: indexPath) else { return }
 		
 		TransactionService.shared.currentTransactionType = .send
