@@ -38,7 +38,9 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
 	public var addressToMarkAsSelected: String? = nil
+	public var newAddressIndexPath: IndexPath? = nil
 	
+	private var bag = [AnyCancellable]()
 	private var newWalletAutoSelected = false
 	private var previousAddresses: [String] = []
 	private var newlyAddedAddress: String? = nil
@@ -55,6 +57,26 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return false
 		}
 	}
+	
+	
+	
+	// MARK: - Init
+	
+	override init() {
+		super.init()
+		
+		DependencyManager.shared.$walletDeleted
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.previousAddresses = []
+			}.store(in: &bag)
+	}
+	
+	deinit {
+		bag.forEach({ $0.cancel() })
+	}
+	
+	
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
@@ -165,6 +187,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				// Check if we added a new child address, which doesn't get auto selected
 				if !previousAddresses.contains(childMetadata.address) {
 					newlyAddedAddress = childMetadata.address
+					newAddressIndexPath = IndexPath(row: childIndex, section: sections.count-1)
 					previousAddresses.append(childMetadata.address)
 				}
 			}
@@ -253,6 +276,9 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		self.state = .success(nil)
+		
+		// Make sure its reset after each call
+		newAddressIndexPath = nil
 	}
 	
 	// We only want to disable this during the adding of new accounts, via the context menu for HD wallets. Which should only be triggered once
@@ -296,6 +322,18 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return nil
 	}
 	
+	func isLastSubAccount(indexPath: IndexPath) -> Bool {
+		if indexPath.row > 1,
+		   let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata,
+		   let selectedItem = dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata,
+		   parentItem.type == .hd,
+		   parentItem.children.last?.address == selectedItem.address {
+			return true
+		}
+		
+		return false
+	}
+	
 	private func menuFor(walletMetadata: WalletMetadata, hdWalletIndex: Int) -> MenuViewController? {
 		guard let vc = delegate else { return nil }
 		
@@ -330,6 +368,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						vc.windowError(withTitle: "error".localized(), description: eString)
 					} else {
 						self?.shouldScrollToSelected = false
+						self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
 						self?.refresh(animate: true)
 						vc.hideLoadingView()
 					}

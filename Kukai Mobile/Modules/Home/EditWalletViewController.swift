@@ -29,6 +29,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 	
 	public var selectedWalletMetadata: WalletMetadata? = nil
 	public var selectedWalletParentIndex: Int? = nil
+	public var isLastSubAccount: Bool = false
 	
 	var bottomSheetMaxHeight: CGFloat = 420
 	var dimBackground: Bool = true
@@ -49,8 +50,8 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 		
 		guard let selectedWalletMetadata = selectedWalletMetadata else { return }
 		
-		if selectedWalletParentIndex != nil {
-			deleteButton.isHidden = true // Can't delete HD wallet sub accounts, all or none
+		if selectedWalletParentIndex != nil && !isLastSubAccount {
+			deleteButton.isHidden = true // Can only delete the last sub account in a HD wallet. Not allowed to leave a gap
 		}
 		
 		// Heading

@@ -20,6 +20,7 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 	private let viewModel = AccountsViewModel()
 	private var cancellable: AnyCancellable?
 	private var refreshControl = UIRefreshControl()
+	private var editingIndexPath: IndexPath? = nil
 	
 	public weak var bottomSheetContainer: UIViewController? = nil
 	public var addressToMarkAsSelected: String? = nil
@@ -67,6 +68,10 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 					//self?.hideLoadingView(completion: nil)
 					self?.refreshControl.endRefreshing()
 					
+					guard self?.tableView.isEditing == false else {
+						return
+					}
+					
 					if self?.viewModel.scrollToSelected() == true {
 						
 						if self?.bottomSheetContainer != nil {
@@ -80,6 +85,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 						} else {
 							self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
 						}
+					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
+						self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)
 					}
 			}
 		}
@@ -122,14 +129,17 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		}
 		
 		if let vc = segue.destination as? EditWalletViewController, let indexPath = sender as? IndexPath {
+			self.editingIndexPath = indexPath
 			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
 			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+			vc.isLastSubAccount = viewModel.isLastSubAccount(indexPath: indexPath)
 			
 		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
 			vc.selectedWalletMetadata = metadata
 			
-		} else if let vc = segue.destination as? RemoveWalletViewController, let metadata = sender as? WalletMetadata {
-			vc.selectedWalletMetadata = metadata
+		} else if let vc = segue.destination as? RemoveWalletViewController, let indexPath = self.editingIndexPath {
+			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
+			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
 		}
 	}
 }

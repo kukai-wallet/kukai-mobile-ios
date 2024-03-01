@@ -119,7 +119,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			let isSectionExpanded = (expandedSection == sections.count)
 			var totalChildCount = 0
-			for (childIndex, childMetadata) in metadata.children.enumerated() {
+			for (_, childMetadata) in metadata.children.enumerated() {
 				if childMetadata.address == selectedAddress { continue }
 				
 				totalChildCount += 1
