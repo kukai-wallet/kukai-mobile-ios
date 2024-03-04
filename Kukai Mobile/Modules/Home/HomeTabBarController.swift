@@ -245,6 +245,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.tzktClient.$accountDidChange
 			.dropFirst()
 			.sink { [weak self] addresses in
+				Logger.app.info("$accountDidChange Refreshing everything for \(addresses)")
 				self?.refreshType = .refreshEverything
 				self?.refresh(addresses: addresses)
 			}.store(in: &bag)
