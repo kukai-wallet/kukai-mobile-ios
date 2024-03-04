@@ -309,14 +309,12 @@ public class BalanceService {
 				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
-					DependencyManager.shared.activityService.loadCache(address: address)
 					self?.balanceRequestDispathGroup.leave()
 				}
 			})
 			
 			loadCachedExchangeDataIfNotLoaded()
 			loadEstimatedTotalsIfNotLoaded()
-			DependencyManager.shared.activityService.loadCache(address: address)
 			self.balanceRequestDispathGroup.leave()
 			
 		} else {
@@ -352,7 +350,6 @@ public class BalanceService {
 				let unresolvedDestinations = LookupService.shared.unresolvedDomains(addresses: uniqueDestinations)
 				
 				LookupService.shared.resolveAddresses(unresolvedDestinations) {
-					DependencyManager.shared.activityService.loadCache(address: address)
 					self?.needsCacheDateUpdate = true
 					self?.balanceRequestDispathGroup.leave()
 				}
