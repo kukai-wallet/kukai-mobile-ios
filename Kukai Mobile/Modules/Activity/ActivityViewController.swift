@@ -62,7 +62,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	override func viewWillAppear(_ animated: Bool) {
 		viewModel.isVisible = true
 		
-		(self.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
+		let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
+		if let selectedAddress = DependencyManager.shared.selectedWalletAddress, !pendingAddresses.contains([selectedAddress]) {
+			(self.tabBarController as? HomeTabBarController)?.stopActivityAnimationIfNecessary()
+		}
 		viewModel.refresh(animate: false)
 	}
 	
