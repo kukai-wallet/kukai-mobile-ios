@@ -31,6 +31,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityTabBarImageView: UIImageView? = nil
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
+	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -131,13 +132,19 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] obj in
 				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
-					DispatchQueue.main.async {
-						self?.windowError(withTitle: "error".localized(), description: obj.error.description)
+					
+					if self?.supressAutoRefreshError == true {
+						self?.supressAutoRefreshError = false
+					} else {
+						DispatchQueue.main.async {
+							self?.windowError(withTitle: "error".localized(), description: obj.error.description)
+						}
 					}
 				}
 			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.supressAutoRefreshError = true
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
 		}.store(in: &bag)
