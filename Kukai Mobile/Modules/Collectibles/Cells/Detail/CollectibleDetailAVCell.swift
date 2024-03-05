@@ -38,6 +38,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var commandCentreTargetToggle: Any? = nil
 	private var commandCentreTargetPlay: Any? = nil
 	private var commandCentreTargetPause: Any? = nil
+	private var fullScreenSpinner: UIActivityIndicatorView? = nil
 	
 	public var setup = false
 	public var timer: Timer? = nil
@@ -63,6 +64,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		avplayerController.view.frame = placeholderView.bounds
 		avplayerController.view.backgroundColor = .clear
 		avplayerController.updatesNowPlayingInfoCenter = false
+		avplayerController.delegate = self
 		
 		self.playbackWillKeepUpObserver = avplayerController.player?.observe(\.currentItem?.isPlaybackLikelyToKeepUp, changeHandler: { [weak self] player, change in
 			if player.currentItem?.isPlaybackLikelyToKeepUp == true {
@@ -70,7 +72,9 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 				
 				if self?.isAudio == false && self?.isPlaying == false {
 					self?.mediaActivityView.stopAnimating()
+					self?.fullScreenSpinner?.stopAnimating()
 					self?.mediaActivityView.isHidden = true
+					self?.fullScreenSpinner?.isHidden = true
 					self?.playerController?.player?.play()
 					self?.isPlaying = true
 					
@@ -218,7 +222,9 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private func checkAudioImageStatus() {
 		if isImageDownloaded && isPlaybackReady {
 			mediaActivityView.stopAnimating()
+			fullScreenSpinner?.stopAnimating()
 			mediaActivityView.isHidden = true
+			fullScreenSpinner?.isHidden = true
 		}
 	}
 	
@@ -283,5 +289,27 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 		
 		playerController?.player?.pause()
 		let _ = try? AVAudioSession.sharedInstance().setActive(false)
+	}
+}
+
+extension CollectibleDetailAVCell: AVPlayerViewControllerDelegate {
+	
+	func playerViewController(_ playerViewController: AVPlayerViewController, willBeginFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+		
+		if !isPlaybackReady {
+			fullScreenSpinner = UIActivityIndicatorView(style: .medium)
+			fullScreenSpinner?.frame = CGRect(x: (UIScreen.main.bounds.width - 50) / 2, y: (UIScreen.main.bounds.height - 50) / 2, width: 50, height: 50)
+			fullScreenSpinner?.startAnimating()
+			
+			if let v = fullScreenSpinner {
+				playerViewController.contentOverlayView?.addSubview(v)
+			}
+		}
+	}
+	
+	func playerViewController(_ playerViewController: AVPlayerViewController, willEndFullScreenPresentationWithAnimationCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+		fullScreenSpinner?.stopAnimating()
+		fullScreenSpinner?.removeFromSuperview()
+		fullScreenSpinner = nil
 	}
 }
