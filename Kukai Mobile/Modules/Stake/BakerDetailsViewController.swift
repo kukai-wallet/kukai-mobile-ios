@@ -43,9 +43,9 @@ class BakerDetailsViewController: UIViewController {
 		
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		splitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		spaceLabel.text = baker.stakingCapacity.rounded(scale: 0, roundingMode: .bankers).description + " tez"
+		spaceLabel.text = baker.stakingCapacity.rounded(scale: 0, roundingMode: .bankers).description + " XTZ"
 		rewardslabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		freeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " tez"
+		freeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
 		
 		switch baker.payoutAccuracy {
 			case .precise:

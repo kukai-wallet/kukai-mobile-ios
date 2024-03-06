@@ -317,7 +317,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		if token.isXTZ() {
 			self.tokenHeaderData.tokenImage = UIImage.tezosToken()
-			self.tokenHeaderData.tokenName = "Tezos"
+			self.tokenHeaderData.tokenName = "XTZ"
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)

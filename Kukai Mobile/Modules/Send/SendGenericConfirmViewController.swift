@@ -220,7 +220,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = fee.normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		updateOperationDisplay()
 	}

@@ -62,7 +62,7 @@ class DefiViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			cell.sourceLabel.text = position.exchange.name == .lb ? "Sirius Dex" : "Quipuswap"
 			
 			cell.amountLabel.text = position.tokenAmount().normalisedRepresentation
-			cell.value1Label.text = "\(calc.expectedXTZ.normalisedRepresentation) tez"
+			cell.value1Label.text = "\(calc.expectedXTZ.normalisedRepresentation) XTZ"
 			cell.value2Label.text = "\(calc.expectedToken.normalisedRepresentation) \(position.exchange.token.symbol)"
 			
 			return cell

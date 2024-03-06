@@ -44,7 +44,7 @@ class LiquidityTokenDetailsViewModel: ViewModel {
 				return
 			}
 			
-			self?.amount = res.normalisedRepresentation + " tez"
+			self?.amount = res.normalisedRepresentation + " XTZ"
 			self?.withdrawEnabled = res > XTZAmount.zero()
 			self?.state = .success(successMessage)
 		}

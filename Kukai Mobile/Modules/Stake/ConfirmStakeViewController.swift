@@ -97,7 +97,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 				
 			} else {
 				bakerAddSplitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " tez"
+				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
 				bakerAddEstimatedRewardLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 			}
 			
@@ -217,7 +217,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = fee.normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 	

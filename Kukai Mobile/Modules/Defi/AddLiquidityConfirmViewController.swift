@@ -42,7 +42,7 @@ class AddLiquidityConfirmViewController: UIViewController {
 		token1Icon.image = UIImage.tezosToken()
 		token1Label.text = "XTZ"
 		token1AmountLabel.text = TransactionService.shared.addLiquidityData.token1?.normalisedRepresentation ?? ""
-		token1BalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
+		token1BalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) XTZ"
 		
 		let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
 		MediaProxyService.load(url: tokenIconURL, to: token2Icon, withCacheType: .permanent, fallback: UIImage())
