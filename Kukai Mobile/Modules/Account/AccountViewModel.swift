@@ -152,7 +152,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.valuelabel.text = currencyString
 					
 				} else {
-					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.placeholderCurrencyString()
+					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
 				}
 				
 				return cell

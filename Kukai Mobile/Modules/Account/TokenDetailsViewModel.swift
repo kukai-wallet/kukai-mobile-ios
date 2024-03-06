@@ -339,14 +339,20 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let isHidden = token.isHidden
 			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			
-			let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] ?? (xtzValue: .zero(), marketRate: 0)
-			let fiatPerToken = tokenValueAndRate.marketRate
-			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
-			self.tokenHeaderData.fiatAmount = tokenFiatPrice
-			
-			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
+			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+				let fiatPerToken = tokenValueAndRate.marketRate
+				tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+				tokenHeaderData.fiatAmount = tokenFiatPrice
+				
+				let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
+				
+			} else {
+				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
+				tokenHeaderData.fiatAmount = dashedString
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isStakingPossible: false, isStaked: false, bakerName: "")
+			}
 		}
 	}
 	
