@@ -86,6 +86,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private static let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	private var currentChartRange: TokenDetailsChartCellRange = .day
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
+	private var initialChartLoad = true
 	
 	// Set by VC
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
@@ -142,7 +143,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			} else if let obj = item as? AllChartData, self.initialChartLoad == true, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				cell.setup()
 				return cell
 				
@@ -257,6 +258,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		// Trigger remote data fetching
 		loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
+			self.initialChartLoad = false
 			
 			switch result {
 				case .success(let data):
