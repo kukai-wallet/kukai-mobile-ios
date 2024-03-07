@@ -67,7 +67,15 @@ class ChartHostingController: UIHostingController<AnyView> {
 	}
 	
 	public func setData(_ data: [ChartViewDataPoint]) {
-		integration.data = data
+		var d = data
+		
+		if d.count == 1 {
+			let sameValue = d[0].value
+			let oneSeconLaterValue = Date(timeIntervalSince1970: d[0].date.timeIntervalSince1970 + 1)
+			d.append(ChartViewDataPoint(value: sameValue, date: oneSeconLaterValue, id: UUID()))
+		}
+		
+		integration.data = d
 	}
 }
 
@@ -98,9 +106,15 @@ struct ChartView: View {
 	
 	var body: some View {
 		VStack(spacing: 4) {
-			topAnnotationView
-			chart
-			bottomAnnotationView
+			if integration.data.count > 0 {
+				topAnnotationView
+				chart
+				bottomAnnotationView
+			} else {
+				Text("No data available")
+					.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
+					.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
+			}
 			
 		}.background(.clear)
 	}
@@ -111,9 +125,15 @@ struct ChartView: View {
 				GeometryReader { geo in
 					
 					let widthOfString = doubleFormatter(integration.maxData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
-					let boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
+					var boxOffset: CGFloat = 4
 					
-					VStack(alignment: .trailing) {
+					if maxDataPoint.y == minDataPoint.y {
+						boxOffset = CGFloat(geo.size.width - widthOfString)
+					} else {
+						boxOffset = max(4, min(geo.size.width - widthOfString, maxDataPoint.x - widthOfString / 2))
+					}
+					
+					return VStack(alignment: .trailing) {
 						Text(doubleFormatter((integration.maxData?.value ?? 0)))
 							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
 							.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
@@ -134,9 +154,16 @@ struct ChartView: View {
 				GeometryReader { geo in
 					
 					let widthOfString = doubleFormatter(integration.minData?.value).widthOfString(usingFont: UIFont.custom(ofType: .bold, andSize: 12))
-					let boxOffset = max(4, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+					var boxOffset: CGFloat = 4
 					
-					VStack(alignment: .trailing) {
+					if maxDataPoint.y == minDataPoint.y {
+						boxOffset = CGFloat(geo.size.width - widthOfString)
+					} else {
+						boxOffset = max(4, min(geo.size.width - widthOfString, minDataPoint.x - widthOfString / 2))
+					}
+					
+					
+					return VStack(alignment: .trailing) {
 						Text(doubleFormatter((integration.minData?.value ?? 0)))
 							.font(Font(UIFont.custom(ofType: .bold, andSize: 12)))
 							.foregroundStyle(Color(UIColor.colorNamed("Txt8")))
@@ -222,7 +249,16 @@ struct ChartView: View {
 	private func doubleFormatter(_ double: Double?) -> String {
 		guard let d = double else { return "" }
 		
-		return DependencyManager.shared.coinGeckoService.format(decimal: Decimal(d), numberStyle: .currency, maximumFractionDigits: 2)
+		var numberOfDigits = 2
+		if d < 0.000001 {
+			let emptyValue = DependencyManager.shared.coinGeckoService.format(decimal: Decimal(d), numberStyle: .currency, maximumFractionDigits: 2)
+			return "<\(emptyValue)"
+			
+		} else if d < 0.01 {
+			numberOfDigits = 6
+		}
+		
+		return DependencyManager.shared.coinGeckoService.format(decimal: Decimal(d), numberStyle: .currency, maximumFractionDigits: numberOfDigits)
 	}
 	
 	private func useProxy(_ proxy: ChartProxy) -> some View {
@@ -273,7 +309,35 @@ struct TokenDetailsChartView_Previews: PreviewProvider {
 			.init(value: 900, date: Date().addingTimeInterval(60000))
 		]
 		
-		let dataArrays = [tempData1, tempData2, tempData3]
+		let tempData4: [ChartViewDataPoint] = [
+		]
+		
+		let tempData5: [ChartViewDataPoint] = [
+			.init(value: 0.0004, date: Date()),
+			.init(value: 0.0006, date: Date().addingTimeInterval(10000)),
+			.init(value: 0.0002, date: Date().addingTimeInterval(20000)),
+			.init(value: 0.0001, date: Date().addingTimeInterval(30000)),
+			.init(value: 0.0009, date: Date().addingTimeInterval(40000)),
+			.init(value: 0.00041, date: Date().addingTimeInterval(50000)),
+			.init(value: 0.00042, date: Date().addingTimeInterval(60000))
+		]
+		
+		let tempData6: [ChartViewDataPoint] = [
+			.init(value: 0.0000004, date: Date()),
+			.init(value: 0.0000006, date: Date().addingTimeInterval(10000)),
+			.init(value: 0.0000002, date: Date().addingTimeInterval(20000)),
+			.init(value: 0.0000001, date: Date().addingTimeInterval(30000)),
+			.init(value: 0.0000009, date: Date().addingTimeInterval(40000)),
+			.init(value: 0.00000041, date: Date().addingTimeInterval(50000)),
+			.init(value: 0.00000042, date: Date().addingTimeInterval(60000))
+		]
+		
+		let tempData7: [ChartViewDataPoint] = [
+			.init(value: 0.004, date: Date()),
+			.init(value: 0.004, date: Date())
+		]
+		
+		let dataArrays = [tempData1, tempData2, tempData3, tempData4, tempData5, tempData6, tempData7]
 		var currentIndex = 0
 		
 		let integration = ChartViewIntegrationService()

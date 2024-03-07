@@ -340,13 +340,35 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			
 			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+				var tokenPriceString = ""
 				let fiatPerToken = tokenValueAndRate.marketRate
-				tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+				if fiatPerToken < 0.000001 {
+					tokenPriceString = "<\(DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2))"
+					
+				} else if fiatPerToken < 0.01 {
+					tokenPriceString = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 6)
+					
+				} else {
+					tokenPriceString = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+				}
+				
+				tokenFiatPrice = tokenPriceString
 				tokenHeaderData.fiatAmount = tokenFiatPrice
 				
+				
+				var tokenBalanceValueString = ""
 				let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-				let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
-				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
+				if xtzPrice < 0.000001 {
+					tokenBalanceValueString = "<\(DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2))"
+					
+				} else if xtzPrice < 0.01 {
+					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 6)
+					
+				} else {
+					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+				}
+				
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isStakingPossible: false, isStaked: false, bakerName: "")
 				
 			} else {
 				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()

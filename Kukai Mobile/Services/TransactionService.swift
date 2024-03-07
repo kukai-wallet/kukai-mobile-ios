@@ -371,7 +371,7 @@ public class TransactionService {
 		switch metadata.socialType {
 			case .apple:
 				let image = UIImage(named: "Social_Apple")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("Txt2")) ?? UIImage()
-				return (image: image, title: "Apple account", subtitle: metadata.address.truncateTezosAddress())
+				return (image: image, title: "AppleID", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitter:
 				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
