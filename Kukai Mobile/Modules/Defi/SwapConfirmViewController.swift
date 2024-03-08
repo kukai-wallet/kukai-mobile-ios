@@ -63,7 +63,7 @@ class SwapConfirmViewController: UIViewController {
 			tokenFromIcon.image = UIImage.tezosToken()
 			tokenFromLabel.text = "XTZ"
 			tokenFromAmountLabel.text = TransactionService.shared.exchangeData.fromAmount?.normalisedRepresentation ?? ""
-			tokenFromBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
+			tokenFromBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) XTZ"
 			
 			let tokenIconURL = TzKTClient.avatarURL(forToken: exchange.token.address)
 			MediaProxyService.load(url: tokenIconURL, to: tokenToIcon, withCacheType: .permanent, fallback: UIImage())
@@ -73,7 +73,7 @@ class SwapConfirmViewController: UIViewController {
 			tokenToBalanceLabel.text = "Balance: \(tokenBalanceString) \(exchange.token.symbol)"
 			
 			let fee = (TransactionService.shared.exchangeData.fromAmount ?? .zero()) * Decimal( (settings.fee)/100 )
-			swapFeeLabel.text = "\(fee.rounded(scale: 6, roundingMode: .bankers)) tez"
+			swapFeeLabel.text = "\(fee.rounded(scale: 6, roundingMode: .bankers)) XTZ"
 			
 			minReceivedLabel.text = calcResult.minimum.normalisedRepresentation + " \(exchange.token.symbol)"
 			
@@ -89,12 +89,12 @@ class SwapConfirmViewController: UIViewController {
 			tokenToIcon.image = UIImage.tezosToken()
 			tokenToLabel.text = "XTZ"
 			tokenToAmountLabel.text = TransactionService.shared.exchangeData.toAmount?.normalisedRepresentation ?? ""
-			tokenToBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) tez"
+			tokenToBalanceLabel.text = "Balance: \(DependencyManager.shared.balanceService.account.xtzBalance.normalisedRepresentation) XTZ"
 			
 			let fee = (TransactionService.shared.exchangeData.toAmount ?? .zero()) * Decimal( (settings.fee)/100 )
-			swapFeeLabel.text = "\(fee.rounded(scale: 6, roundingMode: .bankers)) tez"
+			swapFeeLabel.text = "\(fee.rounded(scale: 6, roundingMode: .bankers)) XTZ"
 			
-			minReceivedLabel.text = calcResult.minimum.normalisedRepresentation + " tez"
+			minReceivedLabel.text = calcResult.minimum.normalisedRepresentation + " XTZ"
 		}
 		
 		exchangeRateLabel.text = TransactionService.shared.exchangeData.exchangeRateString

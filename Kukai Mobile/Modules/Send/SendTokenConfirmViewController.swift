@@ -259,7 +259,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = fee.normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount

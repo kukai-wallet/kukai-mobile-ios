@@ -10,6 +10,11 @@ import KukaiCoreSwift
 import OSLog
 
 
+public struct TokenValueAndRate: Codable {
+	let xtzValue: XTZAmount
+	let marketRate: Decimal
+}
+
 public class BalanceService {
 	
 	// MARK: - Types
@@ -45,7 +50,7 @@ public class BalanceService {
 	
 	// MARK: - Global state properties
 	
-	public var tokenValueAndRate: [String: (xtzValue: XTZAmount, marketRate: Decimal)] = [:]
+	public var tokenValueAndRate: [String: TokenValueAndRate] = [:]
 	public var exchangeData: [DipDupExchangesAndTokens] = []
 	public var lastExchangeDataRefreshDate: Date? = nil
 	public var lastFullRefreshDates: [String: Date] = [:]
@@ -59,6 +64,7 @@ public class BalanceService {
 	private static let cacheFilenameExchangeData = "balance-service-exchangedata"
 	private static let cacheLastRefreshDates = "balance-service-refresh-dates"
 	private static let cacheEstimatedTotals = "balance-service-estimated-total"
+	private static let cacheTokenPrices = "balance-service-token-prices"
 	
 	
 	
@@ -79,6 +85,7 @@ public class BalanceService {
 	
 	init() {
 		lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
+		tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
 	}
 	
 	
@@ -559,15 +566,16 @@ public class BalanceService {
 		var estimatedTotal: XTZAmount = .zero()
 		
 		for token in self.currentlyRefreshingAccount.tokens {
-			let dexRate = self.midPrice(forToken: token) // Use midPrice insread of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
+			let dexRate = self.midPrice(forToken: token) // Use midPrice instead of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
 			self.tokenValueAndRate[token.id] = dexRate
-			estimatedTotal += dexRate.xtzValue
+			estimatedTotal += dexRate?.xtzValue ?? .zero()
 		}
 		
 		let cacheKey = BalanceService.addressCacheKey(forAddress: self.currentlyRefreshingAccount.walletAddress)
 		self.estimatedTotalXtz[cacheKey] = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
 		
 		let _ = DiskService.write(encodable: self.estimatedTotalXtz, toFileName: BalanceService.cacheEstimatedTotals)
+		let _ = DiskService.write(encodable: self.tokenValueAndRate, toFileName: BalanceService.cacheTokenPrices)
 	}
 	
 	func updateTokenStates(forAddress address: String, selectedAccount: Bool = false) {
@@ -628,26 +636,28 @@ public class BalanceService {
 	
 	// MARK: - Rates and prices
 	
-	func midPrice(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
+	func midPrice(forToken token: Token) -> TokenValueAndRate? {
 		guard let quipuOrFirst = exchangeDataForToken(token) else {
-			return (xtzValue: .zero(), marketRate: 0)
+			//return TokenValueAndRate(xtzValue: .zero(), marketRate: 0)
+			return nil
 		}
 		
 		let decimal = Decimal(string: quipuOrFirst.midPrice) ?? 0
 		let amount = XTZAmount(fromNormalisedAmount: token.balance * decimal)
 		
-		return (xtzValue: amount, marketRate: decimal)
+		return TokenValueAndRate(xtzValue: amount, marketRate: decimal)
 	}
 	
-	func dexRate(forToken token: Token) -> (xtzValue: XTZAmount, marketRate: Decimal) {
+	func dexRate(forToken token: Token) -> TokenValueAndRate? {
 		guard let quipuOrFirst = exchangeDataForToken(token) else {
-			return (xtzValue: .zero(), marketRate: 0)
+			//return TokenValueAndRate(xtzValue: .zero(), marketRate: 0)
+			return nil
 		}
 		
 		let xtz = xtzExchange(forToken: token, ofAmount: token.balance, withExchangeData: quipuOrFirst)
 		let market = DexCalculationService.shared.tokenToXtzMarketRate(xtzPool: quipuOrFirst.xtzPoolAmount(), tokenPool: quipuOrFirst.tokenPoolAmount()) ?? 0
 		
-		return (xtzValue: xtz, marketRate: market)
+		return TokenValueAndRate(xtzValue: xtz, marketRate: market)
 	}
 	
 	func exchangeDataForToken(_ token: Token) -> DipDupExchange? {
@@ -659,13 +669,13 @@ public class BalanceService {
 		return DexCalculationService.shared.tokenToXtzExpectedReturn(tokenToSell: amount, xtzPool: withExchangeData.xtzPoolAmount(), tokenPool: withExchangeData.tokenPoolAmount(), dex: withExchangeData.name) ?? .zero()
 	}
 	
-	func fiatAmount(forToken: Token, ofAmount: TokenAmount) -> Decimal {
+	func fiatAmount(forToken: Token, ofAmount: TokenAmount) -> Decimal? {
 		if forToken.isXTZ() {
 			return ofAmount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			
 		} else {
 			guard let exchangeData = exchangeDataForToken(forToken) else {
-				return 0
+				return nil
 			}
 			
 			let xtzExchange = xtzExchange(forToken: forToken, ofAmount: ofAmount, withExchangeData: exchangeData)
@@ -674,8 +684,11 @@ public class BalanceService {
 	}
 	
 	func fiatAmountDisplayString(forToken: Token, ofAmount: TokenAmount) -> String {
-		let amount = fiatAmount(forToken: forToken, ofAmount: ofAmount)
-		return DependencyManager.shared.coinGeckoService.format(decimal: amount, numberStyle: .currency, maximumFractionDigits: 2)
+		if let amount = fiatAmount(forToken: forToken, ofAmount: ofAmount) {
+			return DependencyManager.shared.coinGeckoService.format(decimal: amount, numberStyle: .currency, maximumFractionDigits: 2)
+		} else {
+			return DependencyManager.shared.coinGeckoService.dashedCurrencyString()
+		}
 	}
 	
 	func token(forAddress address: String, andTokenId: Decimal? = nil) -> (token: Token, isNFT: Bool)? {

@@ -25,7 +25,7 @@ class PublicBakerCell: UITableViewCell, UITableViewCellContainerView, UITableVie
 		
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		splitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		spaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " tez"
+		spaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
 		estRewardsLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 		
 		bakerNameLabel.accessibilityIdentifier = "baker-list-name"

@@ -119,7 +119,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-				cell.symbolLabel.text = "Tez"
+				cell.symbolLabel.text = "XTZ"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
@@ -152,7 +152,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.valuelabel.text = currencyString
 					
 				} else {
-					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.placeholderCurrencyString()
+					cell.valuelabel.text = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
 				}
 				
 				return cell
@@ -160,14 +160,14 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let total = item as? TotalEstimatedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
 				
 				if total.tez.normalisedRepresentation == "-1" {
-					cell.balanceLabel.text = "--- tez"
+					cell.balanceLabel.text = "--- XTZ"
 					cell.balanceLabel.textColor = .colorNamed("Txt14")
 					cell.valueLabel.text = ""
 					cell.delegate = self?.estimatedTotalCellDelegate
 					return cell
 					
 				} else {
-					cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " tez"
+					cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: total.tez.toNormalisedDecimal() ?? 0, numberStyle: .decimal) + " XTZ"
 					cell.balanceLabel.textColor = .colorNamed("Txt2")
 					cell.valueLabel.text = total.value
 					cell.delegate = self?.estimatedTotalCellDelegate
@@ -317,7 +317,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var data = startingData
 		let hashableData: [AnyHashable] = [
 			AccountGettingStartedData(),
-			AccountButtonData(title: "Get XTZ", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
+			AccountButtonData(title: "Get Tez (XTZ)", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
 			AccountReceiveAssetsData(),
 			AccountDiscoverHeaderData(),
 			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)

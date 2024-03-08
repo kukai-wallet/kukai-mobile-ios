@@ -86,6 +86,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private static let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
 	private var currentChartRange: TokenDetailsChartCellRange = .day
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
+	private var initialChartLoad = true
 	
 	// Set by VC
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
@@ -142,7 +143,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let obj = item as? AllChartData, obj.day.count == 0, obj.week.count == 0, obj.month.count == 0, obj.year.count == 0, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			} else if let obj = item as? AllChartData, self.initialChartLoad == true, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				cell.setup()
 				return cell
 				
@@ -257,6 +258,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		// Trigger remote data fetching
 		loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
+			self.initialChartLoad = false
 			
 			switch result {
 				case .success(let data):
@@ -317,7 +319,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		if token.isXTZ() {
 			self.tokenHeaderData.tokenImage = UIImage.tezosToken()
-			self.tokenHeaderData.tokenName = "Tezos"
+			self.tokenHeaderData.tokenName = "XTZ"
 			
 			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
@@ -339,14 +341,42 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let isHidden = token.isHidden
 			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			
-			let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] ?? (xtzValue: .zero(), marketRate: 0)
-			let fiatPerToken = tokenValueAndRate.marketRate
-			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
-			self.tokenHeaderData.fiatAmount = tokenFiatPrice
-			
-			let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: false, isStaked: false, bakerName: "")
+			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+				var tokenPriceString = ""
+				let fiatPerToken = tokenValueAndRate.marketRate
+				if fiatPerToken < 0.000001 {
+					tokenPriceString = "<\(DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2))"
+					
+				} else if fiatPerToken < 0.01 {
+					tokenPriceString = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 6)
+					
+				} else {
+					tokenPriceString = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
+				}
+				
+				tokenFiatPrice = tokenPriceString
+				tokenHeaderData.fiatAmount = tokenFiatPrice
+				
+				
+				var tokenBalanceValueString = ""
+				let xtzPrice = tokenValueAndRate.xtzValue * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				if xtzPrice < 0.000001 {
+					tokenBalanceValueString = "<\(DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2))"
+					
+				} else if xtzPrice < 0.01 {
+					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 6)
+					
+				} else {
+					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
+				}
+				
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isStakingPossible: false, isStaked: false, bakerName: "")
+				
+			} else {
+				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
+				tokenHeaderData.fiatAmount = dashedString
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isStakingPossible: false, isStaked: false, bakerName: "")
+			}
 		}
 	}
 	

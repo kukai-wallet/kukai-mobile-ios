@@ -36,4 +36,12 @@ class WelcomeViewController: UIViewController {
 		
 		DependencyManager.shared.selectedWalletMetadata = nil
 	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if StorageService.needsToShowJailbreakWanring() {
+			self.performSegue(withIdentifier: "jailbreak", sender: nil)
+		}
+	}
 }

@@ -174,7 +174,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 			collectibleImageQuantityLabel.text = "x\(quantityString)"
 		}
 		
-		feeValueLabel?.text = "0 tez"
+		feeValueLabel?.text = "0 XTZ"
 		MediaProxyService.load(url: MediaProxyService.url(fromUri: token.displayURI, ofFormat: MediaProxyService.Format.small.rawFormat()), to: collectibleImage, withCacheType: .temporary, fallback: UIImage())
 	}
 	
@@ -246,7 +246,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
-		feeValueLabel.text = fee.normalisedRepresentation + " tez"
+		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}
 	

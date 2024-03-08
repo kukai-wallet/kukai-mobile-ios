@@ -127,6 +127,7 @@ for your Digital Assets</string>
                     <connections>
                         <outlet property="existingWalletButton" destination="XYC-YP-h5d" id="SlZ-mS-Fbg"/>
                         <outlet property="newWalletButton" destination="fpw-5A-t7A" id="OQ3-f3-qyC"/>
+                        <segue destination="0jf-O6-aOB" kind="presentation" identifier="jailbreak" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="QjP-WW-9Pa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9hi-ft-eP7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1955,6 +1956,110 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
             </objects>
             <point key="canvasLocation" x="-414" y="-739"/>
         </scene>
+        <!--Jailbreak Warning View Controller-->
+        <scene sceneID="k0Y-5Z-w78">
+            <objects>
+                <viewController id="0jf-O6-aOB" customClass="JailbreakWarningViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GMw-6I-Chp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ygj-6K-jeD">
+                                <rect key="frame" x="16" y="110.5" width="343" height="446.5"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="AQF-go-UL4">
+                                        <rect key="frame" x="132.5" y="50" width="78" height="78"/>
+                                        <color key="tintColor" name="BGAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="Kzm-II-lWy"/>
+                                            <constraint firstAttribute="height" constant="78" id="u6u-x5-NSH"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jailbroken Device Detected" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pxB-5Y-42F">
+                                        <rect key="frame" x="16" y="144" width="311" height="26.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Putting a large amount of funds into a wallet on this device contains high security risks!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4JD-iI-y4A">
+                                        <rect key="frame" x="16" y="194.5" width="311" height="34"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="TxtAlert4"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Install the Kukai Wallet App on a secure device before adding significant value." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RtV-Xp-KZP">
+                                        <rect key="frame" x="16" y="282.5" width="311" height="34"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt6"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oOo-v0-m7J" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="60" y="340.5" width="223" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="vnJ-LK-ZRa"/>
+                                        </constraints>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Continue">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="continueTapped:" destination="0jf-O6-aOB" eventType="touchUpInside" id="N7M-tF-Szy"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECOMMENDED" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oq-ez-NIL">
+                                        <rect key="frame" x="16" y="252.5" width="311" height="22"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                        <color key="textColor" name="BGB-alt4"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="pxB-5Y-42F" firstAttribute="top" secondItem="AQF-go-UL4" secondAttribute="bottom" constant="16" id="ATW-ec-2Il"/>
+                                    <constraint firstAttribute="trailing" secondItem="4JD-iI-y4A" secondAttribute="trailing" constant="16" id="CCd-k8-J4G"/>
+                                    <constraint firstItem="oOo-v0-m7J" firstAttribute="top" secondItem="RtV-Xp-KZP" secondAttribute="bottom" constant="24" id="G2K-uX-fEY"/>
+                                    <constraint firstItem="5Oq-ez-NIL" firstAttribute="leading" secondItem="ygj-6K-jeD" secondAttribute="leading" constant="16" id="HZv-BQ-0q9"/>
+                                    <constraint firstItem="pxB-5Y-42F" firstAttribute="leading" secondItem="ygj-6K-jeD" secondAttribute="leading" constant="16" id="JHp-Ff-Cyc"/>
+                                    <constraint firstAttribute="trailing" secondItem="pxB-5Y-42F" secondAttribute="trailing" constant="16" id="M6j-xL-2Ie"/>
+                                    <constraint firstItem="4JD-iI-y4A" firstAttribute="top" secondItem="pxB-5Y-42F" secondAttribute="bottom" constant="24" id="RWT-4p-wMj"/>
+                                    <constraint firstItem="AQF-go-UL4" firstAttribute="centerX" secondItem="ygj-6K-jeD" secondAttribute="centerX" id="RzA-TO-kvU"/>
+                                    <constraint firstAttribute="bottom" secondItem="oOo-v0-m7J" secondAttribute="bottom" constant="50" id="YOy-zB-ejp"/>
+                                    <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="oOo-v0-m7J" secondAttribute="trailing" constant="60" id="Yg6-i1-wJw"/>
+                                    <constraint firstAttribute="trailing" secondItem="RtV-Xp-KZP" secondAttribute="trailing" constant="16" id="ZUU-Oa-jLA"/>
+                                    <constraint firstItem="4JD-iI-y4A" firstAttribute="leading" secondItem="ygj-6K-jeD" secondAttribute="leading" constant="16" id="eba-BD-gXv"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Oq-ez-NIL" secondAttribute="trailing" constant="16" id="ec5-Jj-hWP"/>
+                                    <constraint firstItem="RtV-Xp-KZP" firstAttribute="leading" secondItem="ygj-6K-jeD" secondAttribute="leading" constant="16" id="guw-yh-KTm"/>
+                                    <constraint firstItem="5Oq-ez-NIL" firstAttribute="top" secondItem="4JD-iI-y4A" secondAttribute="bottom" constant="24" id="iuF-mK-Y4U"/>
+                                    <constraint firstItem="AQF-go-UL4" firstAttribute="top" secondItem="ygj-6K-jeD" secondAttribute="top" constant="50" id="l7I-G7-TQl"/>
+                                    <constraint firstItem="oOo-v0-m7J" firstAttribute="leading" relation="lessThanOrEqual" secondItem="ygj-6K-jeD" secondAttribute="leading" constant="60" id="qKf-6Q-0fZ"/>
+                                    <constraint firstItem="RtV-Xp-KZP" firstAttribute="top" secondItem="5Oq-ez-NIL" secondAttribute="bottom" constant="8" id="uHs-x1-any"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="jwf-oo-fVK"/>
+                        <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="ygj-6K-jeD" firstAttribute="centerY" secondItem="jwf-oo-fVK" secondAttribute="centerY" id="Jmc-z6-iem"/>
+                            <constraint firstItem="jwf-oo-fVK" firstAttribute="trailing" secondItem="ygj-6K-jeD" secondAttribute="trailing" constant="16" id="RT8-8i-aKp"/>
+                            <constraint firstItem="ygj-6K-jeD" firstAttribute="leading" secondItem="jwf-oo-fVK" secondAttribute="leading" constant="16" id="vRu-qL-U4h"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="containerView" destination="ygj-6K-jeD" id="UbA-ML-3cH"/>
+                        <outlet property="continueButton" destination="oOo-v0-m7J" id="KlN-m9-hq5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="r6e-JS-TtU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10882" y="1363"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="1VJ-Ye-1zl">
@@ -2005,6 +2110,9 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
         <designable name="mM7-0X-VxZ">
             <size key="intrinsicContentSize" width="106" height="36"/>
         </designable>
+        <designable name="oOo-v0-m7J">
+            <size key="intrinsicContentSize" width="109" height="38"/>
+        </designable>
         <designable name="rXX-Jd-YOc">
             <size key="intrinsicContentSize" width="69" height="38"/>
         </designable>
@@ -2034,6 +2142,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertCautionColored" width="20" height="18"/>
+        <image name="AlertKnockout" width="24" height="24"/>
         <image name="ArrowUp-right" width="128" height="128"/>
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>
@@ -2069,6 +2178,9 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
         </namedColor>
         <namedColor name="BGB-alt0">
             <color red="1" green="0.90200001001358032" blue="0.70999997854232788" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGB-alt4">
+            <color red="0.9179999828338623" green="0.62699997425079346" blue="0.046999998390674591" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB-alt6">
             <color red="0.9179999828338623" green="0.62699997425079346" blue="0.046999998390674591" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2111,6 +2223,9 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
         </namedColor>
         <namedColor name="Txt8">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtAlert4">
+            <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

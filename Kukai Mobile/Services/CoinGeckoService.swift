@@ -27,7 +27,7 @@ public class CoinGeckoService {
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService
 	
-	public var selectedCurrencyRatePerXTZ: Decimal = 0
+	public var selectedCurrencyRatePerXTZ: Decimal = -1
 	public var exchangeRates: CoinGeckoExchangeRateResponse? = nil
 	private var dispatchGroupMarketData = DispatchGroup()
 	
@@ -236,6 +236,21 @@ public class CoinGeckoService {
 		return numberFormatter
 	}
 	
+	/**
+	 In situations where no pricing infomration is available, we may want to display somehting other than, e.g. $0.00, to indicate the the difference between a token of value lower than 0.01
+	 This will instead produce "$--" (localised), to indicate, no info available
+	 */
+	public func dashedCurrencyString() -> String {
+		let numberFormatter = sharedNumberFormatter()
+		numberFormatter.numberStyle = .currency
+		numberFormatter.maximumFractionDigits = 0
+		
+		var sampleString = numberFormatter.string(from: 1) ?? "--"
+		sampleString = sampleString.replacingOccurrences(of: "1", with: "--")
+		
+		return sampleString
+	}
+	
 	public func placeholderCurrencyString() -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = .currency
@@ -246,6 +261,10 @@ public class CoinGeckoService {
 	public func format(decimal: Decimal, numberStyle: NumberFormatter.Style, maximumFractionDigits: Int? = nil) -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = numberStyle
+		
+		guard decimal >= 0 else {
+			return dashedCurrencyString()
+		}
 		
 		if let maxDigits = maximumFractionDigits {
 			numberFormatter.maximumFractionDigits = maxDigits

@@ -78,7 +78,7 @@ class SwapViewModel: ViewModel {
 			tokenToBalanceText = "Balance: \(xtzBalance.normalisedRepresentation)"
 			
 			let marketRate = DexCalculationService.shared.tokenToXtzMarketRate(xtzPool: exchange.xtzPoolAmount(), tokenPool: exchange.tokenPoolAmount())
-			exchangeRateText = "1 \(exchange.token.symbol) = \(marketRate ?? 0) tez"
+			exchangeRateText = "1 \(exchange.token.symbol) = \(marketRate ?? 0) XTZ"
 		}
 	}
 	

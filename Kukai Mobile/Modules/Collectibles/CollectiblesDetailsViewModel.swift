@@ -84,7 +84,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
 	private var playerController: AVPlayerViewController? = nil
-	//private var playerLooper: AVPlayerLooper? = nil
 	private var player: AVPlayer? = nil
 	
 	private var sendData = SendContent(enabled: true)
@@ -270,7 +269,6 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	deinit {
 		playerController = nil
 		player = nil
-		//playerLooper = nil
 	}
 	
 	
