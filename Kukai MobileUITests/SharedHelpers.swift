@@ -191,6 +191,10 @@ class SharedHelpers: XCTestCase {
 		app.keyboards.buttons["Done"].tap()
 	}
 	
+	func typeContinue(app: XCUIApplication) {
+		app.keyboards.buttons["continue"].tap()
+	}
+	
 	func typeSwitchToUppercase(app: XCUIApplication) {
 		let key = app.keyboards.buttons["shift"]
 		if key.exists {

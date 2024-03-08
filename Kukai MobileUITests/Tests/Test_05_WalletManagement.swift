@@ -185,6 +185,8 @@ final class Test_05_WalletManagement: XCTestCase {
 			moreButton.tap()
 			
 			app.popovers.tables.staticTexts["Remove Wallet"].tap()
+			sleep(2)
+			
 			app.buttons["Remove"].tap()
 			sleep(2)
 		}
@@ -205,6 +207,8 @@ final class Test_05_WalletManagement: XCTestCase {
 			account.tap()
 			
 			app.buttons["Delete"].tap()
+			sleep(2)
+			
 			app.buttons["Remove"].tap()
 			sleep(2)
 		}

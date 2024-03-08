@@ -66,6 +66,8 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		app.tables.staticTexts["Security"].tap()
 		sleep(2)
+		Test_02_Onboarding.handlePasscode(app: app)
+		sleep(2)
 		
 		app.tables.staticTexts["Back Up"].tap()
 		sleep(2)
@@ -135,6 +137,8 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		Test_04_Account.check(app: app, displayingGettingStarted: true)
+		
+		Test_09_SideMenu.handleResetAppFromTabBar(app: app)
 	}
 	
 	func testImportHDWallet() {
@@ -194,9 +198,7 @@ final class Test_02_Onboarding: XCTestCase {
 		SharedHelpers.shared.waitForStaticText("Invalid wallet address", exists: false, inElement: app.scrollViews, delay: 2)
 		
 		app.buttons["Import"].tap()
-		
-		sleep(2)
-		app.alerts.buttons["ok"].tap() // dismiss alert error
+		SharedHelpers.shared.waitForStaticText("Error", exists: true, inElement: app, delay: 4)
 		
 		
 		// Enter matching address and continue import flow
@@ -380,7 +382,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
 		XCTAssert(details0.title == "kukaiautomatedtesting.gho", details0.title)
-		XCTAssert(details0.subtitle == "tz1Tmh...Dvmv", details0.subtitle ?? "-")
+		XCTAssert(details0.subtitle == "tz1TmhC...Dvmv", details0.subtitle ?? "-")
 		
 		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
@@ -558,22 +560,37 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		
 		settingsApp.staticTexts["Sign in to your iPhone"].tap()
+		sleep(2)
+		
 		settingsApp.textFields.firstMatch.tap()
 		settingsApp.typeText(EnvironmentVariables.shared.config().gmailAddress)
 		
-		settingsApp.buttons["Next"].tap()
+		
+		SharedHelpers.shared.typeContinue(app: settingsApp)
 		sleep(4)
 		
-		settingsApp.secureTextFields["Required"].tap()
+		settingsApp.secureTextFields["Password"].tap()
 		settingsApp.typeText(EnvironmentVariables.shared.config().gmailPassword)
 		
 		
-		settingsApp.buttons["Next"].tap()
+		SharedHelpers.shared.typeDone(app: settingsApp)
+		sleep(5)
+		
+		let agreeButton = settingsApp.buttons["Agree"]
+		if agreeButton.exists {
+			agreeButton.tap()
+			sleep(2)
+			
+			let alert = settingsApp.alerts.firstMatch
+			alert.scrollViews.buttons["Agree"].tap()
+			sleep(2)
+		}
+		
 		
 		SharedHelpers.shared.waitForButton("Don’t Merge", exists: true, inElement: settingsApp, delay: 10)
 		settingsApp.buttons["Don’t Merge"].tap()
 		
-		SharedHelpers.shared.waitForButton("Sign Out", exists: true, inElement: settingsApp, delay: 30)
+		SharedHelpers.shared.waitForStaticText("Sign Out", exists: true, inElement: settingsApp, delay: 30)
 	}
 	
 	public static func handleSignInToiCloudPopupIfNeeded() {

@@ -26,7 +26,6 @@ class RemoveWalletViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = containerView.addGradientBackgroundModal()
 		
 		removeButton.customButtonType = .destructive
 		cancelButton.customButtonType = .primary
@@ -34,6 +33,9 @@ class RemoveWalletViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		containerView.layoutIfNeeded()
+		let _ = containerView.addGradientBackgroundModal()
 		
 		guard let selectedWalletMetadata = selectedWalletMetadata else { return }
 		

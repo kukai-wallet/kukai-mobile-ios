@@ -253,6 +253,9 @@ final class Test_09_SideMenu: XCTestCase {
 		app.tables.staticTexts["Security"].tap()
 		sleep(2)
 		
+		Test_02_Onboarding.handlePasscode(app: app)
+		sleep(2)
+		
 		app.tables.staticTexts["Reset App"].tap()
 		sleep(2)
 		

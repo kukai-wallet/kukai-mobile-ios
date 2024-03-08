@@ -137,9 +137,15 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
 			vc.selectedWalletMetadata = metadata
 			
-		} else if let vc = segue.destination as? RemoveWalletViewController, let indexPath = self.editingIndexPath {
-			vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
-			vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+		} else if let vc = segue.destination as? RemoveWalletViewController {
+			
+			if let indexPath = self.editingIndexPath {
+				vc.selectedWalletMetadata = viewModel.metadataFor(indexPath: indexPath)
+				vc.selectedWalletParentIndex = viewModel.parentIndexForIndexPathIfRelevant(indexPath: indexPath)
+				
+			} else if let metadata = sender as? WalletMetadata {
+				vc.selectedWalletMetadata = metadata
+			}
 		}
 	}
 }
