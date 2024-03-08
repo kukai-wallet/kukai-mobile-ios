@@ -39,8 +39,8 @@ final class Test_04_Account: XCTestCase {
 		
 		// Go to Tez token details
 		let tablesQuery = app.tables
-		SharedHelpers.shared.waitForStaticText("Tez", exists: true, inElement: tablesQuery, delay: 10)
-		tablesQuery.staticTexts["Tez"].tap()
+		SharedHelpers.shared.waitForStaticText("XTZ", exists: true, inElement: tablesQuery, delay: 10)
+		tablesQuery.staticTexts["XTZ"].tap()
 		
 		// Check baker rewards loads correctly
 		sleep(4)
@@ -99,7 +99,7 @@ final class Test_04_Account: XCTestCase {
 		
 		// Go to Tez token details
 		let tablesQuery = app.tables
-		tablesQuery.staticTexts["Tez"].tap()
+		tablesQuery.staticTexts["XTZ"].tap()
 		
 		// Check date loads correctly and switches when chart held down
 		sleep(4)
@@ -160,7 +160,6 @@ final class Test_04_Account: XCTestCase {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
-		
 		// Check position of WTZ
 		let tablesQuery = app.tables
 		let balanceCells = app.tables.cells.containing(.staticText, identifier: "account-token-balance")
@@ -179,7 +178,7 @@ final class Test_04_Account: XCTestCase {
 		let count = app.tables.cells.containing(.staticText, identifier: "activity-type-label").count
 		XCTAssert(count > 0, count.description)
 		
-		tablesQuery.buttons["button-favourite"].tap()
+		app.navigationBars.firstMatch.buttons["button-favourite"].tap()
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
@@ -192,7 +191,7 @@ final class Test_04_Account: XCTestCase {
 		tablesQuery.staticTexts["WTZ"].tap()
 		sleep(2)
 		
-		tablesQuery.buttons["button-favourite"].tap()
+		app.navigationBars.firstMatch.buttons["button-favourite"].tap()
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
@@ -203,7 +202,7 @@ final class Test_04_Account: XCTestCase {
 		tablesQuery.staticTexts["WTZ"].tap()
 		sleep(2)
 		
-		tablesQuery.buttons["button-more"].tap()
+		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		app.popovers.tables.staticTexts["Hide Token"].tap()
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
@@ -217,7 +216,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		
 		tablesQuery.staticTexts["WTZ"].tap()
-		tablesQuery.buttons["button-more"].tap()
+		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		app.popovers.tables.staticTexts["Unhide Token"].tap()
 		
 		SharedHelpers.shared.navigationBack(app: app)
@@ -236,7 +235,7 @@ final class Test_04_Account: XCTestCase {
 		
 		// Open XTZ, send 1. + 3 random digits
 		let tablesQuery = app.tables
-		tablesQuery.staticTexts["Tez"].tap()
+		tablesQuery.staticTexts["XTZ"].tap()
 		tablesQuery.buttons["primary-button"].tap()
 		tablesQuery.staticTexts[testConfig.walletAddress_HD_account_1.truncateTezosAddress()].tap()
 		
@@ -299,9 +298,8 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.type(app: app, text: inputString)
 		
 		app.buttons["primary-button"].tap()
-		sleep(4)
 		
-		
+		SharedHelpers.shared.waitForButton("Normal", exists: true, inElement: app, delay: 10)
 		app.buttons["Normal"].tap()
 		sleep(2)
 		
@@ -344,7 +342,7 @@ final class Test_04_Account: XCTestCase {
 		
 		// Change baker
 		let tablesQuery = app.tables
-		tablesQuery.staticTexts["Tez"].tap()
+		tablesQuery.staticTexts["XTZ"].tap()
 		
 		let bakerButton = tablesQuery.buttons["token-detials-baker-button"]
 		let currentBakerName = bakerButton.label
@@ -365,7 +363,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		
 		// Check baker no longer matches
-		tablesQuery.staticTexts["Tez"].tap()
+		tablesQuery.staticTexts["XTZ"].tap()
 		XCTAssert(bakerButton.label != currentBakerName, bakerButton.label)
 		
 		
@@ -466,6 +464,10 @@ final class Test_04_Account: XCTestCase {
 		let dragStart = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
 		let dragDestination = dragButton.coordinate(withNormalizedOffset: CGVector(dx: 25, dy: 0.5))
 		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+		sleep(2)
+		
+		Test_02_Onboarding.handlePasscode(app: app)
+		sleep(2)
 	}
 	
 	public static func slideDownBottomSheet(inApp app: XCUIApplication, element: XCUIElement) {
