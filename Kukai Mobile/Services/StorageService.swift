@@ -28,6 +28,7 @@ public class StorageService {
 	
 	private struct UserDefaultKeys {
 		static let onboardingComplete = "app.kukai.onboarding.complete"
+		public static let hasShownJailbreakWarning = "app.kukai.jailbreak.warning"
 	}
 	
 	public struct settingsKeys {
@@ -240,5 +241,27 @@ public class StorageService {
 	
 	public static func didCompleteOnboarding() -> Bool {
 		return UserDefaults.standard.bool(forKey: StorageService.UserDefaultKeys.onboardingComplete)
+	}
+	
+	public static func recordJailbreakWarning() {
+		UserDefaults.standard.set(true, forKey: StorageService.UserDefaultKeys.hasShownJailbreakWarning)
+	}
+	
+	public static func needsToShowJailbreakWanring() -> Bool {
+		if UserDefaults.standard.bool(forKey: StorageService.UserDefaultKeys.hasShownJailbreakWarning) == false, canEditSandboxFilesForJailbreakDetection() {
+			return true
+		}
+		
+		return false
+	}
+	
+	static func canEditSandboxFilesForJailbreakDetection() -> Bool {
+		let jailBreakTestText = "Test for Jailbreak"
+		do {
+			try jailBreakTestText.write(toFile: "/private/jailbreakTestText.txt", atomically: true, encoding: .utf8)
+			return true
+		} catch {
+			return false
+		}
 	}
 }
