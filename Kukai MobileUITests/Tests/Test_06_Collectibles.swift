@@ -48,7 +48,7 @@ final class Test_06_Collectibles: XCTestCase {
 		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
 		sleep(2)
 		
-		app.collectionViews.buttons["button-favourite"].tap()
+		app.navigationBars.firstMatch.buttons["button-favourite"].tap()
 		sleep(1)
 		
 		SharedHelpers.shared.navigationBack(app: app)
@@ -65,7 +65,7 @@ final class Test_06_Collectibles: XCTestCase {
 		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
 		sleep(2)
 		
-		app.collectionViews.buttons["button-favourite"].tap()
+		app.navigationBars.firstMatch.buttons["button-favourite"].tap()
 		sleep(1)
 		
 		SharedHelpers.shared.navigationBack(app: app)
@@ -76,7 +76,7 @@ final class Test_06_Collectibles: XCTestCase {
 		app.collectionViews["collectibles-list-view"].staticTexts["Tasty Cookie"].firstMatch.tap()
 		sleep(2)
 		
-		app.collectionViews.buttons["button-more"].tap()
+		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		sleep(1)
 		
 		app.popovers.tables.staticTexts["Hide Collectible"].tap()
@@ -88,7 +88,7 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		app.tables.staticTexts["Tasty Cookie"].tap()
 		sleep(1)
-		app.collectionViews.buttons["button-more"].tap()
+		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		sleep(1)
 		
 		app.popovers.tables.staticTexts["Unhide Collectible"].tap()
