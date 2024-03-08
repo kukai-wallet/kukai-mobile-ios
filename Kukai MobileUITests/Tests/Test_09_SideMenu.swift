@@ -48,14 +48,14 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(2)
 		
 		Test_09_SideMenu.handleSwitchingCurrency(app: app, currencyCode: "EUR")
-		SharedHelpers.shared.waitForStaticText("€0.00", exists: true, inElement: app.tables, delay: 5)
+		SharedHelpers.shared.waitForStaticText("€--", exists: true, inElement: app.tables, delay: 5)
 		
 		
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
 		Test_09_SideMenu.handleSwitchingCurrency(app: app, currencyCode: "USD")
-		SharedHelpers.shared.waitForStaticText("$0.00", exists: true, inElement: app.tables, delay: 5)
+		SharedHelpers.shared.waitForStaticText("$--", exists: true, inElement: app.tables, delay: 5)
 		
 		
 		// Test Theme ... not sure I can do anything beyond toggle
@@ -96,14 +96,14 @@ final class Test_09_SideMenu: XCTestCase {
 		
 		
 		// Change Passcode
-		Test_09_SideMenu.handleChangingPasscode(app: app, oldPasscode: "000000", newPasscode: "012345")
+		Test_09_SideMenu.handleChangingPasscode(app: app, oldPasscode: "147963", newPasscode: "963147")
 		
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
-		Test_09_SideMenu.handleChangingPasscode(app: app, oldPasscode: "012345", newPasscode: "000000")
+		Test_09_SideMenu.handleChangingPasscode(app: app, oldPasscode: "963147", newPasscode: "147963")
 		
-		// Backup + rest is tested via onboarding
+		// Backup + reset is tested via onboarding
 		// FaceId / TouchID can't be tested
 	}
 	
@@ -116,7 +116,8 @@ final class Test_09_SideMenu: XCTestCase {
 		app.tables.staticTexts["Tell Others about Kukai"].tap()
 		sleep(2)
 		
-		XCTAssert(app.staticTexts["kukai.app"].exists)
+		let copyButtonExists = XCUIApplication().collectionViews.cells["Copy"].children(matching: .other).element(boundBy: 1).children(matching: .other).element(boundBy: 3).exists
+		XCTAssert(copyButtonExists)
 	}
 	
 	func testAbout() {
@@ -235,6 +236,9 @@ final class Test_09_SideMenu: XCTestCase {
 		app.tables.staticTexts["Security"].tap()
 		sleep(2)
 		
+		Test_02_Onboarding.handlePasscode(app: app, passcode: oldPasscode)
+		sleep(2)
+		
 		app.tables.staticTexts["Kukai Passcode"].tap()
 		sleep(2)
 		
@@ -251,6 +255,9 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(2)
 		
 		app.tables.staticTexts["Security"].tap()
+		sleep(2)
+		
+		Test_02_Onboarding.handlePasscode(app: app)
 		sleep(2)
 		
 		app.tables.staticTexts["Reset App"].tap()

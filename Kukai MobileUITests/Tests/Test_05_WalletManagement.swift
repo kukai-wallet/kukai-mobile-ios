@@ -40,7 +40,12 @@ final class Test_05_WalletManagement: XCTestCase {
 		sleep(2)
 		
 		let newAccountExists = app.tables.staticTexts[testConfig.walletAddress_HD_account_2.truncateTezosAddress()].exists
+		let newExists = app.tables.staticTexts["NEW!"].exists
+		let countOfNew = app.tables.staticTexts.matching(identifier: "NEW!").count
+		
 		XCTAssert(newAccountExists)
+		XCTAssert(newExists)
+		XCTAssert(countOfNew == 1)
 	}
 	
 	func test_02_editGroupName() {
@@ -125,7 +130,12 @@ final class Test_05_WalletManagement: XCTestCase {
 		sleep(2)
 		
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count
+		let newExists = app.tables.staticTexts["NEW!"].exists
+		let countOfNew = app.tables.staticTexts.matching(identifier: "NEW!").count
+		
 		XCTAssert(count == 3)
+		XCTAssert(newExists)
+		XCTAssert(countOfNew == 1)
 	}
 	
 	func test_05_goBackToMainWallet() {
@@ -185,6 +195,8 @@ final class Test_05_WalletManagement: XCTestCase {
 			moreButton.tap()
 			
 			app.popovers.tables.staticTexts["Remove Wallet"].tap()
+			sleep(2)
+			
 			app.buttons["Remove"].tap()
 			sleep(2)
 		}
@@ -205,6 +217,8 @@ final class Test_05_WalletManagement: XCTestCase {
 			account.tap()
 			
 			app.buttons["Delete"].tap()
+			sleep(2)
+			
 			app.buttons["Remove"].tap()
 			sleep(2)
 		}
