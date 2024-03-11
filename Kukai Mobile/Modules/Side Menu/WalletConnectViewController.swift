@@ -47,6 +47,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.sink { [weak self] (sessionTopic: String, namespaces: [String : SessionNamespace]) in
 				self?.pairingToChangeAccount = nil
 				self?.viewModel.refresh(animate: true)
+				self?.hideLoadingView()
 			}.store(in: &bag)
 		
 		WalletConnectService.shared.$pairsAndSessionsUpdated
@@ -54,14 +55,16 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
 				self?.viewModel.refresh(animate: true)
+				self?.hideLoadingView()
 			}.store(in: &bag)
 	}
 	
 	func bottomSheetDataChanged() {
 		self.showLoadingView()
+		self.updateLoadingViewStatusLabel(message: "Waiting for a response \nfrom the connected application")
 		
 		// Change account for the given pairing
-		if let pairing = pairingToChangeAccount {
+		if let pairing = self.pairingToChangeAccount {
 			
 			let newAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 			guard let existingSession = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic }),
@@ -72,13 +75,11 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			Task {
 				do {
 					try await Sign.instance.update(topic: existingSession.topic, namespaces: newNamespaces)
-					viewModel.refresh(animate: true)
-					self.hideLoadingView()
 					
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.pairingToChangeAccount = nil
-						self?.hideLoadingModal()
+						self?.hideLoadingView()
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
 				}
@@ -105,7 +106,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			
 			WalletConnectService.shared.reconnect { error in
 				
-				self?.hideLoadingModal(completion: {
+				self?.hideLoadingView(completion: {
 					if let err = error {
 						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-wc2-reconnect"), withArguments: err.localizedDescription) )
 					}
@@ -161,6 +162,7 @@ extension WalletConnectViewController: UITableViewDelegate {
 			guard let pairing = try? Pair.instance.getPairing(for: forPair.topic),
 				  let firstSession = Sign.instance.getSessions().filter({ $0.pairingTopic == pairing.topic }).first,
 				  let firstAccount = firstSession.accounts.first else {
+				self?.windowError(withTitle: "error".localized(), description: "error-wc2-switch-no-pairing".localized())
 				return
 			}
 			

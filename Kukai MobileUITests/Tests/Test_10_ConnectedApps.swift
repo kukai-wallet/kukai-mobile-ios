@@ -33,8 +33,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
-		handlePasteSetting()
-		
 		
 		// Go to safari -> ghostnet website
 		safari.launch()
@@ -91,6 +89,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		app.buttons["paste-button"].tap()
 		sleep(2)
+		Test_10_ConnectedApps.handlePastePermissionsIfNecessary(app: app)
 		
 		
 		// Wait for popup
@@ -289,6 +288,21 @@ final class Test_10_ConnectedApps: XCTestCase {
 			XCTFail("Connect button is not present, haven't disconnected")
 		}
 	}
+	
+	
+	
+	// MARK: - Helpers
+	
+	public static func handlePastePermissionsIfNecessary(app: XCUIApplication) {
+		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		let pasteAlert = springboard.alerts.firstMatch
+		
+		if pasteAlert.exists && pasteAlert.label.contains("would like to paste from") {
+			pasteAlert.scrollViews.buttons["Allow Paste"].tap()
+		}
+		sleep(2)
+	}
+	
 	
 	
 	/*
