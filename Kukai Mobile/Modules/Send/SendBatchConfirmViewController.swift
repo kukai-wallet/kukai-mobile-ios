@@ -49,16 +49,6 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var toBatchCountLabel: UILabel!
 	@IBOutlet weak var toBatchDetailsButton: UIButton!
 	
-	/*
-	@IBOutlet weak var toSingleView: UIView!
-	@IBOutlet weak var toSingleContractLabel: UILabel!
-	@IBOutlet weak var toSingleDetailsButton: UIButton!
-	
-	@IBOutlet weak var typeStackView: UIStackView!
-	@IBOutlet weak var typeLabel: UILabel!
-	@IBOutlet weak var typeDetailLabel: UILabel!
-	*/
-	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
@@ -75,6 +65,7 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		let _ = self.view.addGradientBackgroundFull()
 		
 		feeButton.accessibilityIdentifier = "fee-button"
+		toBatchCountLabel.accessibilityIdentifier = "contract-count-label"
 		
 		if DependencyManager.shared.currentNetworkType != .testnet {
 			testnetWarningView.isHidden = true

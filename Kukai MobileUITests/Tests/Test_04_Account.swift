@@ -475,4 +475,10 @@ final class Test_04_Account: XCTestCase {
 		let dragDestination = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 25))
 		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
 	}
+	
+	public static func slideDownFullScreenBottomSheet(inApp app: XCUIApplication, element: XCUIElement) {
+		let dragStart = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+		let dragDestination = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 100))
+		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
+	}
 }
