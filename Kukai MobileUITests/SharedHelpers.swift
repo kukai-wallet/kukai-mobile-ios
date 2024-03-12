@@ -101,7 +101,7 @@ class SharedHelpers: XCTestCase {
 		var found = false
 		
 		for _ in 0..<maxSwipe {
-			if element.buttons[button].exists {
+			if element.buttons[button].firstMatch.exists {
 				found = true
 				break
 				

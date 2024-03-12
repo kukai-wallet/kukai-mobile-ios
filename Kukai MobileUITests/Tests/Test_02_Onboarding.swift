@@ -487,7 +487,6 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_02_Onboarding.handlePasscode(app: app)
 		
 		
-		
 		// App state verification
 		Test_04_Account.waitForInitalLoad(app: app)
 	}
@@ -562,7 +561,15 @@ final class Test_02_Onboarding: XCTestCase {
 		settingsApp.staticTexts["Sign in to your iPhone"].tap()
 		sleep(2)
 		
+		let manually = settingsApp.staticTexts["Sign in Manually"]
+		if manually.exists {
+			manually.tap()
+			sleep(2)
+		}
+		
 		settingsApp.textFields.firstMatch.tap()
+		sleep(2)
+		handleSwipeKeyboardModalIfNeeded(app: settingsApp)
 		settingsApp.typeText(EnvironmentVariables.shared.config().gmailAddress)
 		
 		
@@ -612,6 +619,14 @@ final class Test_02_Onboarding: XCTestCase {
 					XCTFail("Failed to login to apple id")
 				}
 			}
+		}
+	}
+	
+	public static func handleSwipeKeyboardModalIfNeeded(app: XCUIApplication) {
+		let message = "Speed up your typing by sliding your finger across the letters to compose a word."
+		if app.staticTexts[message].exists {
+			app.buttons["Continue"].tap()
+			sleep(1)
 		}
 	}
 	

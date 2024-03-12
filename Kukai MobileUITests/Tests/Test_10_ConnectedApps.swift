@@ -84,7 +84,14 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		let cameraAlert = springboard.alerts.firstMatch
 		if cameraAlert.exists {
-			cameraAlert.scrollViews.buttons["OK"].tap()
+			
+			let allow = cameraAlert.scrollViews.buttons["Allow"]
+			let ok = cameraAlert.scrollViews.buttons["OK"]
+			if allow.exists {
+				allow.tap()
+			} else if ok.exists {
+				ok.tap()
+			}
 		}
 		
 		app.buttons["paste-button"].tap()

@@ -159,17 +159,21 @@ final class Test_04_Account: XCTestCase {
 	public func testOtherTokenDetails() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
 		
-		// Check position of WTZ
+		var symbolOfThirdCell = ""
+		
+		// Check and record whatever symbol is in third place
 		let tablesQuery = app.tables
 		let balanceCells = app.tables.cells.containing(.staticText, identifier: "account-token-balance")
 		let thirdCell = balanceCells.element(boundBy: 2)
+		symbolOfThirdCell = thirdCell.staticTexts["account-token-symbol"].label
 		
-		XCTAssert(thirdCell.staticTexts["WTZ"].exists)
+		XCTAssert(thirdCell.staticTexts[symbolOfThirdCell].exists)
 		
 		
-		// Tap into WTZ check state, mark as favourite and confirm position change
-		tablesQuery.staticTexts["WTZ"].tap()
+		// Tap into token check state, mark as favourite and confirm position change
+		tablesQuery.staticTexts[symbolOfThirdCell].tap()
 		sleep(2)
 		
 		let tokenBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: tablesQuery)
@@ -184,22 +188,22 @@ final class Test_04_Account: XCTestCase {
 		
 		let cellToCheck = balanceCells.element(boundBy: 1)
 		
-		XCTAssert(cellToCheck.staticTexts["WTZ"].exists)
+		XCTAssert(cellToCheck.staticTexts[symbolOfThirdCell].exists)
 		
 		
-		// Back into WTZ, unfavourite, confirm it moved back
-		tablesQuery.staticTexts["WTZ"].tap()
+		// Back into token, unfavourite, confirm it moved back
+		tablesQuery.staticTexts[symbolOfThirdCell].tap()
 		sleep(2)
 		
 		app.navigationBars.firstMatch.buttons["button-favourite"].tap()
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		XCTAssert(thirdCell.staticTexts["WTZ"].exists)
+		XCTAssert(thirdCell.staticTexts[symbolOfThirdCell].exists)
 		
 		
 		// Back into WTZ, hide, check its gone
-		tablesQuery.staticTexts["WTZ"].tap()
+		tablesQuery.staticTexts[symbolOfThirdCell].tap()
 		sleep(2)
 		
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
@@ -215,7 +219,7 @@ final class Test_04_Account: XCTestCase {
 		app.popovers.tables.staticTexts["View Hidden Tokens"].tap()
 		sleep(2)
 		
-		tablesQuery.staticTexts["WTZ"].tap()
+		tablesQuery.staticTexts[symbolOfThirdCell].tap()
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		app.popovers.tables.staticTexts["Unhide Token"].tap()
 		
@@ -329,7 +333,20 @@ final class Test_04_Account: XCTestCase {
 		
 		sleep(2)
 		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
-		let newTokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 1).staticTexts["account-token-balance"].label
+		
+		// Can't assume the order of tokens, need to find the correct cell with "kUSD" in it
+		var newTokenString = ""
+		let cellQuery = app.tables.cells.containing(.staticText, identifier: "account-token-symbol")
+		let numberOfCells = cellQuery.count
+		for i in 0...numberOfCells {
+			let cell = cellQuery.element(boundBy: i)
+			let symbol = cell.staticTexts["account-token-symbol"].label
+			if symbol == "kUSD" {
+				newTokenString = cell.staticTexts["account-token-balance"].label
+				break
+			}
+		}
+		
 		let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
 		
 		XCTAssert(expectedXTZ == newXTZBalance, "\(expectedXTZ) != \(newXTZBalance)")
@@ -389,6 +406,7 @@ final class Test_04_Account: XCTestCase {
 	// MARK: - Helpers
 	
 	public static func waitForInitalLoad(app: XCUIApplication) {
+		sleep(2)
 		SharedHelpers.shared.waitForAnyStaticText([
 			"account-token-balance",
 			"account-getting-started-header"
