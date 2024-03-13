@@ -156,6 +156,14 @@ class DependencyManager {
 		}
 	}
 	
+	// For use during WC2 flow where a user tentively selects an account, and we want to wait until its confirmed before switching
+	var temporarySelectedWalletMetadata: WalletMetadata?
+	var temporarySelectedWalletAddress: String? {
+		get {
+			return temporarySelectedWalletMetadata?.address
+		}
+	}
+	
 	
 	// Combine publishers to serve as notifications across multiple screens
 	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults

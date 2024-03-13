@@ -37,16 +37,20 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 		
 		self.nameLabel.text = proposal.proposer.name
+		
+		DependencyManager.shared.temporarySelectedWalletMetadata = nil
 	}
 	
 	func bottomSheetDataChanged() {
+		let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata
+		
 		if DependencyManager.shared.walletList.count() == 1 {
-			accountLabel.text = DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress()
+			accountLabel.text = selectedAccountMeta?.address.truncateTezosAddress()
 			multiAccountTitle.isHidden = true
 			accountButtonContainer.isHidden = true
 		} else {
 			singleAccountContainer.isHidden = true
-			accountButton.setTitle(DependencyManager.shared.selectedWalletAddress?.truncateTezosAddress(), for: .normal)
+			accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
 		}
 	}
 	
@@ -91,6 +95,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
 					self?.didSend = true
+					self?.switchToTemporaryWalletIfNeeded()
 					self?.presentingViewController?.dismiss(animated: true)
 					
 				} else {
@@ -114,6 +119,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	@IBAction func rejectTapped(_ sender: Any) {
 		self.showLoadingModal { [weak self] in
 			self?.handleRejection()
+		}
+	}
+	
+	private func switchToTemporaryWalletIfNeeded() {
+		if DependencyManager.shared.temporarySelectedWalletAddress != nil && DependencyManager.shared.temporarySelectedWalletAddress != DependencyManager.shared.selectedWalletAddress {
+			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.temporarySelectedWalletMetadata
 		}
 	}
 	

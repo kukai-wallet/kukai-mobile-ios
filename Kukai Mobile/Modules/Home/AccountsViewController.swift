@@ -199,13 +199,13 @@ extension AccountsViewController: UITableViewDelegate {
 			viewModel.selectedIndex = indexPath
 			tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 			
-			DependencyManager.shared.selectedWalletMetadata = metadata
-			
 			if let container = bottomSheetContainer {
+				DependencyManager.shared.temporarySelectedWalletMetadata = metadata
 				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
 				container.dismissBottomSheet()
 				
 			} else {
+				DependencyManager.shared.selectedWalletMetadata = metadata
 				self.navigationController?.popViewController(animated: true)
 			}
 			
