@@ -32,6 +32,7 @@ class SharedHelpers: XCTestCase {
 	func application(resetForEveryInvocation: Bool = false) -> XCUIApplication {
 		sharedApplication.launchEnvironment = ["XCUITEST-KEYBOARD": "true"]
 		sharedApplication.launchEnvironment = ["XCUITEST-GHOSTNET": "true"]
+		sharedApplication.launchEnvironment = ["XCUITEST-STUB-XTZ-PRICE": "true"]
 		
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present

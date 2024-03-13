@@ -29,6 +29,10 @@ public class CoinGeckoService {
 	
 	public var selectedCurrencyRatePerXTZ: Decimal = -1
 	public var exchangeRates: CoinGeckoExchangeRateResponse? = nil
+	
+	/// Coingecko has a very aggressive rate limiting policy. To avoid issues arising from running XCUITests on dev machine, we stub it during test runs
+	public var stubPrice: Bool = false
+	
 	private var dispatchGroupMarketData = DispatchGroup()
 	
 	var selectedCurrency: String {
@@ -47,6 +51,12 @@ public class CoinGeckoService {
 	// MARK: - Network functions
 	
 	public func fetchTezosPrice(completion: @escaping ((Result<Decimal, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			selectedCurrencyRatePerXTZ = 1.23
+			completion(Result.success(selectedCurrencyRatePerXTZ))
+			return
+		}
+		
 		guard let url = URL(string: coinGeckoPriceURL + selectedCurrency) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
@@ -65,11 +75,27 @@ public class CoinGeckoService {
 	}
 	
 	public func loadLastTezosPrice() {
+		guard stubPrice == false else {
+			selectedCurrencyRatePerXTZ = 1.23
+			return
+		}
+		
 		let cache = self.requestIfService.lastCache(forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self)
 		self.selectedCurrencyRatePerXTZ = cache?.price() ?? 0
 	}
 	
 	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoExchangeRateResponse(rates: [
+				"usd": CoinGeckoExchangeRate(name: "US Dollar", unit: "$", value: 72729.208, type: "fiat"),
+				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
+				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
+			])
+			exchangeRates = stubbedResponse
+			completion(Result.success(stubbedResponse))
+			return
+		}
+		
 		guard let url = URL(string: coinGeckoExchangeRatesURL) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
@@ -88,10 +114,35 @@ public class CoinGeckoService {
 	}
 	
 	public func loadLastExchangeRates() {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoExchangeRateResponse(rates: [
+				"usd": CoinGeckoExchangeRate(name: "US Dollar", unit: "$", value: 72729.208, type: "fiat"),
+				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
+				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
+			])
+			exchangeRates = stubbedResponse
+			return
+		}
+		
 		self.exchangeRates = self.requestIfService.lastCache(forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self)
 	}
 	
 	public func fetchChartData(forURL: String, withKey: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoMarketDataResponse(prices: [ [1710253206577, 1.364924598389686],
+																		[1710253506313, 1.3640842444632224],
+																		[1710253815819, 1.366669129944549],
+																		[1710254095138, 1.367196961260544],
+																		[1710254453439, 1.3661190435663413],
+																		[1710254710709, 1.364264674621857],
+																		[1710254995244, 1.3664442887113173],
+																		[1710255294877, 1.3631232865975842],
+																		[1710255623763, 1.3593348486343222],
+																		[1710255896593, 1.3527296112320508]])
+			completion(Result.success(stubbedResponse))
+			return
+		}
+		
 		guard let url = URL(string: forURL) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
