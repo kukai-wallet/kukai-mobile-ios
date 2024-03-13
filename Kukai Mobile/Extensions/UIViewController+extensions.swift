@@ -25,6 +25,7 @@ extension UIViewController {
 	// MARK: - Activity display
 	
 	private static var activityView = createActivityView()
+	private static var activityViewStatusLabel = UILabel()
 	private static var activityViewActivityIndicator = UIActivityIndicatorView(style: .large)
 	
 	private static var activityIndicator = UIActivityIndicatorView(style: .large)
@@ -36,12 +37,20 @@ extension UIViewController {
 		let view = UIView(frame: UIScreen.main.bounds)
 		view.backgroundColor = UIViewController.loadingModalBackgroundColor
 		
+		activityViewStatusLabel.numberOfLines = 0
+		activityViewStatusLabel.font = UIFont.custom(ofType: .medium, andSize: 16)
+		activityViewStatusLabel.textColor = UIColor.white
+		activityViewStatusLabel.textAlignment = .center
+		activityViewStatusLabel.frame = CGRect(x: view.center.x, y: view.center.y, width: view.frame.width - 64, height: 50)
+		
 		UIViewController.activityViewActivityIndicator.color = UIColor.white
 		
 		view.addSubview(UIViewController.activityViewActivityIndicator)
+		view.addSubview(UIViewController.activityViewStatusLabel)
 		view.bringSubviewToFront(UIViewController.activityViewActivityIndicator)
 		
 		UIViewController.activityViewActivityIndicator.center = view.center
+		UIViewController.activityViewStatusLabel.center = CGPoint(x: view.center.x, y: (view.center.y + 48))
 		
 		return view
 	}
@@ -58,12 +67,14 @@ extension UIViewController {
 	func loadingViewHideActivity() {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = true
+		UIViewController.activityViewStatusLabel.isHidden = true
 		UIViewController.activityView.alpha = 1
 	}
 	
 	func loadingViewShowActivity() {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityViewActivityIndicator.isHidden = false
+		UIViewController.activityViewStatusLabel.isHidden = false
 		UIViewController.activityView.alpha = 1
 	}
 	
@@ -78,9 +89,14 @@ extension UIViewController {
 		}
 	}
 	
+	func updateLoadingViewStatusLabel(message: String) {
+		UIViewController.activityViewStatusLabel.text = message
+	}
+	
 	func hideLoadingView(completion: (() -> Void)? = nil) {
 		UIViewController.activityViewActivityIndicator.stopAnimating()
 		UIViewController.activityView.removeFromSuperview()
+		UIViewController.activityViewStatusLabel.text = ""
 		if let comp = completion {
 			comp()
 		}
@@ -95,6 +111,7 @@ extension UIViewController {
 		
 		loadingModalStatusLabel.translatesAutoresizingMaskIntoConstraints = false
 		loadingModalStatusLabel.numberOfLines = 0
+		loadingModalStatusLabel.font = UIFont.custom(ofType: .medium, andSize: 16)
 		loadingModalStatusLabel.textColor = UIColor.white
 		loadingModalStatusLabel.textAlignment = .center
 		
@@ -106,8 +123,8 @@ extension UIViewController {
 			activityIndicator.centerXAnchor.constraint(equalTo: vc.view.centerXAnchor),
 			activityIndicator.centerYAnchor.constraint(equalTo: vc.view.centerYAnchor),
 			
-			loadingModalStatusLabel.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor, constant: 20),
-			loadingModalStatusLabel.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -20),
+			loadingModalStatusLabel.leadingAnchor.constraint(equalTo: vc.view.leadingAnchor, constant: 32),
+			loadingModalStatusLabel.trailingAnchor.constraint(equalTo: vc.view.trailingAnchor, constant: -32),
 			loadingModalStatusLabel.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 20)
 		])
 		

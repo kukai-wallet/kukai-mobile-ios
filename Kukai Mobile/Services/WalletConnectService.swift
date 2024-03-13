@@ -559,8 +559,10 @@ public class WalletConnectService {
 	}
 	
 	public static func approveCurrentProposal(completion: ((Bool, Error?) -> Void)?) {
+		let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata
+		
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal,
-			  let currentAccount = DependencyManager.shared.selectedWalletMetadata,
+			  let currentAccount = selectedAccountMeta,
 			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
 			Logger.app.error("WC approveCurrentProposal can't find current prposal or current state")
 			completion?(false, nil)

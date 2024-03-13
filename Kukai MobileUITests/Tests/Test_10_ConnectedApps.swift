@@ -33,8 +33,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
-		handlePasteSetting()
-		
 		
 		// Go to safari -> ghostnet website
 		safari.launch()
@@ -86,11 +84,19 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		let cameraAlert = springboard.alerts.firstMatch
 		if cameraAlert.exists {
-			cameraAlert.scrollViews.buttons["OK"].tap()
+			
+			let allow = cameraAlert.scrollViews.buttons["Allow"]
+			let ok = cameraAlert.scrollViews.buttons["OK"]
+			if allow.exists {
+				allow.tap()
+			} else if ok.exists {
+				ok.tap()
+			}
 		}
 		
 		app.buttons["paste-button"].tap()
 		sleep(2)
+		Test_10_ConnectedApps.handlePastePermissionsIfNecessary(app: app)
 		
 		
 		// Wait for popup
@@ -99,8 +105,8 @@ final class Test_10_ConnectedApps: XCTestCase {
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		sleep(5)
 		
-		
 		handleSignAndWrapTogether(app: app, safari: safari, webview: webview)
+		handleBatch(app: app, safari: safari, webview: webview)
 		handleSimulatedErrors(app: app, safari: safari, webview: webview)
 	}
 	
@@ -125,22 +131,26 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		let secondAddress = EnvironmentVariables.shared.config().walletAddress_HD_account_1.truncateTezosAddress()
 		app.staticTexts[secondAddress].tap()
-		sleep(2)
+		sleep(4)
 		
-		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: app, delay: 10)
+		
+		// Verify that the new address shows up in safari web page
+		safari.activate()
 		sleep(2)
+		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: safari, delay: 10)
+		
+		
+		// Return to app and ensure its now visible there too
+		app.activate()
+		sleep(2)
+		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: app, delay: 10)
 		SharedHelpers.shared.dismissBottomSheetByDraggging(staticText: "Test Dapp", app: app)
 		sleep(2)
 		
 		
-		
+		// Return to safari and trigger sign expression
 		safari.activate()
 		sleep(2)
-		
-		if !webview.staticTexts[secondAddress].exists {
-			XCTFail("Hasn't updated to correct account")
-		}
-		
 		
 		handleSign(app: app, safari: safari, webview: webview)
 		disconnectFromSideMenuAndVerify(app: app, safari: safari, webview: webview)
@@ -242,6 +252,64 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(2)
 	}
 	
+	func handleBatch(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
+		safari.activate()
+		SharedHelpers.shared.waitForButton("Submit Wrap", exists: true, inElement: webview, delay: 10)
+		
+		if SharedHelpers.shared.scrollUntilButton(app: app, button: "Submit Operations", showsIn: webview) {
+			sleep(2)
+			webview.buttons["Submit Operations"].firstMatch.tap()
+			sleep(2)
+		} else {
+			XCTFail("Unable to find `Submit Operations`")
+			return
+		}
+		
+		
+		app.activate()
+		sleep(2)
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		
+		// Should see batch screen, check it dispalys content correctly
+		SharedHelpers.shared.waitForStaticText("Confirm Send", exists: true, inElement: app, delay: 25)
+		
+		let countLabel = app.staticTexts["contract-count-label"]
+		let operationCount = countLabel.label
+		XCTAssert(operationCount == "3", operationCount)
+		
+		countLabel.forceTap()
+		
+		
+		// Verify details displayed correctly
+		let operationCells = app.tables.cells.containing(.staticText, identifier: "operation-destination")
+		let operationElementsCount = operationCells.count
+		XCTAssert(operationElementsCount == 3, operationElementsCount.description)
+		XCTAssert(app.staticTexts["1 XTZ"].exists)
+		XCTAssert(app.staticTexts["wrap"].exists)
+		
+		operationCells.element(boundBy: 1).tap()
+		sleep(1)
+		XCTAssert(app.staticTexts["1 XTZ"].exists)
+		XCTAssert(app.staticTexts["wrap"].exists)
+		
+		operationCells.element(boundBy: 2).tap()
+		sleep(1)
+		XCTAssert(app.staticTexts["0.012345 XTZ"].exists)
+		XCTAssert(app.staticTexts["transaction"].exists)
+		
+		Test_04_Account.slideDownFullScreenBottomSheet(inApp: app, element: app.staticTexts["Batch Info"].firstMatch)
+		sleep(2)
+		
+		// Perform operation
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		SharedHelpers.shared.waitForStaticText("Confirm Send", exists: false, inElement: app, delay: 25)
+		sleep(1)
+		SharedHelpers.shared.waitForStaticText("window-error-title", exists: false, inElement: app, delay: 5)
+		sleep(2)
+	}
+	
 	func handleSimulatedErrors(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
 		safari.activate()
 		SharedHelpers.shared.waitForButton("Submit Wrap", exists: true, inElement: webview, delay: 10)
@@ -289,6 +357,21 @@ final class Test_10_ConnectedApps: XCTestCase {
 			XCTFail("Connect button is not present, haven't disconnected")
 		}
 	}
+	
+	
+	
+	// MARK: - Helpers
+	
+	public static func handlePastePermissionsIfNecessary(app: XCUIApplication) {
+		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		let pasteAlert = springboard.alerts.firstMatch
+		
+		if pasteAlert.exists && pasteAlert.label.contains("would like to paste from") {
+			pasteAlert.scrollViews.buttons["Allow Paste"].tap()
+		}
+		sleep(2)
+	}
+	
 	
 	
 	/*

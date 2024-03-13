@@ -126,6 +126,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 				print("XCUITEST-RESET = done")
 			}
 		}
+		
+		if environment["XCUITEST-STUB-XTZ-PRICE"] == "true" {
+			DependencyManager.shared.stubXtzPrice = true
+		}
 	}
 	
 	func disconnectHardwareKeyboard() {

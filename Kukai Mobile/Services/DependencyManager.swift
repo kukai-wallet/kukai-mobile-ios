@@ -19,7 +19,7 @@ class DependencyManager {
 	
 	static let shared = DependencyManager()
 	
-	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://mainnet.smartpy.io")!/*, URL(string: "https://rpc.tzbeta.net")!*/]
+	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://mainnet.smartpy.io")!, URL(string: "https://rpc.tzbeta.net")!]
 	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
@@ -49,6 +49,8 @@ class DependencyManager {
 	var exploreService: ExploreService
 	var discoverService: DiscoverService
 	var appUpdateService: AppUpdateService
+	
+	var stubXtzPrice: Bool = false
 	
 	
 	// Properties and helpers
@@ -156,6 +158,14 @@ class DependencyManager {
 		}
 	}
 	
+	// For use during WC2 flow where a user tentively selects an account, and we want to wait until its confirmed before switching
+	var temporarySelectedWalletMetadata: WalletMetadata?
+	var temporarySelectedWalletAddress: String? {
+		get {
+			return temporarySelectedWalletMetadata?.address
+		}
+	}
+	
 	
 	// Combine publishers to serve as notifications across multiple screens
 	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults
@@ -205,6 +215,8 @@ class DependencyManager {
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
+		coinGeckoService.stubPrice = self.stubXtzPrice
+		
 		updateKukaiCoreClients(supressUpdateNotification: true)
 	}
 	
@@ -253,6 +265,8 @@ class DependencyManager {
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: currentNetworkType)
 		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
 		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
+		
+		coinGeckoService.stubPrice = self.stubXtzPrice
 		
 		if !supressUpdateNotification {
 			networkDidChange = true
