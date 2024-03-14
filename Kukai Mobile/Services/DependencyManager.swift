@@ -29,7 +29,7 @@ class DependencyManager {
 	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
-	static let defaultObjktURL_testnet = URL(string: "https://data.objkt.com/v3/graphql")!
+	static let defaultObjktURL_testnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
 	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
 	
