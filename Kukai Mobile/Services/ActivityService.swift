@@ -49,6 +49,7 @@ public class ActivityService {
 	}
 	
 	public func loadCache(address: String?) {
+		Logger.app.info("ActivityService: loadCache \(address)")
 		self.pendingTransactionGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address)) ?? []
 		
 		if let cachedGroups = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.transactionsCacheFilename(withAddress: address)) {
@@ -78,12 +79,14 @@ public class ActivityService {
 	// MARK: - Transaction processing
 	
 	public func fetchTransactionGroups(forAddress address: String, completion: @escaping ((KukaiError?) -> Void)) {
+		Logger.app.info("ActivityService: requesting transactions for \(address)")
 		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { [weak self] transactions in
 			let groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: address)
 			
 			self?.checkAndUpdatePendingTransactions(forAddress: address, comparedToGroups: groups)
 			let _ = DiskService.write(encodable: groups, toFileName: ActivityService.transactionsCacheFilename(withAddress: address))
 			
+			Logger.app.info("ActivityService: requesting transactions for \(address) - complete")
 			completion(nil)
 		}
 	}
@@ -108,6 +111,7 @@ public class ActivityService {
 	}
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, destinationAddress: String, destinationAlias: String?, xtzAmount: TokenAmount, parameters: [String: String]?, primaryToken: Token?) -> Bool {
+		Logger.app.info("ActivityService: add pending from \(fromWallet.address) with opHash: \(opHash)")
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
 		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
@@ -126,6 +130,7 @@ public class ActivityService {
 	}
 	
 	public func addPendingBatch(opHash: String, counter: Decimal, fromWallet: WalletMetadata, batchInfo: [PendingBatchInfo]) -> Bool {
+		Logger.app.info("ActivityService: add pending batch from \(fromWallet.address) with opHash: \(opHash)")
 		var previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		
 		var transactions: [TzKTTransaction] = []
@@ -150,6 +155,7 @@ public class ActivityService {
 	}
 	
 	public func addPending(opHash: String, type: TzKTTransaction.TransactionType, counter: Decimal, fromWallet: WalletMetadata, newDelegate: TzKTAddress?) -> Bool {
+		Logger.app.info("ActivityService: add pending delegate from \(fromWallet.address) with opHash: \(opHash)")
 		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
 		let transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, newDelegate: newDelegate)
 		
@@ -166,6 +172,7 @@ public class ActivityService {
 	}
 	
 	public func checkAndUpdatePendingTransactions(forAddress address: String, comparedToGroups: [TzKTTransactionGroup]) {
+		Logger.app.info("ActivityService: checking pending for \(address)")
 		let now = Date()
 		var indexesToRemove: [Int] = []
 		
@@ -209,16 +216,20 @@ public class ActivityService {
 	}
 	
 	public static func pendingOperationsFor(forAddress address: String) -> [TzKTTransactionGroup] {
+		Logger.app.info("ActivityService: get pending operations for \(address)")
 		return DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address)) ?? []
 	}
 	
 	public func addUniqueAddressToPendingOperation(address: String) {
+		Logger.app.info("ActivityService: requesting to list address \(address), as containing pending")
 		if !addressesWithPendingOperation.contains([address]) {
+			Logger.app.info("ActivityService: adding address \(address), to pending")
 			addressesWithPendingOperation.append(address)
 		}
 	}
 	
 	public func updatePendingQueue(forAddress address: String) {
+		Logger.app.info("ActivityService: remove \(address), from pending queue")
 		self.addressesWithPendingOperation.removeAll(where: { $0 == address })
 	}
 }
