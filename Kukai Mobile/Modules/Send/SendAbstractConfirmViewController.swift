@@ -79,6 +79,8 @@ class SendAbstractConfirmViewController: UIViewController {
 	}
 	
 	func handleApproval(opHash: String) {
+		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+		
 		if !isWalletConnectOp {
 			self.dismissAndReturn(collapseOnly: false)
 			return

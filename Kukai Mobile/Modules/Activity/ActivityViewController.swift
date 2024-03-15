@@ -69,6 +69,11 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		viewModel.refresh(animate: false)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+	}
+	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		viewModel.isVisible = false

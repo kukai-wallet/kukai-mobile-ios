@@ -199,8 +199,13 @@ extension AccountsViewController: UITableViewDelegate {
 			viewModel.selectedIndex = indexPath
 			tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 			
-			if let container = bottomSheetContainer {
+			if let container = bottomSheetContainer, bottomSheetContainer?.presentingViewController is WalletConnectPairViewController {
 				DependencyManager.shared.temporarySelectedWalletMetadata = metadata
+				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
+				container.dismissBottomSheet()
+				
+			} else if let container = bottomSheetContainer {
+				DependencyManager.shared.selectedWalletMetadata = metadata
 				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
 				container.dismissBottomSheet()
 				

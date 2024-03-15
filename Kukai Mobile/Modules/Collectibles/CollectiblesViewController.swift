@@ -66,6 +66,11 @@ class CollectiblesViewController: UIViewController {
 		self.segmentedControl.setTitle(isGroupMode ? "Collections" : "All", forSegmentAt: 0)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+	}
+	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.isVisible = false

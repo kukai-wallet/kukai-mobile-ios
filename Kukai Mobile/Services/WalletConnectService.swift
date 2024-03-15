@@ -496,9 +496,19 @@ public class WalletConnectService {
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable(accounts)))
 				*/
 				
+				
 				// List current account
-				let currentAccount = DependencyManager.shared.selectedWalletMetadata
-				let prefix = currentAccount?.address.prefix(3).lowercased() ?? ""
+				
+				// This gets trigger after an account switch, which may result in the dApp asking for details of an address that is not the currently selected address
+				// Instead search for the stored session properties of the linked session and return details for that address instead. if It exists, fallback to selected
+				var metadataToUse = DependencyManager.shared.selectedWalletMetadata
+				if let relatedSession = Sign.instance.getSessions().filter({ $0.topic == request.topic }).first,
+				   let addressUsedInSession = relatedSession.namespaces["tezos"]?.accounts.first?.address,
+				   let metadataForAddress = DependencyManager.shared.walletList.metadata(forAddress: addressUsedInSession) {
+					metadataToUse = metadataForAddress
+				}
+				
+				let prefix = metadataToUse?.address.prefix(3).lowercased() ?? ""
 				var algo = ""
 				if prefix == "tz1" {
 					algo = "ed25519"
@@ -508,7 +518,7 @@ public class WalletConnectService {
 					algo = "unknown"
 				}
 				
-				let obj = WalletConnectGetAccountObj(algo: algo, address: currentAccount?.address ?? "", pubkey: currentAccount?.bas58EncodedPublicKey ?? "")
+				let obj = WalletConnectGetAccountObj(algo: algo, address: metadataToUse?.address ?? "", pubkey: metadataToUse?.bas58EncodedPublicKey ?? "")
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
 				requestDidComplete = true
 				

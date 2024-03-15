@@ -90,6 +90,12 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		}
 	}
 	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let vc = segue.destination as? AccountsContainerViewController {
+			vc.addressToMarkAsSelected = DependencyManager.shared.temporarySelectedWalletAddress ?? DependencyManager.shared.selectedWalletAddress
+		}
+	}
+	
 	private func handleApproval() {
 		WalletConnectService.approveCurrentProposal { [weak self] success, error in
 			self?.hideLoadingModal(completion: { [weak self] in
