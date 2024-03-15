@@ -376,4 +376,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			DependencyManager.shared.tzktClient.listenForAccountChanges(addresses: allWallets)
 		}
 	}
+	
+	static func reconnectAccountActivityListenerIfNeeded() {
+		if DependencyManager.shared.tzktClient.isListening == false {
+			AccountViewModel.setupAccountActivityListener()
+		}
+	}
 }

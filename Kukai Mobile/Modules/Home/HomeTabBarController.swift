@@ -89,6 +89,15 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 					DependencyManager.shared.balanceService.loadCache(address: address)
 					
 					DispatchQueue.main.async {
+						
+						// Check if we need to start or stop the activity animation
+						let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
+						if pendingAddresses.contains([address]) {
+							self?.startActivityAnimationIfNecessary(addressesToBeRefreshed: pendingAddresses)
+						} else {
+							self?.stopActivityAnimationIfNecessary()
+						}
+						
 						DependencyManager.shared.addressLoaded = address
 						
 						self?.refreshType = .useCacheIfNotStale
@@ -144,6 +153,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			AccountViewModel.reconnectAccountActivityListenerIfNeeded()
 			self?.supressAutoRefreshError = true
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
