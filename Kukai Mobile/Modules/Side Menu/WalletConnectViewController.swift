@@ -61,7 +61,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	
 	func bottomSheetDataChanged() {
 		self.showLoadingView()
-		self.updateLoadingViewStatusLabel(message: "Waiting for a response \nfrom the connected application")
 		
 		// Change account for the given pairing
 		if let pairing = self.pairingToChangeAccount {
@@ -75,6 +74,8 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			Task {
 				do {
 					try await Sign.instance.update(topic: existingSession.topic, namespaces: newNamespaces)
+					viewModel.refresh(animate: true)
+					hideLoadingView()
 					
 				} catch {
 					DispatchQueue.main.async { [weak self] in
