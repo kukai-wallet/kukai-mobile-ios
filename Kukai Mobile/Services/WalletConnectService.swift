@@ -780,7 +780,6 @@ public class WalletConnectService {
 			
 			// Compute opSummaries for Batch UI
 			var opSummaries: [TransactionService.BatchOpSummary] = []
-			var firstOpSummaryWithToken: TransactionService.BatchOpSummary? = nil
 			var previousEmptyToken: Token? = nil
 			
 			for op in operations {
@@ -793,7 +792,6 @@ public class WalletConnectService {
 					if totalXTZ > XTZAmount.zero() {
 						summary.chosenToken = Token.xtz()
 						summary.chosenAmount = totalXTZ
-						if firstOpSummaryWithToken == nil { firstOpSummaryWithToken = summary }
 						
 					} else if let firstTokenDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: [opTrans]) {
 						
@@ -834,8 +832,6 @@ public class WalletConnectService {
 								summary.chosenToken = token
 								summary.chosenAmount = TokenAmount(fromRpcAmount: firstTokenDetails.rpcAmount, decimalPlaces: token?.decimalPlaces ?? 0)
 							}
-							
-							if firstOpSummaryWithToken == nil { firstOpSummaryWithToken = summary }
 						}
 					}
 					
@@ -868,28 +864,68 @@ public class WalletConnectService {
 			TransactionService.shared.walletConnectOperationData.batchData.operationCount = operations.count
 			TransactionService.shared.walletConnectOperationData.currentTransactionType = .batch
 			
-			if firstOpSummaryWithToken == nil || firstOpSummaryWithToken?.chosenToken?.isXTZ() == true {
-				
-				// Check if we need to display XTZ balance (falls back to zero XTZ balance)
-				// If its XTZ we check all summaries and sum it together
-				var XTZAmount = XTZAmount.zero()
-				opSummaries.forEach { summary in
-					if summary.chosenToken?.isXTZ() == true {
-						XTZAmount += (summary.chosenAmount as? XTZAmount) ?? .zero()
-					}
+			
+			
+			
+			
+			// Above we run `firstNonZeroTokenTransferAmount` on each operation to extract some pieces of information from each operation.
+			// it was intended to run on an array of operations, but the operation details screen needs similar data for each op.
+			// The "full picture" can only be seen with access to all of them. So here we re-run it again against everything to try and
+			// get the full picture of FA token sends, if we currently have no XTZ send to deal with
+			
+			var xtzAmount = XTZAmount.zero()
+			opSummaries.forEach { summary in
+				if summary.chosenToken?.isXTZ() == true {
+					xtzAmount += (summary.chosenAmount as? XTZAmount) ?? .zero()
 				}
+			}
+			
+			if xtzAmount > XTZAmount.zero() {
 				
+				// show XTZ amount
 				let accountBalance = xtzBalance
 				let selectedToken = Token.xtz(withAmount: accountBalance)
 				
 				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = xtzAmount
 				mainThreadProcessedOperations(ofType: .batch)
-			} else {
 				
-				// If not, we have a FA token, display that instead
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = firstOpSummaryWithToken?.chosenToken
-				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = firstOpSummaryWithToken?.chosenAmount
+			} else if let globalDetails = OperationFactory.Extractor.firstNonZeroTokenTransferAmount(operations: operations), globalDetails.rpcAmount != "", globalDetails.rpcAmount != "0" {
+				
+				// process token details
+				var token: Token? = nil
+				
+				if let t = DependencyManager.shared.balanceService.dexToken(forAddress: globalDetails.tokenContract, andTokenId: globalDetails.tokenId) {
+					token = t
+					
+				} else if let t = DependencyManager.shared.balanceService.token(forAddress: globalDetails.tokenContract, andTokenId: globalDetails.tokenId) {
+					token = t.token
+					
+				} else {
+					token = Token(name: nil,
+								  symbol: "",
+								  tokenType: .fungible,
+								  faVersion: globalDetails.tokenId != nil ? .fa2 : .fa1_2,
+								  balance: TokenAmount.zeroBalance(decimalPlaces: 0),
+								  thumbnailURL: TzKTClient.avatarURL(forToken: globalDetails.tokenContract),
+								  tokenContractAddress: globalDetails.tokenContract,
+								  tokenId: 0,
+								  nfts: nil,
+								  mintingTool: nil)
+				}
+				
+				let amount = TokenAmount(fromRpcAmount: globalDetails.rpcAmount, decimalPlaces: token?.decimalPlaces ?? 0)
+				
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = token
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = amount
+				mainThreadProcessedOperations(ofType: .batch)
+				
+			} else {
+				let accountBalance = xtzBalance
+				let selectedToken = Token.xtz(withAmount: accountBalance)
+				
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
+				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount.zero()
 				mainThreadProcessedOperations(ofType: .batch)
 			}
 		}
