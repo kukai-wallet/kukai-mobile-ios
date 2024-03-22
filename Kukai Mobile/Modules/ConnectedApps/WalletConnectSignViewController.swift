@@ -88,6 +88,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					
 					Logger.app.error("WC Rejction error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
+					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 				}
 			})
 		})
