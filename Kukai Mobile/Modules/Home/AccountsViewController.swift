@@ -211,9 +211,9 @@ extension AccountsViewController: UITableViewDelegate {
 				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
 				container.dismissBottomSheet()
 				
-			} else if let container = bottomSheetContainer {
+			} else if let container = bottomSheetContainer, let parentNav = (container.presentingViewController as? UINavigationController), let vc = (parentNav.viewControllers[parentNav.viewControllers.count-1] as? BottomSheetContainerDelegate) {
 				DependencyManager.shared.temporarySelectedWalletMetadata = metadata
-				(container.presentingViewController as? BottomSheetContainerDelegate)?.bottomSheetDataChanged()
+				vc.bottomSheetDataChanged()
 				container.dismissBottomSheet()
 				
 			} else {
