@@ -65,7 +65,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 		// Change account for the given pairing
 		if let pairing = self.pairingToChangeAccount {
 			
-			let newAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			let newAddress = DependencyManager.shared.temporarySelectedWalletAddress ?? DependencyManager.shared.selectedWalletAddress ?? ""
 			guard let existingSession = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic }),
 				  let newNamespaces = WalletConnectService.updateNamespaces(forPairing: pairing, toAddress: newAddress) else {
 				return

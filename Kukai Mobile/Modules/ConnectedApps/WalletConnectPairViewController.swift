@@ -102,6 +102,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
+		self.switchToTemporaryWalletIfNeeded()
+		
 		self.showLoadingModal { [weak self] in
 			self?.handleApproval()
 		}
@@ -118,7 +120,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
 					self?.didSend = true
-					self?.switchToTemporaryWalletIfNeeded()
 					self?.presentingViewController?.dismiss(animated: true)
 					
 				} else {
