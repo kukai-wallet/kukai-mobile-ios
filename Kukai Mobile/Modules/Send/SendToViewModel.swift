@@ -36,13 +36,11 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var expandedSection: Int? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			if let obj = item as? SendHeaderObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
 				cell.iconView.image = obj.icon
 				cell.headingLabel.text = obj.title
-				cell.lessButton.isHidden = !(indexPath.section == self?.expandedSection)
-				cell.delegate = self
 				return cell
 				
 			} else if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
@@ -198,13 +196,5 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		refresh(animate: true)
 		return true
-	}
-}
-
-extension SendToViewModel: AccountsSectionHeaderCellDelegate {
-	
-	func lessTapped() {
-		expandedSection = nil
-		refresh(animate: true)
 	}
 }

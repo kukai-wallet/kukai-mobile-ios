@@ -83,7 +83,14 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 							}
 							
 						} else {
-							self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
+							
+							// Check if the selected index is available to be scrolled too (might be inside the collapsed group). if its available, scroll to it, else just the top of the section
+							let selectedIndex = self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0)
+							if selectedIndex.row >= (self?.tableView.numberOfRows(inSection: selectedIndex.section) ?? 0) {
+								self?.tableView.scrollToRow(at: IndexPath(row: 0, section: selectedIndex.section), at: .middle, animated: true)
+							} else {
+								self?.tableView.scrollToRow(at: selectedIndex, at: .middle, animated: true)
+							}
 						}
 					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
 						self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)

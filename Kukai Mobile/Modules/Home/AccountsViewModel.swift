@@ -84,8 +84,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
-				cell.delegate = self
-				cell.lessButton.isHidden = !(indexPath.section == self?.expandedSection)
+				cell.checkImage.isHidden = !(self?.selectedIndex.section == indexPath.section)
 				
 				return cell
 				
@@ -166,21 +165,13 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sectionData[sections.count-1].append(metadata)
 			
 			for (childIndex, childMetadata) in metadata.children.enumerated() {
-				let isSelected = childMetadata.address == currentAddress
-				
-				// slected always needs to be displayed whether expanded or collapsed.
-				// If current section is collapsed and the indx is beyond the fold, make selected be the last item in that section instead
-				if isSelected && !isSectionExpanded && childIndex > 1 {
-					sectionData[sections.count-1].removeLast()
-					sectionData[sections.count-1].append(childMetadata)
-					
-				} else if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
 					sectionData[sections.count-1].append(childMetadata)
 				}
 				
 				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
-				if isSelected {
-					selectedIndex = IndexPath(row: sectionData[sections.count-1].count-1, section: sections.count-1)
+				if childMetadata.address == currentAddress {
+					selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1)
 				}
 				
 				
@@ -427,14 +418,5 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .failure(error, "Error occurred detching tezos domains")
 			}
 		}
-	}
-}
-
-extension AccountsViewModel: AccountsSectionHeaderCellDelegate {
-	
-	func lessTapped() {
-		expandedSection = nil
-		reloadFromExpanding = true
-		refresh(animate: true)
 	}
 }
