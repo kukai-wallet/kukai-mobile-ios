@@ -15,13 +15,30 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
-	@IBOutlet weak var accountLabel: UILabel!
 	@IBOutlet weak var singleAccountContainer: UIView!
 	@IBOutlet weak var multiAccountTitle: UILabel!
 	@IBOutlet weak var accountButton: UIButton!
 	@IBOutlet weak var accountButtonContainer: UIView!
 	@IBOutlet weak var rejectButton: CustomisableButton!
 	@IBOutlet weak var connectButton: CustomisableButton!
+	
+	@IBOutlet weak var singleAccountStackViewRegular: UIStackView!
+	@IBOutlet weak var singleAccountRegularIcon: UIImageView!
+	@IBOutlet weak var singleAccountRegularLabel: UILabel!
+	
+	@IBOutlet weak var singleAccountStackViewSocial: UIStackView!
+	@IBOutlet weak var singleAccountSocialIcon: UIImageView!
+	@IBOutlet weak var singleAccountSocialAliasLabel: UILabel!
+	@IBOutlet weak var singleAccountSocialAccountLabel: UILabel!
+	
+	@IBOutlet weak var multiAccountStackViewRegular: UIStackView!
+	@IBOutlet weak var multiAccountRegularIcon: UIImageView!
+	@IBOutlet weak var multiAccountRegularLabel: UILabel!
+	
+	@IBOutlet weak var multiAccountStackViewSocial: UIStackView!
+	@IBOutlet weak var multiAccountSocialIcon: UIImageView!
+	@IBOutlet weak var multiAccountSocialAliasLabel: UILabel!
+	@IBOutlet weak var multiAccountSocialAccountLabel: UILabel!
 	
 	var bottomSheetMaxHeight: CGFloat = 450
 	var dimBackground: Bool = true
@@ -65,15 +82,46 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	func bottomSheetDataChanged() {
-		let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata
+		guard let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata else {
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedAccountMeta, ofSize: .size_20)
 		
 		if DependencyManager.shared.walletList.count() == 1 {
-			accountLabel.text = selectedAccountMeta?.address.truncateTezosAddress()
+			//accountLabel.text = selectedAccountMeta.address.truncateTezosAddress()
 			multiAccountTitle.isHidden = true
 			accountButtonContainer.isHidden = true
+			
+			if media.subtitle != nil {
+				singleAccountStackViewRegular.isHidden = true
+				singleAccountStackViewSocial.isHidden = false
+				singleAccountSocialIcon.image = media.image
+				singleAccountSocialAliasLabel.text = media.title
+				singleAccountSocialAccountLabel.text = media.subtitle
+			} else {
+				singleAccountStackViewRegular.isHidden = false
+				singleAccountStackViewSocial.isHidden = true
+				singleAccountRegularIcon.image = media.image
+				singleAccountRegularLabel.text = media.title
+			}
+			
 		} else {
 			singleAccountContainer.isHidden = true
-			accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
+			//accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
+			
+			if media.subtitle != nil {
+				multiAccountStackViewRegular.isHidden = true
+				multiAccountStackViewSocial.isHidden = false
+				multiAccountSocialIcon.image = media.image
+				multiAccountSocialAliasLabel.text = media.title
+				multiAccountSocialAccountLabel.text = media.subtitle
+			} else {
+				multiAccountStackViewRegular.isHidden = false
+				multiAccountStackViewSocial.isHidden = true
+				multiAccountRegularIcon.image = media.image
+				multiAccountRegularLabel.text = media.title
+			}
 		}
 	}
 	
