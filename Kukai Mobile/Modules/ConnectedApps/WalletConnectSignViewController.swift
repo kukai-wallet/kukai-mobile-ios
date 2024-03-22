@@ -9,6 +9,7 @@ import UIKit
 import WalletConnectSign
 import KukaiCoreSwift
 import KukaiCryptoSwift
+import WalletConnectNetworking
 import Combine
 import OSLog
 
@@ -22,10 +23,10 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	private var stringToSign: String = ""
 	private var accountToSign: String = ""
 	private var bag = Set<AnyCancellable>()
+	private var didSend = false
 	
 	var bottomSheetMaxHeight: CGFloat = 500
 	var dimBackground: Bool = true
-	private var didSend = false
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -51,6 +52,23 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		payloadTextView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
 		
 		slideButton.delegate = self
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				
+				if status == .disconnected {
+					self?.showLoadingModal()
+					self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
+				} else {
+					self?.hideLoadingModal()
+				}
+			}
+		}.store(in: &bag)
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {

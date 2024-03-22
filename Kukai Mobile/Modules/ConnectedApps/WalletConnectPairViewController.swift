@@ -7,6 +7,8 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectNetworking
+import Combine
 import OSLog
 
 class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol, BottomSheetContainerDelegate {
@@ -23,7 +25,9 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	var bottomSheetMaxHeight: CGFloat = 450
 	var dimBackground: Bool = true
+	
 	private var didSend = false
+	private var bag = [AnyCancellable]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -41,6 +45,25 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		DependencyManager.shared.temporarySelectedWalletMetadata = nil
 	}
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		bottomSheetDataChanged()
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				
+				if status == .disconnected {
+					self?.showLoadingModal()
+					self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
+				} else {
+					self?.hideLoadingModal()
+				}
+			}
+		}.store(in: &bag)
+	}
+	
 	func bottomSheetDataChanged() {
 		let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata
 		
@@ -52,12 +75,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			singleAccountContainer.isHidden = true
 			accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
 		}
-	}
-	
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		
-		bottomSheetDataChanged()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -151,6 +168,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					
 					Logger.app.error("WC Rejction error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
+					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 				}
 			})
 		}

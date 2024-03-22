@@ -7,6 +7,8 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectNetworking
+import Combine
 import OSLog
 
 class SendAbstractConfirmViewController: UIViewController {
@@ -19,6 +21,7 @@ class SendAbstractConfirmViewController: UIViewController {
 	public var currentBatchData: TransactionService.BatchData = TransactionService.BatchData()
 	public var selectedMetadata: WalletMetadata? = nil
 	
+	private var bag = [AnyCancellable]()
 	
 	
 	// MARK: - Lifecycle
@@ -26,6 +29,23 @@ class SendAbstractConfirmViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				
+				if status == .disconnected {
+					self?.showLoadingModal()
+					self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
+				} else {
+					self?.hideLoadingModal()
+				}
+			}
+		}.store(in: &bag)
+	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
