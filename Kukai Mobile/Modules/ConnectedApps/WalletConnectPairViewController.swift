@@ -7,13 +7,14 @@
 
 import UIKit
 import KukaiCoreSwift
+import WalletConnectNetworking
+import Combine
 import OSLog
 
 class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedProtocol, BottomSheetContainerDelegate {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var nameLabel: UILabel!
-	@IBOutlet weak var accountLabel: UILabel!
 	@IBOutlet weak var singleAccountContainer: UIView!
 	@IBOutlet weak var multiAccountTitle: UILabel!
 	@IBOutlet weak var accountButton: UIButton!
@@ -21,9 +22,29 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	@IBOutlet weak var rejectButton: CustomisableButton!
 	@IBOutlet weak var connectButton: CustomisableButton!
 	
+	@IBOutlet weak var singleAccountStackViewRegular: UIStackView!
+	@IBOutlet weak var singleAccountRegularIcon: UIImageView!
+	@IBOutlet weak var singleAccountRegularLabel: UILabel!
+	
+	@IBOutlet weak var singleAccountStackViewSocial: UIStackView!
+	@IBOutlet weak var singleAccountSocialIcon: UIImageView!
+	@IBOutlet weak var singleAccountSocialAliasLabel: UILabel!
+	@IBOutlet weak var singleAccountSocialAccountLabel: UILabel!
+	
+	@IBOutlet weak var multiAccountStackViewRegular: UIStackView!
+	@IBOutlet weak var multiAccountRegularIcon: UIImageView!
+	@IBOutlet weak var multiAccountRegularLabel: UILabel!
+	
+	@IBOutlet weak var multiAccountStackViewSocial: UIStackView!
+	@IBOutlet weak var multiAccountSocialIcon: UIImageView!
+	@IBOutlet weak var multiAccountSocialAliasLabel: UILabel!
+	@IBOutlet weak var multiAccountSocialAccountLabel: UILabel!
+	
 	var bottomSheetMaxHeight: CGFloat = 450
 	var dimBackground: Bool = true
+	
 	private var didSend = false
+	private var bag = [AnyCancellable]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -41,23 +62,67 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		DependencyManager.shared.temporarySelectedWalletMetadata = nil
 	}
 	
-	func bottomSheetDataChanged() {
-		let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata
-		
-		if DependencyManager.shared.walletList.count() == 1 {
-			accountLabel.text = selectedAccountMeta?.address.truncateTezosAddress()
-			multiAccountTitle.isHidden = true
-			accountButtonContainer.isHidden = true
-		} else {
-			singleAccountContainer.isHidden = true
-			accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
-		}
-	}
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
 		bottomSheetDataChanged()
+		
+		// Monitor connection
+		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			DispatchQueue.main.async {
+				
+				if status == .disconnected {
+					self?.showLoadingModal()
+					self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
+				} else {
+					self?.hideLoadingModal()
+				}
+			}
+		}.store(in: &bag)
+	}
+	
+	func bottomSheetDataChanged() {
+		guard let selectedAccountMeta = DependencyManager.shared.temporarySelectedWalletMetadata == nil ? DependencyManager.shared.selectedWalletMetadata : DependencyManager.shared.temporarySelectedWalletMetadata else {
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedAccountMeta, ofSize: .size_20)
+		
+		if DependencyManager.shared.walletList.count() == 1 {
+			//accountLabel.text = selectedAccountMeta.address.truncateTezosAddress()
+			multiAccountTitle.isHidden = true
+			accountButtonContainer.isHidden = true
+			
+			if media.subtitle != nil {
+				singleAccountStackViewRegular.isHidden = true
+				singleAccountStackViewSocial.isHidden = false
+				singleAccountSocialIcon.image = media.image
+				singleAccountSocialAliasLabel.text = media.title
+				singleAccountSocialAccountLabel.text = media.subtitle
+			} else {
+				singleAccountStackViewRegular.isHidden = false
+				singleAccountStackViewSocial.isHidden = true
+				singleAccountRegularIcon.image = media.image
+				singleAccountRegularLabel.text = media.title
+			}
+			
+		} else {
+			singleAccountContainer.isHidden = true
+			//accountButton.setTitle(selectedAccountMeta?.address.truncateTezosAddress(), for: .normal)
+			
+			if media.subtitle != nil {
+				multiAccountStackViewRegular.isHidden = true
+				multiAccountStackViewSocial.isHidden = false
+				multiAccountSocialIcon.image = media.image
+				multiAccountSocialAliasLabel.text = media.title
+				multiAccountSocialAccountLabel.text = media.subtitle
+			} else {
+				multiAccountStackViewRegular.isHidden = false
+				multiAccountStackViewSocial.isHidden = true
+				multiAccountRegularIcon.image = media.image
+				multiAccountRegularLabel.text = media.title
+			}
+		}
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -85,6 +150,8 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
+		self.switchToTemporaryWalletIfNeeded()
+		
 		self.showLoadingModal { [weak self] in
 			self?.handleApproval()
 		}
@@ -101,7 +168,6 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 			self?.hideLoadingModal(completion: { [weak self] in
 				if success {
 					self?.didSend = true
-					self?.switchToTemporaryWalletIfNeeded()
 					self?.presentingViewController?.dismiss(animated: true)
 					
 				} else {
@@ -151,6 +217,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					
 					Logger.app.error("WC Rejction error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
+					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 				}
 			})
 		}

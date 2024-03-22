@@ -95,7 +95,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return SideMenuResponse(segue: "side-menu-security", collapseAndNavigate: true, url: nil, isSecure: true)
 			
 			case "connected":
-				return SideMenuResponse(segue: "side-menu-wallet-connect", collapseAndNavigate: false, url: nil, isSecure: false)
+				return SideMenuResponse(segue: "connected-apps", collapseAndNavigate: true, url: nil, isSecure: false)
 				
 			case "feedback":
 				let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
