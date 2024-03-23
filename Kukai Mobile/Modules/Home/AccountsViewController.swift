@@ -73,25 +73,19 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 					}
 					
 					if self?.viewModel.scrollToSelected() == true {
+						let selectedIndex = self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0)
+						let deadlineAdjustment: TimeInterval = (self?.bottomSheetContainer != nil) ? 0.1 : 0 // need an artifical delay within bottom sheets for some reason, else it doesn't work
 						
-						if self?.bottomSheetContainer != nil {
-							
-							// When displayed inside a bottom sheet, it can't get the correct frame until after its started rendering, resulting in it doing nothing
-							// need to add a slight delay so it picks up the correct sizing and then animates
-							DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-								self?.tableView.scrollToRow(at: self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0), at: .middle, animated: true)
-							}
-							
-						} else {
-							
-							// Check if the selected index is available to be scrolled too (might be inside the collapsed group). if its available, scroll to it, else just the top of the section
-							let selectedIndex = self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0)
+						// When displayed inside a bottom sheet, it can't get the correct frame until after its started rendering, resulting in it doing nothing
+						// need to add a slight delay so it picks up the correct sizing and then animates
+						DispatchQueue.main.asyncAfter(deadline: .now() + deadlineAdjustment) { [weak self] in
 							if selectedIndex.row >= (self?.tableView.numberOfRows(inSection: selectedIndex.section) ?? 0) {
 								self?.tableView.scrollToRow(at: IndexPath(row: 0, section: selectedIndex.section), at: .middle, animated: true)
 							} else {
 								self?.tableView.scrollToRow(at: selectedIndex, at: .middle, animated: true)
 							}
 						}
+						
 					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
 						self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)
 					}
