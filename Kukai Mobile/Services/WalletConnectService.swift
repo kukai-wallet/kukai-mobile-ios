@@ -262,8 +262,7 @@ public class WalletConnectService {
 			// Setup listener for completion status
 			self.$requestDidComplete
 				.dropFirst()
-				.sink(receiveValue: { [weak self] value in
-					self?.delegate?.processingIncomingDone()
+				.sink(receiveValue: { value in
 					promise(.success(value))
 				})
 				.store(in: &self.bag)
