@@ -53,6 +53,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
+					self?.forceRefresh = true
 					self?.refresh(animate: true)
 				}
 			}.store(in: &bag)
@@ -159,6 +160,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		self.forceRefresh = true
 		DependencyManager.shared.balanceService.fetch(records: [BalanceService.FetchRequestRecord(address: address, type: .refreshEverything)])
 	}
 	

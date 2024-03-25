@@ -70,7 +70,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			state = .loading
 		}
 		
-		guard let ds = dataSource, let selectedAddress = DependencyManager.shared.selectedWalletAddress else {
+		guard let ds = dataSource/*, let selectedAddress = DependencyManager.shared.selectedWalletAddress*/ else {
 			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
 			return
 		}
@@ -83,6 +83,8 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var sections: [Int] = []
 		var sectionData: [[AnyHashable]] = []
 		
+		
+		// TODO: contacts not enabled yet
 		/*
 		let contactsHeaderImage = UIImage(named: "Contacts") ?? UIImage()
 		let contactsHeader = SendHeaderObj(icon: contactsHeaderImage, title: "Contacts")
@@ -90,9 +92,11 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		sectionData.append([contactsHeader, NoContacts()])
 		*/
 		
+		
+		
 		// Social
 		var walletsToAdd: [WalletObj] = []
-		for metadata in wallets.socialWallets where metadata.address != selectedAddress {
+		for metadata in wallets.socialWallets /*where metadata.address != selectedAddress*/ {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
 			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
 		}
@@ -106,19 +110,21 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// HD's
 		for (index, metadata) in wallets.hdWallets.enumerated() {
 			walletsToAdd = []
+			/*
 			if metadata.address == selectedAddress && metadata.children.count == 0 {
 				continue
 			}
+			*/
 			
-			if metadata.address != selectedAddress {
+			//if metadata.address != selectedAddress {
 				let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
 				walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
-			}
+			//}
 			
 			let isSectionExpanded = (expandedSection == sections.count)
 			var totalChildCount = 0
 			for (_, childMetadata) in metadata.children.enumerated() {
-				if childMetadata.address == selectedAddress { continue }
+				//if childMetadata.address == selectedAddress { continue }
 				
 				totalChildCount += 1
 				
@@ -143,7 +149,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Linear
 		walletsToAdd = []
-		for metadata in wallets.linearWallets where metadata.address != selectedAddress {
+		for metadata in wallets.linearWallets /*where metadata.address != selectedAddress*/ {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
 			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
 		}
@@ -156,7 +162,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Ledger
 		walletsToAdd = []
-		for metadata in wallets.ledgerWallets where metadata.address != selectedAddress {
+		for metadata in wallets.ledgerWallets /*where metadata.address != selectedAddress*/ {
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
 			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
 		}

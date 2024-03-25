@@ -500,7 +500,16 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func signRequested() {
 		self.loadingViewHideActivityAndFade(withDuration: 0.5)
-		self.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			if self?.presentedViewController == nil {
+				self?.performSegue(withIdentifier: "wallet-connect-sign", sender: nil)
+				
+			} else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self?.windowError(withTitle: "error".localized(), description: "error-wc2-cant-open-more-modals".localized())
+			}
+		}
 	}
 	
 	public func processingIncomingOperations() {

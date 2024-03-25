@@ -262,8 +262,7 @@ public class WalletConnectService {
 			// Setup listener for completion status
 			self.$requestDidComplete
 				.dropFirst()
-				.sink(receiveValue: { [weak self] value in
-					self?.delegate?.processingIncomingDone()
+				.sink(receiveValue: { value in
 					promise(.success(value))
 				})
 				.store(in: &self.bag)
@@ -880,6 +879,15 @@ public class WalletConnectService {
 				}
 			}
 			
+			let accountBalance = xtzBalance
+			let selectedToken = Token.xtz(withAmount: accountBalance)
+			
+			TransactionService.shared.walletConnectOperationData.batchData.mainDisplayToken = selectedToken
+			TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = xtzAmount
+			mainThreadProcessedOperations(ofType: .batch)
+			
+			// TODO: disabling the token identification abstraction logic for now. More testing needed
+			/*
 			if xtzAmount > XTZAmount.zero() {
 				
 				// show XTZ amount
@@ -928,6 +936,7 @@ public class WalletConnectService {
 				TransactionService.shared.walletConnectOperationData.batchData.mainDisplayAmount = XTZAmount.zero()
 				mainThreadProcessedOperations(ofType: .batch)
 			}
+			*/
 		}
 	}
 	
