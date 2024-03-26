@@ -224,27 +224,36 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	func updateAmountDisplay() {
 		guard let token = self.currentBatchData.mainDisplayToken, let amount = self.currentBatchData.mainDisplayAmount else {
+			largeDisplayStackView.isHidden = true
+			smallDisplayIcon.image = UIImage.unknownToken()
+			smallDisplayAmount.text = "0"
+			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
-		let amountText = amount.normalisedRepresentation
-		if amountText.count > Int(UIScreen.main.bounds.width / 4) {
-			// small display
+		let approxSizeOfOccupiedSpace: CGFloat = 180 // Yes "magic number", deal with it, very unique business logic at play
+		let remainder = UIScreen.main.bounds.width - approxSizeOfOccupiedSpace
+		let amountText = DependencyManager.shared.coinGeckoService.format(decimal: amount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+		
+		var amountWidth = amountText.widthOfString(usingFont: largeDisplayAmount.font)
+		amountWidth.round(.up)
+		
+		var symbolWidth = token.symbol.widthOfString(usingFont: largeDisplaySymbol.font)
+		symbolWidth.round(.up)
+		
+		if (amountWidth + symbolWidth) > remainder {
+			
+			// Display with more room for long length numbers
 			largeDisplayStackView.isHidden = true
 			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + token.symbol
+			smallDisplayAmount.text = amountText + " " + token.symbol
 			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-			
 		} else {
-			// large display
+			
+			// Display with less room and more detail
 			smallDisplayStackView.isHidden = true
 			largeDisplayIcon.addTokenIcon(token: token)
-			
-			if (amountText.components(separatedBy: ".").first?.count ?? amountText.count) > 5 {
-				largeDisplayAmount.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
-			} else {
-				largeDisplayAmount.text = amountText
-			}
+			largeDisplayAmount.text = amountText
 			
 			largeDisplaySymbol.text = token.symbol
 			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
