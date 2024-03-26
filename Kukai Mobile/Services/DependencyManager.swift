@@ -226,6 +226,7 @@ class DependencyManager {
 			if err.isTimeout() {
 				SentrySDK.capture(message: "Timeout") { scope in
 					scope.setLevel(.error)
+					scope.setFingerprint(["client", "timeout"])
 					scope.setExtras([
 						"url": err.requestURL?.absoluteString ?? "-",
 						"domain": err.subType?.domain ?? "-",
