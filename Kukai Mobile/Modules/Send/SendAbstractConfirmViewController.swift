@@ -22,12 +22,15 @@ class SendAbstractConfirmViewController: UIViewController {
 	public var selectedMetadata: WalletMetadata? = nil
 	
 	private var bag = [AnyCancellable]()
+	private var swipeDownEnabled = true
 	
 	
 	// MARK: - Lifecycle
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		presentationController?.delegate = self
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -35,7 +38,7 @@ class SendAbstractConfirmViewController: UIViewController {
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
 				
 				if status == .disconnected {
 					self?.showLoadingModal()
@@ -75,7 +78,7 @@ class SendAbstractConfirmViewController: UIViewController {
 		
 		self.showLoadingView()
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
+			DispatchQueue.main.async { [weak self] in
 				self?.hideLoadingView()
 				
 				if success {
@@ -94,7 +97,7 @@ class SendAbstractConfirmViewController: UIViewController {
 					self?.windowError(withTitle: "error".localized(), description: message)
 					self?.dismissAndReturn(collapseOnly: collapseOnly)
 				}
-			})
+			}
 		})
 	}
 	
@@ -128,6 +131,16 @@ class SendAbstractConfirmViewController: UIViewController {
 				}
 			})
 		})
+	}
+	
+	public func blockInteraction() {
+		self.view.isUserInteractionEnabled = false
+		self.swipeDownEnabled = false
+	}
+	
+	public func unblockInteraction() {
+		self.view.isUserInteractionEnabled = true
+		self.swipeDownEnabled = true
 	}
 	
 	public func performAuth() {
@@ -167,5 +180,12 @@ extension SendAbstractConfirmViewController: LoginViewControllerDelegate {
 		} else {
 			authFailure()
 		}
+	}
+}
+
+extension SendAbstractConfirmViewController: UIAdaptivePresentationControllerDelegate {
+	
+	func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+		return swipeDownEnabled
 	}
 }

@@ -58,6 +58,7 @@ class DiscoverFeaturedCell: UITableViewCell {
 	}
 	
 	public func setupTimer() {
+		stopTimer()
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] timer in
 			var nextRow = self?.pageControl.currentPage ?? 0
 			if nextRow == ((self?.pageControl.numberOfPages ?? 1) - 1) {
