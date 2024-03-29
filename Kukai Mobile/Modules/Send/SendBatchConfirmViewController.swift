@@ -163,7 +163,6 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	@IBAction func detailsTapped(_ sender: UIButton) {
-		
 		if self.currentBatchData.opSummaries?.count == 1 {
 			self.performSegue(withIdentifier: "details-medium", sender: nil)
 		} else {
@@ -181,45 +180,40 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true) { [weak self] in
-			self?.performAuth()
-		}
+		self.blockInteraction()
+		self.performAuth()
 	}
 	
 	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.hideLoadingModal { [weak self] in
-				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-				self?.slideButton.resetSlider()
-			}
-			
+			self.unblockInteraction()
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.slideButton.resetSlider()
 			return
 		}
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
 			
-			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
-				switch sendResult {
-					case .success(let opHash):
-						Logger.app.info("Sent: \(opHash)")
-						
-						self?.didSend = true
-						self?.addPendingTransaction(opHash: opHash)
-						self?.handleApproval(opHash: opHash)
-						
-					case .failure(let sendError):
-						self?.windowError(withTitle: "error".localized(), description: sendError.description)
-						self?.slideButton?.resetSlider()
-				}
-			})
+			switch sendResult {
+				case .success(let opHash):
+					Logger.app.info("Sent: \(opHash)")
+					
+					self?.didSend = true
+					self?.addPendingTransaction(opHash: opHash)
+					self?.handleApproval(opHash: opHash)
+					
+				case .failure(let sendError):
+					self?.unblockInteraction()
+					self?.windowError(withTitle: "error".localized(), description: sendError.description)
+					self?.slideButton?.resetSlider()
+			}
 		}
 	}
 	
 	override func authFailure() {
-		self.hideLoadingModal { [weak self] in
-			self?.slideButton.resetSlider()
-		}
+		self.unblockInteraction()
+		self.slideButton.resetSlider()
 	}
 	
 	func updateAmountDisplay() {
@@ -359,7 +353,6 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			let addPendingResult = DependencyManager.shared.activityService.addPendingBatch(opHash: opHash, counter: counter, fromWallet: selectedWalletMetadata, batchInfo: pendingInfo.reversed())
 			Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 		}
-		
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 	}

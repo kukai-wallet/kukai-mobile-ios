@@ -30,7 +30,7 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		cancellable = viewModel.$state.sink { [weak self] state in
 			switch state {
 				case .loading:
-					//self?.showLoadingView(completion: nil)
+					//self?.showLoadingView()
 					let _ = ""
 					
 				case .failure(_, let errorString):

@@ -55,7 +55,7 @@ extension UIViewController {
 		return view
 	}
 	
-	func showLoadingView(completion: (() -> Void)? = nil) {
+	func showLoadingView() {
 		UIViewController.activityViewActivityIndicator.startAnimating()
 		UIViewController.activityView.frame = UIScreen.main.bounds
 		UIViewController.activityView.alpha = 1

@@ -69,7 +69,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
 				
 				if status == .disconnected {
 					self?.showLoadingModal()
@@ -146,15 +146,15 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
+		self.showLoadingView()
 		rejectTapped("")
 	}
 	
 	@IBAction func connectTapped(_ sender: Any) {
 		self.switchToTemporaryWalletIfNeeded()
 		
-		self.showLoadingModal { [weak self] in
-			self?.handleApproval()
-		}
+		self.showLoadingView()
+		self.handleApproval()
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -165,7 +165,9 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	private func handleApproval() {
 		WalletConnectService.approveCurrentProposal { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
+			DispatchQueue.main.async { [weak self] in
+				self?.hideLoadingView()
+				
 				if success {
 					self?.didSend = true
 					self?.presentingViewController?.dismiss(animated: true)
@@ -184,14 +186,13 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					Logger.app.error("WC Approve error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
 				}
-			})
+			}
 		}
 	}
 	
 	@IBAction func rejectTapped(_ sender: Any) {
-		self.showLoadingModal { [weak self] in
-			self?.handleRejection()
-		}
+		self.showLoadingView()
+		self.handleRejection()
 	}
 	
 	private func switchToTemporaryWalletIfNeeded() {
@@ -202,7 +203,9 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 	
 	private func handleRejection(andDismiss: Bool = true) {
 		WalletConnectService.rejectCurrentProposal { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
+			DispatchQueue.main.async { [weak self] in
+				self?.hideLoadingView()
+				
 				if success {
 					self?.didSend = true
 					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
@@ -219,7 +222,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 					self?.windowError(withTitle: "error".localized(), description: message)
 					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 				}
-			})
+			}
 		}
 	}
 }

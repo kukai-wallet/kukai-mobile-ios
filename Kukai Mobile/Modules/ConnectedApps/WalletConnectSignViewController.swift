@@ -24,6 +24,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	private var accountToSign: String = ""
 	private var bag = Set<AnyCancellable>()
 	private var didSend = false
+	private var swipeDownEnabled = true
 	
 	var bottomSheetMaxHeight: CGFloat = 500
 	var dimBackground: Bool = true
@@ -52,6 +53,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		payloadTextView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
 		
 		slideButton.delegate = self
+		presentationController?.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -59,7 +61,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
 				
 				if status == .disconnected {
 					self?.showLoadingModal()
@@ -79,19 +81,30 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		}
 	}
 	
+	public func blockInteraction() {
+		self.view.isUserInteractionEnabled = false
+		self.swipeDownEnabled = false
+	}
+	
+	public func unblockInteraction() {
+		self.view.isUserInteractionEnabled = true
+		self.swipeDownEnabled = true
+	}
+	
 	@IBAction func copyButtonTapped(_ sender: Any) {
 		UIPasteboard.general.string = payloadTextView.text
 	}
 	
 	@IBAction func closeButtonTapped(_ sender: Any) {
-		self.showLoadingModal { [weak self] in
-			self?.handleRejection()
-		}
+		self.showLoadingView()
+		self.handleRejection()
 	}
 	
 	private func handleRejection(andDismiss: Bool = true) {
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
+			DispatchQueue.main.async { [weak self] in
+				self?.hideLoadingView()
+				
 				if success {
 					self?.didSend = true
 					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
@@ -108,14 +121,13 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					self?.windowError(withTitle: "error".localized(), description: message)
 					if andDismiss { self?.presentingViewController?.dismiss(animated: true) }
 				}
-			})
+			}
 		})
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true) { [weak self] in
-			self?.performAuth()
-		}
+		self.blockInteraction()
+		self.performAuth()
 	}
 	
 	public func performAuth() {
@@ -138,11 +150,9 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	
 	public func authSuccessful() {
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: accountToSign) else {
-			self.hideLoadingModal { [weak self] in
-				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-				self?.slideButton.resetSlider()
-			}
-			
+			self.unblockInteraction()
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.slideButton.resetSlider()
 			return
 		}
 		
@@ -167,31 +177,30 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		}
 		
 		wallet.sign(str, isOperation: false) { [weak self] result in
-			self?.hideLoadingModal(completion: { [weak self] in
-				
-				switch result {
-					case .success(let signature):
-						self?.didSend = true
-						let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
-						self?.handleApproval(signature: updatedSignature)
-						
-					case .failure(_):
-						self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
-						self?.slideButton?.resetSlider()
-				}
-			})
+			switch result {
+				case .success(let signature):
+					self?.didSend = true
+					let updatedSignature = Base58Check.encode(message: signature, ellipticalCurve: wallet.privateKeyCurve())
+					self?.handleApproval(signature: updatedSignature)
+					
+				case .failure(_):
+					self?.unblockInteraction()
+					self?.windowError(withTitle: "error".localized(), description: String.localized(String.localized("error-cant-sign"), withArguments: result.getFailure().description))
+					self?.slideButton?.resetSlider()
+			}
 		}
 	}
 	
 	public func authFailure() {
-		self.hideLoadingModal { [weak self] in
-			self?.slideButton.resetSlider()
-		}
+		self.unblockInteraction()
+		self.slideButton.resetSlider()
 	}
 	
 	private func handleApproval(signature: String) {
 		WalletConnectService.approveCurrentRequest(signature: signature, opHash: nil, completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
+			DispatchQueue.main.async { [weak self] in
+				self?.unblockInteraction()
+				
 				if success {
 					self?.slideButton.markComplete(withText: "Complete")
 					self?.didSend = true
@@ -211,7 +220,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 					Logger.app.error("WC Approve error: \(error)")
 					self?.windowError(withTitle: "error".localized(), description: message)
 				}
-			})
+			}
 		})
 	}
 }
@@ -226,5 +235,12 @@ extension WalletConnectSignViewController: LoginViewControllerDelegate {
 		} else {
 			authFailure()
 		}
+	}
+}
+
+extension WalletConnectSignViewController: UIAdaptivePresentationControllerDelegate {
+	
+	func presentationControllerShouldDismiss(_ presentationController: UIPresentationController) -> Bool {
+		return swipeDownEnabled
 	}
 }

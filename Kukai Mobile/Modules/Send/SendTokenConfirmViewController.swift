@@ -182,44 +182,38 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func didCompleteSlide() {
-		self.showLoadingModal(invisible: true) { [weak self] in
-			self?.performAuth()
-		}
+		self.blockInteraction()
+		self.performAuth()
 	}
 	
 	override func authSuccessful() {
 		guard let walletAddress = selectedMetadata?.address, let wallet = WalletCacheService().fetchWallet(forAddress: walletAddress) else {
-			self.hideLoadingModal { [weak self] in
-				self?.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
-				self?.slideButton.resetSlider()
-			}
-			
+			self.unblockInteraction()
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.slideButton.resetSlider()
 			return
 		}
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			self?.slideButton.markComplete(withText: "Complete")
-			
-			self?.hideLoadingModal(invisible: true, completion: { [weak self] in
-				switch sendResult {
-					case .success(let opHash):
-						Logger.app.info("Sent: \(opHash)")
-						self?.didSend = true
-						self?.addPendingTransaction(opHash: opHash)
-						self?.handleApproval(opHash: opHash)
-						
-					case .failure(let sendError):
-						self?.windowError(withTitle: "error".localized(), description: sendError.description)
-						self?.slideButton?.resetSlider()
-				}
-			})
+			switch sendResult {
+				case .success(let opHash):
+					Logger.app.info("Sent: \(opHash)")
+					self?.didSend = true
+					self?.addPendingTransaction(opHash: opHash)
+					self?.handleApproval(opHash: opHash)
+					
+				case .failure(let sendError):
+					self?.unblockInteraction()
+					self?.windowError(withTitle: "error".localized(), description: sendError.description)
+					self?.slideButton?.resetSlider()
+			}
 		}
 	}
 	
 	override func authFailure() {
-		self.hideLoadingModal { [weak self] in
-			self?.slideButton.resetSlider()
-		}
+		self.unblockInteraction()
+		self.slideButton.resetSlider()
 	}
 	
 	func updateAmountDisplay(withValue value: TokenAmount) {
