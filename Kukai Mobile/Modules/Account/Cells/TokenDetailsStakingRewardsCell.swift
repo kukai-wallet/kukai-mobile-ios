@@ -46,7 +46,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			lastTimeTitle.text = "Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Cycle"
-			lastCycle.text = previousReward.cycle.description
+			lastCycle.text = previousReward.cycle == 0 ? "N/A" : previousReward.cycle.description
 			
 		} else if let previousReward = data.estimatedPreviousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
@@ -59,7 +59,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			lastTimeTitle.text = "Est Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Est Cycle"
-			lastCycle.text = previousReward.cycle.description
+			lastCycle.text = previousReward.cycle == 0 ? "N/A" : previousReward.cycle.description
 			
 		} else {
 			lastBakerIcon.image = UIImage.unknownToken()
@@ -78,7 +78,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 			nextBaker.text = nextReward.bakerAlias
 			nextAmount.text = nextReward.amount.normalisedRepresentation + " (\(percentage)%)"
 			nextTime.text = nextReward.dateOfPayment.timeAgoDisplay()
-			nextCycle.text = nextReward.cycle.description
+			nextCycle.text = nextReward.cycle == 0 ? "N/A" : nextReward.cycle.description
 			
 		} else {
 			nextBakerIcon.image = UIImage.unknownToken()
