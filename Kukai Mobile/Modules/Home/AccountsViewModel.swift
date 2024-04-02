@@ -84,7 +84,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
-				cell.checkImage.isHidden = !(self?.selectedIndex.section == indexPath.section)
+				cell.checkImage.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
 				
 				return cell
 				
