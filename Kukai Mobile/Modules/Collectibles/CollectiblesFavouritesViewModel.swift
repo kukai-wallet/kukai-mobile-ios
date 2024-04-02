@@ -128,12 +128,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 		normalSnapshot.appendSections([0])
 		normalSnapshot.appendItems(hashableData, toSection: 0)
 		
-		if forceRefresh {
-			ds.applySnapshotUsingReloadData(normalSnapshot)
-			forceRefresh = false
-		} else {
-			ds.apply(normalSnapshot, animatingDifferences: animate)
-		}
+		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		// Return success
 		self.state = .success(nil)

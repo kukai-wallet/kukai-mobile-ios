@@ -122,13 +122,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		}
 		
 		normalSnapshot.appendItems(hashableData, toSection: 0)
-		
-		if forceRefresh {
-			ds.applySnapshotUsingReloadData(normalSnapshot)
-			forceRefresh = false
-		} else {
-			ds.apply(normalSnapshot, animatingDifferences: animate)
-		}
+		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
 		// Return success
 		self.state = .success(nil)
