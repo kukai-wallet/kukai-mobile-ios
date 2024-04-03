@@ -262,7 +262,8 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
-		if let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
+		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
+		if !isWalletConnectOp, let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
 			let updatedValue = ((token.balance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
