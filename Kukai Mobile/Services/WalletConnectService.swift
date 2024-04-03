@@ -724,10 +724,11 @@ public class WalletConnectService {
 		
 		DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
 			let xtzBalance = (try? res.get()) ?? .zero()
+			let xtzSend = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
 			
-			if operationsObj.fee > (try? res.get()) ?? .zero() {
+			if (xtzSend + operationsObj.fee) > xtzBalance {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
-				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, operationsObj.fee.normalisedRepresentation), error: nil)
+				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, (xtzSend + operationsObj.fee).normalisedRepresentation), error: nil)
 				
 			} else {
 				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance)
