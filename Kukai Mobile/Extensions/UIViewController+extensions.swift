@@ -102,6 +102,15 @@ extension UIViewController {
 		}
 	}
 	
+	static func removeLoadingView(completion: (() -> Void)? = nil) {
+		UIViewController.activityViewActivityIndicator.stopAnimating()
+		UIViewController.activityView.removeFromSuperview()
+		UIViewController.activityViewStatusLabel.text = ""
+		if let comp = completion {
+			comp()
+		}
+	}
+	
 	static func createLoadingModal() -> UIViewController {
 		let vc = UIViewController()
 		vc.view.backgroundColor = UIColor.black.withAlphaComponent(0.75)

@@ -59,10 +59,12 @@ class SendAbstractConfirmViewController: UIViewController {
 	}
 	
 	func dismissAndReturn(collapseOnly: Bool) {
-		self.dismiss(animated: true)
-		
-		if collapseOnly == false {
-			(self.presentingViewController as? UINavigationController)?.popToHome()
+		DispatchQueue.main.async { [weak self] in
+			self?.dismiss(animated: true)
+			
+			if collapseOnly == false {
+				(self?.presentingViewController as? UINavigationController)?.popToHome()
+			}
 		}
 	}
 	
@@ -79,7 +81,7 @@ class SendAbstractConfirmViewController: UIViewController {
 		self.showLoadingView()
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
 			DispatchQueue.main.async { [weak self] in
-				self?.hideLoadingView()
+				UIViewController.removeLoadingView()
 				
 				if success {
 					self?.didSend = true
@@ -110,26 +112,24 @@ class SendAbstractConfirmViewController: UIViewController {
 		}
 		
 		WalletConnectService.approveCurrentRequest(signature: nil, opHash: opHash, completion: { [weak self] success, error in
-			self?.hideLoadingModal(completion: { [weak self] in
-				if success {
-					self?.dismissAndReturn(collapseOnly: false)
-					
-				} else {
-					var message = "error-wc2-unrecoverable".localized()
-					
-					if let err = error {
-						if err.localizedDescription == "Unsupported or empty accounts for namespace" {
-							message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
-						} else {
-							message = "\(err)"
-						}
+			if success {
+				self?.dismissAndReturn(collapseOnly: false)
+				
+			} else {
+				var message = "error-wc2-unrecoverable".localized()
+				
+				if let err = error {
+					if err.localizedDescription == "Unsupported or empty accounts for namespace" {
+						message = "Unsupported namespace. \nPlease check your wallet is using the same network as the application you are trying to connect to (e.g. Mainnet or Ghostnet)"
+					} else {
+						message = "\(err)"
 					}
-					
-					Logger.app.error("WC Approve error: \(error)")
-					self?.windowError(withTitle: "error".localized(), description: message)
-					self?.dismissAndReturn(collapseOnly: true)
 				}
-			})
+				
+				Logger.app.error("WC Approve error: \(error)")
+				self?.windowError(withTitle: "error".localized(), description: message)
+				self?.dismissAndReturn(collapseOnly: true)
+			}
 		})
 	}
 	

@@ -8,6 +8,7 @@
 // Modified from: https://www.hackingwithswift.com/example-code/media/how-to-scan-a-qr-code
 
 import AVFoundation
+import KukaiCryptoSwift
 import UIKit
 import Combine
 import os.log
@@ -362,7 +363,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	private func checkForBeaconAndReport(stringToCheck: String) {
-		if let data = stringToCheck.base58CheckDecodedData, let json = try? JSONSerialization.jsonObject(with: data) as? [String: String], let _ = json["relayServer"], let _ = json["publicKey"] {
+		if let data = Base58Check.decode(stringToCheck), let json = try? JSONSerialization.jsonObject(with: data) as? [String: String], let _ = json["relayServer"], let _ = json["publicKey"] {
 			self.windowError(withTitle: "error".localized(), description: "error-beacon-not-supported".localized())
 			self.textfield.text = ""
 			
