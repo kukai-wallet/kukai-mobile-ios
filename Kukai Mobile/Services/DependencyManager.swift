@@ -56,11 +56,9 @@ class DependencyManager {
 	
 	// Properties and helpers
 	let sharedSession: URLSession
-	var torusVerifiers: [TorusAuthProvider: SubverifierWrapper] = [:] {
-		didSet {
-			torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
-		}
-	}
+	var torusVerifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
+	var torusMainnetKeys: [String: String] = [:]
+	var torusTestnetKeys: [String: String] = [:]
 	
 	// Stored URL's and network info
 	var currentNodeURLs: [URL] {
@@ -207,7 +205,7 @@ class DependencyManager {
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
-		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
+		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers, web3AuthClientId: "")
 		balanceService = BalanceService()
 		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
@@ -289,5 +287,9 @@ class DependencyManager {
 		if !supressUpdateNotification {
 			networkDidChange = true
 		}
+	}
+	
+	func setupTorus() {
+		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers, web3AuthClientId: torusMainnetKeys["web3AuthClientId"] ?? "")
 	}
 }

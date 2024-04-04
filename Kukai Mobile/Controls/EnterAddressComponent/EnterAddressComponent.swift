@@ -178,7 +178,11 @@ public class EnterAddressComponent: UIView {
 					completion(Result.failure(KukaiError.unknown(withString: String.localized(String.localized("error-no-cloudkit-config"), withArguments: e.localizedDescription))))
 					
 				} else {
-					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
+					let response = self?.cloudKitService.extractTorusConfig()
+					DependencyManager.shared.torusVerifiers = response?.verifiers ?? [:]
+					DependencyManager.shared.torusMainnetKeys = response?.mainnetKeys ?? [:]
+					DependencyManager.shared.torusTestnetKeys = response?.testnetKeys ?? [:]
+					DependencyManager.shared.setupTorus()
 					self?.performTorusLookup(verifier: verifier, string: string, completion: completion)
 				}
 			}

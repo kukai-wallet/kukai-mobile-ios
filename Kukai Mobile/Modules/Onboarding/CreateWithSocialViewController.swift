@@ -73,7 +73,12 @@ class CreateWithSocialViewController: UIViewController {
 					self?.navigationController?.popViewController(animated: true)
 					
 				} else {
-					DependencyManager.shared.torusVerifiers = self?.cloudKitService.extractTorusConfig() ?? [:]
+					let response = self?.cloudKitService.extractTorusConfig()
+					
+					DependencyManager.shared.torusVerifiers = response?.verifiers ?? [:]
+					DependencyManager.shared.torusMainnetKeys = response?.mainnetKeys ?? [:]
+					DependencyManager.shared.torusTestnetKeys = response?.testnetKeys ?? [:]
+					DependencyManager.shared.setupTorus()
 				}
 			}
 		}
@@ -150,8 +155,10 @@ class CreateWithSocialViewController: UIViewController {
 			case .failure(let error):
 				self.hideLoadingView()
 				
-				// Ignore apple sign in cancelled error
-				if error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001 {
+				// Cancelled errors
+				if (error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001) &&
+					(error.errorType != .internalApplication && error.subType?.code != 1)
+				{
 					self.windowError(withTitle: "error".localized(), description: error.description)
 				}
 		}
