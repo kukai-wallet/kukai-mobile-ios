@@ -148,6 +148,10 @@ extension UIViewController {
 	}
 	
 	func showLoadingModal(invisible: Bool = false, completion: (() -> Void)? = nil) {
+		guard UIViewController.loadingModal.presentingViewController == nil else {
+			return
+		}
+		
 		UIViewController.loadingModalStatusLabel.text = ""
 		
 		if invisible {
