@@ -74,13 +74,15 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			Task {
 				do {
 					try await Sign.instance.update(topic: existingSession.topic, namespaces: newNamespaces)
-					viewModel.refresh(animate: true)
-					hideLoadingView()
+					DispatchQueue.main.async { [weak self] in
+						self?.viewModel.refresh(animate: true)
+						UIViewController.removeLoadingView()
+					}
 					
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.pairingToChangeAccount = nil
-						self?.hideLoadingView()
+						UIViewController.removeLoadingView()
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
 				}
