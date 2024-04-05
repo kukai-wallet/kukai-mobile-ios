@@ -242,7 +242,9 @@ public class WalletConnectService {
 				return
 			}
 			
-			self.delegate?.processingIncomingOperations()
+			if request.method != "tezos_getAccounts" {
+				self.delegate?.processingIncomingOperations()
+			}
 			
 			// Check if the request is for the correct network, and requesting for the correct account
 			// TODO: The tezos provider should be performing the account check at a minimum, when the provider is replaced, remove this check
