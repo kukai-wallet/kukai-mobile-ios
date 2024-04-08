@@ -415,7 +415,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .success(nil)
 					
 				case .failure(let error):
-					self?.state = .failure(error, "Error occurred detching tezos domains")
+					self?.state = .failure(error, "Error occurred fetching tezos domains")
 			}
 		}
 	}

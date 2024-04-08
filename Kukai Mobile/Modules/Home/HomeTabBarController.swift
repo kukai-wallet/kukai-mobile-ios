@@ -109,7 +109,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
 			.sink { [weak self] addresses in
-				if addresses.count > 0 {
+				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
+				
+				if addresses.contains([address]) {
 					self?.startActivityAnimationIfNecessary(addressesToBeRefreshed: addresses)
 				} else {
 					self?.stopActivityAnimationIfNecessary()
@@ -215,7 +217,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		// Check if we need to start or stop the activity animation
 		let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
-		if pendingAddresses.count > 0 {
+		if pendingAddresses.contains([selectedAddress]) {
 			startActivityAnimationIfNecessary(addressesToBeRefreshed: pendingAddresses)
 		} else {
 			stopActivityAnimationIfNecessary()

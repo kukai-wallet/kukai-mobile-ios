@@ -97,7 +97,7 @@ class WalletManagementService {
 	}
 	
 	public static func isUsedAccount(address: String, completion: @escaping ((Bool) -> Void)) {
-		DependencyManager.shared.tzktClient.getAccount(forAddress: address) { result in
+		DependencyManager.shared.tzktClient.getAccount(forAddress: address, fromURL: DependencyManager.defaultTzktURL_mainnet) { result in
 			guard let res = try? result.get() else {
 				completion(false)
 				return

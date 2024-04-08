@@ -203,6 +203,8 @@ public class ActivityService {
 		
 		if indexesToRemove.count > 0 {
 			pending.remove(atOffsets: IndexSet(indexesToRemove))
+			self.pendingTransactionGroups = pending
+			
 			let _ = DiskService.write(encodable: pending, toFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address))
 			if pending.count == 0 {
 				self.updatePendingQueue(forAddress: address)
