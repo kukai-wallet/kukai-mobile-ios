@@ -96,7 +96,7 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextFieldSuggestionAccessoryViewCell", for: indexPath) as? TextFieldSuggestionAccessoryViewCell else {
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextFieldSuggestionAccessoryViewCell", for: indexPath) as? TextFieldSuggestionAccessoryViewCell, indexPath.row < filteredSuggestions.count else {
 			return UICollectionViewCell()
 		}
 		

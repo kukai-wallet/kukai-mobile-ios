@@ -16,12 +16,17 @@ protocol DiscoverFeaturedCellDelegate: AnyObject {
 class DiscoverFeaturedCell: UITableViewCell {
 	
 	@IBOutlet weak var collectionView: UICollectionView!
+	@IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var pageControl: UIPageControl!
 	
 	private var discoverGroup: DiscoverGroup = DiscoverGroup(id: UUID(), title: "", items: [])
 	private var timer: Timer? = nil
+	private let pageWidth: CGFloat = UIScreen.main.bounds.width
+	private var pageHeight: CGFloat = 0
+	private var customAspectRatioLogicHasBeenRun = false
 	
 	public weak var delegate: DiscoverFeaturedCellDelegate? = nil
+	public static let customAspectRatio: CGFloat = 2.62
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
@@ -40,7 +45,13 @@ class DiscoverFeaturedCell: UITableViewCell {
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
-		(self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: collectionView.frame.size.width, height: collectionView.frame.size.height)
+		if !customAspectRatioLogicHasBeenRun {
+			customAspectRatioLogicHasBeenRun = true
+			
+			pageHeight = CGFloat(Int(pageWidth/DiscoverFeaturedCell.customAspectRatio))
+			collectionViewHeightConstraint.constant += (pageHeight - 150)
+			(self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: pageWidth, height: collectionView.frame.size.height)
+		}
 	}
 	
 	func setup(discoverGroup: DiscoverGroup, startIndex: Int) {
@@ -93,7 +104,7 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 		}
 		
 		let item = discoverGroup.items[indexPath.row]
-		cell.setup(categories: [" "], title: item.title, description: item.description, pageWidth: collectionView.frame.width)
+		cell.setup(categories: [" "], title: item.title, description: item.description, pageWidth: pageWidth)
 		
 		return cell
 	}
@@ -110,7 +121,6 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		let pageWidth = collectionView.frame.width
 		self.pageControl.currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
 	}
 	

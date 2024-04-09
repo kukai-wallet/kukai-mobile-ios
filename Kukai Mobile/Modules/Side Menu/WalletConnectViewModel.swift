@@ -66,7 +66,10 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Get data
-		pairs = Pair.instance.getPairings().compactMap({ pair -> PairObj? in
+		let sortedPairs = Pair.instance.getPairings().sorted { lhs, rhs in
+			return lhs.expiryDate < rhs.expiryDate
+		}
+		pairs = sortedPairs.compactMap({ pair -> PairObj? in
 			
 			let sessions = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic })
 			
