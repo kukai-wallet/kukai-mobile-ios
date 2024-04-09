@@ -548,6 +548,7 @@ public class WalletConnectService {
 	public static func rejectCurrentProposal(andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			Logger.app.error("WC rejectCurrentProposal can't find current prposal")
+			if andMarkComplete { WalletConnectService.completeRequest() }
 			completion?(false, nil)
 			return
 		}
@@ -576,6 +577,7 @@ public class WalletConnectService {
 			  let currentAccount = selectedAccountMeta,
 			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
 			Logger.app.error("WC approveCurrentProposal can't find current prposal or current state")
+			WalletConnectService.completeRequest()
 			completion?(false, nil)
 			return
 		}
@@ -618,6 +620,7 @@ public class WalletConnectService {
 	public static func rejectCurrentRequest(withMessage: String = "User Rejected", andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC rejectCurrentRequest can't find current request")
+			if andMarkComplete { WalletConnectService.completeRequest() }
 			completion?(false, nil)
 			return
 		}
@@ -642,6 +645,7 @@ public class WalletConnectService {
 	public static func approveCurrentRequest(signature: String?, opHash: String?, completion: ((Bool, Error?) -> Void)?) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC approveCurrentRequest can't find current request or current state")
+			WalletConnectService.completeRequest()
 			completion?(false, nil)
 			return
 		}
