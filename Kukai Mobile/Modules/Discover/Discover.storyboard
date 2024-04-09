@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -91,10 +91,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="PZu-G2-zhR">
-                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="220"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="200"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="220" id="pkJ-S1-yMo"/>
+                                                        <constraint firstAttribute="height" constant="200" id="pkJ-S1-yMo"/>
                                                     </constraints>
                                                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Dfg-UI-Jpn">
                                                         <size key="itemSize" width="394" height="212"/>
@@ -104,28 +104,28 @@
                                                     </collectionViewFlowLayout>
                                                     <cells>
                                                         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="DiscoverFeaturedItemCell" id="yeS-b1-X0Z" customClass="DiscoverFeaturedItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="394" height="220"/>
+                                                            <rect key="frame" x="0.0" y="-10" width="394" height="220"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Teb-de-wNR">
                                                                 <rect key="frame" x="0.0" y="0.0" width="394" height="220"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <subviews>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="kXi-RG-cXs">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="394" height="170"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="394" height="150"/>
                                                                         <color key="backgroundColor" name="BGThumbNFT"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="height" constant="170" id="RkR-5f-Geu"/>
+                                                                            <constraint firstAttribute="height" constant="150" id="RkR-5f-Geu"/>
                                                                             <constraint firstAttribute="width" constant="394" id="a33-gD-prU"/>
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;description&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9HI-rq-H40">
-                                                                        <rect key="frame" x="16" y="195" width="362" height="21"/>
+                                                                        <rect key="frame" x="16" y="175" width="362" height="41"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                                                                         <color key="textColor" name="Txt10"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dDk-gk-axQ">
-                                                                        <rect key="frame" x="16" y="176" width="362" height="17"/>
+                                                                        <rect key="frame" x="16" y="156" width="362" height="17"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                                         <color key="textColor" name="Txt6"/>
                                                                         <nil key="highlightedColor"/>
@@ -150,6 +150,7 @@
                                                             <connections>
                                                                 <outlet property="descriptionLabel" destination="9HI-rq-H40" id="mPU-Ht-cy6"/>
                                                                 <outlet property="iconView" destination="kXi-RG-cXs" id="Z5S-TZ-5Eb"/>
+                                                                <outlet property="imageViewHeightConstraint" destination="RkR-5f-Geu" id="F8E-Qw-07l"/>
                                                                 <outlet property="imageViewWidthConstraint" destination="a33-gD-prU" id="QwC-po-pzv"/>
                                                                 <outlet property="titleLabel" destination="dDk-gk-axQ" id="Alv-M9-CFG"/>
                                                             </connections>
@@ -157,7 +158,7 @@
                                                     </cells>
                                                 </collectionView>
                                                 <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="5" translatesAutoresizingMaskIntoConstraints="NO" id="TAK-in-Nwy">
-                                                    <rect key="frame" x="16" y="220" width="361" height="30"/>
+                                                    <rect key="frame" x="16" y="200" width="361" height="50"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <color key="pageIndicatorTintColor" name="BGB0"/>
                                                     <color key="currentPageIndicatorTintColor" name="BGB4"/>
@@ -177,6 +178,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
                                             <outlet property="collectionView" destination="PZu-G2-zhR" id="RGW-H7-R8K"/>
+                                            <outlet property="collectionViewHeightConstraint" destination="pkJ-S1-yMo" id="oqa-g3-OEI"/>
                                             <outlet property="pageControl" destination="TAK-in-Nwy" id="gY8-EB-ZOu"/>
                                         </connections>
                                     </tableViewCell>
@@ -335,7 +337,7 @@
     </scenes>
     <designables>
         <designable name="uLl-Eg-mC4">
-            <size key="intrinsicContentSize" width="26" height="26"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
     </designables>
     <resources>
