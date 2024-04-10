@@ -353,9 +353,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		if let metadataObject = metadataObjects.first {
 			guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
 			guard let stringValue = readableObject.stringValue else { return }
-			AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 			
 			if previousString != stringValue {
+				AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
 				previousString = stringValue
 				checkForBeaconAndReport(stringToCheck: stringValue)
 			}
@@ -363,7 +363,12 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	}
 	
 	private func checkForBeaconAndReport(stringToCheck: String) {
-		if let data = Base58Check.decode(stringToCheck), let json = try? JSONSerialization.jsonObject(with: data) as? [String: String], let _ = json["relayServer"], let _ = json["publicKey"] {
+		
+		if stringToCheck.prefix(8) == "tezos://" {
+			self.windowError(withTitle: "error".localized(), description: "error-beacon-not-supported".localized())
+			self.textfield.text = ""
+			
+		} else if let data = Base58Check.decode(stringToCheck), let json = try? JSONSerialization.jsonObject(with: data) as? [String: String], let _ = json["relayServer"], let _ = json["publicKey"] {
 			self.windowError(withTitle: "error".localized(), description: "error-beacon-not-supported".localized())
 			self.textfield.text = ""
 			
