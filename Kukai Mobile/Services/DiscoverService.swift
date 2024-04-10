@@ -25,6 +25,7 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 	public let description: String
 	
 	@URLFromString public var imageUri: URL?
+	@URLFromString public var mobileCarouselUri: URL?
 	@URLFromString public var projectURL: URL?
 }
 

@@ -113,7 +113,7 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 		guard let c = cell as? DiscoverFeaturedItemCell else { return }
 		
 		let item = discoverGroup.items[indexPath.row]
-		c.setupImage(imageURL: item.imageUri)
+		c.setupImage(imageURL: item.mobileCarouselUri)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
