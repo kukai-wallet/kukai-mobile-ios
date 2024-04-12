@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 import Combine
+import os.log
 
 struct ShowMore: Hashable, Identifiable {
 	let id = UUID()
@@ -245,6 +246,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func willDisplayImage(forIndexPath: IndexPath) -> URL? {
 		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? DiscoverItem else { return nil }
 		
+		Logger.app.info("Discover image loading: \(obj.imageUri?.absoluteString)")
 		return MediaProxyService.url(fromUri: obj.imageUri, ofFormat: MediaProxyService.Format.small.rawFormat())
 	}
 }

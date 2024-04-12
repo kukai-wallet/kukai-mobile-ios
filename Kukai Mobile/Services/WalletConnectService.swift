@@ -50,6 +50,19 @@ struct DefaultSocketFactory: WebSocketFactory {
 	}
 }
 
+/*
+struct WC2CryptoProvider: CryptoProvider {
+	
+	func recoverPubKey(signature: WalletConnectSigner.EthereumSignature, message: Data) throws -> Data {
+		return Data()
+	}
+	
+	func keccak256(_ data: Data) -> Data {
+		return data.sha3(.keccak256)
+	}
+}
+*/
+
 struct RequestOperation: Codable {
 	let account: String
 }
@@ -87,7 +100,7 @@ public class WalletConnectService {
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
 		Pair.configure(metadata: WalletConnectService.metadata)
-		
+		//Sign.configure(crypto: WC2CryptoProvider())
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
@@ -429,6 +442,7 @@ public class WalletConnectService {
 		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
 		if let wcAccount = Account("tezos:\(network):\(address)") {
 			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
+			//let accounts = [wcAccount]
 			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
 			sessionNamespaces["tezos"] = sessionNamespace
 			
@@ -446,6 +460,7 @@ public class WalletConnectService {
 		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
 		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
 			tezosNamespace?.accounts = Set([newAccount])
+			//tezosNamespace?.accounts = [newAccount]
 		}
 		
 		if let namespace = tezosNamespace {
@@ -602,7 +617,7 @@ public class WalletConnectService {
 		Logger.app.info("WC Approve proposal: \(proposal.id)")
 		Task {
 			do {
-				try await Sign.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
+				let _ = try await Sign.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
 				Logger.app.info("WC approveCurrentProposal success")
 				completion?(true, nil)
 				
