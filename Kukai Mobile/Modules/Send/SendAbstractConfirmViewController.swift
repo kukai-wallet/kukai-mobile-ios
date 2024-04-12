@@ -78,10 +78,10 @@ class SendAbstractConfirmViewController: UIViewController {
 			return
 		}
 		
-		self.showLoadingView()
+		if andDismiss { self.showLoadingView() }
 		WalletConnectService.rejectCurrentRequest(completion: { [weak self] success, error in
 			DispatchQueue.main.async { [weak self] in
-				UIViewController.removeLoadingView()
+				if andDismiss { UIViewController.removeLoadingView() }
 				
 				if success {
 					self?.didSend = true
