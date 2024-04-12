@@ -22,6 +22,7 @@ extension UITableViewCell: UITableViewCellGradient {
 	func addGradientBackground(withFrame: CGRect, toView: UIView) {
 		toView.customCornerRadius = 8
 		toView.maskToBounds = true
+		toView.borderWidth = 0
 		
 		if let cell = self as? UITableViewCellContainerView {
 			cell.gradientLayer.removeFromSuperlayer()
@@ -32,6 +33,7 @@ extension UITableViewCell: UITableViewCellGradient {
 	func addUnconfirmedGradientBackground(withFrame: CGRect, toView: UIView) {
 		toView.customCornerRadius = 8
 		toView.maskToBounds = true
+		toView.borderWidth = 0
 		
 		if let cell = self as? UITableViewCellContainerView {
 			cell.gradientLayer.removeFromSuperlayer()
