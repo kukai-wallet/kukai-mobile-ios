@@ -406,7 +406,7 @@ public class WalletConnectService {
 			}
 			
 		} else if request.method == "tezos_getAccounts" {
-			WalletConnectService.shared.respondWithAccounts()
+			WalletConnectService.shared.respondWithAccounts(request: request)
 			
 		} else {
 			WalletConnectService.rejectCurrentRequest(completion: nil)
@@ -480,14 +480,7 @@ public class WalletConnectService {
 		self.sessionActionRequiredPublisherSubject.send((action: uri, context: nil))
 	}
 	
-	public func respondWithAccounts() {
-		guard let request = TransactionService.shared.walletConnectOperationData.request else {
-			Logger.app.error("WC Approve Session error: Unable to find request")
-			WalletConnectService.rejectCurrentRequest(completion: nil)
-			delegateErrorOnMain(message: "Wallet connect: Unable to respond to request for list of wallets", error: nil)
-			return
-		}
-		
+	public func respondWithAccounts(request: WalletConnectSign.Request) {
 		Logger.app.info("WC Approve Request: \(request.id)")
 		Task {
 			do {
@@ -536,12 +529,12 @@ public class WalletConnectService {
 				
 				let obj = WalletConnectGetAccountObj(algo: algo, address: metadataToUse?.address ?? "", pubkey: metadataToUse?.bas58EncodedPublicKey ?? "")
 				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
-				requestDidComplete = true
+				WalletConnectService.completeRequest(withDelay: 0.3)
 				
 			} catch {
 				Logger.app.error("WC Approve Session error: \(error)")
 				delegateErrorOnMain(message: "Wallet connect: error returning list of accounts: \(error)", error: error)
-				requestDidComplete = false
+				WalletConnectService.completeRequest(withDelay: 0.3, withValue: false)
 			}
 		}
 	}
@@ -553,9 +546,9 @@ public class WalletConnectService {
 	/// WalletConnectService puts every user-action-required request into a queue, so that we can manage them 1 at a time. This function delays the marking of the current request as complete, by the given delay.
 	/// Each bottom sheet has to deal with up to 2 dismissal animations (a fullscreen spinner / loader) followed by the sheet itself. Each of these should take the standard 0.3 to complete. We double that by default to ensure nothing goes wrong
 	// TODO: could all bottom sheets move to showLoadingView instead of modal, so that its removal and the sheets dismissal can be done together, reducing this time
-	public static func completeRequest(withDelay delay: TimeInterval = 1.2) {
+	public static func completeRequest(withDelay delay: TimeInterval = 1.2, withValue value: Bool = true) {
 		DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-			WalletConnectService.shared.requestDidComplete = true
+			WalletConnectService.shared.requestDidComplete = value
 		}
 	}
 	
