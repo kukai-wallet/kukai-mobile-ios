@@ -128,7 +128,7 @@ final class Test_04_Account: XCTestCase {
 		
 		
 		// Check staking
-		XCTAssert(tablesQuery.staticTexts["Staked"].exists)
+		XCTAssert(tablesQuery.staticTexts["Delegated"].exists)
 		
 		
 		// Check balance not zero
