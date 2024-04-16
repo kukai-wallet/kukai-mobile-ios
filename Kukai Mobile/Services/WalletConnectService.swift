@@ -564,6 +564,7 @@ public class WalletConnectService {
 		Logger.app.info("WC Reject proposal: \(proposal.id)")
 		Task {
 			do {
+				//try await Sign.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
 				try await Sign.instance.reject(proposalId: proposal.id, reason: .userRejected)
 				Logger.app.info("WC rejectCurrentProposal success")
 				completion?(true, nil)

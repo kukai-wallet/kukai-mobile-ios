@@ -44,9 +44,10 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if let add = obj.address, let metadata = DependencyManager.shared.walletList.metadata(forAddress: add) {
 					let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
 					cell.addressIconView.image = media.image
-					cell.addressLabel.text = media.title
+					cell.titleLabel.text = media.title
+					cell.subtitleLabel.text = media.subtitle
 				} else {
-					cell.addressLabel.text = " "
+					cell.titleLabel.text = " "
 				}
 				
 				return cell
