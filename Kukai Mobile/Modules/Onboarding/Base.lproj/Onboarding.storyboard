@@ -1573,22 +1573,26 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                                     <constraint firstAttribute="height" constant="91" placeholder="YES" id="4b5-95-hZa"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enter a tezos address to view details of this wallet, without being able to perform transactions with it" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpj-ie-wi2">
-                                <rect key="frame" x="16" y="211" width="343" height="34"/>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
-                                <color key="textColor" name="Txt8"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpj-ie-wi2">
+                                <rect key="frame" x="16" y="227" width="343" height="120"/>
+                                <string key="text">Enter a Tezos address to view wallet content and activity. 
+
+You will not be able to transact in this wallet.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="d0F-pG-VsA"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="Qpj-ie-wi2" firstAttribute="top" secondItem="KmG-Ac-6Ne" secondAttribute="bottom" constant="32" id="6ut-oA-biB"/>
+                            <constraint firstItem="Qpj-ie-wi2" firstAttribute="top" secondItem="KmG-Ac-6Ne" secondAttribute="bottom" constant="48" id="6ut-oA-biB"/>
                             <constraint firstItem="KmG-Ac-6Ne" firstAttribute="leading" secondItem="d0F-pG-VsA" secondAttribute="leading" constant="16" id="9fz-NO-MGc"/>
                             <constraint firstItem="Qpj-ie-wi2" firstAttribute="leading" secondItem="d0F-pG-VsA" secondAttribute="leading" constant="16" id="OZr-qc-nrg"/>
                             <constraint firstItem="d0F-pG-VsA" firstAttribute="trailing" secondItem="KmG-Ac-6Ne" secondAttribute="trailing" constant="16" id="YxR-GF-vIO"/>
                             <constraint firstItem="KmG-Ac-6Ne" firstAttribute="top" secondItem="d0F-pG-VsA" secondAttribute="top" constant="24" id="lgu-9Z-tUE"/>
                             <constraint firstItem="d0F-pG-VsA" firstAttribute="trailing" secondItem="Qpj-ie-wi2" secondAttribute="trailing" constant="16" id="n6Z-PL-kVA"/>
+                            <constraint firstItem="d0F-pG-VsA" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Qpj-ie-wi2" secondAttribute="bottom" constant="16" id="tx1-Hm-Y1l"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Address to Watch" id="Xjw-O9-fv1"/>
@@ -1599,7 +1603,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gs7-Bd-SEH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7367" y="2317"/>
+            <point key="canvasLocation" x="-7367.1999999999998" y="2316.7916041979011"/>
         </scene>
         <!--Account Scanning View Controller-->
         <scene sceneID="qbm-47-wc0">
@@ -2275,7 +2279,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="Ura-gb-YOV"/>
+        <segue reference="L9m-e9-wGE"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>

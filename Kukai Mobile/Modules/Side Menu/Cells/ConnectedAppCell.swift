@@ -13,8 +13,9 @@ class ConnectedAppCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var siteLabel: UILabel!
 	@IBOutlet weak var addressIconView: UIImageView!
-	@IBOutlet weak var addressLabel: UILabel!
 	@IBOutlet weak var networkLabel: UILabel!
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var subtitleLabel: UILabel!
 	
 	var gradientLayer: CAGradientLayer = CAGradientLayer()
 	
