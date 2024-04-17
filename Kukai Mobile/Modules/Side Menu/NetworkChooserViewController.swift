@@ -44,7 +44,7 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate, UITab
 			
 		} else {
 			cell.networkLabel.text = "Ghostnet"
-			cell.descriptionLabel.text = "A Beta Network running the lastest Tezos mainnet protocol, with fake XTZ and fake tokens with no monetary value. Mainly use by developers of the public when testing a dApp in Beta"
+			cell.descriptionLabel.text = "A test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value"
 		}
 		
 		return cell
