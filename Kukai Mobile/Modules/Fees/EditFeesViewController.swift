@@ -53,6 +53,7 @@ class EditFeesViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		self.view.layoutIfNeeded()
 		refreshUI()
 	}
 	
@@ -226,6 +227,13 @@ class EditFeesViewController: UIViewController {
 	private func applySelectedStyle(toButton button: UIButton) {
 		button.backgroundColor = .colorNamed("BG6")
 		button.isSelected = true
+		
+		for layer in button.layer.sublayers ?? [] {
+			if layer.shadowPath != nil {
+				layer.removeFromSuperlayer()
+			}
+		}
+		
 		button.addShadow(color: .black.withAlphaComponent(0.04), opacity: 1, offset: CGSize(width: 0, height: 3), radius: 1)
 		button.addShadow(color: .black.withAlphaComponent(0.12), opacity: 1, offset: CGSize(width: 0, height: 3), radius: 8)
 	}
