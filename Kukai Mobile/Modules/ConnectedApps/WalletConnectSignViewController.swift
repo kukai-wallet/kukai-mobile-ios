@@ -91,7 +91,8 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		self.swipeDownEnabled = true
 	}
 	
-	@IBAction func copyButtonTapped(_ sender: Any) {
+	@IBAction func copyButtonTapped(_ sender: UIButton) {
+		Toast.shared.show(withMessage: "copied!", attachedTo: sender)
 		UIPasteboard.general.string = payloadTextView.text
 	}
 	

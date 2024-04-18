@@ -31,11 +31,13 @@ class TokenContractViewController: UIViewController {
 		tokenAddress = contractAddress
 	}
 	
-	@IBAction func copyTokenIdTapped(_ sender: Any) {
+	@IBAction func copyTokenIdTapped(_ sender: UIButton) {
+		Toast.shared.show(withMessage: "copied!", attachedTo: sender)
 		UIPasteboard.general.string = tokenIdLabel.text
 	}
 	
-	@IBAction func copyTokenContractTapped(_ sender: Any) {
+	@IBAction func copyTokenContractTapped(_ sender: UIButton) {
+		Toast.shared.show(withMessage: "copied!", attachedTo: sender)
 		UIPasteboard.general.string = contractLabel.text
 	}
 	
