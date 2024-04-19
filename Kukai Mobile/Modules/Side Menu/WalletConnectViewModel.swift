@@ -47,7 +47,9 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.titleLabel.text = media.title
 					cell.subtitleLabel.text = media.subtitle
 				} else {
-					cell.titleLabel.text = " "
+					cell.addressIconView.image = TransactionService.tezosLogo(ofSize: .size_20)
+					cell.titleLabel.text = obj.address
+					cell.subtitleLabel.text = ""
 				}
 				
 				return cell

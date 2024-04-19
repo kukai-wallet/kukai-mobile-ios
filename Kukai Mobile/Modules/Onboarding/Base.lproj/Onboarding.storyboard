@@ -306,7 +306,7 @@ for your Digital Assets</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EX4-MC-WXt" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="132.5" y="45" width="110.5" height="34"/>
+                                                <rect key="frame" x="129.5" y="45" width="116.5" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="xJV-2O-fg9"/>
                                                 </constraints>
@@ -1316,11 +1316,26 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                                         <color key="textColor" name="Txt8"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Extra word (passphrase)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bIm-xp-dm5" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Extra word (passphrase)" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="bIm-xp-dm5" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="57" width="343" height="34"/>
                                                         <color key="backgroundColor" name="BG4"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="yIs-gG-GgK"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                                <color key="value" name="Txt10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GCL-3n-6ex">
                                                         <rect key="frame" x="0.0" y="99" width="343" height="17"/>
@@ -1346,11 +1361,26 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                                         <color key="textColor" name="Txt8"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Wallet Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zN1-he-MJi" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Wallet Address" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="zN1-he-MJi" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="57" width="343" height="34"/>
                                                         <color key="backgroundColor" name="BG4"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="86g-2c-39T"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                                <color key="value" name="Txt10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </textField>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FfJ-rw-6OW">
                                                         <rect key="frame" x="0.0" y="99" width="343" height="17"/>
@@ -1916,12 +1946,11 @@ You will not be able to transact in this wallet.</string>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="jri-Gb-JOC"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                <color key="tintColor" name="TxtBtnPrim1"/>
                                 <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Send" image="ArrowUp-right"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Back up later">
                                     <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                    <color key="baseForegroundColor" name="TxTBtnAlert1"/>
                                 </buttonConfiguration>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
@@ -2202,25 +2231,25 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
     </scenes>
     <designables>
         <designable name="1VJ-Ye-1zl">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="5t4-7b-ZSi">
-            <size key="intrinsicContentSize" width="191.5" height="38"/>
+            <size key="intrinsicContentSize" width="211.5" height="38"/>
         </designable>
         <designable name="EIg-ad-QmA">
             <size key="intrinsicContentSize" width="141" height="38"/>
         </designable>
         <designable name="EX4-MC-WXt">
-            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
         <designable name="FWv-hS-Trj">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="J2v-BG-JDc">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="Loj-qu-Rs8">
-            <size key="intrinsicContentSize" width="203.5" height="38"/>
+            <size key="intrinsicContentSize" width="223.5" height="38"/>
         </designable>
         <designable name="UlV-Fl-sF1">
             <size key="intrinsicContentSize" width="119" height="38"/>
@@ -2229,10 +2258,10 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
             <size key="intrinsicContentSize" width="227" height="38"/>
         </designable>
         <designable name="ZcX-hG-7A3">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="bIm-xp-dm5">
-            <size key="intrinsicContentSize" width="185.5" height="34"/>
+            <size key="intrinsicContentSize" width="207" height="23.5"/>
         </designable>
         <designable name="bRr-0r-cKe">
             <size key="intrinsicContentSize" width="210.5" height="38"/>
@@ -2241,16 +2270,16 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
             <size key="intrinsicContentSize" width="144" height="38"/>
         </designable>
         <designable name="c2S-hk-v1m">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
         <designable name="ljI-gW-RKX">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="mM7-0X-VxZ">
-            <size key="intrinsicContentSize" width="106" height="36"/>
+            <size key="intrinsicContentSize" width="124" height="36"/>
         </designable>
         <designable name="oOo-v0-m7J">
             <size key="intrinsicContentSize" width="109" height="38"/>
@@ -2268,7 +2297,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
             <size key="intrinsicContentSize" width="87.5" height="38"/>
         </designable>
         <designable name="zN1-he-MJi">
-            <size key="intrinsicContentSize" width="124.5" height="34"/>
+            <size key="intrinsicContentSize" width="131" height="23.5"/>
         </designable>
         <designable name="zTe-bp-NGr">
             <size key="intrinsicContentSize" width="32" height="34"/>
@@ -2279,7 +2308,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="L9m-e9-wGE"/>
+        <segue reference="nii-SC-NQy"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -2346,6 +2375,9 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TintGeneral">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxTBtnAlert1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt0">

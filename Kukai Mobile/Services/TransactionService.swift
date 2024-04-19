@@ -415,6 +415,11 @@ public class TransactionService {
 		}
 	}
 	
+	public static func tezosLogo(ofSize size: WalletIconSize) -> UIImage {
+		let imageSize = TransactionService.sizeForWalletIcon(walletIconSize: size)
+		return UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
+	}
+	
 	public static func sizeForWalletIcon(walletIconSize: WalletIconSize) -> CGSize {
 		let raw = walletIconSize.rawValue
 		return CGSize(width: raw, height: raw)

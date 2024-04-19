@@ -298,8 +298,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			let floorPrice = data.floorPrice()
 			if lastSale != nil || floorPrice != nil {
 				
-				let lastSaleString = lastSale == nil ? " " : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
-				let floorPriceString = floorPrice == nil ? " " : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
+				let lastSaleString = lastSale == nil ? "---" : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
+				let floorPriceString = floorPrice == nil ? "---" : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
 				let priceData = PricesContent(lastSalePrice: lastSaleString, floorPrice: floorPriceString)
 				self.currentSnapshot.insertItems([priceData], afterItem: self.sendData)
 				needsUpdating = true
