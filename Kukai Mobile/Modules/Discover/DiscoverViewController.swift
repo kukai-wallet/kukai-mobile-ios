@@ -92,6 +92,14 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 		}
 	}
 	
+	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		if indexPath.section == 0 && indexPath.row == 1 {
+			return DiscoverFeaturedCell.featuredCellCustomHeight()
+		} else {
+			return UITableView.automaticDimension
+		}
+	}
+	
 	func innerCellTapped(url: URL?) {
 		guard let url = url else {
 			return

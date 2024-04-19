@@ -16,7 +16,6 @@ protocol DiscoverFeaturedCellDelegate: AnyObject {
 class DiscoverFeaturedCell: UITableViewCell {
 	
 	@IBOutlet weak var collectionView: UICollectionView!
-	@IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var pageControl: UIPageControl!
 	
 	private var discoverGroup: DiscoverGroup = DiscoverGroup(id: UUID(), title: "", items: [])
@@ -24,6 +23,8 @@ class DiscoverFeaturedCell: UITableViewCell {
 	private let pageWidth: CGFloat = UIScreen.main.bounds.width
 	private var pageHeight: CGFloat = 0
 	private var customAspectRatioLogicHasBeenRun = false
+	private static let estimatedTextHeight: CGFloat = 40
+	private static let estimatedPageControlSize: CGFloat = 30
 	
 	public weak var delegate: DiscoverFeaturedCellDelegate? = nil
 	public static let customAspectRatio: CGFloat = 2.62
@@ -42,16 +43,26 @@ class DiscoverFeaturedCell: UITableViewCell {
 		flowLayout?.minimumInteritemSpacing = 0
 	}
 	
+	/**
+	 This cell has very custom aspect ratio sizing business logic, that can't be done via interface builder.
+	 Also couldn't find an easy way to calcualte the actual sizes of other ocmponents, for now just hardcode to known values, can revisit late rif it becomes an issue
+	 */
+	static func featuredCellCustomHeight() -> CGFloat {
+		let screenWidth = UIScreen.main.bounds.width
+		let newHeight = Decimal(screenWidth/DiscoverFeaturedCell.customAspectRatio).rounded(scale: 0, roundingMode: .up).intValue()
+		return CGFloat(newHeight) + DiscoverFeaturedCell.estimatedTextHeight + DiscoverFeaturedCell.estimatedPageControlSize
+	}
+	
 	override func layoutSubviews() {
-		super.layoutSubviews()
-		
 		if !customAspectRatioLogicHasBeenRun {
 			customAspectRatioLogicHasBeenRun = true
 			
-			pageHeight = CGFloat(Int(pageWidth/DiscoverFeaturedCell.customAspectRatio))
-			collectionViewHeightConstraint.constant += (pageHeight - 150)
-			(self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: pageWidth, height: collectionView.frame.size.height)
+			let newHeight = Decimal(pageWidth/DiscoverFeaturedCell.customAspectRatio).rounded(scale: 0, roundingMode: .up).intValue()
+			pageHeight = CGFloat(newHeight)
+			(self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.itemSize = CGSize(width: pageWidth, height: pageHeight + DiscoverFeaturedCell.estimatedTextHeight)
 		}
+		
+		super.layoutSubviews()
 	}
 	
 	func setup(discoverGroup: DiscoverGroup, startIndex: Int) {
@@ -76,7 +87,9 @@ class DiscoverFeaturedCell: UITableViewCell {
 				nextRow = -1
 			}
 			
+			self?.collectionView.isPagingEnabled = false // bug fix, some devices don't scroll horizontally if paging enabled for some reason
 			self?.collectionView.scrollToItem(at: IndexPath(row: nextRow+1, section: 0), at: .centeredHorizontally, animated: true)
+			self?.collectionView.isPagingEnabled = true
 		})
 		
 		delegate?.timerSetup(timer: timer, sender: self)
