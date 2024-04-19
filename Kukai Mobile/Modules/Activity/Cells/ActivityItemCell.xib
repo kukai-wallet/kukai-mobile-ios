@@ -102,16 +102,30 @@
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
-                                <rect key="frame" x="309" y="78" width="132" height="12"/>
+                                <rect key="frame" x="248.33333333333331" y="78" width="192.66666666666669" height="12"/>
                                 <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAILED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0g-0s-igy">
+                                        <rect key="frame" x="0.0" y="0.0" width="40.666666666666664" height="12"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="TxtAlert4"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnInfoKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="8S0-1T-Jqu">
+                                        <rect key="frame" x="44.666666666666686" y="0.0" width="12" height="12"/>
+                                        <color key="tintColor" name="TxtAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="Q6D-RL-NoP"/>
+                                            <constraint firstAttribute="width" constant="12" id="jvw-QN-xRA"/>
+                                        </constraints>
+                                    </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONFIRMED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-6G-spS">
-                                        <rect key="frame" x="0.0" y="0.0" width="71.333333333333329" height="12"/>
+                                        <rect key="frame" x="60.666666666666679" y="0.0" width="71.333333333333314" height="12"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtGood4"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" translatesAutoresizingMaskIntoConstraints="NO" id="fzx-Tv-thc">
-                                        <rect key="frame" x="75.333333333333314" y="0.0" width="12" height="12"/>
+                                        <rect key="frame" x="136" y="0.0" width="12" height="12"/>
                                         <color key="tintColor" name="TxtGood4"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="12" id="Aoz-k3-wUo"/>
@@ -119,7 +133,7 @@
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;time&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6Q-9u-1aj">
-                                        <rect key="frame" x="91.333333333333314" y="0.0" width="40.666666666666657" height="12"/>
+                                        <rect key="frame" x="152" y="0.0" width="40.666666666666657" height="12"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt12"/>
                                         <nil key="highlightedColor"/>
@@ -169,6 +183,8 @@
                 <outlet property="destinationIcon" destination="IRV-TS-X6f" id="Pi1-V4-FuJ"/>
                 <outlet property="destinationIconStackView" destination="gBZ-as-9TO" id="g8q-NH-Xjm"/>
                 <outlet property="destinationLabel" destination="qIp-2X-KmI" id="zON-sK-m4K"/>
+                <outlet property="failedIcon" destination="8S0-1T-Jqu" id="ZEr-Kk-1In"/>
+                <outlet property="failedLabel" destination="Z0g-0s-igy" id="Mnk-EG-cpK"/>
                 <outlet property="iconView" destination="REs-fD-NQd" id="15Q-4H-a9T"/>
                 <outlet property="timeLabel" destination="N6Q-9u-1aj" id="T3w-uC-HPE"/>
                 <outlet property="titleLabel" destination="fot-0r-ybG" id="4MB-Nm-iyL"/>
@@ -181,6 +197,7 @@
     </objects>
     <resources>
         <image name="Check" width="24" height="24"/>
+        <image name="btnInfoKnockout" width="36" height="36"/>
         <namedColor name="Txt10">
             <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -192,6 +209,9 @@
         </namedColor>
         <namedColor name="Txt8">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtAlert4">
+            <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
