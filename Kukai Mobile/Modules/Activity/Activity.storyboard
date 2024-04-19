@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -37,7 +38,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-8a-Xcf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="99" y="8" width="278" height="43"/>
+                                                    <rect key="frame" x="99" y="8" width="278" height="38"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="38" id="JLh-gC-5qC"/>
                                                     </constraints>
@@ -66,7 +67,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-8G-Yez">
-                                                    <rect key="frame" x="16" y="19" width="67" height="21"/>
+                                                    <rect key="frame" x="16" y="16.666666666666668" width="67" height="21.000000000000004"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
@@ -75,7 +76,7 @@
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstItem="8Qq-8a-Xcf" firstAttribute="leading" secondItem="nAr-8G-Yez" secondAttribute="trailing" constant="16" id="CAE-tk-2Hw"/>
-                                                <constraint firstAttribute="bottom" secondItem="8Qq-8a-Xcf" secondAttribute="bottom" constant="3" id="NQb-wH-ygU"/>
+                                                <constraint firstAttribute="bottom" secondItem="8Qq-8a-Xcf" secondAttribute="bottom" constant="8" id="NQb-wH-ygU"/>
                                                 <constraint firstItem="nAr-8G-Yez" firstAttribute="centerY" secondItem="8Qq-8a-Xcf" secondAttribute="centerY" id="eDs-lX-GUU"/>
                                                 <constraint firstItem="8Qq-8a-Xcf" firstAttribute="top" secondItem="rVn-7c-5Cw" secondAttribute="top" constant="8" id="gU2-7b-e8l"/>
                                                 <constraint firstAttribute="trailing" secondItem="8Qq-8a-Xcf" secondAttribute="trailing" constant="16" id="qNm-CG-5Wz"/>
