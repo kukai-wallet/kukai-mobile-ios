@@ -30,6 +30,7 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func error(message: String?, error: Error?)
 	func connectionStatusChanged(status: SocketConnectionStatus)
+	func walletConnectSocketFailedToReconnect3Times()
 }
 
 public struct WalletConnectGetAccountObj: Codable {
@@ -73,8 +74,10 @@ public class WalletConnectService {
 	public var deepLinkPairingToConnect: WalletConnectURI? = nil
 	public var hasBeenSetup = false
 	public weak var delegate: WalletConnectServiceDelegate? = nil
+	public var isConnected = false
 	
 	private var bag = [AnyCancellable]()
+	private var connectionManagmentBag = [AnyCancellable]()
 	private var tempConnectionSubscription: AnyCancellable? = nil
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
@@ -84,6 +87,9 @@ public class WalletConnectService {
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
 	
 	private var pairingTimer: Timer? = nil
+	private var isReconnecting = false
+	private var autoReconnectCount = 0
+	private var isManualDisconnection = true
 	
 	@Published public var requestDidComplete: Bool = false
 	@Published public var pairsAndSessionsUpdated: Bool = false
@@ -98,15 +104,38 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory())
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .manual)
 		Pair.configure(metadata: WalletConnectService.metadata)
 		//Sign.configure(crypto: WC2CryptoProvider())
 		
+		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+			Logger.app.info("WC2 - Connection status: changed to \(status == .connected ? "connected" : "disconnected")")
+			
 			DispatchQueue.main.async {
 				self?.delegate?.connectionStatusChanged(status: status)
 			}
+			
+			if status == .disconnected {
+				self?.isConnected = false
+				
+				if self?.isManualDisconnection == false && self?.isReconnecting == false {
+					WalletConnectService.shared.reconnect()
+					
+				} else if self?.isManualDisconnection == true {
+					self?.isManualDisconnection = false
+				}
+			} else {
+				self?.isConnected = true
+				
+				if let uri = self?.deepLinkPairingToConnect {
+					self?.pairClient(uri: uri)
+				}
+				
+				self?.autoReconnectCount = 0
+			}
+			
 		}.store(in: &bag)
 		
 		
@@ -188,20 +217,77 @@ public class WalletConnectService {
 		
 		hasBeenSetup = true
 		
+		/*
 		if let uri = deepLinkPairingToConnect {
 			pairClient(uri: uri)
 		}
+		*/
 	}
 	
-	public func isConnected(completion: @escaping ((Bool) -> Void)) {
-		tempConnectionSubscription = Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
-			completion(status == .connected)
-			
-			self?.tempConnectionSubscription?.cancel()
-		}
+	public func connect() {
+		if !hasBeenSetup { return }
+		Logger.app.info("WC2 - Connection status: calling connect()")
 		
-		tempConnectionSubscription?.store(in: &bag)
+		self.connectionManagmentBag.forEach({ $0.cancel() })
+		self.reconnect()
 	}
+	
+	public func disconnect() {
+		if !hasBeenSetup { return }
+		Logger.app.info("WC2 - Connection status: calling disconnect()")
+		
+		self.isManualDisconnection = true
+		
+		self.connectionManagmentBag.forEach({ $0.cancel() })
+		try? Networking.instance.disconnect(closeCode: .normalClosure)
+	}
+	
+	public func reconnect() {
+		Logger.app.info("WC2 - Connection status: calling reconnect()")
+		isReconnecting = true
+		autoReconnectCount += 1
+		
+		// Listen for connection events and return when complete, keep retrying if not
+		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
+			
+			if value == .connected {
+				Logger.app.info("WC2 - Connection status: reconnect reporting success")
+				
+				self?.connectionManagmentBag.forEach({ $0.cancel() })
+				self?.isReconnecting = false
+				
+			} else {
+				Logger.app.info("WC2 - Connection status: reconnect reporting failure, retrying in 3 seconds")
+				
+				self?.retryReconnect()
+			}
+			
+		}.store(in: &connectionManagmentBag)
+		
+		
+		// perform a disconnect and then try to connect
+		do {
+			try Networking.instance.disconnect(closeCode: .normalClosure)
+			try Networking.instance.connect()
+			
+		} catch (let error) {
+			Logger.app.info("WC2 - Connection status: reconnect reporting error: \(error)")
+			self.retryReconnect()
+		}
+	}
+	
+	private func retryReconnect() {
+		if self.autoReconnectCount < 3 {
+			DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 2) {
+				WalletConnectService.shared.reconnect()
+			}
+		} else {
+			Logger.app.info("WC2 - Connection status: reconnect attempts exceeded. Cancelling for now")
+			self.autoReconnectCount = 0
+			self.delegate?.walletConnectSocketFailedToReconnect3Times()
+		}
+	}
+
 	
 	
 	

@@ -36,7 +36,7 @@ class Toast {
 		])
 	}
 	
-	public func show(withMessage message: String, attachedTo: UIView) {
+	public func show(withMessage message: String, attachedTo: UIView, onTop: Bool = true) {
 		toastLabel.text = message
 		
 		guard let window = UIApplication.shared.currentWindow else {
@@ -49,12 +49,45 @@ class Toast {
 		
 		let newSize = toastView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
 		
+		
+		
+		
+		let attachedToFrameInWindow = attachedTo.convert(attachedTo.bounds, to: nil)
+		
+		var centerX = attachedTo.center.x + (attachedToFrameInWindow.origin.x - attachedTo.frame.origin.x)
+		let yOffset = ((newSize.height/2) + 8)
+		var centerY = (attachedToFrameInWindow.origin.y - yOffset)
+		
+		// if too far to the right, move to the left
+		let endXPos = (centerX + (newSize.width/2))
+		if endXPos > window.bounds.width {
+			centerX -= (endXPos - window.bounds.width)
+		}
+		
+		// if too far to the left, move to the right
+		let startXPos = (centerX - (newSize.width/2))
+		if startXPos < 0 {
+			centerX += (startXPos * -1)
+		}
+		
+		// If not displaying on top, undo the offset and move it down by the height of the view
+		if !onTop {
+			centerY += (yOffset + attachedTo.frame.height + 8)
+		}
+		
+		toastView.frame = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
+		toastView.center = CGPoint(x: centerX, y: centerY)
+		
+		
+		
+		/*
 		let attachedToFrameInWindow = attachedTo.convert(attachedTo.bounds, to: nil)
 		toastView.frame = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
 		
 		let centerX = attachedTo.center.x + (attachedToFrameInWindow.origin.x - attachedTo.frame.origin.x)
 		let centerY = (attachedToFrameInWindow.origin.y - ((newSize.height/2) + 8))
 		toastView.center = CGPoint(x: centerX, y: centerY)
+		*/
 		
 		toastView.alpha = 0
 		window.addSubview(toastView)

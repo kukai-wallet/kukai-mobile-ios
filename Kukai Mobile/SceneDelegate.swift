@@ -14,7 +14,11 @@ import OSLog
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	var window: UIWindow?
-	var firstLoad = true
+	
+	public var firstLoad = true
+	public var privacyProtectionWindowVisible = false
+	
+	@Published var dismissedPrivacyProtectionWindow = false
 	
 	private var privacyProtectionWindow: UIWindow?
 
@@ -51,6 +55,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
+		
+		WalletConnectService.shared.connect()
+		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
 		
@@ -59,6 +66,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	func sceneDidEnterBackground(_ scene: UIScene) {
+		
+		WalletConnectService.shared.disconnect()
 		
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
 		// They will auto trigger themselves based on `viewDidAppear` methods
@@ -88,6 +97,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
+		privacyProtectionWindowVisible = true
 		privacyProtectionWindow = UIWindow(windowScene: windowScene)
 		privacyProtectionWindow?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
 		privacyProtectionWindow?.windowLevel = .alert + 1
@@ -101,6 +111,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			
 		} completion: { [weak self] finish in
 			self?.privacyProtectionWindow = nil
+			self?.privacyProtectionWindowVisible = false
+			self?.dismissedPrivacyProtectionWindow = true
 		}
 	}
 	

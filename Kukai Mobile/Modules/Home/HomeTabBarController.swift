@@ -65,6 +65,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
+					self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						DependencyManager.shared.addressLoaded = address
@@ -87,6 +88,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
+					self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						
@@ -122,6 +124,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] address in
 				
+				self?.reconnectWalletConnectIfNeeded()
+				
 				if DependencyManager.shared.appUpdateService.isRequiredUpdate {
 					self?.displayUpdateRequired()
 				}
@@ -142,6 +146,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.balanceService.$addressErrored
 			.dropFirst()
 			.sink { [weak self] obj in
+				self?.reconnectWalletConnectIfNeeded()
+				
 				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
 					
 					if self?.supressAutoRefreshError == true {
@@ -152,6 +158,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 						}
 					}
 				}
+			}.store(in: &bag)
+		
+		(UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.$dismissedPrivacyProtectionWindow
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.displayDisconnectedToastIfNeeded()
 			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
@@ -468,26 +480,38 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			self.walletConnectActivity.frame = self.scanButton.frame
 			self.scanButton.addSubview(self.walletConnectActivity)
 			
+			self.scanButton.setImage(nil, for: .normal)
+			self.walletConnectActivity.color = ThemeManager.shared.currentInterfaceStyle() == .dark ? .white : .black
 			self.walletConnectActivity.startAnimating()
-			recheckConnectionIn3Seconds()
+			
+			displayDisconnectedToastIfNeeded()
 			
 		} else {
 			self.scanButton.isEnabled = true
+			self.scanButton.setImage(UIImage(named: "ScanQR"), for: .normal)
 			self.walletConnectActivity.stopAnimating()
 			self.walletConnectActivity.removeFromSuperview()
 		}
 	}
 	
-	// TODO: issue may have been solved by moving the WalletConnectService setup to sceneDelegate instead of homeTabController. Can possibly remove
-	private func recheckConnectionIn3Seconds() {
-		DispatchQueue.main.asyncAfter(wallDeadline: .now() + 3) { [weak self] in
-			WalletConnectService.shared.isConnected { [weak self] connected in
-				if connected {
-					DispatchQueue.main.async {
-						self?.connectionStatusChanged(status: .connected)
-					}
-				}
-			}
+	public func displayDisconnectedToastIfNeeded() {
+		if !WalletConnectService.shared.isConnected && 
+			(UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.privacyProtectionWindowVisible == false &&
+			self.navigationController?.viewControllers.last is HomeTabBarController
+		{
+			Toast.shared.show(withMessage: "Reconnecting...", attachedTo: self.scanButton, onTop: false)
+		}
+	}
+	
+	public func walletConnectSocketFailedToReconnect3Times() {
+		DispatchQueue.main.async {
+			self.windowError(withTitle: "error".localized(), description: "error-wc2-reconnect".localized())
+		}
+	}
+	
+	public func reconnectWalletConnectIfNeeded() {
+		if !WalletConnectService.shared.isConnected {
+			WalletConnectService.shared.reconnect()
 		}
 	}
 	
