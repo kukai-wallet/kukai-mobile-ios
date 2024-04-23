@@ -78,17 +78,6 @@ class Toast {
 		toastView.frame = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
 		toastView.center = CGPoint(x: centerX, y: centerY)
 		
-		
-		
-		/*
-		let attachedToFrameInWindow = attachedTo.convert(attachedTo.bounds, to: nil)
-		toastView.frame = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-		
-		let centerX = attachedTo.center.x + (attachedToFrameInWindow.origin.x - attachedTo.frame.origin.x)
-		let centerY = (attachedToFrameInWindow.origin.y - ((newSize.height/2) + 8))
-		toastView.center = CGPoint(x: centerX, y: centerY)
-		*/
-		
 		toastView.alpha = 0
 		window.addSubview(toastView)
 		toastView.setNeedsLayout()
