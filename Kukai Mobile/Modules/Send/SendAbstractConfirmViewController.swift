@@ -37,17 +37,19 @@ class SendAbstractConfirmViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		// Monitor connection
-		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
-			DispatchQueue.main.async { [weak self] in
-				
-				if status == .disconnected {
-					self?.showLoadingModal()
-					self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
-				} else {
-					self?.hideLoadingModal()
+		if isWalletConnectOp {
+			Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+				DispatchQueue.main.async { [weak self] in
+					
+					if status == .disconnected {
+						self?.showLoadingModal()
+						self?.updateLoadingModalStatusLabel(message: "Reconnecting ... ")
+					} else {
+						UIViewController.removeLoadingModal()
+					}
 				}
-			}
-		}.store(in: &bag)
+			}.store(in: &bag)
+		}
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
@@ -60,7 +62,10 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	func dismissAndReturn(collapseOnly: Bool) {
 		DispatchQueue.main.async { [weak self] in
-			self?.dismiss(animated: true)
+			self?.dismiss(animated: true, completion: {
+				UIViewController.removeLoadingView()
+				UIViewController.removeLoadingModal()
+			})
 			
 			if collapseOnly == false {
 				(self?.presentingViewController as? UINavigationController)?.popToHome()
