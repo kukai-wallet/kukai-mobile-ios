@@ -22,7 +22,7 @@ extension String {
 			return processString(fromIndex: 14)
 		}
 		
-		let d = (try? Data(hexString: self)) ?? Data()
+		let d = Data(hexString: self) ?? Data()
 		let readable = String(data: d, encoding: .isoLatin1)
 		
 		return readable ?? ""
@@ -40,7 +40,7 @@ extension String {
 		let index = self.index(self.startIndex, offsetBy: fromIndex)
 		let subString = String(self.suffix(from: index))
 		
-		let d = (try? Data(hexString: subString)) ?? Data()
+		let d = Data(hexString: subString) ?? Data()
 		let readable = String(data: d, encoding: .isoLatin1)
 		
 		return readable ?? ""
