@@ -105,8 +105,8 @@ public class RequestIfService {
 	}
 	
 	private func validate<T: Codable>(secureObject: SecureServiceObject, responseType: T.Type) -> T? {
-		guard let publicKeyData = try? Data(hexString: "d71729958d14ba994b9bf29816f9710bd944d0ed7dc3e5a58a31532ca87e06f6"),
-			  let signatureData = try? Data(hexString: secureObject.signature),
+		guard let publicKeyData = Data(hexString: "d71729958d14ba994b9bf29816f9710bd944d0ed7dc3e5a58a31532ca87e06f6"),
+			  let signatureData = Data(hexString: secureObject.signature),
 			  let data = Data(base64Encoded: secureObject.data)
 		else {
 			Logger.app.error("RequestIfService unable to setup secure data processing")
