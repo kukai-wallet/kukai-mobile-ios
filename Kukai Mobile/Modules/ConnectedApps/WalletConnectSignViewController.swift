@@ -50,7 +50,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		stringToSign = expression
 		accountToSign = account
 		payloadTextView.text = expression.humanReadableStringFromMichelson()
-		payloadTextView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 6)
+		payloadTextView.contentInset = UIEdgeInsets(top: 4, left: 6, bottom: 4, right: 12)
 		
 		slideButton.delegate = self
 		presentationController?.delegate = self

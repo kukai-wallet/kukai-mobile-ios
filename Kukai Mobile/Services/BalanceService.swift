@@ -187,6 +187,10 @@ public class BalanceService {
 			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
 			DependencyManager.shared.activityService.loadCache(address: address)
 			
+			// Had to be moved to here as if its called during transaction fetching, it can result in the pending being removed long before the refresh comes in to say groups were updated
+			// But the removal of pending is also what triggers the removal of the activity tab spinner, so it needs to be performed along side balance refreshing being finished
+			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
+			
 			self.account = account
 		}
 		

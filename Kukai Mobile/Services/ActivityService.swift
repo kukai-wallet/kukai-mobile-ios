@@ -80,10 +80,8 @@ public class ActivityService {
 	
 	public func fetchTransactionGroups(forAddress address: String, completion: @escaping ((KukaiError?) -> Void)) {
 		Logger.app.info("ActivityService: requesting transactions for \(address)")
-		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { [weak self] transactions in
+		DependencyManager.shared.tzktClient.fetchTransactions(forAddress: address, limit: 100) { transactions in
 			let groups = DependencyManager.shared.tzktClient.groupTransactions(transactions: transactions, currentWalletAddress: address)
-			
-			self?.checkAndUpdatePendingTransactions(forAddress: address, comparedToGroups: groups)
 			let _ = DiskService.write(encodable: groups, toFileName: ActivityService.transactionsCacheFilename(withAddress: address))
 			
 			Logger.app.info("ActivityService: requesting transactions for \(address) - complete")
