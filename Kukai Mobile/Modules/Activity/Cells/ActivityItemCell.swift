@@ -45,6 +45,9 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		typeLabel.accessibilityIdentifier = "activity-type-label"
 		titleLabel.accessibilityIdentifier = "activity-item-title"
 		
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
+		
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
 		if data.status == .unconfirmed {
