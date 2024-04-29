@@ -180,12 +180,11 @@ class ImportWalletViewController: UIViewController {
 					}
 					
 					self?.accountScanningVc?.updateFound(found)
-					
 				})
 				
 				if let eString = errorString {
 					DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-						self?.hideLoadingView()
+						self?.removeScanningVc()
 						self?.windowError(withTitle: "error".localized(), description: eString)
 					}
 				} else {
