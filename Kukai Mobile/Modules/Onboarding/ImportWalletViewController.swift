@@ -136,6 +136,7 @@ class ImportWalletViewController: UIViewController {
 	
 	@IBAction func importTapped(_ sender: Any) {
 		textView.resignFirstResponder()
+		textView.text = textView.text.lowercased()
 		
 		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text), mnemonic.isValid() else {
 			textViewErrorLabel.text = "Invalid recovery phrase"
