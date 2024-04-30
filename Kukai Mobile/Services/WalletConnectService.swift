@@ -88,7 +88,6 @@ public class WalletConnectService {
 	
 	private var pairingTimer: Timer? = nil
 	private var isReconnecting = false
-	private var autoReconnectCount = 0
 	private var isManualDisconnection = true
 	
 	@Published public var requestDidComplete: Bool = false
@@ -132,8 +131,6 @@ public class WalletConnectService {
 				if let uri = self?.deepLinkPairingToConnect {
 					self?.pairClient(uri: uri)
 				}
-				
-				self?.autoReconnectCount = 0
 			}
 			
 		}.store(in: &bag)
@@ -228,7 +225,7 @@ public class WalletConnectService {
 		if !hasBeenSetup { return }
 		Logger.app.info("WC2 - Connection status: calling connect()")
 		
-		self.connectionManagmentBag.forEach({ $0.cancel() })
+		self.connectionManagmentBag = []
 		self.reconnect()
 	}
 	
@@ -237,15 +234,13 @@ public class WalletConnectService {
 		Logger.app.info("WC2 - Connection status: calling disconnect()")
 		
 		self.isManualDisconnection = true
-		
-		self.connectionManagmentBag.forEach({ $0.cancel() })
+		self.connectionManagmentBag = []
 		try? Networking.instance.disconnect(closeCode: .normalClosure)
 	}
 	
 	public func reconnect() {
 		Logger.app.info("WC2 - Connection status: calling reconnect()")
 		isReconnecting = true
-		autoReconnectCount += 1
 		
 		// Listen for connection events and return when complete, keep retrying if not
 		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
@@ -253,7 +248,7 @@ public class WalletConnectService {
 			if value == .connected {
 				Logger.app.info("WC2 - Connection status: reconnect reporting success")
 				
-				self?.connectionManagmentBag.forEach({ $0.cancel() })
+				self?.connectionManagmentBag = []
 				self?.isReconnecting = false
 				
 			} else {
@@ -261,7 +256,6 @@ public class WalletConnectService {
 				
 				self?.retryReconnect()
 			}
-			
 		}.store(in: &connectionManagmentBag)
 		
 		
@@ -277,13 +271,13 @@ public class WalletConnectService {
 	}
 	
 	private func retryReconnect() {
-		if self.autoReconnectCount < 3 {
+		if self.connectionManagmentBag.count < 3 {
 			DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 2) {
 				WalletConnectService.shared.reconnect()
 			}
 		} else {
 			Logger.app.info("WC2 - Connection status: reconnect attempts exceeded. Cancelling for now")
-			self.autoReconnectCount = 0
+			self.connectionManagmentBag = []
 			self.delegate?.walletConnectSocketFailedToReconnect3Times()
 		}
 	}
