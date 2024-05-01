@@ -25,6 +25,8 @@ class DiscoverFeaturedCell: UITableViewCell {
 	private var customAspectRatioLogicHasBeenRun = false
 	private static let estimatedTextHeight: CGFloat = 40
 	private static let estimatedPageControlSize: CGFloat = 30
+	private var once = false
+	private var selectedIndex = 0
 	
 	public weak var delegate: DiscoverFeaturedCellDelegate? = nil
 	public static let customAspectRatio: CGFloat = 2.62
@@ -65,13 +67,13 @@ class DiscoverFeaturedCell: UITableViewCell {
 		super.layoutSubviews()
 	}
 	
-	func setup(discoverGroup: DiscoverGroup, startIndex: Int) {
+	func setup(discoverGroup: DiscoverGroup) {
 		self.discoverGroup = discoverGroup
 		
 		self.collectionView.reloadData()
-		self.collectionView.scrollToItem(at: IndexPath(row: startIndex, section: 0), at: .centeredHorizontally, animated: false)
 		self.pageControl.numberOfPages = discoverGroup.items.count
-		self.pageControl.currentPage = startIndex
+		self.pageControl.currentPage = 0
+		self.once = false
 		
 		if discoverGroup.items.count > 1 {
 			stopTimer()
@@ -82,13 +84,14 @@ class DiscoverFeaturedCell: UITableViewCell {
 	public func setupTimer() {
 		stopTimer()
 		timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: { [weak self] timer in
-			var nextRow = self?.pageControl.currentPage ?? 0
-			if nextRow == ((self?.pageControl.numberOfPages ?? 1) - 1) {
-				nextRow = -1
+			let itemCount = self?.discoverGroup.items.count ?? 0
+			var nextRow = (self?.selectedIndex ?? 0) + 1
+			if nextRow == (itemCount * 20) {
+				nextRow = (itemCount * 10)
 			}
 			
 			self?.collectionView.isPagingEnabled = false // bug fix, some devices don't scroll horizontally if paging enabled for some reason
-			self?.collectionView.scrollToItem(at: IndexPath(row: nextRow+1, section: 0), at: .centeredHorizontally, animated: true)
+			self?.collectionView.scrollToItem(at: IndexPath(row: nextRow, section: 0), at: .centeredHorizontally, animated: true)
 			self?.collectionView.isPagingEnabled = true
 		})
 		
@@ -108,7 +111,7 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-		return discoverGroup.items.count
+		return discoverGroup.items.count * 10_000 // high number to give the appearence of infinite scroll
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -116,25 +119,36 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 			return UICollectionViewCell()
 		}
 		
-		let item = discoverGroup.items[indexPath.row]
+		let item = discoverGroup.items[indexPath.row % discoverGroup.items.count]
 		cell.setup(categories: [" "], title: item.title, description: item.description, pageWidth: pageWidth)
 		
 		return cell
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+		if !once {
+			let infiniteScrollStartIndex = 0 + (discoverGroup.items.count * 10) // give an infinite scroll-like experience by starting off many rows into the the set to allow side ways scrolling
+			
+			self.collectionView.isPagingEnabled = false // bug fix, some devices don't scroll horizontally if paging enabled for some reason
+			self.collectionView.scrollToItem(at: IndexPath(row: infiniteScrollStartIndex, section: 0), at: .centeredHorizontally, animated: false)
+			self.collectionView.isPagingEnabled = true
+			
+			self.once = true
+		}
+		
 		guard let c = cell as? DiscoverFeaturedItemCell else { return }
 		
-		let item = discoverGroup.items[indexPath.row]
-		c.setupImage(imageURL: item.mobileCarouselUri)
+		selectedIndex = indexPath.row
+		let item = discoverGroup.items[indexPath.row % discoverGroup.items.count]
+		c.setupImage(imageURL: item.featuredItemURL)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		delegate?.innerCellTapped(url: discoverGroup.items[indexPath.row].projectURL)
+		delegate?.innerCellTapped(url: discoverGroup.items[indexPath.row].projectUrl)
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {
-		self.pageControl.currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth)
+		self.pageControl.currentPage = Int((scrollView.contentOffset.x + pageWidth / 2) / pageWidth) % discoverGroup.items.count
 	}
 	
 	func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

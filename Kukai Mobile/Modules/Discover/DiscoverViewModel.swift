@@ -67,7 +67,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let obj = item as? DiscoverGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverFeaturedCell", for: indexPath) as? DiscoverFeaturedCell {
 				cell.delegate = self?.featuredDelegate
-				cell.setup(discoverGroup: obj, startIndex: 0)
+				cell.setup(discoverGroup: obj)
 				return cell
 				
 			} else if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverHeadingCell", for: indexPath) as? DiscoverHeadingCell {
@@ -128,45 +128,38 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		
+		let groups = DependencyManager.shared.discoverService.items
+		if groups.count == 0 { return }
+		
+		
 		if DependencyManager.shared.currentNetworkType == .testnet {
-			currentSnapshot.appendSections([0, 1])
-			
-			currentSnapshot.appendItems([GhostnetWarningCellObj(), menu], toSection: 0)
-			currentSnapshot.appendItems([
-				"Defi",
-				DiscoverItem(id: UUID(), title: "WTZ", categories: [], description: "Ghostnet version of Crunchy's wrapped XTZ", imageUri: nil, projectURL: URL(string: "https://ghostnet.wtz.io/")),
-				DiscoverItem(id: UUID(), title: "Quipuswap", categories: [], description: "Ghostnet version of Quipuswap DEX", imageUri: nil, projectURL: URL(string: "https://ghostnet.quipuswap.com/"))
-			], toSection: 1)
+			currentSnapshot.appendSections(Array(0..<groups.count))
+			currentSnapshot.appendItems([GhostnetWarningCellObj(), menu, groups[0]], toSection: 0)
 			
 		} else {
-			let groups = DependencyManager.shared.discoverService.items
-			
 			currentSnapshot.appendSections(Array(0..<groups.count))
+			currentSnapshot.appendItems([menu, groups[0]], toSection: 0)
+		}
+		
+		for (index, group) in groups.enumerated() {
+			if index == 0 { continue }
 			
-			for (index, group) in groups.enumerated() {
-				var itemsToAdd: [AnyHashable] = []
+			var itemsToAdd: [AnyHashable] = []
+			itemsToAdd.append(group.title.uppercased())
+			
+			for (index2, item) in group.items.enumerated() {
+				itemsToAdd.append(item)
 				
-				if index == 0 {
-					itemsToAdd.append(menu)
-					itemsToAdd.append(group)
-					
-				} else {
-					itemsToAdd.append(group.title.uppercased())
-					for (index2, item) in group.items.enumerated() {
-						itemsToAdd.append(item)
-						
-						if index2 == (DiscoverViewModel.itemPerSection-1) && expandedSection != index {
-							break
-						}
-					}
-					
-					if group.items.count > DiscoverViewModel.itemPerSection {
-						itemsToAdd.append(ShowMore())
-					}
+				if index2 == (DiscoverViewModel.itemPerSection-1) && expandedSection != index {
+					break
 				}
-				
-				currentSnapshot.appendItems(itemsToAdd, toSection: index)
 			}
+			
+			if group.items.count > DiscoverViewModel.itemPerSection {
+				itemsToAdd.append(ShowMore())
+			}
+			
+			currentSnapshot.appendItems(itemsToAdd, toSection: index)
 		}
 		
 		datasource.apply(currentSnapshot, animatingDifferences: animate)
@@ -177,7 +170,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return nil
 		}
 		
-		return obj.projectURL
+		return obj.projectUrl
 	}
 	
 	func isShowMoreOrLess(indexPath: IndexPath) -> Bool {
@@ -246,7 +239,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func willDisplayImage(forIndexPath: IndexPath) -> URL? {
 		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? DiscoverItem else { return nil }
 		
-		Logger.app.info("Discover image loading: \(obj.imageUri?.absoluteString)")
-		return MediaProxyService.url(fromUri: obj.imageUri, ofFormat: MediaProxyService.Format.small.rawFormat())
+		Logger.app.info("Discover image loading: \(obj.squareLogoUri?.absoluteString)")
+		return MediaProxyService.url(fromUri: obj.squareLogoUri, ofFormat: MediaProxyService.Format.small.rawFormat())
 	}
 }
