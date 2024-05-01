@@ -15,7 +15,11 @@ import OSLog
 
 public class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
+	@IBOutlet weak var sideMneuButtonContainer: UIBarButtonItem!
+	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
+	@IBOutlet weak var scanButtonContainer: UIBarButtonItem!
+	@IBOutlet weak var scanButton: UIButton!
 	
 	private var refreshType: BalanceService.RefreshType = .useCache
 	private let scanner = ScanViewController()
@@ -32,11 +36,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
-	
-	
-	public let sideMenuButton = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-	public let scanButton = UIButton(frame: CGRect(x: 0, y: 0, width: 44, height: 44))
-	
 	
 	public override func viewDidLoad() {
         super.viewDidLoad()
@@ -192,29 +191,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: accountButtonWidth))
 		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
 		
-		sideMenuButton.translatesAutoresizingMaskIntoConstraints = false
-		sideMenuButton.setImage(UIImage(named: "Hamburger"), for: .normal)
-		sideMenuButton.tintColor = .colorNamed("BG12")
-		sideMenuButton.addTarget(self, action: #selector(sideMenuTapped), for: .touchUpInside)
-		
-		scanButton.translatesAutoresizingMaskIntoConstraints = false
-		scanButton.setImage(UIImage(named: "ScanQR"), for: .normal)
-		scanButton.tintColor = .colorNamed("BG12")
-		scanButton.addTarget(self, action: #selector(scanTapped), for: .touchUpInside)
-		
-		navigationController?.navigationBar.addSubview(sideMenuButton)
-		navigationController?.navigationBar.addSubview(scanButton)
-		
-		navigationController?.view.addConstraints([
-			NSLayoutConstraint(item: sideMenuButton, attribute: .leading, relatedBy: .equal, toItem: navigationController?.navigationBar, attribute: .leading, multiplier: 1, constant: 16),
-			NSLayoutConstraint(item: sideMenuButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44),
-			NSLayoutConstraint(item: sideMenuButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44),
-			NSLayoutConstraint(item: scanButton, attribute: .trailing, relatedBy: .equal, toItem: navigationController?.navigationBar, attribute: .trailing, multiplier: 1, constant: -16),
-			NSLayoutConstraint(item: scanButton, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 44),
-			NSLayoutConstraint(item: scanButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44)
+		NSLayoutConstraint.activate([
+			sideMenuButton.heightAnchor.constraint(equalToConstant: 44),
+			sideMenuButton.widthAnchor.constraint(equalToConstant: 44),
+			scanButton.heightAnchor.constraint(equalToConstant: 44),
+			scanButton.widthAnchor.constraint(equalToConstant: 44)
 		])
-		
-		
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -302,7 +284,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			}.store(in: &bag)
 	}
 	
-	@objc func sideMenuTapped(_ sender: Any) {
+	@IBAction func sideMenuTapped(_ sender: Any) {
 		guard let currentWindow = UIApplication.shared.currentWindow else {
 			return
 		}
@@ -331,7 +313,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 	}
 	
-	@objc func scanTapped(_ sender: Any) {
+	@IBAction func scanTapped(_ sender: Any) {
 		openScanner()
 	}
 	
