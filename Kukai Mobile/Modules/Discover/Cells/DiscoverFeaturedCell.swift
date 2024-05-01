@@ -67,15 +67,13 @@ class DiscoverFeaturedCell: UITableViewCell {
 		super.layoutSubviews()
 	}
 	
-	func setup(discoverGroup: DiscoverGroup, startIndex: Int) {
+	func setup(discoverGroup: DiscoverGroup) {
 		self.discoverGroup = discoverGroup
 		
 		self.collectionView.reloadData()
-		self.collectionView.isPagingEnabled = false // bug fix, some devices don't scroll horizontally if paging enabled for some reason
-		self.collectionView.scrollToItem(at: IndexPath(row: startIndex, section: 0), at: .centeredHorizontally, animated: false)
-		self.collectionView.isPagingEnabled = true
 		self.pageControl.numberOfPages = discoverGroup.items.count
-		self.pageControl.currentPage = startIndex
+		self.pageControl.currentPage = 0
+		self.once = false
 		
 		if discoverGroup.items.count > 1 {
 			stopTimer()
@@ -142,11 +140,11 @@ extension DiscoverFeaturedCell: UICollectionViewDelegate, UICollectionViewDataSo
 		
 		selectedIndex = indexPath.row
 		let item = discoverGroup.items[indexPath.row % discoverGroup.items.count]
-		c.setupImage(imageURL: item.mobileCarouselUri)
+		c.setupImage(imageURL: item.featuredItemURL)
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-		delegate?.innerCellTapped(url: discoverGroup.items[indexPath.row].projectURL)
+		delegate?.innerCellTapped(url: discoverGroup.items[indexPath.row].projectUrl)
 	}
 	
 	func scrollViewDidScroll(_ scrollView: UIScrollView) {

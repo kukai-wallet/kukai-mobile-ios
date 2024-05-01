@@ -93,7 +93,7 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 	}
 	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		if indexPath.section == 0 && indexPath.row == 1 {
+		if indexPath.section == 0 && indexPath.row == (DependencyManager.shared.currentNetworkType == .mainnet ? 1 : 2) {
 			return DiscoverFeaturedCell.featuredCellCustomHeight()
 		} else {
 			return UITableView.automaticDimension
