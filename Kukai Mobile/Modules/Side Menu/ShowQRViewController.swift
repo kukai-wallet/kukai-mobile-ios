@@ -60,8 +60,4 @@ class ShowQRViewController: UIViewController {
 		// present the view controller
 		self.present(activityViewController, animated: true, completion: nil)
 	}
-	
-	@IBAction func infoButtonTapped(_ sender: Any) {
-		self.alert(errorWithMessage: "Under Construction")
-	}
 }
