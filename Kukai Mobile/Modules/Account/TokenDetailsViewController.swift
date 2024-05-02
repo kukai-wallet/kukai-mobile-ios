@@ -149,7 +149,8 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 						let address = DependencyManager.shared.selectedWalletAddress ?? ""
 						if TokenStateService.shared.removeHidden(forAddress: address, token: token) {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-							self?.dismiss(animated: true)
+							self?.navigationController?.popViewController(animated: true)
+							
 						} else {
 							self?.windowError(withTitle: "error".localized(), description: "error-unhide-token".localized())
 						}
@@ -166,7 +167,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 						let address = DependencyManager.shared.selectedWalletAddress ?? ""
 						if TokenStateService.shared.addHidden(forAddress: address, token: token) {
 							DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
-							self?.dismiss(animated: true)
+							self?.navigationController?.popViewController(animated: true)
 							
 						} else {
 							self?.windowError(withTitle: "error".localized(), description: "error-hide-token".localized())
