@@ -1485,57 +1485,6 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
             </objects>
             <point key="canvasLocation" x="-9532" y="2317"/>
         </scene>
-        <!--Fee Info View Controller-->
-        <scene sceneID="pQv-Bt-qPM">
-            <objects>
-                <viewController id="JB4-HE-1ks" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3hV-AI-t0J">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehl-fS-tyP">
-                                <rect key="frame" x="16" y="52" width="343" height="24"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                <color key="textColor" name="Txt2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photos" translatesAutoresizingMaskIntoConstraints="NO" id="kS6-RM-WYe">
-                                <rect key="frame" x="105.5" y="84" width="164" height="113"/>
-                                <color key="tintColor" name="BG4"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="164" id="3bv-wJ-1Jl"/>
-                                    <constraint firstAttribute="height" constant="113" id="icf-xM-5d5"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeg-LG-WoB">
-                                <rect key="frame" x="16" y="221" width="343" height="118"/>
-                                <string key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh
-
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh</string>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
-                                <color key="textColor" name="Txt6"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="7Iu-IA-3GU"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="trailing" secondItem="ehl-fS-tyP" secondAttribute="trailing" constant="16" id="0Z4-Zi-ABm"/>
-                            <constraint firstItem="qeg-LG-WoB" firstAttribute="leading" secondItem="7Iu-IA-3GU" secondAttribute="leading" constant="16" id="4T0-Xy-PNa"/>
-                            <constraint firstItem="qeg-LG-WoB" firstAttribute="top" secondItem="kS6-RM-WYe" secondAttribute="bottom" constant="24" id="LDy-BT-szn"/>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="trailing" secondItem="qeg-LG-WoB" secondAttribute="trailing" constant="16" id="Uzm-cd-Sjm"/>
-                            <constraint firstItem="kS6-RM-WYe" firstAttribute="top" secondItem="ehl-fS-tyP" secondAttribute="bottom" constant="8" id="Y7Z-WI-4af"/>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qeg-LG-WoB" secondAttribute="bottom" constant="24" id="fZJ-qk-xTS"/>
-                            <constraint firstItem="ehl-fS-tyP" firstAttribute="top" secondItem="7Iu-IA-3GU" secondAttribute="top" constant="32" id="fxr-qe-NjQ"/>
-                            <constraint firstItem="ehl-fS-tyP" firstAttribute="leading" secondItem="7Iu-IA-3GU" secondAttribute="leading" constant="16" id="hPz-0Y-6IR"/>
-                            <constraint firstItem="kS6-RM-WYe" firstAttribute="centerX" secondItem="7Iu-IA-3GU" secondAttribute="centerX" id="n7q-Q7-51Z"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BxD-YY-8u3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-10116" y="3323"/>
-        </scene>
         <!--Connect Ledger-->
         <scene sceneID="kVg-jt-iew">
             <objects>
@@ -2292,7 +2241,6 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="KukaiWheel" width="24" height="24"/>
-        <image name="Photos" width="24" height="24"/>
         <image name="ProtectWallet" width="150" height="150"/>
         <image name="Social_Apple" width="30" height="30"/>
         <image name="Social_Facebook_kockout" width="30" height="30"/>
@@ -2303,7 +2251,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <image name="branding_image" width="201" height="195"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
         <image name="btnUnchecked" width="36" height="36"/>
-        <image name="faceid" catalog="system" width="128" height="115"/>
+        <image name="faceid" catalog="system" width="32" height="32"/>
         <image name="logo_kukai" width="293" height="80"/>
         <image name="use_key_wallet" width="126" height="97.5"/>
         <image name="use_social_wallet" width="126" height="97.5"/>
