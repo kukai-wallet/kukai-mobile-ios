@@ -90,11 +90,6 @@ class CreateWithSocialViewController: UIViewController {
 		self.torusObserver = nil
 	}
 	
-	
-	@IBAction func learnMoreTapped(_ sender: Any) {
-		self.alert(withTitle: "Learn More", andMessage: "Info Text")
-	}
-	
 	@IBAction func appleTapped(_ sender: Any) {
 		guard DependencyManager.shared.torusVerifiers[.apple] != nil else {
 			self.windowError(withTitle: "error".localized(), description: "error-missing-verifier".localized())

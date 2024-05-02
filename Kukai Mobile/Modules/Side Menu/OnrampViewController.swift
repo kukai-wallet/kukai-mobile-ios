@@ -49,10 +49,6 @@ class OnrampViewController: UIViewController, UITableViewDelegate {
 		viewModel.refresh(animate: true)
 	}
 	
-	@IBAction func infoButtonTapped(_ sender: Any) {
-		self.alert(errorWithMessage: "Under Construction")
-	}
-	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		cell.layoutIfNeeded()
 		

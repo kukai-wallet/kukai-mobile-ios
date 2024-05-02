@@ -94,12 +94,9 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 		}
 	}
 	
-	@IBAction func domainInfoButtonTapped(_ sender: Any) {
-		self.alert(withTitle: "Domain Info", andMessage: "info text")
-	}
-	
 	@IBAction func domainNameLearnMoreTapped(_ sender: Any) {
-		self.alert(withTitle: "Learn more", andMessage: "info text")
+		guard let url = URL(string: "https://tezos.domains/") else { return }
+		UIApplication.shared.open(url)
 	}
 	
 	@IBAction func cancelTapped(_ sender: Any) {

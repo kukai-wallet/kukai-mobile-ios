@@ -250,17 +250,17 @@ class EditFeesViewController: UIViewController {
 	}
 	
 	@IBAction func feeInfoTapped(_ sender: Any) {
-		infoIndex = 1
+		infoIndex = 0
 		self.performSegue(withIdentifier: "feeInfo", sender: nil)
 	}
 	
 	@IBAction func gasLimitInfoTapped(_ sender: Any) {
-		infoIndex = 2
+		infoIndex = 1
 		self.performSegue(withIdentifier: "feeInfo", sender: nil)
 	}
 	
 	@IBAction func storageInfoTapped(_ sender: Any) {
-		infoIndex = 3
+		infoIndex = 2
 		self.performSegue(withIdentifier: "feeInfo", sender: nil)
 	}
 	

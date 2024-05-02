@@ -326,7 +326,7 @@ for your Digital Assets</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="learnMoreTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="xXE-cx-E98"/>
+                                                    <segue destination="lTh-XN-LfV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="jwT-jy-rkF"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5t4-7b-ZSi" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -1462,31 +1462,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                             <constraint firstItem="E7i-BW-W2F" firstAttribute="top" secondItem="Cik-1x-02T" secondAttribute="top" id="Uav-V3-dhC"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Import Wallet" id="103-Gk-UFC">
-                        <barButtonItem key="rightBarButtonItem" id="Jdc-Mw-eyH">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="ljI-gW-RKX" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="276" y="5.5" width="83" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnInfo_Outline_Dark"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                        <real key="value" value="22"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
-                                        <color key="value" name="BGB4"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                        <real key="value" value="22"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <segue destination="JB4-HE-1ks" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="Hvb-6L-9To"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Import Wallet" id="103-Gk-UFC"/>
                     <connections>
                         <outlet property="advancedButton" destination="mM7-0X-VxZ" id="3w3-Xu-6b2"/>
                         <outlet property="advancedStackView" destination="hmv-tG-gdu" id="jmx-ed-i7j"/>
@@ -1508,57 +1484,6 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8J-us-3ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-9532" y="2317"/>
-        </scene>
-        <!--Fee Info View Controller-->
-        <scene sceneID="pQv-Bt-qPM">
-            <objects>
-                <viewController id="JB4-HE-1ks" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="3hV-AI-t0J">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ehl-fS-tyP">
-                                <rect key="frame" x="16" y="52" width="343" height="24"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                <color key="textColor" name="Txt2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Photos" translatesAutoresizingMaskIntoConstraints="NO" id="kS6-RM-WYe">
-                                <rect key="frame" x="105.5" y="84" width="164" height="113"/>
-                                <color key="tintColor" name="BG4"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="164" id="3bv-wJ-1Jl"/>
-                                    <constraint firstAttribute="height" constant="113" id="icf-xM-5d5"/>
-                                </constraints>
-                            </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qeg-LG-WoB">
-                                <rect key="frame" x="16" y="221" width="343" height="118"/>
-                                <string key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh
-
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh</string>
-                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
-                                <color key="textColor" name="Txt6"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="7Iu-IA-3GU"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="trailing" secondItem="ehl-fS-tyP" secondAttribute="trailing" constant="16" id="0Z4-Zi-ABm"/>
-                            <constraint firstItem="qeg-LG-WoB" firstAttribute="leading" secondItem="7Iu-IA-3GU" secondAttribute="leading" constant="16" id="4T0-Xy-PNa"/>
-                            <constraint firstItem="qeg-LG-WoB" firstAttribute="top" secondItem="kS6-RM-WYe" secondAttribute="bottom" constant="24" id="LDy-BT-szn"/>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="trailing" secondItem="qeg-LG-WoB" secondAttribute="trailing" constant="16" id="Uzm-cd-Sjm"/>
-                            <constraint firstItem="kS6-RM-WYe" firstAttribute="top" secondItem="ehl-fS-tyP" secondAttribute="bottom" constant="8" id="Y7Z-WI-4af"/>
-                            <constraint firstItem="7Iu-IA-3GU" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qeg-LG-WoB" secondAttribute="bottom" constant="24" id="fZJ-qk-xTS"/>
-                            <constraint firstItem="ehl-fS-tyP" firstAttribute="top" secondItem="7Iu-IA-3GU" secondAttribute="top" constant="32" id="fxr-qe-NjQ"/>
-                            <constraint firstItem="ehl-fS-tyP" firstAttribute="leading" secondItem="7Iu-IA-3GU" secondAttribute="leading" constant="16" id="hPz-0Y-6IR"/>
-                            <constraint firstItem="kS6-RM-WYe" firstAttribute="centerX" secondItem="7Iu-IA-3GU" secondAttribute="centerX" id="n7q-Q7-51Z"/>
-                        </constraints>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BxD-YY-8u3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-10116" y="3323"/>
         </scene>
         <!--Connect Ledger-->
         <scene sceneID="kVg-jt-iew">
@@ -2128,7 +2053,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tj9-rq-529" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8329" y="-752"/>
+            <point key="canvasLocation" x="-8271" y="-1449"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="6vH-Fr-E0g">
@@ -2153,9 +2078,9 @@ You will not be able to transact in this wallet.</string>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dHV-WD-wSg">
                                 <rect key="frame" x="32" y="250" width="311" height="151.5"/>
-                                <string key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh
+                                <string key="text">Social wallets are best for easy onboarding and lower value use. Your account address will be publicly known, for privacy it is better to choose an HD Wallet.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh</string>
+Social wallets are secured by your chosen social provider credentials. If you lose access to your social provider you will lose access to the social wallet.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -2177,7 +2102,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gXx-Vh-Cdb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8330" y="-1472"/>
+            <point key="canvasLocation" x="-7231" y="-1449"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="WuM-8P-DJa">
@@ -2187,7 +2112,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Other Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhX-XD-bm8">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose HD Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhX-XD-bm8">
                                 <rect key="frame" x="16" y="50" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
@@ -2201,10 +2126,10 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eLh-rm-mWx">
-                                <rect key="frame" x="32" y="250" width="311" height="151.5"/>
-                                <string key="text">Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh
+                                <rect key="frame" x="32" y="250" width="311" height="118"/>
+                                <string key="text">An HD Wallet uses a Recovery Phrase to backup your wallet. You will be asked to write down your phrase, and store it in a secure offline location.
 
-Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhet, consectetuer adipiscing elit, sed diam nonummy nibh</string>
+HD Wallets allow you to create many accounts within the same wallet, all of them accessible by the same Recovery Phrase.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -2226,7 +2151,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M02-p0-TUQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7586" y="-1472"/>
+            <point key="canvasLocation" x="-6487" y="-1449"/>
         </scene>
     </scenes>
     <designables>
@@ -2275,9 +2200,6 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
-        <designable name="ljI-gW-RKX">
-            <size key="intrinsicContentSize" width="24" height="14"/>
-        </designable>
         <designable name="mM7-0X-VxZ">
             <size key="intrinsicContentSize" width="106" height="36"/>
         </designable>
@@ -2319,7 +2241,6 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="KukaiWheel" width="24" height="24"/>
-        <image name="Photos" width="24" height="24"/>
         <image name="ProtectWallet" width="150" height="150"/>
         <image name="Social_Apple" width="30" height="30"/>
         <image name="Social_Facebook_kockout" width="30" height="30"/>
@@ -2330,7 +2251,7 @@ Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibhe
         <image name="branding_image" width="201" height="195"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
         <image name="btnUnchecked" width="36" height="36"/>
-        <image name="faceid" catalog="system" width="128" height="115"/>
+        <image name="faceid" catalog="system" width="32" height="32"/>
         <image name="logo_kukai" width="293" height="80"/>
         <image name="use_key_wallet" width="126" height="97.5"/>
         <image name="use_social_wallet" width="126" height="97.5"/>

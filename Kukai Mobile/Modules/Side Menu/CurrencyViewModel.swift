@@ -25,7 +25,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: 0)
 	
 	private let coinGeckoService = DependencyManager.shared.coinGeckoService
-	private let popularKeys = ["usd", "eur", "gbp", "jpy", "rub", "inr", "btc", "eth"]
+	private let popularKeys = ["usd", "eur", "gbp", "jpy", "rub", "inr"]
 	private var popularCells: [CurrencyObj] = []
 	private var otherCells: [CurrencyObj] = []
 	private var cancellable: AnyCancellable? = nil
@@ -61,14 +61,18 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
+		let fiatOnly = rates.filter { (key: String, value: CoinGeckoExchangeRate) in
+			return value.type == "fiat"
+		}
+		
 		for key in popularKeys {
-			if let obj = rates[key] {
+			if let obj = fiatOnly[key] {
 				popularCells.append(CurrencyObj(code: key.uppercased(), name: obj.name))
 			}
 		}
 		
-		for key in rates.keys.sorted(by: <) where !popularKeys.contains(key) {
-			otherCells.append(CurrencyObj(code: key.uppercased(), name: rates[key]?.name ?? ""))
+		for key in fiatOnly.keys.sorted(by: <) where !popularKeys.contains(key) {
+			otherCells.append(CurrencyObj(code: key.uppercased(), name: fiatOnly[key]?.name ?? ""))
 		}
 		
 		

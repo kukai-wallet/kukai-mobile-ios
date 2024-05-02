@@ -967,7 +967,7 @@ Please store it carefully!</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pcb-Lc-EOE">
-                                <rect key="frame" x="16" y="261.66666666666663" width="361" height="328.66666666666663"/>
+                                <rect key="frame" x="16" y="258.66666666666669" width="361" height="335.00000000000006"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Safety Alert" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGT-Zj-Cxh">
                                         <rect key="frame" x="16" y="26" width="329" height="24"/>
@@ -976,7 +976,7 @@ Please store it carefully!</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertCautionColored" translatesAutoresizingMaskIntoConstraints="NO" id="BNU-Yo-cwD">
-                                        <rect key="frame" x="154" y="84" width="53" height="48"/>
+                                        <rect key="frame" x="154" y="74" width="53" height="48"/>
                                         <color key="tintColor" name="BGB-alt4"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="53" id="Bua-U0-Gqe"/>
@@ -984,43 +984,21 @@ Please store it carefully!</string>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ozw-LX-CJN">
-                                        <rect key="frame" x="16" y="166" width="329" height="50.666666666666657"/>
-                                        <string key="text">Screenshots aren’t a safe way to keep track of your Recovery Phrase.  Store it somewhere that isn’t backed up online to keep your account safe.</string>
-                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <rect key="frame" x="16" y="146" width="329" height="77"/>
+                                        <string key="text">Screenshots aren't a safe way to store your Recovery Phrase. If you want to protect this wallet you should start over and not take a screenshot.</string>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
                                         <color key="textColor" name="Txt6"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wIg-3U-TK6" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="191" y="240.66666666666663" width="152" height="56"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="56" id="UfV-JS-tvH"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                        <color key="tintColor" name="TxtBtnPrim1"/>
-                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                        <state key="normal" title="Send" image="ArrowUp-right"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Learn More">
-                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                        </buttonConfiguration>
-                                        <userDefinedRuntimeAttributes>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                <real key="value" value="12"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                        </userDefinedRuntimeAttributes>
-                                        <connections>
-                                            <action selector="learnMoreTapped:" destination="sO4-Is-Oyd" eventType="touchUpInside" id="Ynr-fU-rQy"/>
-                                        </connections>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hbe-iD-iGO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="18" y="240.66666666666663" width="152" height="56"/>
+                                        <rect key="frame" x="36" y="247" width="289" height="56"/>
                                         <color key="backgroundColor" name="BtnSec1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="zkU-jK-Kul"/>
                                         </constraints>
                                         <color key="tintColor" name="TxtBtnSec1"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Got it">
+                                        <buttonConfiguration key="configuration" style="plain" title="Continue">
                                             <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                         </buttonConfiguration>
                                         <userDefinedRuntimeAttributes>
@@ -1042,21 +1020,18 @@ Please store it carefully!</string>
                                 </subviews>
                                 <color key="backgroundColor" name="BG2"/>
                                 <constraints>
-                                    <constraint firstItem="hbe-iD-iGO" firstAttribute="width" secondItem="wIg-3U-TK6" secondAttribute="width" id="0Rc-V7-GPR"/>
                                     <constraint firstItem="FGT-Zj-Cxh" firstAttribute="top" secondItem="Pcb-Lc-EOE" secondAttribute="top" constant="26" id="7RA-7v-MGE"/>
-                                    <constraint firstItem="ozw-LX-CJN" firstAttribute="top" secondItem="BNU-Yo-cwD" secondAttribute="bottom" constant="34" id="9Wy-x1-GXx"/>
+                                    <constraint firstItem="ozw-LX-CJN" firstAttribute="top" secondItem="BNU-Yo-cwD" secondAttribute="bottom" constant="24" id="9Wy-x1-GXx"/>
+                                    <constraint firstAttribute="trailing" secondItem="hbe-iD-iGO" secondAttribute="trailing" constant="36" id="EJr-B3-Ik0"/>
                                     <constraint firstAttribute="trailing" secondItem="ozw-LX-CJN" secondAttribute="trailing" constant="16" id="JUk-wu-Upx"/>
                                     <constraint firstItem="BNU-Yo-cwD" firstAttribute="centerX" secondItem="Pcb-Lc-EOE" secondAttribute="centerX" id="LyH-V3-ebg"/>
                                     <constraint firstAttribute="bottom" secondItem="hbe-iD-iGO" secondAttribute="bottom" constant="32" id="VEi-z9-B9h"/>
-                                    <constraint firstItem="wIg-3U-TK6" firstAttribute="top" secondItem="ozw-LX-CJN" secondAttribute="bottom" constant="24" id="VaY-3t-aS2"/>
                                     <constraint firstAttribute="trailing" secondItem="FGT-Zj-Cxh" secondAttribute="trailing" constant="16" id="bX3-Vw-9JA"/>
-                                    <constraint firstAttribute="bottom" secondItem="wIg-3U-TK6" secondAttribute="bottom" constant="32" id="cQJ-pz-8bG"/>
                                     <constraint firstItem="FGT-Zj-Cxh" firstAttribute="leading" secondItem="Pcb-Lc-EOE" secondAttribute="leading" constant="16" id="fjH-JI-0lE"/>
-                                    <constraint firstItem="BNU-Yo-cwD" firstAttribute="top" secondItem="FGT-Zj-Cxh" secondAttribute="bottom" constant="34" id="ibW-Ke-Lxv"/>
-                                    <constraint firstItem="wIg-3U-TK6" firstAttribute="leading" secondItem="hbe-iD-iGO" secondAttribute="trailing" constant="21" id="meu-xz-x0z"/>
+                                    <constraint firstItem="BNU-Yo-cwD" firstAttribute="top" secondItem="FGT-Zj-Cxh" secondAttribute="bottom" constant="24" id="ibW-Ke-Lxv"/>
                                     <constraint firstItem="ozw-LX-CJN" firstAttribute="leading" secondItem="Pcb-Lc-EOE" secondAttribute="leading" constant="16" id="moq-46-U0W"/>
-                                    <constraint firstAttribute="trailing" secondItem="wIg-3U-TK6" secondAttribute="trailing" constant="18" id="qp0-qZ-HgA"/>
-                                    <constraint firstItem="hbe-iD-iGO" firstAttribute="leading" secondItem="Pcb-Lc-EOE" secondAttribute="leading" constant="18" id="y1U-Rr-wfK"/>
+                                    <constraint firstItem="hbe-iD-iGO" firstAttribute="leading" secondItem="Pcb-Lc-EOE" secondAttribute="leading" constant="36" id="y1U-Rr-wfK"/>
+                                    <constraint firstItem="hbe-iD-iGO" firstAttribute="top" secondItem="ozw-LX-CJN" secondAttribute="bottom" constant="24" id="yVd-tv-95Y"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -1077,7 +1052,6 @@ Please store it carefully!</string>
                     <connections>
                         <outlet property="contentView" destination="Pcb-Lc-EOE" id="zx0-tJ-A2A"/>
                         <outlet property="gotItButton" destination="hbe-iD-iGO" id="SuT-2L-GcC"/>
-                        <outlet property="learnMoreButton" destination="wIg-3U-TK6" id="R6V-Pi-Cck"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ruc-Pz-Roq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1635,16 +1609,13 @@ Please store it carefully!</string>
             <size key="intrinsicContentSize" width="53.333333333333336" height="38"/>
         </designable>
         <designable name="hbe-iD-iGO">
-            <size key="intrinsicContentSize" width="76.666666666666671" height="38"/>
+            <size key="intrinsicContentSize" width="108.66666666666667" height="38"/>
         </designable>
         <designable name="nxu-NE-n0L">
             <size key="intrinsicContentSize" width="142.66666666666666" height="38"/>
         </designable>
         <designable name="uch-qJ-gRT">
             <size key="intrinsicContentSize" width="71.333333333333329" height="38"/>
-        </designable>
-        <designable name="wIg-3U-TK6">
-            <size key="intrinsicContentSize" width="127.66666666666667" height="38"/>
         </designable>
     </designables>
     <resources>
