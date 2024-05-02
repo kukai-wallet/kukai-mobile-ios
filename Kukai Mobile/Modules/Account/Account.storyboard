@@ -6,6 +6,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -272,7 +273,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;balance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sSc-km-vdB">
-                                                    <rect key="frame" x="112" y="2" width="257" height="24"/>
+                                                    <rect key="frame" x="98" y="2" width="271" height="24"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
@@ -284,7 +285,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-cl-SFJ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="16" y="4" width="80" height="20"/>
+                                                    <rect key="frame" x="16" y="-2" width="66" height="32"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="tintColor" name="Txt10"/>
                                                     <inset key="imageEdgeInsets" minX="17" minY="0.0" maxX="4" maxY="0.0"/>
@@ -880,6 +881,7 @@
                         <segue destination="PJu-ck-fWS" kind="show" identifier="details" id="zcN-zW-iIF"/>
                         <segue destination="afZ-no-uZ1" kind="show" identifier="recover" id="lv2-Xs-Dwb"/>
                         <segue destination="gR5-I4-y5S" kind="show" identifier="onramp" id="cfv-eY-Nia"/>
+                        <segue destination="LdT-JN-wgl" kind="custom" identifier="total-estimated-info" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="1e7-qw-UYx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -904,7 +906,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FWf-TM-nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2592" y="-1420"/>
+            <point key="canvasLocation" x="-2592" y="-1527"/>
         </scene>
         <!--Hidden Tokens-->
         <scene sceneID="Qrr-xS-5hQ">
@@ -1774,6 +1776,46 @@
             </objects>
             <point key="canvasLocation" x="-2782" y="-495"/>
         </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="YVw-vf-N1y">
+            <objects>
+                <viewController storyboardIdentifier="create-wallet-info1" id="LdT-JN-wgl" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9Um-gH-IIX">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Estimated Value" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bUg-yg-MMA">
+                                <rect key="frame" x="16" y="89" width="361" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DGj-qV-Va3">
+                                <rect key="frame" x="32" y="137" width="329" height="117.66666666666669"/>
+                                <string key="text">The estimated value only includes tokens you hold that have an exchange rate priced in either XTZ or your selected currency.
+
+The estimate uses exchange data that might not be up to date and does not take into account selling costs.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6NG-9B-vES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6NG-9B-vES" firstAttribute="trailing" secondItem="bUg-yg-MMA" secondAttribute="trailing" constant="16" id="1nb-FS-LtP"/>
+                            <constraint firstItem="DGj-qV-Va3" firstAttribute="leading" secondItem="6NG-9B-vES" secondAttribute="leading" constant="32" id="JAr-m2-1c3"/>
+                            <constraint firstItem="6NG-9B-vES" firstAttribute="trailing" secondItem="DGj-qV-Va3" secondAttribute="trailing" constant="32" id="V2n-cA-Mdp"/>
+                            <constraint firstItem="bUg-yg-MMA" firstAttribute="top" secondItem="6NG-9B-vES" secondAttribute="top" constant="30" id="bMb-ep-seH"/>
+                            <constraint firstItem="bUg-yg-MMA" firstAttribute="leading" secondItem="6NG-9B-vES" secondAttribute="leading" constant="16" id="n1f-Q9-yJC"/>
+                            <constraint firstItem="DGj-qV-Va3" firstAttribute="top" secondItem="bUg-yg-MMA" secondAttribute="bottom" constant="24" id="wZm-DN-Ho1"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="TT3-wq-V65" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1793" y="-1420"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="1Ao-zL-OIA">
@@ -1783,10 +1825,10 @@
             <size key="intrinsicContentSize" width="78" height="31"/>
         </designable>
         <designable name="405-zw-M1R">
-            <size key="intrinsicContentSize" width="26" height="26"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="5Pu-Vc-J65">
-            <size key="intrinsicContentSize" width="54" height="44"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="EKG-xY-HYO">
             <size key="intrinsicContentSize" width="73" height="34"/>
@@ -1795,10 +1837,10 @@
             <size key="intrinsicContentSize" width="117" height="34"/>
         </designable>
         <designable name="cTx-cl-SFJ">
-            <size key="intrinsicContentSize" width="80" height="20"/>
+            <size key="intrinsicContentSize" width="66" height="32"/>
         </designable>
         <designable name="dQs-Hg-Uq3">
-            <size key="intrinsicContentSize" width="56" height="46"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="mc4-MV-VSh">
             <size key="intrinsicContentSize" width="83.333333333333329" height="31"/>
@@ -1884,5 +1926,8 @@
         <namedColor name="TxtGood4">
             <color red="0.035000000149011612" green="0.68199998140335083" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

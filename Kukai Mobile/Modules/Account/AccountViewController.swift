@@ -126,7 +126,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	}
 	
 	func totalEstiamtedInfoTapped() {
-		self.alert(withTitle: "Total Estimated", andMessage: "Info Text")
+		self.performSegue(withIdentifier: "total-estimated-info", sender: nil)
 	}
 }
 
