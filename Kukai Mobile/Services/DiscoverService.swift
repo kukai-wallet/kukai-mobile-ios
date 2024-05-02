@@ -33,10 +33,10 @@ public struct DiscoverItem: Codable, Hashable, Identifiable {
 		guard let stringURL = mobileBannerUri else { return nil }
 		
 		let scale = UIScreen.main.scale
-		if scale == 2 {
-			return URL(string: "\(stringURL)300")
-		} else {
+		if scale == 3 {
 			return URL(string: "\(stringURL)450")
+		} else {
+			return URL(string: "\(stringURL)300")
 		}
 	}
 }
