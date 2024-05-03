@@ -87,8 +87,8 @@ public class WalletConnectService {
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
 	
 	private var pairingTimer: Timer? = nil
-	private var isReconnecting = false
-	private var isManualDisconnection = true
+	//private var isReconnecting = false
+	//private var isManualDisconnection = true
 	
 	@Published public var requestDidComplete: Bool = false
 	@Published public var pairsAndSessionsUpdated: Bool = false
@@ -103,7 +103,7 @@ public class WalletConnectService {
 	public func setup() {
 		
 		// Objects and metadata
-		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .manual)
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
 		Pair.configure(metadata: WalletConnectService.metadata)
 		//Sign.configure(crypto: WC2CryptoProvider())
 		
@@ -119,18 +119,23 @@ public class WalletConnectService {
 			if status == .disconnected {
 				self?.isConnected = false
 				
+				/*
 				if self?.isManualDisconnection == false && self?.isReconnecting == false {
 					WalletConnectService.shared.reconnect()
 					
 				} else if self?.isManualDisconnection == true {
 					self?.isManualDisconnection = false
 				}
+				*/
+				
 			} else {
 				self?.isConnected = true
 				
+				/*
 				if let uri = self?.deepLinkPairingToConnect {
 					self?.pairClient(uri: uri)
 				}
+				*/
 			}
 			
 		}.store(in: &bag)
@@ -214,13 +219,12 @@ public class WalletConnectService {
 		
 		hasBeenSetup = true
 		
-		/*
 		if let uri = deepLinkPairingToConnect {
 			pairClient(uri: uri)
 		}
-		*/
 	}
 	
+	/*
 	public func connect() {
 		if !hasBeenSetup { return }
 		Logger.app.info("WC2 - Connection status: calling connect()")
@@ -281,7 +285,7 @@ public class WalletConnectService {
 			self.delegate?.walletConnectSocketFailedToReconnect3Times()
 		}
 	}
-
+	*/
 	
 	
 	

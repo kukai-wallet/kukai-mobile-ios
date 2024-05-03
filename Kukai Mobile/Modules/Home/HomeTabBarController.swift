@@ -66,7 +66,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
-					self?.reconnectWalletConnectIfNeeded()
+					//self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						DependencyManager.shared.addressLoaded = address
@@ -89,7 +89,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
-					self?.reconnectWalletConnectIfNeeded()
+					//self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						
@@ -125,7 +125,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] address in
 				
-				self?.reconnectWalletConnectIfNeeded()
+				//self?.reconnectWalletConnectIfNeeded()
 				
 				if DependencyManager.shared.appUpdateService.isRequiredUpdate {
 					self?.displayUpdateRequired()
@@ -147,7 +147,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.balanceService.$addressErrored
 			.dropFirst()
 			.sink { [weak self] obj in
-				self?.reconnectWalletConnectIfNeeded()
+				//self?.reconnectWalletConnectIfNeeded()
 				
 				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
 					
@@ -159,12 +159,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 						}
 					}
 				}
-			}.store(in: &bag)
-		
-		(UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.$dismissedPrivacyProtectionWindow
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.displayDisconnectedToastIfNeeded()
 			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
@@ -486,22 +480,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			self.walletConnectActivity.color = ThemeManager.shared.currentInterfaceStyle() == .dark ? .white : .black
 			self.walletConnectActivity.startAnimating()
 			
-			displayDisconnectedToastIfNeeded()
-			
 		} else {
 			self.scanButton.isEnabled = true
 			self.scanButton.setImage(UIImage(named: "ScanQR"), for: .normal)
 			self.walletConnectActivity.stopAnimating()
 			self.walletConnectActivity.removeFromSuperview()
-		}
-	}
-	
-	public func displayDisconnectedToastIfNeeded() {
-		if !WalletConnectService.shared.isConnected && 
-			(UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.privacyProtectionWindowVisible == false &&
-			self.navigationController?.viewControllers.last is HomeTabBarController
-		{
-			Toast.shared.show(withMessage: "Reconnecting...", attachedTo: self.scanButton, onTop: false)
 		}
 	}
 	
@@ -511,11 +494,13 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
+	/*
 	public func reconnectWalletConnectIfNeeded() {
 		if !WalletConnectService.shared.isConnected {
 			WalletConnectService.shared.reconnect()
 		}
 	}
+	*/
 	
 	public func pairRequested() {
 		if self.presentedViewController == nil {
