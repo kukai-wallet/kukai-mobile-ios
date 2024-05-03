@@ -374,7 +374,7 @@ public class TransactionService {
 				return (image: image, title: "AppleID", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .twitter:
-				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize) ?? UIImage()
+				let image = UIImage(named: "Social_Twitter_color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("Txt2")) ?? UIImage()
 				return (image: image, title: metadata.socialUsername ?? metadata.socialUserId ?? "", subtitle: metadata.address.truncateTezosAddress())
 				
 			case .google:

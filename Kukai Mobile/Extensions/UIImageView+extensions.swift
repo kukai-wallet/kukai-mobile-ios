@@ -15,7 +15,7 @@ extension UIImageView {
 		self.tintColor = color
 	}
 	
-	func addTokenIcon(token: Token?) {
+	func addTokenIcon(token: Token?, fallbackToAvatar: Bool = true) {
 		guard let token = token else {
 			self.image = UIImage.unknownToken()
 			return
@@ -25,7 +25,7 @@ extension UIImageView {
 			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
 		} else {
 			var tokenURL = token.thumbnailURL
-			if tokenURL == nil, let address = token.tokenContractAddress {
+			if fallbackToAvatar, tokenURL == nil, let address = token.tokenContractAddress {
 				tokenURL = TzKTClient.avatarURL(forToken: address)
 			}
 			
