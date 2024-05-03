@@ -56,7 +56,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
 		
-		WalletConnectService.shared.connect()
+		//WalletConnectService.shared.connect()
 		
 		// Check system colors set correctly from beginning
 		ThemeManager.shared.updateSystemInterfaceStyle()
@@ -67,7 +67,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	func sceneDidEnterBackground(_ scene: UIScene) {
 		
-		WalletConnectService.shared.disconnect()
+		//WalletConnectService.shared.disconnect()
 		
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow
 		// They will auto trigger themselves based on `viewDidAppear` methods

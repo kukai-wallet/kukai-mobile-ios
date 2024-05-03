@@ -108,7 +108,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		} else {
 			
 			// Icon and title
-			iconView.addTokenIcon(token: data.primaryToken)
+			iconView.addTokenIcon(token: data.primaryToken, fallbackToAvatar: false)
 			titleLabel.text = title(forToken: data.primaryToken)
 			
 			if data.primaryToken?.tokenType == .nonfungible {

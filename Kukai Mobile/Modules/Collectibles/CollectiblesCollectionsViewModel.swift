@@ -202,7 +202,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
 					self.imageURLsForCollectionGroups.append(groupURL)
 					
-					let urls = visibleNfts.compactMap({ MediaProxyService.smallURL(forNFT: $0) })
+					let urls = visibleNfts.map({ MediaProxyService.smallURL(forNFT: $0) })
 					self.imageURLsForCollectibles.append(urls)
 					self.nftCollectionTotalCounts.append(totalCount)
 				}
