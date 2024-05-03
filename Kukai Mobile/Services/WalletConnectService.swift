@@ -697,6 +697,7 @@ public class WalletConnectService {
 			do {
 				let _ = try await Sign.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
 				Logger.app.info("WC approveCurrentProposal success")
+				WalletConnectService.shared.pairsAndSessionsUpdated = true
 				completion?(true, nil)
 				
 			} catch (let error) {
