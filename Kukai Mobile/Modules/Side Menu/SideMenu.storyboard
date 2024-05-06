@@ -354,34 +354,51 @@
                                             <outlet property="titleLabel" destination="Xsi-WJ-yvJ" id="Bf6-bs-op7"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="spacerCell" rowHeight="17" id="f5j-l6-1n4">
+                                        <rect key="frame" x="0.0" y="102" width="393" height="17"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="f5j-l6-1n4" id="G90-N4-DaD">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="17"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s2y-8w-TT7">
+                                                    <rect key="frame" x="16" y="8" width="361" height="1"/>
+                                                    <color key="backgroundColor" name="BG6"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="2MF-6v-F7Q"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="s2y-8w-TT7" secondAttribute="trailing" constant="16" id="C7j-Am-1YI"/>
+                                                <constraint firstItem="s2y-8w-TT7" firstAttribute="top" secondItem="G90-N4-DaD" secondAttribute="top" constant="8" id="VK2-s8-kpx"/>
+                                                <constraint firstAttribute="bottom" secondItem="s2y-8w-TT7" secondAttribute="bottom" constant="8" id="w94-A7-CWF"/>
+                                                <constraint firstItem="s2y-8w-TT7" firstAttribute="leading" secondItem="G90-N4-DaD" secondAttribute="leading" constant="16" id="y5A-Hx-1bd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SideMenuAboutCell" rowHeight="288" id="sSc-oy-JOQ" customClass="SideMenuAboutCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="102" width="393" height="288"/>
+                                        <rect key="frame" x="0.0" y="119" width="393" height="288"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="sSc-oy-JOQ" id="AUR-ws-uBO">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="288"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqh-qi-9b5">
-                                                    <rect key="frame" x="16" y="16" width="361" height="1"/>
-                                                    <color key="backgroundColor" name="BG6"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="1" id="EOb-Hq-z9d"/>
-                                                    </constraints>
-                                                </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Kukai" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXi-un-NlD">
-                                                    <rect key="frame" x="146.66666666666666" y="41" width="100" height="21.666666666666671"/>
+                                                    <rect key="frame" x="146.66666666666666" y="11.000000000000002" width="100" height="21.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                                     <color key="textColor" name="Txt2"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Follow on:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tvm-Ak-mus">
-                                                    <rect key="frame" x="159.33333333333334" y="97.333333333333329" width="74.333333333333343" height="19.333333333333329"/>
+                                                    <rect key="frame" x="159.33333333333334" y="67.333333333333329" width="74.333333333333343" height="19.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BKb-vr-vGU" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="114.66666666666669" y="124.66666666666669" width="44" height="44"/>
+                                                    <rect key="frame" x="114.66666666666669" y="94.666666666666671" width="44" height="44.000000000000014"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="1Oh-d1-Yjv"/>
                                                         <constraint firstAttribute="width" constant="44" id="GLf-My-PRQ"/>
@@ -404,7 +421,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KWZ-cC-lvU" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="174.66666666666666" y="124.66666666666669" width="44" height="44"/>
+                                                    <rect key="frame" x="174.66666666666666" y="94.666666666666671" width="44" height="44.000000000000014"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="44" id="XTm-pW-Wbf"/>
                                                         <constraint firstAttribute="height" constant="44" id="lJd-je-rzr"/>
@@ -427,7 +444,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W4f-J6-VHc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="234.66666666666663" y="124.66666666666669" width="44" height="44"/>
+                                                    <rect key="frame" x="234.66666666666663" y="94.666666666666671" width="44" height="44.000000000000014"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="44" id="70E-3V-Syw"/>
                                                         <constraint firstAttribute="width" constant="44" id="cag-Sd-SCD"/>
@@ -450,7 +467,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z4i-oW-RHc">
-                                                    <rect key="frame" x="115" y="184.66666666666666" width="163" height="31"/>
+                                                    <rect key="frame" x="115" y="154.66666666666666" width="163" height="31"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Terms and Conditions">
                                                         <fontDescription key="titleFontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
@@ -461,7 +478,7 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z52-oq-B22">
-                                                    <rect key="frame" x="140.33333333333334" y="223.66666666666666" width="112.66666666666666" height="31"/>
+                                                    <rect key="frame" x="140.33333333333334" y="193.66666666666666" width="112.66666666666666" height="31"/>
                                                     <state key="normal" title="Button"/>
                                                     <buttonConfiguration key="configuration" style="plain" title="Privacy Policy">
                                                         <fontDescription key="titleFontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
@@ -472,17 +489,17 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;version&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QQs-Up-Rxb">
-                                                    <rect key="frame" x="169" y="66.666666666666671" width="55" height="14.666666666666671"/>
+                                                    <rect key="frame" x="169" y="36.666666666666664" width="55" height="14.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="uXi-un-NlD" firstAttribute="top" secondItem="AUR-ws-uBO" secondAttribute="topMargin" id="12h-dN-LXg"/>
                                                 <constraint firstItem="KWZ-cC-lvU" firstAttribute="top" secondItem="tvm-Ak-mus" secondAttribute="bottom" constant="8" id="4fN-MD-9Jp"/>
                                                 <constraint firstItem="z4i-oW-RHc" firstAttribute="centerX" secondItem="AUR-ws-uBO" secondAttribute="centerX" id="5sl-KY-Buz"/>
                                                 <constraint firstItem="W4f-J6-VHc" firstAttribute="leading" secondItem="KWZ-cC-lvU" secondAttribute="trailing" constant="16" id="6du-5P-NH9"/>
-                                                <constraint firstItem="nqh-qi-9b5" firstAttribute="leading" secondItem="AUR-ws-uBO" secondAttribute="leading" constant="16" id="B9z-Qm-TVQ"/>
                                                 <constraint firstItem="uXi-un-NlD" firstAttribute="centerX" secondItem="AUR-ws-uBO" secondAttribute="centerX" id="FZj-t5-ygl"/>
                                                 <constraint firstItem="z4i-oW-RHc" firstAttribute="top" secondItem="KWZ-cC-lvU" secondAttribute="bottom" constant="16" id="OPH-2Q-cf5"/>
                                                 <constraint firstItem="KWZ-cC-lvU" firstAttribute="centerX" secondItem="AUR-ws-uBO" secondAttribute="centerX" id="OtV-5x-HFG"/>
@@ -493,11 +510,8 @@
                                                 <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="z52-oq-B22" secondAttribute="bottom" constant="24" id="Y9Y-zg-qbL"/>
                                                 <constraint firstItem="z52-oq-B22" firstAttribute="centerX" secondItem="AUR-ws-uBO" secondAttribute="centerX" id="dZp-j1-PXM"/>
                                                 <constraint firstItem="QQs-Up-Rxb" firstAttribute="top" secondItem="uXi-un-NlD" secondAttribute="bottom" constant="4" id="dcU-Nb-582"/>
-                                                <constraint firstItem="nqh-qi-9b5" firstAttribute="top" secondItem="AUR-ws-uBO" secondAttribute="top" constant="16" id="fbT-tp-Bbk"/>
                                                 <constraint firstItem="BKb-vr-vGU" firstAttribute="centerY" secondItem="KWZ-cC-lvU" secondAttribute="centerY" id="mDk-Wb-Fgx"/>
-                                                <constraint firstItem="uXi-un-NlD" firstAttribute="top" secondItem="nqh-qi-9b5" secondAttribute="bottom" constant="24" id="tCz-VA-JGP"/>
                                                 <constraint firstItem="tvm-Ak-mus" firstAttribute="centerX" secondItem="AUR-ws-uBO" secondAttribute="centerX" id="tRT-GS-h1W"/>
-                                                <constraint firstAttribute="trailing" secondItem="nqh-qi-9b5" secondAttribute="trailing" constant="16" id="vdK-B5-odc"/>
                                                 <constraint firstItem="z52-oq-B22" firstAttribute="top" secondItem="z4i-oW-RHc" secondAttribute="bottom" constant="8" id="wi4-cf-d6L"/>
                                             </constraints>
                                         </tableViewCellContentView>
