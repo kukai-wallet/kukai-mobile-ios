@@ -23,6 +23,10 @@ struct SideMenuResponse {
 	let isSecure: Bool
 }
 
+struct SpacerObj: Hashable {
+	let id = UUID()
+}
+
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
@@ -38,6 +42,9 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle ?? ""
 				return cell
+				
+			} else if let _ = item as? SpacerObj {
+				return tableView.dequeueReusableCell(withIdentifier: "spacerCell", for: indexPath)
 				
 			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuAboutCell", for: indexPath) as? SideMenuAboutCell {
 				cell.setup()
@@ -64,14 +71,14 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		var options: [AnyHashable] = []
 		options = [
+			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, subtitleIsWarning: false, id: "connected"),
 			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, subtitleIsWarning: false, id: "settings"),
 			SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, subtitleIsWarning: false, id: "security"),
-			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, subtitleIsWarning: false, id: "connected"),
+			SpacerObj(),
 			SideMenuOptionData(icon: UIImage(named: "Contacts") ?? UIImage.unknownToken(), title: "Feedback & Support", subtitle: nil, subtitleIsWarning: false, id: "feedback"),
 			SideMenuOptionData(icon: UIImage(named: "Share") ?? UIImage.unknownToken(), title: "Tell Others about Kukai", subtitle: nil, subtitleIsWarning: false, id: "share"),
+			SpacerObj(),
 		]
-		
-		
 		
 		options.append(UUID())
 		
