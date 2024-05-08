@@ -508,7 +508,7 @@ public class WalletConnectService {
 	
 	// MARK: - Namespaces
 	
-	public static func createNamespace(forProposal proposal: Session.Proposal, address: String, currentNetworkType: TezosNodeClientConfig.NetworkType) -> [String: SessionNamespace]? {
+	public static func createNamespace(forProposal proposal: Session.Proposal, metadata: WalletMetadata, currentNetworkType: TezosNodeClientConfig.NetworkType) -> [String: SessionNamespace]? {
 		var sessionNamespaces = [String: SessionNamespace]()
 		
 		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
@@ -524,7 +524,7 @@ public class WalletConnectService {
 		
 		
 		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
-		if let wcAccount = Account("tezos:\(network):\(address)") {
+		if let wcAccount = Account("tezos:\(network):\(metadata.bas58EncodedPublicKey)") {
 			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
 			//let accounts = [wcAccount]
 			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
@@ -537,12 +537,12 @@ public class WalletConnectService {
 		}
 	}
 	
-	public static func updateNamespaces(forPairing pairing: Pairing, toAddress: String/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
+	public static func updateNamespaces(forPairing pairing: Pairing, toMetadata: WalletMetadata/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
 		let session = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic })
 		var tezosNamespace = session?.namespaces["tezos"]
 		
 		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
-		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
+		if let newAccount = Account("tezos:\(previousNetwork):\(toMetadata.bas58EncodedPublicKey)") {
 			tezosNamespace?.accounts = Set([newAccount])
 			//tezosNamespace?.accounts = [newAccount]
 		}
@@ -668,7 +668,7 @@ public class WalletConnectService {
 		
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal,
 			  let currentAccount = selectedAccountMeta,
-			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
+			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, metadata: currentAccount, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
 			Logger.app.error("WC approveCurrentProposal can't find current prposal or current state")
 			WalletConnectService.completeRequest()
 			completion?(false, nil)
