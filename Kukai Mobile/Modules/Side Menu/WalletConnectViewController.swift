@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import KukaiCryptoSwift
 import WalletConnectSign
 import Combine
 
@@ -66,8 +67,9 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 		if let pairing = self.pairingToChangeAccount {
 			
 			let newAddress = DependencyManager.shared.temporarySelectedWalletAddress ?? DependencyManager.shared.selectedWalletAddress ?? ""
-			guard let existingSession = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic }),
-				  let newNamespaces = WalletConnectService.updateNamespaces(forPairing: pairing, toAddress: newAddress) else {
+			guard let metadata = DependencyManager.shared.walletList.metadata(forAddress: newAddress),
+				  let existingSession = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic }),
+				  let newNamespaces = WalletConnectService.updateNamespaces(forPairing: pairing, toMetadata: metadata) else {
 				return
 			}
 			
@@ -170,7 +172,7 @@ extension WalletConnectViewController: UITableViewDelegate {
 			}
 			
 			self?.pairingToChangeAccount = pairing
-			self?.performSegue(withIdentifier: "accounts", sender: firstAccount.address)
+			self?.performSegue(withIdentifier: "accounts", sender: PublicKey.publicKeyHash(fromBase58EncodedKey: firstAccount.address))
 		}
 		
 		/*

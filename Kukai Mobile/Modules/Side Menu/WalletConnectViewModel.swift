@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import KukaiCryptoSwift
 import WalletConnectSign
 
 struct PairObj: Hashable {
@@ -82,7 +83,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else {
 				let firstSession = sessions.first
 				let firstAccount = firstSession?.accounts.first
-				let address = firstAccount?.address
+				let address = PublicKey.publicKeyHash(fromBase58EncodedKey: firstAccount?.address ?? "")
 				let network = firstAccount?.blockchain.reference == "ghostnet" ? "Ghostnet" : "Mainnet"
 				let iconURL = URL(string: pair.peer?.icons.first ?? "")
 				
