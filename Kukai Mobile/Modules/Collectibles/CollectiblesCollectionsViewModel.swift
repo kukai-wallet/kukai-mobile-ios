@@ -58,6 +58,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			.sink { [weak self] address in
 				if DependencyManager.shared.selectedWalletAddress == address {
 					self?.forceRefresh = true
+					self?.isSearching = false
+					self?.needsLayoutChange = true
+					
 					if self?.isVisible == true {
 						self?.refresh(animate: true)
 					}
