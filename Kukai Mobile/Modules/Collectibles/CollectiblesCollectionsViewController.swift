@@ -47,6 +47,10 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 				case .success:
 					//self?.hideLoadingView(completion: nil)
 					if self?.refreshingFromParent == true || self?.viewModel.needsLayoutChange == true {
+						if self?.viewModel.isSearching == false {
+							self?.clearSearchTextField()
+						}
+						
 						self?.collectionView.collectionViewLayout = self?.viewModel.layout() ?? UICollectionViewFlowLayout()
 						self?.collectionView.contentOffset = CGPoint(x: 0, y: 0)
 						self?.refreshingFromParent = false
@@ -219,14 +223,7 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	
 	private func hideSearchingUI() {
 		self.viewModel.isSearching = false
-		
-		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
-		searchCell?.searchBar.text = ""
-		searchCell?.cancelButton.isHidden = true
-		
-		UIView.animate(withDuration: 0.3) {
-			searchCell?.contentView.layoutIfNeeded()
-		}
+		self.clearSearchTextField()
 		
 		viewModel.endSearching(forColelctionView: self.collectionView, completion: {})
 		
@@ -244,5 +241,15 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 			self?.view.layoutIfNeeded()
 		}
 		*/
+	}
+	
+	private func clearSearchTextField() {
+		let searchCell = collectionView.cellForItem(at: IndexPath(row: 0, section: 0)) as? CollectiblesSearchCell
+		searchCell?.searchBar.text = ""
+		searchCell?.cancelButton.isHidden = true
+		
+		UIView.animate(withDuration: 0.3) {
+			searchCell?.contentView.layoutIfNeeded()
+		}
 	}
 }
