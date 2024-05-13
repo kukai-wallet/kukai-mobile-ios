@@ -270,7 +270,7 @@ for your Digital Assets</string>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="TVd-Nl-aAH" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="lDr-rS-5vF"/>
+                                    <segue destination="TVd-Nl-aAH" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="lDr-rS-5vF"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -300,7 +300,7 @@ for your Digital Assets</string>
                                         <rect key="frame" x="0.0" y="24" width="375" height="303"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Access your Kukai wallet using your preferred social account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TlV-fF-pfc">
-                                                <rect key="frame" x="57" y="0.0" width="261" height="29"/>
+                                                <rect key="frame" x="32" y="0.0" width="311" height="29"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                 <color key="textColor" name="Txt8"/>
                                                 <nil key="highlightedColor"/>
@@ -326,11 +326,11 @@ for your Digital Assets</string>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <segue destination="lTh-XN-LfV" kind="custom" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="jwT-jy-rkF"/>
+                                                    <segue destination="lTh-XN-LfV" kind="custom" customClass="BottomSheetLargeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="jwT-jy-rkF"/>
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5t4-7b-ZSi" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="57" y="103" width="261" height="56"/>
+                                                <rect key="frame" x="32" y="103" width="311" height="56"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="56" id="Z29-7F-jnd"/>
                                                 </constraints>
@@ -361,14 +361,47 @@ for your Digital Assets</string>
                                                     <action selector="appleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="gin-CX-p3g"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Loj-qu-Rs8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                <rect key="frame" x="32" y="175" width="311" height="56"/>
+                                                <color key="backgroundColor" name="BtnTer1"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="56" id="2pp-WC-vgi"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                <color key="tintColor" name="TxtBtnTer1"/>
+                                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                <state key="normal" title="Send" image="ArrowUp-right"/>
+                                                <buttonConfiguration key="configuration" style="plain" title="Sign in with Google">
+                                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                </buttonConfiguration>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                        <real key="value" value="12"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Social_Google_1color"/>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                        <real key="value" value="20"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                        <color key="value" name="TxtBtnSec1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                        <real key="value" value="20"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="googleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="aJe-aZ-QIB"/>
+                                                </connections>
+                                            </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="fDb-HE-FXq">
-                                                <rect key="frame" x="57" y="247" width="261" height="56"/>
+                                                <rect key="frame" x="32" y="247" width="311" height="56"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Wnt-wg-wax">
-                                                        <rect key="frame" x="0.0" y="0.0" width="261" height="56"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="311" height="56"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZcX-hG-7A3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="71" height="56"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="87.5" height="56"/>
                                                                 <color key="backgroundColor" name="BtnTer1"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="56" id="keo-1S-mRL"/>
@@ -403,7 +436,7 @@ for your Digital Assets</string>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J2v-BG-JDc" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                <rect key="frame" x="95" y="0.0" width="71" height="56"/>
+                                                                <rect key="frame" x="111.5" y="0.0" width="88" height="56"/>
                                                                 <color key="backgroundColor" name="BtnTer1"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="56" id="5HV-Yv-C1s"/>
@@ -438,7 +471,7 @@ for your Digital Assets</string>
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1VJ-Ye-1zl" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                                <rect key="frame" x="190" y="0.0" width="71" height="56"/>
+                                                                <rect key="frame" x="223.5" y="0.0" width="87.5" height="56"/>
                                                                 <color key="backgroundColor" name="BtnTer1"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="56" id="Dol-z1-Y8K"/>
@@ -480,39 +513,6 @@ for your Digital Assets</string>
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Loj-qu-Rs8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="57" y="175" width="261" height="56"/>
-                                                <color key="backgroundColor" name="BtnTer1"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="56" id="2pp-WC-vgi"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                                <color key="tintColor" name="TxtBtnTer1"/>
-                                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Send" image="ArrowUp-right"/>
-                                                <buttonConfiguration key="configuration" style="plain" title="Sign in with Google">
-                                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
-                                                </buttonConfiguration>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                        <real key="value" value="12"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Social_Google_1color"/>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                                        <real key="value" value="20"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
-                                                        <color key="value" name="TxtBtnSec1"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                                        <real key="value" value="20"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="googleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="aJe-aZ-QIB"/>
-                                                </connections>
-                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -524,11 +524,11 @@ for your Digital Assets</string>
                                             <constraint firstItem="fDb-HE-FXq" firstAttribute="leading" secondItem="5t4-7b-ZSi" secondAttribute="leading" id="Smq-c9-pln"/>
                                             <constraint firstItem="Loj-qu-Rs8" firstAttribute="top" secondItem="5t4-7b-ZSi" secondAttribute="bottom" constant="16" id="TLq-4r-bYU"/>
                                             <constraint firstItem="fDb-HE-FXq" firstAttribute="top" secondItem="Loj-qu-Rs8" secondAttribute="bottom" constant="16" id="fdT-FG-TK6"/>
-                                            <constraint firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" constant="57" id="fiy-u1-Egs"/>
+                                            <constraint firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" constant="32" id="fiy-u1-Egs"/>
                                             <constraint firstItem="TlV-fF-pfc" firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" id="l8s-gW-pc9"/>
                                             <constraint firstItem="TlV-fF-pfc" firstAttribute="leading" secondItem="5t4-7b-ZSi" secondAttribute="leading" id="lwj-Th-6uN"/>
                                             <constraint firstItem="5t4-7b-ZSi" firstAttribute="top" secondItem="EX4-MC-WXt" secondAttribute="bottom" constant="24" id="t3L-bp-bb2"/>
-                                            <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="hoU-aE-01p" secondAttribute="leading" constant="57" id="uFP-z6-0YD"/>
+                                            <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="hoU-aE-01p" secondAttribute="leading" constant="32" id="uFP-z6-0YD"/>
                                             <constraint firstItem="Loj-qu-Rs8" firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" id="vmB-yX-HYW"/>
                                             <constraint firstAttribute="bottom" secondItem="fDb-HE-FXq" secondAttribute="bottom" id="z5A-YS-moV"/>
                                         </constraints>
@@ -540,21 +540,21 @@ for your Digital Assets</string>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9pp-bW-Avf">
-                                        <rect key="frame" x="57" y="351" width="120" height="1"/>
+                                        <rect key="frame" x="32" y="351" width="145" height="1"/>
                                         <color key="backgroundColor" name="BG6"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="66r-Tx-tB3"/>
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="in2-jt-O6C">
-                                        <rect key="frame" x="198.5" y="351" width="119.5" height="1"/>
+                                        <rect key="frame" x="198.5" y="351" width="144.5" height="1"/>
                                         <color key="backgroundColor" name="BG6"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1" id="eyi-8H-2lv"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bRr-0r-cKe" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="57" y="372" width="261" height="56"/>
+                                        <rect key="frame" x="32" y="372" width="311" height="56"/>
                                         <color key="backgroundColor" name="BtnTer1"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="A20-IY-fYK"/>
@@ -584,25 +584,25 @@ for your Digital Assets</string>
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="n5q-Nq-bbp" firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" constant="57" id="80C-om-8R4"/>
+                                    <constraint firstItem="n5q-Nq-bbp" firstAttribute="trailing" secondItem="5t4-7b-ZSi" secondAttribute="trailing" constant="32" id="80C-om-8R4"/>
                                     <constraint firstItem="rz0-IJ-zSS" firstAttribute="bottom" secondItem="bRr-0r-cKe" secondAttribute="bottom" constant="36" id="Afe-5f-VHa"/>
                                     <constraint firstItem="hoU-aE-01p" firstAttribute="top" secondItem="rz0-IJ-zSS" secondAttribute="top" constant="24" id="BES-2w-dZ9"/>
                                     <constraint firstItem="bRr-0r-cKe" firstAttribute="top" secondItem="BxG-Iy-CiK" secondAttribute="bottom" constant="12" id="I0V-qn-7Su"/>
                                     <constraint firstItem="in2-jt-O6C" firstAttribute="leading" secondItem="BxG-Iy-CiK" secondAttribute="trailing" constant="4" id="JMa-NH-ama"/>
-                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="trailing" secondItem="rz0-IJ-zSS" secondAttribute="trailing" constant="318" id="Mfy-Am-sgj"/>
+                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="trailing" secondItem="rz0-IJ-zSS" secondAttribute="trailing" constant="32" id="Mfy-Am-sgj"/>
                                     <constraint firstItem="BxG-Iy-CiK" firstAttribute="top" secondItem="hoU-aE-01p" secondAttribute="bottom" constant="16" id="RMQ-hf-GMJ"/>
                                     <constraint firstItem="hoU-aE-01p" firstAttribute="trailing" secondItem="n5q-Nq-bbp" secondAttribute="trailing" id="Rtw-WO-kR2"/>
                                     <constraint firstItem="9pp-bW-Avf" firstAttribute="centerY" secondItem="BxG-Iy-CiK" secondAttribute="centerY" id="aLB-fb-Cui"/>
                                     <constraint firstItem="9pp-bW-Avf" firstAttribute="leading" secondItem="ZcX-hG-7A3" secondAttribute="leading" id="bFM-Jv-KNC"/>
-                                    <constraint firstItem="bRr-0r-cKe" firstAttribute="leading" secondItem="n5q-Nq-bbp" secondAttribute="leading" constant="57" id="bZX-dq-cBs"/>
-                                    <constraint firstItem="n5q-Nq-bbp" firstAttribute="trailing" secondItem="bRr-0r-cKe" secondAttribute="trailing" constant="57" id="cmR-F3-gYp"/>
+                                    <constraint firstItem="bRr-0r-cKe" firstAttribute="leading" secondItem="n5q-Nq-bbp" secondAttribute="leading" constant="32" id="bZX-dq-cBs"/>
+                                    <constraint firstItem="n5q-Nq-bbp" firstAttribute="trailing" secondItem="bRr-0r-cKe" secondAttribute="trailing" constant="32" id="cmR-F3-gYp"/>
                                     <constraint firstItem="9pp-bW-Avf" firstAttribute="width" secondItem="in2-jt-O6C" secondAttribute="width" id="dAi-MP-IKX"/>
                                     <constraint firstItem="in2-jt-O6C" firstAttribute="centerY" secondItem="BxG-Iy-CiK" secondAttribute="centerY" id="hsL-1f-pDt"/>
                                     <constraint firstItem="hoU-aE-01p" firstAttribute="leading" secondItem="n5q-Nq-bbp" secondAttribute="leading" id="k3a-7O-DEO"/>
                                     <constraint firstItem="BxG-Iy-CiK" firstAttribute="leading" secondItem="9pp-bW-Avf" secondAttribute="trailing" constant="4" id="lFg-K4-BSB"/>
                                     <constraint firstItem="in2-jt-O6C" firstAttribute="trailing" secondItem="1VJ-Ye-1zl" secondAttribute="trailing" id="pDR-bo-dex"/>
-                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="n5q-Nq-bbp" secondAttribute="leading" constant="57" id="vP2-0A-bVU"/>
-                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="rz0-IJ-zSS" secondAttribute="leading" constant="57" id="yJI-to-UZq"/>
+                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="n5q-Nq-bbp" secondAttribute="leading" constant="32" id="vP2-0A-bVU"/>
+                                    <constraint firstItem="5t4-7b-ZSi" firstAttribute="leading" secondItem="rz0-IJ-zSS" secondAttribute="leading" constant="32" id="yJI-to-UZq"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="rz0-IJ-zSS"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="n5q-Nq-bbp"/>
@@ -2228,7 +2228,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="nii-SC-NQy"/>
+        <segue reference="Ura-gb-YOV"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>
