@@ -143,21 +143,26 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	
 	func menuViewControllerForMoreButton(forViewController: UIViewController) -> MenuViewController? {
 		var actions: [[UIAction]] = []
-		let contractAddress = selectedToken?.tokenContractAddress ?? ""
+		var contractAddress = selectedToken?.tokenContractAddress ?? ""
 		
 		if let objktCollectionInfo = DependencyManager.shared.objktClient.collections[contractAddress] {
 			
 			// Social section
 			if let twitterURL = objktCollectionInfo.twitterURL() {
+				var updatedTwitterURL = twitterURL
+				if contractAddress == "KT1RJ6PbjHpwc3M5rw5s2Nbmefwbuwbdxton" && selectedToken?.mintingTool == "https://teia.art/mint" {
+					updatedTwitterURL = URL(string: "https://twitter.com/TeiaArt")!
+				}
+				
 				let action = UIAction(title: "Twitter", image: UIImage(named: "Social_Twitter_1color")) { action in
 					
-					let path = twitterURL.path()
+					let path = updatedTwitterURL.path()
 					let pathIndex = path.index(after: path.startIndex)
 					let twitterUsername = path.suffix(from: pathIndex)
 					if let deeplinkURL = URL(string: "twitter://user?screen_name=\(twitterUsername)"), UIApplication.shared.canOpenURL(deeplinkURL) {
 						UIApplication.shared.open(deeplinkURL)
 					} else {
-						UIApplication.shared.open(twitterURL)
+						UIApplication.shared.open(updatedTwitterURL)
 					}
 				}
 				
