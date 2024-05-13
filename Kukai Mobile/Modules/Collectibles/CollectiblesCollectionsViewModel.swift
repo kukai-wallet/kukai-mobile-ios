@@ -42,7 +42,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	
 	var imageURLsForCollectionGroups: [URL?] = []
 	var imageURLsForCollectibles: [[URL?]] = []
-	var nftCollectionTotalCounts: [Int?] = []
+	var nftCollectionRemainderCounts: [Int?] = []
+	var displayCount = 2
 	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
@@ -149,7 +150,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
-				cell.setup(title: title, totalCount: nftCollectionTotalCounts[indexPath.row])
+				cell.setup(title: title, displayCount: displayCount, totalCount: nftCollectionRemainderCounts[indexPath.row] ?? 0)
 				
 				return cell
 			} else if let _ = item as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
@@ -175,9 +176,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		// Build snapshot data
+		displayCount = Int((UIScreen.main.bounds.width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
 		imageURLsForCollectionGroups = []
 		imageURLsForCollectibles = []
-		nftCollectionTotalCounts = []
+		nftCollectionRemainderCounts = []
 		
 		var hashableData: [AnyHashable] = []
 		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
@@ -196,18 +198,18 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					
 					// Process URLs and counts for easier later retreival
 					let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
-					var totalCount: Int? = nil
+					var remainderCount: Int = 0
 					
-					if visibleNfts.count > 5 {
-						totalCount = (nftGroup.nfts?.count ?? 4) - 4
+					if visibleNfts.count > displayCount {
+						remainderCount = visibleNfts.count - displayCount
 					}
 					
 					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
 					self.imageURLsForCollectionGroups.append(groupURL)
 					
-					let urls = visibleNfts.map({ MediaProxyService.smallURL(forNFT: $0) })
+					let urls = visibleNfts.prefix(displayCount).map({ MediaProxyService.smallURL(forNFT: $0) })
 					self.imageURLsForCollectibles.append(urls)
-					self.nftCollectionTotalCounts.append(totalCount)
+					self.nftCollectionRemainderCounts.append(remainderCount)
 				}
 			} else {
 				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject(), LoadingContainerCellObject()]
