@@ -138,24 +138,41 @@ class ImportWalletViewController: UIViewController {
 		textView.resignFirstResponder()
 		textView.text = textView.text.lowercased()
 		
-		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text), mnemonic.isValid() else {
+		// Check if we can create a Mnemonic object
+		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text) else {
 			textViewErrorLabel.text = "Invalid recovery phrase"
 			textViewErrorLabel.isHidden = false
 			return
 		}
 		
+		// Try to create a valid wallet object
 		var wallet: Wallet? = nil
-		if legacyToggle.isOn {
-			wallet = RegularWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+		
+		if mnemonic.isValid() {
+			// If all checks pass (length, words, checksum), its a normal menmonic import
+			if legacyToggle.isOn {
+				wallet = RegularWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+			} else {
+				wallet = HDWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+			}
+			
+		} else if mnemonic.isValidWords() && mnemonic.words.count == 24 && !Mnemonic.isValidChecksum(phrase: mnemonic.words), let normalMnemonic = Mnemonic.shiftedMnemonicToMnemonic(mnemonic: mnemonic) {
+			// Else if the words+length are valid, but the checksum fails, attempt to treat it as a shfitedMnemonic
+			wallet = RegularWallet(withShiftedMnemonic: normalMnemonic, passphrase: "")
+			
 		} else {
-			wallet = HDWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
+			// Its invalid
+			textViewErrorLabel.text = "Invalid recovery phrase"
+			textViewErrorLabel.isHidden = false
+			return
 		}
 		
+		
+		// Unwrap the wallet object
 		guard let wal = wallet else {
 			self.windowError(withTitle: "error".localized(), description: "error-new-wallet-details".localized())
 			return
 		}
-		
 		
 		if (extraWordTextField.text ?? "").isEmpty {
 			conintue(withWallet: wal)

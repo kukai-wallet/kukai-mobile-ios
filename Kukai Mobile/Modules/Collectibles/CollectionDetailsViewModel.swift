@@ -143,7 +143,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	
 	func menuViewControllerForMoreButton(forViewController: UIViewController) -> MenuViewController? {
 		var actions: [[UIAction]] = []
-		var contractAddress = selectedToken?.tokenContractAddress ?? ""
+		let contractAddress = selectedToken?.tokenContractAddress ?? ""
 		
 		if let objktCollectionInfo = DependencyManager.shared.objktClient.collections[contractAddress] {
 			
