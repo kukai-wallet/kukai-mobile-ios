@@ -156,9 +156,9 @@ class ImportWalletViewController: UIViewController {
 				wallet = HDWallet(withMnemonic: mnemonic, passphrase: extraWordTextField.text ?? "")
 			}
 			
-		} else if mnemonic.isValidWords() && mnemonic.words.count == 24 && !Mnemonic.isValidChecksum(phrase: mnemonic.words), let normalMnemonic = Mnemonic.shiftedMnemonicToMnemonic(mnemonic: mnemonic) {
+		} else if mnemonic.isValidWords() && mnemonic.words.count == 24 && !Mnemonic.isValidChecksum(phrase: mnemonic.words) {
 			// Else if the words+length are valid, but the checksum fails, attempt to treat it as a shfitedMnemonic
-			wallet = RegularWallet(withShiftedMnemonic: normalMnemonic, passphrase: "")
+			wallet = RegularWallet(withShiftedMnemonic: mnemonic, passphrase: "")
 			
 		} else {
 			// Its invalid

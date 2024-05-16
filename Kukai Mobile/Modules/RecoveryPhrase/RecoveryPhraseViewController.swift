@@ -64,11 +64,15 @@ class RecoveryPhraseViewController: UIViewController {
 		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 		
 		
-		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
+		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress),
+			  let wallet = WalletCacheService().fetchWallet(forAddress: address),
+			  let mnemonic = ((wallet as? HDWallet)?.mnemonic ?? (wallet as? RegularWallet)?.mnemonic) else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
 			self.navigationController?.popViewController(animated: true)
 			return
 		}
+		
+		
 		
 		for (index, word) in mnemonic.words.enumerated() {
 			if let label = value(forKey: "word\(index+1)Label") as? UILabel {
