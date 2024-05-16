@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import KukaiCryptoSwift
 
 class RecoveryPhraseViewController: UIViewController {
 	
@@ -63,15 +64,37 @@ class RecoveryPhraseViewController: UIViewController {
 		
 		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 		
-		
 		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress),
-			  let wallet = WalletCacheService().fetchWallet(forAddress: address),
-			  let mnemonic = ((wallet as? HDWallet)?.mnemonic ?? (wallet as? RegularWallet)?.mnemonic) else {
-			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
-			self.navigationController?.popViewController(animated: true)
+			  let wallet = WalletCacheService().fetchWallet(forAddress: address) else {
+			noWallet()
 			return
 		}
 		
+		var tempMnemonic: Mnemonic? = nil
+		switch wallet.type {
+			case .regular, .regularShifted:
+				tempMnemonic = (wallet as? RegularWallet)?.mnemonic
+				
+			case .hd:
+				tempMnemonic = (wallet as? HDWallet)?.mnemonic
+							
+			case .social:
+				guard let socialWallet = (wallet as? TorusWallet) else {
+					noWallet()
+					return
+				}
+				
+				tempMnemonic = Mnemonic.shiftedMnemonic(fromSpskPrivateKey: socialWallet.privateKey)
+				
+			case .ledger:
+				unsupported()
+				return
+		}
+		
+		guard let mnemonic = tempMnemonic else {
+			noWallet()
+			return
+		}
 		
 		
 		for (index, word) in mnemonic.words.enumerated() {
@@ -93,6 +116,16 @@ class RecoveryPhraseViewController: UIViewController {
 			blurryImage = asImage?.addBlur()
 			seedWordCoverContainer.isHidden = false
 		}
+	}
+	
+	private func noWallet() {
+		self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
+		self.navigationController?.popViewController(animated: true)
+	}
+	
+	private func unsupported() {
+		self.windowError(withTitle: "error".localized(), description: "error-unsupported-wallet-type".localized())
+		self.navigationController?.popViewController(animated: true)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {

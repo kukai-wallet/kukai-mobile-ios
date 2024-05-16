@@ -54,6 +54,39 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress),
+			  let wallet = WalletCacheService().fetchWallet(forAddress: address) else {
+			noWallet()
+			return
+		}
+		
+		var tempMnemonic: Mnemonic? = nil
+		switch wallet.type {
+			case .regular, .regularShifted:
+				tempMnemonic = (wallet as? RegularWallet)?.mnemonic
+				
+			case .hd:
+				tempMnemonic = (wallet as? HDWallet)?.mnemonic
+				
+			case .social:
+				guard let socialWallet = (wallet as? TorusWallet) else {
+					noWallet()
+					return
+				}
+				
+				tempMnemonic = Mnemonic.shiftedMnemonic(fromSpskPrivateKey: socialWallet.privateKey)
+				
+			case .ledger:
+				unsupported()
+				return
+		}
+		
+		guard let mnemonic = tempMnemonic else {
+			noWallet()
+			return
+		}
+		
+		
 		// Find 4 non-repeating random indexes between 0 and 23
 		var randomIndexes: [Int] = []
 		while randomIndexes.count < 4 {
@@ -69,13 +102,6 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		selectionTitle2.text = "Select word #\(randomIndexes[1] + 1)"
 		selectionTitle3.text = "Select word #\(randomIndexes[2] + 1)"
 		selectionTitle4.text = "Select word #\(randomIndexes[3] + 1)"
-		
-		
-		guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress), let mnemonic = (WalletCacheService().fetchWallet(forAddress: address) as? HDWallet)?.mnemonic else {
-			self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
-			self.navigationController?.popViewController(animated: true)
-			return
-		}
 		
 		assign(realWord: mnemonic.words[randomIndexes[0]], toButtons: [selection1Button1, selection1Button2, selection1Button3], selectionIndex: 1)
 		assign(realWord: mnemonic.words[randomIndexes[1]], toButtons: [selection2Button1, selection2Button2, selection2Button3], selectionIndex: 2)
@@ -127,6 +153,16 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 		}
 		
 		return word
+	}
+	
+	private func noWallet() {
+		self.windowError(withTitle: "error".localized(), description: "error-no-wallet".localized())
+		self.navigationController?.popViewController(animated: true)
+	}
+	
+	private func unsupported() {
+		self.windowError(withTitle: "error".localized(), description: "error-unsupported-wallet-type".localized())
+		self.navigationController?.popViewController(animated: true)
 	}
 	
 	@IBAction func selection1ButtonTapped(_ sender: UIButton) {
