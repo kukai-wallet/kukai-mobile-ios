@@ -93,8 +93,8 @@ public class CoinGeckoService {
 				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
 			])
 			
-			coinGeckoQueue.sync {
-				exchangeRates = stubbedResponse
+			coinGeckoQueue.sync { [weak self] in
+				self?.exchangeRates = stubbedResponse
 			}
 			completion(Result.success(stubbedResponse))
 			return
@@ -112,7 +112,7 @@ public class CoinGeckoService {
 				return
 			}
 			
-			self?.coinGeckoQueue.sync {
+			self?.coinGeckoQueue.sync { [weak self] in
 				self?.exchangeRates = response
 			}
 			completion(Result.success(response))
@@ -126,14 +126,14 @@ public class CoinGeckoService {
 				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
 				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
 			])
-			coinGeckoQueue.sync {
-				exchangeRates = stubbedResponse
+			coinGeckoQueue.sync { [weak self] in
+				self?.exchangeRates = stubbedResponse
 			}
 			return
 		}
 		
-		coinGeckoQueue.sync {
-			self.exchangeRates = self.requestIfService.lastCache(forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self)
+		coinGeckoQueue.sync { [weak self] in
+			self?.exchangeRates = self?.requestIfService.lastCache(forKey: self?.fetchEchangeRatesKey ?? "", responseType: CoinGeckoExchangeRateResponse.self)
 		}
 	}
 	
