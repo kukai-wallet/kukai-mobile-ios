@@ -12,11 +12,11 @@ import Combine
 class WalletManagementService {
 	
 	/// Cache a new wallet, run tezos domains checks, and update records in DependencyManager correctly
-	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool, completion: @escaping ((String?) -> Void)) {
+	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, backedUp: Bool, markSelected: Bool, completion: @escaping ((String?) -> Void)) {
 		let walletCache = WalletCacheService()
 		
 		do {
-			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: true)
+			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: backedUp)
 			
 			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {
@@ -88,9 +88,9 @@ class WalletManagementService {
 		}
 	}
 	
-	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, markSelected: Bool) async -> String? {
+	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, backedUp: Bool, markSelected: Bool) async -> String? {
 		return await withCheckedContinuation({ continuation in
-			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: forChildOfIndex, markSelected: markSelected) { result in
+			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: forChildOfIndex, backedUp: backedUp, markSelected: markSelected) { result in
 				continuation.resume(returning: result)
 			}
 		})
@@ -117,7 +117,7 @@ class WalletManagementService {
 	}
 	
 	public static func cacheWalletAndScanForAccounts(wallet: HDWallet, progress: ((Int) -> Void)? = nil) async -> String? {
-		if let errorString = await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) {
+		if let errorString = await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: true, markSelected: true) {
 			return errorString
 			
 		} else {
@@ -133,7 +133,7 @@ class WalletManagementService {
 				
 				if await WalletManagementService.isUsedAccount(address: child.address) {
 					progress?(childIndex)
-					let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, markSelected: false)
+					let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, backedUp: true, markSelected: false)
 				} else {
 					isUsedAccount = false
 				}

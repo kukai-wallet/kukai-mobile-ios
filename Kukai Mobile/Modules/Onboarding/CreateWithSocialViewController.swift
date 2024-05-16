@@ -138,7 +138,7 @@ class CreateWithSocialViewController: UIViewController {
 			case .success(let wallet):
 				self.updateLoadingModalStatusLabel(message: "Wallet created, checking for tezos domain registrations")
 				
-				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] errorString in
+				WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: false, markSelected: true) { [weak self] errorString in
 					if let eString = errorString {
 						self?.hideLoadingView()
 						self?.windowError(withTitle: "error".localized(), description: eString)

@@ -353,7 +353,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return
 				}
 				
-				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, markSelected: false) { [weak self] errorString in
+				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, backedUp: false, markSelected: false) { [weak self] errorString in
 					if let eString = errorString {
 						vc.hideLoadingView()
 						vc.windowError(withTitle: "error".localized(), description: eString)

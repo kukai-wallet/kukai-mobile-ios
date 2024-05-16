@@ -87,9 +87,11 @@ extension SideMenuBackupViewController: UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		cell.addGradientBackground(withFrame: cell.contentView.bounds, toView: cell.contentView)
+		if let backupCell = cell as? SideMenuOptionCell, let container = backupCell.customContainerView {
+			cell.layoutIfNeeded()
+			
+			cell.addGradientBackground(withFrame: container.bounds, toView: container)
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

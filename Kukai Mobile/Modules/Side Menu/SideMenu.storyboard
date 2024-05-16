@@ -57,7 +57,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iM6-NV-SVb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="321.33333333333331" y="63" width="55.666666666666686" height="36"/>
+                                <rect key="frame" x="297.33333333333331" y="63" width="79.666666666666686" height="36"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="oRt-ll-jgQ"/>
@@ -1695,61 +1695,101 @@ Sometimes it can be necessary to clear this list manually in order to remove sta
                                 <rect key="frame" x="0.0" y="119" width="393" height="733"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SideMenuOptionCell" rowHeight="52" id="IJk-a8-tfC" customClass="SideMenuOptionCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SideMenuHeadingCell" rowHeight="52" id="IJk-a8-tfC" customClass="SideMenuHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="20" y="55.333332061767578" width="353" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IJk-a8-tfC" id="J5B-Sr-ofI">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="52"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fCa-Tf-rnS">
-                                                    <rect key="frame" x="16" y="16" width="24" height="24"/>
-                                                    <color key="tintColor" name="BGB4"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="24" id="c0P-MD-oSq"/>
-                                                        <constraint firstAttribute="width" constant="24" id="dCB-eb-cMu"/>
-                                                    </constraints>
-                                                </imageView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tGw-GF-9id">
-                                                    <rect key="frame" x="50" y="19.666666666666668" width="43.333333333333343" height="17.000000000000004"/>
-                                                    <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
-                                                    <color key="textColor" name="Txt6"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pwz-JT-bY3">
-                                                    <rect key="frame" x="109.33333333333333" y="19.666666666666668" width="211.66666666666669" height="17.000000000000004"/>
-                                                    <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pCN-UP-46f">
+                                                    <rect key="frame" x="0.0" y="8" width="353" height="36"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="oGE-sQ-x9j">
-                                                    <rect key="frame" x="329" y="18.666666666666668" width="8" height="15.000000000000004"/>
-                                                    <color key="tintColor" name="BGB4"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="8" id="gBA-uj-Cz0"/>
-                                                        <constraint firstAttribute="height" constant="15" id="m6h-DC-uhT"/>
-                                                    </constraints>
-                                                </imageView>
                                             </subviews>
                                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstItem="oGE-sQ-x9j" firstAttribute="centerY" secondItem="J5B-Sr-ofI" secondAttribute="centerY" id="3qZ-eb-xwj"/>
-                                                <constraint firstAttribute="trailing" secondItem="oGE-sQ-x9j" secondAttribute="trailing" constant="16" id="7ff-mk-QKJ"/>
-                                                <constraint firstItem="tGw-GF-9id" firstAttribute="leading" secondItem="fCa-Tf-rnS" secondAttribute="trailing" constant="10" id="EO4-FL-g54"/>
-                                                <constraint firstItem="oGE-sQ-x9j" firstAttribute="leading" secondItem="Pwz-JT-bY3" secondAttribute="trailing" constant="8" id="Hko-Nr-WrW"/>
-                                                <constraint firstAttribute="bottom" secondItem="fCa-Tf-rnS" secondAttribute="bottom" priority="999" constant="16" id="IKk-Xq-2Pf"/>
-                                                <constraint firstItem="Pwz-JT-bY3" firstAttribute="centerY" secondItem="fCa-Tf-rnS" secondAttribute="centerY" id="T4C-Kh-eA4"/>
-                                                <constraint firstItem="tGw-GF-9id" firstAttribute="centerY" secondItem="fCa-Tf-rnS" secondAttribute="centerY" id="ixS-2A-FZZ"/>
-                                                <constraint firstItem="Pwz-JT-bY3" firstAttribute="leading" secondItem="tGw-GF-9id" secondAttribute="trailing" constant="16" id="sxj-DI-gu2"/>
-                                                <constraint firstItem="fCa-Tf-rnS" firstAttribute="top" secondItem="J5B-Sr-ofI" secondAttribute="top" constant="16" id="v2r-6l-EMD"/>
-                                                <constraint firstItem="fCa-Tf-rnS" firstAttribute="leading" secondItem="J5B-Sr-ofI" secondAttribute="leading" constant="16" id="yrb-s8-brr"/>
+                                                <constraint firstItem="pCN-UP-46f" firstAttribute="top" secondItem="J5B-Sr-ofI" secondAttribute="top" constant="8" id="L63-in-DuO"/>
+                                                <constraint firstAttribute="bottom" secondItem="pCN-UP-46f" secondAttribute="bottom" constant="8" id="MMm-kS-xaS"/>
+                                                <constraint firstAttribute="trailing" secondItem="pCN-UP-46f" secondAttribute="trailing" id="Our-6R-f1s"/>
+                                                <constraint firstItem="pCN-UP-46f" firstAttribute="leading" secondItem="J5B-Sr-ofI" secondAttribute="leading" id="ra1-rk-6h1"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="iconView" destination="fCa-Tf-rnS" id="ejw-dm-nsc"/>
-                                            <outlet property="subtitleLabel" destination="Pwz-JT-bY3" id="oOm-oA-DpS"/>
-                                            <outlet property="titleLabel" destination="tGw-GF-9id" id="RAy-m5-KLO"/>
+                                            <outlet property="titleLabel" destination="pCN-UP-46f" id="Tqc-Dt-jjY"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="SideMenuOptionCell" rowHeight="52" id="uxZ-lc-m3l" customClass="SideMenuOptionCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="107.33333206176758" width="353" height="52"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uxZ-lc-m3l" id="sDG-hF-f9l">
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="52"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cDU-Ab-3Q3">
+                                                    <rect key="frame" x="0.0" y="2" width="353" height="48"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tjA-rB-jIF">
+                                                            <rect key="frame" x="16" y="16" width="24" height="16"/>
+                                                            <color key="tintColor" name="BGB4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="24" id="tb6-x8-wYj"/>
+                                                                <constraint firstAttribute="width" constant="24" id="vHb-XC-fDb"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ddH-8B-isz">
+                                                            <rect key="frame" x="50" y="15.666666666666668" width="43.333333333333343" height="17.000000000000004"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Txt6"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xe6-hd-DBf">
+                                                            <rect key="frame" x="101.33333333333333" y="15.666666666666668" width="219.66666666666669" height="17.000000000000004"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Txt10"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="h8l-Q9-SwR">
+                                                            <rect key="frame" x="329" y="16.666666666666668" width="8" height="15"/>
+                                                            <color key="tintColor" name="BGB4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="15" id="ifu-gS-cGr"/>
+                                                                <constraint firstAttribute="width" constant="8" id="vpw-IR-8bq"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstItem="tjA-rB-jIF" firstAttribute="top" secondItem="cDU-Ab-3Q3" secondAttribute="top" constant="16" id="Bip-yx-u0B"/>
+                                                        <constraint firstItem="Xe6-hd-DBf" firstAttribute="centerY" secondItem="tjA-rB-jIF" secondAttribute="centerY" id="CmO-IP-mx7"/>
+                                                        <constraint firstItem="h8l-Q9-SwR" firstAttribute="leading" secondItem="Xe6-hd-DBf" secondAttribute="trailing" constant="8" id="HTt-hx-skV"/>
+                                                        <constraint firstItem="h8l-Q9-SwR" firstAttribute="centerY" secondItem="tjA-rB-jIF" secondAttribute="centerY" id="YmK-tR-9TL"/>
+                                                        <constraint firstAttribute="trailing" secondItem="h8l-Q9-SwR" secondAttribute="trailing" constant="16" id="cSu-Fz-5Df"/>
+                                                        <constraint firstItem="ddH-8B-isz" firstAttribute="leading" secondItem="tjA-rB-jIF" secondAttribute="trailing" constant="10" id="cVw-zv-Ncy"/>
+                                                        <constraint firstItem="ddH-8B-isz" firstAttribute="centerY" secondItem="tjA-rB-jIF" secondAttribute="centerY" id="fGf-Mk-C4y"/>
+                                                        <constraint firstItem="tjA-rB-jIF" firstAttribute="leading" secondItem="cDU-Ab-3Q3" secondAttribute="leading" constant="16" id="hgj-24-DUW"/>
+                                                        <constraint firstItem="Xe6-hd-DBf" firstAttribute="leading" secondItem="ddH-8B-isz" secondAttribute="trailing" constant="8" id="iIE-YY-UGK"/>
+                                                        <constraint firstAttribute="bottom" secondItem="tjA-rB-jIF" secondAttribute="bottom" constant="16" id="rDE-Vl-cAy"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="cDU-Ab-3Q3" firstAttribute="top" secondItem="sDG-hF-f9l" secondAttribute="top" constant="2" id="KGS-Oy-5F5"/>
+                                                <constraint firstItem="cDU-Ab-3Q3" firstAttribute="leading" secondItem="sDG-hF-f9l" secondAttribute="leading" id="N1l-eY-6oZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="cDU-Ab-3Q3" secondAttribute="trailing" id="YV5-Qa-kea"/>
+                                                <constraint firstAttribute="bottom" secondItem="cDU-Ab-3Q3" secondAttribute="bottom" constant="2" id="kJO-MY-MzG"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="customContainerView" destination="cDU-Ab-3Q3" id="pN5-3D-m3o"/>
+                                            <outlet property="iconView" destination="tjA-rB-jIF" id="OnZ-2G-dgS"/>
+                                            <outlet property="subtitleLabel" destination="Xe6-hd-DBf" id="mL7-fH-bV7"/>
+                                            <outlet property="titleLabel" destination="ddH-8B-isz" id="Ffr-O4-puz"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1920,40 +1960,40 @@ Sometimes it can be necessary to clear this list manually in order to remove sta
             <size key="intrinsicContentSize" width="214" height="36"/>
         </designable>
         <designable name="38w-Rp-6HC">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="6n3-6W-xs4">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="7hS-5P-Vf4">
             <size key="intrinsicContentSize" width="30" height="36"/>
         </designable>
         <designable name="Afd-eu-CxP">
-            <size key="intrinsicContentSize" width="53" height="36"/>
+            <size key="intrinsicContentSize" width="73" height="24"/>
         </designable>
         <designable name="BKb-vr-vGU">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="JOj-kz-zuN">
-            <size key="intrinsicContentSize" width="50" height="36"/>
+            <size key="intrinsicContentSize" width="70" height="24"/>
         </designable>
         <designable name="KWZ-cC-lvU">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="Nzm-zE-JrN">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="Uoh-oV-NMX">
             <size key="intrinsicContentSize" width="113" height="36"/>
         </designable>
         <designable name="W4f-J6-VHc">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="20" height="22"/>
         </designable>
         <designable name="iM6-NV-SVb">
-            <size key="intrinsicContentSize" width="55.666666666666664" height="31"/>
+            <size key="intrinsicContentSize" width="79.666666666666671" height="38"/>
         </designable>
         <designable name="j6C-A9-dec">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="36" height="36"/>
         </designable>
         <designable name="vT4-cL-ycF">
             <size key="intrinsicContentSize" width="32" height="36"/>

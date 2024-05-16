@@ -215,7 +215,7 @@ class ImportWalletViewController: UIViewController {
 			
 		} else {
 			accountScanningVc?.hideAllText()
-			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, markSelected: true) { [weak self] errorString in
+			WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: true, markSelected: true) { [weak self] errorString in
 				if let eString = errorString {
 					self?.removeScanningVc()
 					self?.windowError(withTitle: "error".localized(), description: eString)
