@@ -34,6 +34,7 @@ public class CoinGeckoService {
 	public var stubPrice: Bool = false
 	
 	private var dispatchGroupMarketData = DispatchGroup()
+	private var coinGeckoQueue = DispatchQueue(label: "coingecko", qos: .utility)
 	
 	var selectedCurrency: String {
 		get { return (UserDefaults.standard.string(forKey: "com.currency.selected") ?? Locale.current.currency?.identifier.lowercased()) ?? "usd" } // Return stored, or based on phone local, or default to USD
@@ -91,7 +92,10 @@ public class CoinGeckoService {
 				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
 				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
 			])
-			exchangeRates = stubbedResponse
+			
+			coinGeckoQueue.sync {
+				exchangeRates = stubbedResponse
+			}
 			completion(Result.success(stubbedResponse))
 			return
 		}
@@ -108,7 +112,9 @@ public class CoinGeckoService {
 				return
 			}
 			
-			self?.exchangeRates = response
+			self?.coinGeckoQueue.sync {
+				self?.exchangeRates = response
+			}
 			completion(Result.success(response))
 		}
 	}
@@ -120,11 +126,15 @@ public class CoinGeckoService {
 				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
 				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
 			])
-			exchangeRates = stubbedResponse
+			coinGeckoQueue.sync {
+				exchangeRates = stubbedResponse
+			}
 			return
 		}
 		
-		self.exchangeRates = self.requestIfService.lastCache(forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self)
+		coinGeckoQueue.sync {
+			self.exchangeRates = self.requestIfService.lastCache(forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self)
+		}
 	}
 	
 	public func fetchChartData(forURL: String, withKey: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
