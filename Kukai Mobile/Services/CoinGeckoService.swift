@@ -302,6 +302,10 @@ public class CoinGeckoService {
 		return sampleString
 	}
 	
+	public func dashedString() -> String {
+		return "--"
+	}
+	
 	public func placeholderCurrencyString() -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = .currency
@@ -314,7 +318,11 @@ public class CoinGeckoService {
 		numberFormatter.numberStyle = numberStyle
 		
 		guard decimal >= 0 else {
-			return dashedCurrencyString()
+			if numberStyle == .decimal {
+				return dashedString()
+			} else {
+				return dashedCurrencyString()
+			}
 		}
 		
 		if let maxDigits = maximumFractionDigits {

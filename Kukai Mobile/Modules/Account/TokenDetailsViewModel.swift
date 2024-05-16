@@ -343,7 +343,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			
 			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
 				var tokenPriceString = ""
-				let fiatPerToken = tokenValueAndRate.marketRate
+				let fiatPerToken = (tokenValueAndRate.marketRate * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ)
 				if fiatPerToken < 0.000001 {
 					tokenPriceString = "<\(DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2))"
 					
@@ -486,10 +486,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	}
 	
 	func createDataSet(for dataArray: [DipDupChartObject]) -> [ChartViewDataPoint] {
+		let currencyMultiplier = (DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ as NSDecimalNumber).doubleValue
 		var setData: [ChartViewDataPoint] = []
+		
 		for item in dataArray {
 			let date = item.date() ?? Date()
-			let val = item.averageDouble()
+			let val = item.averageDouble() * currencyMultiplier
 			
 			setData.append( ChartViewDataPoint(value: val, date: date) )
 		}

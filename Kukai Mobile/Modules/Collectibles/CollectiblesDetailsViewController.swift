@@ -21,10 +21,29 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	private let viewModel = CollectiblesDetailsViewModel()
 	private var cancellable: AnyCancellable?
 	private var menu: MenuViewController? = nil
+	//private let avPickerView = AVRoutePickerView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
+		
+		
+		/*
+		let avRouteButton = avPickerView.subviews.first(where: { $0 is UIButton }) as? UIButton
+		avRouteButton?.setImage(UIImage(systemName: "airplayaudio"), for: .normal)
+		avRouteButton?.layer.sublayers?.first?.isHidden = true
+		
+		if let btn = avRouteButton {
+			btn.translatesAutoresizingMaskIntoConstraints = false
+			NSLayoutConstraint.activate([
+				btn.widthAnchor.constraint(equalToConstant: 30),
+				btn.heightAnchor.constraint(equalToConstant: 30)
+			])
+		}
+		
+		let avBarButton = UIBarButtonItem(customView: avPickerView)
+		self.navigationItem.rightBarButtonItems?.append(avBarButton)
+		*/
 		
 		favouriteButton.accessibilityIdentifier = "button-favourite"
 		moreButton.accessibilityIdentifier = "button-more"

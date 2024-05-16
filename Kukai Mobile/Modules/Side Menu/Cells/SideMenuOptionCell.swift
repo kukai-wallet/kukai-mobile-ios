@@ -13,6 +13,7 @@ protocol SideMenuOptionToggleDelegate: AnyObject {
 
 class SideMenuOptionCell: UITableViewCell, UITableViewCellContainerView {
 	
+	@IBOutlet weak var customContainerView: UIView? // cell needs container view on 1 screen, and being used by many, adding custom for 1 screen
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!

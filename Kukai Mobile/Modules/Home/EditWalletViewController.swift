@@ -31,7 +31,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 	public var selectedWalletParentIndex: Int? = nil
 	public var isLastSubAccount: Bool = false
 	
-	var bottomSheetMaxHeight: CGFloat = 420
+	var bottomSheetMaxHeight: CGFloat = 460
 	var dimBackground: Bool = true
 	
 	override func viewDidLoad() {

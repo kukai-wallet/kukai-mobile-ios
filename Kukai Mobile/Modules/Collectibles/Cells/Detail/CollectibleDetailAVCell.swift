@@ -143,6 +143,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			
 			imageView = SDAnimatedImageView(frame: placeholderView.bounds)
 			imageView?.contentMode = .scaleAspectFit
+			imageView?.backgroundColor = .colorNamed("BGFullNFT")
 			guard let audioImageView = imageView else {
 				return
 			}

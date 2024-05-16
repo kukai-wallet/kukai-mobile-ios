@@ -13,30 +13,47 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	
 	@IBOutlet weak var collectionIcon: UIImageView!
 	@IBOutlet weak var collectionName: UILabel!
+	@IBOutlet weak var stackView: UIStackView!
 	
-	@IBOutlet weak var collectionImage1: SDAnimatedImageView!
-	@IBOutlet weak var collectionImage2: SDAnimatedImageView!
-	@IBOutlet weak var collectionImage3: SDAnimatedImageView!
-	@IBOutlet weak var collectionImage4: SDAnimatedImageView!
-	@IBOutlet weak var collectionImage5: SDAnimatedImageView!
-	
-	@IBOutlet weak var lastImageTitle: UILabel!
-	
+	private var imageViews: [SDAnimatedImageView] = []
+	private var lastLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 54, height: 54))
 	private var gradientLayer: CAGradientLayer? = nil
-	private var totalCount: Int?
+	private var remainderCount: Int = 0
+	private var displayCount: Int = 0
 	private var previousGradientBounds = CGRect.zero
 	
-	func setup(title: String, totalCount: Int?) {
+	func setup(title: String, displayCount: Int, totalCount: Int) {
 		self.collectionName.text = title
-		self.totalCount = totalCount
+		self.remainderCount = totalCount
+		self.displayCount = displayCount
+		
+		if imageViews.count == 0 {
+			for _ in 0..<displayCount {
+				let imageView = SDAnimatedImageView(frame: CGRect(x: 0, y: 0, width: 54, height: 54))
+				imageView.translatesAutoresizingMaskIntoConstraints = false
+				imageView.customCornerRadius = 6
+				imageView.maskToBounds = true
+				imageView.backgroundColor = .colorNamed("BG3")
+				imageView.borderWidth = 1
+				imageView.borderColor = .colorNamed("BG2")
+				
+				NSLayoutConstraint.activate([
+					imageView.heightAnchor.constraint(equalToConstant: 54),
+					imageView.widthAnchor.constraint(equalToConstant: 54)
+				])
+				
+				imageViews.append(imageView)
+				stackView.addArrangedSubview(imageView)
+			}
+			
+			lastLabel.font = .custom(ofType: .bold, andSize: 14)
+			lastLabel.textColor = .colorNamed("Txt14")
+			lastLabel.textAlignment = .center
+			
+			imageViews.last?.addSubview(lastLabel)
+		}
 		
 		collectionIcon.accessibilityIdentifier = "collecibtles-group-icon"
-	}
-	
-	func setup(iconImage: UIImage?, title: String, totalCount: Int?) {
-		self.collectionIcon.image = iconImage
-		self.collectionName.text = title
-		self.totalCount = totalCount
 	}
 	
 	func setupCollectionImage(url: URL?) {
@@ -44,81 +61,20 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	}
 	
 	func setupImages(imageURLs: [URL?]) {
-		
 		let halfMegaByte: UInt = 500000
 		
-		// Images 1-4 display if urls present
-		emptyStyle(forImageView: collectionImage1)
-		if imageURLs.count > 0 {
-			MediaProxyService.load(url: imageURLs[0], to: collectionImage1, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
-				if imageSize != nil {
-					self?.collectionImage1.backgroundColor = .colorNamed("BGThumbNFT")
-					self?.collectionImage1.borderWidth = 0
-				} else {
-					self?.emptyStyle(forImageView: self?.collectionImage1)
-				}
+		for (index, imageView) in imageViews.enumerated() {
+			if imageURLs.count > index, (remainderCount <= 0 || (remainderCount > 0 && index != imageViews.count-1)) {
+				MediaProxyService.load(url: imageURLs[index], to: imageView, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte)
 			}
 		}
 		
-		emptyStyle(forImageView: collectionImage2)
-		if imageURLs.count > 1 {
-			MediaProxyService.load(url: imageURLs[1], to: collectionImage2, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
-				if imageSize != nil {
-					self?.collectionImage2.backgroundColor = .colorNamed("BGThumbNFT")
-					self?.collectionImage2.borderWidth = 0
-				} else {
-					self?.emptyStyle(forImageView: self?.collectionImage2)
-				}
-			}
-		}
-		
-		emptyStyle(forImageView: collectionImage3)
-		if imageURLs.count > 2 {
-			MediaProxyService.load(url: imageURLs[2], to: collectionImage3, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
-				if imageSize != nil {
-					self?.collectionImage3.backgroundColor = .colorNamed("BGThumbNFT")
-					self?.collectionImage3.borderWidth = 0
-				} else {
-					self?.emptyStyle(forImageView: self?.collectionImage3)
-				}
-			}
-		}
-		
-		emptyStyle(forImageView: collectionImage4)
-		if imageURLs.count > 3 {
-			MediaProxyService.load(url: imageURLs[3], to: collectionImage4, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
-				if imageSize != nil {
-					self?.collectionImage4.backgroundColor = .colorNamed("BGThumbNFT")
-					self?.collectionImage4.borderWidth = 0
-				} else {
-					self?.emptyStyle(forImageView: self?.collectionImage4)
-				}
-			}
-		}
-		
-		
-		
-		// Image 5 displays a count of how many items left, an image if theres exactly 5, or a blank space like the rest
-		
-		emptyStyle(forImageView: collectionImage5)
-		if let total = totalCount {
-			lastImageTitle.text = "+\(total)"
-			lastImageTitle.isHidden = false
-			
-		} else if imageURLs.count > 4 {
-			MediaProxyService.load(url: imageURLs[4], to: collectionImage5, withCacheType: .temporary, fallback: UIImage.unknownGroup(), maxAnimatedImageSize: halfMegaByte) { [weak self] imageSize in
-				if imageSize != nil {
-					self?.collectionImage5.backgroundColor = .colorNamed("BGThumbNFT")
-					self?.collectionImage5.borderWidth = 0
-				} else {
-					self?.emptyStyle(forImageView: self?.collectionImage5)
-				}
-			}
-			
-			lastImageTitle.isHidden = true
+		if remainderCount > 0 {
+			lastLabel.text = "+\(remainderCount+1)" // +1 because we remove one of the images in order to display the remainder
+			lastLabel.isHidden = false
 			
 		} else {
-			lastImageTitle.isHidden = true
+			lastLabel.isHidden = true
 		}
 	}
 	
@@ -139,28 +95,14 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		self.previousGradientBounds = self.contentView.bounds
 	}
 	
-	private func emptyStyle(forImageView imageView: UIImageView?) {
-		guard let imageView = imageView else { return }
-		
-		imageView.backgroundColor = .colorNamed("BG3")
-		imageView.borderWidth = 1
-		imageView.borderColor = .colorNamed("BG2")
-	}
-	
 	override func prepareForReuse() {
-		collectionImage1.image = nil
-		collectionImage1.backgroundColor = .clear
-		collectionImage2.image = nil
-		collectionImage2.backgroundColor = .clear
-		collectionImage3.image = nil
-		collectionImage3.backgroundColor = .clear
-		collectionImage4.image = nil
-		collectionImage4.backgroundColor = .clear
-		collectionImage5.image = nil
-		collectionImage5.backgroundColor = .clear
+		for imageView in imageViews {
+			imageView.image = nil
+			imageView.backgroundColor = .clear
+		}
 	}
 	
 	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [collectionImage1, collectionImage2, collectionImage3, collectionImage4, collectionImage5]
+		return imageViews
 	}
 }
