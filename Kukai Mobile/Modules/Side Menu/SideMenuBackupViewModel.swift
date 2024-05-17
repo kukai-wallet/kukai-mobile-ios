@@ -54,7 +54,7 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			sectionData.append(["Social Wallets"])
 		}
-		for (index, metadata) in wallets.socialWallets.enumerated() {
+		for metadata in wallets.socialWallets {
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
 			let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
 			sectionData[sections.count-1].append(SideMenuOptionData(icon: media.image, title: media.title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))
@@ -66,7 +66,7 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			sectionData.append(["HD Wallets"])
 		}
-		for (index, metadata) in wallets.hdWallets.enumerated() {
+		for metadata in wallets.hdWallets {
 			let title = metadata.walletNickname ?? metadata.address.truncateTezosAddress()
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
 			sectionData[sections.count-1].append(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))
@@ -78,7 +78,7 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			sectionData.append(["Legacy Wallets"])
 		}
-		for (index, metadata) in wallets.linearWallets.enumerated() {
+		for metadata in wallets.linearWallets {
 			let title = metadata.walletNickname ?? metadata.address.truncateTezosAddress()
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
 			sectionData[sections.count-1].append(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))

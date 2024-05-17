@@ -69,6 +69,7 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 					self?.refreshControl.endRefreshing()
 					
 					guard self?.tableView.isEditing == false else {
+						self?.editingIndexPath = nil
 						return
 					}
 					
