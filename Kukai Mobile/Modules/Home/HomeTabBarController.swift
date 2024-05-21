@@ -459,7 +459,7 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 	func scannedQRCode(code: String) {
 		if code == "" { return }
 		
-		if let walletConnectURI = WalletConnectURI(string: code) {
+		if let walletConnectURI = try? WalletConnectURI(uriString: code) {
 			WalletConnectService.shared.pairClient(uri: walletConnectURI)
 		}
 	}

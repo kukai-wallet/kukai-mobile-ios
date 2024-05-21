@@ -30,7 +30,7 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func error(message: String?, error: Error?)
 	func connectionStatusChanged(status: SocketConnectionStatus)
-	func walletConnectSocketFailedToReconnect3Times()
+	//func walletConnectSocketFailedToReconnect3Times()
 }
 
 public struct WalletConnectGetAccountObj: Codable {
@@ -51,7 +51,6 @@ struct DefaultSocketFactory: WebSocketFactory {
 	}
 }
 
-/*
 struct WC2CryptoProvider: CryptoProvider {
 	
 	func recoverPubKey(signature: WalletConnectSigner.EthereumSignature, message: Data) throws -> Data {
@@ -59,10 +58,9 @@ struct WC2CryptoProvider: CryptoProvider {
 	}
 	
 	func keccak256(_ data: Data) -> Data {
-		return data.sha3(.keccak256)
+		return ((try? data.sha3(varient: .KECCAK256)) ?? Data())
 	}
 }
-*/
 
 struct RequestOperation: Codable {
 	let account: String
@@ -90,13 +88,7 @@ public class WalletConnectService {
 	//private var isReconnecting = false
 	//private var isManualDisconnection = true
 	
-	@Published public var requestDidComplete: Bool = false
 	@Published public var pairsAndSessionsUpdated: Bool = false
-	
-	/// This publisher serves as a means to combine WalletConnect's`sessionProposalPublisherSubject` and `sessionRequestPublisherSubject`,
-	/// the subjects action output will either be a `WalletConnectSign.Session.Proposal` or a `WalletConnectSign.Request`.
-	/// This will enable the ability to apply a buffer to all events that a user must interact with, so they can be presented/handled one at a time without the need for multiple async delays, guessing when everything is finished, and simplifying the code
-	private let sessionActionRequiredPublisherSubject = PassthroughSubject<(action: Any, context: VerifyContext?), Never>()
 	
 	private init() {}
 	
@@ -105,7 +97,7 @@ public class WalletConnectService {
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
 		Pair.configure(metadata: WalletConnectService.metadata)
-		//Sign.configure(crypto: WC2CryptoProvider())
+		Sign.configure(crypto: WC2CryptoProvider())
 		
 		
 		// Monitor connection
@@ -162,46 +154,11 @@ public class WalletConnectService {
 			}.store(in: &bag)
 		
 		
-		// Setup central buffered publisher for items that require user input and can't be handled more than 1 at a time
-		// Each item will be wrapped in a future, that is listening to a published var waiting for a user action to mark it as handled (either success or reject)
-		sessionActionRequiredPublisherSubject
-			.receive(on: DispatchQueue.main)
-			.buffer(size: 10, prefetch: .byRequest, whenFull: .dropNewest)
-			.flatMap(maxPublishers: .max(1)) { [weak self] userActionItem in
-				
-				guard let self = self else {
-					Logger.app.error("WC sessionActionRequiredPublisherSubject can't find self, skipping action")
-					return Future<Bool, Never>() { $0(.success(false)) }
-				}
-				
-				if let proposal = userActionItem.action as? Session.Proposal {
-					Logger.app.error("WC sessionActionRequiredPublisherSubject received a proposal")
-					return self.wrapProposalAsFuture(proposal: proposal)
-					
-				} else if let request = userActionItem.action as? Request {
-					Logger.app.error("WC sessionActionRequiredPublisherSubject received a request")
-					return self.wrapRequestAsFuture(request: request)
-					
-				} else if let uri = userActionItem.action as? WalletConnectURI {
-					Logger.app.error("WC sessionActionRequiredPublisherSubject received a uri")
-					return self.wrapPairRequestAsFuture(uri: uri)
-					
-				} else {
-					Logger.app.error("WC sessionActionRequiredPublisherSubject received an unknown type, skipping")
-					return Future<Bool, Never>() { $0(.success(false)) }
-				}
-			}
-			.sink(receiveValue: { success in
-				Logger.app.info("WC request completed with success: \(success)")
-			})
-			.store(in: &bag)
-		
-		
 		// Pass WC2 objects to central buffered publisher, as they require identical UI/UX management (displying bottom sheet, requesting user interaction)
 		Sign.instance.sessionProposalPublisher
 			.sink { [weak self] incomingProposalObj in
 				Logger.app.info("WC sessionProposalPublisher")
-				self?.sessionActionRequiredPublisherSubject.send((action: incomingProposalObj.proposal, context: incomingProposalObj.context))
+				self?.handleRequestOrProposal()
 				
 				self?.delegate?.processingIncomingDone()
 				self?.pairingTimer?.invalidate()
@@ -212,8 +169,7 @@ public class WalletConnectService {
 		Sign.instance.sessionRequestPublisher
 			.sink { [weak self] incomingProposalObj in
 				Logger.app.info("WC sessionRequestPublisher")
-				self?.sessionActionRequiredPublisherSubject.send((action: incomingProposalObj.request, context: incomingProposalObj.context))
-				
+				self?.handleRequestOrProposal()
 			}.store(in: &bag)
 		
 		
@@ -224,176 +180,72 @@ public class WalletConnectService {
 		}
 	}
 	
-	/*
-	public func connect() {
-		if !hasBeenSetup { return }
-		Logger.app.info("WC2 - Connection status: calling connect()")
-		
-		self.connectionManagmentBag = []
-		self.reconnect()
-	}
-	
-	public func disconnect() {
-		if !hasBeenSetup { return }
-		Logger.app.info("WC2 - Connection status: calling disconnect()")
-		
-		self.isManualDisconnection = true
-		self.connectionManagmentBag = []
-		try? Networking.instance.disconnect(closeCode: .normalClosure)
-	}
-	
-	public func reconnect() {
-		Logger.app.info("WC2 - Connection status: calling reconnect()")
-		isReconnecting = true
-		
-		// Listen for connection events and return when complete, keep retrying if not
-		Networking.instance.socketConnectionStatusPublisher.dropFirst().sink { [weak self] value in
-			
-			if value == .connected {
-				Logger.app.info("WC2 - Connection status: reconnect reporting success")
-				
-				self?.connectionManagmentBag = []
-				self?.isReconnecting = false
-				
-			} else {
-				Logger.app.info("WC2 - Connection status: reconnect reporting failure, retrying in 3 seconds")
-				
-				self?.retryReconnect()
-			}
-		}.store(in: &connectionManagmentBag)
-		
-		
-		// perform a disconnect and then try to connect
-		do {
-			try Networking.instance.disconnect(closeCode: .normalClosure)
-			try Networking.instance.connect()
-			
-		} catch (let error) {
-			Logger.app.info("WC2 - Connection status: reconnect reporting error: \(error)")
-			self.retryReconnect()
-		}
-	}
-	
-	private func retryReconnect() {
-		if self.connectionManagmentBag.count < 3 {
-			DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 2) {
-				WalletConnectService.shared.reconnect()
-			}
-		} else {
-			Logger.app.info("WC2 - Connection status: reconnect attempts exceeded. Cancelling for now")
-			self.connectionManagmentBag = []
-			self.delegate?.walletConnectSocketFailedToReconnect3Times()
-		}
-	}
-	*/
-	
 	
 	
 	// MARK: - Queue Management
 	
-	private func wrapProposalAsFuture(proposal: Session.Proposal) -> Future<Bool, Never> {
-		return Future<Bool, Never>() { [weak self] promise in
-			Logger.app.info("Processing WC2 proposal: \(proposal.id)")
-			TransactionService.shared.walletConnectOperationData.proposal = proposal
+	//private var currentRequestsAndProposals: [Any] = []
+	private var requestOrProposalInProgress = false
+	
+	private typealias walletConnectRequestTuple = (request: Request, context: VerifyContext?)
+	private typealias walletConnectPorposalTuple = (proposal: Session.Proposal, context: VerifyContext?)
+	private protocol walletConnectExpirableObject {
+		var expiryTimestamp: UInt64? { get }
+	}
+	
+	private func handleRequestOrProposal() {
+		guard !requestOrProposalInProgress else {
+			return
+		}
+		
+		if let nextRequest = Sign.instance.getPendingRequests().first {
+			requestOrProposalInProgress = true
+			handleRequest(nextRequest)
 			
-			guard let self = self else {
-				Logger.app.error("WC wrapProposalAsFuture failed to find self, returning false")
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
-				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
-				promise(.success(false))
-				return
-			}
+		} else if let nextProposal = Sign.instance.getPendingProposals().first {
+			requestOrProposalInProgress = true
+			handleProposal(nextProposal)
 			
-			// Check if the proposal is for the network the app is currently on
-			self.checkValidNetwork(forProposal: proposal) { [weak self] isValid in
-				guard isValid else {
-					Logger.app.info("Request is for the wrong network, rejecting")
-					promise(.success(false))
-					return
-				}
-				
-				self?.delegate?.pairRequested()
-			}
-			
-			
-			// Setup listener for user action confirming the proposal has been handled or rejected
-			self.$requestDidComplete
-				.dropFirst()
-				.sink(receiveValue: { value in
-					promise(.success(value))
-				})
-				.store(in: &self.bag)
+		} else {
+			Logger.app.error("handleRequestOrProposal but nothing here")
+			requestOrProposalInProgress = false
 		}
 	}
 	
-	private func wrapRequestAsFuture(request: Request) -> Future<Bool, Never> {
-		return Future<Bool, Never>() { [weak self] promise in
-			Logger.app.info("Processing WC2 request method: \(request.method), for topic: \(request.topic), with id: \(request.id)")
-			TransactionService.shared.walletConnectOperationData.request = request
+	private func handleRequest(_ requestWrapper: walletConnectRequestTuple) {
+		Logger.app.info("Processing WC2 request method: \(requestWrapper.request.method), for topic: \(requestWrapper.request.topic), with id: \(requestWrapper.request.id)")
+		TransactionService.shared.walletConnectOperationData.request = requestWrapper.request
+		
+		if requestWrapper.request.method != "tezos_getAccounts" {
+			self.delegate?.processingIncomingOperations()
+		}
+		
+		// Check if the request is for the correct network, and requesting for the correct account
+		// TODO: The tezos provider should be performing the account check at a minimum, when the provider is replaced, remove this check
+		self.checkValidNetworkAndAccount(forRequest: requestWrapper.request) { [weak self] isValid in
 			
-			guard let self = self else {
-				Logger.app.error("WC wrapRequestAsFuture failed to find self, returning false")
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
-				self?.delegateErrorOnMain(message: "error-wc2-cant-continue".localized(), error: nil)
-				promise(.success(false))
+			guard isValid else {
+				Logger.app.info("Request is for the wrong network, rejecting")
 				return
 			}
 			
-			if request.method != "tezos_getAccounts" {
-				self.delegate?.processingIncomingOperations()
-			}
-			
-			// Check if the request is for the correct network, and requesting for the correct account
-			// TODO: The tezos provider should be performing the account check at a minimum, when the provider is replaced, remove this check
-			self.checkValidNetworkAndAccount(forRequest: request) { [weak self] isValid in
-				
-				guard isValid else {
-					Logger.app.info("Request is for the wrong network, rejecting")
-					promise(.success(false))
-					return
-				}
-				
-				// Process the request
-				self?.handleRequestLogic(request)
-			}
-			
-			
-			// Setup listener for completion status
-			self.$requestDidComplete
-				.dropFirst()
-				.sink(receiveValue: { value in
-					promise(.success(value))
-				})
-				.store(in: &self.bag)
+			// Process the request
+			self?.handleRequestLogic(requestWrapper.request)
 		}
 	}
 	
-	private func wrapPairRequestAsFuture(uri: WalletConnectURI) -> Future<Bool, Never> {
-		return Future<Bool, Never>() { [weak self] promise in
-			Logger.app.info("WC pairing to \(uri.absoluteString)")
-			
-			self?.delegate?.processingIncomingOperations()
-			self?.pairingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { [weak self] timer in
-				self?.delegateErrorOnMain(message: "No response from application. Please refresh the webpage, and try to connect again", error: nil)
-				self?.delegate?.processingIncomingDone()
-			})
-			
-			Task { [weak self] in
-				do {
-					try await Pair.instance.pair(uri: uri)
-					promise(.success(true))
-					
-				} catch {
-					Logger.app.error("WC Pairing connect error: \(error)")
-					self?.delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error)
-					self?.delegate?.processingIncomingDone()
-					self?.pairingTimer?.invalidate()
-					self?.pairingTimer = nil
-					promise(.success(false))
-				}
-				
-				self?.deepLinkPairingToConnect = nil
+	private func handleProposal(_ proposalWrapper: walletConnectPorposalTuple) {
+		Logger.app.info("Processing WC2 proposal: \(proposalWrapper.proposal.id)")
+		TransactionService.shared.walletConnectOperationData.proposal = proposalWrapper.proposal
+		
+		// Check if the proposal is for the network the app is currently on
+		self.checkValidNetwork(forProposal: proposalWrapper.proposal) { [weak self] isValid in
+			guard isValid else {
+				Logger.app.info("Request is for the wrong network, rejecting")
+				return
 			}
+			
+			self?.delegate?.pairRequested()
 		}
 	}
 	
@@ -525,8 +377,8 @@ public class WalletConnectService {
 		
 		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
 		if let wcAccount = Account("tezos:\(network):\(address)") {
-			let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
-			//let accounts = [wcAccount]
+			//let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
+			let accounts = [wcAccount]
 			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
 			sessionNamespaces["tezos"] = sessionNamespace
 			
@@ -543,8 +395,8 @@ public class WalletConnectService {
 		
 		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
 		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
-			tezosNamespace?.accounts = Set([newAccount])
-			//tezosNamespace?.accounts = [newAccount]
+			//tezosNamespace?.accounts = Set([newAccount])
+			tezosNamespace?.accounts = [newAccount]
 		}
 		
 		if let namespace = tezosNamespace {
@@ -561,7 +413,36 @@ public class WalletConnectService {
 	/// Due to Beacon incorrectly triggering this all incoming uri's get treated the same as a incoming proposal or a request.
 	/// The URI pairing function is wrapped up inside a Future and passed into the user action queue, to ensure only 1 thing is processed at a time
 	public func pairClient(uri: WalletConnectURI) {
-		self.sessionActionRequiredPublisherSubject.send((action: uri, context: nil))
+		//self.sessionActionRequiredPublisherSubject.send((action: uri, context: nil))
+		
+		// TODO: clean up docs
+		guard !requestOrProposalInProgress else {
+			Logger.app.error("WC Pairing blocked by pending operations")
+			self.delegateErrorOnMain(message: "Please wait until all pending requests are finished before attempting a new pairing", error: nil)
+			return
+		}
+		
+		self.delegate?.processingIncomingOperations()
+		self.pairingTimer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: { [weak self] timer in
+			Logger.app.error("WC Pairing cancelled due to timeout")
+			self?.delegateErrorOnMain(message: "No response from application. Please refresh the webpage, and try to connect again", error: nil)
+			self?.delegate?.processingIncomingDone()
+		})
+		
+		Task { [weak self] in
+			do {
+				try await Pair.instance.pair(uri: uri)
+				
+			} catch {
+				Logger.app.error("WC Pairing connect error: \(error)")
+				self?.delegateErrorOnMain(message: "Unable to connect to Pair with dApp, due to: \(error)", error: error)
+				self?.delegate?.processingIncomingDone()
+				self?.pairingTimer?.invalidate()
+				self?.pairingTimer = nil
+			}
+			
+			self?.deepLinkPairingToConnect = nil
+		}
 	}
 	
 	public func respondWithAccounts(request: WalletConnectSign.Request) {
@@ -626,13 +507,15 @@ public class WalletConnectService {
 	
 	
 	
-	
 	/// WalletConnectService puts every user-action-required request into a queue, so that we can manage them 1 at a time. This function delays the marking of the current request as complete, by the given delay.
 	/// Each bottom sheet has to deal with up to 2 dismissal animations (a fullscreen spinner / loader) followed by the sheet itself. Each of these should take the standard 0.3 to complete. We double that by default to ensure nothing goes wrong
 	// TODO: could all bottom sheets move to showLoadingView instead of modal, so that its removal and the sheets dismissal can be done together, reducing this time
 	public static func completeRequest(withDelay delay: TimeInterval = 1.2, withValue value: Bool = true) {
 		DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-			WalletConnectService.shared.requestDidComplete = value
+			// TODO: figure out what goes here, possible another call to handle
+			//WalletConnectService.shared.requestDidComplete = value
+			WalletConnectService.shared.requestOrProposalInProgress = false
+			WalletConnectService.shared.handleRequestOrProposal() // match call so next one can be processed
 		}
 	}
 	
@@ -648,8 +531,8 @@ public class WalletConnectService {
 		Logger.app.info("WC Reject proposal: \(proposal.id)")
 		Task {
 			do {
-				//try await Sign.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
-				try await Sign.instance.reject(proposalId: proposal.id, reason: .userRejected)
+				try await Sign.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
+				//try await Sign.instance.reject(proposalId: proposal.id, reason: .userRejected)
 				Logger.app.info("WC rejectCurrentProposal success")
 				completion?(true, nil)
 				

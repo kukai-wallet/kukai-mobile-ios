@@ -124,7 +124,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			var wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
 			wc2URI = wc2URI.removingPercentEncoding ?? ""
 			
-			if let uri = WalletConnectURI(string: String(wc2URI)) {
+			if let uri = try? WalletConnectURI(uriString: String(wc2URI)) {
 				
 				if WalletConnectService.shared.hasBeenSetup {
 					WalletConnectService.shared.pairClient(uri: uri)
