@@ -26,8 +26,8 @@ jobs:
         with:
          languages: "swift"
 
-      - name: Test
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta
+      - name: Build
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v3
