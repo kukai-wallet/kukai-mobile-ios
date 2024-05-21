@@ -163,6 +163,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+			self?.recheckWalletConnectAnimation()
 			self?.supressAutoRefreshError = true
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
@@ -229,6 +230,19 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			startActivityAnimationIfNecessary(addressesToBeRefreshed: pendingAddresses)
 		} else {
 			stopActivityAnimationIfNecessary()
+		}
+	}
+	
+	public override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		recheckWalletConnectAnimation()
+	}
+	
+	public func recheckWalletConnectAnimation() {
+		// Seems to get stuck sometimes, unsure why, adding an extra check to ensure it gets checked
+		if WalletConnectService.shared.isConnected {
+			connectionStatusChanged(status: .connected)
 		}
 	}
 	

@@ -85,6 +85,10 @@ public class WalletConnectService {
 											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
 	
 	private var pairingTimer: Timer? = nil
+	private var requestOrProposalInProgress = false
+	private typealias walletConnectRequestTuple = (request: Request, context: VerifyContext?)
+	private typealias walletConnectPorposalTuple = (proposal: Session.Proposal, context: VerifyContext?)
+	
 	//private var isReconnecting = false
 	//private var isManualDisconnection = true
 	
@@ -93,6 +97,9 @@ public class WalletConnectService {
 	private init() {}
 	
 	public func setup() {
+		guard !hasBeenSetup else {
+			return
+		}
 		
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
@@ -112,22 +119,22 @@ public class WalletConnectService {
 				self?.isConnected = false
 				
 				/*
-				if self?.isManualDisconnection == false && self?.isReconnecting == false {
-					WalletConnectService.shared.reconnect()
-					
-				} else if self?.isManualDisconnection == true {
-					self?.isManualDisconnection = false
-				}
-				*/
+				 if self?.isManualDisconnection == false && self?.isReconnecting == false {
+				 WalletConnectService.shared.reconnect()
+				 
+				 } else if self?.isManualDisconnection == true {
+				 self?.isManualDisconnection = false
+				 }
+				 */
 				
 			} else {
 				self?.isConnected = true
 				
 				/*
-				if let uri = self?.deepLinkPairingToConnect {
-					self?.pairClient(uri: uri)
-				}
-				*/
+				 if let uri = self?.deepLinkPairingToConnect {
+				 self?.pairClient(uri: uri)
+				 }
+				 */
 			}
 			
 		}.store(in: &bag)
@@ -183,15 +190,6 @@ public class WalletConnectService {
 	
 	
 	// MARK: - Queue Management
-	
-	//private var currentRequestsAndProposals: [Any] = []
-	private var requestOrProposalInProgress = false
-	
-	private typealias walletConnectRequestTuple = (request: Request, context: VerifyContext?)
-	private typealias walletConnectPorposalTuple = (proposal: Session.Proposal, context: VerifyContext?)
-	private protocol walletConnectExpirableObject {
-		var expiryTimestamp: UInt64? { get }
-	}
 	
 	private func handleRequestOrProposal() {
 		guard !requestOrProposalInProgress else {
@@ -253,7 +251,7 @@ public class WalletConnectService {
 	private func checkValidNetwork(forProposal proposal: WalletConnectSign.Session.Proposal, completion: @escaping ((Bool) -> Void)) {
 		DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] _, error in
 			if let err = error {
-				WalletConnectService.rejectCurrentProposal(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentProposal(completion: nil)
 				self?.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
 				completion(false)
 				return
@@ -265,7 +263,7 @@ public class WalletConnectService {
 				  (chain.absoluteString == "tezos:\(tezosChainName)" || (chain.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
-				WalletConnectService.rejectCurrentProposal(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentProposal(completion: nil)
 				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				completion(false)
 				return
@@ -279,7 +277,7 @@ public class WalletConnectService {
 	private func checkValidNetworkAndAccount(forRequest request: WalletConnectSign.Request, completion: @escaping ((Bool) -> Void)) {
 		DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] _, error in
 			if let err = error {
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: "Unable to fetch info from the Tezos node, please try again", error: err)
 				completion(false)
 				return
@@ -290,7 +288,7 @@ public class WalletConnectService {
 			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
 				  (request.chainId.absoluteString == "tezos:\(tezosChainName)" || (request.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
 			else {
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentRequest(completion: nil)
 				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				completion(false)
@@ -309,14 +307,14 @@ public class WalletConnectService {
 			let requestedMethod = request.method
 			
 			guard requestedMethod == "tezos_getAccounts" || allowedAccounts.contains(fullRequestedAccount) else {
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: "The requested account \(requestedAccount.truncateTezosAddress()), was not authorised to perform this action. Please ensure you have paired this account with the remote application.", error: nil)
 				completion(false)
 				return
 			}
 			
 			guard allowedMethods.contains(requestedMethod) else {
-				WalletConnectService.rejectCurrentRequest(andMarkComplete: false, completion: nil)
+				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: "The requested method \(requestedMethod), was not authorised for this account. Please ensure you have paired this account with the remote application.", error: nil)
 				completion(false)
 				return
@@ -377,7 +375,6 @@ public class WalletConnectService {
 		
 		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
 		if let wcAccount = Account("tezos:\(network):\(address)") {
-			//let accounts: Set<WalletConnectSign.Account> = Set([wcAccount])
 			let accounts = [wcAccount]
 			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
 			sessionNamespaces["tezos"] = sessionNamespace
@@ -395,7 +392,6 @@ public class WalletConnectService {
 		
 		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
 		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
-			//tezosNamespace?.accounts = Set([newAccount])
 			tezosNamespace?.accounts = [newAccount]
 		}
 		
@@ -410,12 +406,7 @@ public class WalletConnectService {
 	
 	// MARK: - Pairing and WC2 responses
 	
-	/// Due to Beacon incorrectly triggering this all incoming uri's get treated the same as a incoming proposal or a request.
-	/// The URI pairing function is wrapped up inside a Future and passed into the user action queue, to ensure only 1 thing is processed at a time
 	public func pairClient(uri: WalletConnectURI) {
-		//self.sessionActionRequiredPublisherSubject.send((action: uri, context: nil))
-		
-		// TODO: clean up docs
 		guard !requestOrProposalInProgress else {
 			Logger.app.error("WC Pairing blocked by pending operations")
 			self.delegateErrorOnMain(message: "Please wait until all pending requests are finished before attempting a new pairing", error: nil)
@@ -507,23 +498,16 @@ public class WalletConnectService {
 	
 	
 	
-	/// WalletConnectService puts every user-action-required request into a queue, so that we can manage them 1 at a time. This function delays the marking of the current request as complete, by the given delay.
-	/// Each bottom sheet has to deal with up to 2 dismissal animations (a fullscreen spinner / loader) followed by the sheet itself. Each of these should take the standard 0.3 to complete. We double that by default to ensure nothing goes wrong
-	// TODO: could all bottom sheets move to showLoadingView instead of modal, so that its removal and the sheets dismissal can be done together, reducing this time
-	public static func completeRequest(withDelay delay: TimeInterval = 1.2, withValue value: Bool = true) {
-		DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-			// TODO: figure out what goes here, possible another call to handle
-			//WalletConnectService.shared.requestDidComplete = value
-			WalletConnectService.shared.requestOrProposalInProgress = false
-			WalletConnectService.shared.handleRequestOrProposal() // match call so next one can be processed
-		}
+	/// Previously this function managed the termintation of events in our own queue system. Seems to be no longer necessary. Leaving the definition as is for now incase we need to revert back
+	public static func completeRequest(withDelay delay: TimeInterval = 0.3, withValue value: Bool = true) {
+		WalletConnectService.shared.requestOrProposalInProgress = false
 	}
 	
 	/// Optional `andMarkComplete` needed for some internal situations where we can't continue on our side, so the queue will mark itself complete, but we still need to let WC2 know that something went wrong and the user might need to retry
-	public static func rejectCurrentProposal(andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
+	public static func rejectCurrentProposal(completion: ((Bool, Error?) -> Void)?) {
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
 			Logger.app.error("WC rejectCurrentProposal can't find current prposal")
-			if andMarkComplete { WalletConnectService.completeRequest() }
+			WalletConnectService.completeRequest()
 			completion?(false, nil)
 			return
 		}
@@ -532,7 +516,6 @@ public class WalletConnectService {
 		Task {
 			do {
 				try await Sign.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
-				//try await Sign.instance.reject(proposalId: proposal.id, reason: .userRejected)
 				Logger.app.info("WC rejectCurrentProposal success")
 				completion?(true, nil)
 				
@@ -542,7 +525,7 @@ public class WalletConnectService {
 			}
 			
 			TransactionService.shared.resetWalletConnectState()
-			if andMarkComplete { WalletConnectService.completeRequest() }
+			WalletConnectService.completeRequest()
 		}
 	}
 	
@@ -594,10 +577,10 @@ public class WalletConnectService {
 	}
 	
 	/// Optional `andMarkComplete` needed for some internal situations where we can't continue on our side, so the queue will mark itself complete, but we still need to let WC2 know that something went wrong and the user might need to retry
-	public static func rejectCurrentRequest(withMessage: String = "User Rejected", andMarkComplete: Bool = true, completion: ((Bool, Error?) -> Void)?) {
+	public static func rejectCurrentRequest(withMessage: String = "User Rejected", completion: ((Bool, Error?) -> Void)?) {
 		guard let request = TransactionService.shared.walletConnectOperationData.request else {
 			Logger.app.error("WC rejectCurrentRequest can't find current request")
-			if andMarkComplete { WalletConnectService.completeRequest() }
+			WalletConnectService.completeRequest()
 			completion?(false, nil)
 			return
 		}
@@ -615,7 +598,7 @@ public class WalletConnectService {
 			}
 			
 			TransactionService.shared.resetWalletConnectState()
-			if andMarkComplete { WalletConnectService.completeRequest() }
+			WalletConnectService.completeRequest()
 		}
 	}
 	
