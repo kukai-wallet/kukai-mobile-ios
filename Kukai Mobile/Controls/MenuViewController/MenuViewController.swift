@@ -227,6 +227,8 @@ class MenuViewController: UITableViewController, UIPopoverPresentationController
 	}
 	
 	public func display(attachedTo sourceView: UIView) {
+		if self.presentingViewController != nil { return }
+		
 		self.setup()
 		
 		self.popoverPresentationController?.sourceView = sourceView
