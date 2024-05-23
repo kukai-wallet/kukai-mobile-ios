@@ -502,11 +502,13 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 		}
 	}
 	
+	/*
 	public func walletConnectSocketFailedToReconnect3Times() {
 		DispatchQueue.main.async {
 			self.windowError(withTitle: "error".localized(), description: "error-wc2-reconnect".localized())
 		}
 	}
+	*/
 	
 	/*
 	public func reconnectWalletConnectIfNeeded() {

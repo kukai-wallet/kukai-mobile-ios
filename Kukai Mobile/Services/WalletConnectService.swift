@@ -39,12 +39,69 @@ public struct WalletConnectGetAccountObj: Codable {
 	let pubkey: String
 }
 
-extension WebSocket: WebSocketConnecting {}
+class KukaiWebSocket: Starscream.WebSocket, WebSocketConnecting {
+	private var _isConnected = true
+	
+	public var isConnected: Bool {
+		_isConnected
+	}
+	
+	var onConnect: (() -> Void)?
+	
+	var onDisconnect: ((Error?) -> Void)?
+	
+	var onText: ((String) -> Void)?
+	
+	convenience init(newRequest: URLRequest) {
+		self.init(request: newRequest, useCustomEngine: false)
+		
+		onEvent = { [weak self] event in
+			guard let self else { return }
+			
+			switch event {
+				case .connected:
+					_isConnected = true
+					onConnect?()
+					
+				case .disconnected(let reason, let code):
+					_isConnected = false
+					onDisconnect?(NSError(domain: reason, code: Int(code), userInfo: nil))
+					
+				case .text(let text):
+					onText?(text)
+					
+				case .binary:
+					break
+					
+				case .pong:
+					break
+					
+				case .ping:
+					break
+					
+				case .error(let error):
+					onDisconnect?(error)
+					
+				case .viabilityChanged:
+					break
+					
+				case .reconnectSuggested:
+					break
+					
+				case .cancelled:
+					_isConnected = false
+					
+				default:
+					break
+			}
+		}
+	}
+}
 
 struct DefaultSocketFactory: WebSocketFactory {
 	
 	func create(with url: URL) -> WebSocketConnecting {
-		let socket = WebSocket(url: url)
+		let socket = KukaiWebSocket(newRequest: URLRequest(url: url))
 		let queue = DispatchQueue(label: "com.walletconnect.sdk.sockets", attributes: .concurrent)
 		socket.callbackQueue = queue
 		return socket
@@ -108,15 +165,11 @@ public class WalletConnectService {
 		
 		
 		// Monitor connection
-		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
+		Networking.instance.socketConnectionStatusPublisher.sink { status in
 			Logger.app.info("WC2 - Connection status: changed to \(status == .connected ? "connected" : "disconnected")")
 			
-			DispatchQueue.main.async {
-				self?.delegate?.connectionStatusChanged(status: status)
-			}
-			
 			if status == .disconnected {
-				self?.isConnected = false
+				WalletConnectService.shared.isConnected = false
 				
 				/*
 				 if self?.isManualDisconnection == false && self?.isReconnecting == false {
@@ -128,13 +181,17 @@ public class WalletConnectService {
 				 */
 				
 			} else {
-				self?.isConnected = true
+				WalletConnectService.shared.isConnected = true
 				
 				/*
 				 if let uri = self?.deepLinkPairingToConnect {
 				 self?.pairClient(uri: uri)
 				 }
 				 */
+			}
+			
+			DispatchQueue.main.async {
+				WalletConnectService.shared.delegate?.connectionStatusChanged(status: status)
 			}
 			
 		}.store(in: &bag)
