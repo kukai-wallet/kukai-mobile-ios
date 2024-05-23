@@ -241,9 +241,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public func recheckWalletConnectAnimation() {
 		// Seems to get stuck sometimes, unsure why, adding an extra check to ensure it gets checked
-		if WalletConnectService.shared.isConnected {
-			connectionStatusChanged(status: .connected)
-		}
+		connectionStatusChanged(status: WalletConnectService.shared.isConnected ? .connected : .disconnected)
 	}
 	
 	public override func viewDidLayoutSubviews() {

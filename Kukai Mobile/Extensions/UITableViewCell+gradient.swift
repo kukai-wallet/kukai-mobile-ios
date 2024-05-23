@@ -14,14 +14,16 @@ protocol UITableViewCellContainerView: UITableViewCell {
 }
 
 protocol UITableViewCellGradient {
-	func addGradientBackground(withFrame: CGRect, toView: UIView)
+	func addGradientBackground(withFrame: CGRect, toView: UIView, roundCorners: Bool)
 }
 
 extension UITableViewCell: UITableViewCellGradient {
 	
-	func addGradientBackground(withFrame: CGRect, toView: UIView) {
-		toView.customCornerRadius = 8
-		toView.maskToBounds = true
+	func addGradientBackground(withFrame: CGRect, toView: UIView, roundCorners: Bool = true) {
+		if roundCorners {
+			toView.customCornerRadius = 8
+			toView.maskToBounds = true
+		}
 		toView.borderWidth = 0
 		
 		if let cell = self as? UITableViewCellContainerView {

@@ -102,6 +102,9 @@
 		C02D7CB027BEB34F006A8E39 /* CurrencyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */; };
 		C02DF5F42A66E23100A1497D /* SharedHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F32A66E23100A1497D /* SharedHelpers.swift */; };
 		C02DF5F62A66E47100A1497D /* Test_02_Onboarding.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02DF5F52A66E47100A1497D /* Test_02_Onboarding.swift */; };
+		C02F3CB22BFF5B6300FA6383 /* AccountsAddHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02F3CB12BFF5B6300FA6383 /* AccountsAddHeaderCell.swift */; };
+		C02F3CB42BFF5B8E00FA6383 /* AccountsAddOptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02F3CB32BFF5B8E00FA6383 /* AccountsAddOptionCell.swift */; };
+		C02F3CB62BFF77A900FA6383 /* AddWalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C02F3CB52BFF77A900FA6383 /* AddWalletViewModel.swift */; };
 		C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */; };
 		C031D3EB27D114BC00EABBE6 /* TokenDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */; };
 		C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */; };
@@ -516,6 +519,9 @@
 		C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyViewModel.swift; sourceTree = "<group>"; };
 		C02DF5F32A66E23100A1497D /* SharedHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedHelpers.swift; sourceTree = "<group>"; };
 		C02DF5F52A66E47100A1497D /* Test_02_Onboarding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test_02_Onboarding.swift; sourceTree = "<group>"; };
+		C02F3CB12BFF5B6300FA6383 /* AccountsAddHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsAddHeaderCell.swift; sourceTree = "<group>"; };
+		C02F3CB32BFF5B8E00FA6383 /* AccountsAddOptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountsAddOptionCell.swift; sourceTree = "<group>"; };
+		C02F3CB52BFF77A900FA6383 /* AddWalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddWalletViewModel.swift; sourceTree = "<group>"; };
 		C031D3E827D114A600EABBE6 /* TokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewController.swift; sourceTree = "<group>"; };
 		C031D3EA27D114BC00EABBE6 /* TokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsViewModel.swift; sourceTree = "<group>"; };
 		C031D3EC27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectiblesDetailsViewModel.swift; sourceTree = "<group>"; };
@@ -901,6 +907,7 @@
 				C049E7392881837F00887B64 /* AccountsViewController.swift */,
 				C049E73B2881838E00887B64 /* AccountsViewModel.swift */,
 				C005BA312822D3DC00D8369D /* AddWalletViewController.swift */,
+				C02F3CB52BFF77A900FA6383 /* AddWalletViewModel.swift */,
 				C0F5A8DD29ED85580061DBBD /* EditWalletViewController.swift */,
 				C06C529A29FC00C30073A2FE /* RenameWalletGroupdViewController.swift */,
 				C06C529C29FC09EF0073A2FE /* RemoveWalletViewController.swift */,
@@ -1457,6 +1464,8 @@
 				C0DAF38A29F14B85006F05A9 /* GhostnetWarningCollectionViewCell.swift */,
 				C0DAF38B29F14B85006F05A9 /* GhostnetWarningCollectionViewCell.xib */,
 				C0752B8B2B90AD4900025D00 /* AccountsMoreCell.swift */,
+				C02F3CB12BFF5B6300FA6383 /* AccountsAddHeaderCell.swift */,
+				C02F3CB32BFF5B8E00FA6383 /* AccountsAddOptionCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1887,6 +1896,7 @@
 				C082BBC728941F2B002B1E42 /* RemoveLiquidityViewController.swift in Sources */,
 				C0742C53297ADC8E005D6DB0 /* MenuViewController.swift in Sources */,
 				C009F88F28197F1D007EA8A8 /* GmailValidator.swift in Sources */,
+				C02F3CB42BFF5B8E00FA6383 /* AccountsAddOptionCell.swift in Sources */,
 				C055EF1A2A2F77F10031CB5F /* NetworkChoiceCell.swift in Sources */,
 				C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */,
 				C0717B1E2A697D3D007F9419 /* EnterCustomBakerViewController.swift in Sources */,
@@ -1924,6 +1934,7 @@
 				C01E10E82BF61143004A8244 /* SideMenuHeadingCell.swift in Sources */,
 				C00AD57929DB5BCD0030C8CC /* AutoScrollView.swift in Sources */,
 				C008B9BA2965D2CA00B17D96 /* CollectibleDetailAVCell.swift in Sources */,
+				C02F3CB22BFF5B6300FA6383 /* AccountsAddHeaderCell.swift in Sources */,
 				C044E12F2AAF4BAA0085652F /* SideMenuSettingsViewController.swift in Sources */,
 				C01AE5DE28A26C59008F93E8 /* RemoveLiquidityConfirmViewController.swift in Sources */,
 				C0FE432C2AD6A00500312940 /* PassthroughTapGestureRecognizer.swift in Sources */,
@@ -2083,6 +2094,7 @@
 				C03DA8842BFF3B2400B6F46C /* SentryBreadcrumb+extensions.swift in Sources */,
 				C0F5A8DE29ED85580061DBBD /* EditWalletViewController.swift in Sources */,
 				C0FE432E2AD6D44400312940 /* CustomAVPlayerViewController.swift in Sources */,
+				C02F3CB62BFF77A900FA6383 /* AddWalletViewModel.swift in Sources */,
 				C0C6B5D128CA2A6B00368AEA /* StakeViewModel.swift in Sources */,
 				C031D3E927D114A600EABBE6 /* TokenDetailsViewController.swift in Sources */,
 				C09860AE27C3C26B00F888AF /* SendTokenAmountViewController.swift in Sources */,
