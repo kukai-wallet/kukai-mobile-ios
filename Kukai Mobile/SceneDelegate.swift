@@ -9,6 +9,7 @@ import UIKit
 import CustomAuth
 import WalletConnectPairing
 import KukaiCoreSwift
+import Sentry
 import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -53,6 +54,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneWillResignActive(_ scene: UIScene) {
+		
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
@@ -94,11 +96,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	// MARK: - Non system functions
 	
 	func showPrivacyProtectionWindow() {
-		guard let windowScene = self.window?.windowScene else {
+		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "calling showPrivacyProtectionWindow"))
+		
+		guard let windowScene = self.window?.windowScene, !privacyProtectionWindowVisible else {
+			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "can't continue showPrivacyProtectionWindow"))
 			return
 		}
 		
+		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "continuing showPrivacyProtectionWindow"))
 		privacyProtectionWindowVisible = true
+		privacyProtectionWindow = nil
 		privacyProtectionWindow = UIWindow(windowScene: windowScene)
 		privacyProtectionWindow?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
 		privacyProtectionWindow?.windowLevel = .alert + 1
@@ -107,6 +114,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	
 	func hidePrivacyProtectionWindow() {
+		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "calling hidePrivacyProtectionWindow"))
+		
+		guard privacyProtectionWindowVisible else {
+			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "can't continue hidePrivacyProtectionWindow"))
+			return
+		}
+		
+		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "continuing hidePrivacyProtectionWindow"))
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.privacyProtectionWindow?.alpha = 0
 			
@@ -114,6 +129,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			self?.privacyProtectionWindow = nil
 			self?.privacyProtectionWindowVisible = false
 			self?.dismissedPrivacyProtectionWindow = true
+			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "done animating hidePrivacyProtectionWindow"))
 		}
 	}
 	

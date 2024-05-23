@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Sentry
 
 extension UIViewController {
 	
@@ -209,11 +210,12 @@ extension UIViewController {
 	
 	func windowError(withTitle: String, description: String, autoDismiss: TimeInterval? = 10) {
 		if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
+			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "displaying windowError 1"))
 			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
 			
 		} else if let sceneDelgate = (self.parent?.view.window?.windowScene?.delegate as? SceneDelegate) {
+			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "displaying windowError 2"))
 			sceneDelgate.window?.displayError(title: withTitle, description: description, autoDismiss: autoDismiss)
-			
 		}
 	}
 	
