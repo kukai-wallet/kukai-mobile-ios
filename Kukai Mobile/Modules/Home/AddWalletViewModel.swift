@@ -33,13 +33,13 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	let headings: [[AnyHashable]] = [
 		[
-			AddCellData(image: UIImage(named: "btnAddKnockout"), title: "Add account to existing wallet", subtitle: "<TBD>", isExpandable: false, isTopLevel: true, option: "account")
+			AddCellData(image: UIImage(named: "btnAddKnockout"), title: "Add account to existing wallet", subtitle: "Add another account to the same recovery phrase", isExpandable: false, isTopLevel: true, option: "account")
 		],
 		[
-			AddCellData(image: UIImage(named: "ArrowOval"), title: "Create a New Wallet", subtitle: "<TBD>", isExpandable: true, isTopLevel: true, option: nil)
+			AddCellData(image: UIImage(named: "ArrowOval"), title: "Create a New Wallet", subtitle: "Create a brand new wallet", isExpandable: true, isTopLevel: true, option: nil)
 		],
 		[
-			AddCellData(image: UIImage(named: "AddNewAccount"), title: "Add Existing Wallet", subtitle: "<TBD>", isExpandable: true, isTopLevel: true, option: nil)
+			AddCellData(image: UIImage(named: "AddNewAccount"), title: "Add Existing Wallet", subtitle: "Import a wallet you've previously setup", isExpandable: true, isTopLevel: true, option: nil)
 		]
 	]
 	
@@ -52,7 +52,7 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		[
 			AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social"),
 			AddCellData(image: UIImage(named: "WalletHD"), title: "Restore with Recovery Phrase", subtitle: "Import accounts using your recovery phrase from Kukai or another wallet", isExpandable: false, isTopLevel: false, option: "import"),
-			AddCellData(image: UIImage(named: "WalletWatch"), title: "Watch a Tezos Address", subtitle: "<TBD>", isExpandable: false, isTopLevel: false, option: "watch")
+			AddCellData(image: UIImage(named: "WalletWatch"), title: "Watch a Tezos Address", subtitle: "Watch a public address or .tez domain", isExpandable: false, isTopLevel: false, option: "watch")
 		]
 	]
 	

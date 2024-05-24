@@ -15,6 +15,7 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 	private let viewModel = AddWalletViewModel()
 	private var bag = [AnyCancellable]()
 	private var gradient = CAGradientLayer()
+	private var selectedIndex = IndexPath(row: -1, section: -1)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -90,7 +91,12 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		tableView.deselectRow(at: indexPath, animated: true)
+		if selectedIndex == indexPath {
+			tableView.deselectRow(at: indexPath, animated: true)
+			selectedIndex = IndexPath(row: -1, section: -1)
+		} else {
+			selectedIndex = indexPath
+		}
 		
 		if let optionalOption = viewModel.handleTap(atIndexPath: indexPath) {
 			if optionalOption == "hd" {

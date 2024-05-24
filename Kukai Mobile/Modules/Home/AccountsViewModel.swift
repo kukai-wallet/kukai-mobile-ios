@@ -95,9 +95,9 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.subtitleLabel.text = walletMedia.subtitle
 				
 				if let newAddress = self?.newlyAddedAddress, obj.address == newAddress {
-					cell.newIndicatorView.isHidden = false
+					cell.newIndicatorView?.isHidden = false
 				} else {
-					cell.newIndicatorView.isHidden = true
+					cell.newIndicatorView?.isHidden = true
 				}
 				
 				return cell
@@ -339,32 +339,16 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			
 			vc.showLoadingView()
-			self?.isPreviousAccountUsed(forAddress: walletMetadata.address, completion: { isUsed in
-				guard isUsed else {
-					vc.hideLoadingView()
-					vc.windowError(withTitle: "error-previous-account-title".localized(), description: "error-previous-account-empty".localized())
-					return
+			AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex) { [weak self] errorTitle, errorMessage in
+				vc.hideLoadingView()
+				if let title = errorTitle, let message = errorMessage {
+					vc.windowError(withTitle: title, description: message)
+				} else {
+					self?.shouldScrollToSelected = false
+					self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
+					self?.refresh(animate: true)
 				}
-				
-				guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
-					  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
-					vc.hideLoadingView()
-					vc.windowError(withTitle: "error".localized(), description: "error-cant-add-account".localized())
-					return
-				}
-				
-				WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, backedUp: false, markSelected: false) { [weak self] errorString in
-					if let eString = errorString {
-						vc.hideLoadingView()
-						vc.windowError(withTitle: "error".localized(), description: eString)
-					} else {
-						self?.shouldScrollToSelected = false
-						self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
-						self?.refresh(animate: true)
-						vc.hideLoadingView()
-					}
-				}
-			})
+			}
 		}
 		
 		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
@@ -376,20 +360,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
-	}
-	
-	private func isPreviousAccountUsed(forAddress address: String, completion: @escaping ((Bool) -> Void)) {
-		var metadataToCheck = DependencyManager.shared.walletList.metadata(forAddress: address)
-		if (metadataToCheck?.children.count ?? 0) > 0, let last = metadataToCheck?.children.last {
-			metadataToCheck = last
-		}
-		
-		guard let meta = metadataToCheck else {
-			completion(false)
-			return
-		}
-		
-		WalletManagementService.isUsedAccount(address: meta.address, completion: completion)
 	}
 	
 	func pullToRefresh(animate: Bool) {

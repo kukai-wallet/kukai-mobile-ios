@@ -176,9 +176,9 @@ extension AccountsViewController: UITableViewDelegate {
 			cell.setSelected(false, animated: true)
 		}
 		
-		if let c = cell as? AccountItemCell, c.newIndicatorView.isHidden == false {
+		if let c = cell as? AccountItemCell, c.newIndicatorView?.isHidden == false {
 			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-				c.newIndicatorView.shake()
+				c.newIndicatorView?.shake()
 			}
 		}
 	}
