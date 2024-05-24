@@ -193,15 +193,13 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		}
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
-			self?.slideButton.markComplete(withText: "Complete")
-			
 			switch sendResult {
 				case .success(let opHash):
 					Logger.app.info("Sent: \(opHash)")
 					
 					self?.didSend = true
 					self?.addPendingTransaction(opHash: opHash)
-					self?.handleApproval(opHash: opHash)
+					self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
 					
 				case .failure(let sendError):
 					self?.unblockInteraction()

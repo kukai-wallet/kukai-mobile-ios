@@ -108,7 +108,7 @@ class SendAbstractConfirmViewController: UIViewController {
 		})
 	}
 	
-	func handleApproval(opHash: String) {
+	func handleApproval(opHash: String, slideButton: SlideButton?) {
 		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
 		
 		if !isWalletConnectOp {
@@ -118,7 +118,15 @@ class SendAbstractConfirmViewController: UIViewController {
 		
 		WalletConnectService.approveCurrentRequest(signature: nil, opHash: opHash, completion: { [weak self] success, error in
 			if success {
-				self?.dismissAndReturn(collapseOnly: false)
+				
+				DispatchQueue.main.async {
+					slideButton?.markComplete(withText: "Complete")
+				}
+				
+				// Delay for UX purposes only, just a brief delay to see the words "complete"
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+					self?.dismissAndReturn(collapseOnly: false)
+				}
 				
 			} else {
 				var message = "error-wc2-unrecoverable".localized()
