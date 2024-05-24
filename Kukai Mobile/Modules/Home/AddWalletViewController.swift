@@ -93,41 +93,17 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if let optionalOption = viewModel.handleTap(atIndexPath: indexPath) {
-			print("do: \(optionalOption)")
+			if optionalOption == "hd" {
+				CreateWalletViewController.createAndCacheHDWallet { errorMessage in
+					if let error = errorMessage {
+						self.windowError(withTitle: "error".localized(), description: error)
+					} else {
+						self.navigationController?.popViewController(animated: true)
+					}
+				}
+			} else {
+				self.performSegue(withIdentifier: optionalOption, sender: nil)
+			}
 		}
 	}
-	
-	
-	
-	
-	/*
-	var bottomSheetMaxHeight: CGFloat = 330
-	var dimBackground: Bool = true
-	
-	@IBOutlet var createWalletButton: CustomisableButton!
-	@IBOutlet var existingWalletButton: CustomisableButton!
-	
-	override func viewDidLoad() {
-        super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
-		createWalletButton.customButtonType = .primary
-		existingWalletButton.customButtonType = .secondary
-    }
-	
-	@IBAction func createTapped(_ sender: Any) {
-		let parent = (self.presentingViewController as? UINavigationController)?.viewControllers.last
-		
-		self.dismiss(animated: true) {
-			parent?.performSegue(withIdentifier: "create", sender: nil)
-		}
-	}
-	
-	@IBAction func existingTapped(_ sender: Any) {
-		let parent = (self.presentingViewController as? UINavigationController)?.viewControllers.last
-		
-		self.dismiss(animated: true) {
-			parent?.performSegue(withIdentifier: "existing", sender: nil)
-		}
-	}
-	*/
 }

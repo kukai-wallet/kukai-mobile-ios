@@ -22,7 +22,16 @@ class CreateWalletViewController: UIViewController {
     }
 	
 	@IBAction func hdWalletTapped(_ sender: Any) {
-		
+		CreateWalletViewController.createAndCacheHDWallet { errorMessage in
+			if let error = errorMessage {
+				self.windowError(withTitle: "error".localized(), description: error)
+			} else {
+				self.navigate()
+			}
+		}
+	}
+	
+	public static func createAndCacheHDWallet(completion: ((String?) -> Void)) {
 		if let wallet = HDWallet(withMnemonicLength: .twentyFour, passphrase: "") {
 			let walletCache = WalletCacheService()
 			
@@ -30,21 +39,21 @@ class CreateWalletViewController: UIViewController {
 				try walletCache.cache(wallet: wallet, childOfIndex: nil, backedUp: false)
 				DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 				DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: wallet.address)
-				self.navigate()
+				completion(nil)
 				
 			} catch let error as WalletCacheError {
 				
 				if error == WalletCacheError.walletAlreadyExists {
-					self.windowError(withTitle: "error".localized(), description: "error-wallet-already-exists".localized())
+					completion("error-wallet-already-exists".localized())
 				} else {
-					self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
+					completion("error-cant-cache".localized())
 				}
 				
 			} catch {
-				self.windowError(withTitle: "error".localized(), description: "error-cant-cache".localized())
+				completion("error-cant-cache".localized())
 			}
 		} else {
-			self.windowError(withTitle: "error".localized(), description: "error-cant-create-wallet".localized())
+			completion("error-cant-create-wallet".localized())
 		}
 	}
 	
