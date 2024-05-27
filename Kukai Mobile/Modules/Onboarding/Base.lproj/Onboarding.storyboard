@@ -1176,13 +1176,13 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <outlet property="tableView" destination="S2I-PX-LET" id="nOC-aX-Trg"/>
                         <segue destination="3EC-3V-hGn" kind="show" identifier="social" id="yeh-rk-pAd"/>
                         <segue destination="eqC-Rn-fYp" kind="show" identifier="phrase" id="44S-d7-xpb"/>
-                        <segue destination="FgT-yu-Q7d" kind="show" identifier="ledger" id="Y41-J3-odp"/>
                         <segue destination="Fsf-BW-M9f" kind="show" identifier="watch" id="K86-hl-jVo"/>
+                        <segue destination="vGy-Xg-zLb" kind="show" identifier="private-key" id="N88-gX-WOC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p0N-1o-Bac" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9532" y="1141"/>
+            <point key="canvasLocation" x="-9532" y="1388"/>
         </scene>
         <!--Import Wallet-->
         <scene sceneID="TMY-kC-fvd">
@@ -1482,35 +1482,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8J-us-3ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9532" y="2317"/>
-        </scene>
-        <!--Connect Ledger-->
-        <scene sceneID="kVg-jt-iew">
-            <objects>
-                <viewController id="FgT-yu-Q7d" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oAz-55-7Aa">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TBD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BGl-4o-Xmn">
-                                <rect key="frame" x="171" y="323" width="33.5" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" name="Txt2"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="jGR-xK-FGs"/>
-                        <color key="backgroundColor" name="BG2"/>
-                        <constraints>
-                            <constraint firstItem="BGl-4o-Xmn" firstAttribute="centerX" secondItem="oAz-55-7Aa" secondAttribute="centerX" id="Nnl-P1-Tp1"/>
-                            <constraint firstItem="BGl-4o-Xmn" firstAttribute="centerY" secondItem="oAz-55-7Aa" secondAttribute="centerY" id="yTp-RF-hj4"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" title="Connect Ledger" id="b82-oA-W0w"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="HBN-Yf-FAY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-11518" y="2317"/>
+            <point key="canvasLocation" x="-10551" y="2303"/>
         </scene>
         <!--Address to Watch-->
         <scene sceneID="Ps7-Xx-Geh">
@@ -1557,7 +1529,203 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gs7-Bd-SEH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7367.1999999999998" y="2316.7916041979011"/>
+            <point key="canvasLocation" x="-8378" y="2304"/>
+        </scene>
+        <!--Import Private Key-->
+        <scene sceneID="XIH-Vs-Hlx">
+            <objects>
+                <viewController id="vGy-Xg-zLb" customClass="ImportPrivateKeyViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dV0-Bt-SXs">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jBC-b7-fic" customClass="AutoScrollView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4JQ-2X-hOh">
+                                        <rect key="frame" x="16" y="16" width="343" height="75"/>
+                                        <color key="backgroundColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="75" id="Wmq-iv-Aje"/>
+                                        </constraints>
+                                        <color key="textColor" systemColor="labelColor"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </textView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="J7R-8W-zfd">
+                                        <rect key="frame" x="16" y="99" width="343" height="42"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e.g. edskAbc123..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T01-6s-OSN">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt8"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="isZ-rq-Vae">
+                                                <rect key="frame" x="0.0" y="25" width="343" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="BGAlert4"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="MQX-uY-9rv">
+                                        <rect key="frame" x="16" y="157" width="343" height="184"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Adf-Ve-u15">
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted password (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JVj-uF-RmS">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="Txt8"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="password" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="0W5-Sj-9Bh" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="25" width="343" height="34"/>
+                                                        <color key="backgroundColor" name="BG4"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="INR-W2-uNM"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                                <color key="value" name="Txt10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="4"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mog-7K-ySg">
+                                                        <rect key="frame" x="0.0" y="67" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="BGAlert4"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XFl-E6-rB5">
+                                                <rect key="frame" x="0.0" y="100" width="343" height="84"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm wallet address (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TLd-Sn-dLo">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="Txt8"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. tz1abc123" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aSa-Wn-1rX" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="25" width="343" height="34"/>
+                                                        <color key="backgroundColor" name="BG4"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="34" id="fLk-xe-HfI"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
+                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                                                <color key="value" name="Txt10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="8"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-J5-a6a">
+                                                        <rect key="frame" x="0.0" y="67" width="343" height="17"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                        <color key="textColor" name="BGAlert4"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oaz-ev-CPh" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="57" y="354" width="261" height="56"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="56" id="Frm-hc-Bch"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        <color key="tintColor" name="TxtBtnPrim1"/>
+                                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Import">
+                                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                        </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="12"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="importTapped:" destination="eqC-Rn-fYp" eventType="touchUpInside" id="Cnb-8e-2pG"/>
+                                            <action selector="importTapped:" destination="vGy-Xg-zLb" eventType="touchUpInside" id="YBI-1b-Lga"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="4JQ-2X-hOh" firstAttribute="leading" secondItem="Rf3-RX-8Xn" secondAttribute="leading" constant="16" id="36a-ol-bJo"/>
+                                    <constraint firstItem="J7R-8W-zfd" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" id="7XC-Cn-qoE"/>
+                                    <constraint firstItem="Rf3-RX-8Xn" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" constant="16" id="Coa-E1-6Uk"/>
+                                    <constraint firstItem="MQX-uY-9rv" firstAttribute="top" secondItem="J7R-8W-zfd" secondAttribute="bottom" constant="16" id="DOg-OX-7WC"/>
+                                    <constraint firstItem="Rf3-RX-8Xn" firstAttribute="bottom" secondItem="oaz-ev-CPh" secondAttribute="bottom" constant="24" id="Enk-tT-86Y"/>
+                                    <constraint firstItem="oaz-ev-CPh" firstAttribute="leading" secondItem="mAb-Kh-hB7" secondAttribute="leading" constant="57" id="ITX-7R-K47"/>
+                                    <constraint firstItem="4JQ-2X-hOh" firstAttribute="leading" secondItem="mAb-Kh-hB7" secondAttribute="leading" constant="16" id="KgC-Ql-Mn5"/>
+                                    <constraint firstItem="mAb-Kh-hB7" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" constant="16" id="NIU-Mp-76a"/>
+                                    <constraint firstItem="J7R-8W-zfd" firstAttribute="top" secondItem="4JQ-2X-hOh" secondAttribute="bottom" constant="8" id="OJH-qy-UTR"/>
+                                    <constraint firstItem="4JQ-2X-hOh" firstAttribute="top" secondItem="Rf3-RX-8Xn" secondAttribute="top" constant="16" id="SyI-8c-cF7"/>
+                                    <constraint firstItem="oaz-ev-CPh" firstAttribute="top" secondItem="MQX-uY-9rv" secondAttribute="bottom" constant="13" id="XFS-1j-GpF"/>
+                                    <constraint firstItem="mAb-Kh-hB7" firstAttribute="trailing" secondItem="oaz-ev-CPh" secondAttribute="trailing" constant="57" id="ZSv-Vc-k0F"/>
+                                    <constraint firstItem="J7R-8W-zfd" firstAttribute="leading" secondItem="4JQ-2X-hOh" secondAttribute="leading" id="gdw-zd-0tR"/>
+                                    <constraint firstAttribute="trailing" secondItem="MQX-uY-9rv" secondAttribute="trailing" constant="16" id="i5T-Qc-J8C"/>
+                                    <constraint firstItem="MQX-uY-9rv" firstAttribute="leading" secondItem="mAb-Kh-hB7" secondAttribute="leading" constant="16" id="msQ-ki-gjB"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="Rf3-RX-8Xn"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="mAb-Kh-hB7"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="thk-Qf-grq"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="jBC-b7-fic" firstAttribute="bottom" secondItem="thk-Qf-grq" secondAttribute="bottom" id="3bb-lr-D1k"/>
+                            <constraint firstItem="jBC-b7-fic" firstAttribute="trailing" secondItem="thk-Qf-grq" secondAttribute="trailing" id="R2f-Zq-tnC"/>
+                            <constraint firstItem="jBC-b7-fic" firstAttribute="leading" secondItem="thk-Qf-grq" secondAttribute="leading" id="aFM-kq-MMT"/>
+                            <constraint firstItem="jBC-b7-fic" firstAttribute="top" secondItem="thk-Qf-grq" secondAttribute="top" id="whR-CY-gRz"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Import Private Key" id="iLd-4e-28W"/>
+                    <connections>
+                        <outlet property="addressErrorLabel" destination="7rD-J5-a6a" id="JDc-4h-ZPh"/>
+                        <outlet property="addressTextField" destination="aSa-Wn-1rX" id="6Lm-c2-TPZ"/>
+                        <outlet property="importButton" destination="oaz-ev-CPh" id="iTI-kE-bJM"/>
+                        <outlet property="passwordErrorLabel" destination="Mog-7K-ySg" id="6o8-Aq-Mzn"/>
+                        <outlet property="passwordTextField" destination="0W5-Sj-9Bh" id="SXH-fc-FIq"/>
+                        <outlet property="scrollView" destination="jBC-b7-fic" id="stM-RY-FbO"/>
+                        <outlet property="textView" destination="4JQ-2X-hOh" id="zHt-mH-1C6"/>
+                        <outlet property="textViewErrorLabel" destination="isZ-rq-Vae" id="EDU-Ds-cWA"/>
+                        <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="GKS-yE-z1j"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SJ2-OB-KrW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-9532" y="2304"/>
         </scene>
         <!--Account Scanning View Controller-->
         <scene sceneID="qbm-47-wc0">
@@ -1635,7 +1803,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2zy-z4-nIW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-9079" y="3322"/>
+            <point key="canvasLocation" x="-10551" y="3112"/>
         </scene>
         <!--Confirm Passcode View Controller-->
         <scene sceneID="vLI-rX-dKU">
@@ -2033,7 +2201,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r6e-JS-TtU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11519" y="1362"/>
+            <point key="canvasLocation" x="-11519" y="1411"/>
         </scene>
         <!--Onboarding Page View Controller-->
         <scene sceneID="PjW-is-Yde">
@@ -2051,7 +2219,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Tj9-rq-529" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-8271" y="-1449"/>
+            <point key="canvasLocation" x="-8271" y="-863"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="6vH-Fr-E0g">
@@ -2100,7 +2268,7 @@ Social wallets are secured by your chosen social provider credentials. If you lo
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gXx-Vh-Cdb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7231" y="-1449"/>
+            <point key="canvasLocation" x="-7231" y="-863"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="WuM-8P-DJa">
@@ -2149,10 +2317,13 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="M02-p0-TUQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-6487" y="-1449"/>
+            <point key="canvasLocation" x="-6487" y="-863"/>
         </scene>
     </scenes>
     <designables>
+        <designable name="0W5-Sj-9Bh">
+            <size key="intrinsicContentSize" width="79" height="23.5"/>
+        </designable>
         <designable name="1VJ-Ye-1zl">
             <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
@@ -2183,6 +2354,9 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <designable name="ZcX-hG-7A3">
             <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
+        <designable name="aSa-Wn-1rX">
+            <size key="intrinsicContentSize" width="114.5" height="23.5"/>
+        </designable>
         <designable name="bIm-xp-dm5">
             <size key="intrinsicContentSize" width="199" height="23.5"/>
         </designable>
@@ -2203,6 +2377,9 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         </designable>
         <designable name="oOo-v0-m7J">
             <size key="intrinsicContentSize" width="109" height="38"/>
+        </designable>
+        <designable name="oaz-ev-CPh">
+            <size key="intrinsicContentSize" width="87.5" height="38"/>
         </designable>
         <designable name="rXX-Jd-YOc">
             <size key="intrinsicContentSize" width="69" height="38"/>
@@ -2228,7 +2405,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="L9m-e9-wGE"/>
+        <segue reference="GKS-yE-z1j"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>
