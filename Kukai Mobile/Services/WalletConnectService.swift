@@ -39,69 +39,12 @@ public struct WalletConnectGetAccountObj: Codable {
 	let pubkey: String
 }
 
-class KukaiWebSocket: Starscream.WebSocket, WebSocketConnecting {
-	private var _isConnected = true
-	
-	public var isConnected: Bool {
-		_isConnected
-	}
-	
-	var onConnect: (() -> Void)?
-	
-	var onDisconnect: ((Error?) -> Void)?
-	
-	var onText: ((String) -> Void)?
-	
-	convenience init(newRequest: URLRequest) {
-		self.init(request: newRequest, useCustomEngine: false)
-		
-		onEvent = { [weak self] event in
-			guard let self else { return }
-			
-			switch event {
-				case .connected:
-					_isConnected = true
-					onConnect?()
-					
-				case .disconnected(let reason, let code):
-					_isConnected = false
-					onDisconnect?(NSError(domain: reason, code: Int(code), userInfo: nil))
-					
-				case .text(let text):
-					onText?(text)
-					
-				case .binary:
-					break
-					
-				case .pong:
-					break
-					
-				case .ping:
-					break
-					
-				case .error(let error):
-					onDisconnect?(error)
-					
-				case .viabilityChanged:
-					break
-					
-				case .reconnectSuggested:
-					break
-					
-				case .cancelled:
-					_isConnected = false
-					
-				default:
-					break
-			}
-		}
-	}
-}
+extension WebSocket: WebSocketConnecting {}
 
 struct DefaultSocketFactory: WebSocketFactory {
 	
 	func create(with url: URL) -> WebSocketConnecting {
-		let socket = KukaiWebSocket(newRequest: URLRequest(url: url))
+		let socket = WebSocket(url: url)
 		let queue = DispatchQueue(label: "com.walletconnect.sdk.sockets", attributes: .concurrent)
 		socket.callbackQueue = queue
 		return socket
