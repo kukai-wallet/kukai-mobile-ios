@@ -306,7 +306,7 @@ for your Digital Assets</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EX4-MC-WXt" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="132.5" y="45" width="110.5" height="34"/>
+                                                <rect key="frame" x="129.5" y="45" width="116.5" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="xJV-2O-fg9"/>
                                                 </constraints>
@@ -1534,7 +1534,7 @@ You will not be able to transact in this wallet.</string>
         <!--Import Private Key-->
         <scene sceneID="XIH-Vs-Hlx">
             <objects>
-                <viewController id="vGy-Xg-zLb" customClass="ImportPrivateKeyViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="private-key" id="vGy-Xg-zLb" customClass="ImportPrivateKeyViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dV0-Bt-SXs">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1543,10 +1543,10 @@ You will not be able to transact in this wallet.</string>
                                 <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4JQ-2X-hOh">
-                                        <rect key="frame" x="16" y="16" width="343" height="75"/>
+                                        <rect key="frame" x="16" y="16" width="343" height="110"/>
                                         <color key="backgroundColor" name="BG4"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="75" id="Wmq-iv-Aje"/>
+                                            <constraint firstAttribute="height" constant="110" id="Wmq-iv-Aje"/>
                                         </constraints>
                                         <color key="textColor" systemColor="labelColor"/>
                                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
@@ -1559,7 +1559,7 @@ You will not be able to transact in this wallet.</string>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="J7R-8W-zfd">
-                                        <rect key="frame" x="16" y="99" width="343" height="42"/>
+                                        <rect key="frame" x="16" y="134" width="343" height="42"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="e.g. edskAbc123..." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T01-6s-OSN">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
@@ -1576,7 +1576,7 @@ You will not be able to transact in this wallet.</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="MQX-uY-9rv">
-                                        <rect key="frame" x="16" y="157" width="343" height="184"/>
+                                        <rect key="frame" x="16" y="200" width="343" height="84"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Adf-Ve-u15">
                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="84"/>
@@ -1616,48 +1616,10 @@ You will not be able to transact in this wallet.</string>
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XFl-E6-rB5">
-                                                <rect key="frame" x="0.0" y="100" width="343" height="84"/>
-                                                <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm wallet address (optional)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TLd-Sn-dLo">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
-                                                        <color key="textColor" name="Txt8"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="e.g. tz1abc123" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aSa-Wn-1rX" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="25" width="343" height="34"/>
-                                                        <color key="backgroundColor" name="BG4"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="34" id="fLk-xe-HfI"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
-                                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="done" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="textPadding">
-                                                                <real key="value" value="8"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                                                <color key="value" name="Txt10"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
-                                                                <real key="value" value="8"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                    </textField>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-J5-a6a">
-                                                        <rect key="frame" x="0.0" y="67" width="343" height="17"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
-                                                        <color key="textColor" name="BGAlert4"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                </subviews>
-                                            </stackView>
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oaz-ev-CPh" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="57" y="354" width="261" height="56"/>
+                                        <rect key="frame" x="57" y="308" width="261" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="56" id="Frm-hc-Bch"/>
                                         </constraints>
@@ -1684,14 +1646,14 @@ You will not be able to transact in this wallet.</string>
                                     <constraint firstItem="4JQ-2X-hOh" firstAttribute="leading" secondItem="Rf3-RX-8Xn" secondAttribute="leading" constant="16" id="36a-ol-bJo"/>
                                     <constraint firstItem="J7R-8W-zfd" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" id="7XC-Cn-qoE"/>
                                     <constraint firstItem="Rf3-RX-8Xn" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" constant="16" id="Coa-E1-6Uk"/>
-                                    <constraint firstItem="MQX-uY-9rv" firstAttribute="top" secondItem="J7R-8W-zfd" secondAttribute="bottom" constant="16" id="DOg-OX-7WC"/>
+                                    <constraint firstItem="MQX-uY-9rv" firstAttribute="top" secondItem="J7R-8W-zfd" secondAttribute="bottom" constant="24" id="DOg-OX-7WC"/>
                                     <constraint firstItem="Rf3-RX-8Xn" firstAttribute="bottom" secondItem="oaz-ev-CPh" secondAttribute="bottom" constant="24" id="Enk-tT-86Y"/>
                                     <constraint firstItem="oaz-ev-CPh" firstAttribute="leading" secondItem="mAb-Kh-hB7" secondAttribute="leading" constant="57" id="ITX-7R-K47"/>
                                     <constraint firstItem="4JQ-2X-hOh" firstAttribute="leading" secondItem="mAb-Kh-hB7" secondAttribute="leading" constant="16" id="KgC-Ql-Mn5"/>
                                     <constraint firstItem="mAb-Kh-hB7" firstAttribute="trailing" secondItem="4JQ-2X-hOh" secondAttribute="trailing" constant="16" id="NIU-Mp-76a"/>
                                     <constraint firstItem="J7R-8W-zfd" firstAttribute="top" secondItem="4JQ-2X-hOh" secondAttribute="bottom" constant="8" id="OJH-qy-UTR"/>
+                                    <constraint firstItem="oaz-ev-CPh" firstAttribute="top" secondItem="MQX-uY-9rv" secondAttribute="bottom" constant="24" id="QOU-xF-ynr"/>
                                     <constraint firstItem="4JQ-2X-hOh" firstAttribute="top" secondItem="Rf3-RX-8Xn" secondAttribute="top" constant="16" id="SyI-8c-cF7"/>
-                                    <constraint firstItem="oaz-ev-CPh" firstAttribute="top" secondItem="MQX-uY-9rv" secondAttribute="bottom" constant="13" id="XFS-1j-GpF"/>
                                     <constraint firstItem="mAb-Kh-hB7" firstAttribute="trailing" secondItem="oaz-ev-CPh" secondAttribute="trailing" constant="57" id="ZSv-Vc-k0F"/>
                                     <constraint firstItem="J7R-8W-zfd" firstAttribute="leading" secondItem="4JQ-2X-hOh" secondAttribute="leading" id="gdw-zd-0tR"/>
                                     <constraint firstAttribute="trailing" secondItem="MQX-uY-9rv" secondAttribute="trailing" constant="16" id="i5T-Qc-J8C"/>
@@ -1712,8 +1674,6 @@ You will not be able to transact in this wallet.</string>
                     </view>
                     <navigationItem key="navigationItem" title="Import Private Key" id="iLd-4e-28W"/>
                     <connections>
-                        <outlet property="addressErrorLabel" destination="7rD-J5-a6a" id="JDc-4h-ZPh"/>
-                        <outlet property="addressTextField" destination="aSa-Wn-1rX" id="6Lm-c2-TPZ"/>
                         <outlet property="importButton" destination="oaz-ev-CPh" id="iTI-kE-bJM"/>
                         <outlet property="passwordErrorLabel" destination="Mog-7K-ySg" id="6o8-Aq-Mzn"/>
                         <outlet property="passwordTextField" destination="0W5-Sj-9Bh" id="SXH-fc-FIq"/>
@@ -2322,28 +2282,28 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </scenes>
     <designables>
         <designable name="0W5-Sj-9Bh">
-            <size key="intrinsicContentSize" width="79" height="23.5"/>
+            <size key="intrinsicContentSize" width="87" height="23.5"/>
         </designable>
         <designable name="1VJ-Ye-1zl">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="5t4-7b-ZSi">
-            <size key="intrinsicContentSize" width="191.5" height="38"/>
+            <size key="intrinsicContentSize" width="211.5" height="38"/>
         </designable>
         <designable name="EIg-ad-QmA">
             <size key="intrinsicContentSize" width="141" height="38"/>
         </designable>
         <designable name="EX4-MC-WXt">
-            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
         <designable name="FWv-hS-Trj">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="J2v-BG-JDc">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="Loj-qu-Rs8">
-            <size key="intrinsicContentSize" width="203.5" height="38"/>
+            <size key="intrinsicContentSize" width="223.5" height="38"/>
         </designable>
         <designable name="UlV-Fl-sF1">
             <size key="intrinsicContentSize" width="119" height="38"/>
@@ -2352,13 +2312,10 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="227" height="38"/>
         </designable>
         <designable name="ZcX-hG-7A3">
-            <size key="intrinsicContentSize" width="24" height="14"/>
-        </designable>
-        <designable name="aSa-Wn-1rX">
-            <size key="intrinsicContentSize" width="114.5" height="23.5"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="bIm-xp-dm5">
-            <size key="intrinsicContentSize" width="199" height="23.5"/>
+            <size key="intrinsicContentSize" width="207" height="23.5"/>
         </designable>
         <designable name="bRr-0r-cKe">
             <size key="intrinsicContentSize" width="210.5" height="38"/>
@@ -2367,13 +2324,13 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="144" height="38"/>
         </designable>
         <designable name="c2S-hk-v1m">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
         <designable name="mM7-0X-VxZ">
-            <size key="intrinsicContentSize" width="106" height="36"/>
+            <size key="intrinsicContentSize" width="124" height="36"/>
         </designable>
         <designable name="oOo-v0-m7J">
             <size key="intrinsicContentSize" width="109" height="38"/>
@@ -2394,7 +2351,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="87.5" height="38"/>
         </designable>
         <designable name="zN1-he-MJi">
-            <size key="intrinsicContentSize" width="123" height="23.5"/>
+            <size key="intrinsicContentSize" width="131" height="23.5"/>
         </designable>
         <designable name="zTe-bp-NGr">
             <size key="intrinsicContentSize" width="32" height="34"/>

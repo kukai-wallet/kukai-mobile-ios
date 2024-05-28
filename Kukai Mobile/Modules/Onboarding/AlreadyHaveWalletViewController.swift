@@ -44,7 +44,7 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 				cell.descriptionLabel.text = "Import accounts using your recovery phrase from Kukai or another wallet"
 				
 			case 2:
-				cell.iconView.image = UIImage(named: "WalletRestore")
+				cell.iconView.image = UIImage(named: "WalletHD")
 				cell.titleLabel.text = "Import a Private Key"
 				cell.descriptionLabel.text = "Import a wallet from a private key"
 				

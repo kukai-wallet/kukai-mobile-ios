@@ -60,10 +60,11 @@ class ConfirmPasscodeViewController: UIViewController {
 	
 	func navigateNonBiometric() {
 		let importVc = self.navigationController?.viewControllers.filter({ $0 is ImportWalletViewController }).first
+		let importPrivateVc = self.navigationController?.viewControllers.filter({ $0 is ImportPrivateKeyViewController }).first
 		let socialVc = self.navigationController?.viewControllers.filter({ $0 is CreateWithSocialViewController }).first
 		let watchVc = self.navigationController?.viewControllers.filter({ $0 is WatchWalletViewController }).first
 		
-		if importVc != nil || socialVc != nil || watchVc != nil {
+		if importVc != nil || importPrivateVc != nil || socialVc != nil || watchVc != nil {
 			self.performSegue(withIdentifier: "home", sender: self)
 		} else {
 			self.performSegue(withIdentifier: "next", sender: nil)

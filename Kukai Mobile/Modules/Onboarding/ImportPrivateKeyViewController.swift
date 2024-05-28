@@ -17,8 +17,6 @@ class ImportPrivateKeyViewController: UIViewController {
 	@IBOutlet weak var textViewErrorLabel: UILabel!
 	@IBOutlet weak var passwordTextField: ValidatorTextField!
 	@IBOutlet weak var passwordErrorLabel: UILabel!
-	@IBOutlet weak var addressTextField: ValidatorTextField!
-	@IBOutlet weak var addressErrorLabel: UILabel!
 	@IBOutlet weak var importButton: CustomisableButton!
 	
     override func viewDidLoad() {
@@ -28,7 +26,6 @@ class ImportPrivateKeyViewController: UIViewController {
 		
 		textViewErrorLabel.isHidden = true
 		passwordErrorLabel.isHidden = true
-		addressErrorLabel.isHidden = true
 		
 		textView.delegate = self
 		textView.text = "Enter Private Key"
@@ -37,9 +34,6 @@ class ImportPrivateKeyViewController: UIViewController {
 		
 		passwordTextField.validatorTextFieldDelegate = self
 		passwordTextField.validator = NoWhiteSpaceStringValidator()
-		
-		addressTextField.validatorTextFieldDelegate = self
-		addressTextField.validator = TezosAddressValidator(ownAddress: "")
 		
 		let tap = UITapGestureRecognizer(target: self, action: #selector(ImportPrivateKeyViewController.resignAll))
 		view.addGestureRecognizer(tap)
@@ -80,36 +74,39 @@ class ImportPrivateKeyViewController: UIViewController {
 	@objc private func resignAll() {
 		textView.resignFirstResponder()
 		passwordTextField.resignFirstResponder()
-		addressTextField.resignFirstResponder()
 	}
 	
 	@IBAction func importTapped(_ sender: Any) {
-		guard let inputText = textView.text else {
-			self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key".localized())
+		guard let inputText = textView.text, let wallet = RegularWallet(fromSecretKey: inputText, passphrase: passwordTextField.text) else {
+			
+			if textView.text != nil, (passwordTextField.text == nil || passwordTextField.text == ""), KeyPair.isSecretKeyEncrypted(textView.text) {
+				self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key-password".localized())
+			} else {
+				self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key".localized())
+			}
 			return
 		}
 		
-		let first4 = inputText.prefix(4)
-		if first4 == "edsk" {
-			guard let decoded = Base58Check.decode(string: inputText, prefix: Prefix.Keys.Ed25519.secret), let keyPair = Sodium.shared.sign.keyPair(seed: Array(decoded.prefix(32))) else {
-				self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key".localized())
-				return
+		// Cache and move on
+		self.showLoadingView()
+		WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: true, markSelected: true) { [weak self] errorString in
+			self?.hideLoadingView()
+			if let eString = errorString {
+				self?.windowError(withTitle: "error".localized(), description: eString)
+			} else {
+				self?.navigate()
 			}
-			
-			let privateKey = PrivateKey(keyPair.secretKey)
-			let publicKey = PublicKey(keyPair.publicKey)
-			
-		} else if first4 == "spsk" {
-			guard let decoded = Base58Check.decode(string: inputText, prefix: Prefix.Keys.Secp256k1.secret) else {
-				self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key".localized())
-				return
-			}
-			
-			let privateKey = PrivateKey(decoded, signingCurve: .secp256k1)
-			let publicKey = KeyPair.secp256k1PublicKey(fromPrivateKeyBytes: privateKey.bytes)
+		}
+	}
+	
+	private func navigate() {
+		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
+		if let vc = viewController {
+			self.navigationController?.popToViewController(vc, animated: true)
+			AccountViewModel.setupAccountActivityListener() // Add new wallet(s) to listener
 			
 		} else {
-			self.windowError(withTitle: "error".localized(), description: "error-invalid-private-key".localized())
+			self.performSegue(withIdentifier: "done", sender: nil)
 		}
 	}
 }
@@ -179,10 +176,7 @@ extension ImportPrivateKeyViewController: ValidatorTextFieldDelegate {
 	}
 	
 	private func isEverythingValid() -> Bool {
-		return (doesTextViewPassValidation() &&
-				((passwordTextField.text ?? "").isEmpty || passwordTextField.isValid) &&
-				((addressTextField.text ?? "").isEmpty || addressTextField.isValid)
-				)
+		return ( doesTextViewPassValidation() && ((passwordTextField.text ?? "").isEmpty || passwordTextField.isValid) )
 	}
 }
 
