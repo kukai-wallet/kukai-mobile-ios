@@ -483,10 +483,14 @@ public class BalanceService {
 	}
 	
 	private func orderGroupAndAliasNFTs(completion: @escaping (() -> Void)) {
+		let exploreService = DependencyManager.shared.exploreService
 		var modifiedNFTs: [UUID: (token: Token, sortIndex: Int)] = [:]
 		var unmodifiedNFTs: [Token] = []
+		let newTokens: [Token] = self.currentlyRefreshingAccount.tokens.filter({ !exploreService.isBlocked(forAddress: $0.tokenContractAddress)})
 		
+		// filter blocked NFTs, group, alias, add extra info
 		for token in self.currentlyRefreshingAccount.nfts {
+			if exploreService.isBlocked(forAddress: token.tokenContractAddress) { continue }
 			
 			// Custom logic, search for teia links
 			var address = token.tokenContractAddress ?? ""
@@ -532,7 +536,7 @@ public class BalanceService {
 			
 			let newAccount = Account(walletAddress: self?.currentlyRefreshingAccount.walletAddress ?? "",
 									 xtzBalance: self?.currentlyRefreshingAccount.xtzBalance ?? .zero(),
-									 tokens: self?.currentlyRefreshingAccount.tokens ?? [],
+									 tokens: newTokens,
 									 nfts: newNFTs,
 									 recentNFTs: self?.currentlyRefreshingAccount.recentNFTs ?? [],
 									 liquidityTokens: self?.currentlyRefreshingAccount.liquidityTokens ?? [],

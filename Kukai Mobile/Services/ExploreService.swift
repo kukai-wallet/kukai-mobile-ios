@@ -8,16 +8,6 @@
 import Foundation
 import KukaiCoreSwift
 
-
-public struct ExploreResponse: Codable {
-	let environment: ExploreEnvironments
-}
-
-public struct ExploreEnvironments: Codable {
-	let mainnet: ExploreEnvironment
-	let ghostnet: ExploreEnvironment
-}
-
 public struct ExploreEnvironment: Codable {
 	let blockList: [String]
 	let model3DAllowList: [String]
@@ -110,9 +100,11 @@ public struct RemoteDiscoverItem: Codable {
 
 public class ExploreService {
 	
-	private let exploreURL = "https://services.kukai.app/v2/explore?encode=true"
+	private let exploreURL_mainnet = "https://services.kukai.app/v4/explore?encode=true"
+	private let exploreURL_ghostnet = "https://services.ghostnet.kukai.app/v4/explore?encode=true"
 	
-	private let exploreCacheKey = "explore-cahce-key"
+	private let exploreCacheKey_mainnet = "explore-cache-key-mainnet"
+	private let exploreCacheKey_ghostnet = "explore-cache-key-ghostnet"
 	
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService
@@ -120,14 +112,16 @@ public class ExploreService {
 	
 	public var contractAddressToPrimaryKeyMap: [String: UUID] = [:]
 	public var items: [UUID: ExploreItem] = [:]
+	public var blocklistMap: [String: Bool] = [:]
 	
 	public init(networkService: NetworkService, networkType: TezosNodeClientConfig.NetworkType) {
 		self.networkService = networkService
 		self.requestIfService = RequestIfService(networkService: networkService)
 		self.networkType = networkType
 		
-		let lastCache = self.requestIfService.lastCache(forKey: exploreCacheKey, responseType: ExploreResponse.self)
-		processRawData(item: lastCache, networkType: networkType)
+		let cacheKeyToUse = networkType == .mainnet ? exploreCacheKey_mainnet : exploreCacheKey_ghostnet
+		let lastCache = self.requestIfService.lastCache(forKey: cacheKeyToUse, responseType: ExploreEnvironment.self)
+		processRawData(item: lastCache)
 	}
 	
 	
@@ -143,6 +137,12 @@ public class ExploreService {
 		return nil
 	}
 	
+	public func isBlocked(forAddress: String?) -> Bool {
+		guard let address = forAddress else { return false } // reduce code needed for calling code involving complex fetch/sort/filtering
+		
+		return self.blocklistMap[address] == true
+	}
+	
 	/// Create a mapping of each address to the corresponding primaryKey of each item, so that lookups can be prefromed in a constant time
 	private func processQuickFindList(items: [ExploreItem]) {
 		contractAddressToPrimaryKeyMap = [:]
@@ -154,25 +154,26 @@ public class ExploreService {
 		}
 	}
 	
-	private func processRawData(item: ExploreResponse?, networkType: TezosNodeClientConfig.NetworkType) {
+	private func processRawData(item: ExploreEnvironment?) {
 		guard let exploreItem = item else {
 			return
 		}
 		
-		var exploreItemsToProcess: [ExploreItem] = []
-		if networkType == .mainnet {
-			exploreItemsToProcess = exploreItem.environment.mainnet.contractAliases
-		} else {
-			exploreItemsToProcess = exploreItem.environment.ghostnet.contractAliases
-		}
+		self.contractAddressToPrimaryKeyMap = [:]
+		self.items = [:]
+		self.blocklistMap = [:]
 		
-		for (index, item) in exploreItemsToProcess.enumerated() {
+		for (index, item) in exploreItem.contractAliases.enumerated() {
 			var temp = item
 			temp.sortIndex = index
 			self.items[item.primaryKey] = temp
 		}
 		
-		self.processQuickFindList(items: exploreItemsToProcess)
+		self.processQuickFindList(items: exploreItem.contractAliases)
+		
+		for address in exploreItem.blockList {
+			blocklistMap[address] = true
+		}
 	}
 	
 	
@@ -180,25 +181,30 @@ public class ExploreService {
 	
 	/// Fetch items, which automatically get primaryKey added. Map them into a dictionary based on UUID and store in `items`
 	public func fetchExploreItems(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
-		guard let url = URL(string: exploreURL) else {
+		let currentNetworkType = DependencyManager.shared.currentNetworkType
+		let urlToUse = currentNetworkType == .mainnet ? exploreURL_mainnet : exploreURL_ghostnet
+		let cacheKeyToUse = currentNetworkType == .mainnet ? exploreCacheKey_mainnet : exploreCacheKey_ghostnet
+		
+		guard let url = URL(string: urlToUse) else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.fifteenMinute.rawValue, forKey: exploreCacheKey, responseType: ExploreResponse.self, isSecure: true) { [weak self] result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.hour.rawValue, forKey: cacheKeyToUse, responseType: ExploreEnvironment.self, isSecure: true) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self?.processRawData(item: response, networkType: self?.networkType ?? .mainnet)
+			self?.processRawData(item: response)
 			
 			completion(Result.success(true))
 		}
 	}
 	
 	public func deleteCache() {
-		let _ = self.requestIfService.delete(key: exploreCacheKey)
+		let _ = self.requestIfService.delete(key: exploreCacheKey_mainnet)
+		let _ = self.requestIfService.delete(key: exploreCacheKey_ghostnet)
 	}
 }
