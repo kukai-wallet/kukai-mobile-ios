@@ -207,6 +207,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let metadata = DependencyManager.shared.selectedWalletMetadata
+		let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
 		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		var data: [AnyHashable] = []
@@ -224,7 +225,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 				
 			} else {
-				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, selectedAddress: selectedAddress)
+				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, parentMetadata: parentMetadata, selectedAddress: selectedAddress)
 			}
 			
 		} else {
@@ -261,10 +262,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return (xtzBalance == .zero() && tokenCount == 0)
 	}
 	
-	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
+	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
 		var data = startingData
 		
-		if metadata?.backedUp == false {
+		if metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true) {
 			data.append(BackupCellData())
 		}
 		

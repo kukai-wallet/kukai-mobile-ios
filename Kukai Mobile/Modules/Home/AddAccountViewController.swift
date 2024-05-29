@@ -75,7 +75,7 @@ extension AddAccountViewController: UITableViewDelegate {
 		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 		
 		self.showLoadingView()
-		AddAccountViewModel.addAccount(forMetadata: metadata, hdWalletIndex: indexPath.section) { [weak self] errorTitle, errorMessage in
+		AddAccountViewModel.addAccount(forMetadata: metadata, hdWalletIndex: indexPath.section, forceMainnet: false) { [weak self] errorTitle, errorMessage in
 			self?.hideLoadingView()
 			
 			if let title = errorTitle, let message = errorMessage {

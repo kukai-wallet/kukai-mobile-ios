@@ -297,11 +297,17 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 	
 	private func compareIndexesAndNavigate() {
 		if realWordIndexes.contains(selectedIndexes) {
+			
 			guard let address = (sideMenuOption_address ?? DependencyManager.shared.selectedWalletAddress) else {
 				return
 			}
 			
+			// Check if we are backing up from a child wallet, if so, switch out to its parent
 			var metadata = DependencyManager.shared.walletList.metadata(forAddress: address)
+			if metadata?.isChild == true {
+				let parent = DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "")
+				metadata = parent
+			}
 			metadata?.backedUp = true
 			
 			guard let meta = metadata else {
@@ -309,11 +315,11 @@ class VerifyRecoveryPhraseViewController: UIViewController {
 			}
 			
 			let walletCache = WalletCacheService()
-			let _ = DependencyManager.shared.walletList.update(address: address, with: meta)
+			let _ = DependencyManager.shared.walletList.update(address: meta.address, with: meta) // load meta address so we pick up parent
 			let _ = walletCache.encryptAndWriteMetadataToDisk(DependencyManager.shared.walletList)
 			
 			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
-			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
+			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address) // make sure we don't use meta address so we reload the child
 			
 			self.navigate()
 		}

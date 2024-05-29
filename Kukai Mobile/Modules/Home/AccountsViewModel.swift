@@ -339,7 +339,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			
 			vc.showLoadingView()
-			AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex) { [weak self] errorTitle, errorMessage in
+			AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
 				vc.hideLoadingView()
 				if let title = errorTitle, let message = errorMessage {
 					vc.windowError(withTitle: title, description: message)

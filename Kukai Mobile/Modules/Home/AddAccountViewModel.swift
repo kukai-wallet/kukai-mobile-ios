@@ -89,7 +89,7 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
 	}
 	
-	public static func isPreviousAccountUsed(forAddress address: String, completion: @escaping ((Bool) -> Void)) {
+	public static func isPreviousAccountUsed(forAddress address: String, forceMainnet: Bool, completion: @escaping ((Bool) -> Void)) {
 		var metadataToCheck = DependencyManager.shared.walletList.metadata(forAddress: address)
 		if (metadataToCheck?.children.count ?? 0) > 0, let last = metadataToCheck?.children.last {
 			metadataToCheck = last
@@ -100,12 +100,12 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		WalletManagementService.isUsedAccount(address: meta.address, completion: completion)
+		WalletManagementService.isUsedAccount(address: meta.address, forceMainnet: forceMainnet, completion: completion)
 	}
 	
-	public static func addAccount(forMetadata walletMetadata: WalletMetadata, hdWalletIndex: Int, completion: @escaping ((String?, String?) -> Void)) {
+	public static func addAccount(forMetadata walletMetadata: WalletMetadata, hdWalletIndex: Int, forceMainnet: Bool, completion: @escaping ((String?, String?) -> Void)) {
 		
-		AddAccountViewModel.isPreviousAccountUsed(forAddress: walletMetadata.address, completion: { isUsed in
+		AddAccountViewModel.isPreviousAccountUsed(forAddress: walletMetadata.address, forceMainnet: forceMainnet, completion: { isUsed in
 			guard isUsed else {
 				completion("error-previous-account-title".localized(), "error-previous-account-empty".localized())
 				return
