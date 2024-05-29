@@ -69,7 +69,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 	
 	func sceneDidEnterBackground(_ scene: UIScene) {
-		
 		//WalletConnectService.shared.disconnect()
 		
 		// When entering background, cover the screen in a new window containing a nav controller and the login flow

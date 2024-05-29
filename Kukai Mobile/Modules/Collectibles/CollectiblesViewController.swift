@@ -100,6 +100,7 @@ class CollectiblesViewController: UIViewController {
 	
 	@IBAction func segmentedControlTapped(_ sender: Any) {
 		pageController?.scrollTo(index: segmentedControl.selectedSegmentIndex)
+		moreButton.isHidden = (segmentedControl.selectedSegmentIndex != 0)
 	}
 	
 	@IBAction func moreButtonTapped(_ sender: UIButton) {

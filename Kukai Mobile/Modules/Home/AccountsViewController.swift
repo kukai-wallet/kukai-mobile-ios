@@ -88,7 +88,11 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 						}
 						
 					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
-						self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)
+						if newSubAccountIndex.row >= (self?.tableView.numberOfRows(inSection: newSubAccountIndex.section) ?? 0) {
+							self?.tableView.scrollToRow(at: IndexPath(row: 0, section: newSubAccountIndex.section), at: .middle, animated: true)
+						} else {
+							self?.tableView.scrollToRow(at: newSubAccountIndex, at: .middle, animated: true)
+						}
 					}
 			}
 		}
