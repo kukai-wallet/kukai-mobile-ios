@@ -96,7 +96,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	func showPrivacyProtectionWindow() {
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "calling showPrivacyProtectionWindow"))
 		
-		guard let windowScene = self.window?.windowScene, !privacyProtectionWindowVisible else {
+		guard !privacyProtectionWindowVisible else {
 			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "can't continue showPrivacyProtectionWindow"))
 			return
 		}
