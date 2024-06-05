@@ -20,6 +20,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	private var movingToDetails = false
 	private var textFieldDone = false
 	private var lastSearchedTerm: String? = nil
+	private var ignoreNextTextFieldDidEnd = true
 	
 	public weak var delegate: UIViewController? = nil
 	
@@ -92,6 +93,12 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	}
 	
 	func needsRefreshFromParent() {
+		if viewModel.isSearching {
+			self.clearSearchTextField()
+			viewModel.isSearching = false
+			ignoreNextTextFieldDidEnd = true
+		}
+		
 		refreshingFromParent = true
 		viewModel.refresh(animate: true)
 	}
@@ -174,11 +181,12 @@ extension CollectiblesCollectionsViewController: ValidatorTextFieldDelegate {
 	}
 	
 	public func textFieldDidEndEditing(_ textField: UITextField) {
-		if !movingToDetails && !textFieldDone {
+		if !movingToDetails && !textFieldDone && !ignoreNextTextFieldDidEnd {
 			self.hideSearchingUI()
 		}
 		
 		textFieldDone = false
+		ignoreNextTextFieldDidEnd = false
 	}
 	
 	func textFieldShouldClear(_ textField: UITextField) -> Bool {
