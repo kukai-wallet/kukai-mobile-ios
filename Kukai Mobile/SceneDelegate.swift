@@ -13,7 +13,7 @@ import Sentry
 import OSLog
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-
+	
 	var window: UIWindow?
 	
 	public var firstLoad = true
@@ -22,14 +22,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	@Published var dismissedPrivacyProtectionWindow = false
 	
 	private var privacyProtectionWindow: UIWindow?
-
-
+	
+	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 		// Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
 		// If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let scene = (scene as? UIWindowScene) else { return }
 		
+		privacyProtectionWindow = UIWindow(windowScene: scene)
 		WalletConnectService.shared.setup()
 		
 		scene.windows.forEach { window in
@@ -42,7 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			Logger.app.info("Launching without URL")
 		}
 	}
-
+	
 	func sceneDidDisconnect(_ scene: UIScene) {
 	}
 	
@@ -52,11 +53,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		ThemeManager.shared.updateSystemInterfaceStyle()
 		MigrationService.runChecks()
 	}
-
+	
 	func sceneWillResignActive(_ scene: UIScene) {
 		
 	}
-
+	
 	func sceneWillEnterForeground(_ scene: UIScene) {
 		
 		//WalletConnectService.shared.connect()
@@ -79,7 +80,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			DependencyManager.shared.tzktClient.stopListeningForAccountChanges()
 		}
 	}
-
+	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		guard let url = URLContexts.first?.url else {
 			return
@@ -87,8 +88,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		handleDeeplink(url: url)
 	}
-	
-	
 	
 	
 	
@@ -104,10 +103,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "continuing showPrivacyProtectionWindow"))
 		privacyProtectionWindowVisible = true
-		privacyProtectionWindow = nil
-		privacyProtectionWindow = UIWindow(windowScene: windowScene)
 		privacyProtectionWindow?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
 		privacyProtectionWindow?.windowLevel = .alert + 1
+		privacyProtectionWindow?.alpha = 1
+		privacyProtectionWindow?.isHidden = false
 		privacyProtectionWindow?.makeKeyAndVisible()
 	}
 	
@@ -125,7 +124,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			self?.privacyProtectionWindow?.alpha = 0
 			
 		} completion: { [weak self] finish in
-			self?.privacyProtectionWindow = nil
+			self?.privacyProtectionWindow?.isHidden = true
 			self?.privacyProtectionWindowVisible = false
 			self?.dismissedPrivacyProtectionWindow = true
 			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "done animating hidePrivacyProtectionWindow"))
