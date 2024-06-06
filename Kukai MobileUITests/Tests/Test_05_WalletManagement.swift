@@ -165,6 +165,17 @@ final class Test_05_WalletManagement: XCTestCase {
 		XCTAssert(count == hasWalletsOrAccounts, "\(count) != \(hasWalletsOrAccounts)")
 	}
 	
+	public static func addAccount(app: XCUIApplication, toWallet: String, waitForNewAddress: String) {
+		app.navigationBars.buttons["accounts-nav-add"].tap()
+		sleep(1)
+		
+		app.staticTexts["Add account to existing wallet"].tap()
+		sleep(1)
+		
+		app.staticTexts[toWallet].tap()
+		SharedHelpers.shared.waitForStaticText(waitForNewAddress, exists: true, inElement: app, delay: 3)
+	}
+	
 	public static func check(app: XCUIApplication, isInEditMode: Bool) {
 		SharedHelpers.shared.waitForImage("accounts-item-chevron", exists: isInEditMode, inElement: app.tables, delay: 1)
 		

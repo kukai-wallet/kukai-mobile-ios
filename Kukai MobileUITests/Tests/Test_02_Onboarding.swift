@@ -158,6 +158,7 @@ final class Test_02_Onboarding: XCTestCase {
 		// Navigate to wallet management
 		Test_03_Home.handleOpenWalletManagement(app: app)
 		
+		Test_05_WalletManagement.addAccount(app: app, toWallet: testConfig.walletAddress_HD.truncateTezosAddress(), waitForNewAddress: testConfig.walletAddress_HD_account_1.truncateTezosAddress())
 		Test_05_WalletManagement.check(app: app, hasSections: 1)
 		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 2)
 		
@@ -443,6 +444,75 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_05_WalletManagement.deleteAllWallets(app: app)
 	}
 	
+	func testImportPrivateKey_unencrypted() {
+		let app = XCUIApplication()
+		app.staticTexts["Already Have a Wallet"].tap()
+		
+		Test_02_Onboarding.handleImportPrivateKey(app: app, key: "edsk3KvXD8SVD9GCyU4jbzaFba2HZRad5pQ7ajL79n7rUoc3nfHv5t", encryptedWith: nil)
+		
+		
+		// Confirm terms and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		
+		
+		// App state verification
+		Test_04_Account.waitForInitalLoad(app: app)
+		
+		
+		// Navigate to wallet management
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		
+		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
+		XCTAssert(details0.title == "tz1Qvps...joCH", details0.title)
+		
+		Test_05_WalletManagement.deleteAllWallets(app: app)
+	}
+	
+	func testImportPrivateKey_encrypted() {
+		let app = XCUIApplication()
+		app.staticTexts["Already Have a Wallet"].tap()
+		
+		Test_02_Onboarding.handleImportPrivateKey(app: app, key: "edesk1L8uVSYd3aug7jbeynzErQTnBxq6G6hJwmeue3yUBt11wp3ULXvcLwYRzDp4LWWvRFNJXRi3LaN7WGiEGhh", encryptedWith: "pa55word")
+		
+		
+		// Confirm terms and conditions and create a passcode
+		SharedHelpers.shared.waitForButton("checkmark", exists: true, inElement: app, delay: 5)
+		
+		app.buttons["checkmark"].tap()
+		app.staticTexts["Get Started"].tap()
+		
+		// Create passcode
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_02_Onboarding.handlePasscode(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		
+		
+		// App state verification
+		Test_04_Account.waitForInitalLoad(app: app)
+		
+		
+		// Navigate to wallet management
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		
+		Test_05_WalletManagement.check(app: app, hasSections: 1)
+		Test_05_WalletManagement.check(app: app, hasWalletsOrAccounts: 1)
+		
+		let details0 = Test_05_WalletManagement.getWalletDetails(app: app, index: 0)
+		XCTAssert(details0.title == "tz1Xzte...GuMF", details0.title)
+		
+		Test_05_WalletManagement.deleteAllWallets(app: app)
+	}
 	
 	
 	// MARK: - Helpers
@@ -467,6 +537,22 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		app.typeText(address)
 		app.buttons["send-button"].tap()
+	}
+	
+	public static func handleImportPrivateKey(app: XCUIApplication, key: String, encryptedWith: String?) {
+		app.tables.staticTexts["Import a Private Key"].tap()
+		
+		app.scrollViews.children(matching: .textView).element.tap()
+		app.typeText(key)
+		
+		if let pass = encryptedWith {
+			app.textFields.firstMatch.tap()
+			app.typeText(pass)
+		}
+		
+		SharedHelpers.shared.typeDone(app: app)
+		
+		app.buttons["Import"].tap()
 	}
 	
 	public static func handleBasicImport(app: XCUIApplication, useAutoComplete: Bool) {
@@ -593,8 +679,14 @@ final class Test_02_Onboarding: XCTestCase {
 			sleep(2)
 		}
 		
-		
 		SharedHelpers.shared.waitForButton("Don’t Merge", exists: true, inElement: settingsApp, delay: 10)
+		
+		let notNowButton = settingsApp.buttons["Not Now"]
+		if notNowButton.exists {
+			notNowButton.tap()
+			sleep(2)
+		}
+		
 		settingsApp.buttons["Don’t Merge"].tap()
 		
 		SharedHelpers.shared.waitForStaticText("Sign Out", exists: true, inElement: settingsApp, delay: 30)
