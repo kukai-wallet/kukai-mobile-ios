@@ -28,20 +28,18 @@ final class Test_03_Home: XCTestCase {
 	
 	func test_01_importWalletsNeeded() throws {
 		let app = XCUIApplication()
-		
+		let testConfig = EnvironmentVariables.shared.config()
 		
 		// Import the HD wallet and wait for the initial load
 		// This will be used for ghostnet to perform transactions
 		Test_02_Onboarding.handleBasicImport(app: app, useAutoComplete: false)
-		
 		Test_03_Home.handleOpenWalletManagement(app: app)
-		sleep(2)
+		Test_05_WalletManagement.addAccount(app: app, toWallet: testConfig.walletAddress_HD.truncateTezosAddress(), waitForNewAddress: testConfig.walletAddress_HD_account_1.truncateTezosAddress())
 		
 		Test_05_WalletManagement.addMore(app: app)
 		
-		SharedHelpers.shared.tapSecondaryButton(app: app)
-		sleep(2)
-		
+		app.staticTexts["Add Existing Wallet"].tap()
+		sleep(1)
 		
 		// Import a known mainnet wallet as a watch wallet, allowing to perform mainnet checks like baker rewards
 		Test_02_Onboarding.handleImportWatchWallet_address(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress)

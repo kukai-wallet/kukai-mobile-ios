@@ -138,8 +138,8 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(2)
 		
 		let fullURL1 = (safari.textFields["Address"].value as? String) ?? ""
-		let prefix1 = String(fullURL1.prefix(19))
-		XCTAssert(prefix1 == "https://twitter.com", prefix1)
+		let prefix1 = String(fullURL1.prefix(13))
+		XCTAssert(prefix1 == "https://x.com", prefix1)
 		
 		app.launch()
 		sleep(2)

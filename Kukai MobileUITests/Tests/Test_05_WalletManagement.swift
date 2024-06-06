@@ -123,10 +123,10 @@ final class Test_05_WalletManagement: XCTestCase {
 		Test_05_WalletManagement.addMore(app: app)
 		sleep(2)
 		
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(2)
+		app.staticTexts["Create a New Wallet"].tap()
+		sleep(1)
 		
-		SharedHelpers.shared.tapTertiaryButton(app: app)
+		app.staticTexts["HD Wallet"].tap()
 		sleep(2)
 		
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count

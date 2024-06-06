@@ -388,7 +388,12 @@ final class Test_04_Account: XCTestCase {
 		bakerButton.tap()
 		sleep(2)
 		
-		app.tables.staticTexts["Baking Benjamins"].tap()
+		let name = "Baking Benjamins"
+		if app.tables.staticTexts[name].exists {
+			app.tables.staticTexts["Baking Benjamins"].tap()
+		} else {
+			app.tables.staticTexts["tz1YgDU...4jnD"].tap()
+		}
 		sleep(2)
 		
 		SharedHelpers.shared.tapPrimaryButton(app: app)
