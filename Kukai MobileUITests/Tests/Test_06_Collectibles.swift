@@ -144,7 +144,18 @@ final class Test_06_Collectibles: XCTestCase {
 		sleep(2)
 		
 		app.typeText("Cookie")
+		Test_06_Collectibles.switchGroupMode(app: app) // Catching a crash that occured, making sure it doesn't get re-added
 		sleep(2)
+		
+		app.collectionViews["collectibles-list-view"].textFields["collectibles-search"].tap()
+		sleep(2)
+		app.typeText("Cookie")
+		Test_06_Collectibles.switchGroupMode(app: app)
+		sleep(2)
+		
+		app.collectionViews["collectibles-list-view"].textFields["collectibles-search"].tap()
+		sleep(2)
+		app.typeText("Cookie")
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collectibles-search-result-image").count > 0)
 		
 		app.collectionViews["collectibles-list-view"].buttons["collectibles-search-cancel"].tap()
@@ -194,5 +205,24 @@ final class Test_06_Collectibles: XCTestCase {
 		
 		sleep(2)
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+	}
+	
+	
+	
+	// Helpers
+	
+	static func switchGroupMode(app: XCUIApplication) {
+		app.buttons["colelctibles-tap-more"].tap()
+		sleep(1)
+		
+		let groupCollections = app.staticTexts["Group Collections"]
+		let ungroupCollections = app.staticTexts["Ungroup Collections"]
+		
+		if groupCollections.exists {
+			groupCollections.tap()
+			
+		} else if ungroupCollections.exists {
+			ungroupCollections.tap()
+		}
 	}
 }

@@ -71,40 +71,9 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(2)
 		
 		
+		handlePastingQRCode(app: app, springboard: springboard, dAppName: "Test Dapp")
 		
-		// Open app to pair
-		app.activate()
-		Test_03_Home.handleLoginIfNeeded(app: app)
-		sleep(2)
-		
-		
-		// Open scanner and double check for alerts just in case
-		Test_03_Home.handleOpenScanner(app: app)
-		sleep(2)
-		
-		let cameraAlert = springboard.alerts.firstMatch
-		if cameraAlert.exists {
-			
-			let allow = cameraAlert.scrollViews.buttons["Allow"]
-			let ok = cameraAlert.scrollViews.buttons["OK"]
-			if allow.exists {
-				allow.tap()
-			} else if ok.exists {
-				ok.tap()
-			}
-		}
-		
-		app.buttons["paste-button"].tap()
-		sleep(2)
-		Test_10_ConnectedApps.handlePastePermissionsIfNecessary(app: app)
-		
-		
-		// Wait for popup
-		SharedHelpers.shared.waitForStaticText("Test Dapp", exists: true, inElement: app, delay: 5)
-		
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(5)
-		
+		// Perform operations
 		handleSignAndWrapTogether(app: app, safari: safari, webview: webview)
 		handleBatch(app: app, safari: safari, webview: webview)
 		handleSimulatedErrors(app: app, safari: safari, webview: webview)
@@ -153,9 +122,153 @@ final class Test_10_ConnectedApps: XCTestCase {
 		disconnectFromSideMenuAndVerify(app: app, safari: safari, webview: webview)
 	}
 	
+	func test_03_objkt() {
+		let app = XCUIApplication()
+		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		
+		
+		// Go to safari -> ghostnet objkt
+		safari.launch()
+		
+		sleep(2)
+		safari.textFields["TabBarItemTitle"].tap()
+		
+		sleep(2)
+		safari.typeText("https://ghostnet.objkt.com")
+		safari.keyboards.buttons["Go"].tap()
+		
+		SharedHelpers.shared.waitForStaticText("OE Ending Soon", exists: true, inElement: safari.webViews["WebView"], delay: 10)
+		sleep(2)
+		
+		// Check if already logged in, if so disconnect
+		let profileLink = safari.webViews["WebView"].links[EnvironmentVariables.shared.config().walletAddress_HD]
+		if profileLink.exists {
+			profileLink.tap()
+			sleep(1)
+			
+			let links = safari.links
+			for i in 0..<links.count {
+				if links.element(boundBy: i).label.suffix(8) == "Sign Out" {
+					links.element(boundBy: i).forceTap()
+				}
+			}
+			
+			sleep(1)
+		}
+		
+		
+		// Find + tap sync button
+		let links = safari.webViews["WebView"].links
+		var indexOfBanner = 0
+		for i in 0..<links.count {
+			if links.element(boundBy: i).label == "ghostnet.objkt.com" {
+				indexOfBanner = i
+			}
+		}
+		
+		let indexOfSync = indexOfBanner + 3
+		let sync = links.element(boundBy: indexOfSync)
+		sync.tap()
+		sleep(2)
+		
+		
+		// Find + tap kukai QRCode
+		safari.staticTexts["Kukai"].tap()
+		sleep(2)
+		
+		let buttons = safari.webViews["WebView"].buttons
+		buttons.element(boundBy: 2).forceTap()
+		sleep(2)
+		
+		safari.webViews["WebView"].staticTexts["Copy to clipboard"].forceTap()
+		sleep(2)
+		
+		
+		// Connect and sign
+		handlePastingQRCode(app: app, springboard: springboard, dAppName: "objkt.com")
+		
+		springboard.buttons["Return to Safari"].tap()
+		SharedHelpers.shared.waitForStaticText("Open", exists: true, inElement: safari, delay: 10)
+		safari.buttons["Open"].forceTap()
+		
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.waitForStaticText("objkt.com", exists: true, inElement: app, delay: 5)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(3)
+		
+		
+		// Perform operations
+		springboard.buttons["Return to Safari"].tap()
+		safari.webViews.firstMatch.swipeUp()
+		safari.links["Never. Stop. Breathing."].firstMatch.doubleTap()
+		sleep(3)
+		
+		safari.webViews.firstMatch.swipeUp()
+		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS '1.00 tez'")).firstMatch.tap()
+		sleep(1)
+		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS 'Wallet'")).firstMatch.tap()
+		sleep(3)
+		
+		safari.buttons["Open"].tap()
+		
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.waitForStaticText("objkt.com", exists: true, inElement: app, delay: 5)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(3)
+		
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+		
+		springboard.buttons["Return to Safari"].tap()
+		safari.webViews["WebView"].links["Close"].tap()
+	}
+	
 	
 	
 	// MARK: - Helpers
+	
+	func handlePastingQRCode(app: XCUIApplication, springboard: XCUIApplication, dAppName: String) {
+		
+		// Open app to pair
+		app.activate()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
+		
+		
+		// Open scanner and double check for alerts just in case
+		Test_03_Home.handleOpenScanner(app: app)
+		sleep(2)
+		
+		let cameraAlert = springboard.alerts.firstMatch
+		if cameraAlert.exists {
+			
+			let allow = cameraAlert.scrollViews.buttons["Allow"]
+			let ok = cameraAlert.scrollViews.buttons["OK"]
+			if allow.exists {
+				allow.tap()
+			} else if ok.exists {
+				ok.tap()
+			}
+		}
+		
+		app.buttons["paste-button"].tap()
+		sleep(2)
+		Test_10_ConnectedApps.handlePastePermissionsIfNecessary(app: app)
+		
+		
+		// Wait for popup
+		SharedHelpers.shared.waitForStaticText(dAppName, exists: true, inElement: app, delay: 5)
+		
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(5)
+	}
 	
 	/// For some reason I can't tap "Allow paste" via the usual trick of listening for springboard alerts. This one is different and blocks the thread. Also doesn't work with interuptionMonitor
 	func handlePasteSetting() {
@@ -365,102 +478,4 @@ final class Test_10_ConnectedApps: XCTestCase {
 		}
 		sleep(2)
 	}
-	
-	
-	
-	/*
-	 AirGaps WC2 is broken, ghostnet objkt is set to require mainnet. Hopefully can uncomment this soon!
-	 
-	 func test_02_connectToOBJKT() throws {
-	 let app = XCUIApplication()
-	 let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
-	 let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
-	 
-	 
-	 // Go to safari -> ghostnet objkt
-	 safari.launch()
-	 
-	 sleep(2)
-	 safari.textFields["TabBarItemTitle"].tap()
-	 
-	 sleep(2)
-	 safari.typeText("https://ghostnet.objkt.com")
-	 safari.keyboards.buttons["Go"].tap()
-	 
-	 SharedHelpers.shared.waitForStaticText("objkt.com", exists: true, inElement: safari.webViews["WebView"], delay: 10)
-	 sleep(2)
-	 
-	 // Tap Menu + sync
-	 let objktPage = safari.webViews["WebView"].otherElements["objkt.com | The largest Digital Art & Collectible marketplace on Tezos"]
-	 let menuButton = objktPage.children(matching: .link).element(boundBy: 2)
-	 menuButton.tap()
-	 
-	 sleep(1)
-	 objktPage.links["sync Sync"].tap()
-	 
-	 sleep(1)
-	 objktPage.otherElements["Other Wallets"].forceTap()
-	 
-	 sleep(1)
-	 objktPage.otherElements["Trust Wallet"].forceTap()
-	 
-	 
-	 // Get Trust wallet link
-	 safari.textFields["Address"].tap()
-	 let fullURL = safari.textFields["Address"].value as? String
-	 var wc2Code = fullURL?.replacingOccurrences(of: "https://link.trustwallet.com/wc?uri=", with: "")
-	 wc2Code = wc2Code?.removingPercentEncoding
-	 
-	 
-	 safari.buttons["Cancel"].tap()
-	 
-	 let backbuttonButton = safari.toolbars["BottomBrowserToolbar"].buttons["BackButton"]
-	 backbuttonButton.tap()
-	 menuButton.forceTap()
-	 
-	 
-	 // Back to app and paste in WC2 code
-	 app.launch()
-	 Test_03_Home.handleLoginIfNeeded(app: app)
-	 
-	 sleep(2)
-	 Test_03_Home.handleOpenScanner(app: app)
-	 
-	 sleep(2)
-	 
-	 let alert = springboard.alerts.firstMatch
-	 if alert.exists {
-	 alert.scrollViews.buttons["Ok"].tap()
-	 }
-	 
-	 app.textFields.firstMatch.tap()
-	 app.typeText(wc2Code ?? "")
-	 app.buttons["Done"].tap()
-	 
-	 
-	 // Wait for popup
-	 SharedHelpers.shared.waitForStaticText("objkt.com", exists: true, inElement: app, delay: 5)
-	 
-	 SharedHelpers.shared.tapPrimaryButton(app: app)
-	 
-	 
-	 
-	 
-	 // Copy trust wallet WC2
-	 
-	 // reopen app and paste into scanner
-	 
-	 // approve setup and sign
-	 
-	 // go back to safari
-	 
-	 // go to first OE and purchase
-	 
-	 // verify activity and item shows up
-	 }
-	 
-	 func test_03_burnCollectible() throws {
-	 
-	 }
-	 */
 }
