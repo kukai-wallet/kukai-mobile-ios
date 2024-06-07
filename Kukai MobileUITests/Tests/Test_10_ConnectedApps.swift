@@ -144,9 +144,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 		app.activate()
 		sleep(2)
 		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: app, delay: 10)
-		SharedHelpers.shared.dismissBottomSheetByDraggging(staticText: "Test Dapp", app: app)
-		sleep(2)
-		
 		
 		// Return to safari and trigger sign expression
 		safari.activate()
@@ -332,9 +329,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 	}
 	
 	func disconnectFromSideMenuAndVerify(app: XCUIApplication, safari: XCUIApplication, webview: XCUIElement) {
-		app.tables.staticTexts["Connected Apps"].tap()
-		sleep(1)
-		
 		app.staticTexts["Test Dapp"].tap()
 		sleep(2)
 		
