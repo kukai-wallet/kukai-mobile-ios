@@ -56,7 +56,7 @@ class SendTokenAmountViewController: UIViewController {
 		
 		
 		// Token data
-		balanceLabel.text = token.balance.normalisedRepresentation
+		balanceLabel.text = token.availableBalance.normalisedRepresentation
 		symbolLabel.text = token.symbol
 		fiatValueLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 		tokenIcon.addTokenIcon(token: token)
@@ -64,7 +64,7 @@ class SendTokenAmountViewController: UIViewController {
 		
 		// Textfield
 		textfield.validatorTextFieldDelegate = self
-		textfield.validator = TokenAmountValidator(balanceLimit: token.balance, decimalPlaces: token.decimalPlaces)
+		textfield.validator = TokenAmountValidator(balanceLimit: token.availableBalance, decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
 		textfield.numericAndSeperatorOnly = true
 		
@@ -85,7 +85,7 @@ class SendTokenAmountViewController: UIViewController {
 	}
 	
 	@IBAction func maxButtonTapped(_ sender: UIButton) {
-		textfield.text = selectedToken?.balance.normalisedRepresentation ?? ""
+		textfield.text = selectedToken?.availableBalance.normalisedRepresentation ?? ""
 		let _ = textfield.revalidateTextfield()
 	}
 	
@@ -168,7 +168,7 @@ extension SendTokenAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validateMaxXTZ(input: String) {
-		if selectedToken?.isXTZ() == true, let balance = selectedToken?.balance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount  {
+		if selectedToken?.isXTZ() == true, let balance = selectedToken?.availableBalance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount  {
 			maxWarningLabel.isHidden = false
 		} else {
 			maxWarningLabel.isHidden = true

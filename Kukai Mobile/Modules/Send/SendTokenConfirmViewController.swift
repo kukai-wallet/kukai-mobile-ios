@@ -262,8 +262,8 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
-		if !isWalletConnectOp, let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.balance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
-			let updatedValue = ((token.balance - oneMutez) - fee)
+		if !isWalletConnectOp, let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.availableBalance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
+			let updatedValue = ((token.availableBalance - oneMutez) - fee)
 			
 			if updatedValue < .zero() {
 				updateAmountDisplay(withValue: .zero())
@@ -272,10 +272,10 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 				
 				if isFirstCall {
 					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-						self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
+						self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
 					}
 				} else {
-					self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.balance.normalisedRepresentation, fee.normalisedRepresentation))
+					self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
 				}
 				
 			} else {
