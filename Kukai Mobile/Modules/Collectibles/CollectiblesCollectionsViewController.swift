@@ -20,7 +20,7 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	private var movingToDetails = false
 	private var textFieldDone = false
 	private var lastSearchedTerm: String? = nil
-	private var ignoreNextTextFieldDidEnd = true
+	private var ignoreNextTextFieldDidEnd = false
 	
 	public weak var delegate: UIViewController? = nil
 	

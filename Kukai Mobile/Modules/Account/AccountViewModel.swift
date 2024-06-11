@@ -346,7 +346,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)
 		
 		if obj is XTZAmount {
-			return Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
+			let account =  DependencyManager.shared.balanceService.account
+			return Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
 		} else if obj is Token {
 			return obj as? Token

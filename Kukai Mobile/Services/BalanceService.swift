@@ -192,6 +192,10 @@ public class BalanceService {
 			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
 			
 			self.account = account
+			
+		} else if let add = address {
+			// If local cache fails to parse, models must have change. Delete everything, will trigger a network refresh
+			deleteAccountCachcedData(forAddress: add)
 		}
 		
 		cacheLoadingInProgress = false
@@ -271,7 +275,7 @@ public class BalanceService {
 	// MARK: - Refresh
 	
 	private func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: BalanceService.RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
-		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
+		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 		
 		var error: KukaiError? = nil
 		balanceRequestDispathGroup.enter()
@@ -285,7 +289,7 @@ public class BalanceService {
 		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
-			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
+			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 			self.balanceRequestDispathGroup.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
@@ -536,6 +540,8 @@ public class BalanceService {
 			
 			let newAccount = Account(walletAddress: self?.currentlyRefreshingAccount.walletAddress ?? "",
 									 xtzBalance: self?.currentlyRefreshingAccount.xtzBalance ?? .zero(),
+									 xtzStakedBalance: self?.currentlyRefreshingAccount.xtzStakedBalance ?? .zero(),
+									 xtzUnstakedBalance: self?.currentlyRefreshingAccount.xtzUnstakedBalance ?? .zero(),
 									 tokens: newTokens,
 									 nfts: newNFTs,
 									 recentNFTs: self?.currentlyRefreshingAccount.recentNFTs ?? [],

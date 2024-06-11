@@ -18,7 +18,7 @@ final class Test_05_WalletManagement: XCTestCase {
 	override func setUpWithError() throws {
 		continueAfterFailure = false
 		
-		SharedHelpers.shared.application().launch()
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -123,10 +123,10 @@ final class Test_05_WalletManagement: XCTestCase {
 		Test_05_WalletManagement.addMore(app: app)
 		sleep(2)
 		
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(2)
+		app.staticTexts["Create a New Wallet"].tap()
+		sleep(1)
 		
-		SharedHelpers.shared.tapTertiaryButton(app: app)
+		app.staticTexts["HD Wallet"].tap()
 		sleep(2)
 		
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-section-header").count
@@ -150,7 +150,6 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	
 	
-	
 	// MARK: - Helpers
 	
 	public static func check(app: XCUIApplication, hasSections: Int) {
@@ -163,6 +162,17 @@ final class Test_05_WalletManagement: XCTestCase {
 		let count = app.tables.cells.containing(.staticText, identifier: "accounts-item-title").count
 		
 		XCTAssert(count == hasWalletsOrAccounts, "\(count) != \(hasWalletsOrAccounts)")
+	}
+	
+	public static func addAccount(app: XCUIApplication, toWallet: String, waitForNewAddress: String) {
+		app.navigationBars.buttons["accounts-nav-add"].tap()
+		sleep(1)
+		
+		app.staticTexts["Add account to existing wallet"].tap()
+		sleep(1)
+		
+		app.staticTexts[toWallet].tap()
+		SharedHelpers.shared.waitForStaticText(waitForNewAddress, exists: true, inElement: app, delay: 3)
 	}
 	
 	public static func check(app: XCUIApplication, isInEditMode: Bool) {
