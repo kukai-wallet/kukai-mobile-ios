@@ -16,8 +16,6 @@ final class Test_06_Collectibles: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = true
-		
-		SharedHelpers.shared.application().launch()
 	}
 	
 	override func tearDownWithError() throws {

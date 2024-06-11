@@ -106,7 +106,6 @@ public class WalletConnectService {
 		Pair.configure(metadata: WalletConnectService.metadata)
 		Sign.configure(crypto: WC2CryptoProvider())
 		
-		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { status in
 			Logger.app.info("WC2 - Connection status: changed to \(status == .connected ? "connected" : "disconnected")")

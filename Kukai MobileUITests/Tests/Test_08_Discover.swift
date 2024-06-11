@@ -14,8 +14,6 @@ final class Test_08_Discover: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
-		
-		SharedHelpers.shared.application().launch()
 	}
 	
 	override func tearDownWithError() throws {

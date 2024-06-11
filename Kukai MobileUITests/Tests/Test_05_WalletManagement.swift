@@ -17,8 +17,6 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
-		
-		SharedHelpers.shared.application().launch()
 	}
 	
 	override func tearDownWithError() throws {
