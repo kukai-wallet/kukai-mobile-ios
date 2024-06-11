@@ -87,19 +87,17 @@ class StakeViewController: UIViewController {
 		}
 		
 		self.showLoadingView()
-		
 		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { [weak self] estimationResult in
+			self?.hideLoadingView()
 			
 			switch estimationResult {
 				case .success(let estimationResult):
 					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
 					TransactionService.shared.currentForgedString = estimationResult.forgedString
-					self?.loadingViewHideActivity()
 					self?.performSegue(withIdentifier: "confirm", sender: nil)
 					
 				case .failure(let estimationError):
-					self?.hideLoadingView()
 					self?.windowError(withTitle: "error".localized(), description: estimationError.description)
 			}
 		}
