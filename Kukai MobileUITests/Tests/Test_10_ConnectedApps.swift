@@ -127,7 +127,6 @@ final class Test_10_ConnectedApps: XCTestCase {
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
-		
 		// Go to safari -> ghostnet objkt
 		safari.launch()
 		
@@ -143,8 +142,10 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		// Check if already logged in, if so disconnect
 		let profileLink = safari.webViews["WebView"].links[EnvironmentVariables.shared.config().walletAddress_HD]
-		if profileLink.exists {
-			profileLink.tap()
+		let profileLink2 = safari.webViews["WebView"].links[EnvironmentVariables.shared.config().walletAddress_HD_account_1]
+		let profileElement = profileLink.exists ? profileLink2 : profileLink
+		if profileElement.exists {
+			profileElement.tap()
 			sleep(1)
 			
 			let links = safari.links
@@ -207,15 +208,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(3)
 		
 		safari.webViews.firstMatch.swipeUp()
-		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS '1.00 tez'")).firstMatch.tap()
-		sleep(1)
-		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS 'Wallet'")).firstMatch.tap()
-		sleep(3)
-		
-		safari.buttons["Open"].tap()
-		
-		Test_03_Home.handleLoginIfNeeded(app: app)
-		sleep(2)
+		handleTappingBuyAndOpeningApp(safari: safari, app: app)
 		
 		SharedHelpers.shared.waitForStaticText("objkt.com", exists: true, inElement: app, delay: 5)
 		Test_04_Account.slideButtonToComplete(inApp: app)
@@ -228,11 +221,84 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		springboard.buttons["Return to Safari"].tap()
 		safari.webViews["WebView"].links["Close"].tap()
+		sleep(2)
+		
+		
+		// Perform multiple "fake" operations that will be cancelled, to test resilience
+		handleTappingBuyAndOpeningApp(safari: safari, app: app)
+		handleCancellingOperation(app: app)
+		springboard.buttons["Return to Safari"].tap()
+		sleep(5)
+		
+		handleTappingBuyAndOpeningApp(safari: safari, app: app)
+		handleCancellingOperation(app: app)
+		springboard.buttons["Return to Safari"].tap()
+		sleep(5)
+		
+		handleTappingBuyAndOpeningApp(safari: safari, app: app)
+		handleCancellingOperation(app: app)
+		springboard.buttons["Return to Safari"].tap()
+		sleep(5)
+		
+		
+		// Perform an account switch, and sign another message to complete process
+		app.activate()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
+		
+		Test_03_Home.handleOpenSideMenu(app: app)
+		
+		app.tables.staticTexts["Connected Apps"].tap()
+		sleep(1)
+		
+		app.staticTexts["objkt.com"].firstMatch.tap()
+		sleep(2)
+		
+		app.staticTexts["Switch Wallet"].tap()
+		sleep(2)
+		
+		let secondAddress = EnvironmentVariables.shared.config().walletAddress_HD_account_1.truncateTezosAddress()
+		app.staticTexts[secondAddress].tap()
+		sleep(4)
+		
+		// Open safari to trigger switch
+		safari.activate()
+		sleep(5)
+		safari.buttons["Open"].tap()
+		
+		
+		// Return to app and ensure its now visible there too
+		app.activate()
+		sleep(2)
+		SharedHelpers.shared.waitForStaticText(secondAddress, exists: true, inElement: app, delay: 10)
+		
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: true, inElement: app, delay: 10)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		SharedHelpers.shared.waitForStaticText("Sign Message", exists: false, inElement: app, delay: 10)
+		sleep(1)
 	}
 	
 	
 	
 	// MARK: - Helpers
+	
+	func handleTappingBuyAndOpeningApp(safari: XCUIApplication, app: XCUIApplication) {
+		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS '1.00 tez'")).firstMatch.tap()
+		sleep(1)
+		safari.webViews["WebView"].links.matching(NSPredicate(format: "label CONTAINS 'Wallet'")).firstMatch.tap()
+		sleep(5)
+		
+		safari.buttons["Open"].tap()
+		
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		sleep(2)
+	}
+	
+	func handleCancellingOperation(app: XCUIApplication) {
+		SharedHelpers.shared.dismissBottomSheetByDraggging(staticText: "Confirm Send", app: app)
+		sleep(3)
+	}
 	
 	func handlePastingQRCode(app: XCUIApplication, springboard: XCUIApplication, dAppName: String) {
 		
