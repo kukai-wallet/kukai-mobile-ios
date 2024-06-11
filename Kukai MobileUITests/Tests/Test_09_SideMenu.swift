@@ -9,11 +9,12 @@ import XCTest
 
 final class Test_09_SideMenu: XCTestCase {
 	
-	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -178,7 +179,6 @@ final class Test_09_SideMenu: XCTestCase {
 		let fullURL3 = (safari.textFields["Address"].value as? String) ?? ""
 		XCTAssert(fullURL3 == "https://t.me/KukaiWallet", fullURL3)
 	}
-	
 	
 	
 	// MARK: - Helpers

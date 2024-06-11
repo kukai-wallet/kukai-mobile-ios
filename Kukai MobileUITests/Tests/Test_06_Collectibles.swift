@@ -16,6 +16,8 @@ final class Test_06_Collectibles: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = true
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -204,7 +206,6 @@ final class Test_06_Collectibles: XCTestCase {
 		sleep(2)
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 	}
-	
 	
 	
 	// Helpers

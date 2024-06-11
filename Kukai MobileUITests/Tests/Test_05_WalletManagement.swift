@@ -17,6 +17,8 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -144,7 +146,6 @@ final class Test_05_WalletManagement: XCTestCase {
 		
 		app.tables.staticTexts[testConfig.walletAddress_HD.truncateTezosAddress()].tap()
 	}
-	
 	
 	
 	

@@ -9,11 +9,12 @@ import XCTest
 
 final class Test_07_Activity: XCTestCase {
 	
-	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {

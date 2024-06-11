@@ -16,6 +16,8 @@ final class Test_10_ConnectedApps: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = false
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -33,7 +35,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		
 		// Go to safari -> ghostnet website
-		safari.launch()
+		safari.activate()
 		
 		sleep(2)
 		safari.textFields["TabBarItemTitle"].tap()
@@ -126,7 +128,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
 		
 		// Go to safari -> ghostnet objkt
-		safari.launch()
+		safari.activate()
 		
 		sleep(2)
 		safari.textFields["TabBarItemTitle"].tap()
@@ -249,7 +251,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		app.tables.staticTexts["Connected Apps"].tap()
 		sleep(1)
 		
-		app.staticTexts["objkt.com"].firstMatch.tap()
+		app.staticTexts.lastMatch(staticText: "objkt.com")?.tap()
 		sleep(2)
 		
 		app.staticTexts["Switch Wallet"].tap()
