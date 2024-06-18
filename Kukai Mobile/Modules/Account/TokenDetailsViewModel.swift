@@ -50,7 +50,8 @@ struct TokenDetailsBalanceAndBakerData: Hashable, Identifiable {
 	let id = UUID()
 	let balance: String
 	let value: String
-	let isStakingPossible: Bool
+	let isDelegationPossible: Bool
+	let isDelegated: Bool
 	let isStaked: Bool
 	let bakerName: String
 }
@@ -153,7 +154,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let obj = item as? TokenDetailsBalanceAndBakerData {
-				let reuse = obj.isStakingPossible ? (obj.isStaked ? "TokenDetailsBalanceAndBakerCell_baker" : "TokenDetailsBalanceAndBakerCell_nobaker") : "TokenDetailsBalanceAndBakerCell_nostaking"
+				let reuse = obj.isDelegationPossible ? (obj.isDelegated ? "TokenDetailsBalanceAndBakerCell_baker" : "TokenDetailsBalanceAndBakerCell_nobaker") : "TokenDetailsBalanceAndBakerCell_nostaking"
 				
 				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
 					
@@ -226,7 +227,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		]
 		
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true && DependencyManager.shared.currentNetworkType != .testnet {
+		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .testnet {
 			data.append(stakingRewardLoadingData)
 		}
 		
@@ -284,7 +285,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		 
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isStakingPossible == true && balanceAndBakerData?.isStaked == true && DependencyManager.shared.currentNetworkType != .testnet {
+		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .testnet {
 			loadBakerData { [weak self] result in
 				guard let self = self else { return }
 				
@@ -331,7 +332,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
 			
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isStakingPossible: true, isStaked: (account.delegate != nil), bakerName: bakerString)
+			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isDelegationPossible: true, isDelegated: (account.delegate != nil), isStaked: account.xtzStakedBalance > .zero(), bakerName: bakerString)
 			
 		} else {
 			self.tokenHeaderData.tokenURL = token.thumbnailURL
@@ -370,12 +371,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 				}
 				
-				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isStakingPossible: false, isStaked: false, bakerName: "")
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
 				
 			} else {
 				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
 				tokenHeaderData.fiatAmount = dashedString
-				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isStakingPossible: false, isStaked: false, bakerName: "")
+				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
 			}
 		}
 	}
