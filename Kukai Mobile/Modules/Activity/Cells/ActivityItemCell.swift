@@ -105,6 +105,28 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			
 			destinationIconStackView.isHidden = true
 			
+		} else if data.type == .staking {
+			typeIcon.isHidden = true
+			typeLabel.text = ""
+			toLabel.isHidden = false
+			
+			let url = TzKTClient.avatarURL(forToken: data.baker?.address ?? "")
+			MediaProxyService.load(url: url, to: iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			iconView.backgroundColor = .white
+			iconView.customCornerRadius = 20
+			
+			if data.subType == .stake {
+				titleLabel.text = "Stake: \( (data.primaryToken?.balance ?? .zero()).normalisedRepresentation) XTZ"
+				toLabel.text = "To: "
+				
+			} else if data.subType == .unstake {
+				titleLabel.text = "Unstake: \( (data.primaryToken?.balance ?? .zero()).normalisedRepresentation) XTZ"
+				toLabel.text = "From: "
+			}
+			
+			destinationLabel.text = data.baker?.alias ?? data.baker?.address.truncateTezosAddress() ?? "..."
+			destinationIconStackView.isHidden = true
+			
 		} else {
 			
 			// Icon and title

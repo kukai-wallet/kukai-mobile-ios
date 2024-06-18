@@ -112,7 +112,16 @@ public class ActivityService {
 		Logger.app.info("ActivityService: add pending from \(fromWallet.address) with opHash: \(opHash)")
 		let destination = TzKTAddress(alias: destinationAlias, address: destinationAddress)
 		let previousId = pendingTransactionGroups.count == 0 ? (transactionGroups.first?.transactions.first?.id ?? 0) : (pendingTransactionGroups.first?.id ?? 0)
-		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken)
+		var kind: String? = nil
+		
+		if parameters?["entrypoint"] == "stake" && destinationAddress == fromWallet.address {
+			kind = "stake"
+			
+		} else if parameters?["entrypoint"] == "unstake" && destinationAddress == fromWallet.address {
+			kind = "unstake"
+		}
+		
+		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken, baker: nil, kind: kind)
 		transaction.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 		
 		if let group = TzKTTransactionGroup(withTransactions: [transaction], currentWalletAddress: fromWallet.address) {
@@ -134,7 +143,7 @@ public class ActivityService {
 		var transactions: [TzKTTransaction] = []
 		for info in batchInfo {
 			previousId += 1
-			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken)
+			var temp = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId, opHash: opHash, type: info.type, counter: counter, fromWallet: fromWallet, destination: info.destination, xtzAmount: info.xtzAmount, parameters: info.parameters, primaryToken: info.primaryToken, baker: nil, kind: nil)
 			temp.processAdditionalData(withCurrentWalletAddress: fromWallet.address)
 			
 			transactions.append(temp)

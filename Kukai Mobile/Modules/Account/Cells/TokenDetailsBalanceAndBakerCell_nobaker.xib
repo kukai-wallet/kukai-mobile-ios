@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,31 +26,31 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eg7-gH-urm">
-                        <rect key="frame" x="16" y="24" width="264" height="14"/>
+                        <rect key="frame" x="16" y="24" width="267.33333333333331" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt10"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Not Delegated" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Q5-qQ-inm">
-                        <rect key="frame" x="296" y="24" width="81" height="14"/>
+                        <rect key="frame" x="299.33333333333331" y="24" width="77.666666666666686" height="14"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt10"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Koh-l9-dib">
-                        <rect key="frame" x="48" y="42" width="232" height="21"/>
+                        <rect key="frame" x="48.000000000000014" y="42" width="235.33333333333337" height="21"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                         <color key="textColor" name="Txt2"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QwJ-sD-uhn">
-                        <rect key="frame" x="48" y="63" width="232" height="16"/>
+                        <rect key="frame" x="48.000000000000014" y="63" width="235.33333333333337" height="16"/>
                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
                         <color key="textColor" name="Txt10"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hfb-Ue-zc0" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="296" y="42" width="81" height="37"/>
+                        <rect key="frame" x="299.33333333333331" y="42" width="77.666666666666686" height="37"/>
                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                         <state key="normal" title="Delegate">
@@ -96,6 +96,7 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="bakerButton" destination="hfb-Ue-zc0" id="FU4-go-7Ae"/>
+                <outlet property="bakerHeading" destination="6Q5-qQ-inm" id="anf-QB-Hop"/>
                 <outlet property="balance" destination="Koh-l9-dib" id="pAR-Tk-vyt"/>
                 <outlet property="tokenIcon" destination="Xr0-6M-FZU" id="tm5-0h-IF9"/>
                 <outlet property="value" destination="QwJ-sD-uhn" id="mTo-Tg-QA8"/>
@@ -105,7 +106,7 @@
     </objects>
     <designables>
         <designable name="hfb-Ue-zc0">
-            <size key="intrinsicContentSize" width="58" height="29"/>
+            <size key="intrinsicContentSize" width="56" height="29"/>
         </designable>
     </designables>
     <resources>
