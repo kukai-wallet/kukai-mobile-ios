@@ -119,6 +119,9 @@ public class ActivityService {
 			
 		} else if parameters?["entrypoint"] == "unstake" && destinationAddress == fromWallet.address {
 			kind = "unstake"
+			
+		} else if parameters?["entrypoint"] == "finalize_unstake" && destinationAddress == fromWallet.address {
+			kind = "finalize"
 		}
 		
 		var transaction = TzKTTransaction.placeholder(withStatus: .unconfirmed, id: previousId + 1, opHash: opHash, type: type, counter: counter, fromWallet: fromWallet, destination: destination, xtzAmount: xtzAmount, parameters: parameters, primaryToken: primaryToken, baker: nil, kind: kind)

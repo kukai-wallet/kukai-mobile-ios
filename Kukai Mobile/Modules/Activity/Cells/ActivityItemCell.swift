@@ -115,12 +115,19 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			iconView.backgroundColor = .white
 			iconView.customCornerRadius = 20
 			
+			let token = data.primaryToken
+			let balanceDsiplay = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token?.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token?.decimalPlaces ?? 6)
+			
 			if data.subType == .stake {
-				titleLabel.text = "Stake: \( (data.primaryToken?.balance ?? .zero()).normalisedRepresentation) XTZ"
+				titleLabel.text = "Stake: \(balanceDsiplay) XTZ"
 				toLabel.text = "To: "
 				
 			} else if data.subType == .unstake {
-				titleLabel.text = "Unstake: \( (data.primaryToken?.balance ?? .zero()).normalisedRepresentation) XTZ"
+				titleLabel.text = "Unstake: \(balanceDsiplay) XTZ"
+				toLabel.text = "From: "
+				
+			} else if data.subType == .finaliseUnstake {
+				titleLabel.text = "Finalise Unstake: \(balanceDsiplay) XTZ"
 				toLabel.text = "From: "
 			}
 			
