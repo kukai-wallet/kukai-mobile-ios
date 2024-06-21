@@ -51,7 +51,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		AVCaptureDevice.requestAccess(for: .video) { [weak self] (response) in
 			DispatchQueue.main.async {
 				if response {
-					self?.setupVideoPreview()
+					self?.setupCaptureSession()
 				} else {
 					self?.failed()
 				}
@@ -73,6 +73,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		textfield.text = nil
 		
+		setupPreviewLayer()
 		if (captureSession?.isRunning == false) {
 			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
 			DispatchQueue.global(qos: .background).async { [weak self] in
@@ -271,7 +272,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		setupClearBox()
 	}
 	
-	func setupVideoPreview() {
+	func setupCaptureSession() {
 		captureSession = AVCaptureSession()
 		
 		guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
@@ -301,16 +302,13 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			failed()
 			return
 		}
-		
+	}
+	
+	func setupPreviewLayer() {
 		previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
 		previewLayer.frame = previewContainerView.bounds
 		previewLayer.videoGravity = .resizeAspectFill
 		previewContainerView.layer.insertSublayer(previewLayer, at: 0)
-		
-		// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
-		DispatchQueue.global(qos: .background).async { [weak self] in
-			self?.captureSession.startRunning()
-		}
 		
 		view.setNeedsLayout()
 	}
