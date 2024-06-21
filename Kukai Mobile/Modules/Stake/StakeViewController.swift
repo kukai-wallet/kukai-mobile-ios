@@ -51,6 +51,8 @@ class StakeViewController: UIViewController {
 	}
 	
 	public func enteredCustomBaker(address: String) {
+		self.showLoadingView()
+		
 		if address == "" {
 			let currentDelegate = DependencyManager.shared.balanceService.account.delegate
 			let name = currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress() ?? ""
@@ -66,15 +68,25 @@ class StakeViewController: UIViewController {
 			TransactionService.shared.delegateData.isAdd = false
 			
 		} else {
-			let baker = TzKTBaker(address: address, name: address.truncateTezosAddress(), logo: nil)
-			TransactionService.shared.delegateData.chosenBaker = baker
-			TransactionService.shared.delegateData.isAdd = true
+			self.showLoadingView()
+			
+			if let foundBaker = viewModel.bakerFor(address: address) {
+				TransactionService.shared.delegateData.chosenBaker = foundBaker
+				TransactionService.shared.delegateData.isAdd = true
+				
+			} else {
+				let baker = TzKTBaker(address: address, name: address.truncateTezosAddress(), logo: nil)
+				TransactionService.shared.delegateData.chosenBaker = baker
+				TransactionService.shared.delegateData.isAdd = true
+			}
 		}
 		
 		createOperationsAndConfirm(toAddress: address)
 	}
 	
 	public func stakeTapped() {
+		self.showLoadingView()
+		
 		if let baker = TransactionService.shared.delegateData.chosenBaker {
 			createOperationsAndConfirm(toAddress: baker.address)
 		}
@@ -86,7 +98,6 @@ class StakeViewController: UIViewController {
 			return
 		}
 		
-		self.showLoadingView()
 		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { [weak self] estimationResult in
 			self?.hideLoadingView()
