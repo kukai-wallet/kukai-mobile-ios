@@ -24,6 +24,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 	
 	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var bakers: [TzKTBaker] = []
 	
 	
 	
@@ -93,6 +94,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
+			self?.bakers = res
 			let filteredResults = res.filter { baker in
 				if baker.address == currentDelegate?.address {
 					currentBaker = baker
@@ -150,6 +152,10 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	func bakerFor(indexPath: IndexPath) -> TzKTBaker? {
 		return dataSource?.itemIdentifier(for: indexPath) as? TzKTBaker
+	}
+	
+	func bakerFor(address: String) -> TzKTBaker? {
+		return bakers.first(where: { $0.address == address })
 	}
 	
 	func isEnterCustom(indePath: IndexPath) -> Bool {

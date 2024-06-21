@@ -18,8 +18,8 @@ protocol ScanViewControllerDelegate: AnyObject {
 }
 
 class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-	var captureSession: AVCaptureSession!
-	var previewLayer: AVCaptureVideoPreviewLayer! = AVCaptureVideoPreviewLayer()
+	var captureSession: AVCaptureSession?
+	var previewLayer: AVCaptureVideoPreviewLayer = AVCaptureVideoPreviewLayer()
 	
 	let scrollView = AutoScrollView()
 	let titleLabel = UILabel()
@@ -51,7 +51,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		AVCaptureDevice.requestAccess(for: .video) { [weak self] (response) in
 			DispatchQueue.main.async {
 				if response {
-					self?.setupVideoPreview()
+					self?.setupCaptureSession()
 				} else {
 					self?.failed()
 				}
@@ -73,10 +73,11 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		textfield.text = nil
 		
+		setupPreviewLayer()
 		if (captureSession?.isRunning == false) {
 			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
 			DispatchQueue.global(qos: .background).async { [weak self] in
-				self?.captureSession.startRunning()
+				self?.captureSession?.startRunning()
 			}
 		}
 		
@@ -91,7 +92,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		if (captureSession?.isRunning == true) {
 			DispatchQueue.global(qos: .background).async { [weak self] in
-				self?.captureSession.stopRunning()
+				self?.captureSession?.stopRunning()
 			}
 		}
 	}
@@ -271,7 +272,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		setupClearBox()
 	}
 	
-	func setupVideoPreview() {
+	func setupCaptureSession() {
 		captureSession = AVCaptureSession()
 		
 		guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
@@ -283,8 +284,8 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			return
 		}
 		
-		if (captureSession.canAddInput(videoInput)) {
-			captureSession.addInput(videoInput)
+		if captureSession?.canAddInput(videoInput) == true {
+			captureSession?.addInput(videoInput)
 		} else {
 			failed()
 			return
@@ -292,8 +293,8 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		let metadataOutput = AVCaptureMetadataOutput()
 		
-		if (captureSession.canAddOutput(metadataOutput)) {
-			captureSession.addOutput(metadataOutput)
+		if captureSession?.canAddOutput(metadataOutput) == true {
+			captureSession?.addOutput(metadataOutput)
 			
 			metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
 			metadataOutput.metadataObjectTypes = [.qr]
@@ -301,16 +302,17 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 			failed()
 			return
 		}
+	}
+	
+	func setupPreviewLayer() {
+		guard let session = captureSession else {
+			return
+		}
 		
-		previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+		previewLayer = AVCaptureVideoPreviewLayer(session: session)
 		previewLayer.frame = previewContainerView.bounds
 		previewLayer.videoGravity = .resizeAspectFill
 		previewContainerView.layer.insertSublayer(previewLayer, at: 0)
-		
-		// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
-		DispatchQueue.global(qos: .background).async { [weak self] in
-			self?.captureSession.startRunning()
-		}
 		
 		view.setNeedsLayout()
 	}
@@ -321,9 +323,9 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		if permissionsDenied {
 			os_log(.error, log: .default, "User revoked camera permissions")
-			alertController = UIAlertController(title: "error", message: "NSCameraUsageDescription", preferredStyle: .alert)
+			alertController = UIAlertController(title: "error".localized(), message: "This app does not have permission to access the camera. If you wish to scan a QRCode, please go to settings and enable camera access", preferredStyle: .alert)
 			
-			let systemSettingsAction = UIAlertAction(title: "wlt_navigation_settings", style: .default) { (action) in
+			let systemSettingsAction = UIAlertAction(title: "Settings", style: .default) { (action) in
 				guard let settingsUrl = URL(string: UIApplication.openSettingsURLString) else {
 					return
 				}
@@ -333,13 +335,13 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				}
 			}
 			
-			alertController?.addAction(UIAlertAction(title: "cancel", style: .default))
+			alertController?.addAction(UIAlertAction(title: "Cancel", style: .default))
 			alertController?.addAction(systemSettingsAction)
 			
 		} else {
 			os_log(.error, log: .default, "Unable to scan on this device")
-			alertController = UIAlertController(title: "error", message: "error_cant_scan", preferredStyle: .alert)
-			alertController?.addAction(UIAlertAction(title: "ok", style: .default))
+			alertController = UIAlertController(title: "error".localized(), message: "Unbale to setup camera at this time. Please check camera access is enabled in settings", preferredStyle: .alert)
+			alertController?.addAction(UIAlertAction(title: "Ok", style: .default))
 		}
 		
 		if let ac = alertController {
