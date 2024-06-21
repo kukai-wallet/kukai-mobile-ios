@@ -317,6 +317,9 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			}
 			
 			if self.attributes.count > 0 {
+				self.attributes = self.attributes.sorted { lhs, rhs in
+					return lhs.name < rhs.name
+				}
 				self.currentSnapshot.insertItems([self.attributesContent], afterItem: self.descriptionData)
 				self.currentSnapshot.appendItems(self.attributes, toSection: 1)
 				needsUpdating = true
