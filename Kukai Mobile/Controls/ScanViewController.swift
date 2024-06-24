@@ -48,16 +48,6 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		setupClearBox()
 		setupOutlineView()
 		
-		AVCaptureDevice.requestAccess(for: .video) { [weak self] (response) in
-			DispatchQueue.main.async {
-				if response {
-					self?.setupCaptureSession()
-				} else {
-					self?.failed()
-				}
-			}
-		}
-		
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
 			.sink { [weak self] _ in
@@ -73,12 +63,26 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		
 		textfield.text = nil
 		
-		setupPreviewLayer()
-		if (captureSession?.isRunning == false) {
-			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
-			DispatchQueue.global(qos: .background).async { [weak self] in
-				self?.captureSession?.startRunning()
+		let status = AVCaptureDevice.authorizationStatus(for: .video)
+		if status == .authorized {
+			setupCaptureSession()
+			setupPreviewLayer()
+			startCaptureSessionIfNeeded()
+			
+		} else if status == .notDetermined {
+			AVCaptureDevice.requestAccess(for: .video) { [weak self] (response) in
+				DispatchQueue.main.async {
+					if response {
+						self?.setupCaptureSession()
+						self?.setupPreviewLayer()
+						self?.startCaptureSessionIfNeeded()
+					} else {
+						self?.failed()
+					}
+				}
 			}
+		} else {
+			self.failed()
 		}
 		
 		scrollView.setupAutoScroll(focusView: textfield, parentView: self.view)
@@ -99,6 +103,15 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	
 	@objc func back() {
 		self.dismiss(animated: true, completion: nil)
+	}
+	
+	func startCaptureSessionIfNeeded() {
+		if (captureSession?.isRunning == false) {
+			// Xcode warning, should be run on a background thread in order to avoid hanging UI thread
+			DispatchQueue.global(qos: .background).async { [weak self] in
+				self?.captureSession?.startRunning()
+			}
+		}
 	}
 	
 	@objc func textFieldDone() {
@@ -307,6 +320,10 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	func setupPreviewLayer() {
 		guard let session = captureSession else {
 			return
+		}
+		
+		if previewLayer.superlayer != nil {
+			previewLayer.removeFromSuperlayer()
 		}
 		
 		previewLayer = AVCaptureVideoPreviewLayer(session: session)
