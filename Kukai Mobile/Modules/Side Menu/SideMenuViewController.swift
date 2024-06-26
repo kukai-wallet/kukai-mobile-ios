@@ -183,7 +183,7 @@ class SideMenuViewController: UIViewController {
 	@IBAction func getTezTapped(_ sender: Any) {
 		self.closeTapped(self)
 		
-		if DependencyManager.shared.currentNetworkType == .testnet {
+		if DependencyManager.shared.currentNetworkType == .ghostnet {
 			UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
 			
 		} else {

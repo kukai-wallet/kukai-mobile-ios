@@ -26,11 +26,11 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURLs_testnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
-	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
-	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
-	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
-	static let defaultObjktURL_testnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
+	static let defaultNodeURLs_ghostnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
+	static let defaultTzktURL_ghostnet = URL(string: "https://api.ghostnet.tzkt.io")!
+	static let defaultBcdURL_ghostnet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
+	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
 	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
 	
@@ -247,13 +247,13 @@ class DependencyManager {
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func setDefaultTestnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURLs = DependencyManager.defaultNodeURLs_testnet
-		currentTzktURL = DependencyManager.defaultTzktURL_testnet
-		currentBcdURL = DependencyManager.defaultBcdURL_testnet
-		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
-		currentObjktURL = DependencyManager.defaultObjktURL_testnet
-		currentNetworkType = .testnet
+	func setDefaultGhostnetURLs(supressUpdateNotification: Bool = false) {
+		currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
+		currentTzktURL = DependencyManager.defaultTzktURL_ghostnet
+		currentBcdURL = DependencyManager.defaultBcdURL_ghostnet
+		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_ghostnet
+		currentObjktURL = DependencyManager.defaultObjktURL_ghostnet
+		currentNetworkType = .ghostnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}

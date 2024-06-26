@@ -135,7 +135,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 	func tableViewCellButtonTapped(sender: UIButton) {
 		switch sender.accessibilityIdentifier {
 			case AccountViewModel.accessibilityIdentifiers.onramp:
-				if DependencyManager.shared.currentNetworkType == .testnet {
+				if DependencyManager.shared.currentNetworkType == .ghostnet {
 					UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
 					
 				} else {

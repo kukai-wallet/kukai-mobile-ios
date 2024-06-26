@@ -60,7 +60,7 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate, UITab
 		if indexPath.row == 0 {
 			DependencyManager.shared.setDefaultMainnetURLs()
 		} else {
-			DependencyManager.shared.setDefaultTestnetURLs()
+			DependencyManager.shared.setDefaultGhostnetURLs()
 		}
 		
 		self.dismissBottomSheet()

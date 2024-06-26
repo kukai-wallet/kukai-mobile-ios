@@ -227,7 +227,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		]
 		
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .testnet {
+		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .ghostnet {
 			data.append(stakingRewardLoadingData)
 		}
 		
@@ -285,7 +285,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		 
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .testnet {
+		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .ghostnet {
 			loadBakerData { [weak self] result in
 				guard let self = self else { return }
 				

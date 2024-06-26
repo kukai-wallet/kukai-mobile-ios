@@ -71,7 +71,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		feeButton.accessibilityIdentifier = "fee-button"
 		
-		if DependencyManager.shared.currentNetworkType != .testnet {
+		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			testnetWarningView.isHidden = true
 		}
 		

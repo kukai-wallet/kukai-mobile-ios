@@ -77,7 +77,7 @@ class CollectiblesViewController: UIViewController {
 	}
 	
 	private func displayGhostnet() {
-		if DependencyManager.shared.currentNetworkType != .testnet {
+		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			ghostnetStackview.isHidden = true
 			
 		} else {
