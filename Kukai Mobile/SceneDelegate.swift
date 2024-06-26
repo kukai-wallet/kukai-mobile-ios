@@ -21,7 +21,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	@Published var dismissedPrivacyProtectionWindow = false
 	
-	private var privacyProtectionWindow: UIWindow?
+	private var privacyProtectionWindow: UIWindow = UIWindow()
 	
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -103,11 +103,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "continuing showPrivacyProtectionWindow"))
 		privacyProtectionWindowVisible = true
-		privacyProtectionWindow?.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
-		privacyProtectionWindow?.windowLevel = .alert + 1
-		privacyProtectionWindow?.alpha = 1
-		privacyProtectionWindow?.isHidden = false
-		privacyProtectionWindow?.makeKeyAndVisible()
+		privacyProtectionWindow.rootViewController = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController() ?? UIViewController()
+		privacyProtectionWindow.windowLevel = .alert + 1
+		privacyProtectionWindow.alpha = 1
+		privacyProtectionWindow.isHidden = false
+		privacyProtectionWindow.makeKeyAndVisible()
 	}
 	
 	
@@ -121,10 +121,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "continuing hidePrivacyProtectionWindow"))
 		UIView.animate(withDuration: 0.3) { [weak self] in
-			self?.privacyProtectionWindow?.alpha = 0
+			self?.privacyProtectionWindow.alpha = 0
 			
 		} completion: { [weak self] finish in
-			self?.privacyProtectionWindow?.isHidden = true
+			self?.privacyProtectionWindow.isHidden = true
 			self?.privacyProtectionWindowVisible = false
 			self?.dismissedPrivacyProtectionWindow = true
 			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "done animating hidePrivacyProtectionWindow"))
