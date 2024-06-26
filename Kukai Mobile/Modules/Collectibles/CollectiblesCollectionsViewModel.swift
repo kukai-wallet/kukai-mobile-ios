@@ -366,8 +366,11 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func willDisplayCollectionImage(forIndexPath: IndexPath) -> URL? {
+		
 		if forIndexPath.row < imageURLsForCollectionGroups.count {
-			return imageURLsForCollectionGroups[forIndexPath.row]
+			let url = imageURLsForCollectionGroups[forIndexPath.row]
+			Logger.app.info("willDisplayCollectionImage: \(url?.absoluteString)")
+			return url
 		}
 		
 		return nil
@@ -387,7 +390,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			urls = [MediaProxyService.smallURL(forNFT: obj)]
 		}
 		
-		//Logger.app.info("Urls: \(urls)")
+		Logger.app.info("willDisplayImages: \(urls)")
 		return urls
 	}
 	
