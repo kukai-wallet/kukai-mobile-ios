@@ -57,7 +57,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	}
 	
 	func setupCollectionImage(url: URL?) {
-		MediaProxyService.load(url: url, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken(), downSampleSize: nil)
+		MediaProxyService.load(url: url, to: collectionIcon, withCacheType: .temporary, fallback: UIImage.unknownToken(), downSampleSize: nil, maxAnimatedImageSize: 0)
 	}
 	
 	func setupImages(imageURLs: [URL?]) {
