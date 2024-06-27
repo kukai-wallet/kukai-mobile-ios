@@ -28,7 +28,7 @@ class WelcomeViewController: UIViewController {
 		
 		
 		if (UIApplication.shared.delegate as? AppDelegate)?.shouldLaunchGhostnet() == true {
-			DependencyManager.shared.setDefaultTestnetURLs(supressUpdateNotification: true)
+			DependencyManager.shared.setDefaultGhostnetURLs(supressUpdateNotification: true)
 			
 		} else if DependencyManager.shared.currentNetworkType != .mainnet {
 			DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)

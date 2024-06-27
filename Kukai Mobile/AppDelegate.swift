@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		if DependencyManager.shared.currentNetworkType == .mainnet {
 			DependencyManager.shared.setDefaultMainnetURLs()
 		} else {
-			DependencyManager.shared.setDefaultTestnetURLs()
+			DependencyManager.shared.setDefaultGhostnetURLs()
 		}
 		
 		return true

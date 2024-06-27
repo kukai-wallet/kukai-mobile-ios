@@ -208,7 +208,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let metadata = DependencyManager.shared.selectedWalletMetadata
 		let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
-		let isTestnet = DependencyManager.shared.currentNetworkType == .testnet
+		let isTestnet = DependencyManager.shared.currentNetworkType == .ghostnet
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		var data: [AnyHashable] = []
 		

@@ -156,7 +156,7 @@ public class BalanceService {
 	// MARK: - Cache
 	
 	public static func addressCacheKey(forAddress address: String) -> String {
-		if DependencyManager.shared.currentNetworkType == .testnet {
+		if DependencyManager.shared.currentNetworkType == .ghostnet {
 			return address + "-ghostnet"
 		}
 		

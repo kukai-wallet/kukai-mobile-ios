@@ -22,15 +22,17 @@ class DependencyManager {
 	
 	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://rpc.tzbeta.net")!, URL(string: "https://mainnet.smartpy.io")!]
 	static let defaultTzktURL_mainnet = URL(string: "https://kukai.api.tzkt.io")!
+	static let defaultExplorerURL_mainnet = URL(string: "https://tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURLs_testnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
-	static let defaultTzktURL_testnet = URL(string: "https://api.ghostnet.tzkt.io")!
-	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
-	static let defaultTezosDomainsURL_testnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
-	static let defaultObjktURL_testnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
+	static let defaultNodeURLs_ghostnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
+	static let defaultTzktURL_ghostnet = URL(string: "https://api.ghostnet.tzkt.io")!
+	static let defaultExplorerURL_ghostnet = URL(string: "https://ghostnet.tzkt.io")!
+	static let defaultBcdURL_ghostnet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
+	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
 	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
 	
@@ -87,6 +89,11 @@ class DependencyManager {
 	var currentTzktURL: URL {
 		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tzkt.url") }
 		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tzkt.url") ?? "") ?? DependencyManager.defaultTzktURL_mainnet }
+	}
+	
+	var currentExplorerURL: URL {
+		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.explorer.url") }
+		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.explorer.url") ?? "") ?? DependencyManager.defaultExplorerURL_mainnet }
 	}
 	
 	var currentBcdURL: URL {
@@ -239,6 +246,7 @@ class DependencyManager {
 	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
 		currentNodeURLs = DependencyManager.defaultNodeURLs_mainnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
+		currentExplorerURL = DependencyManager.defaultExplorerURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
 		currentObjktURL = DependencyManager.defaultObjktURL_mainnet
@@ -247,13 +255,14 @@ class DependencyManager {
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func setDefaultTestnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURLs = DependencyManager.defaultNodeURLs_testnet
-		currentTzktURL = DependencyManager.defaultTzktURL_testnet
-		currentBcdURL = DependencyManager.defaultBcdURL_testnet
-		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
-		currentObjktURL = DependencyManager.defaultObjktURL_testnet
-		currentNetworkType = .testnet
+	func setDefaultGhostnetURLs(supressUpdateNotification: Bool = false) {
+		currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
+		currentTzktURL = DependencyManager.defaultTzktURL_ghostnet
+		currentExplorerURL = DependencyManager.defaultExplorerURL_ghostnet
+		currentBcdURL = DependencyManager.defaultBcdURL_ghostnet
+		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_ghostnet
+		currentObjktURL = DependencyManager.defaultObjktURL_ghostnet
+		currentNetworkType = .ghostnet
 		
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
