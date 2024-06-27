@@ -10,11 +10,7 @@ import UIKit
 class ActivityToolbarCell: UITableViewCell {
 	
 	@IBAction func viewInExplorerTapped(_ sender: CustomisableButton) {
-		let tzktAPIURLString = DependencyManager.shared.tezosClientConfig.tzktURL.absoluteString
-		let stripAPI = tzktAPIURLString.replacingOccurrences(of: "api.", with: "")
-		
-		if let websiteURL = URL(string: stripAPI)?.appending(path: DependencyManager.shared.selectedWalletAddress ?? "").appending(path: "operations") {
-			UIApplication.shared.open(websiteURL)
-		}
+		let tzktAPIURLString = DependencyManager.shared.currentExplorerURL
+		UIApplication.shared.open(tzktAPIURLString.appending(path: DependencyManager.shared.selectedWalletAddress ?? "").appending(path: "operations"))
 	}
 }
