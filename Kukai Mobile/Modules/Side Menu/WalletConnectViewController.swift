@@ -149,14 +149,14 @@ extension WalletConnectViewController: UITableViewDelegate {
 					for session in Sign.instance.getSessions().filter({ $0.pairingTopic == forPair.topic }) {
 						try await Sign.instance.disconnect(topic: session.topic)
 					}
-					
-					DispatchQueue.main.async { [weak self] in
-						self?.viewModel.refresh(animate: true)
-					}
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
+				}
+				
+				DispatchQueue.main.async { [weak self] in
+					self?.viewModel.refresh(animate: true)
 				}
 			}
 		}

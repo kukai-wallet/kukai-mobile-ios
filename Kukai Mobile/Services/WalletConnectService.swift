@@ -82,7 +82,7 @@ public class WalletConnectService {
 											  description: "Kukai iOS",
 											  url: "https://wallet.kukai.app",
 											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
-											  redirect: AppMetadata.Redirect(native: "kukai://", universal: nil))
+											  redirect: (try! AppMetadata.Redirect(native: "kukai://", universal: nil)) )
 	
 	private var pairingTimer: Timer? = nil
 	private var requestOrProposalInProgress = false
