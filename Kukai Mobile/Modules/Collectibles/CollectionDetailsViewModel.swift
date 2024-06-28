@@ -101,7 +101,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		}
 		
 		var tokenToView = selectedToken
-		if let updatedSelectedToken = DependencyManager.shared.balanceService.account.nfts.first(where: { $0.tokenContractAddress == selectedToken?.tokenContractAddress && $0.tokenId == selectedToken?.tokenId }) {
+		if let updatedSelectedToken = DependencyManager.shared.balanceService.account.nfts.first(where: { $0.tokenContractAddress == selectedToken?.tokenContractAddress && $0.tokenId == selectedToken?.tokenId && $0.name == selectedToken?.name}) {
 			tokenToView = updatedSelectedToken
 		}
 		
