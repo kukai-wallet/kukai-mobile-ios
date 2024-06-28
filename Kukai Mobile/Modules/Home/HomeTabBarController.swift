@@ -163,10 +163,13 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			AccountViewModel.reconnectAccountActivityListenerIfNeeded()
-			self?.recheckWalletConnectAnimation()
 			self?.supressAutoRefreshError = true
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
+			
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+				self?.recheckWalletConnectAnimation()
+			}
 		}.store(in: &bag)
 		
 		ThemeManager.shared.$themeDidChange
