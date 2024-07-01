@@ -36,12 +36,20 @@ class SharedHelpers: XCTestCase {
 		
 		
 		// When starting a new set of tests, clear all the data on the device so no lingering data from a previous failed test is present
-		if (resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation {
+		// When launching manually via Xcode UI, we don't want to reset everytime we test a new file. Only run this check when running as part of CI, which uses env varibales
+		if !areWeRunningManually() && ((resetForEveryInvocation == false && launchCount == 0) || resetForEveryInvocation) {
 			sharedApplication.launchEnvironment["XCUITEST-RESET"] = "true"
 			launchCount += 1
 		}
 		
 		return sharedApplication
+	}
+	
+	func areWeRunningManually() -> Bool {
+		let testBundle = Bundle(for: SharedHelpers.self)
+		let config1URL = testBundle.url(forResource: "CONFIG_1", withExtension: "txt", subdirectory: "Configs")
+		
+		return (ProcessInfo.processInfo.environment["CONFIG_1"] == nil && config1URL != nil)
 	}
 	
 	
