@@ -82,6 +82,41 @@ final class Test_04_Account: XCTestCase {
 			SharedHelpers.shared.navigationBack(app: app)
 		}
 		
+		// Switch to collectibles and check Teia and HEN open the correct collection page
+		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		sleep(2)
+		
+		let henTitle = "Hic et Nunc (HEN)"
+		let henCell = app.collectionViews.staticTexts["Hic et Nunc (HEN)"]
+		let teiaTitle = "Teia"
+		let teiaCell = app.collectionViews.staticTexts["Teia"]
+		for _ in 0..<10 {
+			if teiaCell.exists {
+				break
+			} else {
+				app.swipeUp()
+			}
+		}
+		
+		henCell.tap()
+		sleep(2)
+		
+		XCTAssert(app.staticTexts[henTitle].exists)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		teiaCell.tap()
+		sleep(2)
+		
+		XCTAssert(app.staticTexts[teiaTitle].exists)
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		
+		// Switch back
+		Test_03_Home.handleOpenAccountTab(app: app)
+		sleep(2)
+		
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
