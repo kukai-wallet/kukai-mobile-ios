@@ -28,6 +28,7 @@ final class Test_04_Account: XCTestCase {
 	
 	public func testWatchWalletTokenDetails() {
 		let app = XCUIApplication()
+		
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		Test_05_WalletManagement.handleSwitchingTo(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress.truncateTezosAddress())
 		sleep(2)
@@ -82,6 +83,8 @@ final class Test_04_Account: XCTestCase {
 			SharedHelpers.shared.navigationBack(app: app)
 		}
 		
+		
+		
 		// Switch to collectibles and check Teia and HEN open the correct collection page
 		Test_03_Home.handleOpenCollectiblesTab(app: app)
 		sleep(2)
@@ -111,6 +114,25 @@ final class Test_04_Account: XCTestCase {
 		XCTAssert(app.staticTexts[teiaTitle].exists)
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
+		
+		
+		
+		// Check block mainnet block explorer link opens public tzkt
+		Test_03_Home.handleOpenActivityTab(app: app)
+		sleep(2)
+		
+		app.buttons["View in Explorer"].tap()
+		sleep(5)
+		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+		
+		XCTAssert(safari.webViews.firstMatch.links["TzKT"].exists)
+		XCTAssert(safari.webViews.firstMatch.buttons["ACCOUNT"].exists)
+		XCTAssert(safari.webViews.firstMatch.buttons["OPERATIONS"].exists)
+		app.activate()
+		
+		sleep(2)
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		
 		
 		
 		// Switch back
