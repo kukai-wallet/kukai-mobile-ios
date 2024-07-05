@@ -32,9 +32,22 @@ public struct EnvironmentVariables {
 	private var extractedConfigs: [Int: TestConfig] = [:]
 	
 	private init() {
-		config1 = ProcessInfo.processInfo.environment["CONFIG_1"] ?? ""
-		config2 = ProcessInfo.processInfo.environment["CONFIG_2"] ?? ""
-		config3 = ProcessInfo.processInfo.environment["CONFIG_3"] ?? ""
+		let testBundle = Bundle(for: SharedHelpers.self)
+		let config1URL = testBundle.url(forResource: "CONFIG_1", withExtension: "txt", subdirectory: "Configs")
+		let config2URL = testBundle.url(forResource: "CONFIG_2", withExtension: "txt", subdirectory: "Configs")
+		let config3URL = testBundle.url(forResource: "CONFIG_3", withExtension: "txt", subdirectory: "Configs")
+		
+		// In order to more easily support running locally, and running remotely, check first if files (that will NOT be committed to git) exist. If not, fall back to env variables
+		if ProcessInfo.processInfo.environment["CONFIG_1"] == nil, let config1Path = config1URL, let config2Path = config2URL, let config3Path = config3URL {
+			config1 = (try? String(contentsOf: config1Path)) ?? ""
+			config2 = (try? String(contentsOf: config2Path)) ?? ""
+			config3 = (try? String(contentsOf: config3Path)) ?? ""
+			
+		} else {
+			config1 = ProcessInfo.processInfo.environment["CONFIG_1"] ?? ""
+			config2 = ProcessInfo.processInfo.environment["CONFIG_2"] ?? ""
+			config3 = ProcessInfo.processInfo.environment["CONFIG_3"] ?? ""
+		}
 		
 		extractedConfigs = [
 			1: convertStringToConfig(config1),
