@@ -33,32 +33,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		super.viewDidLoad()
 		let _ = self.view.addGradientBackgroundFull()
 		
-		dispatchGroup = DispatchGroup()
-		dispatchGroup.enter() // animation to finish
-		
-		// When everything done, perform transition
-		dispatchGroup.notify(queue: .main) { [weak self] in
-			self?.transition()
-		}
-		
-		
-		
-		if hasWallet {
-			logoTopConstraint.isActive = false
-			logoCenterConstraint.isActive = true
-			
-		} else if !runOnce {
-			logoTopConstraint.isActive = false
-			logoCenterConstraint.isActive = true
-			
-		} else {
-			logoTopConstraint.isActive = true
-			logoCenterConstraint.isActive = false
-			
-			logoWidthConstraint.constant = 200
-			logoHeightConstraint.constant = 55
-		}
-		
 		/*
 		bag1 = DependencyManager.shared.balanceService.$addressRefreshed.dropFirst().sink(receiveValue: { address in
 			
@@ -95,8 +69,34 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
 		hasWallet = DependencyManager.shared.walletList.count() > 0
+		
+		dispatchGroup = DispatchGroup()
+		dispatchGroup.enter() // animation to finish
+		
+		// When everything done, perform transition
+		dispatchGroup.notify(queue: .main) { [weak self] in
+			self?.transition()
+		}
+		
+		
+		if hasWallet {
+			logoTopConstraint.isActive = false
+			logoCenterConstraint.isActive = true
+			
+		} else if !runOnce {
+			logoTopConstraint.isActive = false
+			logoCenterConstraint.isActive = true
+			
+		} else {
+			logoTopConstraint.isActive = true
+			logoCenterConstraint.isActive = false
+			
+			logoWidthConstraint.constant = 200
+			logoHeightConstraint.constant = 55
+		}
+		
+		
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
 	}
@@ -133,13 +133,16 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	}
 	
 	private func transition() {
+		// For safety reasons, ensure this code can't run during prewarming/while disk protection is active
+		if StorageService.isPrewarming() { return }
+		
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
 		let didCompleteOnboarding = StorageService.didCompleteOnboarding()
 		
-		if hasWallet && didCompleteOnboarding {
+		if hasWallet && didCompleteOnboarding && !StorageService.isPasscodeNil()  {
 			if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
 				sceneDelgate.showPrivacyProtectionWindow()
 				self.performSegue(withIdentifier: "home", sender: nil)
@@ -151,7 +154,15 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 			
+		} else if hasWallet && StorageService.isPasscodeNil() {
+			SentrySDK.capture(message: "Reinstall cache clear - hasWallet & passcodeNil")
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
+			StorageService.deleteKeychainItems()
+			self.performSegue(withIdentifier: "onboarding", sender: nil)
+			
 		} else {
+			SentrySDK.capture(message: "Reinstall cache clear - unknown")
+			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 		}

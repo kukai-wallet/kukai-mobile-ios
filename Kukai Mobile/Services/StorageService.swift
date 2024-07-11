@@ -40,7 +40,30 @@ public class StorageService {
 	// MARK: - Cleanup
 	
 	public static func deleteKeychainItems() {
-		KeychainSwift().clear()
+		if !StorageService.isPrewarming() {
+			KeychainSwift().clear()
+		}
+	}
+	
+	/// Prewarming occurs on iOS devices from iOS 15 onwards. When full disk protection is turned on keychain/user defaults/files etc are inaccessible and will return nil/false/error
+	/// This causes a lot of issues with boolean checks for userDefault items that control keychain clean up, which can be triggered during prewarming, despite apples docs saying it can't. This has been proven to be incorrect
+	/// Since this app uses disk protection, we can detect prewarming by setting a bool in userdefaults and then checking its value. Only situation it can be false is if the app is prewarming
+	/// This can then be used as a fallback safety check. E.g. inside the keychain clear function, do not clear under prewarming at all
+	public static func isPrewarming() -> Bool {
+		let specialKey = "PREWARMING_CHECK" // not a constant as can NOT be used elsewhere
+		
+		UserDefaults.standard.set(true, forKey: specialKey)
+		return UserDefaults.standard.bool(forKey: specialKey) == false
+	}
+	
+	/// Allowing recovery from a strange prewarming issue where the keychain gets deleted during a warming, but the rest of the data remains, causing a weird edge case where the app has wallets but no PIN
+	/// Because checking for the existence of the passcode may trigger FaceID/TouchID, easiest way to confirm is check if biometric is nil. It should be true/false if user has completed the onboarding
+	public static func isPasscodeNil() -> Bool {
+		if KeychainSwift().getBool(StorageService.KeychainKeys.isBiometricEnabled) == nil {
+			return true
+		}
+		
+		return false
 	}
 	
 	
@@ -108,7 +131,7 @@ public class StorageService {
 		return status == 0
 	}
 	
-	private static func getPasscode(withUserPresence: Bool, completion: @escaping ((String?) -> Void)){
+	private static func getPasscode(withUserPresence: Bool, completion: @escaping ((String?) -> Void)) {
 		if withUserPresence {
 			
 			/// SecItemCopyMatching blocks the calling thread, must be moved to background thread
