@@ -57,9 +57,10 @@ public class StorageService {
 	}
 	
 	/// Allowing recovery from a strange prewarming issue where the keychain gets deleted during a warming, but the rest of the data remains, causing a weird edge case where the app has wallets but no PIN
-	/// Because checking for the existence of the passcode may trigger FaceID/TouchID, easiest way to confirm is check if biometric is nil. It should be true/false if user has completed the onboarding
+	/// Because checking for the existence of the passcode may trigger FaceID/TouchID, we first need to check if its set. If its false or nil, check if passcode is nil. If biometric is set to ture, then keychain hasn't been deleted
 	public static func isPasscodeNil() -> Bool {
-		if KeychainSwift().getBool(StorageService.KeychainKeys.isBiometricEnabled) == nil {
+		let isBiometricEnabled = (KeychainSwift().getBool(StorageService.KeychainKeys.isBiometricEnabled) == true)
+		if isBiometricEnabled == false && KeychainSwift().get(StorageService.KeychainKeys.passcode) == nil {
 			return true
 		}
 		

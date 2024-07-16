@@ -264,8 +264,26 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
 		var data = startingData
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		if metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true) {
+		/**
+		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
+		 
+		 -or-
+		 
+		 Is a social wallet, is not backed up and whose balance is either:
+			- Greater than or equal to 10 XTZ
+			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
+			- Contains 5 or more tokens
+		 */
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
+			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
+			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
+			currentAccountTokensCount >= 5
+		))
+		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
 			data.append(BackupCellData())
 		}
 		
