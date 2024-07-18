@@ -1,0 +1,90 @@
+name: CodeQl
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Running unit tests
+    runs-on: macos-14
+    steps:
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+        
+      - name: Checkout repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Get current date
+        run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
+
+      
+      # Env variables
+      - name: Setup Global Env
+        run: |
+          echo "BUILD_CERTIFICATE_BASE64=${{ secrets.BUILD_CERTIFICATE_BASE64 }}" >> $GITHUB_ENV
+          echo "P12_PASSWORD=${{ secrets.P12_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEYCHAIN_PASSWORD=${{ secrets.KEYCHAIN_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Setup env variables for main
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" >> $GITHUB_ENV
+      
+      - name: Setup env varibales for develop
+        if: github.ref == 'refs/heads/develop'
+        run: |
+          echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BETA_BASE64 }}" >> $GITHUB_ENV
+      
+
+
+      # Upload Base64 copies of apple certs to github following these instructions: 
+      # Note: Use app store distribution certs
+      # https://docs.github.com/en/actions/guides/installing-an-apple-certificate-on-macos-runners-for-xcode-development
+      # 
+      # Every time we update certs / profiles or they expire, we need to update the following github actions secrets
+      # BUILD_CERTIFICATE_BASE64              = exported distribution cert from inside Xcode account settings, copied with `base64 -i <file-path> | pbcopy`
+      # P12_PASSWORD                          = whatever new password created for previous file
+      # BUILD_PROVISION_PROFILE_BASE64        = download "Kukai Mobile Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      # BUILD_PROVISION_PROFILE_BETA_BASE64   = download "Kukai Mobile Beta Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      #
+      - name: Install the Apple certificate and provisioning profile
+        run: |
+          # create variables
+          CERTIFICATE_PATH=$RUNNER_TEMP/build_certificate.p12
+          PP_PATH=$RUNNER_TEMP/build_pp.mobileprovision
+          KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
+
+          # import certificate and provisioning profile from secrets
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
+
+          # create temporary keychain
+          security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+          security set-keychain-settings -lut 21600 $KEYCHAIN_PATH
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
+
+          # import certificate to keychain
+          security import $CERTIFICATE_PATH -P "$P12_PASSWORD" -A -t cert -f pkcs12 -k $KEYCHAIN_PATH
+          security list-keychain -d user -s $KEYCHAIN_PATH
+
+          # apply provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
+
+          
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+         languages: "swift"
+
+      - name: Build
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:swift"

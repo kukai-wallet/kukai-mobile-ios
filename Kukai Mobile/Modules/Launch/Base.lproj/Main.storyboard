@@ -1,83 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
-    <device id="retina6_1" orientation="portrait" appearance="light"/>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
+    <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--Navigation Controller-->
+        <!--Custom Navigation Controller-->
         <scene sceneID="2mK-hk-rbP">
             <objects>
-                <navigationController navigationBarHidden="YES" id="Dp3-KA-w54" sceneMemberID="viewController">
+                <navigationController id="Dp3-KA-w54" customClass="CustomNavigationController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Yb0-ZP-kfb">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="8ga-5r-6QX"/>
+                        <segue destination="DZJ-iw-6qn" kind="relationship" relationship="rootViewController" id="5dL-lp-c5A"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Feo-oq-io3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-957" y="139"/>
-        </scene>
-        <!--Launch View Controller-->
-        <scene sceneID="s0d-6b-0kx">
-            <objects>
-                <viewController id="Y6W-OH-hqX" customClass="LaunchViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai-text-medium" translatesAutoresizingMaskIntoConstraints="NO" id="trG-h5-KOb">
-                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
-                            </imageView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="seu-gn-HeW">
-                                <rect key="frame" x="58.5" y="398" width="247" height="100"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="safe-full" translatesAutoresizingMaskIntoConstraints="NO" id="obb-AB-lJ7">
-                                <rect key="frame" x="157" y="398" width="100" height="100"/>
-                            </imageView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="kukai-logo-medium" translatesAutoresizingMaskIntoConstraints="NO" id="rHh-rC-Am3">
-                                <rect key="frame" x="207" y="398" width="100" height="100"/>
-                            </imageView>
-                        </subviews>
-                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <constraints>
-                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="3EV-Q1-7pC"/>
-                            <constraint firstItem="rHh-rC-Am3" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="50" id="9NW-dW-61k"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="height" secondItem="trG-h5-KOb" secondAttribute="height" id="B9y-gp-APg"/>
-                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="Fc0-zQ-eaD"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="width" secondItem="trG-h5-KOb" secondAttribute="width" id="X3d-ap-aDE"/>
-                            <constraint firstItem="trG-h5-KOb" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" constant="-25" id="XYg-WT-D1h"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="top" secondItem="trG-h5-KOb" secondAttribute="top" id="aUC-pg-SLX"/>
-                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerX" secondItem="5EZ-qb-Rvc" secondAttribute="centerX" id="dml-oX-3wB"/>
-                            <constraint firstItem="obb-AB-lJ7" firstAttribute="centerY" secondItem="5EZ-qb-Rvc" secondAttribute="centerY" id="hoj-X0-PeA"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="trailing" secondItem="trG-h5-KOb" secondAttribute="trailing" id="xdl-HM-Bdj"/>
-                            <constraint firstItem="seu-gn-HeW" firstAttribute="leading" secondItem="trG-h5-KOb" secondAttribute="leading" id="xsd-7n-Mdj"/>
-                        </constraints>
-                    </view>
-                    <navigationItem key="navigationItem" id="wat-Df-g1q"/>
-                    <connections>
-                        <outlet property="constraintKukaiLogoXCenter" destination="9NW-dW-61k" id="NF9-6m-7xo"/>
-                        <outlet property="constraintKukaiLogoYCenter" destination="3EV-Q1-7pC" id="dBU-v3-OHi"/>
-                        <outlet property="constraintKukaiTextX" destination="XYg-WT-D1h" id="NHA-G2-vs2"/>
-                        <outlet property="constraintKukaiTextY" destination="Fc0-zQ-eaD" id="txY-Wb-9Kf"/>
-                        <outlet property="kukaiLogo" destination="rHh-rC-Am3" id="vai-I2-pws"/>
-                        <outlet property="kukaiTextCoverView" destination="seu-gn-HeW" id="3RG-ZA-pMF"/>
-                        <outlet property="kukaiTextImage" destination="trG-h5-KOb" id="eR4-DR-lL4"/>
-                        <outlet property="safeImage" destination="obb-AB-lJ7" id="PFn-i2-i9R"/>
-                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="mlf-fv-fJw"/>
-                        <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="d30-CS-0YC"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
         </scene>
         <!--Onboarding-->
         <scene sceneID="5W5-l9-FJm">
@@ -87,7 +38,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trw-99-FrK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="985" y="42"/>
+            <point key="canvasLocation" x="986" y="-7"/>
         </scene>
         <!--Home-->
         <scene sceneID="TCV-Of-zIe">
@@ -97,15 +48,67 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G1b-Rb-7s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="958" y="230"/>
+            <point key="canvasLocation" x="961" y="274"/>
+        </scene>
+        <!--Launch View Controller-->
+        <scene sceneID="vO5-IM-Hey">
+            <objects>
+                <viewController id="DZJ-iw-6qn" customClass="LaunchViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TUJ-Gs-nWN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="WFk-R7-mwy">
+                                <rect key="frame" x="60.5" y="92" width="293" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="Hj3-qG-ajo"/>
+                                    <constraint firstAttribute="width" constant="293" id="aEX-bH-nvi"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OVu-zQ-AHc">
+                                <rect key="frame" x="16" y="188" width="382" height="48"/>
+                                <string key="text">A Secure Home
+for your Digital Assets</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="zYH-Tx-QRj"/>
+                        <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="OVu-zQ-AHc" firstAttribute="leading" secondItem="zYH-Tx-QRj" secondAttribute="leading" constant="16" id="2vO-VJ-ycf"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="top" secondItem="zYH-Tx-QRj" secondAttribute="top" id="Jlj-zn-AB9"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="centerX" secondItem="TUJ-Gs-nWN" secondAttribute="centerX" id="Tfx-NZ-FTJ"/>
+                            <constraint firstItem="OVu-zQ-AHc" firstAttribute="top" secondItem="WFk-R7-mwy" secondAttribute="bottom" constant="16" id="Z6N-rZ-Pbx"/>
+                            <constraint firstItem="zYH-Tx-QRj" firstAttribute="trailing" secondItem="OVu-zQ-AHc" secondAttribute="trailing" constant="16" id="hvf-Yl-0vA"/>
+                            <constraint firstItem="WFk-R7-mwy" firstAttribute="centerY" secondItem="TUJ-Gs-nWN" secondAttribute="centerY" priority="999" constant="-40" id="wOz-Vk-q0Q"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="ggH-Ru-fIo"/>
+                    <connections>
+                        <outlet property="kukaiLogo" destination="WFk-R7-mwy" id="4DL-R6-DvP"/>
+                        <outlet property="logoCenterConstraint" destination="wOz-Vk-q0Q" id="ICc-2M-XP9"/>
+                        <outlet property="logoHeightConstraint" destination="Hj3-qG-ajo" id="Gvu-bF-h3M"/>
+                        <outlet property="logoText" destination="OVu-zQ-AHc" id="uKI-ml-aI0"/>
+                        <outlet property="logoTopConstraint" destination="Jlj-zn-AB9" id="GjD-ZO-RPO"/>
+                        <outlet property="logoWidthConstraint" destination="aEX-bH-nvi" id="nUS-MR-64i"/>
+                        <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="cXp-Id-QMn"/>
+                        <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="4yH-5V-vYY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iwm-mZ-HDy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="106" y="139"/>
         </scene>
     </scenes>
     <resources>
-        <image name="kukai-logo-medium" width="100" height="100"/>
-        <image name="kukai-text-medium" width="247" height="100"/>
-        <image name="safe-full" width="100" height="100"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
+        <image name="logo_kukai" width="293" height="80"/>
+        <namedColor name="BG2">
+            <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
     </resources>
 </document>

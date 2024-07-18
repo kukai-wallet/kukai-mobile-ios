@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-Regular.ttf">
+            <string>Figtree-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Activity-->
+        <scene sceneID="Kem-ja-hno">
+            <objects>
+                <viewController id="1Pq-Uv-YHX" customClass="ActivityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HhN-HQ-m2z">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5CJ-aj-OHP">
+                                <rect key="frame" x="0.0" y="61" width="393" height="708"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityToolbarCell" rowHeight="54" id="Yv4-zB-yUu" customClass="ActivityToolbarCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="55.333332061767578" width="393" height="54"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Yv4-zB-yUu" id="rVn-7c-5Cw">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="54"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Qq-8a-Xcf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <rect key="frame" x="99" y="8" width="278" height="38"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="38" id="JLh-gC-5qC"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
+                                                    <color key="tintColor" name="TxtB6"/>
+                                                    <inset key="contentEdgeInsets" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
+                                                    <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="6" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <state key="normal" title="View in Explorer">
+                                                        <color key="titleColor" name="TxtB6"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="ArrowWeb"/>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                            <real key="value" value="14"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                            <color key="value" name="TxtB6"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                            <real key="value" value="14"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="viewInExplorerTapped:" destination="Yv4-zB-yUu" eventType="touchUpInside" id="zXo-Wj-ORa"/>
+                                                    </connections>
+                                                </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nAr-8G-Yez">
+                                                    <rect key="frame" x="16" y="16.666666666666668" width="67" height="21.000000000000004"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                                    <color key="textColor" name="Txt2"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="8Qq-8a-Xcf" firstAttribute="leading" secondItem="nAr-8G-Yez" secondAttribute="trailing" constant="16" id="CAE-tk-2Hw"/>
+                                                <constraint firstAttribute="bottom" secondItem="8Qq-8a-Xcf" secondAttribute="bottom" constant="8" id="NQb-wH-ygU"/>
+                                                <constraint firstItem="nAr-8G-Yez" firstAttribute="centerY" secondItem="8Qq-8a-Xcf" secondAttribute="centerY" id="eDs-lX-GUU"/>
+                                                <constraint firstItem="8Qq-8a-Xcf" firstAttribute="top" secondItem="rVn-7c-5Cw" secondAttribute="top" constant="8" id="gU2-7b-e8l"/>
+                                                <constraint firstAttribute="trailing" secondItem="8Qq-8a-Xcf" secondAttribute="trailing" constant="16" id="qNm-CG-5Wz"/>
+                                                <constraint firstItem="nAr-8G-Yez" firstAttribute="leading" secondItem="rVn-7c-5Cw" secondAttribute="leading" constant="16" id="xZr-Ma-q97"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingContainerCell" rowHeight="100" id="ZTQ-Za-vEM" customClass="LoadingContainerCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="109.33333206176758" width="393" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZTQ-Za-vEM" id="wbT-9Y-Qqi">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uxk-Hu-jfi">
+                                                    <rect key="frame" x="16" y="2" width="361" height="96"/>
+                                                    <subviews>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DdA-YM-jhv" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="64" y="10" width="90" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="90" id="VHJ-ym-B8P"/>
+                                                                <constraint firstAttribute="height" constant="12" id="Wo7-fc-NO9"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AW2-jv-eUo" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="64" y="26" width="287" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="12" id="NOD-pD-NlZ"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0ar-VQ-wuB" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="291" y="74" width="60" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="12" id="WvJ-nd-7lk"/>
+                                                                <constraint firstAttribute="width" constant="60" id="eqp-MA-yhx"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6eg-l4-CQk" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="10" y="10" width="40" height="36"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="Gfi-Lo-S8N"/>
+                                                                <constraint firstAttribute="height" constant="40" id="eVZ-5z-MqE"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="20"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j72-g5-wmq" customClass="ShimmerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                            <rect key="frame" x="63.999999999999986" y="42" width="143.66666666666663" height="12"/>
+                                                            <color key="backgroundColor" name="BG4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="height" constant="12" id="wIn-mc-z3w"/>
+                                                            </constraints>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                    <real key="value" value="4"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
+                                                        </view>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="AW2-jv-eUo" firstAttribute="top" secondItem="DdA-YM-jhv" secondAttribute="bottom" constant="4" id="1sc-eR-zxa"/>
+                                                        <constraint firstItem="6eg-l4-CQk" firstAttribute="top" secondItem="uxk-Hu-jfi" secondAttribute="top" constant="10" id="2Ch-yB-hkZ"/>
+                                                        <constraint firstItem="AW2-jv-eUo" firstAttribute="leading" secondItem="DdA-YM-jhv" secondAttribute="leading" id="8bC-pT-WiR"/>
+                                                        <constraint firstAttribute="bottom" secondItem="6eg-l4-CQk" secondAttribute="bottom" constant="50" id="AME-DZ-ELD"/>
+                                                        <constraint firstItem="0ar-VQ-wuB" firstAttribute="trailing" secondItem="AW2-jv-eUo" secondAttribute="trailing" id="JOe-Nr-glV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="0ar-VQ-wuB" secondAttribute="bottom" constant="10" id="QiO-PM-dtt"/>
+                                                        <constraint firstItem="6eg-l4-CQk" firstAttribute="leading" secondItem="uxk-Hu-jfi" secondAttribute="leading" constant="10" id="U0A-xR-Y4j"/>
+                                                        <constraint firstItem="DdA-YM-jhv" firstAttribute="top" secondItem="6eg-l4-CQk" secondAttribute="top" id="ZQs-Db-vE1"/>
+                                                        <constraint firstAttribute="trailing" secondItem="AW2-jv-eUo" secondAttribute="trailing" constant="10" id="cXc-Z7-laG"/>
+                                                        <constraint firstItem="DdA-YM-jhv" firstAttribute="leading" secondItem="6eg-l4-CQk" secondAttribute="trailing" constant="14" id="dmc-Dz-g3g"/>
+                                                        <constraint firstItem="j72-g5-wmq" firstAttribute="top" secondItem="AW2-jv-eUo" secondAttribute="bottom" constant="4" id="hiQ-L8-ZoK"/>
+                                                        <constraint firstItem="j72-g5-wmq" firstAttribute="leading" secondItem="DdA-YM-jhv" secondAttribute="leading" id="lC4-5e-vnE"/>
+                                                        <constraint firstItem="j72-g5-wmq" firstAttribute="trailing" secondItem="AW2-jv-eUo" secondAttribute="centerX" id="qfF-k0-d5X"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="uxk-Hu-jfi" secondAttribute="bottom" constant="2" id="ZTC-Fs-xLW"/>
+                                                <constraint firstItem="uxk-Hu-jfi" firstAttribute="top" secondItem="wbT-9Y-Qqi" secondAttribute="top" constant="2" id="aga-lt-zml"/>
+                                                <constraint firstAttribute="trailing" secondItem="uxk-Hu-jfi" secondAttribute="trailing" constant="16" id="iyZ-QH-b2J"/>
+                                                <constraint firstItem="uxk-Hu-jfi" firstAttribute="leading" secondItem="wbT-9Y-Qqi" secondAttribute="leading" constant="16" id="nNK-xF-rmM"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="containerView" destination="uxk-Hu-jfi" id="A4q-up-Hgl"/>
+                                            <outlet property="iconShimmerView" destination="6eg-l4-CQk" id="RAk-3C-kak"/>
+                                            <outletCollection property="shimmerViews" destination="DdA-YM-jhv" collectionClass="NSMutableArray" id="yvM-yu-mkK"/>
+                                            <outletCollection property="shimmerViews" destination="AW2-jv-eUo" collectionClass="NSMutableArray" id="zqF-Ed-Ufn"/>
+                                            <outletCollection property="shimmerViews" destination="0ar-VQ-wuB" collectionClass="NSMutableArray" id="msE-Y9-sxV"/>
+                                            <outletCollection property="shimmerViews" destination="j72-g5-wmq" collectionClass="NSMutableArray" id="wba-Tc-14v"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BatchBottomPadding" rowHeight="10" id="Roe-Yd-p2B">
+                                        <rect key="frame" x="0.0" y="209.33333206176758" width="393" height="10"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Roe-Yd-p2B" id="2An-T4-5G0">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="10"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ChX-3a-ZQi">
+                                                    <rect key="frame" x="0.0" y="0.0" width="393" height="10"/>
+                                                    <color key="backgroundColor" name="BGActivityBatch"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="10" id="TJI-2d-pyD"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="ChX-3a-ZQi" secondAttribute="bottom" id="4yr-T5-8hi"/>
+                                                <constraint firstItem="ChX-3a-ZQi" firstAttribute="top" secondItem="2An-T4-5G0" secondAttribute="top" id="Btg-jg-FjI"/>
+                                                <constraint firstItem="ChX-3a-ZQi" firstAttribute="leading" secondItem="2An-T4-5G0" secondAttribute="leading" id="Ken-U5-n6E"/>
+                                                <constraint firstAttribute="trailing" secondItem="ChX-3a-ZQi" secondAttribute="trailing" id="vZP-Vs-J1r"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="723-1V-1CZ"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="top" secondItem="723-1V-1CZ" secondAttribute="top" constant="2" id="bvT-K7-N9b"/>
+                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="bottom" secondItem="723-1V-1CZ" secondAttribute="bottom" id="iOA-oi-KPF"/>
+                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="trailing" secondItem="723-1V-1CZ" secondAttribute="trailing" id="tLC-0m-a4b"/>
+                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="leading" secondItem="723-1V-1CZ" secondAttribute="leading" id="tn8-wS-fCw"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Activity" image="Activity" selectedImage="ActivityOn" id="Rg1-fx-j7w"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="tableView" destination="5CJ-aj-OHP" id="oyC-g4-cd4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="a0U-Vu-nJc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-440.45801526717554" y="-1913.3802816901409"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="8Qq-8a-Xcf">
+            <size key="intrinsicContentSize" width="131" height="17"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="Activity" width="26" height="26"/>
+        <image name="ActivityOn" width="26" height="26"/>
+        <image name="ArrowWeb" width="24" height="24"/>
+        <namedColor name="BG4">
+            <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGActivityBatch">
+            <color red="0.71764705882352942" green="0.72549019607843135" blue="0.91764705882352937" alpha="0.30000001192092896" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB6">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

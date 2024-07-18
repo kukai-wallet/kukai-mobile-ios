@@ -17,7 +17,7 @@ extension UIView {
 			return layer.borderWidth
 		}
 	}
-
+	
 	@IBInspectable public var customCornerRadius: CGFloat {
 		set {
 			layer.cornerRadius = newValue
@@ -54,7 +54,6 @@ extension UIView {
 		layer.mask = mask
 	}
 	
-	
 	func parentViewController() -> UIViewController? {
 		var responder: UIResponder? = self
 		while !(responder is UIViewController) {
@@ -64,5 +63,56 @@ extension UIView {
 			}
 		}
 		return (responder as? UIViewController)
+	}
+	
+	func rotate(degrees: CGFloat, duration: CGFloat) {
+		UIView.animate(withDuration: duration, animations: { [weak self] in
+			self?.transform = CGAffineTransform(rotationAngle: (degrees * .pi) / 180)
+		})
+	}
+	
+	func rotateBack(duration: CGFloat) {
+		UIView.animate(withDuration: duration, animations: { [weak self] in
+			self?.transform = CGAffineTransform.identity
+		})
+	}
+	
+	func asImage() -> UIImage? {
+		let renderer = UIGraphicsImageRenderer(bounds: bounds)
+		return renderer.image { rendererContext in
+			layer.render(in: rendererContext.cgContext)
+		}
+	}
+	
+	func addShadow(color: UIColor, opacity: Float, offset: CGSize, radius: CGFloat) {
+		let layer = CALayer()
+		layer.shadowColor = color.cgColor
+		layer.shadowOpacity = opacity
+		layer.shadowOffset = offset
+		layer.shadowRadius = radius
+		layer.shadowPath = UIBezierPath(rect: self.bounds).cgPath
+		self.layer.insertSublayer(layer, at: 0)
+	}
+	
+	func rotate360Degrees(duration: CFTimeInterval = 3) {
+		let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+		rotateAnimation.fromValue = 0.0
+		rotateAnimation.toValue = CGFloat(Double.pi * 2)
+		rotateAnimation.isRemovedOnCompletion = false
+		rotateAnimation.duration = duration
+		rotateAnimation.repeatCount = Float.infinity
+		self.layer.add(rotateAnimation, forKey: nil)
+	}
+	
+	func stopRotate360Degrees() {
+		self.layer.removeAllAnimations()
+	}
+	
+	func shake() {
+		let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+		animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+		animation.duration = 0.6
+		animation.values = [-20.0, 20.0, -20.0, 20.0, -10.0, 10.0, -5.0, 5.0, 0.0 ]
+		layer.add(animation, forKey: "shake")
 	}
 }

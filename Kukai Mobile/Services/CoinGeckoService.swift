@@ -18,17 +18,26 @@ public class CoinGeckoService {
 	private let coinGeckoChartURLYear = "https://api.coingecko.com/api/v3/coins/tezos/market_chart?days=365&interval=daily&vs_currency="
 	
 	private let fetchTezosPriceKey = "coingecko-tezos-price"
-	private let fetchEchangeRates = "coingecko-exchange-rates"
+	private let fetchEchangeRatesKey = "coingecko-exchange-rates"
+	private let chartDataDayKey = "coingecko-chart-day"
+	private let chartDataWeekKey = "coingecko-chart-week"
+	private let chartDataMonthKey = "coingecko-chart-month"
+	private let chartDataYearKey = "coingecko-chart-year"
 	
 	private let networkService: NetworkService
 	private let requestIfService: RequestIfService
 	
-	public var selectedCurrencyRatePerXTZ: Decimal = 0
+	public var selectedCurrencyRatePerXTZ: Decimal = -1
 	public var exchangeRates: CoinGeckoExchangeRateResponse? = nil
+	
+	/// Coingecko has a very aggressive rate limiting policy. To avoid issues arising from running XCUITests on dev machine, we stub it during test runs
+	public var stubPrice: Bool = false
+	
 	private var dispatchGroupMarketData = DispatchGroup()
+	private var coinGeckoQueue = DispatchQueue(label: "coingecko", qos: .utility)
 	
 	var selectedCurrency: String {
-		get { return (UserDefaults.standard.string(forKey: "com.currency.selected") ?? Locale.current.currencyCode?.lowercased()) ?? "usd" } // Return stored, or based on phone local, or default to USD
+		get { return (UserDefaults.standard.string(forKey: "com.currency.selected") ?? Locale.current.currency?.identifier.lowercased()) ?? "usd" } // Return stored, or based on phone local, or default to USD
 	}
 	
 	
@@ -42,50 +51,115 @@ public class CoinGeckoService {
 	
 	// MARK: - Network functions
 	
-	public func fetchTezosPrice(completion: @escaping ((Result<Decimal, ErrorResponse>) -> Void)) {
+	public func fetchTezosPrice(completion: @escaping ((Result<Decimal, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			selectedCurrencyRatePerXTZ = 1.23
+			completion(Result.success(selectedCurrencyRatePerXTZ))
+			return
+		}
+		
 		guard let url = URL(string: coinGeckoPriceURL + selectedCurrency) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per minute, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.minute.rawValue, forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.minute.rawValue, forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self.selectedCurrencyRatePerXTZ = response.price()
+			self?.selectedCurrencyRatePerXTZ = response.price()
 			completion(Result.success(response.price()))
 		}
 	}
 	
-	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, ErrorResponse>) -> Void)) {
+	public func loadLastTezosPrice() {
+		guard stubPrice == false else {
+			selectedCurrencyRatePerXTZ = 1.23
+			return
+		}
+		
+		let cache = self.requestIfService.lastCache(forKey: fetchTezosPriceKey, responseType: CoinGeckoCurrentPrice.self)
+		self.selectedCurrencyRatePerXTZ = cache?.price() ?? 0
+	}
+	
+	public func fetchExchangeRates(completion: @escaping ((Result<CoinGeckoExchangeRateResponse, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoExchangeRateResponse(rates: [
+				"usd": CoinGeckoExchangeRate(name: "US Dollar", unit: "$", value: 72729.208, type: "fiat"),
+				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
+				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
+			])
+			
+			coinGeckoQueue.sync { [weak self] in
+				self?.exchangeRates = stubbedResponse
+			}
+			completion(Result.success(stubbedResponse))
+			return
+		}
+		
 		guard let url = URL(string: coinGeckoExchangeRatesURL) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRates, responseType: CoinGeckoExchangeRateResponse.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRatesKey, responseType: CoinGeckoExchangeRateResponse.self) { [weak self] result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
 			}
 			
-			self.exchangeRates = response
+			self?.coinGeckoQueue.sync { [weak self] in
+				self?.exchangeRates = response
+			}
 			completion(Result.success(response))
 		}
 	}
 	
-	public func fetchChartData(forURL: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, ErrorResponse>) -> Void)) {
+	public func loadLastExchangeRates() {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoExchangeRateResponse(rates: [
+				"usd": CoinGeckoExchangeRate(name: "US Dollar", unit: "$", value: 72729.208, type: "fiat"),
+				"eur": CoinGeckoExchangeRate(name: "Euro", unit: "€", value: 66522.788, type: "fiat"),
+				"gbp": CoinGeckoExchangeRate(name: "British Pound Sterling", unit: "£", value: 56829.149, type: "fiat")
+			])
+			coinGeckoQueue.sync { [weak self] in
+				self?.exchangeRates = stubbedResponse
+			}
+			return
+		}
+		
+		coinGeckoQueue.sync { [weak self] in
+			self?.exchangeRates = self?.requestIfService.lastCache(forKey: self?.fetchEchangeRatesKey ?? "", responseType: CoinGeckoExchangeRateResponse.self)
+		}
+	}
+	
+	public func fetchChartData(forURL: String, withKey: String, completion: @escaping ((Result<CoinGeckoMarketDataResponse, KukaiError>) -> Void)) {
+		guard stubPrice == false else {
+			let stubbedResponse = CoinGeckoMarketDataResponse(prices: [ [1710253206577, 1.364924598389686],
+																		[1710253506313, 1.3640842444632224],
+																		[1710253815819, 1.366669129944549],
+																		[1710254095138, 1.367196961260544],
+																		[1710254453439, 1.3661190435663413],
+																		[1710254710709, 1.364264674621857],
+																		[1710254995244, 1.3664442887113173],
+																		[1710255294877, 1.3631232865975842],
+																		[1710255623763, 1.3593348486343222],
+																		[1710255896593, 1.3527296112320508]])
+			completion(Result.success(stubbedResponse))
+			return
+		}
+		
 		guard let url = URL(string: forURL) else {
-			completion(Result.failure(ErrorResponse.unknownError()))
+			completion(Result.failure(KukaiError.unknown()))
 			return
 		}
 		
 		// Request from API, no more frequently than once per day, else read cache
-		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: fetchEchangeRates, responseType: CoinGeckoMarketDataResponse.self) { result in
+		self.requestIfService.request(url: url, withBody: nil, ifElapsedGreaterThan: RequestIfService.TimeConstants.day.rawValue, forKey: withKey, responseType: CoinGeckoMarketDataResponse.self) { result in
 			guard let response = try? result.get() else {
 				completion(Result.failure(result.getFailure()))
 				return
@@ -95,8 +169,17 @@ public class CoinGeckoService {
 		}
 	}
 	
-	public func fetchAllChartData(completion: @escaping ((Result<[CoinGeckoMarketDataResponse], ErrorResponse>) -> Void)) {
-		var error: ErrorResponse? = nil
+	public func deleteAllCaches() {
+		let _ = self.requestIfService.delete(key: fetchTezosPriceKey)
+		let _ = self.requestIfService.delete(key: fetchEchangeRatesKey)
+		let _ = self.requestIfService.delete(key: chartDataDayKey)
+		let _ = self.requestIfService.delete(key: chartDataWeekKey)
+		let _ = self.requestIfService.delete(key: chartDataMonthKey)
+		let _ = self.requestIfService.delete(key: chartDataYearKey)
+	}
+	
+	public func fetchAllChartData(completion: @escaping ((Result<[CoinGeckoMarketDataResponse], KukaiError>) -> Void)) {
+		var error: KukaiError? = nil
 		dispatchGroupMarketData.enter()
 		dispatchGroupMarketData.enter()
 		dispatchGroupMarketData.enter()
@@ -108,7 +191,7 @@ public class CoinGeckoService {
 		var yearResponse: CoinGeckoMarketDataResponse? = nil
 		
 		
-		fetchChartData(forURL: coinGeckoChartURLDay + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLDay + selectedCurrency, withKey: chartDataDayKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -119,7 +202,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLWeek + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLWeek + selectedCurrency, withKey: chartDataWeekKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -130,7 +213,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLMonth + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLMonth + selectedCurrency, withKey: chartDataMonthKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -141,7 +224,7 @@ public class CoinGeckoService {
 			self?.dispatchGroupMarketData.leave()
 		}
 		
-		fetchChartData(forURL: coinGeckoChartURLYear + selectedCurrency) { [weak self] result in
+		fetchChartData(forURL: coinGeckoChartURLYear + selectedCurrency, withKey: chartDataYearKey) { [weak self] result in
 			guard let res = try? result.get() else {
 				error = result.getFailure()
 				self?.dispatchGroupMarketData.leave()
@@ -162,12 +245,12 @@ public class CoinGeckoService {
 				completion(Result.success([day, week, month, year]))
 				
 			} else {
-				completion(Result.failure(ErrorResponse.unknownError()))
+				completion(Result.failure(KukaiError.unknown()))
 			}
 		}
 	}
 	
-	public func setSelectedCurrency(currency: String, completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func setSelectedCurrency(currency: String, completion: @escaping ((KukaiError?) -> Void)) {
 		UserDefaults.standard.setValue(currency, forKey: "com.currency.selected")
 		let _ = self.requestIfService.delete(key: fetchTezosPriceKey)
 		
@@ -214,6 +297,25 @@ public class CoinGeckoService {
 		return numberFormatter
 	}
 	
+	/**
+	 In situations where no pricing infomration is available, we may want to display somehting other than, e.g. $0.00, to indicate the the difference between a token of value lower than 0.01
+	 This will instead produce "$--" (localised), to indicate, no info available
+	 */
+	public func dashedCurrencyString() -> String {
+		let numberFormatter = sharedNumberFormatter()
+		numberFormatter.numberStyle = .currency
+		numberFormatter.maximumFractionDigits = 0
+		
+		var sampleString = numberFormatter.string(from: 1) ?? "--"
+		sampleString = sampleString.replacingOccurrences(of: "1", with: "--")
+		
+		return sampleString
+	}
+	
+	public func dashedString() -> String {
+		return "--"
+	}
+	
 	public func placeholderCurrencyString() -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = .currency
@@ -224,6 +326,14 @@ public class CoinGeckoService {
 	public func format(decimal: Decimal, numberStyle: NumberFormatter.Style, maximumFractionDigits: Int? = nil) -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = numberStyle
+		
+		guard decimal >= 0 else {
+			if numberStyle == .decimal {
+				return dashedString()
+			} else {
+				return dashedCurrencyString()
+			}
+		}
 		
 		if let maxDigits = maximumFractionDigits {
 			numberFormatter.maximumFractionDigits = maxDigits
@@ -236,5 +346,41 @@ public class CoinGeckoService {
 		let outputString = numberFormatter.string(from: decimalAsNumber) ?? "0"
 		
 		return outputString
+	}
+	
+	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int) -> String {
+		var reducedNumber: Decimal = 0
+		var reducedNumberSymbol: String? = nil
+		
+		switch num {
+			case 1_000_000_000_000...:
+				reducedNumber = num / 1_000_000_000
+				reducedNumberSymbol = "t"
+				
+			case 1_000_000_000...:
+				reducedNumber = num / 1_000_000_000
+				reducedNumberSymbol = "b"
+				
+			case 1_000_000...:
+				reducedNumber = num / 1_000_000
+				reducedNumberSymbol = "m"
+				
+			case 0...:
+				reducedNumber = num
+				
+			default:
+				reducedNumber = num
+		}
+		
+		var stringToReturn = ""
+		if let symbol = reducedNumberSymbol {
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: 3)
+			stringToReturn += symbol
+			
+		} else {
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: decimalPlaces)
+		}
+		
+		return stringToReturn
 	}
 }

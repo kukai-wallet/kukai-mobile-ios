@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsSendCell" rowHeight="86" id="Eed-4g-EYo" customClass="TokenDetailsSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eed-4g-EYo" id="c1R-x4-9S0">
+                <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EHB-IL-xZp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                        <rect key="frame" x="86.666666666666686" y="16" width="220" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="56" id="bCR-C6-WDv"/>
+                            <constraint firstAttribute="width" constant="220" id="ihr-LC-9yI"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                        <color key="tintColor" name="TxtBtnPrim1"/>
+                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                        <buttonConfiguration key="configuration" style="plain" title="Send">
+                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                        </buttonConfiguration>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="EHB-IL-xZp" secondAttribute="bottom" constant="16" id="0QK-XP-Rd9"/>
+                    <constraint firstItem="EHB-IL-xZp" firstAttribute="centerX" secondItem="c1R-x4-9S0" secondAttribute="centerX" id="mrh-ca-obr"/>
+                    <constraint firstItem="EHB-IL-xZp" firstAttribute="top" secondItem="c1R-x4-9S0" secondAttribute="top" constant="16" id="rur-s7-62A"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="sendButton" destination="EHB-IL-xZp" id="z3v-xr-yf2"/>
+            </connections>
+            <point key="canvasLocation" x="-283" y="21"/>
+        </tableViewCell>
+    </objects>
+    <designables>
+        <designable name="EHB-IL-xZp">
+            <size key="intrinsicContentSize" width="71" height="37.333333333333336"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="ArrowUp-right" width="128" height="128"/>
+        <namedColor name="TxtBtnPrim1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

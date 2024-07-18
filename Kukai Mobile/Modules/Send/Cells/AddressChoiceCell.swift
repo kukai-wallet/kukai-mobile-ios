@@ -7,9 +7,17 @@
 
 import UIKit
 
-class AddressChoiceCell: UITableViewCell {
+class AddressChoiceCell: UITableViewCell, UITableViewCellContainerView {
 	
+	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
+	@IBOutlet weak var moreButton: CustomisableButton?
+	
+	var gradientLayer = CAGradientLayer()
+	
+	override class func awakeFromNib() {
+		super.awakeFromNib()
+	}
 }

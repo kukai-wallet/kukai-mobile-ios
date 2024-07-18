@@ -5,6 +5,7 @@
 //  Created by Simon Mcloughlin on 05/10/2021.
 //
 
+/*
 import UIKit
 import KukaiCoreSwift
 import Combine
@@ -30,7 +31,7 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 			.convertToResult()
 			.sink { [weak self] result in
 				guard let devices = try? result.get() else {
-					let error = (try? result.getError()) ?? ErrorResponse.unknownError()
+					let error = (try? result.getError()) ?? KukaiError.unknown()
 					self?.alert(errorWithMessage: "Error from ledger: \( error )")
 					return
 				}
@@ -86,3 +87,4 @@ class LedgerScanningViewController: UIViewController, UITableViewDelegate, UITab
 			.store(in: &bag)
 	}
 }
+*/

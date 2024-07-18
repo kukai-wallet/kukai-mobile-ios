@@ -8,13 +8,13 @@ on:
 jobs:
   deploy:
     name: Deploying to Testflight
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_13.3.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
         
       - name: Checkout repository
-        uses: actions/checkout@v2.3.4
+        uses: actions/checkout@v4.1.1
 
 
 
@@ -38,7 +38,15 @@ jobs:
 
 
       # Upload Base64 copies of apple certs to github following these instructions: 
+      # Note: Use app store distribution certs
       # https://docs.github.com/en/actions/guides/installing-an-apple-certificate-on-macos-runners-for-xcode-development
+      # 
+      # Every time we update certs / profiles or they expire, we need to update the following github actions secrets
+      # BUILD_CERTIFICATE_BASE64              = exported distribution cert from inside Xcode account settings, copied with `base64 -i <file-path> | pbcopy`
+      # P12_PASSWORD                          = whatever new password created for previous file
+      # BUILD_PROVISION_PROFILE_BASE64        = download "Kukai Mobile Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      # BUILD_PROVISION_PROFILE_BETA_BASE64   = download "Kukai Mobile Beta Prov Dist App Store" from app store connect, copied with `base64 -i <file-path> | pbcopy`
+      #
       - name: Install the Apple certificate and provisioning profile
         run: |
           # create variables
@@ -47,8 +55,8 @@ jobs:
           KEYCHAIN_PATH=$RUNNER_TEMP/app-signing.keychain-db
 
           # import certificate and provisioning profile from secrets
-          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode --output $CERTIFICATE_PATH
-          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode --output $PP_PATH
+          echo -n "$BUILD_CERTIFICATE_BASE64" | base64 --decode -o $CERTIFICATE_PATH
+          echo -n "$BUILD_PROVISION_PROFILE_BASE64" | base64 --decode -o $PP_PATH
 
           # create temporary keychain
           security create-keychain -p "$KEYCHAIN_PASSWORD" $KEYCHAIN_PATH
@@ -63,9 +71,11 @@ jobs:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
       
-      - name: Auto update build number
-        run: agvtool next-version -all
 
+      # Auto increment build number on Dev builds only to avoid mismatch between TestFlight setups
+      - name: Auto update build number
+        if: github.ref == 'refs/heads/develop'
+        run: agvtool next-version -all
 
       # Build and archive for main or develop
       - name: Build and Archive
@@ -75,7 +85,6 @@ jobs:
       - name: Build and Archive
         if: github.ref == 'refs/heads/develop'
         run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
-
 
       # Export .ipa for main or develop
       - name: Export .ipa
@@ -98,8 +107,8 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           export PATH=/usr/local/bin:$PATH
-          export SENTRY_ORG=simon-mcloughlin
-          export SENTRY_PROJECT=simon-mcloughlin
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
           export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
           export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           

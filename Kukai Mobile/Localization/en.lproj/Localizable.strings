@@ -5,3 +5,63 @@
   Created by Simon Mcloughlin on 20/10/2021.
   
 */
+
+
+// MARK: - Errors
+
+"error"="Error";
+"error-fetch-address"="Error fetching address";
+"error-funds-title"="Insufficient Funds";
+"error-previous-account-title"="Previous Account empty";
+
+"error-no-datasource"="Unable to locate datasource";
+"error-no-token"="Unable to locate token info";
+"error-no-destination"="Unable to locate destiantion address";
+"error-no-account"="Unable to locate requested account";
+"error-funds-body"="Your balance is %@ and the required fee to make this transaction is %@";
+
+"error-no-cloudkit-config"="Unable to fetch config settings: %@";
+"error-cant-cache"="Unable to cache";
+"error-cant-cache-cause"="Unable to cache: %@";
+"error-wallet-already-exists"="This wallet address already exists. It can't be added again";
+"error-cant-create-wallet"="Unable to create wallet";
+"error-missing-verifier"="Unsupported, due to missing verifier";
+"error-new-wallet-details"="Unable to create wallet from details supplied. Please check and try again";
+"error-new-wallet-address"="Supplied wallet address, does not match wallet created. Please ensure you have entered the correct details";
+"error-wrong-address"="Invalid wallet address";
+"error-no-wallet"="Unable to locate wallet information. Please try again";
+"error-no-wallet-short"="Unable to locate wallet";
+"error-previous-account-empty"="The main wallet or the previous account is empty, you can only have 1 empty account per wallet at a time";
+"error-cant-add-account"="Unable to add account";
+"error-custom-name"="Unable to set custom name on wallet";
+"error-delete-wallet"="Unable to delete wallet";
+"error-unsupport-action"="Unsupported action";
+"error-hide-token"="Unable to hide token";
+"error-unhide-token"="Unable to unhide token";
+"error-chosen-baker"="Unable to locate chosen baker";
+"error-cant-sign"="Unable to sign with wallet: %@";
+"error-generic-transaction-failure"="An operation has failed for account: %@";
+"error-passcode-too-weak"="Passcode is too weak. It must have 3 or more unique digits, and not have 3 or more sequential digits (e.g. '123' or '456')";
+"error-unable-to-store-passcode"="Unable to store passcode";
+"error-cant-fav"="Unable to favourite token";
+"error-cant-unfav"="Unable to unfavourite token";
+"error-image-not-in-cahce"="Unable to locate image in cache, please make sure the image is displayed correctly";
+"error-unsupported-sign"="Unsupported signature request";
+"error-beacon-not-supported"="Beacon QRCodes are not supported, only Wallet Connect. Please make sure you are using the kukai option. If you are, please contact the dApp support team and ask them to update their beacon version";
+"error-collectible-media-generic"="Unable to play media at this time, please try again later";
+"error-onramp-generic"="Unable to access this provider at this time, please try again later";
+"error-fetching-domains"="Encountered an error checking for tezos domains";
+"error-unsupported-wallet-type"="This type of wallet doesn't support this feature";
+"error-invalid-private-key"="Invalid private key. Please check you have the correct details and try again";
+"error-invalid-private-key-password"="This private key is encrypted, you must supply the password you used to encryt it";
+
+"error-funds-body-wc2"="Balance for address %@, is %@ and the required balance to pay for this transaction is %@";
+"error-unknwon-wc2"="Unable to respond to Wallet Connect";
+"error-unknwon-wc2"="Unknown Wallet Connect error occured";
+"error-wc2-reconnect"="Unable to reconnect: %@";
+"error-wc2-errorcode"="Unable to respond to Wallet Connect: %@ - %@";
+"error-wc2-unrecoverable"="An unknown error occured with the connection. This operation can't continue. Please check the other application and try agian";
+"error-wc2-cant-continue"="Unable to continue with this request due to system error";
+"error-wc2-cant-open-more-modals"="An incoming wallet connect request was automatically rejected, as you are in the middle of an activity. Please return to one of the main tabs and try again.";
+"error-wc2-switch-no-pairing"="Unbale to locate details about this connection. Please try again";
+"error-wc2-reconnect"="Failed to reconnect to WalletConnect 3 times in a row, retrying. Please check your internet connection";

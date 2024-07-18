@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_0" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="CollectibleDetailImageCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="300" height="300"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0xD-nG-GHj" customClass="SDAnimatedImageView">
+                        <rect key="frame" x="0.0" y="8" width="300" height="300"/>
+                        <color key="backgroundColor" name="BGFullNFT"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="0xD-nG-GHj" secondAttribute="height" multiplier="1:1" id="FDD-eS-Mh1"/>
+                        </constraints>
+                    </imageView>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="x4r-bL-1fI">
+                        <rect key="frame" x="140" y="140" width="20" height="20"/>
+                        <color key="color" name="Txt2"/>
+                    </activityIndicatorView>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="0xD-nG-GHj" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="1sN-Qh-6Gd"/>
+                <constraint firstItem="x4r-bL-1fI" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="KCB-sc-lzL"/>
+                <constraint firstAttribute="bottom" secondItem="0xD-nG-GHj" secondAttribute="bottom" priority="999" id="KSo-Wd-ppc"/>
+                <constraint firstItem="0xD-nG-GHj" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="qvp-4n-Glh"/>
+                <constraint firstItem="x4r-bL-1fI" firstAttribute="centerX" secondItem="gTV-IL-0wX" secondAttribute="centerX" id="uhu-iJ-Gnd"/>
+                <constraint firstAttribute="trailing" secondItem="0xD-nG-GHj" secondAttribute="trailing" id="vuS-JS-33U"/>
+            </constraints>
+            <size key="customSize" width="273" height="213"/>
+            <connections>
+                <outlet property="activityIndicator" destination="x4r-bL-1fI" id="0ac-KM-sl4"/>
+                <outlet property="aspectRatioConstraint" destination="FDD-eS-Mh1" id="BQv-tB-X6o"/>
+                <outlet property="imageView" destination="0xD-nG-GHj" id="rEK-DI-K1A"/>
+            </connections>
+            <point key="canvasLocation" x="164.61538461538461" y="78.199052132701425"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <namedColor name="BGFullNFT">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

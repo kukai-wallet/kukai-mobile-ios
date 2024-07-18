@@ -9,20 +9,32 @@ import Foundation
 import Combine
 import KukaiCoreSwift
 import CustomAuth
+import Sentry
+
+struct WalletIndex {
+	let parent: Int
+	let child: Int?
+}
 
 class DependencyManager {
 	
 	static let shared = DependencyManager()
 	
-	static let defaultNodeURL_mainnet = URL(string: "https://api.tez.ie/rpc/mainnet")!
-	static let defaultTzktURL_mainnet = URL(string: "https://api.tzkt.io")!
+	static let defaultNodeURLs_mainnet = [URL(string: "https://mainnet.kukai.network")!, URL(string: "https://rpc.tzbeta.net")!, URL(string: "https://mainnet.smartpy.io")!]
+	static let defaultTzktURL_mainnet = URL(string: "https://kukai.api.tzkt.io")!
+	static let defaultExplorerURL_mainnet = URL(string: "https://tzkt.io")!
 	static let defaultBcdURL_mainnet = URL(string: "https://api.better-call.dev")!
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
+	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURL_testnet = URL(string: "https://hangzhounet.api.tez.ie")!
-	static let defaultTzktURL_testnet = URL(string: "https://api.hangzhounet.tzkt.io")!
-	static let defaultBcdURL_testnet = URL(string: "https://api.better-call.dev")!
-	static let defaultTezosDomainsURL_testnet = URL(string: "https://hangzhounet-api.tezos.domains/graphql")!
+	static let defaultNodeURLs_ghostnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
+	static let defaultTzktURL_ghostnet = URL(string: "https://api.ghostnet.tzkt.io")!
+	static let defaultExplorerURL_ghostnet = URL(string: "https://ghostnet.tzkt.io")!
+	static let defaultBcdURL_ghostnet = URL(string: "https://api.better-call.dev")!
+	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
+	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
+	
+	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
 	
 	
 	// Kukai Core clients and properties
@@ -32,27 +44,56 @@ class DependencyManager {
 	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
 	var dipDupClient: DipDupClient
+	var objktClient: ObjktClient
 	var balanceService: BalanceService
+	var activityService: ActivityService
 	var coinGeckoService: CoinGeckoService
+	var tezosDomainsClient: TezosDomainsClient
+	var exploreService: ExploreService
+	var discoverService: DiscoverService
+	var appUpdateService: AppUpdateService
+	
+	var stubXtzPrice: Bool = false
 	
 	
 	// Properties and helpers
 	let sharedSession: URLSession
-	var torusVerifiers: [TorusAuthProvider: SubverifierWrapper] = [:] {
-		didSet {
-			torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
-		}
-	}
+	var torusVerifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
+	var torusMainnetKeys: [String: String] = [:]
+	var torusTestnetKeys: [String: String] = [:]
 	
 	// Stored URL's and network info
-	var currentNodeURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.node.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.node.url") ?? "") ?? DependencyManager.defaultNodeURL_mainnet }
+	var currentNodeURLs: [URL] {
+		set {
+			let arrayOfStrings = newValue.map({ $0.absoluteString })
+			UserDefaults.standard.setValue(arrayOfStrings, forKey: "app.kukai.mobile.node.url")
+		}
+		get {
+			let arrayOfString = UserDefaults.standard.array(forKey: "app.kukai.mobile.node.url") as? [String] ?? []
+			var urls: [URL] = []
+			
+			for str in arrayOfString {
+				if let url = URL(string: str) {
+					urls.append(url)
+				}
+			}
+			
+			if urls.count == 0 {
+				urls = DependencyManager.defaultNodeURLs_mainnet
+			}
+			
+			return urls
+		}
 	}
 	
 	var currentTzktURL: URL {
 		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tzkt.url") }
 		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tzkt.url") ?? "") ?? DependencyManager.defaultTzktURL_mainnet }
+	}
+	
+	var currentExplorerURL: URL {
+		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.explorer.url") }
+		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.explorer.url") ?? "") ?? DependencyManager.defaultExplorerURL_mainnet }
 	}
 	
 	var currentBcdURL: URL {
@@ -65,42 +106,69 @@ class DependencyManager {
 		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tezos-domains.url") ?? "") ?? DependencyManager.defaultTezosDomainsURL_mainnet }
 	}
 	
+	var currentObjktURL: URL {
+		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.objkt.url") }
+		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.objkt.url") ?? "") ?? DependencyManager.defaultObjktURL_mainnet }
+	}
+	
 	var currentNetworkType: TezosNodeClientConfig.NetworkType {
 		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.type") }
 		get { return TezosNodeClientConfig.NetworkType(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.type") ?? "") ?? .mainnet }
 	}
 	
-	var tezosChainName: TezosChainName {
-		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.chainname") }
-		get { return TezosChainName(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.chainname") ?? "") ?? .mainnet }
-	}
 	
 	
-	// Selected Wallet data
-	var selectedWalletIndex: Int {
+	// Wallet info / helpers
+	
+	var walletList: WalletMetadataList = WalletCacheService().readMetadataFromDiskAndDecrypt()
+	
+	private var _selectedWalletMetadata: WalletMetadata? = nil
+	var selectedWalletMetadata: WalletMetadata? {
 		set {
-			UserDefaults.standard.setValue(newValue, forKey: "app.kukai.mobile.selected.wallet")
+			_selectedWalletMetadata = newValue
+			DependencyManager.shared.balanceService.setLoadingWallet()
+			
+			let encoded = try? JSONEncoder().encode(newValue)
+			UserDefaults.standard.setValue(encoded, forKey: "app.kukai.mobile.selected.wallet")
 			walletDidChange = true
 		}
-		get { return UserDefaults.standard.integer(forKey: "app.kukai.mobile.selected.wallet") }
+		get {
+			if let cached = _selectedWalletMetadata {
+				return cached
+			}
+			
+			if let encoded = UserDefaults.standard.object(forKey: "app.kukai.mobile.selected.wallet") as? Data {
+				let decoded = try? JSONDecoder().decode(WalletMetadata.self, from: encoded)
+				_selectedWalletMetadata = decoded
+				
+				return decoded
+			}
+			
+			return nil
+		}
+	}
+	
+	var selectedWalletAddress: String? {
+		get {
+			return selectedWalletMetadata?.address
+		}
 	}
 	
 	var selectedWallet: Wallet? {
 		get {
-			if let wallets = WalletCacheService().fetchWallets() {
-				
-				if wallets.count == 0 {
-					return nil
-				}
-				
-				if selectedWalletIndex >= wallets.count {
-					selectedWalletIndex = wallets.count-1
-				}
-				
-				return wallets[selectedWalletIndex]
+			if let address = selectedWalletAddress {
+				return WalletCacheService().fetchWallet(forAddress: address)
 			}
 			
 			return nil
+		}
+	}
+	
+	// For use during WC2 flow where a user tentively selects an account, and we want to wait until its confirmed before switching
+	var temporarySelectedWalletMetadata: WalletMetadata?
+	var temporarySelectedWalletAddress: String? {
+		get {
+			return temporarySelectedWalletMetadata?.address
 		}
 	}
 	
@@ -110,7 +178,10 @@ class DependencyManager {
 	// We create dummy published vars, where the actual value isn't relevant, we only care about triggering logic from these when a value is set
 	@Published var networkDidChange: Bool = false
 	@Published var walletDidChange: Bool = false
-	@Published var accountBalancesDidUpdate: Bool = false
+	@Published var addressLoaded: String = ""
+	@Published var addressRefreshed: String = ""
+	@Published var sideMenuOpen: Bool = false
+	@Published var walletDeleted: Bool = false
 	
 	
 	
@@ -138,55 +209,96 @@ class DependencyManager {
 		tezosClientConfig = TezosNodeClientConfig(withDefaultsForNetworkType: .mainnet)
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
-		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
+		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers, web3AuthClientId: "")
 		balanceService = BalanceService()
+		activityService = ActivityService()
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
+		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: .mainnet)
+		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
+		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
-		updateKukaiCoreClients()
+		coinGeckoService.stubPrice = self.stubXtzPrice
+		
+		updateKukaiCoreClients(supressUpdateNotification: true)
+		
+		
+		// Central logging for all errors generated by KukaiCoreSwift
+		ErrorHandlingService.shared.errorEventClosure = { err in
+			if err.isTimeout() {
+				SentrySDK.capture(message: "Timeout") { scope in
+					scope.setLevel(.error)
+					scope.setFingerprint(["client", "timeout"])
+					scope.setExtras([
+						"url": err.requestURL?.absoluteString ?? "-",
+						"domain": err.subType?.domain ?? "-",
+						"code": err.subType?.code ?? "-",
+					])
+				}
+				
+			}
+		}
 	}
 	
-	func setDefaultMainnetURLs() {
-		currentNodeURL = DependencyManager.defaultNodeURL_mainnet
+	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
+		currentNodeURLs = DependencyManager.defaultNodeURLs_mainnet
 		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
+		currentExplorerURL = DependencyManager.defaultExplorerURL_mainnet
 		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
 		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
-		tezosChainName = .mainnet
+		currentObjktURL = DependencyManager.defaultObjktURL_mainnet
 		currentNetworkType = .mainnet
 		
-		updateKukaiCoreClients()
+		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func setDefaultTestnetURLs() {
-		currentNodeURL = DependencyManager.defaultNodeURL_testnet
-		currentTzktURL = DependencyManager.defaultTzktURL_testnet
-		currentBcdURL = DependencyManager.defaultBcdURL_testnet
-		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_testnet
-		tezosChainName = .hangzhounet
-		currentNetworkType = .testnet
+	func setDefaultGhostnetURLs(supressUpdateNotification: Bool = false) {
+		currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
+		currentTzktURL = DependencyManager.defaultTzktURL_ghostnet
+		currentExplorerURL = DependencyManager.defaultExplorerURL_ghostnet
+		currentBcdURL = DependencyManager.defaultBcdURL_ghostnet
+		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_ghostnet
+		currentObjktURL = DependencyManager.defaultObjktURL_ghostnet
+		currentNetworkType = .ghostnet
 		
-		updateKukaiCoreClients()
+		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
-	func updateKukaiCoreClients() {
+	func updateKukaiCoreClients(supressUpdateNotification: Bool = false) {
+		tzktClient.stopListeningForAccountChanges()
+		
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
-			primaryNodeURL: currentNodeURL,
-			tezosChainName: tezosChainName,
+			nodeURLs: currentNodeURLs,
 			tzktURL: currentTzktURL,
 			betterCallDevURL: currentBcdURL,
 			tezosDomainsURL: currentTezosDomainsURL,
+			objktApiURL: currentObjktURL,
 			urlSession: sharedSession,
 			networkType: currentNetworkType
 		)
 		
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
 		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		balanceService = BalanceService()
+		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
+		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
+		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: currentNetworkType)
+		discoverService = DiscoverService(networkService: tezosNodeClient.networkService)
+		appUpdateService = AppUpdateService(networkService: tezosNodeClient.networkService)
 		
-		networkDidChange = true
+		coinGeckoService.stubPrice = self.stubXtzPrice
+		
+		if !supressUpdateNotification {
+			networkDidChange = true
+		}
+	}
+	
+	func setupTorus() {
+		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers, web3AuthClientId: torusMainnetKeys["web3AuthClientId"] ?? "")
 	}
 }

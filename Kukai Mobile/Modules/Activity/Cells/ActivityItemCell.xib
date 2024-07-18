@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityItemCell" rowHeight="100" id="VHf-nR-jpu" customClass="ActivityItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="483" height="104"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VHf-nR-jpu" id="smR-TM-RlC">
+                <rect key="frame" x="0.0" y="0.0" width="483" height="104"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3nn-gA-TSY">
+                        <rect key="frame" x="16" y="2" width="451" height="100"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="REs-fD-NQd" customClass="SDAnimatedImageView">
+                                <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="X9z-SJ-t8A"/>
+                                    <constraint firstAttribute="height" constant="40" id="si6-BQ-g7Q"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pnA-HH-brD">
+                                <rect key="frame" x="60" y="12.666666666666664" width="14" height="14"/>
+                                <color key="tintColor" name="TxtB6"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="14" id="CcP-xT-3zV"/>
+                                    <constraint firstAttribute="height" constant="14" id="jRB-DP-uKD"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;type&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P7q-6s-SWO">
+                                <rect key="frame" x="78" y="9.9999999999999982" width="54.666666666666657" height="19.333333333333329"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fot-0r-ybG">
+                                <rect key="frame" x="60" y="33.333333333333336" width="381" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="09k-6q-ogO">
+                                <rect key="frame" x="60" y="54.333333333333336" width="381" height="16.000000000000007"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;to&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="j7j-21-7Im">
+                                        <rect key="frame" x="0.0" y="0.0" width="27" height="16"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="Txt10"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gBZ-as-9TO">
+                                        <rect key="frame" x="31" y="0.0" width="12" height="16"/>
+                                        <subviews>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D8f-Vr-aGT">
+                                                <rect key="frame" x="0.0" y="0.0" width="12" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="IRV-TS-X6f">
+                                                <rect key="frame" x="0.0" y="2" width="12" height="12"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="12" id="LgP-Ta-Ehj"/>
+                                                    <constraint firstAttribute="width" constant="12" id="ReE-lD-wbV"/>
+                                                </constraints>
+                                            </imageView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q1s-e9-2zl">
+                                                <rect key="frame" x="0.0" y="13.999999999999993" width="12" height="2"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="Q1s-e9-2zl" firstAttribute="height" secondItem="D8f-Vr-aGT" secondAttribute="height" id="2JL-p3-vsj"/>
+                                        </constraints>
+                                    </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;destination&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qIp-2X-KmI">
+                                        <rect key="frame" x="47" y="0.0" width="334" height="16"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="Txt8"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="TcW-ja-mk7"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="KpP-S4-rR7">
+                                <rect key="frame" x="248.33333333333331" y="78" width="192.66666666666669" height="12"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="FAILED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z0g-0s-igy">
+                                        <rect key="frame" x="0.0" y="0.0" width="40.666666666666664" height="12"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="TxtAlert4"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnInfoKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="8S0-1T-Jqu">
+                                        <rect key="frame" x="44.666666666666686" y="0.0" width="12" height="12"/>
+                                        <color key="tintColor" name="TxtAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="Q6D-RL-NoP"/>
+                                            <constraint firstAttribute="width" constant="12" id="jvw-QN-xRA"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="CONFIRMED" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tfb-6G-spS">
+                                        <rect key="frame" x="60.666666666666679" y="0.0" width="71.333333333333314" height="12"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="TxtGood4"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" translatesAutoresizingMaskIntoConstraints="NO" id="fzx-Tv-thc">
+                                        <rect key="frame" x="136" y="0.0" width="12" height="12"/>
+                                        <color key="tintColor" name="TxtGood4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="12" id="Aoz-k3-wUo"/>
+                                            <constraint firstAttribute="width" constant="12" id="T8J-oO-mXe"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="&lt;time&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="N6Q-9u-1aj">
+                                        <rect key="frame" x="152" y="0.0" width="40.666666666666657" height="12"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                        <color key="textColor" name="Txt12"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="fot-0r-ybG" firstAttribute="top" secondItem="P7q-6s-SWO" secondAttribute="bottom" constant="4" id="2J8-MC-PdT"/>
+                            <constraint firstItem="REs-fD-NQd" firstAttribute="leading" secondItem="3nn-gA-TSY" secondAttribute="leading" constant="10" id="9RN-Zf-KRO"/>
+                            <constraint firstItem="fot-0r-ybG" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="leading" id="9gN-CX-fs1"/>
+                            <constraint firstItem="P7q-6s-SWO" firstAttribute="top" secondItem="REs-fD-NQd" secondAttribute="top" id="CmQ-I2-Han"/>
+                            <constraint firstAttribute="trailing" secondItem="KpP-S4-rR7" secondAttribute="trailing" constant="10" id="HIJ-eX-PaL"/>
+                            <constraint firstItem="09k-6q-ogO" firstAttribute="top" secondItem="fot-0r-ybG" secondAttribute="bottom" constant="4" id="NmW-lM-eAd"/>
+                            <constraint firstItem="pnA-HH-brD" firstAttribute="leading" secondItem="REs-fD-NQd" secondAttribute="trailing" constant="10" id="Ond-es-aLd"/>
+                            <constraint firstItem="REs-fD-NQd" firstAttribute="top" secondItem="3nn-gA-TSY" secondAttribute="top" constant="10" id="Oxf-zl-5Ui"/>
+                            <constraint firstItem="P7q-6s-SWO" firstAttribute="centerY" secondItem="pnA-HH-brD" secondAttribute="centerY" id="T4a-Uz-3KF"/>
+                            <constraint firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" constant="10" id="dPC-n1-Iiu"/>
+                            <constraint firstAttribute="bottom" secondItem="REs-fD-NQd" secondAttribute="bottom" constant="50" id="gsX-de-L0Z"/>
+                            <constraint firstItem="09k-6q-ogO" firstAttribute="trailing" secondItem="fot-0r-ybG" secondAttribute="trailing" id="hjN-xB-HfE"/>
+                            <constraint firstAttribute="bottom" secondItem="KpP-S4-rR7" secondAttribute="bottom" constant="10" id="lPX-zT-ZeB"/>
+                            <constraint firstItem="09k-6q-ogO" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="leading" id="rjz-go-8Nm"/>
+                            <constraint firstItem="P7q-6s-SWO" firstAttribute="leading" secondItem="pnA-HH-brD" secondAttribute="trailing" constant="4" id="zeB-Ta-ziR"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="3nn-gA-TSY" secondAttribute="trailing" constant="16" id="fVf-eV-aUU"/>
+                    <constraint firstItem="3nn-gA-TSY" firstAttribute="leading" secondItem="smR-TM-RlC" secondAttribute="leading" constant="16" id="lVZ-sS-oKC"/>
+                    <constraint firstItem="3nn-gA-TSY" firstAttribute="top" secondItem="smR-TM-RlC" secondAttribute="top" constant="2" id="neU-ZK-wPK"/>
+                    <constraint firstAttribute="bottom" secondItem="3nn-gA-TSY" secondAttribute="bottom" constant="2" id="x4B-T7-wQC"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="confirmedIcon" destination="fzx-Tv-thc" id="MU9-0W-tYO"/>
+                <outlet property="confirmedLabel" destination="tfb-6G-spS" id="Gso-o8-ie9"/>
+                <outlet property="containerView" destination="3nn-gA-TSY" id="T6G-yq-zV3"/>
+                <outlet property="destinationIcon" destination="IRV-TS-X6f" id="Pi1-V4-FuJ"/>
+                <outlet property="destinationIconStackView" destination="gBZ-as-9TO" id="g8q-NH-Xjm"/>
+                <outlet property="destinationLabel" destination="qIp-2X-KmI" id="zON-sK-m4K"/>
+                <outlet property="failedIcon" destination="8S0-1T-Jqu" id="ZEr-Kk-1In"/>
+                <outlet property="failedLabel" destination="Z0g-0s-igy" id="Mnk-EG-cpK"/>
+                <outlet property="iconView" destination="REs-fD-NQd" id="15Q-4H-a9T"/>
+                <outlet property="timeLabel" destination="N6Q-9u-1aj" id="T3w-uC-HPE"/>
+                <outlet property="titleLabel" destination="fot-0r-ybG" id="4MB-Nm-iyL"/>
+                <outlet property="toLabel" destination="j7j-21-7Im" id="jGV-OG-PzJ"/>
+                <outlet property="typeIcon" destination="pnA-HH-brD" id="7mo-gQ-qRa"/>
+                <outlet property="typeLabel" destination="P7q-6s-SWO" id="YyZ-r8-Bfg"/>
+            </connections>
+            <point key="canvasLocation" x="194.6564885496183" y="91.549295774647888"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="Check" width="24" height="24"/>
+        <image name="btnInfoKnockout" width="36" height="36"/>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt12">
+            <color red="0.7369999885559082" green="0.74500000476837158" blue="0.83099997043609619" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt8">
+            <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtAlert4">
+            <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtB6">
+            <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtGood4">
+            <color red="0.035000000149011612" green="0.68199998140335083" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

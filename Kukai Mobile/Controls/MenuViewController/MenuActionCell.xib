@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="MenuActionCell" rowHeight="56" id="KGk-i7-Jjw" customClass="MenuActionCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;action&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X64-5E-yCw">
+                        <rect key="frame" x="16" y="10" width="240" height="36"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                        <color key="textColor" name="TxtMenuContext"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="zB3-ke-XvE">
+                        <rect key="frame" x="272" y="10" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="8Ef-I8-ykp"/>
+                            <constraint firstAttribute="width" constant="32" id="YkQ-hj-zIi"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="zB3-ke-XvE" secondAttribute="bottom" constant="10" id="6nq-uN-1KR"/>
+                    <constraint firstItem="X64-5E-yCw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="Kuh-Xn-JWe"/>
+                    <constraint firstAttribute="trailing" secondItem="zB3-ke-XvE" secondAttribute="trailing" constant="16" id="YJc-XN-iFv"/>
+                    <constraint firstItem="X64-5E-yCw" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="a95-fh-5tU"/>
+                    <constraint firstAttribute="bottom" secondItem="X64-5E-yCw" secondAttribute="bottom" constant="10" id="kLf-Jp-hhe"/>
+                    <constraint firstItem="zB3-ke-XvE" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="pY5-ES-glE"/>
+                    <constraint firstItem="zB3-ke-XvE" firstAttribute="leading" secondItem="X64-5E-yCw" secondAttribute="trailing" constant="16" id="xZz-BO-CJ3"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="actionLabel" destination="X64-5E-yCw" id="6HF-BS-dBo"/>
+                <outlet property="iconView" destination="zB3-ke-XvE" id="4z4-i8-JLz"/>
+            </connections>
+            <point key="canvasLocation" x="-12.213740458015266" y="24.647887323943664"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="TxtMenuContext">
+            <color red="0.17599999904632568" green="0.18000000715255737" blue="0.24699999392032623" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -5,7 +5,9 @@
 //  Created by Simon Mcloughlin on 05/10/2021.
 //
 
+/*
 import UIKit
+import KukaiCryptoSwift
 import KukaiCoreSwift
 import Combine
 
@@ -49,18 +51,20 @@ class LedgerVerifyViewController: UIViewController {
 	}
 	
 	func createWallet(address: String?, publicKey: String?) {
-		guard let add = address, let pk = publicKey, let uuid = LedgerService.shared.getConnectedDeviceUUID() else {
+		/*guard let add = address, let pk = publicKey, let uuid = LedgerService.shared.getConnectedDeviceUUID() else {
 			self.alert(errorWithMessage: "Unable to find all the required information, please try again")
 			LedgerService.shared.disconnectFromDevice()
 			self.navigationController?.popViewController(animated: true)
 			return
 		}
 		
-		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HDWallet.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet) {
+		if let ledgerWallet = LedgerWallet(address: add, publicKey: pk, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid), WalletCacheService().cache(wallet: ledgerWallet, childOfIndex: nil) {
+			DependencyManager.shared.walletList = WalletCacheService().readNonsensitive()
+			DependencyManager.shared.selectedWalletIndex = WalletIndex(parent: DependencyManager.shared.walletList.count-1, child: nil)
 			LedgerService.shared.disconnectFromDevice()
 			
-			if self.isPartOfSideMenuImportFlow() {
-				self.completeAndCloseSideMenuImport()
+			if self.isAddingAdditionalWallet() {
+				self.returnToAccountsFromAddWallet()
 				
 			} else {
 				self.performSegue(withIdentifier: "verified", sender: nil)
@@ -70,6 +74,7 @@ class LedgerVerifyViewController: UIViewController {
 			self.alert(errorWithMessage: "Unable to create Ledger wallet instance with supplied info, please try again")
 			LedgerService.shared.disconnectFromDevice()
 			self.navigationController?.popViewController(animated: true)
-		}
+		}*/
 	}
 }
+*/

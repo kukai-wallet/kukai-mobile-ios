@@ -16,7 +16,7 @@ public class CloudKitService {
 	private let database = CKContainer.default().publicCloudDatabase
 	private var configItemRecords: [CKRecord] = []
 	
-	public func fetchConfigItems(completion: @escaping ((ErrorResponse?) -> Void)) {
+	public func fetchConfigItems(completion: @escaping ((KukaiError?) -> Void)) {
 		let query = CKQuery(recordType: "ConfigItem", predicate: NSPredicate(value: true))
 		
 		database.fetch(withQuery: query) { [weak self] result in
@@ -31,68 +31,99 @@ public class CloudKitService {
 						
 						return res
 					}.compactMap({ $0 })
-					completion(nil)
+					
+					DispatchQueue.main.async { completion(nil) }
 					
 				case .failure(let e):
-					completion(ErrorResponse.internalApplicationError(error: e))
+					DispatchQueue.main.async { completion(KukaiError.internalApplicationError(error: e))  }
 			}
 		}
 	}
 	
-	public func extractTorusConfig() -> [TorusAuthProvider: SubverifierWrapper] {
+	public func extractTorusConfig() -> (verifiers: [TorusAuthProvider: SubverifierWrapper], mainnetKeys: [String: String], testnetKeys: [String: String]) {
 		var verifiers: [TorusAuthProvider: SubverifierWrapper] = [:]
+		var mainnetKeys: [String: String] = [:]
+		var testnetKeys: [String: String] = [:]
 		
 		for record in configItemRecords where record.stringForKey("serviceId") == "torus" {
 			
-			guard let networkStr = record.stringForKey("network"),
-				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkStr),
-				  let config = record.doubleStringArrayToDict(key1: "keys", key2: "values"),
-				  let provider = config["loginProvider"],
-				  let type = config["loginType"],
-				  let authProvider = TorusAuthProvider(rawValue: provider) else {
-					  os_log("Skipping invalid torus config item: %@", log: .default, type: .error, record.description)
-					  continue
-				  }
+			// record.stringForKey returns nil, haven't got the slightest clue why. Can only get the `json` key value by fetching all values and parsing
+			var jsonString = (record.value(forKey: "values") as? [Any])?[0] as? String
+			jsonString = jsonString?.replacingOccurrences(of: "\n", with: "")
+			jsonString = jsonString?.replacingOccurrences(of: "\t", with: "")
 			
-			// Option 1:
-			// Required: loginType, loginProvider, verifierName, redirectURL
-			// Optional: aggregateVerifierName, clientId
-			if let loginType = SubVerifierType(rawValue: type), let loginProvider = LoginProviders(rawValue: provider), let verifierName = config["verifierName"], let redirectURL = config["redirectURL"] {
-				let details = SubVerifierDetails(loginType: loginType, loginProvider: loginProvider, clientId: config["clientId"] ?? "", verifierName: verifierName, redirectURL: redirectURL)
-				let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-				verifiers[authProvider] = wrapper
-				
+			guard let jsonData = jsonString?.data(using: .utf8),
+				  let jsonObject = try? JSONSerialization.jsonObject(with: jsonData) as? [String: Any],
+				  let verifierTypeString = jsonObject["verifierType"] as? String,
+				  let verifierType = verifierTypes(rawValue: verifierTypeString),
+				  let networkString = record.stringForKey("network"),
+				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkString),
+				  let loginProviderString = jsonObject["loginProvider"] as? String,
+				  let loginProvider = LoginProviders(rawValue: loginProviderString),
+				  let authProviderString = jsonObject["authProvider"] as? String,
+				  let authProvider = TorusAuthProvider(rawValue: authProviderString),
+				  let loginTypeString = jsonObject["loginType"] as? String,
+				  let loginType = SubVerifierType(rawValue: loginTypeString),
+				  let clientId = jsonObject["clientId"] as? String,
+				  let verifierName = jsonObject["verifierName"] as? String,
+				  let redirectURL = jsonObject["redirectURL"] as? String
+			else {
+				Logger.app.error("Skipping invalid torus config item: \(record.description)")
+				continue
 			}
 			
-			// Option 2:
-			// Required: loginType, loginProvider, verifierName, redirectURL
-			// Optional: aggregateVerifierName, clientId, browserRedirectURL, jwtDomain
-			else if let loginType = SubVerifierType(rawValue: type), let loginProvider = LoginProviders(rawValue: provider), let verifierName = config["verifierName"], let redirectURL = config["redirectURL"] {
+			var subVerifier: SubVerifierDetails? = nil
+			var wrapper: SubverifierWrapper? = nil
+			
+			
+			// Check if we have a jwt dictionary, to decide which subVerfier to create
+			if let jwtDict = jsonObject["jwt"] as? [String: String] {
+				subVerifier = SubVerifierDetails(loginType: loginType, 
+												 loginProvider: loginProvider,
+												 clientId: clientId,
+												 verifier: verifierName,
+												 redirectURL: redirectURL,
+												 browserRedirectURL: jsonObject["browserRedirectURL"] as? String, // Think this is unused, just adding in case its needed in the future
+												 jwtParams: jwtDict)
+			} else {
+				subVerifier = SubVerifierDetails(loginType: loginType, 
+												 loginProvider: loginProvider,
+												 clientId: clientId, 
+												 verifier: verifierName,
+												 redirectURL: redirectURL)
+			}
+			
+			
+			// Check what type of login is being requested, so we can decide what to do with the required aggregate param, that might not be needed
+			if let sub = subVerifier, verifierType == .singleLogin {
+				wrapper = SubverifierWrapper(aggregateVerifierName: verifierName, verifierType: verifierType, networkType: network, subverifier: sub) // Non-aggregate
 				
-				if let jwtDomain = config["jwtDomain"] {
-					let details = SubVerifierDetails(loginType: loginType,
-													 loginProvider: loginProvider,
-													 clientId: config["clientId"] ?? "",
-													 verifierName: verifierName,
-													 redirectURL: redirectURL,
-													 browserRedirectURL: config["browserRedirectURL"],
-													 jwtParams: ["domain": jwtDomain])
-					let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-					verifiers[authProvider] = wrapper
-					
-				} else {
-					let details = SubVerifierDetails(loginType: loginType,
-													 loginProvider: loginProvider,
-													 clientId: config["clientId"] ?? "",
-													 verifierName: verifierName,
-													 redirectURL: redirectURL,
-													 browserRedirectURL: config["browserRedirectURL"])
-					let wrapper = SubverifierWrapper(aggregateVerifierName: config["aggregateVerifierName"], networkType: network, subverifier: details)
-					verifiers[authProvider] = wrapper
-				}
+			} else if let sub = subVerifier, let aggregateVerfifier = jsonObject["aggregateVerifierName"] as? String {
+				wrapper = SubverifierWrapper(aggregateVerifierName: aggregateVerfifier, verifierType: verifierType, networkType: network, subverifier: sub) // Aggregate
+				
+			} else {
+				Logger.app.error("Skipping invalid torus config item: \(record.description)")
+				continue
+			}
+			
+			verifiers[authProvider] = wrapper
+		}
+		
+		for record in configItemRecords where record.stringForKey("serviceId") == "torus-key" {
+			guard let networkString = record.value(forKey: "network") as? String,
+				  let network = TezosNodeClientConfig.NetworkType(rawValue: networkString),
+				  let name = record.value(forKey: "name") as? String,
+				  let value = record.value(forKey: "value") as? String else {
+				continue
+			}
+			
+			if network == .mainnet {
+				mainnetKeys[name] = value
+			} else {
+				testnetKeys[name] = value
 			}
 		}
 		
-		return verifiers
+		return (verifiers: verifiers, mainnetKeys: mainnetKeys, testnetKeys: testnetKeys)
 	}
 }

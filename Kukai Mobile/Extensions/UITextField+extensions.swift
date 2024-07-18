@@ -9,10 +9,12 @@ import UIKit
 
 extension UITextField {
 	
+	private static let defaultToolBarHeight: CGFloat = 50
+	
 	func addDoneToolbar(onDone: (target: Any, action: Selector)? = nil) {
 		let onDone = onDone ?? (target: self, action: #selector(doneButtonTapped))
 
-		let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 50))
+		let toolbar: UIToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UITextField.defaultToolBarHeight))
 		toolbar.barStyle = .default
 		
 		toolbar.items = [
@@ -22,6 +24,10 @@ extension UITextField {
 		toolbar.sizeToFit()
 
 		self.inputAccessoryView = toolbar
+	}
+	
+	func defaultToolBarHeight() -> CGFloat {
+		return UITextField.defaultToolBarHeight
 	}
 	
 	@objc func doneButtonTapped() {
