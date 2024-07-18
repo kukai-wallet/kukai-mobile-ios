@@ -161,7 +161,9 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 			
 		} else {
-			SentrySDK.capture(message: "Reinstall cache clear - unknown")
+			if hasWallet {
+				SentrySDK.capture(message: "Reinstall cache clear - unknown")
+			}
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
