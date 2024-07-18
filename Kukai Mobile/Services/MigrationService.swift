@@ -22,15 +22,17 @@ class MigrationService {
 		
 		if currentBuildInt == previousBuildInt { return }
 		
+		/*
+		 // Only leaving here as a sample for future record of how to use this setup. Can be removed once a new usecase is added
 		if previousBuildInt < 296 {
 			markSocialWalletsAsNotBackedUp()
 		}
+		*/
 		
 		UserDefaults.standard.set(currentBuildString, forKey: MigrationService.userDefaultsVersionKey)
 	}
 	
-	
-	// TODO: can be removed on v1 release to app store
+	/*
 	private static func markSocialWalletsAsNotBackedUp() {
 		guard StorageService.didCompleteOnboarding(), DependencyManager.shared.walletList.socialWallets.count > 0 else { return }
 		
@@ -49,4 +51,5 @@ class MigrationService {
 			DependencyManager.shared.selectedWalletMetadata = DependencyManager.shared.walletList.metadata(forAddress: address)
 		}
 	}
+	*/
 }
