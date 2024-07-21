@@ -131,10 +131,16 @@ extension ConfirmPasscodeViewController: ValidatorTextFieldDelegate {
 		updateDigitViewsWithLength(length: text.count)
 		
 		if validated {
-			if StorageService.validateTempPasscodeAndCommit(text) == true {
+			let storageResult = StorageService.validateTempPasscodeAndCommit(text)
+			
+			if storageResult == .success {
 				navigate()
+				
+			} else if storageResult == .biometricSetupError {
+				displayBiometricErrorAndReset()
+				
 			} else {
-				displayErrorAndReset()
+				displayValidationErrorAndReset()
 			}
 		} else if text == "" {
 			errorLabel.isHidden = true
@@ -145,8 +151,19 @@ extension ConfirmPasscodeViewController: ValidatorTextFieldDelegate {
 		
 	}
 	
-	func displayErrorAndReset() {
+	func displayValidationErrorAndReset() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			self?.errorLabel.text = "Incorrect passcode try again"
+			self?.errorLabel.isHidden = false
+			self?.hiddenTextfield.text = ""
+			self?.updateDigitViewsWithLength(length: 0)
+		}
+	}
+	
+	func displayBiometricErrorAndReset() {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			let biometricTypeText = (CurrentDevice.biometricTypeSupported() == .touchID ? "Touch ID" : "Face ID")
+			self?.errorLabel.text = "Unknown error occured trying to use \(biometricTypeText). Please check your device settings and ensure its setup correctly"
 			self?.errorLabel.isHidden = false
 			self?.hiddenTextfield.text = ""
 			self?.updateDigitViewsWithLength(length: 0)
