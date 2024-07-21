@@ -387,7 +387,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			}
 			
 		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? NFT {
-			urls = [MediaProxyService.smallURL(forNFT: obj)]
+			urls = [MediaProxyService.mediumURL(forNFT: obj)]
 		}
 		
 		Logger.app.info("willDisplayImages: \(urls)")

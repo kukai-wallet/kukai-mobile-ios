@@ -35,6 +35,12 @@ public class StorageService {
 		public static let collectiblesGroupModeEnabled = "app.kukai.collectibles.group-mode"
 	}
 	
+	public enum PasscodeStoreResult {
+		case success
+		case failure
+		case biometricSetupError
+	}
+	
 	
 	
 	// MARK: - Cleanup
@@ -81,28 +87,39 @@ public class StorageService {
 	}
 	
 	/// Compare temporary passcode with user supplied passcode. If valid, commit passcode to real storage (overwritting if necessary)
-	public static func validateTempPasscodeAndCommit(_ passcode: String) -> Bool {
+	public static func validateTempPasscodeAndCommit(_ passcode: String) -> PasscodeStoreResult {
 		guard let hash = KeychainSwift().get(StorageService.KeychainKeys.tempPasscode) else {
-			return false
+			return .failure
 		}
 		
 		if Sodium.shared.pwHash.strVerify(hash: hash, passwd: passcode.bytes) {
 			return recordPasscode(passcode)
 		}
 		
-		return false
+		return .failure
 	}
 	
 	/// Delete previous record (if present) and create a new one with usePresence set
-	private static func recordPasscode(_ passcode: String) -> Bool {
+	private static func recordPasscode(_ passcode: String) -> PasscodeStoreResult {
 		guard let hash = Sodium.shared.pwHash.str(passwd: passcode.bytes, opsLimit: Sodium.shared.pwHash.OpsLimitInteractive, memLimit: Sodium.shared.pwHash.MemLimitInteractive) else {
-			return false
+			return .failure
 		}
 		
 		// Recording the passcode only once with biometic flag, means when biometric enabled, users are unable to enter the passcode on its own (i.e. tapping cancel to biometric)
 		// Because retrieving the passcode to do the verification requires succesful biometrics
 		// Instead it needs to be stored twice, once where it can be accessed without biometrics and one with to enable both cases
-		return recordPasscodeHash(hash, withUserPresence: true) && recordPasscodeHash(hash, withUserPresence: false)
+		let res1 = recordPasscodeHash(hash, withUserPresence: true)
+		let res2 = recordPasscodeHash(hash, withUserPresence: false)
+		
+		if res1 == false {
+			return .biometricSetupError
+			
+		} else if res1 && res2 {
+			return .success
+			
+		} else {
+			return .failure
+		}
 	}
 	
 	private static func recordPasscodeHash(_ hash: String, withUserPresence: Bool) -> Bool {
