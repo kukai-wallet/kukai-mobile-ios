@@ -87,30 +87,6 @@ extension UIView {
 			cornerRadius: 8)
 	}
 	
-	func addGradientBackgroundFull() -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: self.frame,
-			colors: [
-				UIColor.colorNamed("gradBgFull-1").cgColor,
-				UIColor.colorNamed("gradBgFull-2").cgColor,
-				UIColor.colorNamed("gradBgFull-3").cgColor,
-			],
-			locations: [0.01, 0.34, 0.74],
-			degress: cssDegreesToIOS(170))
-	}
-	
-	func addGradientBackgroundModal() -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: self.bounds,
-			colors: [
-				UIColor.colorNamed("gradModal-1").cgColor,
-				UIColor.colorNamed("gradModal-2").cgColor,
-				UIColor.colorNamed("gradModal-3").cgColor,
-			],
-			locations: [0.03, 0.50, 0.94],
-			degress: cssDegreesToIOS(172.5))
-	}
-	
 	func addGradientTabBar(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,

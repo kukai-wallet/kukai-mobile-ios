@@ -23,6 +23,7 @@ class GradientView: UIView {
 	
 	public enum GradientType {
 		case fullScreenBackground
+		case modalBackground
 		case tableViewCell
 		case tableViewCellUnconfirmed
 		case tableViewCellFailed
@@ -91,13 +92,20 @@ class GradientView: UIView {
 			case .fullScreenBackground:
 				self.locations = [0.01, 0.34, 0.74]
 				self.degrees = cssDegreesToIOS(170)
-				//self.customCornerRadius = 0
-				//self.maskToBounds = false
-				//self.borderWidth = 0
+				self.customCornerRadius = 0
+				self.maskToBounds = false
+				self.borderWidth = 0
+				
+			case .modalBackground:
+				self.locations = [0.03, 0.50, 0.94]
+				self.degrees = cssDegreesToIOS(170)
+				self.customCornerRadius = 0
+				self.maskToBounds = false
+				self.borderWidth = 0
 				
 			case .tableViewCell:
 				self.locations = [0.26, 0.67]
-				self.degrees = cssDegreesToIOS(92.91)
+				self.degrees = cssDegreesToIOS(172.5)
 				self.customCornerRadius = 8
 				self.maskToBounds = true
 				self.borderWidth = 0
@@ -122,6 +130,9 @@ class GradientView: UIView {
 		switch gradientType {
 			case .fullScreenBackground:
 				self.colors = [UIColor.colorNamed("gradBgFull-1").cgColor, UIColor.colorNamed("gradBgFull-2").cgColor, UIColor.colorNamed("gradBgFull-3").cgColor]
+			
+			case .modalBackground:
+				self.colors = [UIColor.colorNamed("gradModal-1").cgColor, UIColor.colorNamed("gradModal-2").cgColor, UIColor.colorNamed("gradModal-3").cgColor]
 				
 			case .tableViewCell:
 				self.colors = [UIColor.colorNamed("gradPanelRows-1").cgColor, UIColor.colorNamed("gradPanelRows-2").cgColor]

@@ -16,7 +16,7 @@ class SideMenuResetViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = containerView.addGradientBackgroundModal()
+		GradientView.add(toView: containerView, withType: .modalBackground)
 		
 		yesButton.customButtonType = .destructive
 		noButton.customButtonType = .primary

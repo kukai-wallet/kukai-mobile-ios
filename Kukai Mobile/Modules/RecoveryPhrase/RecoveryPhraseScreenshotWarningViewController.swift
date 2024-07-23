@@ -12,8 +12,6 @@ class RecoveryPhraseScreenshotWarningViewController: UIViewController {
 	@IBOutlet var contentView: UIView!
 	@IBOutlet var gotItButton: CustomisableButton!
 	
-	private var gradient = CAGradientLayer()
-	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -22,9 +20,7 @@ class RecoveryPhraseScreenshotWarningViewController: UIViewController {
 	
 	override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
-		
-		gradient.removeFromSuperlayer()
-		gradient = contentView.addGradientBackgroundModal()
+		GradientView.add(toView: contentView, withType: .modalBackground)
 	}
 	
 	@IBAction func gotItTapped(_ sender: Any) {

@@ -22,7 +22,7 @@ class JailbreakWarningViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		containerView.layoutIfNeeded()
-		let _ = containerView.addGradientBackgroundModal()
+		GradientView.add(toView: containerView, withType: .modalBackground)
 	}
 	
 	@IBAction func continueTapped(_ sender: Any) {
