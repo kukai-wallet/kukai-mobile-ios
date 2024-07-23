@@ -26,7 +26,7 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		let navBarMiddleViewWidth = self.view.frame.width - (32 + 44 + 20) // 16 * 2 for left/right gutter, 44 for right buttons, 20 for 10px spacing in between
 		navBarMiddleView.addConstraint(NSLayoutConstraint(item: navBarMiddleView as Any, attribute: .width, relatedBy: .lessThanOrEqual, toItem: nil, attribute: .width, multiplier: 1, constant: navBarMiddleViewWidth))

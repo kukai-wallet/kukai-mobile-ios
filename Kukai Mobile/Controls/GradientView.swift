@@ -23,7 +23,9 @@ class GradientView: UIView {
 	
 	public enum GradientType {
 		case fullScreenBackground
-		case panelRow
+		case tableViewCell
+		case tableViewCellUnconfirmed
+		case tableViewCellFailed
 	}
 	
 	
@@ -43,7 +45,11 @@ class GradientView: UIView {
 	
 	static func add(toView: UIView, withType: GradientType) {
 		let newGradientView = GradientView(gradientType: withType)
+		newGradientView.frame = toView.bounds
+		
 		toView.addSubview(newGradientView)
+		toView.sendSubviewToBack(newGradientView)
+		
 		NSLayoutConstraint.activate([
 			newGradientView.leadingAnchor.constraint(equalTo: toView.leadingAnchor),
 			newGradientView.trailingAnchor.constraint(equalTo: toView.trailingAnchor),
@@ -85,13 +91,27 @@ class GradientView: UIView {
 			case .fullScreenBackground:
 				self.locations = [0.01, 0.34, 0.74]
 				self.degrees = cssDegreesToIOS(170)
-				self.customCornerRadius = 0
-				self.maskToBounds = false
-				self.borderWidth = 0
+				//self.customCornerRadius = 0
+				//self.maskToBounds = false
+				//self.borderWidth = 0
 				
-			case .panelRow:
+			case .tableViewCell:
 				self.locations = [0.26, 0.67]
 				self.degrees = cssDegreesToIOS(92.91)
+				self.customCornerRadius = 8
+				self.maskToBounds = true
+				self.borderWidth = 0
+				
+			case .tableViewCellUnconfirmed:
+				self.locations = [0.01, 0.93]
+				self.degrees = cssDegreesToIOS(90.36)
+				self.customCornerRadius = 8
+				self.maskToBounds = true
+				self.borderWidth = 0
+				
+			case .tableViewCellFailed:
+				self.locations = [0.01, 0.93]
+				self.degrees = cssDegreesToIOS(90.36)
 				self.customCornerRadius = 8
 				self.maskToBounds = true
 				self.borderWidth = 0
@@ -103,8 +123,14 @@ class GradientView: UIView {
 			case .fullScreenBackground:
 				self.colors = [UIColor.colorNamed("gradBgFull-1").cgColor, UIColor.colorNamed("gradBgFull-2").cgColor, UIColor.colorNamed("gradBgFull-3").cgColor]
 				
-			case .panelRow:
+			case .tableViewCell:
 				self.colors = [UIColor.colorNamed("gradPanelRows-1").cgColor, UIColor.colorNamed("gradPanelRows-2").cgColor]
+				
+			case .tableViewCellUnconfirmed:
+				self.colors = [UIColor.colorNamed("gradUnconfirmed-1").cgColor, UIColor.colorNamed("gradUnconfirmed-2").cgColor]
+				
+			case .tableViewCellFailed:
+				self.colors = [UIColor.colorNamed("gradPanelRows_Alert-1").cgColor, UIColor.colorNamed("gradPanelRows_Alert-2").cgColor]
 		}
 	}
 }

@@ -24,7 +24,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		favouriteButton.accessibilityIdentifier = "button-favourite"
 		moreButton.accessibilityIdentifier = "button-more"

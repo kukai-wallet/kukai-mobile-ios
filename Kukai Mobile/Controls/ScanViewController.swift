@@ -36,26 +36,16 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	weak var delegate: ScanViewControllerDelegate?
 	
 	private var bag = [AnyCancellable]()
-	private var gradient = CAGradientLayer()
 	private var previousString = ""
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		setupNav()
 		setupPreviewView()
 		setupClearBox()
 		setupOutlineView()
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				self?.view.setNeedsDisplay()
-				
-			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

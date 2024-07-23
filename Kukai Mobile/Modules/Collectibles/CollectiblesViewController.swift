@@ -24,12 +24,11 @@ class CollectiblesViewController: UIViewController {
 	
 	private var pageController: OnboardingPageViewController? = nil
 	private var bag = [AnyCancellable]()
-	private var gradient = CAGradientLayer()
 	private var isVisible = false
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		segmentedControl.removeBorder()
 		segmentedControl.setFonts(selectedFont: .custom(ofType: .medium, andSize: 16), selectedColor: UIColor.colorNamed("Txt8"), defaultFont: UIFont.custom(ofType: .bold, andSize: 16), defaultColor: UIColor.colorNamed("Txt2"))
@@ -43,16 +42,6 @@ class CollectiblesViewController: UIViewController {
 				if self?.isVisible == true && selectedAddress == address {
 					self?.displayGhostnet()
 				}
-			}.store(in: &bag)
-		
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				self?.view.setNeedsDisplay()
-				
 			}.store(in: &bag)
     }
 	

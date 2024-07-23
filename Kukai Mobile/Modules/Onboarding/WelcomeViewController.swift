@@ -14,7 +14,7 @@ class WelcomeViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		newWalletButton.customButtonType = .primary
 		existingWalletButton.customButtonType = .secondary

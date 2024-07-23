@@ -15,14 +15,13 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 	
 	private let viewModel = DiscoverViewModel()
 	private var bag = [AnyCancellable]()
-	private var gradient = CAGradientLayer()
 	private weak var featuredTimer: Timer? = nil
 	private weak var featuredCell: DiscoverFeaturedCell? = nil
 	private let footer = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 24))
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewModel.menu = MenuViewController(actions: [], header: nil, sourceViewController: self)
 		viewModel.makeDataSource(withTableView: tableView)
@@ -46,15 +45,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 					self?.hideLoadingView(completion: nil)
 			}
 		}.store(in: &bag)
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				self?.tableView.reloadData()
-				
-			}.store(in: &bag)
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			if self?.viewModel.isVisible == true {

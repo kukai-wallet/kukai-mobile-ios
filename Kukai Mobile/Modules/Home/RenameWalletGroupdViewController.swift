@@ -21,7 +21,7 @@ class RenameWalletGroupdViewController: UIViewController, BottomSheetCustomFixed
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		customNameTextField.validator = LengthValidator(min: 1, max: 30)
 		customNameTextField.validatorTextFieldDelegate = self

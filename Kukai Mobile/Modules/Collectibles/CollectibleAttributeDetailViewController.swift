@@ -17,7 +17,7 @@ class CollectibleAttributeDetailViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {

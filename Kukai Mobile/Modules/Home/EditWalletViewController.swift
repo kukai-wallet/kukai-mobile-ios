@@ -36,7 +36,7 @@ class EditWalletViewController: UIViewController, BottomSheetCustomFixedProtocol
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		customNameTextField.validator = LengthValidator(min: 0, max: 30)
 		customNameTextField.validatorTextFieldDelegate = self

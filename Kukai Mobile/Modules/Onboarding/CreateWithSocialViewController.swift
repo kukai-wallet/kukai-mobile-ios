@@ -32,7 +32,7 @@ class CreateWithSocialViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		appleButton.customButtonType = .primary
 		appleButton.configuration?.imagePadding = 8

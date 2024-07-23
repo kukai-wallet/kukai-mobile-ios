@@ -21,7 +21,7 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellImageDownloading {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		containerView.gradientType = .panelRow
+		containerView.gradientType = .tableViewCell
 		balanceLabel.accessibilityIdentifier = "account-token-balance"
 		valuelabel.accessibilityIdentifier = "account-token-fiat"
 		symbolLabel.accessibilityIdentifier = "account-token-symbol"

@@ -36,7 +36,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		self.view.addSubview(tableView)
 		self.tableView.delegate = self

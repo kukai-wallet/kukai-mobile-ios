@@ -53,7 +53,7 @@ class RecoveryPhraseViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewSeedWordsButton.customButtonType = .primary
 		nextButton.customButtonType = .primary

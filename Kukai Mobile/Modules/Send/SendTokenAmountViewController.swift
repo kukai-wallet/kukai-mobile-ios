@@ -34,7 +34,7 @@ class SendTokenAmountViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		selectedToken = TransactionService.shared.sendData.chosenToken
 		guard let token = selectedToken else {

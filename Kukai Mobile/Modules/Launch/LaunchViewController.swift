@@ -31,7 +31,7 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		/*
 		bag1 = DependencyManager.shared.balanceService.$addressRefreshed.dropFirst().sink(receiveValue: { address in

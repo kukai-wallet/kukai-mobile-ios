@@ -15,7 +15,7 @@ class HiddenTokensMainViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		segmetnedButton.addUnderlineForSelectedSegment()
 		

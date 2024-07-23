@@ -34,7 +34,7 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		doneButtonContainer.accessibilityIdentifier = "accounts-nav-done"
 		
 		if !self.isModal {
-			let _ = self.view.addGradientBackgroundFull()
+			GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		} else {
 			view.backgroundColor = .clear
 		}

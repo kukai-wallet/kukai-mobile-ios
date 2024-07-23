@@ -45,7 +45,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			testnetWarningView.isHidden = true

@@ -19,7 +19,7 @@ class AccountsContainerViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
     }
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

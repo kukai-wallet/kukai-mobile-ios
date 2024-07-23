@@ -13,11 +13,9 @@ class SideMenuStorageViewController: UIViewController {
 	@IBOutlet weak var storageLabel: UILabel!
 	@IBOutlet weak var clearButton: CustomisableButton!
 	
-	private var gradient = CAGradientLayer()
-	
     override func viewDidLoad() {
         super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		clearButton.customButtonType = .secondary
 		setup()
