@@ -77,8 +77,9 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	// TODO: gradient
+	/*
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
 		
 		if let c = cell as? UITableViewCellContainerView {
 			let status = viewModel.statusFor(indexPath: indexPath)
@@ -94,6 +95,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 			}
 		}
 	}
+	*/
 	
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		guard let cell = cell as? UITableViewCellImageDownloading else {

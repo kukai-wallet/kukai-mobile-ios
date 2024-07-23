@@ -108,9 +108,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 	
 	func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		if let c = cell as? CollectiblesCollectionCell {
-			c.layoutIfNeeded()
-			c.addGradientBackground()
-			
 			c.setupCollectionImage(url: viewModel.willDisplayCollectionImage(forIndexPath: indexPath))
 			c.setupImages(imageURLs: viewModel.willDisplayImages(forIndexPath: indexPath))
 			
@@ -125,9 +122,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		} else if let c = cell as? SearchResultCell, let url = viewModel.willDisplayImages(forIndexPath: indexPath).first {
 			let halfMegaByte: UInt = 500000
 			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
-			
-		} else if let c = cell as? LoadingGroupModeCell {
-			c.addGradientBackground()
 		}
 	}
 	

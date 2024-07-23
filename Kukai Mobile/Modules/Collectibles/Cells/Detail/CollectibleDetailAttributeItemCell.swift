@@ -13,16 +13,9 @@ class CollectibleDetailAttributeItemCell: UICollectionViewCell {
 	@IBOutlet weak var valueLabel: UILabel!
 	@IBOutlet weak var percentLabel: UILabel!
 	
-	private var gradient = CAGradientLayer()
-	
 	override func awakeFromNib() {
         super.awakeFromNib()
-    }
-	
-	override func layoutSubviews() {
-		super.layoutSubviews()
 		
-		gradient.removeFromSuperlayer()
-		gradient = self.contentView.addGradientPanelAttributes(withFrame: self.contentView.bounds)
-	}
+		GradientView.add(toView: self.contentView, withType: .collectibleAttributes)
+    }
 }

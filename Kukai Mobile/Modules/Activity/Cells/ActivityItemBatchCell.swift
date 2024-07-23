@@ -34,6 +34,7 @@ class ActivityItemBatchCell: UITableViewCell {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
 			chevronImage.isHidden = true
+			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -88,6 +89,12 @@ class ActivityItemBatchCell: UITableViewCell {
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
+		}
+		
+		if failed {
+			containerView.gradientType = .tableViewCellFailed
+		} else {
+			containerView.gradientType = .tableViewCell
 		}
 	}
 	
