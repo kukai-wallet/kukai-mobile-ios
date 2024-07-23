@@ -36,7 +36,7 @@ public class TransactionService {
 					return "Normal"
 				
 				case .fast:
-					return "Fast"
+					return "Double"
 				
 				case .custom:
 					return "Custom"
