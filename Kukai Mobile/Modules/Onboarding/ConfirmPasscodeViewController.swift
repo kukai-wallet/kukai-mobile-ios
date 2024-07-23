@@ -163,7 +163,7 @@ extension ConfirmPasscodeViewController: ValidatorTextFieldDelegate {
 	func displayBiometricErrorAndReset() {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
 			let biometricTypeText = (CurrentDevice.biometricTypeSupported() == .touchID ? "Touch ID" : "Face ID")
-			self?.errorLabel.text = "Unknown error occured trying to use \(biometricTypeText). Please check your device settings and ensure its setup correctly"
+			self?.errorLabel.text = "Unknown error occured trying to use \(biometricTypeText). Please check your device settings and ensure it's setup correctly"
 			self?.errorLabel.isHidden = false
 			self?.hiddenTextfield.text = ""
 			self?.updateDigitViewsWithLength(length: 0)
