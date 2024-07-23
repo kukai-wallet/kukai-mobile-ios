@@ -15,13 +15,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	private let viewModel = AccountViewModel()
 	private var bag = [AnyCancellable]()
 	private var refreshControl = UIRefreshControl()
-	
 	private var coingeckservice: CoinGeckoService? = nil
-	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.estimatedTotalCellDelegate = self
@@ -52,15 +50,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			self?.refreshControl.endRefreshing()
 		}.store(in: &bag)
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				self?.tableView.reloadData()
-				
-			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -93,14 +82,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
 			UIApplication.shared.open(AppUpdateService.appStoreURL)
-		}
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
 		}
 	}
 	
