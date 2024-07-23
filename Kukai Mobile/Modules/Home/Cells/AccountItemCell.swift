@@ -7,9 +7,9 @@
 
 import UIKit
 
-class AccountItemCell: UITableViewCell, UITableViewCellContainerView {
+class AccountItemCell: UITableViewCell {
 	
-	@IBOutlet var containerView: UIView!
+	@IBOutlet var containerView: GradientView!
 	@IBOutlet var iconView: UIImageView!
 	@IBOutlet var titleLabel: UILabel!
 	@IBOutlet var subtitleLabel: UILabel!
@@ -17,12 +17,11 @@ class AccountItemCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet var chevronImageView: UIImageView?
 	@IBOutlet weak var newIndicatorView: UIView?
 	
-	var gradientLayer = CAGradientLayer()
 	var checkmarkAvailable = true
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
+		containerView.gradientType = .tableViewCell
 		titleLabel.accessibilityIdentifier = "accounts-item-title"
 		subtitleLabel.accessibilityIdentifier = "accounts-item-subtitle"
 		checkedImageView?.accessibilityIdentifier = "accounts-item-checked"

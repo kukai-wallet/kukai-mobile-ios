@@ -7,15 +7,18 @@
 
 import UIKit
 
-class AddressChoiceCell: UITableViewCell, UITableViewCellContainerView {
+class AddressChoiceCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	@IBOutlet weak var moreButton: CustomisableButton?
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	override class func awakeFromNib() {
 		super.awakeFromNib()
