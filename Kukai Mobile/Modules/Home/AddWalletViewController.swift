@@ -81,14 +81,6 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 		return UIView(frame: CGRect.zero)
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? AccountsAddOptionCell {
-			c.addGradientBackground(withFrame: c.contentView.bounds, toView: c.contentView, roundCorners: false)
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if selectedIndex == indexPath {
 			tableView.deselectRow(at: indexPath, animated: true)

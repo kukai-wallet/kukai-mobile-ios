@@ -61,12 +61,6 @@ public class ThemePickerViewController: UIViewController, UITableViewDelegate, U
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-		
 		if indexPath == selectedIndex {
 			cell.setSelected(true, animated: true)
 			

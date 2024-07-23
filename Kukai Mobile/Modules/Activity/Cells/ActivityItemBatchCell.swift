@@ -8,9 +8,9 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
+class ActivityItemBatchCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var batchCountLabel: UILabel!
 	@IBOutlet weak var batchTypeLabel: UILabel!
 	@IBOutlet weak var chevronImage: UIImageView!
@@ -23,8 +23,6 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var timeLabel: UILabel!
 	
 	@IBOutlet weak var invisibleRightButton: UIButton!
-	
-	var gradientLayer = CAGradientLayer()
 	
 	@IBAction func invisibleRIghtButton(_ sender: Any) {
 	}
@@ -116,13 +114,13 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	}
 	
 	public func setOpen() {
-		gradientLayer.opacity = 0
+		containerView.alpha = 0
 		backgroundColor = .colorNamed("BGActivityBatch")
 		chevronImage.rotate(degrees: 90, duration: 0.3)
 	}
 	
 	public func setClosed() {
-		gradientLayer.opacity = 1
+		containerView.alpha = 1
 		backgroundColor = .clear
 		chevronImage.rotateBack(duration: 0.3)
 	}

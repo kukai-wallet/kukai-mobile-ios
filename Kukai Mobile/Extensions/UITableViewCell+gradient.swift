@@ -8,6 +8,7 @@
 import UIKit
 import SDWebImage
 
+/*
 protocol UITableViewCellContainerView: UITableViewCell {
 	var containerView: UIView! { get set }
 	var gradientLayer: CAGradientLayer { get set}
@@ -19,6 +20,7 @@ protocol UITableViewCellGradient {
 
 extension UITableViewCell: UITableViewCellGradient {
 	
+	/*
 	func addGradientBackground(withFrame: CGRect, toView: UIView, roundCorners: Bool = true) {
 		if roundCorners {
 			toView.customCornerRadius = 8
@@ -31,6 +33,7 @@ extension UITableViewCell: UITableViewCellGradient {
 			cell.gradientLayer = toView.addGradientPanelRows(withFrame: toView.bounds)
 		}
 	}
+	*/
 	
 	func addUnconfirmedGradientBackground(withFrame: CGRect, toView: UIView) {
 		toView.customCornerRadius = 8
@@ -55,7 +58,7 @@ extension UITableViewCell: UITableViewCellGradient {
 		}
 	}
 }
-
+*/
 
 
 

@@ -49,14 +49,6 @@ class OnrampViewController: UIViewController, UITableViewDelegate {
 		viewModel.refresh(animate: true)
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		self.showLoadingView()
 		

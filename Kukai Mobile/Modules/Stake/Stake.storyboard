@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Y6W-OH-hqX">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -98,7 +98,7 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="PublicBakerCell" rowHeight="114" id="Mti-wf-S2I" customClass="PublicBakerCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="20" y="133.5" width="374" height="114"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mti-wf-S2I" id="Rln-ii-fQu">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Mti-wf-S2I" id="Rln-ii-fQu" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="114"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -699,7 +699,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                             <constraint firstItem="vBk-d5-qIj" firstAttribute="width" secondItem="PZA-Zl-qJE" secondAttribute="width" id="rRA-ID-JFw"/>
                                         </constraints>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5f-m5-dch">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5f-m5-dch" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="52" width="382" height="382"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="uNM-l5-jC7">
@@ -915,11 +915,11 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="7hn-85-4wP">
-                                                <rect key="frame" x="168" y="0.0" width="121" height="28"/>
+                                                <rect key="frame" x="168" y="0.0" width="134" height="28"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bHS-8y-RgK" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="293" y="0.0" width="89" height="28"/>
+                                                <rect key="frame" x="306" y="0.0" width="76" height="28"/>
                                                 <color key="backgroundColor" name="BtnSec1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="8qr-Tv-CLk"/>
@@ -1111,22 +1111,22 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
     </scenes>
     <designables>
         <designable name="NRS-kv-8Vb">
-            <size key="intrinsicContentSize" width="18" height="22"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="VYs-9f-ae4">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="bHS-8y-RgK">
-            <size key="intrinsicContentSize" width="89" height="17"/>
+            <size key="intrinsicContentSize" width="76" height="17"/>
         </designable>
         <designable name="fCN-GU-Gc8">
-            <size key="intrinsicContentSize" width="12" height="22"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
         <designable name="isB-kD-FJg">
             <size key="intrinsicContentSize" width="107" height="38"/>
         </designable>
         <designable name="vd8-mr-vOW">
-            <size key="intrinsicContentSize" width="18" height="22"/>
+            <size key="intrinsicContentSize" width="30" height="34"/>
         </designable>
     </designables>
     <resources>

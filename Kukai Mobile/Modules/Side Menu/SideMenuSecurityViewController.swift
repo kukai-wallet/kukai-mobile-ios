@@ -69,12 +69,6 @@ extension SideMenuSecurityViewController: UITableViewDelegate {
 		return 4
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		cell.addGradientBackground(withFrame: cell.contentView.bounds, toView: cell.contentView)
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		

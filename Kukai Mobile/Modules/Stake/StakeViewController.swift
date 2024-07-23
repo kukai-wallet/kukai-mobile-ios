@@ -129,14 +129,6 @@ extension StakeViewController: UITableViewDelegate {
 		return footerView
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.bounds, toView: c)
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let baker = viewModel.bakerFor(indexPath: indexPath) {
 			

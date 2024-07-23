@@ -7,10 +7,9 @@
 
 import UIKit
 
-class AccountsAddOptionCell: UITableViewCell, UITableViewCellContainerView {
+class AccountsAddOptionCell: UITableViewCell {
 	
-	var containerView: UIView! = UIView()
-	var gradientLayer = CAGradientLayer()
+	var containerView: UIView! = GradientView(gradientType: .tableViewCell)
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!

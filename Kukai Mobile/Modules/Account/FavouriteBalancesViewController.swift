@@ -92,14 +92,6 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		return 4
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.bounds, toView: c)
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		tableView.deselectRow(at: indexPath, animated: true)
 		

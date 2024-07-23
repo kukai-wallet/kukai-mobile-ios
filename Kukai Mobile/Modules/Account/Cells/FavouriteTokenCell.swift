@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+class FavouriteTokenCell: UITableViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var favIcon: UIImageView!
 	@IBOutlet weak var favIconStackview: UIStackView!
@@ -16,13 +16,13 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellContainerView, UITable
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var lockContainer: UIStackView!
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	
-	var gradientLayer = CAGradientLayer()
 	private var myReorderImage: UIImage? = nil
 	
-	override class func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
 	}
 	
 	func setup(isFav: Bool, isLocked: Bool) {

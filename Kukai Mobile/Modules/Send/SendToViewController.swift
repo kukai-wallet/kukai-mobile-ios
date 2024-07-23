@@ -72,15 +72,6 @@ class SendToViewController: UIViewController, UITableViewDelegate, EnterAddressC
 		self.navigate()
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-	}
-	
-	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
 		if !validAddress {
 			return

@@ -9,16 +9,19 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class PublicBakerCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var bakerIcon: SDAnimatedImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
 	@IBOutlet weak var splitLabel: UILabel!
 	@IBOutlet weak var spaceLabel: UILabel!
 	@IBOutlet weak var estRewardsLabel: UILabel!
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	public func setup(withBaker baker: TzKTBaker) {
 		MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())

@@ -48,14 +48,6 @@ class AddAccountViewController: UIViewController {
 
 extension AddAccountViewController: UITableViewDelegate {
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if indexPath.row == 0, let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		let clearView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		clearView.backgroundColor = .clear
