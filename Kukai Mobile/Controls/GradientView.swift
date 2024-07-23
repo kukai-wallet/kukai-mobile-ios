@@ -47,6 +47,7 @@ class GradientView: UIView {
 	
 	static func add(toView: UIView, withType: GradientType) {
 		let newGradientView = GradientView(gradientType: withType)
+		newGradientView.translatesAutoresizingMaskIntoConstraints = false
 		newGradientView.frame = toView.bounds
 		
 		toView.addSubview(newGradientView)
