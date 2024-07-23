@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import Combine
 
 public struct LoadingContainerCellObject: Hashable {
 	let id = UUID()

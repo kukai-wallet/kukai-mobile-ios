@@ -20,13 +20,16 @@ class SideMenuOptionCell: UITableViewCell {
 	
 	@IBOutlet weak var toggle: UISwitch?
 	
-	var containerView: UIView! = GradientView(gradientType: .tableViewCell)
-	
 	weak var delegate: SideMenuOptionToggleDelegate? = nil
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		customContainerView?.gradientType = .tableViewCell
+		
+		if let custom = customContainerView {
+			custom.gradientType = .tableViewCell
+		} else {
+			GradientView.add(toView: self.contentView, withType: .tableViewCell)
+		}
 	}
 	
 	@IBAction func toggleChanged(_ sender: Any) {

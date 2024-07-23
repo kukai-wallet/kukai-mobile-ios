@@ -106,7 +106,7 @@ class GradientView: UIView {
 				
 			case .tableViewCell:
 				self.locations = [0.26, 0.67]
-				self.degrees = cssDegreesToIOS(172.5)
+				self.degrees = cssDegreesToIOS(92.91)
 				self.customCornerRadius = 8
 				self.maskToBounds = true
 				self.borderWidth = 0
@@ -154,5 +154,9 @@ class GradientView: UIView {
 			case .collectibleAttributes:
 				self.colors = [UIColor.colorNamed("gradPanelAttributes-1").cgColor, UIColor.colorNamed("gradPanelAttributes-2").cgColor]
 		}
+	}
+	
+	public func setGradientOpaque(_ opaque: Bool) {
+		self.gradient.opacity = opaque ? 0 : 1
 	}
 }

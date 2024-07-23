@@ -27,6 +27,11 @@ class ActivityItemBatchCell: UITableViewCell {
 	@IBAction func invisibleRIghtButton(_ sender: Any) {
 	}
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
+	
 	func setup(data: TzKTTransactionGroup) {
 		// Time or confirmed
 		let timeSinceNow = (data.transactions[0].date ?? Date()).timeIntervalSince(Date())
@@ -93,8 +98,6 @@ class ActivityItemBatchCell: UITableViewCell {
 		
 		if failed {
 			containerView.gradientType = .tableViewCellFailed
-		} else {
-			containerView.gradientType = .tableViewCell
 		}
 	}
 	
@@ -121,13 +124,13 @@ class ActivityItemBatchCell: UITableViewCell {
 	}
 	
 	public func setOpen() {
-		containerView.alpha = 0
+		containerView.setGradientOpaque(true)
 		backgroundColor = .colorNamed("BGActivityBatch")
 		chevronImage.rotate(degrees: 90, duration: 0.3)
 	}
 	
 	public func setClosed() {
-		containerView.alpha = 1
+		containerView.setGradientOpaque(false)
 		backgroundColor = .clear
 		chevronImage.rotateBack(duration: 0.3)
 	}

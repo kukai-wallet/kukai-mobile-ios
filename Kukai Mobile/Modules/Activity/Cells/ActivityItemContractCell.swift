@@ -20,6 +20,11 @@ class ActivityItemContractCell: UITableViewCell {
 	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
+	
 	func setup(data: TzKTTransaction) {
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
@@ -80,8 +85,6 @@ class ActivityItemContractCell: UITableViewCell {
 		
 		if failed {
 			containerView.gradientType = .tableViewCellFailed
-		} else {
-			containerView.gradientType = .tableViewCell
 		}
 	}
 }

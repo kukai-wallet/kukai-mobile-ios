@@ -32,6 +32,11 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 	private static let sendTitleColor = UIColor.colorNamed("Txt10")
 	private static let receiveTitleColor = UIColor.colorNamed("TxtB6")
 	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
+	
 	func setup(data: TzKTTransactionGroup) {
 		if let tx = data.transactions.first {
 			setup(data: tx)
@@ -211,8 +216,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 		
 		if failed {
 			containerView.gradientType = .tableViewCellFailed
-		} else {
-			containerView.gradientType = .tableViewCell
 		}
 	}
 	
