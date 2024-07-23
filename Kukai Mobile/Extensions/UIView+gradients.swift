@@ -204,15 +204,6 @@ extension UIView {
 	// Tab bar
 	
 	func addTabbarHighlightedBackgroundGradient(rect: CGRect) -> CAGradientLayer {
-		//let rect = CGRect(x: 0, y: -2, width: width, height: height)
-		/*let gradientLayer = self.addBackgroundGradient(withFrame: rect,
-													   colors: [
-														UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
-														UIColor.colorNamed("gradTabBar_Highlight-2").cgColor
-													   ],
-													   locations: [0, 0.79],
-													   degress: cssDegreesToIOS(180))*/
-		
 		let gradientLayer = CAGradientLayer()
 		gradientLayer.colors = [
 			UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
@@ -239,7 +230,6 @@ extension UIView {
 	
 	
 	// Cells
-	
 	func addGradientPanelRows(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,
@@ -271,48 +261,6 @@ extension UIView {
 			],
 			locations: [0.01, 0.93],
 			degress: cssDegreesToIOS(90.36))
-	}
-	
-	func addGradientNFTSection_top_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderTop-1").cgColor,
-				UIColor.colorNamed("gradExpBorderTop-2").cgColor,
-			],
-			locations: [0.04, 0.54],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [.topLeft, .topRight],
-			cornerRadius: 8)
-	}
-	
-	func addGradientNFTSection_middle_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderMiddle-1").cgColor,
-				UIColor.colorNamed("gradExpBorderMiddle-2").cgColor,
-			],
-			locations: [0, 0.9],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [],
-			cornerRadius: 0)
-	}
-	
-	func addGradientNFTSection_bottom_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderBottom-1").cgColor,
-				UIColor.colorNamed("gradExpBorderBottom-2").cgColor,
-			],
-			locations: [0.54, 0.97],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [.bottomLeft, .bottomRight],
-			cornerRadius: 8)
 	}
 	
 	func addGradientPanelAttributes(withFrame frame: CGRect) -> CAGradientLayer {

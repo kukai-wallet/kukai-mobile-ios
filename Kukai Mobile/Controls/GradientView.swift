@@ -27,6 +27,7 @@ class GradientView: UIView {
 		case tableViewCell
 		case tableViewCellUnconfirmed
 		case tableViewCellFailed
+		case collectibleAttributes
 	}
 	
 	
@@ -123,6 +124,13 @@ class GradientView: UIView {
 				self.customCornerRadius = 8
 				self.maskToBounds = true
 				self.borderWidth = 0
+				
+			case .collectibleAttributes:
+				self.locations = [0, 1]
+				self.degrees = cssDegreesToIOS(180)
+				self.customCornerRadius = 8
+				self.maskToBounds = true
+				self.borderWidth = 0
 		}
 	}
 	
@@ -142,6 +150,9 @@ class GradientView: UIView {
 				
 			case .tableViewCellFailed:
 				self.colors = [UIColor.colorNamed("gradPanelRows_Alert-1").cgColor, UIColor.colorNamed("gradPanelRows_Alert-2").cgColor]
+			
+			case .collectibleAttributes:
+				self.colors = [UIColor.colorNamed("gradPanelAttributes-1").cgColor, UIColor.colorNamed("gradPanelAttributes-2").cgColor]
 		}
 	}
 }
