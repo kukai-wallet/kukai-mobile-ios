@@ -9,12 +9,15 @@ import UIKit
 
 class AccountsAddOptionCell: UITableViewCell {
 	
-	var containerView: UIView! = GradientView(gradientType: .tableViewCell)
-	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	@IBOutlet weak var chevronView: UIImageView!
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		GradientView.add(toView: self.contentView, withType: .tableViewCell)
+	}
 	
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		if selected {

@@ -84,7 +84,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashable
 	
-	private static let bakerRewardsCacheFilename = "TokenDetailsViewModel-baker-rewards-xtz"
+	private static var bakerRewardsCacheFilename: String {
+		get {
+			return "TokenDetailsViewModel-baker-rewards-xtz-\(DependencyManager.shared.selectedWalletAddress ?? "")"
+		}
+	}
 	private var currentChartRange: TokenDetailsChartCellRange = .day
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
 	private var initialChartLoad = true
