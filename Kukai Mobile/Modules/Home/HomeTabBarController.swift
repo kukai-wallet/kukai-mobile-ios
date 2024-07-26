@@ -167,8 +167,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
 			
-			DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-				self?.recheckWalletConnectAnimation()
+			// When returning from a long background, WC2 can sometimes be stuck in a disconnected state.
+			// Give it a few seconds to try connect by itself, and then try manual intervention
+			DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+				self?.recheckWalletConnectAnimation(tryManualReconnect: true)
 			}
 		}.store(in: &bag)
 		
@@ -242,9 +244,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		recheckWalletConnectAnimation()
 	}
 	
-	public func recheckWalletConnectAnimation() {
-		// Seems to get stuck sometimes, unsure why, adding an extra check to ensure it gets checked
-		connectionStatusChanged(status: WalletConnectService.shared.isConnected ? .connected : .disconnected)
+	// When returning from background, WC2 socket can get stuck sometimes.
+	// First we double check that no event was missed by running the logic again
+	// Second we have an optional request to attempt to reconnect the socket by re-initalising the WC2 singletons
+	public func recheckWalletConnectAnimation(tryManualReconnect: Bool = false) {
+		let isConnected = WalletConnectService.shared.isConnected
+		connectionStatusChanged(status: isConnected ? .connected : .disconnected)
+		
+		if !isConnected && tryManualReconnect {
+			attemptWC2Reconnect()
+		}
 	}
 	
 	public override func viewDidLayoutSubviews() {
@@ -488,19 +497,27 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func connectionStatusChanged(status: SocketConnectionStatus) {
 		if status == .disconnected {
-			self.walletConnectActivity.frame = self.scanButton.frame
-			self.scanButton.addSubview(self.walletConnectActivity)
 			
-			self.scanButton.setImage(nil, for: .normal)
+			if walletConnectActivity.superview == nil {
+				self.walletConnectActivity.frame = self.scanButton.frame
+				self.walletConnectActivity.isUserInteractionEnabled = true
+				self.walletConnectActivity.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(attemptWC2Reconnect)))
+				self.scanButton.addSubview(self.walletConnectActivity)
+			}
+			
+			self.scanButton.setImage(UIImage(), for: .normal) // passing in nil doesn't work sometimes, needs to be an empty image
 			self.walletConnectActivity.color = ThemeManager.shared.currentInterfaceStyle() == .dark ? .white : .black
 			self.walletConnectActivity.startAnimating()
 			
 		} else {
-			self.scanButton.isEnabled = true
 			self.scanButton.setImage(UIImage(named: "ScanQR"), for: .normal)
 			self.walletConnectActivity.stopAnimating()
 			self.walletConnectActivity.removeFromSuperview()
 		}
+	}
+	
+	@objc private func attemptWC2Reconnect() {
+		WalletConnectService.shared.setup(force: true)
 	}
 	
 	/*
