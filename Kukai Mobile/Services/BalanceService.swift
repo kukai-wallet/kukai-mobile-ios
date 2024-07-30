@@ -527,6 +527,13 @@ public class BalanceService {
 			lhs.sortIndex < rhs.sortIndex
 		}
 		
+		// Then need to sort the items inside the modifiedArray based on lastLevel, so newest items show up first
+		for tokenWrapper in modifiedArray {
+			tokenWrapper.token.nfts = tokenWrapper.token.nfts?.sorted(by: { lhs, rhs in
+				lhs.lastLevel > rhs.lastLevel
+			})
+		}
+		
 		
 		// Ultimately we need data from OBJKT.com for the `unmodifiedNFTs`. Make a list of which ever ones don't exist, and bulk fetch them
 		let addresses = self.currentlyRefreshingAccount.nfts.compactMap({ $0.tokenContractAddress })
