@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import Combine
 
 class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTotalCellDelegate {
@@ -82,6 +83,21 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
 			UIApplication.shared.open(AppUpdateService.appStoreURL)
+		}
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let token = viewModel.token(atIndexPath: indexPath), let c = cell as? TokenBalanceCell else {
+			return
+		}
+		
+		if token.isXTZ() {
+			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
+		} else {
+			c.iconView.backgroundColor = .colorNamed("BG4")
+			MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
+				c.iconView.backgroundColor = .white
+			}
 		}
 	}
 	
