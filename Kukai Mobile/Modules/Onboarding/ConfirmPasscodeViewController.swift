@@ -51,7 +51,7 @@ class ConfirmPasscodeViewController: UIViewController {
 		// Else if part of onboarding flow
 		StorageService.setCompletedOnboarding(true)
 		
-		if CurrentDevice.biometricTypeAuthorized() == .unavailable {
+		if CurrentDevice.biometricTypeAuthorized() == .unavailable || !StorageService.wasBiometricsAccessibleDuringOnboarding() {
 			self.navigateNonBiometric()
 		} else {
 			self.performSegue(withIdentifier: "biometric", sender: nil)
