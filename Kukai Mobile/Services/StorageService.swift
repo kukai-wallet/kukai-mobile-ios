@@ -19,6 +19,8 @@ public class StorageService {
 		static let passcode = "app.kukai.login.passcode"
 		static let passcodeBiometric = "app.kukai.login.passcode.biometric"
 		static let isBiometricEnabled = "app.kukai.login.biometric.enabled"
+		static let isUserPresenceAvailable = "app.kukai.login.presence.available"
+		static let wasBiometricAccesisbleDuringOnboarding = "app.kukai.login.biometrics.accessible.onboarding"
 		
 		static let loginWrongGuessCount = "app.kukai.login.count"
 		static let loginWrongGuessDelay = "app.kukai.login.delay"
@@ -99,16 +101,25 @@ public class StorageService {
 		return .failure
 	}
 	
+	public static func wasBiometricsAccessibleDuringOnboarding() -> Bool {
+		return KeychainSwift().getBool(StorageService.KeychainKeys.wasBiometricAccesisbleDuringOnboarding) ?? false
+	}
+	
 	/// Delete previous record (if present) and create a new one with usePresence set
 	private static func recordPasscode(_ passcode: String) -> PasscodeStoreResult {
 		guard let hash = Sodium.shared.pwHash.str(passwd: passcode.bytes, opsLimit: Sodium.shared.pwHash.OpsLimitInteractive, memLimit: Sodium.shared.pwHash.MemLimitInteractive) else {
 			return .failure
 		}
 		
+		// There is a strange iOS issue with users who have damaged the hardware connected to their biometrics.
+		// iOS will say the phone supports biometrics, but app is unable to make use of it, returning an error.
+		// So to allow people to install the app, and not implement a security hole. We will check if its possible to use userPresence with a dummy keychain value
+		// If this fails during onboard, all biometric logic will be turned off
+		//
 		// Recording the passcode only once with biometic flag, means when biometric enabled, users are unable to enter the passcode on its own (i.e. tapping cancel to biometric)
 		// Because retrieving the passcode to do the verification requires succesful biometrics
 		// Instead it needs to be stored twice, once where it can be accessed without biometrics and one with to enable both cases
-		let res1 = recordPasscodeHash(hash, withUserPresence: true)
+		let res1 = isUserPresenceAvailable() ? recordPasscodeHash(hash, withUserPresence: true) : true
 		let res2 = recordPasscodeHash(hash, withUserPresence: false)
 		
 		if res1 == false {
@@ -147,6 +158,34 @@ public class StorageService {
 		let status = SecItemAdd(query, &result)
 		
 		return status == 0
+	}
+	
+	private static func isUserPresenceAvailable() -> Bool {
+		guard let accessControl = SecAccessControlCreateWithFlags(nil, kSecAttrAccessibleWhenUnlockedThisDeviceOnly, .biometryAny, nil),
+			  let hashData = "available".data(using: .utf8) else {
+			return false
+		}
+		
+		KeychainSwift().delete(StorageService.KeychainKeys.isUserPresenceAvailable)
+		let query = [
+			kSecClass: kSecClassGenericPassword,
+			kSecAttrAccount: StorageService.KeychainKeys.isUserPresenceAvailable,
+			kSecValueData: hashData,
+			kSecAttrAccessControl: accessControl,
+			kSecReturnData: true
+		] as [CFString: Any] as CFDictionary
+		
+		var result: AnyObject?
+		let status = SecItemAdd(query, &result)
+		
+		// Record what happened for later retreival without triggering biometrics to check
+		if status != 0 {
+			KeychainSwift().set(false, forKey: StorageService.KeychainKeys.wasBiometricAccesisbleDuringOnboarding, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
+			return false
+		} else {
+			KeychainSwift().set(true, forKey: StorageService.KeychainKeys.wasBiometricAccesisbleDuringOnboarding, withAccess: .accessibleWhenUnlockedThisDeviceOnly)
+			return true
+		}
 	}
 	
 	private static func getPasscode(withUserPresence: Bool, completion: @escaping ((String?) -> Void)) {
