@@ -244,7 +244,9 @@ public class BalanceService {
 	
 	func deleteAccountCachcedData(forAddress address: String) {
 		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
-		account = Account(walletAddress: "")
+		if account.walletAddress.count > 0 {
+			account = Account(walletAddress: "")
+		}
 		
 		let accountKey = BalanceService.addressCacheKey(forAddress: address)
 		lastFullRefreshDates[accountKey] = nil
