@@ -16,11 +16,10 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 	@IBOutlet weak var splitLabel: UILabel!
 	@IBOutlet weak var spaceLabel: UILabel!
 	@IBOutlet weak var estRewardsLabel: UILabel!
-	@IBOutlet weak var containerView: GradientView!
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
+		GradientView.add(toView: contentView, withType: .tableViewCell)
 	}
 	
 	public func setup(withBaker baker: TzKTBaker) {
