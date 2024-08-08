@@ -16,11 +16,10 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 	private var bag = [AnyCancellable]()
 	private var refreshControl = UIRefreshControl()
 	private var firstLoad = true
-	private var gradient = CAGradientLayer()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -48,15 +47,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			self?.refreshControl.endRefreshing()
 		}.store(in: &bag)
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				self?.tableView.reloadData()
-				
-			}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -87,8 +77,9 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	// TODO: gradient
+	/*
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
 		
 		if let c = cell as? UITableViewCellContainerView {
 			let status = viewModel.statusFor(indexPath: indexPath)
@@ -104,6 +95,7 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 			}
 		}
 	}
+	*/
 	
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		guard let cell = cell as? UITableViewCellImageDownloading else {

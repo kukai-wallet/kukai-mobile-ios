@@ -6,43 +6,23 @@
 //
 
 import UIKit
-import Combine
 
 public struct LoadingContainerCellObject: Hashable {
 	let id = UUID()
 }
 
-class LoadingContainerCell: UITableViewCell, UITableViewCellContainerView {
+class LoadingContainerCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconShimmerView: ShimmerView!
 	@IBOutlet var shimmerViews: [ShimmerView]!
 	
-	var gradientLayer = CAGradientLayer()
-	private var bag: [AnyCancellable] = []
-	
-	deinit {
-		for b in bag {
-			b.cancel()
-		}
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
 	}
 	
 	public func setup() {
-		
-		if bag.count == 0 {
-			ThemeManager.shared.$themeDidChange
-				.dropFirst()
-				.sink { [weak self] _ in
-					for view in self?.shimmerViews ?? [] {
-						view.reloadForThemeChange()
-					}
-					
-					self?.iconShimmerView.reloadForThemeChange()
-					
-				}.store(in: &bag)
-		}
-		
-		
 		iconShimmerView.startAnimating()
 		for view in shimmerViews {
 			view.startAnimating()

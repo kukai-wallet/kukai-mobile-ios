@@ -18,7 +18,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var connectedAppNameLabel: UILabel!
 	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var confirmBakerAddView: UIView!
 	@IBOutlet weak var bakerAddIcon: UIImageView!
 	@IBOutlet weak var bakerAddNameLabel: UILabel!
@@ -45,7 +45,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			testnetWarningView.isHidden = true
@@ -130,7 +130,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		let _ = containerView.addGradientPanelRows(withFrame: containerView.bounds)
+		containerView.gradientType = .tableViewCell
 		
 		updateFees(isFirstCall: true)
 	}

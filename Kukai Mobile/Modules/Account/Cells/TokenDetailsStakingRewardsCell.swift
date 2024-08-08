@@ -8,9 +8,9 @@
 import UIKit
 import KukaiCoreSwift
 
-class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerView {
+class TokenDetailsStakingRewardsCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var infoButton: CustomisableButton!
 	
 	@IBOutlet weak var lastBakerIcon: UIImageView!
@@ -28,7 +28,10 @@ class TokenDetailsStakingRewardsCell: UITableViewCell, UITableViewCellContainerV
 	@IBOutlet weak var nextTime: UILabel!
 	@IBOutlet weak var nextCycle: UILabel!
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	func setup(data: AggregateRewardInformation) {
 		

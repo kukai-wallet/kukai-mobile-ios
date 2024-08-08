@@ -32,7 +32,7 @@ class CreateWithSocialViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		appleButton.customButtonType = .primary
 		appleButton.configuration?.imagePadding = 8
@@ -152,7 +152,7 @@ class CreateWithSocialViewController: UIViewController {
 				
 				// Cancelled errors
 				if (error.subType?.domain != "com.apple.AuthenticationServices.AuthorizationError" && error.subType?.code != 1001) &&
-					(error.errorType != .internalApplication && error.subType?.code != 1)
+					!(error.errorType == .internalApplication && error.subType?.code == 1)
 				{
 					self.windowError(withTitle: "error".localized(), description: error.description)
 				}

@@ -20,7 +20,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -121,14 +121,6 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 }
 
 extension WalletConnectViewController: UITableViewDelegate {
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		guard let pair = viewModel.pairFor(indexPath: indexPath), let cell = tableView.cellForRow(at: indexPath) as? ConnectedAppCell else {

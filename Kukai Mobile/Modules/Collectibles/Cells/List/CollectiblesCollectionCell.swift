@@ -17,10 +17,14 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	
 	private var imageViews: [SDAnimatedImageView] = []
 	private var lastLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 54, height: 54))
-	private var gradientLayer: CAGradientLayer? = nil
 	private var remainderCount: Int = 0
 	private var displayCount: Int = 0
 	private var previousGradientBounds = CGRect.zero
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		GradientView.add(toView: self.contentView, withType: .tableViewCell)
+	}
 	
 	func setup(title: String, displayCount: Int, totalCount: Int) {
 		self.collectionName.text = title
@@ -78,6 +82,8 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		}
 	}
 	
+	// TODO: gradient
+	/*
 	override func layoutSubviews() {
 		super.layoutSubviews()
 		
@@ -94,6 +100,7 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		
 		self.previousGradientBounds = self.contentView.bounds
 	}
+	*/
 	
 	override func prepareForReuse() {
 		for imageView in imageViews {

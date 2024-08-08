@@ -244,7 +244,9 @@ public class BalanceService {
 	
 	func deleteAccountCachcedData(forAddress address: String) {
 		let _ = DiskService.delete(fileName: BalanceService.accountCacheFilename(withAddress: address))
-		account = Account(walletAddress: "")
+		if account.walletAddress.count > 0 {
+			account = Account(walletAddress: "")
+		}
 		
 		let accountKey = BalanceService.addressCacheKey(forAddress: address)
 		lastFullRefreshDates[accountKey] = nil
@@ -525,6 +527,13 @@ public class BalanceService {
 		var modifiedArray = Array(modifiedNFTs.values)
 		modifiedArray = modifiedArray.sorted { lhs, rhs in
 			lhs.sortIndex < rhs.sortIndex
+		}
+		
+		// Then need to sort the items inside the modifiedArray based on lastLevel, so newest items show up first
+		for tokenWrapper in modifiedArray {
+			tokenWrapper.token.nfts = tokenWrapper.token.nfts?.sorted(by: { lhs, rhs in
+				lhs.lastLevel > rhs.lastLevel
+			})
 		}
 		
 		

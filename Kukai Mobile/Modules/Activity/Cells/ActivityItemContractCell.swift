@@ -8,9 +8,9 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
+class ActivityItemContractCell: UITableViewCell {
 
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var entrypointLabel: UILabel!
 	@IBOutlet weak var destinationLabel: UILabel!
 	
@@ -20,7 +20,10 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	func setup(data: TzKTTransaction) {
 		// Time or confirmed
@@ -28,6 +31,7 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 		if data.status == .unconfirmed {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
+			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -77,6 +81,10 @@ class ActivityItemContractCell: UITableViewCell, UITableViewCellContainerView {
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
+		}
+		
+		if failed {
+			containerView.gradientType = .tableViewCellFailed
 		}
 	}
 }

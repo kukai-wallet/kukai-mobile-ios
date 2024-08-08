@@ -8,18 +8,17 @@
 import UIKit
 import SDWebImage
 
-class HiddenTokenCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+class HiddenTokenCell: UITableViewCell, UITableViewCellImageDownloading {
 	
 	@IBOutlet weak var hiddenIcon: UIImageView!
 	@IBOutlet weak var tokenIcon: SDAnimatedImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	
-	var gradientLayer = CAGradientLayer()
-	
-	override class func awakeFromNib() {
+	override func awakeFromNib() {
 		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
 	}
 	
 	func downloadingImageViews() -> [SDAnimatedImageView] {

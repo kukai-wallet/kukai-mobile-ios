@@ -9,9 +9,9 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: SDAnimatedImageView!
 	
 	@IBOutlet weak var typeIcon: UIImageView!
@@ -32,7 +32,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	private static let sendTitleColor = UIColor.colorNamed("Txt10")
 	private static let receiveTitleColor = UIColor.colorNamed("TxtB6")
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	func setup(data: TzKTTransactionGroup) {
 		if let tx = data.transactions.first {
@@ -53,6 +56,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 		if data.status == .unconfirmed {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
+			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -208,6 +212,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
+		}
+		
+		if failed {
+			containerView.gradientType = .tableViewCellFailed
 		}
 	}
 	

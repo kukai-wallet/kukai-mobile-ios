@@ -118,7 +118,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return cell
 				
 			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				cell.symbolLabel.text = "XTZ"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
 				cell.favCorner.isHidden = false
@@ -136,12 +135,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				}
 				
 				cell.favCorner.isHidden = !token.isFavourite
-				
-				cell.iconView.backgroundColor = .colorNamed("BG4")
-				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
-					cell.iconView.backgroundColor = .white
-				}
-				
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
@@ -264,8 +257,26 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
 		var data = startingData
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		if metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true) {
+		/**
+		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
+		 
+		 -or-
+		 
+		 Is a social wallet, is not backed up and whose balance is either:
+			- Greater than or equal to 10 XTZ
+			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
+			- Contains 5 or more tokens
+		 */
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
+			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
+			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
+			currentAccountTokensCount >= 5
+		))
+		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
 			data.append(BackupCellData())
 		}
 		
@@ -346,7 +357,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)
 		
 		if obj is XTZAmount {
-			let account =  DependencyManager.shared.balanceService.account
+			let account = DependencyManager.shared.balanceService.account
 			return Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
 		} else if obj is Token {

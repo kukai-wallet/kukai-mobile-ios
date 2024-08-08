@@ -53,7 +53,7 @@ class LoginViewController: UIViewController {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		errorLabel.isHidden = true
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)

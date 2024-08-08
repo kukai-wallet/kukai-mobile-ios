@@ -7,9 +7,9 @@
 
 import UIKit
 
-class ConnectedAppCell: UITableViewCell, UITableViewCellContainerView {
+class ConnectedAppCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var siteLabel: UILabel!
 	@IBOutlet weak var addressIconView: UIImageView!
@@ -17,7 +17,10 @@ class ConnectedAppCell: UITableViewCell, UITableViewCellContainerView {
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	
-	var gradientLayer: CAGradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	func setup() {
 		

@@ -20,7 +20,7 @@ class OnrampViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ =  self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		// Setup data
 		viewModel.makeDataSource(withTableView: tableView)
@@ -47,14 +47,6 @@ class OnrampViewController: UIViewController, UITableViewDelegate {
 		super.viewWillAppear(animated)
 		
 		viewModel.refresh(animate: true)
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

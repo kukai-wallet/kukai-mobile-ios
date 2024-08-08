@@ -14,12 +14,11 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 	
 	private let viewModel = AddWalletViewModel()
 	private var bag = [AnyCancellable]()
-	private var gradient = CAGradientLayer()
 	private var selectedIndex = IndexPath(row: -1, section: -1)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
@@ -80,14 +79,6 @@ class AddWalletViewController: UIViewController, UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
 		return UIView(frame: CGRect.zero)
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? AccountsAddOptionCell {
-			c.addGradientBackground(withFrame: c.contentView.bounds, toView: c.contentView, roundCorners: false)
-		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

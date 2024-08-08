@@ -75,8 +75,6 @@ public class WalletConnectService {
 	public var isConnected = false
 	
 	private var bag = [AnyCancellable]()
-	private var connectionManagmentBag = [AnyCancellable]()
-	private var tempConnectionSubscription: AnyCancellable? = nil
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
 	private static let metadata = AppMetadata(name: "Kukai iOS",
 											  description: "Kukai iOS",
@@ -96,10 +94,12 @@ public class WalletConnectService {
 	
 	private init() {}
 	
-	public func setup() {
-		guard !hasBeenSetup else {
+	public func setup(force: Bool = false) {
+		guard !hasBeenSetup || force else {
 			return
 		}
+		
+		bag.removeAll()
 		
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)

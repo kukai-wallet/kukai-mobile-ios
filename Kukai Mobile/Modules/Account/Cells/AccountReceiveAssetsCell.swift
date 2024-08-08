@@ -7,15 +7,19 @@
 
 import UIKit
 
-class AccountReceiveAssetsCell: UITableViewCell, UITableViewCellContainerView {
+class AccountReceiveAssetsCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var receiveAssetsTitle: UILabel!
 	@IBOutlet weak var qrButton: CustomisableButton!
 	@IBOutlet weak var copyButton: CustomisableButton!
 	
-	var gradientLayer: CAGradientLayer = CAGradientLayer()
 	public weak var delegate: UITableViewCellButtonDelegate? = nil
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
 	func setup(delegate: UITableViewCellButtonDelegate?) {
 		receiveAssetsTitle.accessibilityIdentifier = "account-receive-assets-header"

@@ -25,7 +25,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		
 		/*

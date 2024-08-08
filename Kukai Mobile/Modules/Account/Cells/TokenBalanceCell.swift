@@ -8,9 +8,9 @@
 import UIKit
 import SDWebImage
 
-class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableViewCellImageDownloading {
+class TokenBalanceCell: UITableViewCell, UITableViewCellImageDownloading {
 
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var favCorner: UIImageView!
 	@IBOutlet weak var iconView: SDAnimatedImageView!
 	@IBOutlet weak var symbolLabel: UILabel!
@@ -19,11 +19,9 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellContainerView, UITableVi
 	@IBOutlet weak var priceChangeIcon: UIImageView!
 	@IBOutlet weak var priceChangeLabel: UILabel!
 	
-	var gradientLayer = CAGradientLayer()
-	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		
+		containerView.gradientType = .tableViewCell
 		balanceLabel.accessibilityIdentifier = "account-token-balance"
 		valuelabel.accessibilityIdentifier = "account-token-fiat"
 		symbolLabel.accessibilityIdentifier = "account-token-symbol"

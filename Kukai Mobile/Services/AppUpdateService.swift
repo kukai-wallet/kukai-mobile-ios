@@ -29,7 +29,7 @@ public class AppUpdateService {
 	
 	
 	// mt = meida type. 8 = mobile application. See: https://stackoverflow.com/questions/1781427/what-is-mt-8-in-itunes-links-for-the-app-store
-	public static let appStoreURL = URL(string: "https://apps.apple.com/ie/app/id1576499860?mt=8")!
+	public static let appStoreURL = URL(string: "https://apps.apple.com/app/id1576499860?mt=8")!
 	
 	public var requiredVersion: String? = nil
 	public var isRequiredUpdate = false

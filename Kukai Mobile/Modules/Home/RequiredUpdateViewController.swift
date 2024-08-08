@@ -15,7 +15,7 @@ class RequiredUpdateViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = containerView.addGradientBackgroundModal()
+		GradientView.add(toView: containerView, withType: .modalBackground)
 		
 		updateButton.customButtonType = .primary
     }

@@ -7,12 +7,15 @@
 
 import UIKit
 
-class AlreadyHaveAWalletCell: UITableViewCell, UITableViewCellContainerView {
+class AlreadyHaveAWalletCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var descriptionLabel: UILabel!
 	
-	var gradientLayer = CAGradientLayer()
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 }

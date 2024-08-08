@@ -13,7 +13,7 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		tableView.delegate = self
 		tableView.dataSource = self
@@ -65,14 +65,6 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 		}
 		
 		return cell
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

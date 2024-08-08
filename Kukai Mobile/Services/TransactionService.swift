@@ -36,7 +36,7 @@ public class TransactionService {
 					return "Normal"
 				
 				case .fast:
-					return "Fast"
+					return "Double"
 				
 				case .custom:
 					return "Custom"
@@ -256,7 +256,6 @@ public class TransactionService {
 	public var batchData: BatchData
 	public var walletConnectOperationData: WalletConnectOperationData
 	
-	// TODO: make sure to reset all batch data
 	private init() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])

@@ -7,15 +7,17 @@
 
 import UIKit
 
-class AccountsAddOptionCell: UITableViewCell, UITableViewCellContainerView {
-	
-	var containerView: UIView! = UIView()
-	var gradientLayer = CAGradientLayer()
+class AccountsAddOptionCell: UITableViewCell {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var subtitleLabel: UILabel!
 	@IBOutlet weak var chevronView: UIImageView!
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		GradientView.add(toView: self.contentView, withType: .tableViewCell)
+	}
 	
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		if selected {

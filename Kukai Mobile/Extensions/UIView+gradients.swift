@@ -87,30 +87,6 @@ extension UIView {
 			cornerRadius: 8)
 	}
 	
-	func addGradientBackgroundFull() -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: self.frame,
-			colors: [
-				UIColor.colorNamed("gradBgFull-1").cgColor,
-				UIColor.colorNamed("gradBgFull-2").cgColor,
-				UIColor.colorNamed("gradBgFull-3").cgColor,
-			],
-			locations: [0.01, 0.34, 0.74],
-			degress: cssDegreesToIOS(170))
-	}
-	
-	func addGradientBackgroundModal() -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: self.bounds,
-			colors: [
-				UIColor.colorNamed("gradModal-1").cgColor,
-				UIColor.colorNamed("gradModal-2").cgColor,
-				UIColor.colorNamed("gradModal-3").cgColor,
-			],
-			locations: [0.03, 0.50, 0.94],
-			degress: cssDegreesToIOS(172.5))
-	}
-	
 	func addGradientTabBar(withFrame frame: CGRect) -> CAGradientLayer {
 		return addBackgroundGradient(
 			withFrame: frame,
@@ -228,15 +204,6 @@ extension UIView {
 	// Tab bar
 	
 	func addTabbarHighlightedBackgroundGradient(rect: CGRect) -> CAGradientLayer {
-		//let rect = CGRect(x: 0, y: -2, width: width, height: height)
-		/*let gradientLayer = self.addBackgroundGradient(withFrame: rect,
-													   colors: [
-														UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
-														UIColor.colorNamed("gradTabBar_Highlight-2").cgColor
-													   ],
-													   locations: [0, 0.79],
-													   degress: cssDegreesToIOS(180))*/
-		
 		let gradientLayer = CAGradientLayer()
 		gradientLayer.colors = [
 			UIColor.colorNamed("gradTabBar_Highlight-1").cgColor,
@@ -258,95 +225,5 @@ extension UIView {
 		gradientLayer.mask = maskLayer
 		
 		return gradientLayer
-	}
-	
-	
-	
-	// Cells
-	
-	func addGradientPanelRows(withFrame frame: CGRect) -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradPanelRows-1").cgColor,
-				UIColor.colorNamed("gradPanelRows-2").cgColor,
-			],
-			locations: [0.26, 0.67],
-			degress: cssDegreesToIOS(92.91))
-	}
-	
-	func addUnconfirmedGradientPanelRows(withFrame frame: CGRect) -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradUnconfirmed-1").cgColor,
-				UIColor.colorNamed("gradUnconfirmed-2").cgColor,
-			],
-			locations: [0.01, 0.93],
-			degress: cssDegreesToIOS(90.36))
-	}
-	
-	func addAlertGradientPanelRows(withFrame frame: CGRect) -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradPanelRows_Alert-1").cgColor,
-				UIColor.colorNamed("gradPanelRows_Alert-2").cgColor,
-			],
-			locations: [0.01, 0.93],
-			degress: cssDegreesToIOS(90.36))
-	}
-	
-	func addGradientNFTSection_top_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderTop-1").cgColor,
-				UIColor.colorNamed("gradExpBorderTop-2").cgColor,
-			],
-			locations: [0.04, 0.54],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [.topLeft, .topRight],
-			cornerRadius: 8)
-	}
-	
-	func addGradientNFTSection_middle_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderMiddle-1").cgColor,
-				UIColor.colorNamed("gradExpBorderMiddle-2").cgColor,
-			],
-			locations: [0, 0.9],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [],
-			cornerRadius: 0)
-	}
-	
-	func addGradientNFTSection_bottom_border(withFrame frame: CGRect) -> CAGradientLayer {
-		return addGradientBorder(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradExpBorderBottom-1").cgColor,
-				UIColor.colorNamed("gradExpBorderBottom-2").cgColor,
-			],
-			locations: [0.54, 0.97],
-			degrees: cssDegreesToIOS(180),
-			lineWidth: 2,
-			corners: [.bottomLeft, .bottomRight],
-			cornerRadius: 8)
-	}
-	
-	func addGradientPanelAttributes(withFrame frame: CGRect) -> CAGradientLayer {
-		return addBackgroundGradient(
-			withFrame: frame,
-			colors: [
-				UIColor.colorNamed("gradPanelAttributes-1").cgColor,
-				UIColor.colorNamed("gradPanelAttributes-2").cgColor,
-			],
-			locations: [0, 1],
-			degress: cssDegreesToIOS(180))
 	}
 }

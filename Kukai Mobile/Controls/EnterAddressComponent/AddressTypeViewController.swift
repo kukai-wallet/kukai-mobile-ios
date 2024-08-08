@@ -36,7 +36,7 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		self.view.addSubview(tableView)
 		self.tableView.delegate = self
@@ -122,12 +122,6 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-		
 		if indexPath == selectedIndex {
 			cell.setSelected(true, animated: false)
 			

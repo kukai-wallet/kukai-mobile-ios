@@ -13,7 +13,7 @@ class EnterCustomBakerViewController: UIViewController, EnterAddressComponentDel
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		enterAddressComponent.headerLabel.text = "Baker:"
 		enterAddressComponent.updateAvilableAddressTypes([.tezosAddress, .tezosDomain])

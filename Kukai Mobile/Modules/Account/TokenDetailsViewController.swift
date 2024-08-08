@@ -24,7 +24,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		favouriteButton.accessibilityIdentifier = "button-favourite"
 		moreButton.accessibilityIdentifier = "button-more"
@@ -188,21 +188,6 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		}
 		
 		return MenuViewController(actions: [actions], header: nil, sourceViewController: self)
-	}
-}
-
-
-
-// MARK: - UITableViewDelegate
-
-extension TokenDetailsViewController {
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
 	}
 }
 

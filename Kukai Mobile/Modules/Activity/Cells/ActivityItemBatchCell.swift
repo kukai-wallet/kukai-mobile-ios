@@ -8,9 +8,9 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
+class ActivityItemBatchCell: UITableViewCell {
 	
-	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var batchCountLabel: UILabel!
 	@IBOutlet weak var batchTypeLabel: UILabel!
 	@IBOutlet weak var chevronImage: UIImageView!
@@ -24,9 +24,12 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	
 	@IBOutlet weak var invisibleRightButton: UIButton!
 	
-	var gradientLayer = CAGradientLayer()
-	
 	@IBAction func invisibleRIghtButton(_ sender: Any) {
+	}
+	
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
 	}
 	
 	func setup(data: TzKTTransactionGroup) {
@@ -36,6 +39,7 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
 			chevronImage.isHidden = true
+			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -91,6 +95,10 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
 		}
+		
+		if failed {
+			containerView.gradientType = .tableViewCellFailed
+		}
 	}
 	
 	private func batchString(from group: TzKTTransactionGroup) -> String {
@@ -116,13 +124,13 @@ class ActivityItemBatchCell: UITableViewCell, UITableViewCellContainerView {
 	}
 	
 	public func setOpen() {
-		gradientLayer.opacity = 0
+		containerView.setGradientOpaque(true)
 		backgroundColor = .colorNamed("BGActivityBatch")
 		chevronImage.rotate(degrees: 90, duration: 0.3)
 	}
 	
 	public func setClosed() {
-		gradientLayer.opacity = 1
+		containerView.setGradientOpaque(false)
 		backgroundColor = .clear
 		chevronImage.rotateBack(duration: 0.3)
 	}

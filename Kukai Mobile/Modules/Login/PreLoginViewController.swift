@@ -15,7 +15,7 @@ class PreLoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.navigationController?.overrideUserInterfaceStyle = ThemeManager.shared.currentInterfaceStyle()
-		let _ = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		// If `canSkipLogin()` is true, we want to run this code before the login screen has a chance present anything, to prevent any flashes of the keyboard or biometric UI etc
 		// However `viewDidAppear()` will get triggered when the app is moving from foreground -> background mode, so that can't be relied on to run that logic as it would remain true if the user closed the app before the timer

@@ -16,7 +16,7 @@ public class ThemePickerViewController: UIViewController, UITableViewDelegate, U
 	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		let currentTitle = ThemeManager.shared.currentTheme()
 		let selectedRow = ThemeManager.shared.availableThemes().firstIndex(of: currentTitle) ?? 0
@@ -57,22 +57,10 @@ public class ThemePickerViewController: UIViewController, UITableViewDelegate, U
 		
 		let selectedCell = self.tableView.cellForRow(at: indexPath) as? ThemeChoiceCell
 		ThemeManager.shared.setTheme(selectedCell?.themeLabel?.text ?? "Light")
-		
-		// Update all components before dismissing so it s not jarring
-		gradient.removeFromSuperlayer()
-		gradient = self.view.addGradientBackgroundFull()
-		tableView.reloadData()
-		
 		self.dismissBottomSheet()
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		if let c = cell as? UITableViewCellContainerView {
-			c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-		}
-		
 		if indexPath == selectedIndex {
 			cell.setSelected(true, animated: true)
 			

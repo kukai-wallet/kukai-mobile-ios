@@ -15,12 +15,11 @@ class SideMenuSettingsViewController: UIViewController {
 	public let viewModel = SideMenuSettingsViewModel()
 	
 	private var bag = [AnyCancellable]()
-	private var gradient = CAGradientLayer()
 	private let sectionFooterSpacer = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		gradient = self.view.addGradientBackgroundFull()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		// Setup data
 		viewModel.makeDataSource(withTableView: tableView)
@@ -45,15 +44,6 @@ class SideMenuSettingsViewController: UIViewController {
 					self.windowError(withTitle: "error".localized(), description: message)
 			}
 		}.store(in: &bag)
-		
-		ThemeManager.shared.$themeDidChange
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.gradient.removeFromSuperlayer()
-				self?.gradient = self?.view.addGradientBackgroundFull() ?? CAGradientLayer()
-				
-				self?.tableView.reloadData()
-			}.store(in: &bag)
 		
 		DependencyManager.shared.$networkDidChange
 			.dropFirst()
@@ -83,12 +73,6 @@ extension SideMenuSettingsViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
 		return 4
-	}
-	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		cell.layoutIfNeeded()
-		
-		cell.addGradientBackground(withFrame: cell.contentView.bounds, toView: cell.contentView)
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
