@@ -52,6 +52,7 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		[
 			AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social"),
 			AddCellData(image: UIImage(named: "WalletRestore"), title: "Restore with Recovery Phrase", subtitle: "Import accounts using your recovery phrase from Kukai or another wallet", isExpandable: false, isTopLevel: false, option: "import"),
+			AddCellData(image: UIImage(named: "WalletLedger"), title: "Connect with Ledger", subtitle: "Add accounts from your Bluetooth hardware wallet", isExpandable: false, isTopLevel: false, option: "ledger"),
 			AddCellData(image: UIImage(named: "WalletHD"), title: "Restore with Private Key", subtitle: "Import a wallet from a private key", isExpandable: false, isTopLevel: false, option: "private-key"),
 			AddCellData(image: UIImage(named: "WalletWatch"), title: "Watch a Tezos Address", subtitle: "Watch a public address or .tez domain", isExpandable: false, isTopLevel: false, option: "watch")
 		]

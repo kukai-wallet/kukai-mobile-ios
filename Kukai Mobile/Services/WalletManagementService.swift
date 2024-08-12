@@ -7,9 +7,12 @@
 
 import Foundation
 import KukaiCoreSwift
+import KukaiCryptoSwift
 import Combine
 
 class WalletManagementService {
+	
+	private static var bag = Set<AnyCancellable>()
 	
 	/// Cache a new wallet, run tezos domains checks, and update records in DependencyManager correctly
 	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, backedUp: Bool, markSelected: Bool, completion: @escaping ((String?) -> Void)) {
@@ -127,6 +130,45 @@ class WalletManagementService {
 			
 			while isUsedAccount {
 				guard let child = wallet.createChild(accountIndex: childIndex) else {
+					isUsedAccount = false
+					continue
+				}
+				
+				if await WalletManagementService.isUsedAccount(address: child.address) {
+					progress?(childIndex)
+					let _ = await WalletManagementService.cacheNew(wallet: child, forChildOfIndex: hdIndex, backedUp: true, markSelected: false)
+				} else {
+					isUsedAccount = false
+				}
+				
+				childIndex += 1
+			}
+			
+			return nil
+		}
+	}
+	
+	public static func cacheWalletAndScanForAccounts(wallet: LedgerWallet, uuid: String, progress: ((Int) -> Void)? = nil) async -> String? {
+		if let errorString = await WalletManagementService.cacheNew(wallet: wallet, forChildOfIndex: nil, backedUp: true, markSelected: true) {
+			return errorString
+			
+		} else {
+			let hdIndex = DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == wallet.address })
+			var childIndex = 1
+			var isUsedAccount = true
+			
+			while isUsedAccount {
+				
+				// Create new derivation path and fetch the wallet from the device
+				let newDerivationPath = HD.defaultDerivationPath(withAccountIndex: childIndex)
+				let response = await LedgerService.shared.getAddress(forDerivationPath: newDerivationPath, verify: false)
+				
+				guard let res = try? response.get() else {
+					isUsedAccount = false
+					continue
+				}
+				
+				guard let child = LedgerWallet(address: res.address, publicKey: res.publicKey, derivationPath: newDerivationPath, curve: .ed25519, ledgerUUID: uuid) else {
 					isUsedAccount = false
 					continue
 				}

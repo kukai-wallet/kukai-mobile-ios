@@ -306,7 +306,7 @@ for your Digital Assets</string>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EX4-MC-WXt" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="132.5" y="45" width="110.5" height="34"/>
+                                                <rect key="frame" x="129.5" y="45" width="116.5" height="34"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="34" id="xJV-2O-fg9"/>
                                                 </constraints>
@@ -1769,7 +1769,7 @@ You will not be able to transact in this wallet.</string>
         <!--Looking for Devices-->
         <scene sceneID="ZYF-AR-5og">
             <objects>
-                <viewController id="6S7-w9-4Kw" customClass="LookingForDevicesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ledger-start" id="6S7-w9-4Kw" customClass="LookingForDevicesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="pDY-tG-2iC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1788,6 +1788,7 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kukai" translatesAutoresizingMaskIntoConstraints="NO" id="ITd-4D-Srw">
                                                 <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <color key="tintColor" name="BrandColorTrue"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="mdA-MK-A66"/>
                                                     <constraint firstAttribute="height" constant="50" id="yyg-Xk-BAC"/>
@@ -1813,6 +1814,7 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ledger-logo" translatesAutoresizingMaskIntoConstraints="NO" id="ZFe-eI-EiL">
                                                 <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="8qH-Yj-RsM"/>
                                                     <constraint firstAttribute="width" constant="50" id="amn-5O-7pw"/>
@@ -1838,12 +1840,14 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-left" translatesAutoresizingMaskIntoConstraints="NO" id="Hk5-KQ-h91">
                                                 <rect key="frame" x="8" y="8" width="44" height="16"/>
+                                                <color key="tintColor" name="BG6"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="qHI-r3-ah2"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-right" translatesAutoresizingMaskIntoConstraints="NO" id="pcI-zf-Hpl">
                                                 <rect key="frame" x="8" y="26" width="44" height="16"/>
+                                                <color key="tintColor" name="BG6"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="Mw5-14-4Lx"/>
                                                 </constraints>
@@ -1882,7 +1886,7 @@ You will not be able to transact in this wallet.</string>
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1zn-2G-xlf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="32" y="563" width="311" height="56"/>
+                                <rect key="frame" x="32" y="579" width="311" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="0N4-h6-aVb"/>
                                 </constraints>
@@ -1899,19 +1903,22 @@ You will not be able to transact in this wallet.</string>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="pairTapped:" destination="6S7-w9-4Kw" eventType="touchUpInside" id="bDk-l5-75V"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r4H-ZR-0Ux">
-                                <rect key="frame" x="16" y="191" width="343" height="356"/>
+                                <rect key="frame" x="16" y="191" width="343" height="372"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountItemCell" rowHeight="65" id="hQV-ze-uKD" customClass="AccountItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LedgerDeviceCell" rowHeight="65" id="hQV-ze-uKD" customClass="LedgerDeviceCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="50" width="343" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hQV-ze-uKD" id="nPc-qH-a73">
                                             <rect key="frame" x="0.0" y="0.0" width="343" height="65"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRz-kn-PAf">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRz-kn-PAf" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="2" width="311" height="61"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="x9X-Lr-Ybp">
@@ -1960,10 +1967,10 @@ You will not be able to transact in this wallet.</string>
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <connections>
-                                            <outlet property="checkedImageView" destination="E13-nz-8z2" id="253-CN-SZw"/>
-                                            <outlet property="containerView" destination="gRz-kn-PAf" id="cMi-Ps-uhW"/>
-                                            <outlet property="subtitleLabel" destination="u64-RF-MtO" id="UTg-ad-uzj"/>
-                                            <outlet property="titleLabel" destination="Qyp-dG-jbM" id="DHX-C2-M9K"/>
+                                            <outlet property="checkedImage" destination="E13-nz-8z2" id="egn-J8-Rz2"/>
+                                            <outlet property="containerView" destination="gRz-kn-PAf" id="qwO-FV-2Go"/>
+                                            <outlet property="subtitleLabel" destination="u64-RF-MtO" id="62T-Aa-dqb"/>
+                                            <outlet property="titleLabel" destination="Qyp-dG-jbM" id="oUo-Ka-RCU"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1974,7 +1981,7 @@ You will not be able to transact in this wallet.</string>
                         <constraints>
                             <constraint firstItem="U2k-Nc-Xad" firstAttribute="top" secondItem="crb-15-1PS" secondAttribute="bottom" constant="24" id="60q-yc-oN4"/>
                             <constraint firstItem="r4H-ZR-0Ux" firstAttribute="leading" secondItem="upE-i0-CgQ" secondAttribute="leading" constant="16" id="8M8-CX-YDq"/>
-                            <constraint firstItem="upE-i0-CgQ" firstAttribute="bottom" secondItem="1zn-2G-xlf" secondAttribute="bottom" constant="48" id="9H1-Qc-Hhr"/>
+                            <constraint firstItem="upE-i0-CgQ" firstAttribute="bottom" secondItem="1zn-2G-xlf" secondAttribute="bottom" constant="32" id="9H1-Qc-Hhr"/>
                             <constraint firstItem="1zn-2G-xlf" firstAttribute="leading" secondItem="upE-i0-CgQ" secondAttribute="leading" constant="32" id="9zu-zT-cGz"/>
                             <constraint firstItem="crb-15-1PS" firstAttribute="top" secondItem="upE-i0-CgQ" secondAttribute="top" constant="8" id="GUf-hk-ZzQ"/>
                             <constraint firstItem="crb-15-1PS" firstAttribute="leading" secondItem="upE-i0-CgQ" secondAttribute="leading" constant="16" id="H6U-yw-omU"/>
@@ -2004,21 +2011,232 @@ You will not be able to transact in this wallet.</string>
         <!--Device Connected-->
         <scene sceneID="6yJ-VR-yKY">
             <objects>
-                <viewController id="4rf-AN-qbF" sceneMemberID="viewController">
+                <viewController id="4rf-AN-qbF" customClass="DeviceConnectedViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3qR-0i-md4">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure your Ledger is unlocked and the Tezos app is installed and open" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0c3-xC-QSP">
+                                <rect key="frame" x="16" y="88" width="343" height="34"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gp8-Mj-qGa">
+                                <rect key="frame" x="77.5" y="158" width="220" height="76"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vBM-De-pMx">
+                                        <rect key="frame" x="0.0" y="0.0" width="76" height="76"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kukai" translatesAutoresizingMaskIntoConstraints="NO" id="cZY-37-Mdz">
+                                                <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="50" id="Hpn-WW-sqZ"/>
+                                                    <constraint firstAttribute="width" constant="50" id="en2-tD-yJO"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstItem="cZY-37-Mdz" firstAttribute="centerX" secondItem="vBM-De-pMx" secondAttribute="centerX" id="92p-fT-Qe0"/>
+                                            <constraint firstAttribute="width" constant="76" id="Ptu-rQ-rbe"/>
+                                            <constraint firstItem="cZY-37-Mdz" firstAttribute="centerY" secondItem="vBM-De-pMx" secondAttribute="centerY" id="ozH-34-UhD"/>
+                                            <constraint firstAttribute="height" constant="76" id="wZJ-RA-G41"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="18"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Rc-eg-6bt">
+                                        <rect key="frame" x="144" y="0.0" width="76" height="76"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ledger-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Qfp-9w-Zou">
+                                                <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="50" id="CbS-Ra-7eO"/>
+                                                    <constraint firstAttribute="height" constant="50" id="ant-B6-PBu"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" name="BG4"/>
+                                        <constraints>
+                                            <constraint firstItem="Qfp-9w-Zou" firstAttribute="centerY" secondItem="3Rc-eg-6bt" secondAttribute="centerY" id="JEg-aY-kEa"/>
+                                            <constraint firstItem="Qfp-9w-Zou" firstAttribute="centerX" secondItem="3Rc-eg-6bt" secondAttribute="centerX" id="NH5-V7-rRt"/>
+                                            <constraint firstAttribute="width" constant="76" id="QZl-p4-p4c"/>
+                                            <constraint firstAttribute="height" constant="76" id="iBT-en-TWn"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="18"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="feZ-bG-kDs">
+                                        <rect key="frame" x="80" y="13" width="60" height="50"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-left" translatesAutoresizingMaskIntoConstraints="NO" id="QEH-Ga-TdP">
+                                                <rect key="frame" x="8" y="8" width="44" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="44" id="xt9-D9-40n"/>
+                                                </constraints>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-right" translatesAutoresizingMaskIntoConstraints="NO" id="SEP-xd-3Gw">
+                                                <rect key="frame" x="8" y="26" width="44" height="16"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="44" id="IJT-0h-Sdp"/>
+                                                </constraints>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="CCc-1P-Zvo"/>
+                                            <constraint firstItem="SEP-xd-3Gw" firstAttribute="centerX" secondItem="feZ-bG-kDs" secondAttribute="centerX" id="Iaz-I5-idv"/>
+                                            <constraint firstItem="QEH-Ga-TdP" firstAttribute="centerX" secondItem="feZ-bG-kDs" secondAttribute="centerX" id="LLu-ls-fHS"/>
+                                            <constraint firstItem="QEH-Ga-TdP" firstAttribute="top" secondItem="feZ-bG-kDs" secondAttribute="top" constant="8" id="LY0-xu-CLE"/>
+                                            <constraint firstAttribute="bottom" secondItem="SEP-xd-3Gw" secondAttribute="bottom" constant="8" id="Pn5-ij-DRy"/>
+                                            <constraint firstAttribute="width" constant="60" id="qNE-jO-HhE"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="vBM-De-pMx" secondAttribute="bottom" id="1G7-UQ-u4n"/>
+                                    <constraint firstAttribute="bottom" secondItem="3Rc-eg-6bt" secondAttribute="bottom" id="4d7-9h-jGQ"/>
+                                    <constraint firstItem="feZ-bG-kDs" firstAttribute="centerX" secondItem="Gp8-Mj-qGa" secondAttribute="centerX" id="GEH-rQ-Luj"/>
+                                    <constraint firstItem="vBM-De-pMx" firstAttribute="top" secondItem="Gp8-Mj-qGa" secondAttribute="top" id="IGf-G5-grt"/>
+                                    <constraint firstItem="feZ-bG-kDs" firstAttribute="centerY" secondItem="Gp8-Mj-qGa" secondAttribute="centerY" id="MRc-YR-iLi"/>
+                                    <constraint firstItem="feZ-bG-kDs" firstAttribute="leading" secondItem="vBM-De-pMx" secondAttribute="trailing" constant="4" id="MRc-eE-5so"/>
+                                    <constraint firstItem="3Rc-eg-6bt" firstAttribute="leading" secondItem="feZ-bG-kDs" secondAttribute="trailing" constant="4" id="d6R-ni-Gpl"/>
+                                    <constraint firstItem="vBM-De-pMx" firstAttribute="leading" secondItem="Gp8-Mj-qGa" secondAttribute="leading" id="kOl-Li-VNa"/>
+                                    <constraint firstItem="3Rc-eg-6bt" firstAttribute="top" secondItem="Gp8-Mj-qGa" secondAttribute="top" id="qji-Wz-sK3"/>
+                                    <constraint firstAttribute="trailing" secondItem="3Rc-eg-6bt" secondAttribute="trailing" id="rFi-fp-JcZ"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spinner" translatesAutoresizingMaskIntoConstraints="NO" id="Rgy-WU-V4j">
+                                <rect key="frame" x="165" y="282" width="45" height="45"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="45" id="APs-Gm-zax"/>
+                                    <constraint firstAttribute="width" constant="45" id="GWc-7J-LRo"/>
+                                </constraints>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KukaiWheel" translatesAutoresizingMaskIntoConstraints="NO" id="8Fg-Sd-sxA">
+                                <rect key="frame" x="177.5" y="294.5" width="20" height="20"/>
+                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="YDa-fi-s8u"/>
+                                    <constraint firstAttribute="height" constant="20" id="vcK-of-gRa"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gnB-P3-R0z" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="32" y="579" width="311" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="2zn-qn-bAF"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="tintColor" name="TxtBtnPrim1"/>
+                                <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Send" image="ArrowUp-right"/>
+                                <buttonConfiguration key="configuration" style="plain" title="&lt;actionButton&gt;">
+                                    <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                </buttonConfiguration>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="actionButtonTapped:" destination="4rf-AN-qbF" eventType="touchUpInside" id="p6G-ej-kDu"/>
+                                    <action selector="pairTapped:" destination="6S7-w9-4Kw" eventType="touchUpInside" id="BI7-Lq-BtX"/>
+                                    <action selector="scanAgainTapped:" destination="4rf-AN-qbF" eventType="touchUpInside" id="fxo-nT-kTN"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-U5-ljA">
+                                <rect key="frame" x="16" y="351" width="343" height="178"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checking device ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q7E-Ta-CHG">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                        <color key="textColor" name="Txt6"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;address&gt;" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xey-KN-Z2e">
+                                        <rect key="frame" x="0.0" y="25" width="343" height="19.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
+                                        <color key="textColor" name="Txt10"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Rb1-Z8-u5g">
+                                        <rect key="frame" x="0.0" y="52.5" width="343" height="125.5"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Importing Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cy-zG-2MQ">
+                                                <rect key="frame" x="94" y="0.0" width="155" height="24"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scanning for accounts:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zEL-Xx-bx7">
+                                                <rect key="frame" x="87.5" y="32" width="168" height="19.5"/>
+                                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
+                                                <color key="textColor" name="Txt12"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;number&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ht1-5K-bzW">
+                                                <rect key="frame" x="89.5" y="59.5" width="164.5" height="41"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="34"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="found" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2kv-0p-NZA">
+                                                <rect key="frame" x="152.5" y="108.5" width="38" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt12"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="rna-ZU-z6m"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="0c3-xC-QSP" firstAttribute="top" secondItem="rna-ZU-z6m" secondAttribute="top" constant="24" id="0aZ-YC-CWh"/>
+                            <constraint firstItem="8Fg-Sd-sxA" firstAttribute="centerY" secondItem="Rgy-WU-V4j" secondAttribute="centerY" id="6lj-2O-tyb"/>
+                            <constraint firstItem="rna-ZU-z6m" firstAttribute="trailing" secondItem="Kbv-U5-ljA" secondAttribute="trailing" constant="16" id="8aO-vo-XeS"/>
+                            <constraint firstItem="Kbv-U5-ljA" firstAttribute="top" secondItem="Rgy-WU-V4j" secondAttribute="bottom" constant="24" id="8aq-JJ-ee9"/>
+                            <constraint firstItem="8Fg-Sd-sxA" firstAttribute="centerX" secondItem="Rgy-WU-V4j" secondAttribute="centerX" id="Ee4-jF-iI3"/>
+                            <constraint firstItem="Gp8-Mj-qGa" firstAttribute="centerX" secondItem="3qR-0i-md4" secondAttribute="centerX" id="Hj0-XU-Rob"/>
+                            <constraint firstItem="Gp8-Mj-qGa" firstAttribute="top" secondItem="0c3-xC-QSP" secondAttribute="bottom" constant="36" id="KCw-GO-pX3"/>
+                            <constraint firstItem="Kbv-U5-ljA" firstAttribute="leading" secondItem="rna-ZU-z6m" secondAttribute="leading" constant="16" id="Mbt-fi-zsa"/>
+                            <constraint firstItem="Rgy-WU-V4j" firstAttribute="centerX" secondItem="3qR-0i-md4" secondAttribute="centerX" id="Sm5-Oo-GZk"/>
+                            <constraint firstItem="Rgy-WU-V4j" firstAttribute="top" secondItem="Gp8-Mj-qGa" secondAttribute="bottom" constant="48" id="XTK-cL-9HO"/>
+                            <constraint firstItem="rna-ZU-z6m" firstAttribute="trailing" secondItem="gnB-P3-R0z" secondAttribute="trailing" constant="32" id="Xsl-Km-mLo"/>
+                            <constraint firstItem="rna-ZU-z6m" firstAttribute="bottom" secondItem="gnB-P3-R0z" secondAttribute="bottom" constant="32" id="bet-pK-TU6"/>
+                            <constraint firstItem="gnB-P3-R0z" firstAttribute="leading" secondItem="rna-ZU-z6m" secondAttribute="leading" constant="32" id="hp2-pp-pb2"/>
+                            <constraint firstItem="0c3-xC-QSP" firstAttribute="leading" secondItem="rna-ZU-z6m" secondAttribute="leading" constant="16" id="u7c-iV-zIS"/>
+                            <constraint firstAttribute="trailing" secondItem="0c3-xC-QSP" secondAttribute="trailing" constant="16" id="zDS-lx-X5x"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Device Connected" id="aSF-5V-n9G"/>
                     <connections>
+                        <outlet property="accountScanStackView" destination="Rb1-Z8-u5g" id="hXG-av-Eg2"/>
+                        <outlet property="actionButton" destination="gnB-P3-R0z" id="dbr-bn-mLo"/>
+                        <outlet property="addressVerificationLabel" destination="Xey-KN-Z2e" id="dd1-rr-ZVM"/>
+                        <outlet property="instructionLabel" destination="q7E-Ta-CHG" id="m8u-qF-Mwy"/>
+                        <outlet property="numberLabel" destination="ht1-5K-bzW" id="N8G-in-fSa"/>
+                        <outlet property="scanAgainButton" destination="gnB-P3-R0z" id="ZBd-6t-9V1"/>
+                        <outlet property="spinnerImage" destination="Rgy-WU-V4j" id="H5n-ks-SFj"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="l1U-wH-5Pn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBw-cv-msg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-7324" y="3141"/>
+            <point key="canvasLocation" x="-7324" y="3140.7796101949029"/>
         </scene>
         <!--Confirm Passcode View Controller-->
         <scene sceneID="vLI-rX-dKU">
@@ -2537,31 +2755,31 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </scenes>
     <designables>
         <designable name="0W5-Sj-9Bh">
-            <size key="intrinsicContentSize" width="79" height="23.5"/>
+            <size key="intrinsicContentSize" width="87" height="23.5"/>
         </designable>
         <designable name="1VJ-Ye-1zl">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="1zn-2G-xlf">
             <size key="intrinsicContentSize" width="173.5" height="38"/>
         </designable>
         <designable name="5t4-7b-ZSi">
-            <size key="intrinsicContentSize" width="191.5" height="38"/>
+            <size key="intrinsicContentSize" width="211.5" height="38"/>
         </designable>
         <designable name="EIg-ad-QmA">
             <size key="intrinsicContentSize" width="141" height="38"/>
         </designable>
         <designable name="EX4-MC-WXt">
-            <size key="intrinsicContentSize" width="110.5" height="34.5"/>
+            <size key="intrinsicContentSize" width="116.5" height="34.5"/>
         </designable>
         <designable name="FWv-hS-Trj">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="46" height="36"/>
         </designable>
         <designable name="J2v-BG-JDc">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="Loj-qu-Rs8">
-            <size key="intrinsicContentSize" width="203.5" height="38"/>
+            <size key="intrinsicContentSize" width="223.5" height="38"/>
         </designable>
         <designable name="UlV-Fl-sF1">
             <size key="intrinsicContentSize" width="119" height="38"/>
@@ -2570,10 +2788,10 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="227" height="38"/>
         </designable>
         <designable name="ZcX-hG-7A3">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="bIm-xp-dm5">
-            <size key="intrinsicContentSize" width="199" height="23.5"/>
+            <size key="intrinsicContentSize" width="207" height="23.5"/>
         </designable>
         <designable name="bRr-0r-cKe">
             <size key="intrinsicContentSize" width="210.5" height="38"/>
@@ -2582,13 +2800,16 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="144" height="38"/>
         </designable>
         <designable name="c2S-hk-v1m">
-            <size key="intrinsicContentSize" width="30" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="24"/>
         </designable>
         <designable name="fpw-5A-t7A">
             <size key="intrinsicContentSize" width="165.5" height="38"/>
         </designable>
+        <designable name="gnB-P3-R0z">
+            <size key="intrinsicContentSize" width="170" height="38"/>
+        </designable>
         <designable name="mM7-0X-VxZ">
-            <size key="intrinsicContentSize" width="106" height="36"/>
+            <size key="intrinsicContentSize" width="124" height="36"/>
         </designable>
         <designable name="oOo-v0-m7J">
             <size key="intrinsicContentSize" width="109" height="38"/>
@@ -2609,7 +2830,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             <size key="intrinsicContentSize" width="87.5" height="38"/>
         </designable>
         <designable name="zN1-he-MJi">
-            <size key="intrinsicContentSize" width="123" height="23.5"/>
+            <size key="intrinsicContentSize" width="131" height="23.5"/>
         </designable>
         <designable name="zTe-bp-NGr">
             <size key="intrinsicContentSize" width="32" height="34"/>
@@ -2678,6 +2899,9 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BrandColorTrue">
+            <color red="0.34901960784313724" green="0.38823529411764707" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BtnSec1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

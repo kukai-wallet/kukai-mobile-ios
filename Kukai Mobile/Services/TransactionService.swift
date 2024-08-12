@@ -235,6 +235,10 @@ public class TransactionService {
 		var batchData: BatchData
 	}
 	
+	public struct LedgerSetupData {
+		var selectedUUID: String?
+	}
+	
 	
 	
 	// MARK: - Shared Properties
@@ -255,6 +259,7 @@ public class TransactionService {
 	public var removeLiquidityData: RemoveLiquidityData
 	public var batchData: BatchData
 	public var walletConnectOperationData: WalletConnectOperationData
+	public var ledgerSetupData: LedgerSetupData
 	
 	private init() {
 		self.currentTransactionType = .none
@@ -282,6 +287,7 @@ public class TransactionService {
 																						  selectedOp: nil,
 																						  opSummaries: nil)
 		)
+		self.ledgerSetupData = LedgerSetupData(selectedUUID: nil)
 	}
 	
 	
@@ -302,6 +308,7 @@ public class TransactionService {
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
 		self.batchData = BatchData(operationCount: nil, selectedOp: nil, opSummaries: nil)
+		self.ledgerSetupData = LedgerSetupData(selectedUUID: nil)
 		
 		self.resetWalletConnectState()
 	}
