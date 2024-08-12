@@ -128,7 +128,7 @@ class DeviceConnectedViewController: UIViewController {
 		Task {
 			let errorString = await WalletManagementService.cacheWalletAndScanForAccounts(wallet: wallet, uuid: uuid, progress: { [weak self] found in
 				DispatchQueue.main.async { [weak self] in
-					self?.numberLabel.text = found.description
+					self?.numberLabel.text = (found + 1).description
 				}
 			})
 			

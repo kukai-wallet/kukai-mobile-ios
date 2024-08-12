@@ -1885,7 +1885,7 @@ You will not be able to transact in this wallet.</string>
                                     <constraint firstAttribute="width" constant="45" id="r3r-39-RAz"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1zn-2G-xlf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                            <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1zn-2G-xlf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                 <rect key="frame" x="32" y="579" width="311" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="0N4-h6-aVb"/>
@@ -1907,7 +1907,7 @@ You will not be able to transact in this wallet.</string>
                                     <action selector="pairTapped:" destination="6S7-w9-4Kw" eventType="touchUpInside" id="bDk-l5-75V"/>
                                 </connections>
                             </button>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r4H-ZR-0Ux">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r4H-ZR-0Ux">
                                 <rect key="frame" x="16" y="191" width="343" height="372"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -1924,13 +1924,13 @@ You will not be able to transact in this wallet.</string>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="x9X-Lr-Ybp">
                                                             <rect key="frame" x="8" y="10.5" width="235" height="40.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
                                                                     <rect key="frame" x="0.0" y="0.0" width="235" height="19.5"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                     <color key="textColor" name="Txt2"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
                                                                     <rect key="frame" x="0.0" y="23.5" width="235" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Txt10"/>
@@ -2030,6 +2030,7 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Kukai" translatesAutoresizingMaskIntoConstraints="NO" id="cZY-37-Mdz">
                                                 <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <color key="tintColor" name="BrandColorTrue"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="50" id="Hpn-WW-sqZ"/>
                                                     <constraint firstAttribute="width" constant="50" id="en2-tD-yJO"/>
@@ -2055,6 +2056,7 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ledger-logo" translatesAutoresizingMaskIntoConstraints="NO" id="Qfp-9w-Zou">
                                                 <rect key="frame" x="13" y="13" width="50" height="50"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="50" id="CbS-Ra-7eO"/>
                                                     <constraint firstAttribute="height" constant="50" id="ant-B6-PBu"/>
@@ -2080,12 +2082,14 @@ You will not be able to transact in this wallet.</string>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-left" translatesAutoresizingMaskIntoConstraints="NO" id="QEH-Ga-TdP">
                                                 <rect key="frame" x="8" y="8" width="44" height="16"/>
+                                                <color key="tintColor" name="BG6"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="xt9-D9-40n"/>
                                                 </constraints>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="arrow-dashed-right" translatesAutoresizingMaskIntoConstraints="NO" id="SEP-xd-3Gw">
                                                 <rect key="frame" x="8" y="26" width="44" height="16"/>
+                                                <color key="tintColor" name="BG6"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="44" id="IJT-0h-Sdp"/>
                                                 </constraints>
@@ -2151,8 +2155,6 @@ You will not be able to transact in this wallet.</string>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="actionButtonTapped:" destination="4rf-AN-qbF" eventType="touchUpInside" id="p6G-ej-kDu"/>
-                                    <action selector="pairTapped:" destination="6S7-w9-4Kw" eventType="touchUpInside" id="BI7-Lq-BtX"/>
-                                    <action selector="scanAgainTapped:" destination="4rf-AN-qbF" eventType="touchUpInside" id="fxo-nT-kTN"/>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-U5-ljA">
@@ -2229,7 +2231,6 @@ You will not be able to transact in this wallet.</string>
                         <outlet property="addressVerificationLabel" destination="Xey-KN-Z2e" id="dd1-rr-ZVM"/>
                         <outlet property="instructionLabel" destination="q7E-Ta-CHG" id="m8u-qF-Mwy"/>
                         <outlet property="numberLabel" destination="ht1-5K-bzW" id="N8G-in-fSa"/>
-                        <outlet property="scanAgainButton" destination="gnB-P3-R0z" id="ZBd-6t-9V1"/>
                         <outlet property="spinnerImage" destination="Rgy-WU-V4j" id="H5n-ks-SFj"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="l1U-wH-5Pn"/>
                     </connections>
@@ -2865,7 +2866,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <image name="branding_image" width="201" height="195"/>
         <image name="btnInfo_Outline_Dark" width="36" height="36"/>
         <image name="btnUnchecked" width="36" height="36"/>
-        <image name="faceid" catalog="system" width="32" height="32"/>
+        <image name="faceid" catalog="system" width="128" height="115"/>
         <image name="ledger-logo" width="89" height="78"/>
         <image name="logo_kukai" width="293" height="80"/>
         <image name="use_key_wallet" width="126" height="97.5"/>
