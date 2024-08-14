@@ -64,7 +64,7 @@ class WatchWalletViewController: UIViewController, EnterAddressComponentDelegate
 	}
 	
 	func navigate() {
-		var watchMeta = WalletMetadata(address: self.address, hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: true, bas58EncodedPublicKey: "", backedUp: true)
+		let watchMeta = WalletMetadata(address: self.address, hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: true, bas58EncodedPublicKey: "", backedUp: true, customDerivationPath: nil)
 		
 		if self.type == .tezosDomain {
 			if DependencyManager.shared.currentNetworkType == .mainnet {

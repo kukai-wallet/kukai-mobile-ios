@@ -154,44 +154,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
-			sections.append(sections.count)
-			
-			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
-			}
-			
-			let isSectionExpanded = (expandedSection == sections.count-1)
-			sectionData[sections.count-1].append(metadata)
-			
-			for (childIndex, childMetadata) in metadata.children.enumerated() {
-				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
-					sectionData[sections.count-1].append(childMetadata)
-				}
-				
-				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
-				if childMetadata.address == currentAddress {
-					selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1)
-				}
-				
-				
-				// Check if we added a new child address, which doesn't get auto selected
-				if !previousAddresses.contains(childMetadata.address) {
-					newlyAddedAddress = childMetadata.address
-					newAddressIndexPath = IndexPath(row: childIndex, section: sections.count-1)
-					previousAddresses.append(childMetadata.address)
-				}
-			}
-			
-			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
-			
-			
-			// if there are more than 3 items total, display moreCell
-			if metadata.children.count > 2 {
-				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
-				sectionData[sections.count-1].append(moreData)
-			}
-		}
+		handleGroupedData(metadataArray: wallets.hdWallets, sections: &sections, sectionData: &sectionData, currentAddress: currentAddress)
 		
 		
 		// Linear
@@ -207,15 +170,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Ledger
-		if wallets.ledgerWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil, showLess: false)])
-		}
-		for (index, metadata) in wallets.ledgerWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
-			
-			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
-		}
+		handleGroupedData(metadataArray: wallets.ledgerWallets, sections: &sections, sectionData: &sectionData, currentAddress: currentAddress)
 		
 		
 		// Watch
@@ -270,6 +225,48 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Make sure its reset after each call
 		newAddressIndexPath = nil
+	}
+	
+	private func handleGroupedData(metadataArray: [WalletMetadata], sections: inout [Int], sectionData: inout [[AnyHashable]], currentAddress: String) {
+		
+		for (index, metadata) in metadataArray.enumerated() {
+			sections.append(sections.count)
+			
+			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
+				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
+			}
+			
+			let isSectionExpanded = (expandedSection == sections.count-1)
+			sectionData[sections.count-1].append(metadata)
+			
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+					sectionData[sections.count-1].append(childMetadata)
+				}
+				
+				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
+				if childMetadata.address == currentAddress {
+					selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1)
+				}
+				
+				
+				// Check if we added a new child address, which doesn't get auto selected
+				if !previousAddresses.contains(childMetadata.address) {
+					newlyAddedAddress = childMetadata.address
+					newAddressIndexPath = IndexPath(row: childIndex, section: sections.count-1)
+					previousAddresses.append(childMetadata.address)
+				}
+			}
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
+			
+			
+			// if there are more than 3 items total, display moreCell
+			if metadata.children.count > 2 {
+				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(moreData)
+			}
+		}
 	}
 	
 	// We only want to disable this during the adding of new accounts, via the context menu for HD wallets. Which should only be triggered once

@@ -56,27 +56,27 @@ class AddressTypeViewController: UIViewController, UITableViewDelegate, UITableV
 	}
 	
 	static func imageFor(addressType: AddressType) -> UIImage {
-		var tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+		var tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 		
 		switch addressType {
 			case .tezosAddress:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 				
 			case .tezosDomain:
 				let fakeRecord = TezosDomainsReverseRecord(id: "123", address: "123", owner: "123", expiresAtUtc: "123", domain: TezosDomainsDomain(name: "123", address: "123"))
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, mainnetDomains: [fakeRecord], ghostnetDomains: [fakeRecord], type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, mainnetDomains: [fakeRecord], ghostnetDomains: [fakeRecord], type: .regular, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 				
 			case .gmail:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .google, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .google, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 				
 			case .reddit:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .reddit, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .reddit, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 				
 			case .twitter:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .twitter, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .twitter, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 				
 			case .email:
-				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .email, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false)
+				tempMetadata = WalletMetadata(address: "", hdWalletGroupName: nil, walletNickname: nil, socialUsername: nil, socialType: .email, type: .social, children: [], isChild: false, isWatchOnly: false, bas58EncodedPublicKey: "", backedUp: false, customDerivationPath: nil)
 		}
 		
 		return TransactionService.walletMedia(forWalletMetadata: tempMetadata, ofSize: .size_22).image
