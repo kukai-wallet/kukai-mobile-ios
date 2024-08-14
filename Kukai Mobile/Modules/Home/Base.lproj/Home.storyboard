@@ -212,13 +212,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxm-nU-LyP">
-                                                    <rect key="frame" x="39.999999999999993" y="18" width="79.333333333333314" height="19.333333333333329"/>
+                                                    <rect key="frame" x="39.999999999999993" y="12.666666666666664" width="79.333333333333314" height="30"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEg-Fn-9q8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="119.33333333333331" y="18" width="50" height="19.333333333333329"/>
+                                                    <rect key="frame" x="119.33333333333331" y="12.666666666666664" width="50" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="NPg-Hh-oA7"/>
                                                     </constraints>
@@ -271,8 +271,82 @@
                                             <outlet property="menuButton" destination="XEg-Fn-9q8" id="qsB-bZ-xYH"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountItemCell" rowHeight="65" id="KdA-VF-z7e" customClass="AccountItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountsSectionHeaderCell_subheading" rowHeight="65" id="wON-uM-tSt" customClass="AccountsSectionHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="95" width="390" height="65"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wON-uM-tSt" id="TAX-Vx-Dg6">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="65"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Wallet" translatesAutoresizingMaskIntoConstraints="NO" id="4AM-xa-XXo">
+                                                    <rect key="frame" x="16" y="20" width="16" height="15"/>
+                                                    <color key="tintColor" name="Txt10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="Yt1-Mm-o6O"/>
+                                                        <constraint firstAttribute="width" constant="16" id="cl7-kT-eOe"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-3f-STH">
+                                                    <rect key="frame" x="39.999999999999993" y="12.666666666666664" width="79.333333333333314" height="30"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subheading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXg-LE-U94">
+                                                    <rect key="frame" x="40" y="42.666666666666664" width="334" height="18.333333333333336"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8AA-V0-YIM" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                    <rect key="frame" x="119.33333333333331" y="12.666666666666664" width="50" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="50" id="S2g-JA-VG5"/>
+                                                    </constraints>
+                                                    <color key="tintColor" name="BGB4"/>
+                                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
+                                                            <real key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
+                                                            <real key="value" value="16"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="Ellipses"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
+                                                            <color key="value" name="BGB4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="moreTapped:" destination="wON-uM-tSt" eventType="touchUpInside" id="f57-zA-Bln"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="dXg-LE-U94" secondAttribute="trailing" constant="16" id="C00-vm-soH"/>
+                                                <constraint firstItem="4AM-xa-XXo" firstAttribute="leading" secondItem="TAX-Vx-Dg6" secondAttribute="leading" constant="16" id="CDe-b3-uHf"/>
+                                                <constraint firstItem="8AA-V0-YIM" firstAttribute="leading" secondItem="VVS-3f-STH" secondAttribute="trailing" id="CQA-Vk-PqA"/>
+                                                <constraint firstItem="8AA-V0-YIM" firstAttribute="bottom" secondItem="VVS-3f-STH" secondAttribute="bottom" id="T87-hB-hjL"/>
+                                                <constraint firstItem="dXg-LE-U94" firstAttribute="top" secondItem="VVS-3f-STH" secondAttribute="bottom" id="TBO-qZ-CMa"/>
+                                                <constraint firstItem="VVS-3f-STH" firstAttribute="centerY" secondItem="4AM-xa-XXo" secondAttribute="centerY" id="d3A-rY-c6G"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="8AA-V0-YIM" secondAttribute="trailing" constant="16" id="lVe-VY-vMV"/>
+                                                <constraint firstItem="VVS-3f-STH" firstAttribute="leading" secondItem="4AM-xa-XXo" secondAttribute="trailing" constant="8" id="pWg-7F-twh"/>
+                                                <constraint firstItem="dXg-LE-U94" firstAttribute="leading" secondItem="VVS-3f-STH" secondAttribute="leading" id="qZp-vi-RAV"/>
+                                                <constraint firstAttribute="bottom" secondItem="dXg-LE-U94" secondAttribute="bottom" constant="4" id="sYd-8x-MrV"/>
+                                                <constraint firstItem="8AA-V0-YIM" firstAttribute="top" secondItem="VVS-3f-STH" secondAttribute="top" id="sz0-ch-zQP"/>
+                                                <constraint firstItem="4AM-xa-XXo" firstAttribute="top" secondItem="TAX-Vx-Dg6" secondAttribute="top" constant="20" id="t9b-HG-rML"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="headingLabel" destination="VVS-3f-STH" id="uij-jm-EMa"/>
+                                            <outlet property="iconView" destination="4AM-xa-XXo" id="ofx-OI-K48"/>
+                                            <outlet property="menuButton" destination="8AA-V0-YIM" id="gTg-vv-bBf"/>
+                                            <outlet property="subHeadingLabel" destination="dXg-LE-U94" id="HZF-ss-Jm4"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountItemCell" rowHeight="65" id="KdA-VF-z7e" customClass="AccountItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="160" width="390" height="65"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KdA-VF-z7e" id="gIC-5C-VBy">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="65"/>
@@ -381,7 +455,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountsMoreCell" id="qad-rF-JBn" customClass="AccountsMoreCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="160" width="390" height="39"/>
+                                        <rect key="frame" x="0.0" y="225" width="390" height="39"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qad-rF-JBn" id="qBd-Bl-mQ4">
                                             <rect key="frame" x="0.0" y="0.0" width="390" height="39"/>
@@ -417,6 +491,31 @@
                                             <outlet property="moreImage" destination="bf0-0z-00Z" id="5Av-mA-x24"/>
                                             <outlet property="moreLabel" destination="d1O-lW-vwG" id="v07-fk-hjp"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="custom-seperator" id="pCw-lD-c9j">
+                                        <rect key="frame" x="0.0" y="264" width="390" height="19"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pCw-lD-c9j" id="jVw-N9-nTl">
+                                            <rect key="frame" x="0.0" y="0.0" width="390" height="19"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7a-oF-yag">
+                                                    <rect key="frame" x="16" y="16" width="358" height="1"/>
+                                                    <color key="backgroundColor" name="BG6"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="29V-Pe-xMN"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Q7a-oF-yag" secondAttribute="trailing" constant="16" id="AqZ-SI-Wsn"/>
+                                                <constraint firstItem="Q7a-oF-yag" firstAttribute="top" secondItem="jVw-N9-nTl" secondAttribute="top" constant="16" id="FWN-If-cIo"/>
+                                                <constraint firstAttribute="bottom" secondItem="Q7a-oF-yag" secondAttribute="bottom" constant="2" id="HtA-sk-VrF"/>
+                                                <constraint firstItem="Q7a-oF-yag" firstAttribute="leading" secondItem="jVw-N9-nTl" secondAttribute="leading" constant="16" id="mLo-Vn-uRN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -1780,7 +1879,7 @@
     </scenes>
     <designables>
         <designable name="0Rb-3x-STy">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="1un-2s-Olb">
             <size key="intrinsicContentSize" width="76" height="36"/>
@@ -1788,11 +1887,14 @@
         <designable name="5wT-IG-lLN">
             <size key="intrinsicContentSize" width="64" height="36"/>
         </designable>
+        <designable name="8AA-V0-YIM">
+            <size key="intrinsicContentSize" width="30" height="30"/>
+        </designable>
         <designable name="9Bj-V9-TG1">
             <size key="intrinsicContentSize" width="159" height="34"/>
         </designable>
         <designable name="BXZ-at-zJb">
-            <size key="intrinsicContentSize" width="44" height="34"/>
+            <size key="intrinsicContentSize" width="24" height="14"/>
         </designable>
         <designable name="TQh-in-HjU">
             <size key="intrinsicContentSize" width="143.33333333333334" height="34"/>
@@ -1804,7 +1906,7 @@
             <size key="intrinsicContentSize" width="64" height="36"/>
         </designable>
         <designable name="XEg-Fn-9q8">
-            <size key="intrinsicContentSize" width="16" height="18"/>
+            <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
         <designable name="XV7-87-nVU">
             <size key="intrinsicContentSize" width="79" height="17"/>
