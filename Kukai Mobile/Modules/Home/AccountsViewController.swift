@@ -143,6 +143,9 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		} else if let vc = segue.destination as? RenameWalletGroupdViewController, let metadata = sender as? WalletMetadata {
 			vc.selectedWalletMetadata = metadata
 			
+		} else if let vc = segue.destination as? AddCustomPathViewController, let metadata = sender as? WalletMetadata {
+			vc.selectedWalletMetadata = metadata
+			
 		} else if let vc = segue.destination as? RemoveWalletViewController {
 			
 			if let indexPath = self.editingIndexPath {

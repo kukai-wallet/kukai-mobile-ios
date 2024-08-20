@@ -212,13 +212,13 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fxm-nU-LyP">
-                                                    <rect key="frame" x="39.999999999999993" y="12.666666666666664" width="79.333333333333314" height="30"/>
+                                                    <rect key="frame" x="39.999999999999993" y="18" width="79.333333333333314" height="19.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XEg-Fn-9q8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="119.33333333333331" y="12.666666666666664" width="50" height="30"/>
+                                                    <rect key="frame" x="119.33333333333331" y="18" width="50" height="19.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="NPg-Hh-oA7"/>
                                                     </constraints>
@@ -287,19 +287,19 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VVS-3f-STH">
-                                                    <rect key="frame" x="39.999999999999993" y="12.666666666666664" width="79.333333333333314" height="30"/>
+                                                    <rect key="frame" x="39.999999999999993" y="18" width="79.333333333333314" height="19.333333333333329"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subheading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXg-LE-U94">
-                                                    <rect key="frame" x="40" y="42.666666666666664" width="334" height="18.333333333333336"/>
+                                                    <rect key="frame" x="40" y="37.333333333333336" width="334" height="23.666666666666664"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8AA-V0-YIM" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                    <rect key="frame" x="119.33333333333331" y="12.666666666666664" width="50" height="30"/>
+                                                    <rect key="frame" x="119.33333333333331" y="18" width="50" height="19.333333333333329"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="S2g-JA-VG5"/>
                                                     </constraints>
@@ -601,6 +601,7 @@
                         <segue destination="dXg-LT-sIm" kind="custom" identifier="edit" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="H5L-oY-nDz"/>
                         <segue destination="o04-Ni-Yut" kind="custom" identifier="rename" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="vRW-dE-Qbq"/>
                         <segue destination="J1V-CX-t0k" kind="presentation" identifier="remove" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="0z7-ly-876"/>
+                        <segue destination="6Rh-q5-iKL" kind="custom" identifier="custom-path" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="kbe-9N-LDb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fuT-T2-w7f" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1876,10 +1877,108 @@
             </objects>
             <point key="canvasLocation" x="2928" y="-2841"/>
         </scene>
+        <!--Add Custom Path View Controller-->
+        <scene sceneID="0bQ-Ik-WHS">
+            <objects>
+                <viewController id="6Rh-q5-iKL" customClass="AddCustomPathViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="TLQ-c6-opX">
+                        <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Custom Derivation Path" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VoS-7s-rfU">
+                                <rect key="frame" x="16" y="77" width="358" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="m/44'/1729'/0'/0'" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="IYV-Id-St4" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="16" y="328.66666666666669" width="358" height="34"/>
+                                <color key="backgroundColor" name="BG4"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
+                                        <color key="value" name="Txt10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="clearButtonTint">
+                                        <color key="value" name="BGB4"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </textField>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="oVL-dK-a6p">
+                                <rect key="frame" x="146" y="125" width="98" height="98"/>
+                                <color key="tintColor" name="BGB-alt4"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="98" id="CN7-l9-9rc"/>
+                                    <constraint firstAttribute="height" constant="98" id="NWM-L8-63v"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LqG-nY-46J">
+                                <rect key="frame" x="16" y="246.99999999999997" width="358" height="57.666666666666657"/>
+                                <string key="text">TBD
+TBD
+TBD</string>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPX-If-f0H" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="40" y="386.66666666666669" width="310" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="ujB-iX-xNK"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Continue">
+                                    <color key="titleColor" name="TxtBtnPrim1"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="12"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="continueTapped:" destination="6Rh-q5-iKL" eventType="touchUpInside" id="GI6-lO-EgV"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="pCd-TG-LOM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="pCd-TG-LOM" firstAttribute="trailing" secondItem="IYV-Id-St4" secondAttribute="trailing" constant="16" id="1rT-dg-Chr"/>
+                            <constraint firstItem="pCd-TG-LOM" firstAttribute="trailing" secondItem="LqG-nY-46J" secondAttribute="trailing" constant="16" id="3IX-we-p5k"/>
+                            <constraint firstItem="VoS-7s-rfU" firstAttribute="top" secondItem="pCd-TG-LOM" secondAttribute="top" constant="30" id="5N1-Pk-yf4"/>
+                            <constraint firstItem="UPX-If-f0H" firstAttribute="top" secondItem="IYV-Id-St4" secondAttribute="bottom" constant="24" id="7cU-mQ-ACr"/>
+                            <constraint firstItem="LqG-nY-46J" firstAttribute="top" secondItem="oVL-dK-a6p" secondAttribute="bottom" constant="24" id="AOX-pN-cmA"/>
+                            <constraint firstItem="oVL-dK-a6p" firstAttribute="top" secondItem="VoS-7s-rfU" secondAttribute="bottom" constant="24" id="Cuz-bJ-TcN"/>
+                            <constraint firstItem="IYV-Id-St4" firstAttribute="top" secondItem="LqG-nY-46J" secondAttribute="bottom" constant="24" id="VeA-61-j8m"/>
+                            <constraint firstItem="VoS-7s-rfU" firstAttribute="leading" secondItem="pCd-TG-LOM" secondAttribute="leading" constant="16" id="X1g-td-MMj"/>
+                            <constraint firstItem="pCd-TG-LOM" firstAttribute="trailing" secondItem="VoS-7s-rfU" secondAttribute="trailing" constant="16" id="eWg-Bv-j2O"/>
+                            <constraint firstItem="oVL-dK-a6p" firstAttribute="centerX" secondItem="pCd-TG-LOM" secondAttribute="centerX" id="f2K-80-n8C"/>
+                            <constraint firstItem="IYV-Id-St4" firstAttribute="leading" secondItem="pCd-TG-LOM" secondAttribute="leading" constant="16" id="iZg-NH-Q0M"/>
+                            <constraint firstItem="UPX-If-f0H" firstAttribute="leading" secondItem="IYV-Id-St4" secondAttribute="leading" constant="24" id="lke-Fh-peJ"/>
+                            <constraint firstItem="LqG-nY-46J" firstAttribute="leading" secondItem="pCd-TG-LOM" secondAttribute="leading" constant="16" id="mEs-m7-7lT"/>
+                            <constraint firstItem="UPX-If-f0H" firstAttribute="trailing" secondItem="IYV-Id-St4" secondAttribute="trailing" constant="-24" id="y3Y-qn-Yo2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="continueButton" destination="UPX-If-f0H" id="XIH-tC-Gy5"/>
+                        <outlet property="textfield" destination="IYV-Id-St4" id="j0Y-Ll-seB"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="o3k-RY-Ipy" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2368" y="-1981"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="0Rb-3x-STy">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
         </designable>
         <designable name="1un-2s-Olb">
             <size key="intrinsicContentSize" width="76" height="36"/>
@@ -1888,13 +1987,16 @@
             <size key="intrinsicContentSize" width="64" height="36"/>
         </designable>
         <designable name="8AA-V0-YIM">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="16" height="18"/>
         </designable>
         <designable name="9Bj-V9-TG1">
             <size key="intrinsicContentSize" width="159" height="34"/>
         </designable>
         <designable name="BXZ-at-zJb">
-            <size key="intrinsicContentSize" width="24" height="14"/>
+            <size key="intrinsicContentSize" width="44" height="34"/>
+        </designable>
+        <designable name="IYV-Id-St4">
+            <size key="intrinsicContentSize" width="144.33333333333334" height="34"/>
         </designable>
         <designable name="TQh-in-HjU">
             <size key="intrinsicContentSize" width="143.33333333333334" height="34"/>
@@ -1902,11 +2004,14 @@
         <designable name="TZZ-Gt-iwb">
             <size key="intrinsicContentSize" width="105" height="32"/>
         </designable>
+        <designable name="UPX-If-f0H">
+            <size key="intrinsicContentSize" width="85" height="36"/>
+        </designable>
         <designable name="VPE-bC-rGj">
             <size key="intrinsicContentSize" width="64" height="36"/>
         </designable>
         <designable name="XEg-Fn-9q8">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="16" height="18"/>
         </designable>
         <designable name="XV7-87-nVU">
             <size key="intrinsicContentSize" width="79" height="17"/>
@@ -1929,6 +2034,7 @@
     </designables>
     <resources>
         <image name="Alert" width="24" height="24"/>
+        <image name="AlertKnockout" width="24" height="24"/>
         <image name="Check" width="24" height="24"/>
         <image name="ChevronDown" width="18" height="10"/>
         <image name="ChevronRight" width="10" height="18"/>

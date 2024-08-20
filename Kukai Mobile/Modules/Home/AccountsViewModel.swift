@@ -117,7 +117,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setup(obj)
 				return cell
 				
-			}  else if let obj = item as? CustomSeperatorData {
+			}  else if let _ = item as? CustomSeperatorData {
 				return tableView.dequeueReusableCell(withIdentifier: "custom-seperator", for: indexPath)
 				
 			} else {
@@ -365,15 +365,27 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			
 			vc.showLoadingView()
-			AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
-				vc.hideLoadingView()
-				if let title = errorTitle, let message = errorMessage {
-					vc.windowError(withTitle: title, description: message)
-				} else {
-					self?.shouldScrollToSelected = false
-					self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
-					self?.refresh(animate: true)
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: walletMetadata) { success in
+				guard success else { return }
+				
+				AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
+					vc.hideLoadingView()
+					if let title = errorTitle, let message = errorMessage {
+						vc.windowError(withTitle: title, description: message)
+					} else {
+						self?.shouldScrollToSelected = false
+						self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
+						self?.refresh(animate: true)
+					}
 				}
+			}
+		}
+		
+		let customPath = UIAction(title: "Add Custom Path", image: UIImage(named: "CustomPath")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "custom-path", sender: meta)
 			}
 		}
 		
@@ -385,7 +397,21 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
+		
+		// Add different options depending on type of wallet
+		var options: [[UIAction]] = [[edit]]
+		if walletMetadata.customDerivationPath == nil {
+			options[0].append(addAccount)
+		}
+		
+		if walletMetadata.type == .ledger && walletMetadata.customDerivationPath == nil {
+			options[0].append(customPath)
+		}
+		
+		options[0].append(remove)
+		
+		let header = walletMetadata.hdWalletGroupName ?? "Custom Path: \(walletMetadata.customDerivationPath ?? "")"
+		return MenuViewController(actions: options, header: header, alertStyleIndexes: [IndexPath(row: options[0].count-1, section: 0)], sourceViewController: vc)
 	}
 	
 	func pullToRefresh(animate: Bool) {
@@ -414,5 +440,41 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .failure(error, "Error occurred fetching tezos domains")
 			}
 		}
+	}
+	
+	public static func askToConnectToLedgerIfNeeded(walletMetadata: WalletMetadata, completion: @escaping ((Bool) -> Void)) {
+		guard walletMetadata.type == .ledger, LedgerService.shared.getConnectedDeviceUUID() == nil, let rootVc = UIApplication.shared.currentWindow?.rootViewController else {
+			completion(true)
+			return
+		}
+		
+		rootVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?", okAction: { action in
+			guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
+				rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+				completion(false)
+				return
+			}
+			
+			let cancellable = LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
+				.timeout(10, scheduler: RunLoop.current, customError: {
+					return KukaiError.knownErrorMessage("Timed out waiting for device to connect. Check device/bluetooth is turned on and try again")
+				})
+				.sink(onError: { error in
+					rootVc.windowError(withTitle: "error".localized(), description: "\( error )")
+					completion(false)
+				
+				}, onSuccess: { success in
+					if !success {
+						rootVc.windowError(withTitle: "error".localized(), description: "Unable to connect to device, please try again")
+						completion(false)
+						return
+					}
+					
+					completion(true)
+				})
+				
+		}, cancelAction: { action in
+				completion(false)
+		})
 	}
 }

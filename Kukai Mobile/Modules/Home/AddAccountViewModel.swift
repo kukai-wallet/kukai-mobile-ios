@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import KukaiCryptoSwift
 import Combine
 import OSLog
 
@@ -111,19 +112,63 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? HDWallet,
-				  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
+			guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) else {
 				completion("error".localized(), "error-cant-add-account".localized())
 				return
 			}
 			
-			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: hdWalletIndex, backedUp: false, markSelected: false) { errorString in
+			switch wallet.type {
+				case .regular, .regularShifted, .social:
+					completion("error".localized(), "error-cant-add-account".localized())
+					
+				case .hd:
+					addAccountForHD(wallet: wallet, walletMetadata: walletMetadata, walletIndex: hdWalletIndex, completion: completion)
+					
+				case .ledger:
+					addAccountForLedger(wallet: wallet, walletMetadata: walletMetadata, walletIndex: hdWalletIndex, customPath: nil, completion: completion)
+			}
+		})
+	}
+	
+	public static func addAccountForHD(wallet: Wallet, walletMetadata: WalletMetadata, walletIndex: Int, completion: @escaping ((String?, String?) -> Void)) {
+		guard let wallet = wallet as? HDWallet,
+			  let newChild = wallet.createChild(accountIndex: walletMetadata.children.count+1) else {
+			completion("error".localized(), "error-cant-add-account".localized())
+			return
+		}
+		
+		WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false) { errorString in
+			if let eString = errorString {
+				completion("error".localized(), eString)
+			} else {
+				completion(nil, nil)
+			}
+		}
+	}
+	
+	public static func addAccountForLedger(wallet: Wallet, walletMetadata: WalletMetadata, walletIndex: Int, customPath: String?, completion: @escaping ((String?, String?) -> Void)) {
+		guard let wallet = wallet as? LedgerWallet else {
+			completion("error".localized(), "error-cant-add-account".localized())
+			return
+		}
+		
+		let newDerivationPath = customPath ?? HD.defaultDerivationPath(withAccountIndex: walletMetadata.childCountExcludingCustomDerivationPaths()+1)
+		Task {
+			let response = await LedgerService.shared.getAddress(forDerivationPath: newDerivationPath, verify: false)
+			
+			guard let res = try? response.get(),
+				  let newChild = LedgerWallet(address: res.address, publicKey: res.publicKey, derivationPath: newDerivationPath, curve: .ed25519, ledgerUUID: wallet.ledgerUUID) else {
+				completion("error".localized(), "error-cant-add-account".localized())
+				return
+			}
+			
+			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false) { errorString in
 				if let eString = errorString {
 					completion("error".localized(), eString)
 				} else {
 					completion(nil, nil)
 				}
 			}
-		})
+		}
 	}
 }
