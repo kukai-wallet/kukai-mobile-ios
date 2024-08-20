@@ -15,11 +15,11 @@ class WalletManagementService {
 	private static var bag = Set<AnyCancellable>()
 	
 	/// Cache a new wallet, run tezos domains checks, and update records in DependencyManager correctly
-	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, backedUp: Bool, markSelected: Bool, completion: @escaping ((String?) -> Void)) {
+	public static func cacheNew(wallet: Wallet, forChildOfIndex: Int?, backedUp: Bool, markSelected: Bool, customDerivationPath: String? = nil, completion: @escaping ((String?) -> Void)) {
 		let walletCache = WalletCacheService()
 		
 		do {
-			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: backedUp)
+			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: backedUp, customDerivationPath: customDerivationPath)
 			
 			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {
@@ -153,7 +153,7 @@ class WalletManagementService {
 			return errorString
 			
 		} else {
-			let hdIndex = DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == wallet.address })
+			let hdIndex = DependencyManager.shared.walletList.ledgerWallets.firstIndex(where: { $0.address == wallet.address })
 			var childIndex = 1
 			var isUsedAccount = true
 			

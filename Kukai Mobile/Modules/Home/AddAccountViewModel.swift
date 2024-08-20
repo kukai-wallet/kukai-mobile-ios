@@ -148,7 +148,7 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	public static func addAccountForLedger(wallet: Wallet, walletMetadata: WalletMetadata, walletIndex: Int, customPath: String?, completion: @escaping ((String?, String?) -> Void)) {
 		guard let wallet = wallet as? LedgerWallet else {
-			completion("error".localized(), "error-cant-add-account".localized())
+			DispatchQueue.main.async { completion("error".localized(), "error-cant-add-account".localized()) }
 			return
 		}
 		
@@ -158,15 +158,15 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			guard let res = try? response.get(),
 				  let newChild = LedgerWallet(address: res.address, publicKey: res.publicKey, derivationPath: newDerivationPath, curve: .ed25519, ledgerUUID: wallet.ledgerUUID) else {
-				completion("error".localized(), "error-cant-add-account".localized())
+				DispatchQueue.main.async { completion("error".localized(), "error-cant-add-account".localized()) }
 				return
 			}
 			
-			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false) { errorString in
+			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false, customDerivationPath: customPath) { errorString in
 				if let eString = errorString {
-					completion("error".localized(), eString)
+					DispatchQueue.main.async { completion("error".localized(), eString) }
 				} else {
-					completion(nil, nil)
+					DispatchQueue.main.async { completion(nil, nil) }
 				}
 			}
 		}

@@ -46,6 +46,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var newAddressIndexPath: IndexPath? = nil
 	
 	private var bag = [AnyCancellable]()
+	private static var staticBag = [AnyCancellable]()
 	private var newWalletAutoSelected = false
 	private var previousAddresses: [String] = []
 	private var newlyAddedAddress: String? = nil
@@ -331,19 +332,44 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	/// Deleting a child index requires a HD parent wallet index (for performance reasons). Return the index of the HD wallet, if relevant
 	func parentIndexForIndexPathIfRelevant(indexPath: IndexPath) -> Int? {
+		var firstMetadata: WalletMetadata? = nil
+		for i in 1..<3 {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section)) as? WalletMetadata {
+				firstMetadata = obj
+				break
+			}
+		}
 		
-		if indexPath.row > 1, let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata, parentItem.type == .hd {
-			return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
+		if indexPath.row > 1, let parentItem = firstMetadata {
+			
+			switch parentItem.type {
+				case .regular, .regularShifted, .social:
+					return nil
+					
+				case .hd:
+					return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
+					
+				case .ledger:
+					return DependencyManager.shared.walletList.ledgerWallets.firstIndex(where: { $0.address == parentItem.address })
+			}
 		}
 		
 		return nil
 	}
 	
 	func isLastSubAccount(indexPath: IndexPath) -> Bool {
+		var firstMetadata: WalletMetadata? = nil
+		for i in 1..<3 {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section)) as? WalletMetadata {
+				firstMetadata = obj
+				break
+			}
+		}
+		
 		if indexPath.row > 1,
-		   let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata,
+		   let parentItem = firstMetadata,
 		   let selectedItem = dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata,
-		   parentItem.type == .hd,
+		   (parentItem.type == .hd || parentItem.type == .ledger),
 		   parentItem.children.last?.address == selectedItem.address {
 			return true
 		}
@@ -448,33 +474,55 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		rootVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?", okAction: { action in
-			guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
-				rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+		var topMostVc = rootVc
+		if let nav = rootVc as? UINavigationController, let last = nav.viewControllers.last {
+			topMostVc = last
+		}
+		
+		if let modal = rootVc.presentedViewController {
+			topMostVc = modal
+		}  else if let modal = topMostVc.presentedViewController {
+			topMostVc = modal
+		}
+		
+		guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
+			rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			completion(false)
+			return
+		}
+		
+		topMostVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?", 
+						okText: "Connect",
+						okAction: { action in
+							connectLedger(rootVc: rootVc, uuid: wallet.ledgerUUID, completion: completion)
+						},
+						cancelText: "Cancel",
+						cancelStyle: .destructive,
+						cancelAction: { action in
+							completion(false)
+						})
+	}
+	
+	public static func connectLedger(rootVc: UIViewController, uuid: String, completion: @escaping ((Bool) -> Void)) {
+		LedgerService.shared.connectTo(uuid: uuid)
+			.timeout(.seconds(10), scheduler: RunLoop.main, customError: {
+				return KukaiError.knownErrorMessage("Timed out waiting for device to connect. Check device/bluetooth is turned on and try again")
+			})
+			.sink(onError: { error in
+				rootVc.windowError(withTitle: "error".localized(), description: "\( error )")
 				completion(false)
-				return
-			}
-			
-			let cancellable = LedgerService.shared.connectTo(uuid: wallet.ledgerUUID)
-				.timeout(10, scheduler: RunLoop.current, customError: {
-					return KukaiError.knownErrorMessage("Timed out waiting for device to connect. Check device/bluetooth is turned on and try again")
-				})
-				.sink(onError: { error in
-					rootVc.windowError(withTitle: "error".localized(), description: "\( error )")
+				staticBag = []
+				
+			}, onSuccess: { success in
+				if !success {
+					rootVc.windowError(withTitle: "error".localized(), description: "Unable to connect to device, please try again")
 					completion(false)
-				
-				}, onSuccess: { success in
-					if !success {
-						rootVc.windowError(withTitle: "error".localized(), description: "Unable to connect to device, please try again")
-						completion(false)
-						return
-					}
-					
+				} else {
 					completion(true)
-				})
+				}
 				
-		}, cancelAction: { action in
-				completion(false)
-		})
+				staticBag = []
+			})
+			.store(in: &staticBag)
 	}
 }
