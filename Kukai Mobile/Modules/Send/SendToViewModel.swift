@@ -13,6 +13,7 @@ import OSLog
 struct SendHeaderObj: Hashable {
 	let icon: UIImage
 	let title: String
+	let subheader: String?
 }
 
 struct WalletObj: Hashable {
@@ -38,9 +39,15 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? SendHeaderObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
+			if let obj = item as? SendHeaderObj, obj.subheader == nil, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
 				cell.iconView.image = obj.icon
 				cell.headingLabel.text = obj.title
+				return cell
+				
+			} else if let obj = item as? SendHeaderObj, obj.subheader != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell_subheading", for: indexPath) as? ImageHeadingCell {
+				cell.iconView.image = obj.icon
+				cell.headingLabel.text = obj.title
+				cell.subheadingLabel?.text = obj.subheader
 				return cell
 				
 			} else if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
@@ -56,6 +63,9 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
 				cell.setup(obj)
 				return cell
+				
+			} else if let _ = item as? CustomSeperatorData {
+				return tableView.dequeueReusableCell(withIdentifier: "custom-seperator", for: indexPath)
 				
 			} else {
 				return UITableViewCell()
@@ -102,50 +112,14 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		if walletsToAdd.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Social Wallets")])
+			sectionData.append([SendHeaderObj(icon: walletImage, title: "Social Wallets", subheader: nil)])
 			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 		}
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
-			walletsToAdd = []
-			/*
-			if metadata.address == selectedAddress && metadata.children.count == 0 {
-				continue
-			}
-			*/
-			
-			//if metadata.address != selectedAddress {
-				let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-				walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
-			//}
-			
-			let isSectionExpanded = (expandedSection == sections.count)
-			var totalChildCount = 0
-			for (_, childMetadata) in metadata.children.enumerated() {
-				//if childMetadata.address == selectedAddress { continue }
-				
-				totalChildCount += 1
-				
-				if isSectionExpanded || (!isSectionExpanded && totalChildCount < 3) {
-					let childWalletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
-					walletsToAdd.append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
-				}
-			}
-			
-			if walletsToAdd.count > 0 {
-				sections.append(sections.count)
-				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "")])
-				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
-			}
-			
-			// if there are more than 3 items total, display moreCell
-			if totalChildCount > 2 {
-				let moreData = AccountsMoreObject(count: totalChildCount-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
-				sectionData[sections.count-1].append(moreData)
-			}
-		}
+		handleGroupedData(metadataArray: wallets.hdWallets, walletImage: walletImage, sections: &sections, sectionData: &sectionData)
+		
 		
 		// Linear
 		walletsToAdd = []
@@ -155,22 +129,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		if walletsToAdd.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Legacy Wallets")])
+			sectionData.append([SendHeaderObj(icon: walletImage, title: "Legacy Wallets", subheader: nil)])
 			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
 		}
 		
 		
 		// Ledger
-		walletsToAdd = []
-		for metadata in wallets.ledgerWallets /*where metadata.address != selectedAddress*/ {
-			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
-		}
-		if walletsToAdd.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Ledger Wallets")])
-			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
-		}
+		handleGroupedData(metadataArray: wallets.ledgerWallets, walletImage: walletImage, sections: &sections, sectionData: &sectionData)
 		
 		// Add it all
 		snapshot.appendSections(sections)
@@ -180,6 +145,46 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		ds.apply(snapshot, animatingDifferences: animate)
 		
 		state = .success(nil)
+	}
+	
+	private func handleGroupedData(metadataArray: [WalletMetadata], walletImage: UIImage, sections: inout [Int], sectionData: inout [[AnyHashable]]) {
+		for (index, metadata) in metadataArray.enumerated() {
+			sections.append(sections.count)
+			
+			if metadata.type == .ledger {
+				sectionData.append([CustomSeperatorData(), SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil)])
+			} else {
+				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil)])
+			}
+			
+			let isSectionExpanded = (expandedSection == sections.count-1)
+			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
+			sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+			
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				
+				// If child should be visible
+				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+					
+					// Check if child is a custom derivation path, as those get extra heading
+					if let customDerivation = childMetadata.customDerivationPath {
+						sectionData[sections.count-1].append(SendHeaderObj(icon: walletImage, title: "Custom Path", subheader: "(\(customDerivation))"))
+					}
+					let walletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
+					sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+				}
+			}
+			
+			// if there are more than 3 items total, display moreCell
+			if metadata.children.count > 2 {
+				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(moreData)
+			}
+			
+			if metadata.type == .ledger && index == metadataArray.count-1 {
+				sectionData[sections.count-1].append(CustomSeperatorData())
+			}
+		}
 	}
 	
 	func walletObj(forIndexPath indexPath: IndexPath) -> WalletObj? {

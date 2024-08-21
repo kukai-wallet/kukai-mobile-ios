@@ -118,7 +118,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setup(obj)
 				return cell
 				
-			}  else if let _ = item as? CustomSeperatorData {
+			} else if let _ = item as? CustomSeperatorData {
 				return tableView.dequeueReusableCell(withIdentifier: "custom-seperator", for: indexPath)
 				
 			} else {

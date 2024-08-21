@@ -113,11 +113,6 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 			errorLabel.text = "On Ledger confirm, transaction will auto broadcast"
 		}
 		
-		
-		if ledgerWarningLabel.isHidden && errorLabel.isHidden {
-			slideErrorStackView.isHidden = true
-		}
-		
 		slideButton.delegate = self
     }
 	
