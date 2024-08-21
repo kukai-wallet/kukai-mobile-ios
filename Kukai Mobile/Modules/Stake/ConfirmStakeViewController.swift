@@ -34,7 +34,6 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	@IBOutlet weak var slideErrorStackView: UIStackView!
-	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
@@ -108,17 +107,11 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		
 		
 		// Fees and amount view config
-		feeButton.customButtonType = .secondary
-		
-		
-		// Ledger check
 		if selectedMetadata?.type != .ledger {
-			ledgerWarningLabel.isHidden = true
+			slideErrorStackView.isHidden = true
+		} else {
+			errorLabel.text = "On Ledger confirm, transaction will auto broadcast"
 		}
-		
-		
-		// Error / warning check (TBD)
-		errorLabel.isHidden = true
 		
 		
 		if ledgerWarningLabel.isHidden && errorLabel.isHidden {

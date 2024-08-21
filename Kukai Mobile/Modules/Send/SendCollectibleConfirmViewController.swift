@@ -50,7 +50,6 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	@IBOutlet weak var slideErrorStackView: UIStackView!
-	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
@@ -137,16 +136,9 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		
 		// Ledger check
 		if selectedMetadata?.type != .ledger {
-			ledgerWarningLabel.isHidden = true
-		}
-		
-		
-		// Error / warning check (TBD)
-		errorLabel.isHidden = true
-		
-		
-		if ledgerWarningLabel.isHidden && errorLabel.isHidden {
 			slideErrorStackView.isHidden = true
+		} else {
+			errorLabel.text = "On Ledger confirm, transaction will auto broadcast"
 		}
 		
 		slideButton.delegate = self
