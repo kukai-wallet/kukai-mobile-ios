@@ -31,6 +31,17 @@ class SendAbstractConfirmViewController: UIViewController {
         super.viewDidLoad()
 		
 		presentationController?.delegate = self
+		
+		/*
+		LedgerService.shared
+			.$partialSuccessMessageReceived
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.showLoadingView()
+				self?.updateLoadingViewStatusLabel(message: "Please confirm the transaction on your Ledger device")
+			}
+			.store(in: &bag)
+		*/
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -180,6 +191,19 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	public func authFailure() {
 		fatalError("SendAbstractConfirmViewController.authFailure must be overidden")
+	}
+	
+	public static func checkForExpectedLedgerErrors(_ kukaiError: KukaiError) -> String? {
+		if kukaiError.errorType == .internalApplication, let sub = kukaiError.subType {
+			if case KukaiCoreSwift.LedgerService.TezosAppErrorCodes.EXC_REJECT = sub {
+				return nil // Don't display error message for user choosing to reject the operation
+				
+			} else if case KukaiCoreSwift.LedgerService.GeneralErrorCodes.DEVICE_LOCKED = sub {
+				return "Please unlock the Ledger device and try again"
+			}
+		}
+		
+		return kukaiError.description
 	}
 }
 

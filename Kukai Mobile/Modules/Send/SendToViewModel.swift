@@ -171,7 +171,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 						sectionData[sections.count-1].append(SendHeaderObj(icon: walletImage, title: "Custom Path", subheader: "(\(customDerivation))"))
 					}
 					let walletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
-					sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
+					sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: childMetadata.address))
 				}
 			}
 			

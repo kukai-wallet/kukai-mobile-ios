@@ -196,8 +196,11 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 					
 				case .failure(let sendError):
 					self?.unblockInteraction()
-					self?.windowError(withTitle: "error".localized(), description: sendError.description)
 					self?.slideButton?.resetSlider()
+					
+					if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
+						self?.windowError(withTitle: "error".localized(), description: message)
+					}
 			}
 		}
 	}
