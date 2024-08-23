@@ -101,6 +101,7 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 				
 				LedgerService.shared.stopListening()
 				self?.performSegue(withIdentifier: "next", sender: self)
+				self?.bag = Set<AnyCancellable>()
 			})
 			.store(in: &bag)
 	}

@@ -25,6 +25,7 @@ class GradientView: UIView {
 		case fullScreenBackground
 		case modalBackground
 		case tableViewCell
+		case tableViewCellNoRounding
 		case tableViewCellUnconfirmed
 		case tableViewCellFailed
 		case collectibleAttributes
@@ -112,6 +113,13 @@ class GradientView: UIView {
 				self.maskToBounds = true
 				self.borderWidth = 0
 				
+			case .tableViewCellNoRounding:
+				self.locations = [0.26, 0.67]
+				self.degrees = cssDegreesToIOS(92.91)
+				self.customCornerRadius = 0
+				self.maskToBounds = true
+				self.borderWidth = 0
+				
 			case .tableViewCellUnconfirmed:
 				self.locations = [0.01, 0.93]
 				self.degrees = cssDegreesToIOS(90.36)
@@ -143,7 +151,7 @@ class GradientView: UIView {
 			case .modalBackground:
 				self.colors = [UIColor.colorNamed("gradModal-1").cgColor, UIColor.colorNamed("gradModal-2").cgColor, UIColor.colorNamed("gradModal-3").cgColor]
 				
-			case .tableViewCell:
+			case .tableViewCell, .tableViewCellNoRounding:
 				self.colors = [UIColor.colorNamed("gradPanelRows-1").cgColor, UIColor.colorNamed("gradPanelRows-2").cgColor]
 				
 			case .tableViewCellUnconfirmed:
