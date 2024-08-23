@@ -69,6 +69,10 @@ class SendAbstractConfirmViewController: UIViewController {
 		if !didSend && isWalletConnectOp {
 			handleRejection(andDismiss: false)
 		}
+		
+		if LedgerService.shared.getConnectedDeviceUUID() != nil {
+			LedgerService.shared.disconnectFromDevice()
+		}
 	}
 	
 	func dismissAndReturn(collapseOnly: Bool) {
@@ -200,6 +204,9 @@ class SendAbstractConfirmViewController: UIViewController {
 				
 			} else if case KukaiCoreSwift.LedgerService.GeneralErrorCodes.DEVICE_LOCKED = sub {
 				return "Please unlock the Ledger device and try again"
+				
+			} else if case KukaiCoreSwift.LedgerService.GeneralErrorCodes.APP_CLOSED = sub {
+				return "Please open the Tezos app on your ledger device and try again"
 			}
 		}
 		

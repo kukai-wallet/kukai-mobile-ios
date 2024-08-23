@@ -43,7 +43,7 @@ class RemoveWalletViewController: UIViewController {
 		
 		walletTypeIcon.image = media.image
 		
-		if selectedWalletMetadata.type == .hd && selectedWalletMetadata.isChild == false {
+		if selectedWalletMetadata.children.count > 0 && selectedWalletMetadata.isChild == false {
 			walletTypeLabel.text = selectedWalletMetadata.hdWalletGroupName
 			addresLabel.text = selectedWalletMetadata.address.truncateTezosAddress()
 			

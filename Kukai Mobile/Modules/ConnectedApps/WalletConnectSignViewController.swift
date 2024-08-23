@@ -54,6 +54,18 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		
 		slideButton.delegate = self
 		presentationController?.delegate = self
+		
+		
+		/*
+		 // Listen for partial success messages from ledger devices (if applicable)
+		 LedgerService.shared
+		 .$partialSuccessMessageReceived
+		 .dropFirst()
+		 .sink { [weak self] _ in
+		 self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
+		 }
+		 .store(in: &bag)
+		 */
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +90,10 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		
 		if !didSend {
 			handleRejection(andDismiss: false)
+		}
+		
+		if LedgerService.shared.getConnectedDeviceUUID() != nil {
+			LedgerService.shared.disconnectFromDevice()
 		}
 	}
 	
@@ -157,20 +173,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			return
 		}
 		
-		/*
-		// Listen for partial success messages from ledger devices (if applicable)
-		LedgerService.shared
-			.$partialSuccessMessageReceived
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
-			}
-			.store(in: &bag)
-		*/
-		
 		// Sign and continue
-		self.slideButton.markComplete(withText: "Complete")
-		
 		var str = self.stringToSign
 		if str.prefix(2) == "0x" {
 			let strIndex = str.index(str.startIndex, offsetBy: 2)
