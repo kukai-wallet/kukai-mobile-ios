@@ -77,26 +77,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
-	// TODO: gradient
-	/*
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		
-		if let c = cell as? UITableViewCellContainerView {
-			let status = viewModel.statusFor(indexPath: indexPath)
-			
-			if status == .failed || status == .backtracked {
-				c.addFailedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-				
-			} else if status == .unconfirmed {
-				c.addUnconfirmedGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-				
-			} else {
-				c.addGradientBackground(withFrame: c.containerView.bounds, toView: c.containerView)
-			}
-		}
-	}
-	*/
-	
 	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 		guard let cell = cell as? UITableViewCellImageDownloading else {
 			return

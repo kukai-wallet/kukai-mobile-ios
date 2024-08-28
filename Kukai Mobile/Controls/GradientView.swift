@@ -133,6 +133,8 @@ class GradientView: UIView {
 				self.maskToBounds = true
 				self.borderWidth = 0
 		}
+		
+		self.setNeedsDisplay()
 	}
 	
 	private func updateColors() {

@@ -9,7 +9,11 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
+protocol ActivityItemCellProcotol {
+	func brieflyHideContainer(_ hide: Bool)
+}
+
+class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, ActivityItemCellProcotol {
 	
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: SDAnimatedImageView!
@@ -32,15 +36,14 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 	private static let sendTitleColor = UIColor.colorNamed("Txt10")
 	private static let receiveTitleColor = UIColor.colorNamed("TxtB6")
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
-	}
-	
 	func setup(data: TzKTTransactionGroup) {
 		if let tx = data.transactions.first {
 			setup(data: tx)
 		}
+	}
+	
+	func brieflyHideContainer(_ hide: Bool) {
+		containerView.isHidden = hide
 	}
 	
 	func setup(data: TzKTTransaction) {
@@ -56,7 +59,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 		if data.status == .unconfirmed {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
-			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -66,6 +68,20 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 			timeLabel.text = data.date?.timeAgoDisplay() ?? ""
 		}
 		
+		
+		// Gradient
+		if data.status == .unconfirmed {
+			containerView.gradientType = .tableViewCellUnconfirmed
+			
+		} else if data.status == .failed || data.status == .backtracked {
+			containerView.gradientType = .tableViewCellFailed
+			
+		} else {
+			containerView.gradientType = .tableViewCell
+		}
+		
+		
+		// Content
 		if data.subType == .contractCall {
 			// Icon and title
 			iconView.image = UIImage(named: "CallKnockOut")
@@ -212,10 +228,6 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading {
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
-		}
-		
-		if failed {
-			containerView.gradientType = .tableViewCellFailed
 		}
 	}
 	

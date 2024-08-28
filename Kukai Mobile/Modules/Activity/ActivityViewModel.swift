@@ -28,7 +28,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private var bag = [AnyCancellable]()
 	private var selectedWalletAddress = DependencyManager.shared.selectedWalletAddress
-	
+	private weak var tableViewRef: UITableView? = nil
 	
 	
 	// MARK: - Init
@@ -39,12 +39,9 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		DependencyManager.shared.$addressLoaded
 			.dropFirst()
 			.sink { [weak self] address in
-				if DependencyManager.shared.selectedWalletAddress == address {
+				if DependencyManager.shared.selectedWalletAddress == address, self?.isVisible == true {
 					self?.forceRefresh = true
-					
-					if self?.isVisible == true {
-						self?.refresh(animate: true)
-					}
+					self?.refresh(animate: true)
 				}
 			}.store(in: &bag)
 		
@@ -53,7 +50,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			.sink { [weak self] address in
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
-					self?.forceRefresh = true
+					self?.forceRefresh = false
 					self?.refresh(animate: true)
 				}
 			}.store(in: &bag)
@@ -72,6 +69,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tableView.register(UINib(nibName: "ActivityItemContractCell", bundle: nil), forCellReuseIdentifier: "ActivityItemContractCell")
 		tableView.register(UINib(nibName: "ActivityItemBatchCell", bundle: nil), forCellReuseIdentifier: "ActivityItemBatchCell")
 		tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
+		tableViewRef = tableView
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			guard let self = self else { return UITableViewCell() }
@@ -202,13 +200,40 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			currentSnapshot.appendItems(array, toSection: index)
 		}
 		
+		
 		// Load
 		if forceRefresh {
+			brieflyHideCells(true)
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
 			self.forceRefresh = false
+			brieflyHideCells(false)
 			
 		} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
+		}
+	}
+	
+	/**
+	 horrifcly hacky/ugly workaround. During a force refresh only, for some reason if there is a failed gradient on the screen, it will breifly flick to another random cell anc back
+	 prepareForReuse, layout subviews, layout sublayers, cellWillDisplay, deinit, awkeFromNib, etc, all can't see to fix it. Tried adding a "clear" function to gradient view but it doesn't work either
+	 implemented this horrifc hack to hide the cells and show them again just long enough for the flicker to be missed.
+	 looks mildly better since its a full unanimated reload anyway
+	 */
+	private func brieflyHideCells(_ hide: Bool) {
+		if hide {
+			tableViewRef?.visibleCells.forEach({ cell in
+				if let c = cell as? ActivityItemCellProcotol {
+					c.brieflyHideContainer(hide)
+				}
+			})
+		} else {
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+				self?.tableViewRef?.visibleCells.forEach({ cell in
+					if let c = cell as? ActivityItemCellProcotol {
+						c.brieflyHideContainer(hide)
+					}
+				})
+			}
 		}
 	}
 	
