@@ -58,7 +58,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
 		var options: [[AnyHashable]] = []
 		
-		if CurrentDevice.biometricTypeAuthorized() != .unavailable && (StorageService.wasBiometricsAccessibleDuringOnboarding() || StorageService.isBiometricEnabled()) {
+		if CurrentDevice.biometricTypeAuthorized() != .unavailable {
 			let biometricType = CurrentDevice.biometricTypeSupported()
 			let title = biometricType == .faceID ? "Face ID" : "Touch ID"
 			let image = biometricType == .faceID ? UIImage(systemName: "faceid") : UIImage(systemName: "touchid")
