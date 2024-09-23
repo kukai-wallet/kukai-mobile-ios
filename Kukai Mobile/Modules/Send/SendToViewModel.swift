@@ -64,9 +64,6 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setup(obj)
 				return cell
 				
-			} else if let _ = item as? CustomSeperatorData {
-				return tableView.dequeueReusableCell(withIdentifier: "custom-seperator", for: indexPath)
-				
 			} else {
 				return UITableViewCell()
 			}
@@ -150,12 +147,7 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private func handleGroupedData(metadataArray: [WalletMetadata], walletImage: UIImage, sections: inout [Int], sectionData: inout [[AnyHashable]]) {
 		for (index, metadata) in metadataArray.enumerated() {
 			sections.append(sections.count)
-			
-			if metadata.type == .ledger {
-				sectionData.append([CustomSeperatorData(), SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil)])
-			} else {
-				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil)])
-			}
+			sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil)])
 			
 			let isSectionExpanded = (expandedSection == sections.count-1)
 			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
@@ -166,10 +158,6 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				// If child should be visible
 				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
 					
-					// Check if child is a custom derivation path, as those get extra heading
-					if let customDerivation = childMetadata.customDerivationPath {
-						sectionData[sections.count-1].append(SendHeaderObj(icon: walletImage, title: "Custom Path", subheader: "(\(customDerivation))"))
-					}
 					let walletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
 					sectionData[sections.count-1].append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: childMetadata.address))
 				}
@@ -179,10 +167,6 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if metadata.children.count > 2 {
 				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
 				sectionData[sections.count-1].append(moreData)
-			}
-			
-			if metadata.type == .ledger && index == metadataArray.count-1 {
-				sectionData[sections.count-1].append(CustomSeperatorData())
 			}
 		}
 	}

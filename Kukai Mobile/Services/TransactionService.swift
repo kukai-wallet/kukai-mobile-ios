@@ -347,27 +347,32 @@ public class TransactionService {
 		let currentNetwork = DependencyManager.shared.currentNetworkType
 		
 		if metadata.type != .social {
-			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
+			var image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
 			var title = ""
 			var subtitle: String? = ""
+			
+			let subAddresss = metadata.address.truncateTezosAddress()
+			let subDerivation = "(\(metadata.derivationPath ?? "0"))"
+			let subAddressDerivation = subAddresss + " " + subDerivation.replacingOccurrences(of: "m/44'/", with: "")
 			
 			if metadata.hasDomain(onNetwork: currentNetwork) {
 				
 				// check for tezos domains first
-				let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
+				image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
+				title = metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? ""
+				subtitle = metadata.type != .ledger ? subAddresss : subAddressDerivation
 				
 			} else if let nickname = metadata.walletNickname {
 				
 				// If no domains, check for nicknames
 				title = nickname
-				subtitle =  metadata.address.truncateTezosAddress()
+				subtitle = metadata.type != .ledger ? subAddresss : subAddressDerivation
 				
 			} else {
 				
 				// Use address
-				title =  metadata.address.truncateTezosAddress()
-				subtitle = nil
+				title = metadata.address.truncateTezosAddress()
+				subtitle = metadata.type != .ledger ? nil : "(\(metadata.derivationPath ?? "0"))"
 			}
 			
 			return (image: image, title: title, subtitle: subtitle)

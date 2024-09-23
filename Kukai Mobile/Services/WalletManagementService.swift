@@ -19,7 +19,7 @@ class WalletManagementService {
 		let walletCache = WalletCacheService()
 		
 		do {
-			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: backedUp, customDerivationPath: customDerivationPath)
+			try walletCache.cache(wallet: wallet, childOfIndex: forChildOfIndex, backedUp: backedUp)
 			
 			DependencyManager.shared.walletList = walletCache.readMetadataFromDiskAndDecrypt()
 			if wallet.type == .social, let tWallet = wallet as? TorusWallet {

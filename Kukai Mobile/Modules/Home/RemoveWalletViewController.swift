@@ -85,19 +85,7 @@ class RemoveWalletViewController: UIViewController {
 			}
 			
 		} else {
-			// Ledger custom path has a unique flow where the index can't be passed in, have to find it by searching
-			var parentIndex = selectedWalletParentIndex
-			if metadata.customDerivationPath != nil {
-				for (index, ledgerWallet) in DependencyManager.shared.walletList.ledgerWallets.enumerated() {
-					for child in ledgerWallet.children {
-						if child.address == metadata.address {
-							parentIndex = index
-						}
-					}
-				}
-			}
-			
-			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: parentIndex) {
+			if RemoveWalletViewController.deleteCaches(forAddress: metadata.address, parentIndex: selectedWalletParentIndex) {
 				DependencyManager.shared.walletDeleted = true
 				self.dismiss(animated: true)
 			} else {

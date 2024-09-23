@@ -17,7 +17,6 @@ protocol AccountsViewModelDelegate: UIViewController {
 struct AccountsHeaderObject: Hashable {
 	let id = UUID()
 	let header: String
-	let subheader: String?
 	let menu: MenuViewController?
 	let showLess: Bool
 }
@@ -27,10 +26,6 @@ struct AccountsMoreObject: Hashable {
 	let count: Int
 	let isExpanded: Bool
 	let hdWalletIndex: Int
-}
-
-struct CustomSeperatorData: Hashable {
-	let id = UUID()
 }
 
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
@@ -87,17 +82,11 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let obj = item as? AccountsHeaderObject, obj.subheader == nil, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
 				cell.checkImage?.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
 				
-				return cell
-				
-			} else if let obj = item as? AccountsHeaderObject, obj.subheader != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell_subheading", for: indexPath) as? AccountsSectionHeaderCell {
-				cell.headingLabel.text = obj.header
-				cell.subHeadingLabel?.text = obj.subheader
-				cell.setup(menuVC: obj.menu)
 				return cell
 				
 			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
@@ -117,9 +106,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
 				cell.setup(obj)
 				return cell
-				
-			} else if let _ = item as? CustomSeperatorData {
-				return tableView.dequeueReusableCell(withIdentifier: "custom-seperator", for: indexPath)
 				
 			} else {
 				return UITableViewCell()
@@ -159,7 +145,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Social Wallets", subheader: nil, menu: nil, showLess: false)])
+			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false)])
 		}
 		for (index, metadata) in wallets.socialWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -175,7 +161,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Linear
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", subheader: nil, menu: nil, showLess: false)])
+			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false)])
 		}
 		for (index, metadata) in wallets.linearWallets.enumerated() {
 			sectionData[sections.count-1].append(metadata)
@@ -192,7 +178,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if !isPresentingForConnectedApps {
 			if wallets.watchWallets.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", subheader: nil, menu: nil, showLess: false)])
+				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false)])
 			}
 			for (index, metadata) in wallets.watchWallets.enumerated() {
 				sectionData[sections.count-1].append(metadata)
@@ -248,11 +234,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				if metadata.type == .ledger {
-					sectionData.append([CustomSeperatorData(), AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", subheader: nil, menu: menu, showLess: false)])
-				} else {
-					sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", subheader: nil, menu: menu, showLess: false)])
-				}
+				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
 			}
 			
 			let isSectionExpanded = (expandedSection == sections.count-1)
@@ -262,11 +244,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				// If child should be visible
 				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
-					
-					// Check if child is a custom derivation path, as those get extra heading
-					if let customDerivation = childMetadata.customDerivationPath, let menu = menuFor(walletMetadata: childMetadata, hdWalletIndex: index) {
-						sectionData[sections.count-1].append(AccountsHeaderObject(header: "Custom Path", subheader: "(\(customDerivation))", menu: menu, showLess: false))
-					}
 					sectionData[sections.count-1].append(childMetadata)
 				}
 				
@@ -291,10 +268,6 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if metadata.children.count > 2 {
 				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
 				sectionData[sections.count-1].append(moreData)
-			}
-			
-			if metadata.type == .ledger && index == metadataArray.count-1 {
-				sectionData[sections.count-1].append(CustomSeperatorData())
 			}
 		}
 	}
@@ -425,19 +398,13 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Add different options depending on type of wallet
-		var options: [[UIAction]] = [[edit]]
-		if walletMetadata.customDerivationPath == nil {
-			options[0].append(addAccount)
-		}
-		
-		if walletMetadata.type == .ledger && walletMetadata.customDerivationPath == nil {
+		var options: [[UIAction]] = [[edit, addAccount]]
+		if walletMetadata.type == .ledger {
 			options[0].append(customPath)
 		}
 		
 		options[0].append(remove)
-		
-		let header = walletMetadata.hdWalletGroupName ?? "Custom Path: \(walletMetadata.customDerivationPath ?? "")"
-		return MenuViewController(actions: options, header: header, alertStyleIndexes: [IndexPath(row: options[0].count-1, section: 0)], sourceViewController: vc)
+		return MenuViewController(actions: options, header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: options[0].count-1, section: 0)], sourceViewController: vc)
 	}
 	
 	func pullToRefresh(animate: Bool) {
