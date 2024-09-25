@@ -162,7 +162,7 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				return
 			}
 			
-			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false, customDerivationPath: customPath) { errorString in
+			WalletManagementService.cacheNew(wallet: newChild, forChildOfIndex: walletIndex, backedUp: false, markSelected: false) { errorString in
 				if let eString = errorString {
 					DispatchQueue.main.async { completion("error".localized(), eString) }
 				} else {
