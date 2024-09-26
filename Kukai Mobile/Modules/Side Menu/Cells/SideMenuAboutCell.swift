@@ -44,7 +44,7 @@ class SideMenuAboutCell: UITableViewCell {
 	}
 	
 	@IBAction func discordButtonTapped(_ sender: Any) {
-		guard let native = URL(string: "discord://WVzf46Uaer"), let web = URL(string: "https://discord.gg/WVzf46Uaer") else {
+		guard let native = URL(string: "discord://R454ym4M"), let web = URL(string: "https://discord.gg/R454ym4M") else {
 			return
 		}
 		
