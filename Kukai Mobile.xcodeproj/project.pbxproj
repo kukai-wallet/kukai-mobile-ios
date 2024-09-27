@@ -178,6 +178,7 @@
 		C05B0A372A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B0A352A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.swift */; };
 		C05B0A382A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C05B0A362A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.xib */; };
 		C05D4E0C287D769000E7ED17 /* WalletConnectRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05D4E0B287D769000E7ED17 /* WalletConnectRequestParams.swift */; };
+		C063435A2CA6B7DB001CD5F2 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = C06343592CA6B7DB001CD5F2 /* WalletConnect */; };
 		C0638AAC2B9B2A22009AA870 /* JailbreakWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0638AAB2B9B2A22009AA870 /* JailbreakWarningViewController.swift */; };
 		C064D4D32B87B13E008F5947 /* SideMenuLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064D4D22B87B13E008F5947 /* SideMenuLookupViewController.swift */; };
 		C0657AD026B2CB6F009ED7D3 /* UITextField+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0657ACF26B2CB6F009ED7D3 /* UITextField+extensions.swift */; };
@@ -198,7 +199,6 @@
 		C06C08C92A7D31E400625375 /* EnvironmentVariables.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06C08C82A7D31E400625375 /* EnvironmentVariables.swift */; };
 		C06C529B29FC00C30073A2FE /* RenameWalletGroupdViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06C529A29FC00C30073A2FE /* RenameWalletGroupdViewController.swift */; };
 		C06C529D29FC09EF0073A2FE /* RemoveWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06C529C29FC09EF0073A2FE /* RemoveWalletViewController.swift */; };
-		C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = C06E0D5C287C365F007A580B /* WalletConnect */; };
 		C06E0D5F287C3E02007A580B /* WalletConnectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D5E287C3E02007A580B /* WalletConnectViewController.swift */; };
 		C06E0D61287C3E28007A580B /* WalletConnectViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D60287C3E28007A580B /* WalletConnectViewModel.swift */; };
 		C06E0D63287C3E50007A580B /* WalletConnectPairViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06E0D62287C3E50007A580B /* WalletConnectPairViewController.swift */; };
@@ -837,11 +837,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C063435A2CA6B7DB001CD5F2 /* WalletConnect in Frameworks */,
 				C07A2DF02AEA76BF00550E32 /* Starscream in Frameworks */,
 				C0CB9C212A4C512C000E12FA /* KeychainSwift in Frameworks */,
 				C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */,
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
-				C06E0D5D287C365F007A580B /* WalletConnect in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
 			);
@@ -1683,10 +1683,10 @@
 			packageProductDependencies = (
 				C0BBD2A426A9A7980097B63A /* Sentry */,
 				C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */,
-				C06E0D5C287C365F007A580B /* WalletConnect */,
 				C055EF202A2F95ED0031CB5F /* QRCode */,
 				C0CB9C202A4C512C000E12FA /* KeychainSwift */,
 				C07A2DEF2AEA76BF00550E32 /* Starscream */,
+				C06343592CA6B7DB001CD5F2 /* WalletConnect */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -1763,10 +1763,10 @@
 			packageReferences = (
 				C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */,
 				C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */,
-				C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
 				C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */,
 				C0CB9C1F2A4C512C000E12FA /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				C07A2DEE2AEA76BF00550E32 /* XCRemoteSwiftPackageReference "Starscream" */,
+				C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -2799,20 +2799,20 @@
 				minimumVersion = 14.3.1;
 			};
 		};
-		C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/WalletConnect/WalletConnectSwiftV2";
-			requirement = {
-				kind = exactVersion;
-				version = 1.19.4;
-			};
-		};
 		C07A2DEE2AEA76BF00550E32 /* XCRemoteSwiftPackageReference "Starscream" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/daltoniam/Starscream";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.1.2;
+			};
+		};
+		C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simonmcl/WalletConnectSwiftV2";
+			requirement = {
+				branch = "1.19.3-with-manifest";
+				kind = branch;
 			};
 		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -2844,9 +2844,9 @@
 			package = C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */;
 			productName = QRCode;
 		};
-		C06E0D5C287C365F007A580B /* WalletConnect */ = {
+		C06343592CA6B7DB001CD5F2 /* WalletConnect */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C06E0D5B287C365F007A580B /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
+			package = C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
 			productName = WalletConnect;
 		};
 		C07A2DEF2AEA76BF00550E32 /* Starscream */ = {
