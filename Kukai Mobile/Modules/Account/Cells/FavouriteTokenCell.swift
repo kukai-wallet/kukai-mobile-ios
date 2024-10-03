@@ -16,13 +16,13 @@ class FavouriteTokenCell: UITableViewCell, UITableViewCellImageDownloading {
 	@IBOutlet weak var symbolLabel: UILabel!
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var lockContainer: UIStackView!
-	@IBOutlet weak var containerView: GradientView!
+	@IBOutlet weak var containerView: UIView!
 	
 	private var myReorderImage: UIImage? = nil
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
+		GradientView.add(toView: self, withType: .tableViewCell)
 	}
 	
 	func setup(isFav: Bool, isLocked: Bool) {
