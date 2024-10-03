@@ -50,6 +50,7 @@ class SideMenuViewController: UIViewController {
 		
 		scanButton.configuration?.imagePlacement = .trailing
 		scanButton.configuration?.imagePadding = 6
+		scanButton.isEnabled = (DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true)
 		
 		// Setup data
 		viewModel.makeDataSource(withTableView: tableView)
