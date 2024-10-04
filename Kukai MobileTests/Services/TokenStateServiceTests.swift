@@ -42,16 +42,16 @@ class TokenStateServiceTests: XCTestCase {
 		let index4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
 		let index5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
 		
-		XCTAssert(index1 == 1, index1.description)
-		XCTAssert(index2 == 2, index2.description)
-		XCTAssert(index3 == 3, index3.description)
-		XCTAssert(index4 == 4, index4.description)
-		XCTAssert(index5 == 5, index5.description)
+		XCTAssert(index1 == 0, index1.description)
+		XCTAssert(index2 == 1, index2.description)
+		XCTAssert(index3 == 2, index3.description)
+		XCTAssert(index4 == 3, index4.description)
+		XCTAssert(index5 == 4, index5.description)
 		
 		
 		
 		// Test move bottom to top
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token5, toIndex: 1)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token5, toIndex: 0)
 		
 		let moveIndex0_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex0_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
@@ -59,16 +59,16 @@ class TokenStateServiceTests: XCTestCase {
 		let moveIndex0_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
 		let moveIndex0_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
 		
-		XCTAssert(moveIndex0_1 == 2, moveIndex0_1.description)
-		XCTAssert(moveIndex0_2 == 3, moveIndex0_2.description)
-		XCTAssert(moveIndex0_3 == 4, moveIndex0_3.description)
-		XCTAssert(moveIndex0_4 == 5, moveIndex0_4.description)
-		XCTAssert(moveIndex0_5 == 1, moveIndex0_5.description)
+		XCTAssert(moveIndex0_1 == 1, moveIndex0_1.description)
+		XCTAssert(moveIndex0_2 == 2, moveIndex0_2.description)
+		XCTAssert(moveIndex0_3 == 3, moveIndex0_3.description)
+		XCTAssert(moveIndex0_4 == 4, moveIndex0_4.description)
+		XCTAssert(moveIndex0_5 == 0, moveIndex0_5.description)
 		
 		
 		
 		// Test move bottom to top again
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token4, toIndex: 1)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token4, toIndex: 0)
 		
 		let moveIndex1_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex1_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
@@ -76,16 +76,16 @@ class TokenStateServiceTests: XCTestCase {
 		let moveIndex1_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
 		let moveIndex1_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
 		
-		XCTAssert(moveIndex1_1 == 3, moveIndex1_1.description)
-		XCTAssert(moveIndex1_2 == 4, moveIndex1_2.description)
-		XCTAssert(moveIndex1_3 == 5, moveIndex1_3.description)
-		XCTAssert(moveIndex1_4 == 1, moveIndex1_4.description)
-		XCTAssert(moveIndex1_5 == 2, moveIndex1_5.description)
+		XCTAssert(moveIndex1_1 == 2, moveIndex1_1.description)
+		XCTAssert(moveIndex1_2 == 3, moveIndex1_2.description)
+		XCTAssert(moveIndex1_3 == 4, moveIndex1_3.description)
+		XCTAssert(moveIndex1_4 == 0, moveIndex1_4.description)
+		XCTAssert(moveIndex1_5 == 1, moveIndex1_5.description)
 		
 		
 		
 		// Test move bottom to bottom
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token4, toIndex: 6)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token4, toIndex: 4)
 		
 		let moveIndex2_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex2_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
@@ -93,16 +93,16 @@ class TokenStateServiceTests: XCTestCase {
 		let moveIndex2_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
 		let moveIndex2_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
 		
-		XCTAssert(moveIndex2_1 == 2, moveIndex2_1.description)
-		XCTAssert(moveIndex2_2 == 3, moveIndex2_2.description)
-		XCTAssert(moveIndex2_3 == 4, moveIndex2_3.description)
-		XCTAssert(moveIndex2_4 == 5, moveIndex2_4.description)
-		XCTAssert(moveIndex2_5 == 1, moveIndex2_5.description)
+		XCTAssert(moveIndex2_1 == 1, moveIndex2_1.description)
+		XCTAssert(moveIndex2_2 == 2, moveIndex2_2.description)
+		XCTAssert(moveIndex2_3 == 3, moveIndex2_3.description)
+		XCTAssert(moveIndex2_4 == 4, moveIndex2_4.description)
+		XCTAssert(moveIndex2_5 == 0, moveIndex2_5.description)
 		
 		
 		
 		// Test move bottom to bottom again
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token5, toIndex: 6)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token5, toIndex: 4)
 		
 		let moveIndex3_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex3_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
@@ -110,11 +110,45 @@ class TokenStateServiceTests: XCTestCase {
 		let moveIndex3_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
 		let moveIndex3_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
 		
-		XCTAssert(moveIndex3_1 == 1, moveIndex3_1.description)
-		XCTAssert(moveIndex3_2 == 2, moveIndex3_2.description)
-		XCTAssert(moveIndex3_3 == 3, moveIndex3_3.description)
-		XCTAssert(moveIndex3_4 == 4, moveIndex3_4.description)
-		XCTAssert(moveIndex3_5 == 5, moveIndex3_5.description)
+		XCTAssert(moveIndex3_1 == 0, moveIndex3_1.description)
+		XCTAssert(moveIndex3_2 == 1, moveIndex3_2.description)
+		XCTAssert(moveIndex3_3 == 2, moveIndex3_3.description)
+		XCTAssert(moveIndex3_4 == 3, moveIndex3_4.description)
+		XCTAssert(moveIndex3_5 == 4, moveIndex3_5.description)
+		
+		
+		// Test move small move
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 1)
+		
+		let moveIndex4_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
+		let moveIndex4_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
+		let moveIndex4_3 = TokenStateService.shared.isFavourite(forAddress: address, token: token3) ?? -1
+		let moveIndex4_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
+		let moveIndex4_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
+		
+		XCTAssert(moveIndex4_1 == 1, moveIndex4_1.description)
+		XCTAssert(moveIndex4_2 == 0, moveIndex4_2.description)
+		XCTAssert(moveIndex4_3 == 2, moveIndex4_3.description)
+		XCTAssert(moveIndex4_4 == 3, moveIndex4_4.description)
+		XCTAssert(moveIndex4_5 == 4, moveIndex4_5.description)
+		
+		
+		
+		// Reset test move medium move
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 0)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 2)
+		
+		let moveIndex5_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
+		let moveIndex5_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
+		let moveIndex5_3 = TokenStateService.shared.isFavourite(forAddress: address, token: token3) ?? -1
+		let moveIndex5_4 = TokenStateService.shared.isFavourite(forAddress: address, token: token4) ?? -1
+		let moveIndex5_5 = TokenStateService.shared.isFavourite(forAddress: address, token: token5) ?? -1
+		
+		XCTAssert(moveIndex5_1 == 2, moveIndex5_1.description)
+		XCTAssert(moveIndex5_2 == 0, moveIndex5_2.description)
+		XCTAssert(moveIndex5_3 == 1, moveIndex5_3.description)
+		XCTAssert(moveIndex5_4 == 3, moveIndex5_4.description)
+		XCTAssert(moveIndex5_5 == 4, moveIndex5_5.description)
 		
 		
 		
@@ -136,52 +170,52 @@ class TokenStateServiceTests: XCTestCase {
 		let index1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let index2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(index1 == 1, index1.description)
-		XCTAssert(index2 == 2, index2.description)
+		XCTAssert(index1 == 0, index1.description)
+		XCTAssert(index2 == 1, index2.description)
 		
 		
 		
 		// Test move bottom to top
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: 1)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: 0)
 		
 		let moveIndex0_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex0_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex0_1 == 2, moveIndex0_1.description)
-		XCTAssert(moveIndex0_2 == 1, moveIndex0_2.description)
+		XCTAssert(moveIndex0_1 == 1, moveIndex0_1.description)
+		XCTAssert(moveIndex0_2 == 0, moveIndex0_2.description)
 		
 		
 		
 		// Test move bottom to top again
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 1)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 0)
 		
 		let moveIndex1_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex1_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex1_1 == 1, moveIndex1_1.description)
-		XCTAssert(moveIndex1_2 == 2, moveIndex1_2.description)
+		XCTAssert(moveIndex1_1 == 0, moveIndex1_1.description)
+		XCTAssert(moveIndex1_2 == 1, moveIndex1_2.description)
 		
 		
 		
 		// Test move bottom to bottom
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 3)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token1, toIndex: 1)
 		
 		let moveIndex2_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex2_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex2_1 == 2, moveIndex2_1.description)
-		XCTAssert(moveIndex2_2 == 1, moveIndex2_2.description)
+		XCTAssert(moveIndex2_1 == 1, moveIndex2_1.description)
+		XCTAssert(moveIndex2_2 == 0, moveIndex2_2.description)
 		
 		
 		
 		// Test move bottom to bottom again
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: 3)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: 1)
 		
 		let moveIndex3_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex3_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex3_1 == 1, moveIndex3_1.description)
-		XCTAssert(moveIndex3_2 == 2, moveIndex3_2.description)
+		XCTAssert(moveIndex3_1 == 0, moveIndex3_1.description)
+		XCTAssert(moveIndex3_2 == 1, moveIndex3_2.description)
 		
 		
 		
@@ -203,19 +237,19 @@ class TokenStateServiceTests: XCTestCase {
 		let index1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let index2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(index1 == 1, index1.description)
-		XCTAssert(index2 == 2, index2.description)
+		XCTAssert(index1 == 0, index1.description)
+		XCTAssert(index2 == 1, index2.description)
 		
 		
 		
 		// Test move too far forward, shouldn't move due to error
-		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: 0)
+		let _ = TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token2, toIndex: -1)
 		
 		let moveIndex0_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex0_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex0_1 == 1, moveIndex0_1.description)
-		XCTAssert(moveIndex0_2 == 2, moveIndex0_2.description)
+		XCTAssert(moveIndex0_1 == 0, moveIndex0_1.description)
+		XCTAssert(moveIndex0_2 == 1, moveIndex0_2.description)
 		
 		
 		
@@ -225,8 +259,8 @@ class TokenStateServiceTests: XCTestCase {
 		let moveIndex2_1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let moveIndex2_2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(moveIndex2_1 == 1, moveIndex2_1.description)
-		XCTAssert(moveIndex2_2 == 2, moveIndex2_2.description)
+		XCTAssert(moveIndex2_1 == 0, moveIndex2_1.description)
+		XCTAssert(moveIndex2_2 == 1, moveIndex2_2.description)
 		
 		
 		
@@ -247,8 +281,8 @@ class TokenStateServiceTests: XCTestCase {
 		let index1 = TokenStateService.shared.isFavourite(forAddress: address, token: token1) ?? -1
 		let index2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
-		XCTAssert(index1 == 1, index1.description)
-		XCTAssert(index2 == 2, index2.description)
+		XCTAssert(index1 == 0, index1.description)
+		XCTAssert(index2 == 1, index2.description)
 		
 		
 		// Test remove
@@ -258,7 +292,7 @@ class TokenStateServiceTests: XCTestCase {
 		let removeindex2 = TokenStateService.shared.isFavourite(forAddress: address, token: token2) ?? -1
 		
 		XCTAssert(removeindex1 == -1, removeindex1.description)
-		XCTAssert(removeindex2 == 1, removeindex2.description)
+		XCTAssert(removeindex2 == 0, removeindex2.description)
 		
 		
 		

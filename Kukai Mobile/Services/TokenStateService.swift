@@ -76,7 +76,7 @@ public class TokenStateService {
 		if isFavourite(forAddress: address, token: token) == nil {
 			let count = favouriteBalances[address]?.count ?? 0
 			addBlankFavouriteBalanceIfNeeded(forAddress: address)
-			favouriteBalances[address]?[balanceId(from: token)] = count + 1
+			favouriteBalances[address]?[balanceId(from: token)] = count
 			return writeFavouriteBalances()
 		}
 		
@@ -87,7 +87,7 @@ public class TokenStateService {
 		if isFavourite(forAddress: address, nft: nft) == nil {
 			let count = favouriteCollectibles[address]?.count ?? 0
 			addBlankFavouriteCollectibleIfNeeded(forAddress: address)
-			favouriteCollectibles[address]?[nftId(from: nft)] = count + 1
+			favouriteCollectibles[address]?[nftId(from: nft)] = count
 			return writeFavouriteCollectibles()
 		}
 		
@@ -138,8 +138,6 @@ public class TokenStateService {
 	
 	public func removeFavourite(forAddress address: String, token: Token) -> Bool {
 		let balanceId = balanceId(from: token)
-		let currentSortIndex = favouriteBalances[address]?[balanceId] ?? -1
-		
 		favouriteBalances[address]?.removeValue(forKey: balanceId)
 		recomputeSortOrder(inDict: &favouriteBalances, withAddress: address, andMove: nil)
 		
@@ -148,8 +146,6 @@ public class TokenStateService {
 	
 	public func removeFavourite(forAddress address: String, nft: NFT) -> Bool {
 		let balanceId = nftId(from: nft)
-		let currentSortIndex = favouriteCollectibles[address]?[balanceId] ?? -1
-		
 		favouriteCollectibles[address]?.removeValue(forKey: nftId(from: nft))
 		recomputeSortOrder(inDict: &favouriteCollectibles, withAddress: address, andMove: nil)
 		
@@ -210,13 +206,16 @@ public class TokenStateService {
 		}
 		
 		if let moveItem = optionalMove {
-			guard moveItem.to > 0, moveItem.to <= sortedArray.count+1, moveItem.from >= 0, moveItem.from <= sortedArray.count else { return }
+			guard moveItem.to >= 0, moveItem.to < sortedArray.count, moveItem.from >= 0, moveItem.from < sortedArray.count else {
+				return
+			}
 			
-			sortedArray.move(fromOffsets: IndexSet([moveItem.from-1]), toOffset: moveItem.to-1)
+			let oldOtem = sortedArray.remove(at: moveItem.from)
+			sortedArray.insert(oldOtem, at: moveItem.to)
 		}
 		
 		for (index, item) in sortedArray.enumerated() {
-			tempDict[item.key] = index + 1
+			tempDict[item.key] = index
 		}
 		
 		dict[address] = tempDict
