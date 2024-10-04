@@ -117,7 +117,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			if let amount = item as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "XTZ"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setup(isFav: true, isLocked: true)
@@ -131,8 +130,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				}
 				
 			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-				
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				cell.setup(isFav: obj.isFavourite, isLocked: false)
@@ -195,7 +192,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		return tokensToDisplay[atIndexPath.row]
+		return tokensToDisplay[atIndexPath.section-1]
 	}
 	
 	func handleTap(onTableView: UITableView, atIndexPath: IndexPath) {

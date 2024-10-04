@@ -146,7 +146,7 @@ public class TokenStateService {
 	
 	public func removeFavourite(forAddress address: String, nft: NFT) -> Bool {
 		let balanceId = nftId(from: nft)
-		favouriteCollectibles[address]?.removeValue(forKey: nftId(from: nft))
+		favouriteCollectibles[address]?.removeValue(forKey: balanceId)
 		recomputeSortOrder(inDict: &favouriteCollectibles, withAddress: address, andMove: nil)
 		
 		return writeFavouriteCollectibles()
