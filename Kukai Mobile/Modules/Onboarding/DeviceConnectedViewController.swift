@@ -37,15 +37,20 @@ class DeviceConnectedViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
-		self.navigationItem.hidesBackButton = true
-		self.navigationItem.backButtonDisplayMode = .minimal
-		
 		spinnerImage.rotate360Degrees()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		checkConnected()
+	}
+	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		if self.isMovingFromParent {
+			LedgerService.shared.disconnectFromDevice()
+		}
 	}
 	
 	@IBAction func actionButtonTapped(_ sender: Any) {
@@ -146,6 +151,7 @@ class DeviceConnectedViewController: UIViewController {
 	}
 	
 	private func navigate() {
+		LedgerService.shared.disconnectFromDevice()
 		let viewController = self.navigationController?.viewControllers.filter({ $0 is AccountsViewController }).first
 		if let vc = viewController {
 			self.navigationController?.popToViewController(vc, animated: true)

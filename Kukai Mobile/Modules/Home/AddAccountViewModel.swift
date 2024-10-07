@@ -152,7 +152,21 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		let newDerivationPath = customPath ?? HD.defaultDerivationPath(withAccountIndex: walletMetadata.children.count+1) // TODO: likely needs some logic to grab the last derivation path and +1. Will need to consider
+		let lastChildDerivationPath = walletMetadata.children.last?.derivationPath
+		let lastPathComponents = lastChildDerivationPath?.components(separatedBy: "/") ?? []
+		var lastAccountIndex: Int? = nil
+		if lastPathComponents.count > 3 {
+			var sanitisedAccountIndex = lastPathComponents[3]
+			sanitisedAccountIndex = sanitisedAccountIndex.replacingOccurrences(of: "\'", with: "")
+			lastAccountIndex = Int(sanitisedAccountIndex)
+		}
+		
+		guard let previousAccountIndex = lastAccountIndex else {
+			DispatchQueue.main.async { completion("error".localized(), "error-ledger-add-new-path".localized()) }
+			return
+		}
+		
+		let newDerivationPath = customPath ?? HD.defaultDerivationPath(withAccountIndex: previousAccountIndex+1)
 		Task {
 			let response = await LedgerService.shared.getAddress(forDerivationPath: newDerivationPath, verify: false)
 			

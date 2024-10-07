@@ -27,6 +27,12 @@ class AddCustomPathViewController: UIViewController, ValidatorTextFieldDelegate 
 		continueButton.isEnabled = false
     }
 	
+	override func viewWillDisappear(_ animated: Bool) {
+		super.viewWillDisappear(animated)
+		
+		LedgerService.shared.disconnectFromDevice()
+	}
+	
 	@IBAction func continueTapped(_ sender: Any) {
 		let sanitisedText = DerivationPathValidator.mobileKeyboardTextConvertor(text: textfield.text ?? "")
 		let index = DependencyManager.shared.walletList.ledgerWallets.firstIndex { listMeta in

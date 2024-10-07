@@ -158,44 +158,44 @@ class WalletManagementService {
             var usedAccounts: [LedgerWallet] = []
             
             // Level 4
-            usedAccounts.append(contentsOf: await scanPath("44'/1729'/*'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
+            usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/*'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
             progress?(usedAccounts.count)
-            usedAccounts.append(contentsOf: await scanPath("44'/1729'/0'/*'", startIndex: 1, allowedGap: 5, uuid: uuid))
+            usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/0'/*'", startIndex: 1, allowedGap: 5, uuid: uuid))
             progress?(usedAccounts.count)
             
             // Level 5
-            let acc_0_0_0 = await scanPath("44'/1729'/0'/0'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
+            let acc_0_0_0 = await scanPath("m/44'/1729'/0'/0'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
             if acc_0_0_0.count > 0 {
                 usedAccounts.append(contentsOf: acc_0_0_0)
                 progress?(usedAccounts.count)
-                usedAccounts.append(contentsOf: await scanPath("44'/1729'/*'/0'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
+                usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/*'/0'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
                 progress?(usedAccounts.count)
-                usedAccounts.append(contentsOf: await scanPath("44'/1729'/0'/*'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
+                usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/0'/*'/0'", startIndex: 1, allowedGap: 5, uuid: uuid))
                 progress?(usedAccounts.count)
-                usedAccounts.append(contentsOf: await scanPath("44'/1729'/0'/0'/*'", startIndex: 1, allowedGap: 5, uuid: uuid))
+                usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/0'/0'/*'", startIndex: 1, allowedGap: 5, uuid: uuid))
                 progress?(usedAccounts.count)
                 
             } else {
-                let acc_1_0_0 = await scanPath("44'/1729'/1'/0'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
-                let acc_0_1_0 = await scanPath("44'/1729'/0'/1'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
-                let acc_0_0_1 = await scanPath("44'/1729'/0'/0'/1'", startIndex: 0, allowedGap: 0, uuid: uuid)
+                let acc_1_0_0 = await scanPath("m/44'/1729'/1'/0'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
+                let acc_0_1_0 = await scanPath("m/44'/1729'/0'/1'/0'", startIndex: 0, allowedGap: 0, uuid: uuid)
+                let acc_0_0_1 = await scanPath("m/44'/1729'/0'/0'/1'", startIndex: 0, allowedGap: 0, uuid: uuid)
                 
                 if acc_1_0_0.count > 0 {
                     usedAccounts.append(contentsOf: acc_1_0_0)
                     progress?(usedAccounts.count)
-                    usedAccounts.append(contentsOf: await scanPath("44'/1729'/*'/0'/0'", startIndex: 2, allowedGap: 5, uuid: uuid))
+                    usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/*'/0'/0'", startIndex: 2, allowedGap: 5, uuid: uuid))
                     progress?(usedAccounts.count)
                 }
                 if acc_0_1_0.count > 0 {
                     usedAccounts.append(contentsOf: acc_0_1_0)
                     progress?(usedAccounts.count)
-                    usedAccounts.append(contentsOf: await scanPath("44'/1729'/0'/*'/0'", startIndex: 2, allowedGap: 5, uuid: uuid))
+                    usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/0'/*'/0'", startIndex: 2, allowedGap: 5, uuid: uuid))
                     progress?(usedAccounts.count)
                 }
                 if acc_0_0_1.count > 0 {
                     usedAccounts.append(contentsOf: acc_0_0_1)
                     progress?(usedAccounts.count)
-                    usedAccounts.append(contentsOf: await scanPath("44'/1729'/0'/0'/*'", startIndex: 2, allowedGap: 5, uuid: uuid))
+                    usedAccounts.append(contentsOf: await scanPath("m/44'/1729'/0'/0'/*'", startIndex: 2, allowedGap: 5, uuid: uuid))
                     progress?(usedAccounts.count)
                 }
             }

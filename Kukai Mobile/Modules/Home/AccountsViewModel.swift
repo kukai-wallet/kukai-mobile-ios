@@ -365,10 +365,15 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			vc.showLoadingView()
 			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: walletMetadata) { success in
-				guard success else { return }
+				guard success else {
+					vc.hideLoadingView()
+					LedgerService.shared.disconnectFromDevice()
+					return
+				}
 				
 				AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
 					vc.hideLoadingView()
+					LedgerService.shared.disconnectFromDevice()
 					if let title = errorTitle, let message = errorMessage {
 						vc.windowError(withTitle: title, description: message)
 					} else {
@@ -452,13 +457,17 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			topMostVc = modal
 		}
 		
+		if let menu = topMostVc as? MenuViewController, let parent = menu.presentingViewController {
+			topMostVc = parent
+		}
+		
 		guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
 			rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
 			completion(false)
 			return
 		}
 		
-		topMostVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?", 
+		topMostVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?",
 						okText: "Connect",
 						okAction: { action in
 							connectLedger(rootVc: rootVc, uuid: wallet.ledgerUUID, completion: completion)

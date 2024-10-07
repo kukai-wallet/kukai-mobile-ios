@@ -40,6 +40,7 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		self.tableView.reloadData()
 		LedgerService.shared.listenForDevices()
 			.convertToResult()
 			.sink { [weak self] result in
@@ -60,6 +61,10 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		super.viewWillDisappear(animated)
 		
 		spinnerImage.stopRotate360Degrees()
+		
+		if self.isMovingFromParent {
+			LedgerService.shared.disconnectFromDevice()
+		}
 	}
 	
 	func animateTableViewIn() {
