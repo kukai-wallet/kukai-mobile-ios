@@ -107,11 +107,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		
 		
 		// Fees and amount view config
-		if selectedMetadata?.type != .ledger {
-			slideErrorStackView.isHidden = true
-		} else {
-			errorLabel.text = "On Ledger confirm, transaction will auto broadcast"
-		}
+		slideErrorStackView.isHidden = true
 		
 		slideButton.delegate = self
     }
