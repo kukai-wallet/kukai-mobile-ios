@@ -85,6 +85,18 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		}.store(in: &bag)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let meta = DependencyManager.shared.walletList.metadata(forAddress: accountToSign), meta.type == .ledger {
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
+				if !success {
+					self.dismiss(animated: true)
+				}
+			}
+		}
+	}
+	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		

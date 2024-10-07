@@ -63,6 +63,18 @@ class SendAbstractConfirmViewController: UIViewController {
 		}
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if let meta = selectedMetadata, meta.type == .ledger {
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
+				if !success {
+					self.dismissAndReturn(collapseOnly: true)
+				}
+			}
+		}
+	}
+	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
 		
