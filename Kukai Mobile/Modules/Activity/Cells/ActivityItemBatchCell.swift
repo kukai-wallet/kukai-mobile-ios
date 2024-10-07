@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemBatchCell: UITableViewCell {
+class ActivityItemBatchCell: UITableViewCell, ActivityItemCellProcotol {
 	
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var batchCountLabel: UILabel!
@@ -27,11 +27,6 @@ class ActivityItemBatchCell: UITableViewCell {
 	@IBAction func invisibleRIghtButton(_ sender: Any) {
 	}
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
-	}
-	
 	func setup(data: TzKTTransactionGroup) {
 		// Time or confirmed
 		let timeSinceNow = (data.transactions[0].date ?? Date()).timeIntervalSince(Date())
@@ -39,7 +34,6 @@ class ActivityItemBatchCell: UITableViewCell {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
 			chevronImage.isHidden = true
-			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.transactions[0].status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -52,11 +46,26 @@ class ActivityItemBatchCell: UITableViewCell {
 		}
 		
 		
+		// Gradient
+		if data.status == .unconfirmed {
+			containerView.gradientType = .tableViewCellUnconfirmed
+			
+		} else if data.status == .failed || data.status == .backtracked {
+			containerView.gradientType = .tableViewCellFailed
+			
+		} else {
+			containerView.gradientType = .tableViewCell
+		}
+		
 		
 		// Title and destination
 		batchCountLabel.text = "Batch (\(data.transactions.count)) - "
 		batchTypeLabel.text = batchString(from: data)
 		appNameLabel.text = data.transactions[0].target?.alias ?? data.transactions[0].target?.address.truncateTezosAddress()
+	}
+	
+	func brieflyHideContainer(_ hide: Bool) {
+		containerView.isHidden = hide
 	}
 	
 	
@@ -94,10 +103,6 @@ class ActivityItemBatchCell: UITableViewCell {
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
-		}
-		
-		if failed {
-			containerView.gradientType = .tableViewCellFailed
 		}
 	}
 	

@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class ActivityItemContractCell: UITableViewCell {
+class ActivityItemContractCell: UITableViewCell, ActivityItemCellProcotol {
 
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var entrypointLabel: UILabel!
@@ -20,18 +20,12 @@ class ActivityItemContractCell: UITableViewCell {
 	@IBOutlet weak var confirmedIcon: UIImageView!
 	@IBOutlet weak var timeLabel: UILabel!
 	
-	override func awakeFromNib() {
-		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
-	}
-	
 	func setup(data: TzKTTransaction) {
 		// Time or confirmed
 		let timeSinceNow = (data.date ?? Date()).timeIntervalSince(Date())
 		if data.status == .unconfirmed {
 			hasTime(true, failed: false)
 			timeLabel.text = "UNCONFIRMED"
-			containerView.gradientType = .tableViewCellUnconfirmed
 			
 		} else if timeSinceNow > -60 && data.status != .unconfirmed {
 			hasTime(false, failed: (data.status == .failed || data.status == .backtracked))
@@ -41,9 +35,24 @@ class ActivityItemContractCell: UITableViewCell {
 			timeLabel.text = data.date?.timeAgoDisplay() ?? ""
 		}
 		
+		// Gradient
+		if data.status == .unconfirmed {
+			containerView.gradientType = .tableViewCellUnconfirmed
+			
+		} else if data.status == .failed || data.status == .backtracked {
+			containerView.gradientType = .tableViewCellFailed
+			
+		} else {
+			containerView.gradientType = .tableViewCell
+		}
+		
 		// Title and destination
 		entrypointLabel.text = data.entrypointCalled ?? ""
 		destinationLabel.text = data.target?.address.truncateTezosAddress()
+	}
+	
+	func brieflyHideContainer(_ hide: Bool) {
+		containerView.isHidden = hide
 	}
 	
 	
@@ -81,10 +90,6 @@ class ActivityItemContractCell: UITableViewCell {
 			confirmedIcon.isHidden = true
 			failedLabel.isHidden = false
 			failedIcon.isHidden = false
-		}
-		
-		if failed {
-			containerView.gradientType = .tableViewCellFailed
 		}
 	}
 }

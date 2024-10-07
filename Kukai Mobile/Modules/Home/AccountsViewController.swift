@@ -77,6 +77,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 						let selectedIndex = self?.viewModel.selectedIndex ?? IndexPath(row: 0, section: 0)
 						let deadlineAdjustment: TimeInterval = (self?.bottomSheetContainer != nil) ? 0.1 : 0 // need an artifical delay within bottom sheets for some reason, else it doesn't work
 						
+						guard selectedIndex.section < (self?.tableView.numberOfSections ?? 0) else { return }
+								
 						// When displayed inside a bottom sheet, it can't get the correct frame until after its started rendering, resulting in it doing nothing
 						// need to add a slight delay so it picks up the correct sizing and then animates
 						DispatchQueue.main.asyncAfter(deadline: .now() + deadlineAdjustment) { [weak self] in
@@ -88,6 +90,8 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 						}
 						
 					} else if let newSubAccountIndex = self?.viewModel.newAddressIndexPath {
+						guard newSubAccountIndex.section < (self?.tableView.numberOfSections ?? 0) else { return }
+						
 						if newSubAccountIndex.row >= (self?.tableView.numberOfRows(inSection: newSubAccountIndex.section) ?? 0) {
 							self?.tableView.scrollToRow(at: IndexPath(row: 0, section: newSubAccountIndex.section), at: .middle, animated: true)
 						} else {

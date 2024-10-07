@@ -9,7 +9,11 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 
-class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+protocol MoveableDiffableDataSourceDelegate: AnyObject {
+	func didMove()
+}
+
+class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler, MoveableDiffableDataSourceDelegate {
 	
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
@@ -43,6 +47,8 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	
 	class MoveableDiffableDataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType> {
 		
+		weak var delegate: MoveableDiffableDataSourceDelegate? = nil
+		
 		override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
 			if indexPath.section == 0 {
 				return false
@@ -64,10 +70,19 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				return
 			}
 			
+			// Prevent anything from going above XTZ
+			guard destinationIndexPath.section != 0 else {
+				var currentSnapshot = self.snapshot()
+				currentSnapshot.moveSection(sourceIndexPath.section, afterSection: sourceIndexPath.section-1)
+				self.apply(currentSnapshot)
+				return
+			}
+			
+			
 			// Record the new state on disk
 			if let address = DependencyManager.shared.selectedWalletAddress,
 			   let token = (itemIdentifier(for: sourceIndexPath) as? Token),
-			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section) {
+			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section-1) {
 				
 				// We have 1 row per section (to acheive a certain UI). By default, move tries to take a row and move it to another section. We need to modify this to move sections around instead
 				// Get the section that its trying to be added too. If its at index 0, then user wants to move source, above destination, so instead assign it to the previous section
@@ -83,7 +98,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				}
 				
 				self.apply(currentSnapshot)
-				DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
+				self.delegate?.didMove()
 				
 			} else {
 				//self.state = .failure(KukaiError.internalApplicationError(error: "Unable to rearrange favorite"), "Unable to rearrange favorite")
@@ -91,15 +106,17 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		}
 	}
 	
-	
+	func didMove() {
+		self.updateChanges()
+		self.refresh(animate: false)
+	}
 	
 	// MARK: - Functions
 	func makeDataSource(withTableView tableView: UITableView) {
-		dataSource = MoveableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
+		let moveableDiff = MoveableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
 			if let amount = item as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-					cell.tokenIcon.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 40, height: 40))
 					cell.symbolLabel.text = "XTZ"
 					cell.balanceLabel.text = amount.normalisedRepresentation
 					cell.setup(isFav: true, isLocked: true)
@@ -113,8 +130,6 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 				}
 				
 			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
-				
-				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				cell.setup(isFav: obj.isFavourite, isLocked: false)
@@ -128,6 +143,9 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			return UITableViewCell()
 		})
 		
+		moveableDiff.delegate = self
+		
+		dataSource = moveableDiff
 		dataSource?.defaultRowAnimation = .fade
 	}
 	
@@ -174,7 +192,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		return tokensToDisplay[atIndexPath.row]
+		return tokensToDisplay[atIndexPath.section-1]
 	}
 	
 	func handleTap(onTableView: UITableView, atIndexPath: IndexPath) {
@@ -211,5 +229,10 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	
 	func showReorderButton() -> Bool {
 		return favouriteCount > 1
+	}
+	
+	func updateChanges() {
+		guard let address = DependencyManager.shared.selectedWalletAddress else { return }
+		DependencyManager.shared.balanceService.updateTokenStates(forAddress: address, selectedAccount: true)
 	}
 }

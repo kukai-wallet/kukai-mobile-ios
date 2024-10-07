@@ -74,9 +74,9 @@ public class TokenStateService {
 	
 	public func addFavourite(forAddress address: String, token: Token) -> Bool {
 		if isFavourite(forAddress: address, token: token) == nil {
-			let count = favouriteBalances[address]?.count ?? -1
+			let count = favouriteBalances[address]?.count ?? 0
 			addBlankFavouriteBalanceIfNeeded(forAddress: address)
-			favouriteBalances[address]?[balanceId(from: token)] = count + 1
+			favouriteBalances[address]?[balanceId(from: token)] = count
 			return writeFavouriteBalances()
 		}
 		
@@ -85,9 +85,9 @@ public class TokenStateService {
 	
 	public func addFavourite(forAddress address: String, nft: NFT) -> Bool {
 		if isFavourite(forAddress: address, nft: nft) == nil {
-			let count = favouriteCollectibles[address]?.count ?? -1
+			let count = favouriteCollectibles[address]?.count ?? 0
 			addBlankFavouriteCollectibleIfNeeded(forAddress: address)
-			favouriteCollectibles[address]?[nftId(from: nft)] = count + 1
+			favouriteCollectibles[address]?[nftId(from: nft)] = count
 			return writeFavouriteCollectibles()
 		}
 		
@@ -138,19 +138,17 @@ public class TokenStateService {
 	
 	public func removeFavourite(forAddress address: String, token: Token) -> Bool {
 		let balanceId = balanceId(from: token)
-		let currentSortIndex = favouriteBalances[address]?[balanceId] ?? -1
-		reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
-		
 		favouriteBalances[address]?.removeValue(forKey: balanceId)
+		recomputeSortOrder(inDict: &favouriteBalances, withAddress: address, andMove: nil)
+		
 		return writeFavouriteBalances()
 	}
 	
 	public func removeFavourite(forAddress address: String, nft: NFT) -> Bool {
 		let balanceId = nftId(from: nft)
-		let currentSortIndex = favouriteCollectibles[address]?[balanceId] ?? -1
-		reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
+		favouriteCollectibles[address]?.removeValue(forKey: balanceId)
+		recomputeSortOrder(inDict: &favouriteCollectibles, withAddress: address, andMove: nil)
 		
-		favouriteCollectibles[address]?.removeValue(forKey: nftId(from: nft))
 		return writeFavouriteCollectibles()
 	}
 	
@@ -161,32 +159,16 @@ public class TokenStateService {
 	public func moveFavouriteBalance(forAddress address: String, forToken token: Token, toIndex: Int) -> Bool {
 		let balanceId = balanceId(from: token)
 		let currentSortIndex = favouriteBalances[address]?[balanceId] ?? -1
+		recomputeSortOrder(inDict: &favouriteBalances, withAddress: address, andMove: (from: currentSortIndex, to: toIndex))
 		
-		if currentSortIndex < toIndex {
-			// moving down, decrease others
-			reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
-		} else {
-			// moving up, increase others
-			increaseSortIndex(beforeIndex: currentSortIndex, inDict: &favouriteBalances, withAddress: address)
-		}
-		
-		favouriteBalances[address]?[balanceId] = toIndex
 		return writeFavouriteBalances()
 	}
 	
 	public func moveFavouriteCollectible(forAddress address: String, forNft nft: NFT, toIndex: Int) -> Bool {
 		let balanceId = nftId(from: nft)
 		let currentSortIndex = favouriteCollectibles[address]?[balanceId] ?? -1
+		recomputeSortOrder(inDict: &favouriteCollectibles, withAddress: address, andMove: (from: currentSortIndex, to: toIndex))
 		
-		if currentSortIndex < toIndex {
-			// moving down, decrease others
-			reduceSortIndex(afterIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
-		} else {
-			// moving up, increase others
-			increaseSortIndex(beforeIndex: currentSortIndex, inDict: &favouriteCollectibles, withAddress: address)
-		}
-		
-		favouriteCollectibles[address]?[balanceId] = toIndex
 		return writeFavouriteCollectibles()
 	}
 	
@@ -216,25 +198,24 @@ public class TokenStateService {
 		return DiskService.write(encodable: favouriteCollectibles, toFileName: TokenStateService.favouriteCollectiblesFilename)
 	}
 	
-	private func reduceSortIndex(afterIndex: Int, inDict dict: inout [String: [String: Int]], withAddress address: String) {
+	// Easily handle all kinds of sort order changes, whether its from moving or deleting. Convert the dictionary to a sortedArray based on values. Then reassign the dictionary items their new indexes
+	private func recomputeSortOrder(inDict dict: inout [String: [String: Int]], withAddress address: String, andMove optionalMove: (from: Int, to: Int)?) {
 		var tempDict: [String: Int] = (dict[address] ?? [:])
-		
-		for key in tempDict.keys {
-			if let val = tempDict[key], val > afterIndex {
-				tempDict[key] = val-1
-			}
+		var sortedArray = tempDict.map({ return (key: $0.key, value: $0.value) }).sorted { first, second in
+			return first.value < second.value
 		}
 		
-		dict[address] = tempDict
-	}
-	
-	private func increaseSortIndex(beforeIndex: Int, inDict dict: inout [String: [String: Int]], withAddress address: String) {
-		var tempDict: [String: Int] = (dict[address] ?? [:])
-		
-		for key in tempDict.keys {
-			if let val = tempDict[key], val < beforeIndex {
-				tempDict[key] = val+1
+		if let moveItem = optionalMove {
+			guard moveItem.to >= 0, moveItem.to < sortedArray.count, moveItem.from >= 0, moveItem.from < sortedArray.count else {
+				return
 			}
+			
+			let oldOtem = sortedArray.remove(at: moveItem.from)
+			sortedArray.insert(oldOtem, at: moveItem.to)
+		}
+		
+		for (index, item) in sortedArray.enumerated() {
+			tempDict[item.key] = index
 		}
 		
 		dict[address] = tempDict
@@ -245,6 +226,11 @@ public class TokenStateService {
 	// MARK: Delete
 	
 	public func deleteAllCaches() {
+		favouriteBalances = [:]
+		favouriteCollectibles = [:]
+		hiddenBalances = [:]
+		hiddenCollectibles = [:]
+		
 		let _ = DiskService.delete(fileName: TokenStateService.hiddenBalancesFilename)
 		let _ = DiskService.delete(fileName: TokenStateService.hiddenCollectiblesFilename)
 		let _ = DiskService.delete(fileName: TokenStateService.favouriteBalancesFilename)

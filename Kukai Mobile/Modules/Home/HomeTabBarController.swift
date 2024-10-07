@@ -209,6 +209,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		sideMenuVc?.closeTapped(self)
 	}
 	
+	public func runWatchWalletChecks() {
+		if DependencyManager.shared.selectedWalletMetadata?.isWatchOnly == true {
+			scanButton.isEnabled = false
+		} else {
+			scanButton.isEnabled = true
+		}
+	}
+	
 	public func refreshSideMenu() {
 		sideMenuVc?.viewModel.refresh(animate: true)
 	}
@@ -221,6 +229,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		TransactionService.shared.resetAllState()
 		updateAccountButton()
+		runWatchWalletChecks()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""

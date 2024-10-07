@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 import Combine
 
 class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
@@ -96,6 +97,31 @@ class FavouriteBalancesViewController: UIViewController, UITableViewDelegate {
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		viewModel.handleTap(onTableView: tableView, atIndexPath: indexPath)
+	}
+	
+	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+		guard let c = cell as? FavouriteTokenCell else {
+			return
+		}
+		
+		if indexPath.section == 0 {
+			c.tokenIcon.backgroundColor = .colorNamed("BG4")
+			c.tokenIcon.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
+			
+		} else if let token = viewModel.token(atIndexPath: indexPath) {
+			c.tokenIcon.backgroundColor = .colorNamed("BG4")
+			MediaProxyService.load(url: token.thumbnailURL, to: c.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
+				if res != nil {
+					c.tokenIcon.backgroundColor = .white
+				} else {
+					c.tokenIcon.backgroundColor = .colorNamed("BG4")
+				}
+			}
+			
+		} else {
+			c.tokenIcon.backgroundColor = .colorNamed("BG4")
+			c.tokenIcon.image = UIImage.unknownToken()
+		}
 	}
 	
 	func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
