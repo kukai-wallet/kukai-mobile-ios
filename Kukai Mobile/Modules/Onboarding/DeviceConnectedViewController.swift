@@ -16,6 +16,7 @@ class DeviceConnectedViewController: UIViewController {
 	@IBOutlet weak var instructionLabel: UILabel!
 	@IBOutlet weak var addressVerificationLabel: UILabel!
 	@IBOutlet weak var accountScanStackView: UIStackView!
+	@IBOutlet weak var errorStackView: UIStackView!
 	@IBOutlet weak var numberLabel: UILabel!
 	@IBOutlet weak var actionButton: CustomisableButton!
 	
@@ -32,6 +33,7 @@ class DeviceConnectedViewController: UIViewController {
 		numberLabel.text = "0"
 		actionButton.isHidden = true
 		actionButton.setTitle("Try Again", for: .normal)
+		errorStackView.isHidden = true
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -57,22 +59,25 @@ class DeviceConnectedViewController: UIViewController {
 		checkConnected()
 	}
 	
-	private func hideAllInstrunctionUI() {
+	private func hideAllInstrunctionUI(showConnectionError: Bool) {
 		instructionLabel.isHidden = true
 		addressVerificationLabel.isHidden = true
 		accountScanStackView.isHidden = true
 		
 		actionButton.setTitle("Try again", for: .normal)
 		actionButton.isHidden = false
+		
+		errorStackView.isHidden = !showConnectionError
 	}
 	
 	private func checkConnected() {
 		self.instructionLabel.text = "Checking device ..."
 		self.instructionLabel.isHidden = false
+		self.errorStackView.isHidden = true
+		self.actionButton.isHidden = true
 		
 		guard let chosenUUID = TransactionService.shared.ledgerSetupData.selectedUUID else {
-			self.windowError(withTitle: "error".localized(), description: "Unable to locate selected device")
-			self.navigationController?.popViewController(animated: true)
+			hideAllInstrunctionUI(showConnectionError: true)
 			return
 		}
 		
@@ -106,7 +111,7 @@ class DeviceConnectedViewController: UIViewController {
 			}
 			.sink(onError: { [weak self] error in
 				self?.windowError(withTitle: "error".localized(), description: "Ledger device returned an error. Please verify that it has been setup with the Ledger Live app, the Tezos app is installed, and setup.\n\n\(error)")
-				self?.hideAllInstrunctionUI()
+				self?.hideAllInstrunctionUI(showConnectionError: true)
 				
 			}, onSuccess: { [weak self] addressObj2 in
 				self?.address = addressObj2.address
@@ -122,7 +127,7 @@ class DeviceConnectedViewController: UIViewController {
 			  let publicKey = self.publicKey,
 			  let wallet = LedgerWallet(address: address, publicKey: publicKey, derivationPath: HD.defaultDerivationPath, curve: .ed25519, ledgerUUID: uuid) else {
 			self.windowError(withTitle: "error".localized(), description: "Unable to create new wallet. Please try again")
-			self.hideAllInstrunctionUI()
+			self.hideAllInstrunctionUI(showConnectionError: false)
 			return
 		}
 		
@@ -139,7 +144,7 @@ class DeviceConnectedViewController: UIViewController {
 			
 			if let eString = errorString {
 				DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-					self?.hideAllInstrunctionUI()
+					self?.hideAllInstrunctionUI(showConnectionError: false)
 					self?.windowError(withTitle: "error".localized(), description: eString)
 				}
 			} else {
