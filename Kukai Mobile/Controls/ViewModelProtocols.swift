@@ -65,6 +65,7 @@ public struct AnyHashableSendable: Hashable, Sendable {
 	}
 }
 
+/*
 /**
  A custom collection object to hold an array of `AnyHashableSendable` with some helper methods to allow it to function the way the exist code was expecting to use `[AnyHashable]`
  */
@@ -130,6 +131,7 @@ public struct AnyHashableSendable2DArray: Collection, Hashable, Sendable {
 		}
 	}
 }
+*/
 
 /**
  Custom MVVM Diffable datasource protocol handler for a tableView
