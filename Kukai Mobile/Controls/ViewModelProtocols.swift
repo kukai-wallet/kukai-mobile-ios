@@ -48,7 +48,13 @@ public class ViewModel: ObservableObject {
  existing code to stay as is (.append(), .enumerated(), subscript, etc), but it does require switching the type from `[AnyHashable]` to `AnyHashableSendableArray`, or
  `[[AnyHashbale]]` to `AnyHashableSendable2DArray`
  */
-public struct AnyHashableSendable: Hashable, Sendable {
+public struct AnyHashableSendable: Hashable, Sendable, CustomStringConvertible {
+	
+	public var description: String {
+		get {
+			return "\(base)"
+		}
+	}
 	
 	public let base: any Hashable & Sendable
 	
