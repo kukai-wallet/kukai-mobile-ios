@@ -106,7 +106,7 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func handleTap(atIndexPath: IndexPath) -> String? {
-		guard let item = dataSource?.itemIdentifier(for: atIndexPath) as? AddCellData else {
+		guard let item = dataSource?.itemIdentifier(for: atIndexPath)?.base as? AddCellData else {
 			return nil
 		}
 		
