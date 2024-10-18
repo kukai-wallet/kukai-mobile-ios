@@ -18,9 +18,9 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var tokensToDisplay: [Token] = []
 	var isEditing = false
 	var favouriteCount = 0
@@ -81,7 +81,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 			
 			// Record the new state on disk
 			if let address = DependencyManager.shared.selectedWalletAddress,
-			   let token = (itemIdentifier(for: sourceIndexPath) as? Token),
+			   let token = (itemIdentifier(for: sourceIndexPath)?.base as? Token),
 			   TokenStateService.shared.moveFavouriteBalance(forAddress: address, forToken: token, toIndex: destinationIndexPath.section-1) {
 				
 				// We have 1 row per section (to acheive a certain UI). By default, move tries to take a row and move it to another section. We need to modify this to move sections around instead
@@ -115,7 +115,7 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 	func makeDataSource(withTableView tableView: UITableView) {
 		let moveableDiff = MoveableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let amount = item as? XTZAmount {
+			if let amount = item.base as? XTZAmount {
 				if let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
 					cell.symbolLabel.text = "XTZ"
 					cell.balanceLabel.text = amount.normalisedRepresentation
@@ -129,14 +129,14 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 					return cell
 				}
 				
-			} else if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
+			} else if let obj = item.base as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "FavouriteTokenCell", for: indexPath) as? FavouriteTokenCell {
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				cell.setup(isFav: obj.isFavourite, isLocked: false)
 				
 				return cell
 				
-			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
+			} else if let _ = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
 				return cell
 			}
 			
@@ -179,12 +179,12 @@ class FavouriteBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandle
 		}
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections(Array(0..<tokensToDisplay.count+1))
-		snapshot.appendItems([DependencyManager.shared.balanceService.account.xtzBalance], toSection: 0)
+		snapshot.appendItems([.init(DependencyManager.shared.balanceService.account.xtzBalance)], toSection: 0)
 		
 		for (index, item) in tokensToDisplay.enumerated() {
-			snapshot.appendItems([item], toSection: index+1)
+			snapshot.appendItems([.init(item)], toSection: index+1)
 		}
 		
 		ds.apply(snapshot, animatingDifferences: animate)

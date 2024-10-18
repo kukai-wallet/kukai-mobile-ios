@@ -14,16 +14,16 @@ import OSLog
 class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
 			let identifier = indexPath.row == 0 ? "AccountItemCell" : "AccountSubItemCell"
-			if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? AccountItemCell {
+			if let obj = item.base as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: identifier, for: indexPath) as? AccountItemCell {
 				let walletMedia = TransactionService.walletMedia(forWalletMetadata: obj, ofSize: .size_22)
 				cell.iconView.image = walletMedia.image
 				cell.titleLabel.text = walletMedia.title
@@ -53,25 +53,25 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		let wallets = DependencyManager.shared.walletList
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
 		var sections: [Int] = []
-		var sectionData: [[AnyHashable]] = []
+		var sectionData: [[AnyHashableSendable]] = []
 		
 		// HD's
 		for (_, metadata) in wallets.hdWallets.enumerated() {
 			sections.append(sections.count)
 			
-			var items: [AnyHashable] = [metadata]
+			var items: [AnyHashableSendable] = [.init(metadata)]
 			for (_, childMetadata) in metadata.children.prefix(3).enumerated() {
-				items.append(childMetadata)
+				items.append(.init(childMetadata))
 			}
 			sectionData.append(items)
 		}
 		
 		// Ledger
 		for (_, metadata) in wallets.ledgerWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 		}
 		
 		

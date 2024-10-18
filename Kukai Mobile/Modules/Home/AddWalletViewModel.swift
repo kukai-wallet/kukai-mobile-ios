@@ -20,9 +20,9 @@ struct AddCellData: Hashable {
 class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var expandedIndex: IndexPath? = nil
 	
 	let sectionTitles: [String?] = [
@@ -31,47 +31,47 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		nil
 	]
 	
-	let headings: [[AnyHashable]] = [
+	let headings: [[AnyHashableSendable]] = [
 		[
-			AddCellData(image: UIImage(named: "btnAddKnockout"), title: "Add account to existing wallet", subtitle: "Add another account to the same recovery phrase", isExpandable: false, isTopLevel: true, option: "account")
+			.init(AddCellData(image: UIImage(named: "btnAddKnockout"), title: "Add account to existing wallet", subtitle: "Add another account to the same recovery phrase", isExpandable: false, isTopLevel: true, option: "account"))
 		],
 		[
-			AddCellData(image: UIImage(named: "ArrowOval"), title: "Create a New Wallet", subtitle: "Create a brand new wallet", isExpandable: true, isTopLevel: true, option: nil)
+			.init(AddCellData(image: UIImage(named: "ArrowOval"), title: "Create a New Wallet", subtitle: "Create a brand new wallet", isExpandable: true, isTopLevel: true, option: nil))
 		],
 		[
-			AddCellData(image: UIImage(named: "AddNewAccount"), title: "Add Existing Wallet", subtitle: "Import a wallet you've previously setup", isExpandable: true, isTopLevel: true, option: nil)
+			.init(AddCellData(image: UIImage(named: "AddNewAccount"), title: "Add Existing Wallet", subtitle: "Import a wallet you've previously setup", isExpandable: true, isTopLevel: true, option: nil))
 		]
 	]
 	
-	let innerOptions: [[AnyHashable]] = [
+	let innerOptions: [[AnyHashableSendable]] = [
 		[],
 		[
-			AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social"),
-			AddCellData(image: UIImage(named: "WalletHD"), title: "HD Wallet", subtitle: "Create a new HD wallet and recovery phrase", isExpandable: false, isTopLevel: false, option: "hd"),
+			.init(AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social")),
+			.init(AddCellData(image: UIImage(named: "WalletHD"), title: "HD Wallet", subtitle: "Create a new HD wallet and recovery phrase", isExpandable: false, isTopLevel: false, option: "hd")),
 		],
 		[
-			AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social"),
-			AddCellData(image: UIImage(named: "WalletRestore"), title: "Restore with Recovery Phrase", subtitle: "Import accounts using your recovery phrase from Kukai or another wallet", isExpandable: false, isTopLevel: false, option: "import"),
-			AddCellData(image: UIImage(named: "WalletLedger"), title: "Connect with Ledger", subtitle: "Add accounts from your Bluetooth hardware wallet", isExpandable: false, isTopLevel: false, option: "ledger"),
-			AddCellData(image: UIImage(named: "WalletHD"), title: "Restore with Private Key", subtitle: "Import a wallet from a private key", isExpandable: false, isTopLevel: false, option: "private-key"),
-			AddCellData(image: UIImage(named: "WalletWatch"), title: "Watch a Tezos Address", subtitle: "Watch a public address or .tez domain", isExpandable: false, isTopLevel: false, option: "watch")
+			.init(AddCellData(image: UIImage(named: "WalletSocial"), title: "Use Social", subtitle: "Sign in with your preferred social account", isExpandable: false, isTopLevel: false, option: "social")),
+			.init(AddCellData(image: UIImage(named: "WalletRestore"), title: "Restore with Recovery Phrase", subtitle: "Import accounts using your recovery phrase from Kukai or another wallet", isExpandable: false, isTopLevel: false, option: "import")),
+			.init(AddCellData(image: UIImage(named: "WalletLedger"), title: "Connect with Ledger", subtitle: "Add accounts from your Bluetooth hardware wallet", isExpandable: false, isTopLevel: false, option: "ledger")),
+			.init(AddCellData(image: UIImage(named: "WalletHD"), title: "Restore with Private Key", subtitle: "Import a wallet from a private key", isExpandable: false, isTopLevel: false, option: "private-key")),
+			.init(AddCellData(image: UIImage(named: "WalletWatch"), title: "Watch a Tezos Address", subtitle: "Watch a public address or .tez domain", isExpandable: false, isTopLevel: false, option: "watch"))
 		]
 	]
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddHeaderCell", for: indexPath) as? AccountsAddHeaderCell {
+			if let obj = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddHeaderCell", for: indexPath) as? AccountsAddHeaderCell {
 				cell.titleLabel.text = obj
 				return cell
 				
-			} else if let obj = item as? AddCellData, obj.isTopLevel, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddOptionCell", for: indexPath) as? AccountsAddOptionCell {
+			} else if let obj = item.base as? AddCellData, obj.isTopLevel, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddOptionCell", for: indexPath) as? AccountsAddOptionCell {
 				cell.iconView.image = obj.image
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle
 				return cell
 				
-			} else if let obj = item as? AddCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddOptionCell_inner", for: indexPath) as? AccountsAddOptionCell {
+			} else if let obj = item.base as? AddCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsAddOptionCell_inner", for: indexPath) as? AccountsAddOptionCell {
 				cell.iconView.image = obj.image
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle
@@ -90,7 +90,7 @@ class AddWalletViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections(Array(0..<self.headings.count))
 		
 		for (index, heading) in headings.enumerated() {
