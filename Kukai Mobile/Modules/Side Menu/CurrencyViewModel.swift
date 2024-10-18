@@ -18,7 +18,7 @@ struct CurrencyObj: Hashable {
 class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	public static let didChangeCurrencyMessage = "changed"
 	public var isLoading = false
@@ -30,14 +30,14 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var otherCells: [CurrencyObj] = []
 	private var cancellable: AnyCancellable? = nil
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
-			if let currency = item as? CurrencyObj, let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyChoiceCell", for: indexPath) as? CurrencyChoiceCell {
+			if let currency = item.base as? CurrencyObj, let cell = tableView.dequeueReusableCell(withIdentifier: "CurrencyChoiceCell", for: indexPath) as? CurrencyChoiceCell {
 				cell.codeLabel.text = currency.code
 				cell.nameLabel.text = currency.name
 				
@@ -77,11 +77,11 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0, 1])
 		
-		snapshot.appendItems(popularCells, toSection: 0)
-		snapshot.appendItems(otherCells, toSection: 1)
+		snapshot.appendItems(popularCells.map({ .init($0) }), toSection: 0)
+		snapshot.appendItems(otherCells.map({ .init($0) }), toSection: 1)
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		

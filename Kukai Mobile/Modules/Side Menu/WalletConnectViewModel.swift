@@ -20,9 +20,9 @@ struct PairObj: Hashable {
 class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var peersSelected = true
 	
 	private var pairs: [PairObj] = []
@@ -32,10 +32,10 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let _ = item as? UUID {
+			if let _ = item.base as? UUID {
 				return tableView.dequeueReusableCell(withIdentifier: "empty", for: indexPath)
 				
-			} else if let obj = item as? PairObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
+			} else if let obj = item.base as? PairObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
 				let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.siteLabel.text = obj.site
@@ -92,13 +92,13 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
 		
 		if pairs.count > 0 {
-			snapshot.appendItems(pairs, toSection: 0)
+			snapshot.appendItems(pairs.map({.init($0)}), toSection: 0)
 		} else {
-			snapshot.appendItems([UUID()], toSection: 0)
+			snapshot.appendItems([.init(UUID())], toSection: 0)
 		}
 		
 		ds.applySnapshotUsingReloadData(snapshot)
@@ -108,6 +108,6 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func pairFor(indexPath: IndexPath) -> PairObj? {
-		return dataSource?.itemIdentifier(for: indexPath) as? PairObj
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? PairObj
 	}
 }

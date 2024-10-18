@@ -71,6 +71,18 @@ public struct AnyHashableSendable: Hashable, Sendable, CustomStringConvertible {
 	}
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 /**
  A custom collection object to hold an array of `AnyHashableSendable` with some helper methods to allow it to function the way the exist code was expecting to use `[AnyHashable]`

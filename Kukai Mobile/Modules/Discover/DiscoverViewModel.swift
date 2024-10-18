@@ -17,18 +17,18 @@ struct ShowMore: Hashable, Identifiable {
 class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private static let itemPerSection = 3
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var menu: MenuViewController? = nil
 	var isVisible = false
 	var featuredDelegate: DiscoverFeaturedCellDelegate? = nil
 	var expandedSection: Int? = nil
 	
 	private var bag = [AnyCancellable]()
-	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	
 	
 	
@@ -61,26 +61,26 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+			if let obj = item.base as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				cell.setup(menuVC: obj)
 				return cell
 				
-			} else if let obj = item as? DiscoverGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverFeaturedCell", for: indexPath) as? DiscoverFeaturedCell {
+			} else if let obj = item.base as? DiscoverGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverFeaturedCell", for: indexPath) as? DiscoverFeaturedCell {
 				cell.delegate = self?.featuredDelegate
 				cell.setup(discoverGroup: obj)
 				return cell
 				
-			} else if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverHeadingCell", for: indexPath) as? DiscoverHeadingCell {
+			} else if let obj = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverHeadingCell", for: indexPath) as? DiscoverHeadingCell {
 				cell.titleLabel.text = obj
 				return cell
 				
-			} else if let obj = item as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
+			} else if let obj = item.base as? DiscoverItem, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverCell", for: indexPath) as? DiscoverCell {
 				cell.titleLabel.text = obj.title
 				cell.descriptionLabel.text = obj.description
 				
 				return cell
 				
-			} else if let _ = item as? ShowMore, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverShowMoreCell", for: indexPath) as? DiscoverShowMoreCell {
+			} else if let _ = item.base as? ShowMore, let cell = tableView.dequeueReusableCell(withIdentifier: "DiscoverShowMoreCell", for: indexPath) as? DiscoverShowMoreCell {
 				if self?.expandedSection == indexPath.section {
 					cell.setOpen()
 					
@@ -121,12 +121,12 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 	}
 	
-	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<Int, AnyHashable>) {
+	func reloadData(animate: Bool, datasource: UITableViewDiffableDataSource<SectionEnum, CellDataType>) {
 		guard let menu = self.menu else {
 			return
 		}
 		
-		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
 		let groups = DependencyManager.shared.discoverService.items
 		if groups.count == 0 { return }
@@ -134,21 +134,21 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		if DependencyManager.shared.currentNetworkType == .ghostnet {
 			currentSnapshot.appendSections(Array(0..<groups.count))
-			currentSnapshot.appendItems([GhostnetWarningCellObj(), menu, groups[0]], toSection: 0)
+			currentSnapshot.appendItems([.init(GhostnetWarningCellObj()), .init(menu), .init(groups[0])], toSection: 0)
 			
 		} else {
 			currentSnapshot.appendSections(Array(0..<groups.count))
-			currentSnapshot.appendItems([menu, groups[0]], toSection: 0)
+			currentSnapshot.appendItems([.init(menu), .init(groups[0])], toSection: 0)
 		}
 		
 		for (index, group) in groups.enumerated() {
 			if index == 0 { continue }
 			
-			var itemsToAdd: [AnyHashable] = []
-			itemsToAdd.append(group.title.uppercased())
+			var itemsToAdd: [AnyHashableSendable] = []
+			itemsToAdd.append(.init(group.title.uppercased()))
 			
 			for (index2, item) in group.items.enumerated() {
-				itemsToAdd.append(item)
+				itemsToAdd.append(.init(item))
 				
 				if index2 == (DiscoverViewModel.itemPerSection-1) && expandedSection != index {
 					break
@@ -156,7 +156,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			if group.items.count > DiscoverViewModel.itemPerSection {
-				itemsToAdd.append(ShowMore())
+				itemsToAdd.append(.init(ShowMore()))
 			}
 			
 			currentSnapshot.appendItems(itemsToAdd, toSection: index)
@@ -166,7 +166,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func urlForDiscoverItem(atIndexPath: IndexPath) -> URL? {
-		guard let obj = dataSource?.itemIdentifier(for: atIndexPath) as? DiscoverItem else {
+		guard let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base as? DiscoverItem else {
 			return nil
 		}
 		
@@ -174,7 +174,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func isShowMoreOrLess(indexPath: IndexPath) -> Bool {
-		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? ShowMore else {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath)?.base as? ShowMore else {
 			return false
 		}
 		
@@ -220,7 +220,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		cell.setOpen()
 		
 		let group = DependencyManager.shared.discoverService.items[section]
-		currentSnapshot.insertItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]), beforeItem: item)
+		currentSnapshot.insertItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]).map({ .init($0) }), beforeItem: item)
 	}
 	
 	private func closeGroup(forTableView tableView: UITableView, atSection section: Int) {
@@ -233,11 +233,11 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		cell.setClosed()
 		
 		let group = DependencyManager.shared.discoverService.items[section]
-		currentSnapshot.deleteItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]))
+		currentSnapshot.deleteItems(Array(group.items[(DiscoverViewModel.itemPerSection)..<group.items.count]).map({ .init($0) }))
 	}
 	
 	func willDisplayImage(forIndexPath: IndexPath) -> URL? {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? DiscoverItem else { return nil }
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? DiscoverItem else { return nil }
 		
 		Logger.app.info("Discover image loading: \(obj.squareLogoUri?.absoluteString)")
 		return MediaProxyService.url(fromUri: obj.squareLogoUri, ofFormat: MediaProxyService.Format.small.rawFormat())

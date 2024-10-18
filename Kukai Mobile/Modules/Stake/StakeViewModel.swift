@@ -18,12 +18,12 @@ struct StakeHeaderData: Hashable {
 class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private var bag = [AnyCancellable]()
-	private var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var bakers: [TzKTBaker] = []
 	
 	
@@ -54,16 +54,16 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? TzKTBaker, let cell = tableView.dequeueReusableCell(withIdentifier: "PublicBakerCell", for: indexPath) as? PublicBakerCell {
+			if let obj = item.base as? TzKTBaker, let cell = tableView.dequeueReusableCell(withIdentifier: "PublicBakerCell", for: indexPath) as? PublicBakerCell {
 				cell.setup(withBaker: obj)
 				return cell
 				
-			} else if let obj = item as? StakeHeaderData, obj.actionTitle != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingAndActionCell", for: indexPath) as? StakeHeadingCell {
+			} else if let obj = item.base as? StakeHeaderData, obj.actionTitle != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingAndActionCell", for: indexPath) as? StakeHeadingCell {
 				cell.headingLabel.text = obj.title
 				cell.actionTitleLabel?.text = obj.actionTitle
 				return cell
 				
-			} else if let obj = item as? StakeHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingCell", for: indexPath) as? StakeHeadingCell {
+			} else if let obj = item.base as? StakeHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingCell", for: indexPath) as? StakeHeadingCell {
 				cell.headingLabel.text = obj.title
 				return cell
 				
@@ -110,16 +110,16 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			
 			// Build snapshot
-			self?.currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+			self?.currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 			
 			if currentDelegate != nil {
 				self?.currentSnapshot.appendSections([0, 1])
-				self?.currentSnapshot.appendItems([StakeHeaderData(title: "CURRENT BAKER", actionTitle: nil)], toSection: 0)
+				self?.currentSnapshot.appendItems([.init(StakeHeaderData(title: "CURRENT BAKER", actionTitle: nil))], toSection: 0)
 				
 				if let currentBaker = currentBaker {
-					self?.currentSnapshot.appendItems([currentBaker], toSection: 1)
+					self?.currentSnapshot.appendItems([.init(currentBaker)], toSection: 1)
 				} else {
-					self?.currentSnapshot.appendItems([TzKTBaker(address: currentDelegate?.address ?? "", name: currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress(), logo: nil)], toSection: 1)
+					self?.currentSnapshot.appendItems([.init(TzKTBaker(address: currentDelegate?.address ?? "", name: currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress(), logo: nil))], toSection: 1)
 				}
 			}
 			
@@ -129,11 +129,11 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self?.currentSnapshot.appendSections(Array(nextSectionIndex..<(sortedResults.count + nextSectionIndex + 1)))
-			self?.currentSnapshot.appendItems([StakeHeaderData(title: "SELECT BAKER", actionTitle: "Enter Custom Baker")], toSection: nextSectionIndex)
+			self?.currentSnapshot.appendItems([.init(StakeHeaderData(title: "SELECT BAKER", actionTitle: "Enter Custom Baker"))], toSection: nextSectionIndex)
 			nextSectionIndex += 1
 			
 			for baker in sortedResults {
-				self?.currentSnapshot.appendItems([baker], toSection: nextSectionIndex)
+				self?.currentSnapshot.appendItems([.init(baker)], toSection: nextSectionIndex)
 				nextSectionIndex += 1
 			}
 			
