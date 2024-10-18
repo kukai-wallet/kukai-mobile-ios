@@ -644,8 +644,15 @@ final class Test_02_Onboarding: XCTestCase {
 		}
 		
 		
-		settingsApp.staticTexts["Sign in to your iPhone"].tap()
-		sleep(2)
+		let signIn = settingsApp.staticTexts["Sign in to your iPhone"]
+		let appleAccount = settingsApp.staticTexts["Apple Account"]
+		if signIn.exists {
+			signIn.tap()
+			sleep(2)
+		} else if appleAccount.exists {
+			appleAccount.tap()
+			sleep(2)
+		}
 		
 		let manually = settingsApp.staticTexts["Sign in Manually"]
 		if manually.exists {

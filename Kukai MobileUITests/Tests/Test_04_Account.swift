@@ -16,6 +16,8 @@ final class Test_04_Account: XCTestCase {
 	
 	override func setUpWithError() throws {
 		continueAfterFailure = true
+		
+		XCUIApplication().launch()
 	}
 	
 	override func tearDownWithError() throws {
@@ -52,7 +54,6 @@ final class Test_04_Account: XCTestCase {
 		
 		let kUSD = app.tables.staticTexts["kUSD"]
 		let WTZ = app.tables.staticTexts["WTZ"]
-		let EURL = app.tables.staticTexts["EURL"]
 		var enteredTokenDetials = false
 		
 		// Scroll tableview up to 10 times searching for a known token that has a chart, if so tap it
@@ -64,11 +65,6 @@ final class Test_04_Account: XCTestCase {
 				
 			} else if WTZ.exists {
 				WTZ.tap()
-				enteredTokenDetials = true
-				break
-				
-			} else if EURL.exists {
-				EURL.tap()
 				enteredTokenDetials = true
 				break
 				
@@ -89,6 +85,15 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.handleOpenCollectiblesTab(app: app)
 		sleep(2)
 		
+		
+		// Check if in group mode
+		app.buttons["colelctibles-tap-more"].tap()
+		let groupModeButton = app.popovers.tables.staticTexts["Group Collections"]
+		if groupModeButton.exists {
+			groupModeButton.tap()
+			sleep(2)
+		}
+		
 		let henTitle = "Hic et Nunc (HEN)"
 		let henCell = app.collectionViews.staticTexts["Hic et Nunc (HEN)"]
 		let teiaTitle = "Teia"
@@ -100,6 +105,7 @@ final class Test_04_Account: XCTestCase {
 				app.swipeUp()
 			}
 		}
+		
 		
 		henCell.tap()
 		sleep(2)
@@ -365,14 +371,14 @@ final class Test_04_Account: XCTestCase {
 		let currentFee = app.textFields["fee-textfield"].value as? String
 		let currentGas = app.textFields["gas-limit-textfield"].value as? String
 		
-		app.buttons["Fast"].tap()
+		app.buttons["Double"].tap()
 		
 		XCTAssert(currentFee != nil && (app.textFields["fee-textfield"].value as? String) != currentFee, currentFee ?? "-")
 		XCTAssert(currentGas != nil && (app.textFields["gas-limit-textfield"].value as? String) != currentGas, currentGas ?? "-")
-		Test_04_Account.slideDownBottomSheet(inApp: app, element: app.buttons["Fast"].firstMatch)
+		Test_04_Account.slideDownBottomSheet(inApp: app, element: app.buttons["Double"].firstMatch)
 		sleep(2)
 		
-		XCTAssert(app.staticTexts["Fast"].exists)
+		XCTAssert(app.staticTexts["Double"].exists)
 		
 		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
 		Test_04_Account.slideButtonToComplete(inApp: app)

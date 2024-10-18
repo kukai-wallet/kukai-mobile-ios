@@ -38,7 +38,7 @@ public struct EnvironmentVariables {
 		let config3URL = testBundle.url(forResource: "CONFIG_3", withExtension: "txt", subdirectory: "Configs")
 		
 		// In order to more easily support running locally, and running remotely, check first if files (that will NOT be committed to git) exist. If not, fall back to env variables
-		if ProcessInfo.processInfo.environment["CONFIG_1"] == nil, let config1Path = config1URL, let config2Path = config2URL, let config3Path = config3URL {
+		if (ProcessInfo.processInfo.environment["CONFIG_1"] == nil || ProcessInfo.processInfo.environment["CONFIG_1"] == ""),  let config1Path = config1URL, let config2Path = config2URL, let config3Path = config3URL {
 			config1 = (try? String(contentsOf: config1Path)) ?? ""
 			config2 = (try? String(contentsOf: config2Path)) ?? ""
 			config3 = (try? String(contentsOf: config3Path)) ?? ""
