@@ -151,15 +151,15 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func bakerFor(indexPath: IndexPath) -> TzKTBaker? {
-		return dataSource?.itemIdentifier(for: indexPath) as? TzKTBaker
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? TzKTBaker
 	}
 	
 	func bakerFor(address: String) -> TzKTBaker? {
 		return bakers.first(where: { $0.address == address })
 	}
 	
-	func isEnterCustom(indePath: IndexPath) -> Bool {
-		if let obj = dataSource?.itemIdentifier(for: indePath) as? StakeHeaderData {
+	func isEnterCustom(indexPath: IndexPath) -> Bool {
+		if let obj = dataSource?.itemIdentifier(for: indexPath)?.base as? StakeHeaderData {
 			return obj.actionTitle != nil
 		}
 		

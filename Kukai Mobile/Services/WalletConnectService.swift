@@ -39,7 +39,7 @@ public struct WalletConnectGetAccountObj: Codable {
 	let pubkey: String
 }
 
-extension WebSocket: WebSocketConnecting {}
+extension WebSocket: @retroactive WebSocketConnecting {}
 
 struct DefaultSocketFactory: WebSocketFactory {
 	

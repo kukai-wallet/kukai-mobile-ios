@@ -87,7 +87,7 @@ class AddAccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
-		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? WalletMetadata
 	}
 	
 	public static func isPreviousAccountUsed(forAddress address: String, forceMainnet: Bool, completion: @escaping ((Bool) -> Void)) {

@@ -243,7 +243,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			return
 		}
 		
-		guard let group = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup, !isUnconfirmed(indexPath: indexPath) else {
+		guard let group = dataSource?.itemIdentifier(for: indexPath)?.base as? TzKTTransactionGroup, !isUnconfirmed(indexPath: indexPath) else {
 			return
 		}
 		
@@ -269,7 +269,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	public func isUnconfirmed(indexPath: IndexPath) -> Bool {
-		if let item = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup {
+		if let item = dataSource?.itemIdentifier(for: indexPath)?.base as? TzKTTransactionGroup {
 			return (item.transactions.first?.status ?? .applied) == .unconfirmed
 		}
 		
@@ -277,7 +277,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	public func statusFor(indexPath: IndexPath) -> TzKTTransaction.TransactionStatus {
-		if let item = dataSource?.itemIdentifier(for: indexPath) as? TzKTTransactionGroup {
+		if let item = dataSource?.itemIdentifier(for: indexPath)?.base as? TzKTTransactionGroup {
 			return item.status
 		}
 		
