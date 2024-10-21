@@ -129,6 +129,7 @@
 		C0411B4E29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */; };
 		C0411B4F29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */; };
 		C0411B5129DEFEE600778E1E /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B5029DEFEE600778E1E /* EmailValidator.swift */; };
+		C044B14C2CC6979200132B7F /* MigrateLedgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044B14B2CC6979200132B7F /* MigrateLedgerViewController.swift */; };
 		C044E12F2AAF4BAA0085652F /* SideMenuSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E12E2AAF4BAA0085652F /* SideMenuSettingsViewController.swift */; };
 		C044E1312AAF4CB40085652F /* SideMenuSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E1302AAF4CB40085652F /* SideMenuSettingsViewModel.swift */; };
 		C044E1332AAF61650085652F /* SideMenuStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E1322AAF61650085652F /* SideMenuStorageViewController.swift */; };
@@ -553,6 +554,7 @@
 		C0411B4C29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldSuggestionAccessoryViewCell.swift; sourceTree = "<group>"; };
 		C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TextFieldSuggestionAccessoryViewCell.xib; sourceTree = "<group>"; };
 		C0411B5029DEFEE600778E1E /* EmailValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailValidator.swift; sourceTree = "<group>"; };
+		C044B14B2CC6979200132B7F /* MigrateLedgerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateLedgerViewController.swift; sourceTree = "<group>"; };
 		C044E12E2AAF4BAA0085652F /* SideMenuSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuSettingsViewController.swift; sourceTree = "<group>"; };
 		C044E1302AAF4CB40085652F /* SideMenuSettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuSettingsViewModel.swift; sourceTree = "<group>"; };
 		C044E1322AAF61650085652F /* SideMenuStorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuStorageViewController.swift; sourceTree = "<group>"; };
@@ -929,6 +931,7 @@
 				C06AEDFC2C00997E005CFDAA /* AddAccountViewController.swift */,
 				C06AEDFE2C00998D005CFDAA /* AddAccountViewModel.swift */,
 				C095EEE92C6D04F000761290 /* AddCustomPathViewController.swift */,
+				C044B14B2CC6979200132B7F /* MigrateLedgerViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -2085,6 +2088,7 @@
 				C0FBC88D292C12BF00B29921 /* HiddenTokensMainViewController.swift in Sources */,
 				C0E2317D29897BB5007BC79D /* SendTokenConfirmViewController.swift in Sources */,
 				C01372AA29B206CD0083E297 /* MenuActionCell.swift in Sources */,
+				C044B14C2CC6979200132B7F /* MigrateLedgerViewController.swift in Sources */,
 				C07FC40D27C539A40056FA47 /* SendToViewModel.swift in Sources */,
 				C08C973C2908165D00249959 /* CollectibleDetailAttributeItemCell.swift in Sources */,
 				C00AE0032886F66A00184DF7 /* SwapViewController.swift in Sources */,
@@ -2783,7 +2787,7 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kukai-wallet/kukai-core-swift";
 			requirement = {
-				branch = feature/ledger;
+				branch = develop;
 				kind = branch;
 			};
 		};

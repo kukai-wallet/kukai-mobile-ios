@@ -2258,6 +2258,7 @@ You will not be able to transact in this wallet.</string>
                         <outlet property="numberLabel" destination="ht1-5K-bzW" id="N8G-in-fSa"/>
                         <outlet property="spinnerImage" destination="Rgy-WU-V4j" id="H5n-ks-SFj"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="l1U-wH-5Pn"/>
+                        <segue destination="ADS-vZ-1xl" kind="presentation" identifier="migrate" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="V6x-oz-wjo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fBw-cv-msg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2778,6 +2779,137 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
             </objects>
             <point key="canvasLocation" x="-6487" y="-863"/>
         </scene>
+        <!--Migrate Ledger View Controller-->
+        <scene sceneID="v8q-uT-cD2">
+            <objects>
+                <viewController id="ADS-vZ-1xl" customClass="MigrateLedgerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="xYq-3x-hqE">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y6S-e0-r5r">
+                                <rect key="frame" x="16" y="167.5" width="343" height="332.5"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Alert" translatesAutoresizingMaskIntoConstraints="NO" id="15S-K8-9F0">
+                                        <rect key="frame" x="132.5" y="50" width="78" height="78"/>
+                                        <color key="tintColor" name="BGAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="78" id="QCK-rf-WhO"/>
+                                            <constraint firstAttribute="width" constant="78" id="W3U-dy-oPr"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Migrate?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D3t-Cs-zWT">
+                                        <rect key="frame" x="16" y="144" width="311" height="26.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="IN5-cF-J0G">
+                                        <rect key="frame" x="16" y="194.5" width="311" height="114"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure you want to migrate &lt;address&gt; to this new device?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lGa-kP-lmR">
+                                                <rect key="frame" x="0.0" y="0.0" width="311" height="34"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt6"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9LM-El-5th">
+                                                <rect key="frame" x="0.0" y="58" width="311" height="56"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YXr-B2-MbA" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="147.5" height="56"/>
+                                                        <color key="backgroundColor" name="BtnAlert1"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="jGt-gn-8Df"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Migrate">
+                                                            <color key="titleColor" name="TxTBtnAlert1"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" name="BtnStrokeAlert1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="1"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="migrateTapped:" destination="ADS-vZ-1xl" eventType="touchUpInside" id="pkc-nq-qIA"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FPt-9n-C1m" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="163.5" y="0.0" width="147.5" height="56"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Cancel">
+                                                            <color key="titleColor" name="TxtBtnPrim1"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="cancelTapped:" destination="ADS-vZ-1xl" eventType="touchUpInside" id="QDo-b9-2Xw"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="YXr-B2-MbA" firstAttribute="width" secondItem="FPt-9n-C1m" secondAttribute="width" id="l4F-6o-FHg"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="IN5-cF-J0G" firstAttribute="leading" secondItem="Y6S-e0-r5r" secondAttribute="leading" constant="16" id="Egv-Ke-0fI"/>
+                                    <constraint firstItem="IN5-cF-J0G" firstAttribute="top" secondItem="D3t-Cs-zWT" secondAttribute="bottom" constant="24" id="HIs-OZ-Spq"/>
+                                    <constraint firstItem="D3t-Cs-zWT" firstAttribute="leading" secondItem="Y6S-e0-r5r" secondAttribute="leading" constant="16" id="ZUf-9n-IFV"/>
+                                    <constraint firstAttribute="bottom" secondItem="IN5-cF-J0G" secondAttribute="bottom" constant="24" id="dGp-wC-VjT"/>
+                                    <constraint firstItem="15S-K8-9F0" firstAttribute="centerX" secondItem="Y6S-e0-r5r" secondAttribute="centerX" id="dNh-fR-Osz"/>
+                                    <constraint firstItem="15S-K8-9F0" firstAttribute="top" secondItem="Y6S-e0-r5r" secondAttribute="top" constant="50" id="i3g-ne-nTs"/>
+                                    <constraint firstAttribute="trailing" secondItem="IN5-cF-J0G" secondAttribute="trailing" constant="16" id="mdU-K4-edG"/>
+                                    <constraint firstItem="D3t-Cs-zWT" firstAttribute="top" secondItem="15S-K8-9F0" secondAttribute="bottom" constant="16" id="nVf-mZ-qNz"/>
+                                    <constraint firstAttribute="trailing" secondItem="D3t-Cs-zWT" secondAttribute="trailing" constant="16" id="sQS-0d-PTj"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="UcY-fI-MF6"/>
+                        <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="UcY-fI-MF6" firstAttribute="trailing" secondItem="Y6S-e0-r5r" secondAttribute="trailing" constant="16" id="3Al-Ed-eP6"/>
+                            <constraint firstItem="Y6S-e0-r5r" firstAttribute="centerY" secondItem="UcY-fI-MF6" secondAttribute="centerY" id="dRA-eB-DuG"/>
+                            <constraint firstItem="Y6S-e0-r5r" firstAttribute="leading" secondItem="UcY-fI-MF6" secondAttribute="leading" constant="16" id="gM6-ct-Vus"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="FPt-9n-C1m" id="L4l-Ym-Kqm"/>
+                        <outlet property="containerView" destination="Y6S-e0-r5r" id="cEZ-xJ-C9z"/>
+                        <outlet property="messageLabel" destination="lGa-kP-lmR" id="dxJ-pD-3dj"/>
+                        <outlet property="migrateButton" destination="YXr-B2-MbA" id="y1o-Fk-joC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YAQ-tS-gA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-7324" y="3922"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
@@ -2785,6 +2917,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>
+        <image name="Alert" width="24" height="24"/>
         <image name="AlertCautionColored" width="20" height="18"/>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="ArrowUp-right" width="128" height="128"/>
@@ -2843,7 +2976,13 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
         <namedColor name="BrandColorTrue">
             <color red="0.34901960784313724" green="0.38823529411764707" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BtnAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BtnSec1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BtnStrokeAlert1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BtnStrokeSec1">

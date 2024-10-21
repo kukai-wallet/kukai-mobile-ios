@@ -21,6 +21,8 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 	private var didStartReceiving = false
 	private var selectedIndex: IndexPath? = nil
 	
+	public var walletToMigrate: WalletMetadata? = nil
+	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
@@ -80,6 +82,12 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.palceholderView.alpha = 1
 			self?.tableView.alpha = 0
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let vc = segue.destination as? DeviceConnectedViewController {
+			vc.walletToMigrate = self.walletToMigrate
 		}
 	}
 	

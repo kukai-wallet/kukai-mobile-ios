@@ -12,6 +12,10 @@ import Combine
 
 class DeviceConnectedViewController: UIViewController {
 	
+	public enum DeviceConnectedViewControllerError: Error {
+		case migrateInvalidWallet
+	}
+	
 	@IBOutlet weak var spinnerImage: UIImageView!
 	@IBOutlet weak var instructionLabel: UILabel!
 	@IBOutlet weak var addressVerificationLabel: UILabel!
@@ -23,6 +27,8 @@ class DeviceConnectedViewController: UIViewController {
 	private var bag = Set<AnyCancellable>()
 	private var address: String? = nil
 	private var publicKey: String? = nil
+	
+	public var walletToMigrate: WalletMetadata? = nil
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +59,13 @@ class DeviceConnectedViewController: UIViewController {
 		
 		if self.isMovingFromParent {
 			LedgerService.shared.disconnectFromDevice()
+		}
+	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let vc = segue.destination as? MigrateLedgerViewController {
+			vc.walletToMigrate = walletToMigrate
+			vc.newUUID = TransactionService.shared.ledgerSetupData.selectedUUID
 		}
 	}
 	
@@ -101,6 +114,15 @@ class DeviceConnectedViewController: UIViewController {
 	}
 	
 	private func startStep1() {
+		if walletToMigrate != nil {
+			processStep1Migrate()
+			
+		} else {
+			processStep1Onboarding()
+		}
+	}
+	
+	private func processStep1Onboarding() {
 		LedgerService.shared.getAddress(verify: false)
 			.onReceiveOutput { [weak self] addressObj in
 				self?.instructionLabel.text = "Please verify on the Ledger device that the below address is being displayed"
@@ -118,6 +140,24 @@ class DeviceConnectedViewController: UIViewController {
 				self?.address = addressObj2.address
 				self?.publicKey = addressObj2.publicKey
 				self?.startStep2()
+			})
+			.store(in: &bag)
+	}
+	
+	private func processStep1Migrate() {
+		LedgerService.shared.getAddress(verify: false)
+			.sink(onError: { [weak self] error in
+				self?.windowError(withTitle: "error".localized(), description: "Ledger device returned an error. Please verify that it has been setup with the Ledger Live app, the Tezos app is installed, and setup.\n\n\(error)")
+				self?.hideAllInstrunctionUI(showConnectionError: true)
+				
+			}, onSuccess: { [weak self] addressObj in
+				if addressObj.address == self?.walletToMigrate?.address {
+					self?.performSegue(withIdentifier: "migrate", sender: nil)
+					
+				} else {
+					self?.windowError(withTitle: "error".localized(), description: "error-ledger-migrate-invalid".localized())
+					self?.navigationController?.popViewController(animated: true)
+				}
 			})
 			.store(in: &bag)
 	}

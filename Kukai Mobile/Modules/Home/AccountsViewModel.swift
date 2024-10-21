@@ -393,6 +393,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
+		let migrateLedger = UIAction(title: "Migrate To New Device", image: UIImage(named: "WalletLedgerMenu")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "migrate-ledger", sender: meta)
+			}
+		}
+		
 		let remove = UIAction(title: "Remove Wallet", image: UIImage(named: "Delete")) { [weak self] action in
 			
 			// Fetch from store, otherwise it will be stale data
@@ -405,7 +413,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Add different options depending on type of wallet
 		var options: [[UIAction]] = [[edit, addAccount]]
 		if walletMetadata.type == .ledger {
-			options[0].append(customPath)
+			options[0].append(contentsOf: [customPath, migrateLedger])
 		}
 		
 		options[0].append(remove)
