@@ -65,6 +65,8 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		if self.isMovingFromParent {
 			LedgerService.shared.disconnectFromDevice()
 		}
+		
+		LedgerService.shared.stopListening()
 	}
 	
 	func animateTableViewIn() {

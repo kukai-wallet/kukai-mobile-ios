@@ -31,6 +31,7 @@ class DeviceConnectedViewController: UIViewController {
 		addressVerificationLabel.isHidden = true
 		accountScanStackView.isHidden = true
 		numberLabel.text = "0"
+		actionButton.customButtonType = .primary
 		actionButton.isHidden = true
 		actionButton.setTitle("Try Again", for: .normal)
 		errorStackView.isHidden = true
