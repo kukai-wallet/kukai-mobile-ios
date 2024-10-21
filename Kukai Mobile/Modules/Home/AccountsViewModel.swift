@@ -31,9 +31,9 @@ struct AccountsMoreObject: Hashable {
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
@@ -82,14 +82,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+			if let obj = item.base as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
 				cell.checkImage?.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
 				
 				return cell
 				
-			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
+			} else if let obj = item.base as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
 				let walletMedia = TransactionService.walletMedia(forWalletMetadata: obj, ofSize: .size_22)
 				cell.iconView.image = walletMedia.image
 				cell.titleLabel.text = walletMedia.title
@@ -103,7 +103,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
+			} else if let obj = item.base as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
 				cell.setup(obj)
 				return cell
 				
@@ -130,10 +130,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let wallets = DependencyManager.shared.walletList
 		let currentAddress = addressToMarkAsSelected != nil ? addressToMarkAsSelected ?? "" : DependencyManager.shared.selectedWalletAddress ?? ""
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
-		var sections: [Int] = []
-		var sectionData: [[AnyHashable]] = []
+		var sections: [SectionEnum] = []
+		var sectionData: [[AnyHashableSendable]] = []
 		
 		
 		// used later to detect newly added addresses
@@ -145,10 +145,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false)])
+			sectionData.append([.init(AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false))])
 		}
 		for (index, metadata) in wallets.socialWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
@@ -161,10 +161,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Linear
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false)])
+			sectionData.append([.init(AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false))])
 		}
 		for (index, metadata) in wallets.linearWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
@@ -178,10 +178,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if !isPresentingForConnectedApps {
 			if wallets.watchWallets.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false)])
+				sectionData.append([.init(AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false))])
 			}
 			for (index, metadata) in wallets.watchWallets.enumerated() {
-				sectionData[sections.count-1].append(metadata)
+				sectionData[sections.count-1].append(.init(metadata))
 				
 				if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 			}
@@ -228,23 +228,23 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		newAddressIndexPath = nil
 	}
 	
-	private func handleGroupedData(metadataArray: [WalletMetadata], sections: inout [Int], sectionData: inout [[AnyHashable]], currentAddress: String) {
+	private func handleGroupedData(metadataArray: [WalletMetadata], sections: inout [Int], sectionData: inout [[AnyHashableSendable]], currentAddress: String) {
 		
 		for (index, metadata) in metadataArray.enumerated() {
 			sections.append(sections.count)
 			
 			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
+				sectionData.append([.init(AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false))])
 			}
 			
 			let isSectionExpanded = (expandedSection == sections.count-1)
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 			
 			for (childIndex, childMetadata) in metadata.children.enumerated() {
 				
 				// If child should be visible
 				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
-					sectionData[sections.count-1].append(childMetadata)
+					sectionData[sections.count-1].append(.init(childMetadata))
 				}
 				
 				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
@@ -267,7 +267,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			// if there are more than 3 items total, display moreCell
 			if metadata.children.count > 2 {
 				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
-				sectionData[sections.count-1].append(moreData)
+				sectionData[sections.count-1].append(.init(moreData))
 			}
 		}
 	}
@@ -282,11 +282,11 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
-		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? WalletMetadata
 	}
 	
 	func handleMoreCellIfNeeded(indexPath: IndexPath) -> Bool {
-		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? AccountsMoreObject else {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath)?.base as? AccountsMoreObject else {
 			return false
 		}
 		
@@ -307,7 +307,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func parentIndexForIndexPathIfRelevant(indexPath: IndexPath) -> Int? {
 		var firstMetadata: WalletMetadata? = nil
 		for i in 1..<3 {
-			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section)) as? WalletMetadata {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section))?.base as? WalletMetadata {
 				firstMetadata = obj
 				break
 			}
@@ -333,7 +333,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func isLastSubAccount(indexPath: IndexPath) -> Bool {
 		var firstMetadata: WalletMetadata? = nil
 		for i in 1..<3 {
-			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section)) as? WalletMetadata {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section))?.base as? WalletMetadata {
 				firstMetadata = obj
 				break
 			}
@@ -341,7 +341,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		if indexPath.row > 1,
 		   let parentItem = firstMetadata,
-		   let selectedItem = dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata,
+		   let selectedItem = dataSource?.itemIdentifier(for: indexPath)?.base as? WalletMetadata,
 		   (parentItem.type == .hd || parentItem.type == .ledger),
 		   parentItem.children.last?.address == selectedItem.address {
 			return true

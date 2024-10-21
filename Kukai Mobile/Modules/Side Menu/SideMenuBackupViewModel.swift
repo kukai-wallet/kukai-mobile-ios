@@ -11,19 +11,19 @@ import KukaiCoreSwift
 class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuHeadingCell", for: indexPath) as? SideMenuHeadingCell {
+			if let obj = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuHeadingCell", for: indexPath) as? SideMenuHeadingCell {
 				cell.titleLabel.text = obj
 				return cell
 				
-			} else if let obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
+			} else if let obj = item.base as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
 				cell.iconView.image = obj.icon
 				cell.setup(title: obj.title, subtitle: obj.subtitle ?? "", subtitleIsWarning: obj.subtitleIsWarning)
 				
@@ -45,43 +45,43 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Build snapshot
 		let wallets = DependencyManager.shared.walletList
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		var sections: [Int] = []
-		var sectionData: [[AnyHashable]] = []
+		var sectionData: [[AnyHashableSendable]] = []
 		
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["Social Wallets"])
+			sectionData.append([.init("Social Wallets")])
 		}
 		for metadata in wallets.socialWallets {
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
 			let media = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_20)
-			sectionData[sections.count-1].append(SideMenuOptionData(icon: media.image, title: media.title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))
+			sectionData[sections.count-1].append(.init(SideMenuOptionData(icon: media.image, title: media.title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address)))
 		}
 		
 		
 		// HD's
 		if wallets.hdWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["HD Wallets"])
+			sectionData.append([.init("HD Wallets")])
 		}
 		for metadata in wallets.hdWallets {
 			let title = metadata.walletNickname ?? metadata.address.truncateTezosAddress()
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
-			sectionData[sections.count-1].append(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))
+			sectionData[sections.count-1].append(.init(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address)))
 		}
 		
 		
 		// Linear's
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append(["Legacy Wallets"])
+			sectionData.append([.init("Legacy Wallets")])
 		}
 		for metadata in wallets.linearWallets {
 			let title = metadata.walletNickname ?? metadata.address.truncateTezosAddress()
 			let subtitle = metadata.backedUp ? "Backed Up" : "Not Backed Up"
-			sectionData[sections.count-1].append(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address))
+			sectionData[sections.count-1].append(.init(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: title, subtitle: subtitle, subtitleIsWarning: !metadata.backedUp, id: metadata.address)))
 		}
 		
 		
@@ -126,7 +126,7 @@ class SideMenuBackupViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func details(forIndexPath: IndexPath) -> (address: String, backedUp: Bool)? {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionData else {
 			return nil
 		}
 		

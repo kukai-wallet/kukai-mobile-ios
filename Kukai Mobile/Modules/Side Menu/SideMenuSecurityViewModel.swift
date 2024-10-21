@@ -18,21 +18,21 @@ struct SideMenuOptionToggleData: Hashable {
 class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
+			if let obj = item.base as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle ?? ""
 				return cell
 				
-			} else if let obj = item as? SideMenuOptionToggleData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionToggleCell", for: indexPath) as? SideMenuOptionCell {
+			} else if let obj = item.base as? SideMenuOptionToggleData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionToggleCell", for: indexPath) as? SideMenuOptionCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.toggle?.isOn = obj.toggleOn
@@ -55,8 +55,8 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		
 		// Build snapshot
 		
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		var options: [[AnyHashable]] = []
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+		var options: [[AnyHashableSendable]] = []
 		
 		if CurrentDevice.biometricTypeAuthorized() != .unavailable {
 			let biometricType = CurrentDevice.biometricTypeSupported()
@@ -64,16 +64,16 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 			let image = biometricType == .faceID ? UIImage(systemName: "faceid") : UIImage(systemName: "touchid")
 			
 			if CurrentDevice.biometricTypeAuthorized() == .none {
-				options.append([SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: "Not Authorized", subtitleIsWarning: false, id: "biometric-not-auth")])
+				options.append([.init(SideMenuOptionData(icon: image ?? UIImage.unknownToken(), title: title, subtitle: "Not Authorized", subtitleIsWarning: false, id: "biometric-not-auth"))])
 			} else {
-				options.append([SideMenuOptionToggleData(icon: image ?? UIImage.unknownToken(), title: title, toggleOn: StorageService.isBiometricEnabled(), id: "biometric")])
+				options.append([.init(SideMenuOptionToggleData(icon: image ?? UIImage.unknownToken(), title: title, toggleOn: StorageService.isBiometricEnabled(), id: "biometric"))])
 			}
 		}
 		
 		options.append(contentsOf: [
-			[SideMenuOptionData(icon: UIImage(named: "Kukai") ?? UIImage.unknownToken(), title: "Kukai Passcode", subtitle: nil, subtitleIsWarning: false, id: "passcode")],
-			[SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Back Up", subtitle: nil, subtitleIsWarning: false, id: "backup")],
-			[SideMenuOptionData(icon: UIImage(named: "Reset") ?? UIImage.unknownToken(), title: "Reset App", subtitle: nil, subtitleIsWarning: false, id: "reset")]
+			[.init(SideMenuOptionData(icon: UIImage(named: "Kukai") ?? UIImage.unknownToken(), title: "Kukai Passcode", subtitle: nil, subtitleIsWarning: false, id: "passcode"))],
+			[.init(SideMenuOptionData(icon: UIImage(named: "Wallet") ?? UIImage.unknownToken(), title: "Back Up", subtitle: nil, subtitleIsWarning: false, id: "backup"))],
+			[.init(SideMenuOptionData(icon: UIImage(named: "Reset") ?? UIImage.unknownToken(), title: "Reset App", subtitle: nil, subtitleIsWarning: false, id: "reset"))]
 		])
 		
 		snapshot.appendSections(Array(0..<options.count))
@@ -94,7 +94,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		} else if isBiometricCell(forIndexPath: forIndexPath) {
 			return (segue: nil, url: nil)
 			
-		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData {
+		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionData {
 			return (segue: obj.id, url: nil)
 		}
 		
@@ -102,7 +102,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 	}
 	
 	func isBiometricCell(forIndexPath: IndexPath) -> Bool {
-		guard let _ = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionToggleData else {
+		guard let _ = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionToggleData else {
 			return false
 		}
 		
@@ -110,7 +110,7 @@ class SideMenuSecurityViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 	}
 	
 	func isBiometricNotAuthCell(forIndexPath: IndexPath) -> Bool {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData, obj.id == "biometric-not-auth" else {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionData, obj.id == "biometric-not-auth" else {
 			return false
 		}
 		

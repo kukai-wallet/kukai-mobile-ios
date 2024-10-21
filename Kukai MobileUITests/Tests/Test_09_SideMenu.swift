@@ -195,7 +195,7 @@ final class Test_09_SideMenu: XCTestCase {
 		app.tables.staticTexts["Network"].tap()
 		sleep(2)
 		
-		app.tables.staticTexts[ mainnet ? "Mainnet" : "Ghostnet"].tap()
+		app.tables.staticTexts[ mainnet ? "Mainnet" : "Ghostnet"].firstMatch.tap()
 		sleep(4)
 		
 		SharedHelpers.shared.navigationBack(app: app)

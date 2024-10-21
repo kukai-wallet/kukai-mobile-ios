@@ -136,7 +136,7 @@ extension StakeViewController: UITableViewDelegate {
 			TransactionService.shared.delegateData.isAdd = true
 			self.performSegue(withIdentifier: "details", sender: nil)
 			
-		} else if viewModel.isEnterCustom(indePath: indexPath) {
+		} else if viewModel.isEnterCustom(indexPath: indexPath) {
 			self.performSegue(withIdentifier: "custom", sender: nil)
 		}
 	}

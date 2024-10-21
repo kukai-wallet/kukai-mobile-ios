@@ -17,7 +17,7 @@ public struct CollectionEmptyObj: Hashable {
 class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	enum LayoutType {
 		case single
@@ -30,7 +30,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	private var bag = [AnyCancellable]()
 	private var previousLayout: LayoutType = .single
 	
-	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
+	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>?
 	var isVisible = false
 	var forceRefresh = false
 	var isSearching = false
@@ -105,29 +105,29 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			guard let self = self else { return UICollectionViewCell() }
 			
-			if let _ = item as? CollectionEmptyObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCollectionCell", for: indexPath) as? EmptyCollectionCell {
+			if let _ = item.base as? CollectionEmptyObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "EmptyCollectionCell", for: indexPath) as? EmptyCollectionCell {
 				return cell
 				
-			} else if let sortMenu = item as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
+			} else if let sortMenu = item.base as? MenuViewController, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesSearchCell", for: indexPath) as? CollectiblesSearchCell {
 				cell.searchBar.validator = FreeformValidator(allowEmpty: true)
 				cell.searchBar.validatorTextFieldDelegate = self.validatorTextfieldDelegate
 				cell.setup(sortMenu: sortMenu)
 				return cell
 				
-			} else if let obj = item as? Int, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultsCountCell", for: indexPath) as? SearchResultsCountCell {
+			} else if let obj = item.base as? Int, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultsCountCell", for: indexPath) as? SearchResultsCountCell {
 				cell.countLabel.text = "\(obj) Found"
 				return cell
 				
-			} else if let obj = item as? String, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageCollectionViewCell", for: indexPath) as? MessageCollectionViewCell {
+			} else if let obj = item.base as? String, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MessageCollectionViewCell", for: indexPath) as? MessageCollectionViewCell {
 				cell.messageLabel.text = obj
 				return cell
 				
-			} else if self.isSearching, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
+			} else if self.isSearching, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setup(title: obj.name, quantity: balance)
 				return cell
 				
-			} else if self.itemCount <= 1, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
+			} else if self.itemCount <= 1, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
 				cell.titleLabel.text = obj.name
 				cell.subTitleLabel.text = obj.parentAlias ?? ""
 				
@@ -138,7 +138,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				return cell
 				
-			} else if self.isGroupMode == false, let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
+			} else if self.isGroupMode == false, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
 				let type = MediaProxyService.typesContents(types)
@@ -148,17 +148,17 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				
 				return cell
 				
-			} else if let obj = item as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
+			} else if let obj = item.base as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(title: title, displayCount: displayCount, totalCount: nftCollectionRemainderCounts[indexPath.row] ?? 0)
 				
 				return cell
-			} else if let _ = item as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
+			} else if let _ = item.base as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
 				cell.setup()
 				cell.backgroundColor = .clear
 				return cell
 				
-			} else if let _ = item as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
+			} else if let _ = item.base as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
 				cell.setup()
 				cell.backgroundColor = .clear
 				return cell
@@ -181,7 +181,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		imageURLsForCollectibles = []
 		nftCollectionRemainderCounts = []
 		
-		var hashableData: [AnyHashable] = []
+		var hashableData: [AnyHashableSendable] = []
 		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
 		
 		// Add non hidden groups
@@ -193,7 +193,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress()  {
 				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
 					guard !nftGroup.isHidden else { continue }
-					hashableData.append(nftGroup)
+					hashableData.append(.init(nftGroup))
 					
 					
 					// Process URLs and counts for easier later retreival
@@ -212,7 +212,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					self.nftCollectionRemainderCounts.append(remainderCount)
 				}
 			} else {
-				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject(), LoadingContainerCellObject()]
+				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
 			}
 			
 		} else {
@@ -220,27 +220,27 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			// If needs shimmers
 			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 			if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
-				hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
+				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
 			
 			} else {
 				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
 					guard !nftGroup.isHidden else { continue }
 					
-					let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden })
+					let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden }).map({ AnyHashableSendable($0) })
 					hashableData.append(contentsOf: nonHiddenNFTs ?? [])
 				}
 			}
 		}
 		
 		// Build snapshot
-		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		normalSnapshot.appendSections([0, 1])
-		normalSnapshot.appendItems([sortMenu], toSection: 0)
+		normalSnapshot.appendItems([.init(sortMenu)], toSection: 0)
 		
 		if hashableData.count > 0 {
 			normalSnapshot.appendItems(hashableData, toSection: 1)
 		} else {
-			normalSnapshot.appendItems([CollectionEmptyObj()], toSection: 1)
+			normalSnapshot.appendItems([.init(CollectionEmptyObj())], toSection: 1)
 		}
 		
 		itemCount = hashableData.count
@@ -290,16 +290,16 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			
 			if searchResults.count > 0 {
 				searchSnapshot.appendSections([2])
-				searchSnapshot.appendItems(searchResults, toSection: 2)
+				searchSnapshot.appendItems(searchResults.map({ .init($0) }), toSection: 2)
 			} else {
 				searchSnapshot.appendSections([2])
-				searchSnapshot.appendItems(["No items found.\n\nYou do not own any matching items."], toSection: 2)
+				searchSnapshot.appendItems([.init("No items found.\n\nYou do not own any matching items.")], toSection: 2)
 			}
 		}
 		
 		let countIdentifier = searchSnapshot.itemIdentifiers(inSection: 1)
 		searchSnapshot.deleteItems(countIdentifier)
-		searchSnapshot.appendItems([searchResults.count], toSection: 1)
+		searchSnapshot.appendItems([.init(searchResults.count)], toSection: 1)
 		
 		dataSource?.apply(searchSnapshot, animatingDifferences: true)
 	}
@@ -322,10 +322,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			
 			collectionView.collectionViewLayout = self.layout()
 			
-			self.searchSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+			self.searchSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 			self.searchSnapshot.appendSections([0, 1])
-			self.searchSnapshot.appendItems([self.sortMenu], toSection: 0)
-			self.searchSnapshot.appendItems([0], toSection: 1)
+			self.searchSnapshot.appendItems([.init(self.sortMenu)], toSection: 0)
+			self.searchSnapshot.appendItems([.init(0)], toSection: 1)
 			
 			DispatchQueue.main.async {
 				self.dataSource?.apply(self.searchSnapshot, animatingDifferences: true, completion: completion)
@@ -354,7 +354,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func token(forIndexPath indexPath: IndexPath) -> Token? {
-		if let t = dataSource?.itemIdentifier(for: indexPath) as? Token {
+		if let t = dataSource?.itemIdentifier(for: indexPath)?.base as? Token {
 			return t
 		}
 		
@@ -362,7 +362,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
-		return dataSource?.itemIdentifier(for: indexPath) as? NFT
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? NFT
 	}
 	
 	func willDisplayCollectionImage(forIndexPath: IndexPath) -> URL? {
@@ -386,7 +386,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				urls = []
 			}
 			
-		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath) as? NFT {
+		} else if let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? NFT {
 			urls = [MediaProxyService.mediumURL(forNFT: obj)]
 		}
 		
@@ -411,7 +411,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			return createSearchLayout()
 		} else {
 			
-			if dataSource?.itemIdentifier(for: IndexPath(row: 0, section: 1)) is CollectionEmptyObj {
+			if dataSource?.itemIdentifier(for: IndexPath(row: 0, section: 1))?.base is CollectionEmptyObj {
 				return createGroupLayout()
 			} else {
 				switch getLayoutType() {

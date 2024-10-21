@@ -29,21 +29,21 @@ struct SpacerObj: Hashable {
 
 class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuCell", for: indexPath) as? SideMenuCell {
+			if let obj = item.base as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuCell", for: indexPath) as? SideMenuCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle ?? ""
 				return cell
 				
-			} else if let _ = item as? SpacerObj {
+			} else if let _ = item.base as? SpacerObj {
 				return tableView.dequeueReusableCell(withIdentifier: "spacerCell", for: indexPath)
 				
 			} else if let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuAboutCell", for: indexPath) as? SideMenuAboutCell {
@@ -66,21 +66,21 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
 		
-		var options: [AnyHashable] = []
+		var options: [AnyHashableSendable] = []
 		options = [
-			SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, subtitleIsWarning: false, id: "connected"),
-			SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, subtitleIsWarning: false, id: "settings"),
-			SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, subtitleIsWarning: false, id: "security"),
-			SpacerObj(),
-			SideMenuOptionData(icon: UIImage(named: "Contacts") ?? UIImage.unknownToken(), title: "Feedback & Support", subtitle: nil, subtitleIsWarning: false, id: "feedback"),
-			SideMenuOptionData(icon: UIImage(named: "Share") ?? UIImage.unknownToken(), title: "Tell Others about Kukai", subtitle: nil, subtitleIsWarning: false, id: "share"),
-			SpacerObj(),
+			.init(SideMenuOptionData(icon: UIImage(named: "ConnectApps") ?? UIImage.unknownToken(), title: "Connected Apps", subtitle: nil, subtitleIsWarning: false, id: "connected")),
+			.init(SideMenuOptionData(icon: UIImage(named: "GearSolid") ?? UIImage.unknownToken(), title: "Settings", subtitle: nil, subtitleIsWarning: false, id: "settings")),
+			.init(SideMenuOptionData(icon: UIImage(named: "Security") ?? UIImage.unknownToken(), title: "Security", subtitle: nil, subtitleIsWarning: false, id: "security")),
+			.init(SpacerObj()),
+			.init(SideMenuOptionData(icon: UIImage(named: "Contacts") ?? UIImage.unknownToken(), title: "Feedback & Support", subtitle: nil, subtitleIsWarning: false, id: "feedback")),
+			.init(SideMenuOptionData(icon: UIImage(named: "Share") ?? UIImage.unknownToken(), title: "Tell Others about Kukai", subtitle: nil, subtitleIsWarning: false, id: "share")),
+			.init(SpacerObj()),
 		]
 		
-		options.append(UUID())
+		options.append(.init(UUID()))
 		
 		snapshot.appendItems(options, toSection: 0)
 		
@@ -90,7 +90,7 @@ class SideMenuViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func details(forIndexPath: IndexPath) -> SideMenuResponse? {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionData else {
 			return nil
 		}
 		

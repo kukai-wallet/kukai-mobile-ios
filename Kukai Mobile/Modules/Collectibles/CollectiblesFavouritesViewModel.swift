@@ -13,12 +13,12 @@ import OSLog
 class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var bag = [AnyCancellable]()
 	
-	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
+	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>?
 	
 	public var isVisible = false
 	var forceRefresh = false
@@ -70,7 +70,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
-			if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
+			if let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				
 				let types = MediaProxyService.getMediaType(fromFormats: obj.metadata?.formats ?? [])
@@ -81,7 +81,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 				
 				return cell
 				
-			} else if let _ = item as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
+			} else if let _ = item.base as? LoadingContainerCellObject, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingCollectibleCell", for: indexPath) as? LoadingCollectibleCell {
 				cell.setup()
 				cell.backgroundColor = .clear
 				return cell
@@ -99,13 +99,13 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 		}
 		
 		imageURLsForCollectibles = []
-		var hashableData: [AnyHashable] = []
+		var hashableData: [AnyHashableSendable] = []
 		
 		// If needs shimmers
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let balanceService = DependencyManager.shared.balanceService
 		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress), balanceService.isCacheLoadingInProgress() {
-			hashableData = [LoadingContainerCellObject(), LoadingContainerCellObject()]
+			hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
 			
 		} else {
 			for token in DependencyManager.shared.balanceService.account.nfts {
@@ -119,12 +119,12 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 					imageURLsForCollectibles.append([url])
 				}
 				
-				hashableData.append(contentsOf: nfts )
+				hashableData.append(contentsOf: nfts.map({ .init($0) }) )
 			}
 		}
 		
 		// Build snapshot
-		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		normalSnapshot.appendSections([0])
 		normalSnapshot.appendItems(hashableData, toSection: 0)
 		
@@ -135,7 +135,7 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	}
 	
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
-		if let nft = dataSource?.itemIdentifier(for: indexPath) as? NFT {
+		if let nft = dataSource?.itemIdentifier(for: indexPath)?.base as? NFT {
 			return nft
 		}
 		
