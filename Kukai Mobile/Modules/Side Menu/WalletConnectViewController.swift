@@ -7,7 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
-import WalletConnectSign
+import ReownWalletKit
 import Combine
 
 class WalletConnectViewController: UIViewController, BottomSheetContainerDelegate {
@@ -16,7 +16,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	
 	private let viewModel = WalletConnectViewModel()
 	private var bag = Set<AnyCancellable>()
-	private var pairingToChangeAccount: Pairing? = nil
+	private var sessionToChangeAccount: Session? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -42,15 +42,15 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 			}
 		}.store(in: &bag)
 		
-		Sign.instance.sessionUpdatePublisher
+		WalletKit.instance.sessionsPublisher
 			.receive(on: DispatchQueue.main)
-			.sink { [weak self] (sessionTopic: String, namespaces: [String : SessionNamespace]) in
-				self?.pairingToChangeAccount = nil
+			.sink { [weak self] _ in
+				self?.sessionToChangeAccount = nil
 				self?.viewModel.refresh(animate: true)
 				self?.hideLoadingView()
 			}.store(in: &bag)
 		
-		WalletConnectService.shared.$pairsAndSessionsUpdated
+		WalletConnectService.shared.$sessionsUpdated
 			.dropFirst()
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in
@@ -62,18 +62,19 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 	func bottomSheetDataChanged() {
 		self.showLoadingView()
 		
-		// Change account for the given pairing
-		if let pairing = self.pairingToChangeAccount {
+		// Change account for the given session
+		if let session = self.sessionToChangeAccount {
 			
 			let newAddress = DependencyManager.shared.temporarySelectedWalletAddress ?? DependencyManager.shared.selectedWalletAddress ?? ""
-			guard let existingSession = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic }),
-				  let newNamespaces = WalletConnectService.updateNamespaces(forPairing: pairing, toAddress: newAddress) else {
+			guard let newNamespaces = WalletConnectService.updateNamespaces(forSession: session, toAddress: newAddress) else {
 				return
 			}
 			
 			Task {
 				do {
-					try await Sign.instance.update(topic: existingSession.topic, namespaces: newNamespaces)
+					
+					
+					try await WalletKit.instance.update(topic: session.topic, namespaces: newNamespaces)
 					DispatchQueue.main.async { [weak self] in
 						self?.viewModel.refresh(animate: true)
 						UIViewController.removeLoadingView()
@@ -81,7 +82,7 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 					
 				} catch {
 					DispatchQueue.main.async { [weak self] in
-						self?.pairingToChangeAccount = nil
+						self?.sessionToChangeAccount = nil
 						UIViewController.removeLoadingView()
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
 					}
@@ -123,24 +124,20 @@ class WalletConnectViewController: UIViewController, BottomSheetContainerDelegat
 extension WalletConnectViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		guard let pair = viewModel.pairFor(indexPath: indexPath), let cell = tableView.cellForRow(at: indexPath) as? ConnectedAppCell else {
+		guard let session = viewModel.sessionFor(indexPath: indexPath), let cell = tableView.cellForRow(at: indexPath) as? ConnectedAppCell else {
 			return
 		}
 		
-		let menu = menu(forPair: pair)
+		let menu = menu(forSession: session)
 		menu.display(attachedTo: cell.iconView)
 	}
 	
-	func menu(forPair: PairObj) -> MenuViewController {
+	func menu(forSession: SessionObj) -> MenuViewController {
 		
 		let disconnect = UIAction(title: "Disconnect", image: UIImage(named: "Remove")) { action in
 			Task {
 				do {
-					try await Pair.instance.disconnect(topic: forPair.topic)
-					
-					for session in Sign.instance.getSessions().filter({ $0.pairingTopic == forPair.topic }) {
-						try await Sign.instance.disconnect(topic: session.topic)
-					}
+					try await WalletKit.instance.disconnect(topic: forSession.topic)
 				} catch {
 					DispatchQueue.main.async { [weak self] in
 						self?.windowError(withTitle: "error".localized(), description: error.localizedDescription)
@@ -154,14 +151,13 @@ extension WalletConnectViewController: UITableViewDelegate {
 		}
 		
 		let wallet = UIAction(title: "Switch Wallet", image: UIImage(named: "WalletSwitch")) { [weak self] action in
-			guard let pairing = try? Pair.instance.getPairing(for: forPair.topic),
-				  let firstSession = Sign.instance.getSessions().filter({ $0.pairingTopic == pairing.topic }).first,
+			guard let firstSession = WalletKit.instance.getSessions().filter({ $0.topic == forSession.topic }).first,
 				  let firstAccount = firstSession.accounts.first else {
 				self?.windowError(withTitle: "error".localized(), description: "error-wc2-switch-no-pairing".localized())
 				return
 			}
 			
-			self?.pairingToChangeAccount = pairing
+			self?.sessionToChangeAccount = firstSession
 			self?.performSegue(withIdentifier: "accounts", sender: firstAccount.address)
 		}
 		
@@ -172,6 +168,6 @@ extension WalletConnectViewController: UITableViewDelegate {
 		}
 		*/
 		
-		return MenuViewController(actions: [[disconnect, wallet/*, network*/]], header: forPair.site, alertStyleIndexes: [IndexPath(row: 0, section: 0)], sourceViewController: self)
+		return MenuViewController(actions: [[disconnect, wallet/*, network*/]], header: forSession.site, alertStyleIndexes: [IndexPath(row: 0, section: 0)], sourceViewController: self)
 	}
 }

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WalletConnectSign
+import ReownWalletKit
 import KukaiCoreSwift
 import KukaiCryptoSwift
 import WalletConnectNetworking
@@ -32,7 +32,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
 				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())

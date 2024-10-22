@@ -7,7 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
-import WalletConnectSign
+import ReownWalletKit
 import OSLog
 
 class SendGenericConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
@@ -70,7 +70,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
-		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		   let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {

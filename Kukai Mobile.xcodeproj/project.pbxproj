@@ -130,6 +130,7 @@
 		C0411B4F29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0411B4D29DEC2A500778E1E /* TextFieldSuggestionAccessoryViewCell.xib */; };
 		C0411B5129DEFEE600778E1E /* EmailValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411B5029DEFEE600778E1E /* EmailValidator.swift */; };
 		C044B14C2CC6979200132B7F /* MigrateLedgerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044B14B2CC6979200132B7F /* MigrateLedgerViewController.swift */; };
+		C044B14F2CC7A4F100132B7F /* ReownWalletKit in Frameworks */ = {isa = PBXBuildFile; productRef = C044B14E2CC7A4F100132B7F /* ReownWalletKit */; };
 		C044E12F2AAF4BAA0085652F /* SideMenuSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E12E2AAF4BAA0085652F /* SideMenuSettingsViewController.swift */; };
 		C044E1312AAF4CB40085652F /* SideMenuSettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E1302AAF4CB40085652F /* SideMenuSettingsViewModel.swift */; };
 		C044E1332AAF61650085652F /* SideMenuStorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C044E1322AAF61650085652F /* SideMenuStorageViewController.swift */; };
@@ -180,7 +181,6 @@
 		C05B0A372A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05B0A352A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.swift */; };
 		C05B0A382A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C05B0A362A03FC6D005AA803 /* CollectiblesCollectionItemLargeWithTextCell.xib */; };
 		C05D4E0C287D769000E7ED17 /* WalletConnectRequestParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05D4E0B287D769000E7ED17 /* WalletConnectRequestParams.swift */; };
-		C063435A2CA6B7DB001CD5F2 /* WalletConnect in Frameworks */ = {isa = PBXBuildFile; productRef = C06343592CA6B7DB001CD5F2 /* WalletConnect */; };
 		C06343712CAD804E001CD5F2 /* TokenStateServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C06343702CAD804E001CD5F2 /* TokenStateServiceTests.swift */; };
 		C0638AAC2B9B2A22009AA870 /* JailbreakWarningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0638AAB2B9B2A22009AA870 /* JailbreakWarningViewController.swift */; };
 		C064D4D32B87B13E008F5947 /* SideMenuLookupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C064D4D22B87B13E008F5947 /* SideMenuLookupViewController.swift */; };
@@ -841,8 +841,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C063435A2CA6B7DB001CD5F2 /* WalletConnect in Frameworks */,
 				C07A2DF02AEA76BF00550E32 /* Starscream in Frameworks */,
+				C044B14F2CC7A4F100132B7F /* ReownWalletKit in Frameworks */,
 				C0CB9C212A4C512C000E12FA /* KeychainSwift in Frameworks */,
 				C055EF212A2F95ED0031CB5F /* QRCode in Frameworks */,
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
@@ -1684,7 +1684,7 @@
 				C055EF202A2F95ED0031CB5F /* QRCode */,
 				C0CB9C202A4C512C000E12FA /* KeychainSwift */,
 				C07A2DEF2AEA76BF00550E32 /* Starscream */,
-				C06343592CA6B7DB001CD5F2 /* WalletConnect */,
+				C044B14E2CC7A4F100132B7F /* ReownWalletKit */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -1764,7 +1764,7 @@
 				C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */,
 				C0CB9C1F2A4C512C000E12FA /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				C07A2DEE2AEA76BF00550E32 /* XCRemoteSwiftPackageReference "Starscream" */,
-				C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */,
+				C044B14D2CC7A4F100132B7F /* XCRemoteSwiftPackageReference "reown-swift" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -2791,6 +2791,14 @@
 				kind = branch;
 			};
 		};
+		C044B14D2CC7A4F100132B7F /* XCRemoteSwiftPackageReference "reown-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/reown-com/reown-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 		C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/WalletConnect/QRCode";
@@ -2805,14 +2813,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.1.2;
-			};
-		};
-		C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/simonmcl/WalletConnectSwiftV2";
-			requirement = {
-				branch = "1.19.3-with-manifest";
-				kind = branch;
 			};
 		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
@@ -2834,6 +2834,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C044B14E2CC7A4F100132B7F /* ReownWalletKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C044B14D2CC7A4F100132B7F /* XCRemoteSwiftPackageReference "reown-swift" */;
+			productName = ReownWalletKit;
+		};
 		C05240A62770D6DA0031B5D1 /* KukaiCoreSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C00B8B272770C874008E3878 /* XCRemoteSwiftPackageReference "kukai-core-swift" */;
@@ -2843,11 +2848,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C055EF1F2A2F95ED0031CB5F /* XCRemoteSwiftPackageReference "QRCode" */;
 			productName = QRCode;
-		};
-		C06343592CA6B7DB001CD5F2 /* WalletConnect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C0A5F3E12CA6B64C00A337F7 /* XCRemoteSwiftPackageReference "WalletConnectSwiftV2" */;
-			productName = WalletConnect;
 		};
 		C07A2DEF2AEA76BF00550E32 /* Starscream */ = {
 			isa = XCSwiftPackageProductDependency;
