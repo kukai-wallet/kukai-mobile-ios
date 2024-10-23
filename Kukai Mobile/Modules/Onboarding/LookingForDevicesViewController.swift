@@ -31,6 +31,10 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		self.tableView.alpha = 0
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
+		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.startListening()
+		}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -42,21 +46,28 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		self.tableView.reloadData()
-		LedgerService.shared.listenForDevices()
-			.convertToResult()
-			.sink { [weak self] result in
-				guard let devices = try? result.get() else {
-					let error = (try? result.getError()) ?? KukaiError.unknown()
-					self?.windowError(withTitle: "error".localized(), description: "Unable to search for devices, please check bluetooth is enabled and turned on. Error: \(error)")
-					return
+		startListening()
+	}
+	
+	private func startListening() {
+		
+		if !didStartReceiving {
+			self.tableView.reloadData()
+			LedgerService.shared.listenForDevices()
+				.convertToResult()
+				.sink { [weak self] result in
+					guard let devices = try? result.get() else {
+						let error = (try? result.getError()) ?? KukaiError.unknown()
+						self?.windowError(withTitle: "error".localized(), description: "Unable to search for devices, please check bluetooth is enabled and turned on. Error: \(error)")
+						return
+					}
+					
+					self?.didStartReceiving = true
+					self?.deviceList = devices
+					self?.tableView.reloadData()
 				}
-				
-				self?.didStartReceiving = true
-				self?.deviceList = devices
-				self?.tableView.reloadData()
-			}
-			.store(in: &bag)
+				.store(in: &bag)
+		}
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -69,6 +80,7 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		}
 		
 		LedgerService.shared.stopListening()
+		didStartReceiving = false
 	}
 	
 	func animateTableViewIn() {
