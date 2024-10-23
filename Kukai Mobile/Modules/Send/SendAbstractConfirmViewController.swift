@@ -42,6 +42,10 @@ class SendAbstractConfirmViewController: UIViewController {
 			}
 			.store(in: &bag)
 		*/
+		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.ledgerCheck()
+		}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -66,6 +70,10 @@ class SendAbstractConfirmViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		ledgerCheck()
+	}
+	
+	private func ledgerCheck() {
 		if let meta = selectedMetadata, meta.type == .ledger {
 			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
 				if !success {

@@ -66,6 +66,10 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		 }
 		 .store(in: &bag)
 		 */
+		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			self?.ledgerCheck()
+		}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +92,10 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
+		ledgerCheck()
+	}
+	
+	private func ledgerCheck() {
 		if let meta = DependencyManager.shared.walletList.metadata(forAddress: accountToSign), meta.type == .ledger {
 			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
 				if !success {
