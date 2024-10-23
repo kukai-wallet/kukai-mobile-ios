@@ -13,6 +13,7 @@ import OSLog
 class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
+	@IBOutlet weak var closeButton: CustomisableButton!
 	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
@@ -190,7 +191,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	}
 	
 	func didCompleteSlide() {
-		self.blockInteraction()
+		self.blockInteraction(exceptFor: [closeButton])
 		self.performAuth()
 	}
 	

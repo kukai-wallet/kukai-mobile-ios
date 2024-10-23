@@ -15,6 +15,7 @@ import OSLog
 
 class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedProtocol, SlideButtonDelegate {
 	
+	@IBOutlet weak var closeButton: CustomisableButton!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
 	@IBOutlet weak var nameLabel: UILabel!
@@ -118,13 +119,21 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	}
 	
 	public func blockInteraction() {
-		self.view.isUserInteractionEnabled = false
 		self.swipeDownEnabled = false
+		
+		for view in self.view.subviews {
+			if view != closeButton {
+				view.isUserInteractionEnabled = false
+			}
+		}
 	}
 	
 	public func unblockInteraction() {
-		self.view.isUserInteractionEnabled = true
 		self.swipeDownEnabled = true
+		
+		for view in self.view.subviews {
+			view.isUserInteractionEnabled = true
+		}
 	}
 	
 	@IBAction func copyButtonTapped(_ sender: UIButton) {

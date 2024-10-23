@@ -12,6 +12,8 @@ import os.log
 
 class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
+	@IBOutlet weak var closeButton: CustomisableButton!
+	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
 	@IBOutlet weak var connectedAppIcon: UIImageView!
@@ -152,7 +154,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	}
 	
 	func didCompleteSlide() {
-		self.blockInteraction()
+		self.blockInteraction(exceptFor: [closeButton])
 		self.performAuth()
 	}
 	

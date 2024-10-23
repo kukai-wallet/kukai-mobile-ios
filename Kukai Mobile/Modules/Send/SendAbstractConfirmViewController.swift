@@ -181,14 +181,22 @@ class SendAbstractConfirmViewController: UIViewController {
 		})
 	}
 	
-	public func blockInteraction() {
-		self.view.isUserInteractionEnabled = false
+	public func blockInteraction(exceptFor: [UIView]) {
 		self.swipeDownEnabled = false
+		
+		for view in self.view.subviews {
+			if !exceptFor.contains([view]) {
+				view.isUserInteractionEnabled = false
+			}
+		}
 	}
 	
 	public func unblockInteraction() {
-		self.view.isUserInteractionEnabled = true
 		self.swipeDownEnabled = true
+		
+		for view in self.view.subviews {
+			view.isUserInteractionEnabled = true
+		}
 	}
 	
 	public func performAuth() {
