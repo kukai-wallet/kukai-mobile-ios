@@ -8,9 +8,7 @@
 import Foundation
 import KukaiCoreSwift
 import Starscream
-import WalletConnectNetworking
-import WalletConnectPairing
-import WalletConnectSign
+import ReownWalletKit
 import Combine
 import OSLog
 
@@ -90,7 +88,7 @@ public class WalletConnectService {
 	//private var isReconnecting = false
 	//private var isManualDisconnection = true
 	
-	@Published public var pairsAndSessionsUpdated: Bool = false
+	@Published public var sessionsUpdated: Bool = false
 	
 	private init() {}
 	
@@ -103,8 +101,8 @@ public class WalletConnectService {
 		
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
-		Pair.configure(metadata: WalletConnectService.metadata)
-		Sign.configure(crypto: WC2CryptoProvider())
+		WalletKit.configure(metadata: WalletConnectService.metadata, crypto: WC2CryptoProvider())
+		
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { status in
@@ -140,28 +138,21 @@ public class WalletConnectService {
 		
 		
 		// Callbacks
-		Sign.instance.sessionSettlePublisher
+		WalletKit.instance.sessionSettlePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { data in
 				Logger.app.info("WC sessionSettlePublisher \(data.topic)")
 			}.store(in: &bag)
 		
-		Sign.instance.sessionDeletePublisher
+		WalletKit.instance.sessionDeletePublisher
 			.receive(on: DispatchQueue.main)
 			.sink { [weak self] data in 
 				Logger.app.info("WC sessionDeletePublisher \(data.0)")
-				self?.pairsAndSessionsUpdated = true
+				self?.sessionsUpdated = true
 			}.store(in: &bag)
-		
-		(Pair.instance as? PairingClient)?.pairingDeletePublisher
-			.receive(on: DispatchQueue.main)
-			.sink { data in
-				Logger.app.info("WC pairingDeletePublisher \(data.code), \(data.message)")
-			}.store(in: &bag)
-		
 		
 		// Pass WC2 objects to central buffered publisher, as they require identical UI/UX management (displying bottom sheet, requesting user interaction)
-		Sign.instance.sessionProposalPublisher
+		WalletKit.instance.sessionProposalPublisher
 			.sink { [weak self] incomingProposalObj in
 				Logger.app.info("WC sessionProposalPublisher")
 				self?.handleRequestOrProposal()
@@ -172,7 +163,7 @@ public class WalletConnectService {
 				
 			}.store(in: &bag)
 		
-		Sign.instance.sessionRequestPublisher
+		WalletKit.instance.sessionRequestPublisher
 			.sink { [weak self] incomingProposalObj in
 				Logger.app.info("WC sessionRequestPublisher")
 				self?.handleRequestOrProposal()
@@ -195,11 +186,11 @@ public class WalletConnectService {
 			return
 		}
 		
-		if let nextRequest = Sign.instance.getPendingRequests().first {
+		if let nextRequest = WalletKit.instance.getPendingRequests().first {
 			requestOrProposalInProgress = true
 			handleRequest(nextRequest)
 			
-		} else if let nextProposal = Sign.instance.getPendingProposals().first {
+		} else if let nextProposal = WalletKit.instance.getPendingProposals().first {
 			requestOrProposalInProgress = true
 			handleProposal(nextProposal)
 			
@@ -296,7 +287,7 @@ public class WalletConnectService {
 			
 			
 			// Check the requested account and method were previously allowed
-			let session = Sign.instance.getSessions().filter({ $0.topic == request.topic }).first
+			let session = WalletKit.instance.getSessions().filter({ $0.topic == request.topic }).first
 			let allowedAccounts = session?.namespaces["tezos"]?.accounts.map({ $0.absoluteString }) ?? []
 			let allowedMethods = session?.namespaces["tezos"]?.methods ?? []
 			
@@ -385,9 +376,8 @@ public class WalletConnectService {
 		}
 	}
 	
-	public static func updateNamespaces(forPairing pairing: Pairing, toAddress: String/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
-		let session = Sign.instance.getSessions().first(where: { $0.pairingTopic == pairing.topic })
-		var tezosNamespace = session?.namespaces["tezos"]
+	public static func updateNamespaces(forSession session: Session, toAddress: String/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
+		var tezosNamespace = session.namespaces["tezos"]
 		
 		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
 		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
@@ -421,7 +411,7 @@ public class WalletConnectService {
 		
 		Task { [weak self] in
 			do {
-				try await Pair.instance.pair(uri: uri)
+				try await WalletKit.instance.pair(uri: uri)
 				
 			} catch {
 				Logger.app.error("WC Pairing connect error: \(error)")
@@ -466,7 +456,7 @@ public class WalletConnectService {
 				// This gets trigger after an account switch, which may result in the dApp asking for details of an address that is not the currently selected address
 				// Instead search for the stored session properties of the linked session and return details for that address instead. if It exists, fallback to selected
 				var metadataToUse = DependencyManager.shared.selectedWalletMetadata
-				if let relatedSession = Sign.instance.getSessions().filter({ $0.topic == request.topic }).first,
+				if let relatedSession = WalletKit.instance.getSessions().filter({ $0.topic == request.topic }).first,
 				   let addressUsedInSession = relatedSession.namespaces["tezos"]?.accounts.first?.address,
 				   let metadataForAddress = DependencyManager.shared.walletList.metadata(forAddress: addressUsedInSession) {
 					metadataToUse = metadataForAddress
@@ -483,7 +473,7 @@ public class WalletConnectService {
 				}
 				
 				let obj = WalletConnectGetAccountObj(algo: algo, address: metadataToUse?.address ?? "", pubkey: metadataToUse?.bas58EncodedPublicKey ?? "")
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
+				try await WalletKit.instance.respond(topic: request.topic, requestId: request.id, response: .response(AnyCodable([obj])))
 				WalletConnectService.completeRequest(withDelay: 0.3)
 				
 			} catch {
@@ -514,7 +504,7 @@ public class WalletConnectService {
 		Logger.app.info("WC Reject proposal: \(proposal.id)")
 		Task {
 			do {
-				try await Sign.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
+				try await WalletKit.instance.rejectSession(proposalId: proposal.id, reason: .userRejected)
 				Logger.app.info("WC rejectCurrentProposal success")
 				completion?(true, nil)
 				
@@ -560,9 +550,9 @@ public class WalletConnectService {
 		Logger.app.info("WC Approve proposal: \(proposal.id)")
 		Task {
 			do {
-				let _ = try await Sign.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
+				let _ = try await WalletKit.instance.approve(proposalId: proposal.id, namespaces: namespaces, sessionProperties: sessionProperties)
 				Logger.app.info("WC approveCurrentProposal success")
-				WalletConnectService.shared.pairsAndSessionsUpdated = true
+				WalletConnectService.shared.sessionsUpdated = true
 				completion?(true, nil)
 				
 			} catch (let error) {
@@ -587,7 +577,7 @@ public class WalletConnectService {
 		Logger.app.info("WC Reject request: \(request.id)")
 		Task {
 			do {
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
+				try await WalletKit.instance.respond(topic: request.topic, requestId: request.id, response: .error(.init(code: 0, message: withMessage)))
 				Logger.app.info("WC rejectCurrentRequest success")
 				completion?(true, nil)
 				
@@ -621,8 +611,8 @@ public class WalletConnectService {
 					response = .response(AnyCodable(["operationHash": hash]))
 				}
 				
-				try await Sign.instance.respond(topic: request.topic, requestId: request.id, response: response)
-				try? await Sign.instance.extend(topic: request.topic)
+				try await WalletKit.instance.respond(topic: request.topic, requestId: request.id, response: response)
+				try? await WalletKit.instance.extend(topic: request.topic)
 				Logger.app.info("WC approveCurrentRequest success")
 				completion?(true, nil)
 				
