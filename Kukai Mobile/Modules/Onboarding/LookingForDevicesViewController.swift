@@ -32,7 +32,7 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 		self.tableView.delegate = self
 		self.tableView.dataSource = self
 		
-		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+		NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self] _ in
 			self?.startListening()
 		}.store(in: &bag)
     }
@@ -40,6 +40,7 @@ class LookingForDevicesViewController: UIViewController, UITableViewDelegate, UI
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		pairButton.isEnabled = false
 		spinnerImage.rotate360Degrees()
 	}
 	
