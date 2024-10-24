@@ -43,7 +43,7 @@ class SendAbstractConfirmViewController: UIViewController {
 			.store(in: &bag)
 		*/
 		
-		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+		NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self] _ in
 			self?.ledgerCheck()
 		}.store(in: &bag)
     }
