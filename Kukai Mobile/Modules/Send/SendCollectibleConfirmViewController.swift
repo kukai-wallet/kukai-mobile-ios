@@ -231,6 +231,7 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
+		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}

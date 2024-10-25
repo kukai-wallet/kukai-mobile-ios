@@ -194,6 +194,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
+		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 	}

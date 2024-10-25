@@ -108,6 +108,21 @@ class SendAbstractConfirmViewController: UIViewController {
 		}
 	}
 	
+	func checkForErrorsAndWarnings(errorStackView: UIStackView, errorLabel: UILabel, totalFee: XTZAmount) {
+		
+		if (totalFee.toNormalisedDecimal() ?? 0) > 10 {
+			// Warn user that the fee is very high
+			errorStackView.isHidden = false
+			errorLabel.isHidden = false
+			errorLabel.text = "warning-fee-very-high".localized()
+			errorLabel.textColor = .colorNamed("TxtB-alt4")
+		} else {
+			errorStackView.isHidden = true
+			errorLabel.isHidden = true
+			//errorLabel.textColor = .colorNamed("TxtAlert4")
+		}
+	}
+	
 	
 	
 	// MARK: - WC2 functions
