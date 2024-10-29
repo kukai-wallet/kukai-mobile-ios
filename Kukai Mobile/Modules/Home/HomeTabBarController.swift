@@ -167,11 +167,13 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
 			
+			/*
 			// When returning from a long background, WC2 can sometimes be stuck in a disconnected state.
 			// Give it a few seconds to try connect by itself, and then try manual intervention
 			DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
 				self?.recheckWalletConnectAnimation(tryManualReconnect: true)
 			}
+			*/
 		}.store(in: &bag)
 		
 		ThemeManager.shared.$themeDidChange
@@ -250,19 +252,20 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	public override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		recheckWalletConnectAnimation()
+		//recheckWalletConnectAnimation()
 	}
 	
 	// When returning from background, WC2 socket can get stuck sometimes.
 	// First we double check that no event was missed by running the logic again
 	// Second we have an optional request to attempt to reconnect the socket by re-initalising the WC2 singletons
 	public func recheckWalletConnectAnimation(tryManualReconnect: Bool = false) {
-		let isConnected = WalletConnectService.shared.isConnected
+		/*let isConnected = WalletConnectService.shared.isConnected
 		connectionStatusChanged(status: isConnected ? .connected : .disconnected)
 		
 		if !isConnected && tryManualReconnect {
 			attemptWC2Reconnect()
 		}
+		*/
 	}
 	
 	public override func viewDidLayoutSubviews() {
@@ -505,7 +508,7 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func connectionStatusChanged(status: SocketConnectionStatus) {
-		if status == .disconnected {
+		/*if status == .disconnected {
 			
 			if walletConnectActivity.superview == nil {
 				self.walletConnectActivity.frame = self.scanButton.frame
@@ -523,10 +526,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 			self.walletConnectActivity.stopAnimating()
 			self.walletConnectActivity.removeFromSuperview()
 		}
+		 */
 	}
 	
 	@objc private func attemptWC2Reconnect() {
-		WalletConnectService.shared.setup(force: true)
+		//WalletConnectService.shared.setup(force: true)
 	}
 	
 	/*
