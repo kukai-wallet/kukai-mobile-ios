@@ -38,7 +38,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 		
 		if let url = connectionOptions.urlContexts.first?.url {
+			Logger.app.info("Launching with deeplink")
 			handleDeeplink(url: url)
+			
+		} else if let userActivity = connectionOptions.userActivities.first, userActivity.activityType == NSUserActivityTypeBrowsingWeb,  let url = userActivity.webpageURL {
+			Logger.app.info("Launching with universal link")
+			handleDeeplink(url: url)
+			
 		} else {
 			Logger.app.info("Launching without URL")
 		}
@@ -83,6 +89,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
 		guard let url = URLContexts.first?.url else {
+			return
+		}
+		
+		handleDeeplink(url: url)
+	}
+	
+	func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+		guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+			let url = userActivity.webpageURL else {
 			return
 		}
 		
@@ -135,20 +150,29 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		Logger.app.info("Attempting to handle deeplink \(url.absoluteString)")
 		
 		if url.absoluteString.prefix(10) == "kukai://wc" {
-			var wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
-			wc2URI = wc2URI.removingPercentEncoding ?? ""
-			
-			if let uri = try? WalletConnectURI(uriString: String(wc2URI)) {
-				
-				if WalletConnectService.shared.hasBeenSetup {
-					WalletConnectService.shared.pairClient(uri: uri)
-					
-				} else {
-					WalletConnectService.shared.deepLinkPairingToConnect = uri
-				}
-			}
-		} else {
+			let wc2URI = String(url.absoluteString.dropFirst(15)) // just strip off "kukai://wc?uri="
+			handleWC(withURI: wc2URI)
+		} else if url.absoluteString.prefix(28) == "https://connect.kukai.app/wc" {
+			let wc2URI = String(url.absoluteString.dropFirst(33)) // just strip off "https://connect.kukai.app/wc?uri="
+			handleWC(withURI: wc2URI)
+		}
+		else {
 			CustomAuth.handle(url: url)
+		}
+	}
+	
+	private func handleWC(withURI uri: String) {
+		var wc2URI = uri
+		wc2URI = wc2URI.removingPercentEncoding ?? ""
+		
+		if let uri = try? WalletConnectURI(uriString: String(wc2URI)) {
+			
+			if WalletConnectService.shared.hasBeenSetup {
+				WalletConnectService.shared.pairClient(uri: uri)
+				
+			} else {
+				WalletConnectService.shared.deepLinkPairingToConnect = uri
+			}
 		}
 	}
 }
