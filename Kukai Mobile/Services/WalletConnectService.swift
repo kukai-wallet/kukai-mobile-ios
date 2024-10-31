@@ -102,6 +102,7 @@ public class WalletConnectService {
 		// Objects and metadata
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
 		WalletKit.configure(metadata: WalletConnectService.metadata, crypto: WC2CryptoProvider())
+		Events.instance.setTelemetryEnabled(false)
 		
 		
 		// Monitor connection
