@@ -46,21 +46,14 @@ class AddCustomPathViewController: UIViewController, ValidatorTextFieldDelegate 
 		}
 		
 		self.showLoadingView()
-		AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: walletMetadata) { [weak self] success in
-			guard success else {
-				self?.hideLoadingView()
-				return
-			}
-			
-			AddAccountViewModel.addAccountForLedger(wallet: wallet, walletMetadata: walletMetadata, walletIndex: ledgerIndex, customPath: sanitisedText) { errorTitle, errorMessage in
-				self?.hideLoadingView()
-				if let title = errorTitle, let message = errorMessage {
-					self?.windowError(withTitle: title, description: message)
-					
-				} else {
-					DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
-					self?.dismissBottomSheet()
-				}
+		AddAccountViewModel.addAccountForLedger(wallet: wallet, walletMetadata: walletMetadata, walletIndex: ledgerIndex, customPath: sanitisedText) { [weak self] errorTitle, errorMessage in
+			self?.hideLoadingView()
+			if let title = errorTitle, let message = errorMessage {
+				self?.windowError(withTitle: title, description: message)
+				
+			} else {
+				DependencyManager.shared.walletList = WalletCacheService().readMetadataFromDiskAndDecrypt()
+				self?.dismissBottomSheet()
 			}
 		}
 	}
