@@ -270,7 +270,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
 			- Contains 5 or more tokens
 		 */
-		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
 		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
 			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
 			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
