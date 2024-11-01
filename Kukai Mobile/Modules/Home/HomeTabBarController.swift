@@ -180,7 +180,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] _ in
 				(UIApplication.shared.delegate as? AppDelegate)?.setAppearenceProxies()
-				self?.view.setNeedsDisplay()
+				self?.view.setNeedsLayout()
 			}.store(in: &bag)
 		
 		setupTzKTAccountListener()
