@@ -37,6 +37,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
+	
 	public override func viewDidLoad() {
         super.viewDidLoad()
 		self.setupAppearence()
@@ -225,6 +226,22 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	public override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		
+		if #available(iOS 18.0, *), UIDevice.current.userInterfaceIdiom == .pad {
+			
+			// Both iPad and Mac, as mac is running "Designed for iPad"
+			traitOverrides.horizontalSizeClass = .unspecified
+			
+			
+			if ProcessInfo.processInfo.isiOSAppOnMac {
+				/// Fix for macOS Sequoia: without it, the tabs
+				/// appear twice and the view crashes regularly.
+						
+				/// Hides the top tabs
+				self.mode = .tabSidebar
+				self.sidebar.isHidden = true
+			}
+		}
 		
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true

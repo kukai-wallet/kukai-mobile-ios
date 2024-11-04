@@ -20,7 +20,7 @@ class DiscoverFeaturedCell: UITableViewCell {
 	
 	private var discoverGroup: DiscoverGroup = DiscoverGroup(id: UUID(), title: "", items: [])
 	private var timer: Timer? = nil
-	private let pageWidth: CGFloat = UIScreen.main.bounds.width
+	private var pageWidth: CGFloat = 0
 	private var pageHeight: CGFloat = 0
 	private var customAspectRatioLogicHasBeenRun = false
 	private static let estimatedTextHeight: CGFloat = 40
@@ -47,8 +47,8 @@ class DiscoverFeaturedCell: UITableViewCell {
 	 This cell has very custom aspect ratio sizing business logic, that can't be done via interface builder.
 	 Also couldn't find an easy way to calcualte the actual sizes of other ocmponents, for now just hardcode to known values, can revisit late rif it becomes an issue
 	 */
-	static func featuredCellCustomHeight() -> CGFloat {
-		let screenWidth = UIScreen.main.bounds.width
+	static func featuredCellCustomHeight(currentWindowBounds: CGRect) -> CGFloat {
+		let screenWidth = currentWindowBounds.width
 		let newHeight = Decimal(screenWidth/DiscoverFeaturedCell.customAspectRatio).rounded(scale: 0, roundingMode: .up).intValue()
 		return CGFloat(newHeight) + DiscoverFeaturedCell.estimatedTextHeight + DiscoverFeaturedCell.estimatedPageControlSize
 	}
@@ -56,6 +56,8 @@ class DiscoverFeaturedCell: UITableViewCell {
 	override func layoutSubviews() {
 		if !customAspectRatioLogicHasBeenRun {
 			customAspectRatioLogicHasBeenRun = true
+			
+			pageWidth = self.parentViewController()?.view.window?.windowScene?.keyWindow?.bounds.width ?? 0
 			
 			let newHeight = Decimal(pageWidth/DiscoverFeaturedCell.customAspectRatio).rounded(scale: 0, roundingMode: .up).intValue()
 			pageHeight = CGFloat(newHeight)

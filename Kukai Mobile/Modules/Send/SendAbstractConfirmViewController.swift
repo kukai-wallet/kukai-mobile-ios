@@ -50,6 +50,7 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		UIApplication.shared.isIdleTimerDisabled = true
 		
 		// Monitor connection
 		if isWalletConnectOp {
@@ -85,6 +86,7 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		UIApplication.shared.isIdleTimerDisabled = false
 		
 		if !didSend && isWalletConnectOp {
 			handleRejection(andDismiss: false)

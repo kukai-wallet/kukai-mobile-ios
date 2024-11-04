@@ -75,6 +75,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		UIApplication.shared.isIdleTimerDisabled = true
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
@@ -108,6 +109,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		UIApplication.shared.isIdleTimerDisabled = false
 		
 		if !didSend {
 			handleRejection(andDismiss: false)
