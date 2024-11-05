@@ -809,6 +809,8 @@
 		C0EF1BC4289296D900AA5DD4 /* SlideButton.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SlideButton.xib; sourceTree = "<group>"; };
 		C0EF1BC62892DC7D00AA5DD4 /* LiquidityTokenDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewController.swift; sourceTree = "<group>"; };
 		C0EF1BC82892DCE000AA5DD4 /* LiquidityTokenDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiquidityTokenDetailsViewModel.swift; sourceTree = "<group>"; };
+		C0EF27D92CDA405700CE1FCE /* Kukai Mobile-beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Kukai Mobile-beta.entitlements"; sourceTree = "<group>"; };
+		C0EF27DA2CDA405700CE1FCE /* Kukai Mobile-dev.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Kukai Mobile-dev.entitlements"; sourceTree = "<group>"; };
 		C0F5A8DD29ED85580061DBBD /* EditWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWalletViewController.swift; sourceTree = "<group>"; };
 		C0F7113429DCBA0D00FA59E0 /* RecoveryPhraseInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseInfoViewController.swift; sourceTree = "<group>"; };
 		C0F7113629DCBE0500FA59E0 /* RecoveryPhraseScreenshotWarningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPhraseScreenshotWarningViewController.swift; sourceTree = "<group>"; };
@@ -1406,6 +1408,8 @@
 			isa = PBXGroup;
 			children = (
 				C080CC0D2773429200780F7E /* Kukai Mobile.entitlements */,
+				C0EF27D92CDA405700CE1FCE /* Kukai Mobile-beta.entitlements */,
+				C0EF27DA2CDA405700CE1FCE /* Kukai Mobile-dev.entitlements */,
 				C0B03642269EE2070071ACD0 /* AppDelegate.swift */,
 				C0B03644269EE2070071ACD0 /* SceneDelegate.swift */,
 				C0B0364B269EE2070071ACD0 /* Assets.xcassets */,
@@ -2432,10 +2436,12 @@
 		C0B0366A269EE2070071ACD0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_DEEPLINK_1 = "";
+				APP_DEEPLINK_2 = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUNDLE_ID_SUFFIX = .dev;
-				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile-dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 346;
@@ -2471,6 +2477,8 @@
 		C0B0366B269EE2070071ACD0 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_DEEPLINK_1 = kukai;
+				APP_DEEPLINK_2 = "com.googleusercontent.apps.952872982551-mtrcpgj8ccfecnflf9bk5c161rt1dmmr";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUNDLE_ID_SUFFIX = "";
@@ -2653,10 +2661,12 @@
 		C0B03676269EE3080071ACD0 /* Beta */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_DEEPLINK_1 = "";
+				APP_DEEPLINK_2 = "com.googleusercontent.apps.952872982551-os146b77tatd0o36q9l195s3s674odv8";
 				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon${BUNDLE_ID_SUFFIX}";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				BUNDLE_ID_SUFFIX = .beta;
-				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile.entitlements";
+				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile-beta.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;

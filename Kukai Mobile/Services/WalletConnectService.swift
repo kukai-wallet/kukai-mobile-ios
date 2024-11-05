@@ -74,11 +74,6 @@ public class WalletConnectService {
 	
 	private var bag = [AnyCancellable]()
 	private static let projectId = "97f804b46f0db632c52af0556586a5f3"
-	private static let metadata = AppMetadata(name: "Kukai iOS",
-											  description: "Kukai iOS",
-											  url: "https://wallet.kukai.app",
-											  icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"],
-											  redirect: (try! AppMetadata.Redirect(native: "kukai://", universal: "https://connect.kukai.app", linkMode: true)) )
 	
 	private var pairingTimer: Timer? = nil
 	private var requestOrProposalInProgress = false
@@ -99,9 +94,26 @@ public class WalletConnectService {
 		
 		bag.removeAll()
 		
+		// Setup redirect for release only, so beta doesn't interact with it
+		#if BETA
+		guard let redirect = try? AppMetadata.Redirect(native: "", universal: nil) else {
+			return
+		}
+		#elseif DEBUG
+		guard let redirect = try? AppMetadata.Redirect(native: "", universal: nil) else {
+			return
+		}
+		#else
+		guard let redirect = try? AppMetadata.Redirect(native: "kukai://", universal: "https://connect.kukai.app", linkMode: true) else {
+			return
+		}
+		#endif
+		
+		
 		// Objects and metadata
+		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"], redirect: redirect)
 		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
-		WalletKit.configure(metadata: WalletConnectService.metadata, crypto: WC2CryptoProvider())
+		WalletKit.configure(metadata: metadata, crypto: WC2CryptoProvider())
 		Events.instance.setTelemetryEnabled(false)
 		
 		
