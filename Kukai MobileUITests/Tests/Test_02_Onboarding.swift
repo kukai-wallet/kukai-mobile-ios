@@ -391,7 +391,7 @@ final class Test_02_Onboarding: XCTestCase {
 	func testImportSocial_apple() {
 		Test_02_Onboarding.handleLoggingInToAppleIdIfNeeded()
 		
-		let app = XCUIApplication()
+		let app = SharedHelpers.shared.application()
 		app.launch()
 		sleep(2)
 		
@@ -417,6 +417,11 @@ final class Test_02_Onboarding: XCTestCase {
 		let continueWithPassword = testApp.buttons["Continue with Password"]
 		if continueWithPassword.exists {
 			continueWithPassword.tap()
+		}
+		
+		let signInWithPassword = testApp.buttons["Sign In with Password"]
+		if signInWithPassword.exists {
+			signInWithPassword.tap()
 		}
 		
 		testApp.secureTextFields["Password"].tap()

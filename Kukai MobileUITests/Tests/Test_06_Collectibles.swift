@@ -35,12 +35,21 @@ final class Test_06_Collectibles: XCTestCase {
 		sleep(2)
 		
 		
+		// Make sure we are in a good state
+		if app.buttons["Collections"].exists && !app.buttons["All"].exists {
+			app.buttons["colelctibles-tap-more"].tap()
+			app.popovers.tables.staticTexts["Ungroup Collections"].tap()
+			sleep(2)
+		}
+		
+		
 		// Test content is displayed, currently no favourites
 		XCTAssert(app.collectionViews["collectibles-list-view"].cells.containing(.image, identifier: "collecibtles-large-icon").count > 0)
 		
 		app.buttons["Favorites"].tap()
 		sleep(1)
 		XCTAssert(app.collectionViews["collectibles-fav-view"].cells.containing(.image, identifier: "collecibtles-large-icon").count == 0)
+		
 		
 		// Test favouriting works
 		app.buttons["All"].tap()

@@ -99,20 +99,25 @@ public class WalletConnectService {
 		guard let redirect = try? AppMetadata.Redirect(native: "", universal: nil) else {
 			return
 		}
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile.beta", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
+		
 		#elseif DEBUG
 		guard let redirect = try? AppMetadata.Redirect(native: "", universal: nil) else {
 			return
 		}
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile.dev", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
+		
 		#else
 		guard let redirect = try? AppMetadata.Redirect(native: "kukai://", universal: "https://connect.kukai.app", linkMode: true) else {
 			return
 		}
+		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
+		
 		#endif
 		
 		
 		// Objects and metadata
 		let metadata = AppMetadata(name: "Kukai iOS", description: "Kukai iOS", url: "https://wallet.kukai.app", icons: ["https://wallet.kukai.app/assets/img/header-logo.svg"], redirect: redirect)
-		Networking.configure(groupIdentifier: "group.app.kukai.mobile", projectId: WalletConnectService.projectId, socketFactory: DefaultSocketFactory(), socketConnectionType: .automatic)
 		WalletKit.configure(metadata: metadata, crypto: WC2CryptoProvider())
 		Events.instance.setTelemetryEnabled(false)
 		
