@@ -7,12 +7,13 @@
 
 import UIKit
 import KukaiCoreSwift
-import WalletConnectSign
+import ReownWalletKit
 import OSLog
 
 class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
+	@IBOutlet weak var closeButton: CustomisableButton!
 	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
@@ -56,7 +57,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
 	@IBOutlet weak var slideErrorStackView: UIStackView!
-	@IBOutlet weak var ledgerWarningLabel: UILabel!
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
@@ -78,7 +78,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
-		   let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		   let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
 			
 			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
 				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
@@ -140,18 +140,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		
 		// Ledger check
-		if selectedMetadata?.type != .ledger {
-			ledgerWarningLabel.isHidden = true
-		}
-		
-		
-		// Error / warning check (TBD)
-		errorLabel.isHidden = true
-		
-		
-		if ledgerWarningLabel.isHidden && errorLabel.isHidden {
-			slideErrorStackView.isHidden = true
-		}
+		slideErrorStackView.isHidden = true
 		
 		slideButton.delegate = self
 	}
@@ -182,7 +171,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func didCompleteSlide() {
-		self.blockInteraction()
+		self.blockInteraction(exceptFor: [closeButton])
 		self.performAuth()
 	}
 	
@@ -204,8 +193,11 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 					
 				case .failure(let sendError):
 					self?.unblockInteraction()
-					self?.windowError(withTitle: "error".localized(), description: sendError.description)
 					self?.slideButton?.resetSlider()
+					
+					if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
+						self?.windowError(withTitle: "error".localized(), description: message)
+					}
 			}
 		}
 	}
@@ -257,6 +249,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
 		
+		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
 		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
 		

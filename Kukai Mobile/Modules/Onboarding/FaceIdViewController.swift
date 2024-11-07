@@ -60,8 +60,9 @@ class FaceIdViewController: UIViewController {
 		let importVc = self.navigationController?.viewControllers.filter({ $0 is ImportWalletViewController }).first
 		let socialVc = self.navigationController?.viewControllers.filter({ $0 is CreateWithSocialViewController }).first
 		let watchVc = self.navigationController?.viewControllers.filter({ $0 is WatchWalletViewController }).first
+		let deviceConnectedVc = self.navigationController?.viewControllers.filter({ $0 is DeviceConnectedViewController }).first
 		
-		if importVc != nil || socialVc != nil || watchVc != nil {
+		if importVc != nil || socialVc != nil || watchVc != nil || deviceConnectedVc != nil {
 			self.performSegue(withIdentifier: "home", sender: self)
 		} else {
 			self.performSegue(withIdentifier: "next", sender: nil)

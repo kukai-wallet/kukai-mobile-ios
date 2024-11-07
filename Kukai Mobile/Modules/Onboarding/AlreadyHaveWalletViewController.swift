@@ -24,7 +24,7 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 	}
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 4
+		return 5
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -47,18 +47,16 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 				cell.iconView.image = UIImage(named: "WalletHD")
 				cell.titleLabel.text = "Import a Private Key"
 				cell.descriptionLabel.text = "Import a wallet from a private key"
-				
-			case 3:
-				cell.iconView.image = UIImage(named: "WalletWatch")
-				cell.titleLabel.text = "Watch a Tezos Address"
-				cell.descriptionLabel.text = "Watch a public address or .tez domain"
 			
-			/*
-			case 4:
+			case 3:
 				cell.iconView.image = UIImage(named: "WalletLedger")
 				cell.titleLabel.text = "Connect with Ledger"
 				cell.descriptionLabel.text = "Add accounts from your Bluetooth hardware wallet"
-			*/
+				
+			case 4:
+				cell.iconView.image = UIImage(named: "WalletWatch")
+				cell.titleLabel.text = "Watch a Tezos Address"
+				cell.descriptionLabel.text = "Watch a public address or .tez domain"
 				
 			default:
 				cell.iconView.image = UIImage()
@@ -79,14 +77,12 @@ class AlreadyHaveWalletViewController: UIViewController, UITableViewDelegate, UI
 			
 			case 2:
 				self.performSegue(withIdentifier: "private-key", sender: nil)
-				
-			case 3:
-				self.performSegue(withIdentifier: "watch", sender: nil)
 			
-			/*
+			case 3:
+				self.performSegue(withIdentifier: "ledger", sender: nil)
+				
 			case 4:
-				self.alert(withTitle: "Under Construction", andMessage: "coming soon")
-			*/
+				self.performSegue(withIdentifier: "watch", sender: nil)
 				
 			default:
 				self.alert(withTitle: "Under Construction", andMessage: "coming soon")

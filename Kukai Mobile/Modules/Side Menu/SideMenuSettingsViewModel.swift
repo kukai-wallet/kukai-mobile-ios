@@ -11,15 +11,15 @@ import KukaiCoreSwift
 class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
+			if let obj = item.base as? SideMenuOptionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuOptionCell", for: indexPath) as? SideMenuOptionCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle ?? ""
@@ -49,14 +49,14 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		let collectibleStorageSize = ByteCountFormatter().string(fromByteCount: int64)
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0, 1, 2, 3, 4])
 		
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, subtitleIsWarning: false, id: "network")], toSection: 0)
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, subtitleIsWarning: false, id: "currency")], toSection: 1)
-		snapshot.appendItems([SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, subtitleIsWarning: false, id: "theme")], toSection: 2)
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Storage", subtitle: collectibleStorageSize, subtitleIsWarning: false, id: "storage")], toSection: 3)
-		snapshot.appendItems([SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Activity Domains and Aliases", subtitle: "", subtitleIsWarning: false, id: "lookup")], toSection: 4)
+		snapshot.appendItems([.init(SideMenuOptionData(icon: UIImage(named: "Network") ?? UIImage.unknownToken(), title: "Network", subtitle: selectedNetwork, subtitleIsWarning: false, id: "network"))], toSection: 0)
+		snapshot.appendItems([.init(SideMenuOptionData(icon: UIImage(named: "Currency") ?? UIImage.unknownToken(), title: "Currency", subtitle: selectedCurrency, subtitleIsWarning: false, id: "currency"))], toSection: 1)
+		snapshot.appendItems([.init(SideMenuOptionData(icon: themeImage, title: "Theme", subtitle: selectedTheme, subtitleIsWarning: false, id: "theme"))], toSection: 2)
+		snapshot.appendItems([.init(SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Storage", subtitle: collectibleStorageSize, subtitleIsWarning: false, id: "storage"))], toSection: 3)
+		snapshot.appendItems([.init(SideMenuOptionData(icon: UIImage(named: "Storage") ?? UIImage.unknownToken(), title: "Activity Domains and Aliases", subtitle: "", subtitleIsWarning: false, id: "lookup"))], toSection: 4)
 		
 		ds.applySnapshotUsingReloadData(snapshot)
 		
@@ -64,7 +64,7 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 	}
 	
 	func segue(forIndexPath: IndexPath) -> String? {
-		guard let obj = dataSource?.itemIdentifier(for: forIndexPath) as? SideMenuOptionData else {
+		guard let obj = dataSource?.itemIdentifier(for: forIndexPath)?.base as? SideMenuOptionData else {
 			return nil
 		}
 		

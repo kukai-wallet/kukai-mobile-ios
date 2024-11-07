@@ -31,9 +31,9 @@ struct AccountsMoreObject: Hashable {
 class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	public var selectedIndex: IndexPath = IndexPath(row: -1, section: -1)
 	public weak var delegate: AccountsViewModelDelegate? = nil
 	public var isPresentingForConnectedApps = false
@@ -41,6 +41,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	public var newAddressIndexPath: IndexPath? = nil
 	
 	private var bag = [AnyCancellable]()
+	private static var staticBag = [AnyCancellable]()
 	private var newWalletAutoSelected = false
 	private var previousAddresses: [String] = []
 	private var newlyAddedAddress: String? = nil
@@ -81,14 +82,14 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = EditableDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			
-			if let obj = item as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
+			if let obj = item.base as? AccountsHeaderObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsSectionHeaderCell", for: indexPath) as? AccountsSectionHeaderCell {
 				cell.headingLabel.text = obj.header
 				cell.setup(menuVC: obj.menu)
-				cell.checkImage.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
+				cell.checkImage?.isHidden = !(self?.selectedIndex.section == indexPath.section && (self?.selectedIndex.row ?? 0) > 3)
 				
 				return cell
 				
-			} else if let obj = item as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
+			} else if let obj = item.base as? WalletMetadata, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountItemCell", for: indexPath) as? AccountItemCell {
 				let walletMedia = TransactionService.walletMedia(forWalletMetadata: obj, ofSize: .size_22)
 				cell.iconView.image = walletMedia.image
 				cell.titleLabel.text = walletMedia.title
@@ -102,7 +103,7 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
+			} else if let obj = item.base as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
 				cell.setup(obj)
 				return cell
 				
@@ -129,10 +130,10 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let wallets = DependencyManager.shared.walletList
 		let currentAddress = addressToMarkAsSelected != nil ? addressToMarkAsSelected ?? "" : DependencyManager.shared.selectedWalletAddress ?? ""
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
-		var sections: [Int] = []
-		var sectionData: [[AnyHashable]] = []
+		var sections: [SectionEnum] = []
+		var sectionData: [[AnyHashableSendable]] = []
 		
 		
 		// used later to detect newly added addresses
@@ -144,88 +145,43 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Social
 		if wallets.socialWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false)])
+			sectionData.append([.init(AccountsHeaderObject(header: "Social Wallets", menu: nil, showLess: false))])
 		}
 		for (index, metadata) in wallets.socialWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
-			sections.append(sections.count)
-			
-			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
-				sectionData.append([AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false)])
-			}
-			
-			let isSectionExpanded = (expandedSection == sections.count-1)
-			sectionData[sections.count-1].append(metadata)
-			
-			for (childIndex, childMetadata) in metadata.children.enumerated() {
-				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
-					sectionData[sections.count-1].append(childMetadata)
-				}
-				
-				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
-				if childMetadata.address == currentAddress {
-					selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1)
-				}
-				
-				
-				// Check if we added a new child address, which doesn't get auto selected
-				if !previousAddresses.contains(childMetadata.address) {
-					newlyAddedAddress = childMetadata.address
-					newAddressIndexPath = IndexPath(row: childIndex, section: sections.count-1)
-					previousAddresses.append(childMetadata.address)
-				}
-			}
-			
-			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
-			
-			
-			// if there are more than 3 items total, display moreCell
-			if metadata.children.count > 2 {
-				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
-				sectionData[sections.count-1].append(moreData)
-			}
-		}
+		handleGroupedData(metadataArray: wallets.hdWallets, sections: &sections, sectionData: &sectionData, currentAddress: currentAddress)
 		
 		
 		// Linear
 		if wallets.linearWallets.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false)])
+			sectionData.append([.init(AccountsHeaderObject(header: "Legacy Wallets", menu: nil, showLess: false))])
 		}
 		for (index, metadata) in wallets.linearWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
+			sectionData[sections.count-1].append(.init(metadata))
 			
 			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 		}
 		
 		
 		// Ledger
-		if wallets.ledgerWallets.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([AccountsHeaderObject(header: "Ledger Wallets", menu: nil, showLess: false)])
-		}
-		for (index, metadata) in wallets.ledgerWallets.enumerated() {
-			sectionData[sections.count-1].append(metadata)
-			
-			if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
-		}
+		handleGroupedData(metadataArray: wallets.ledgerWallets, sections: &sections, sectionData: &sectionData, currentAddress: currentAddress)
 		
 		
 		// Watch
 		if !isPresentingForConnectedApps {
 			if wallets.watchWallets.count > 0 {
 				sections.append(sections.count)
-				sectionData.append([AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false)])
+				sectionData.append([.init(AccountsHeaderObject(header: "Watch Wallets", menu: nil, showLess: false))])
 			}
 			for (index, metadata) in wallets.watchWallets.enumerated() {
-				sectionData[sections.count-1].append(metadata)
+				sectionData[sections.count-1].append(.init(metadata))
 				
 				if metadata.address == currentAddress { selectedIndex = IndexPath(row: index+1, section: sections.count-1) }
 			}
@@ -272,6 +228,50 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		newAddressIndexPath = nil
 	}
 	
+	private func handleGroupedData(metadataArray: [WalletMetadata], sections: inout [Int], sectionData: inout [[AnyHashableSendable]], currentAddress: String) {
+		
+		for (index, metadata) in metadataArray.enumerated() {
+			sections.append(sections.count)
+			
+			if let menu = menuFor(walletMetadata: metadata, hdWalletIndex: index) {
+				sectionData.append([.init(AccountsHeaderObject(header: metadata.hdWalletGroupName ?? "", menu: menu, showLess: false))])
+			}
+			
+			let isSectionExpanded = (expandedSection == sections.count-1)
+			sectionData[sections.count-1].append(.init(metadata))
+			
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				
+				// If child should be visible
+				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+					sectionData[sections.count-1].append(.init(childMetadata))
+				}
+				
+				// If it is selected, take note of its postion, whether its in order or reordered for the sake of the collapse view
+				if childMetadata.address == currentAddress {
+					selectedIndex = IndexPath(row: childIndex+2, section: sections.count-1)
+				}
+				
+				
+				// Check if we added a new child address, which doesn't get auto selected
+				if !previousAddresses.contains(childMetadata.address) {
+					newlyAddedAddress = childMetadata.address
+					newAddressIndexPath = IndexPath(row: childIndex, section: sections.count-1)
+					previousAddresses.append(childMetadata.address)
+				}
+			}
+			
+			if metadata.address == currentAddress { selectedIndex = IndexPath(row: 1, section: sections.count-1) }
+			
+			
+			// if there are more than 3 items total, display moreCell
+			if metadata.children.count > 2 {
+				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(.init(moreData))
+			}
+		}
+	}
+	
 	// We only want to disable this during the adding of new accounts, via the context menu for HD wallets. Which should only be triggered once
 	// Once thats been triggered, unless another is added, we should resume scrolling to selected
 	func scrollToSelected() -> Bool {
@@ -282,11 +282,11 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func metadataFor(indexPath: IndexPath) -> WalletMetadata? {
-		return dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? WalletMetadata
 	}
 	
 	func handleMoreCellIfNeeded(indexPath: IndexPath) -> Bool {
-		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? AccountsMoreObject else {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath)?.base as? AccountsMoreObject else {
 			return false
 		}
 		
@@ -305,19 +305,44 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	/// Deleting a child index requires a HD parent wallet index (for performance reasons). Return the index of the HD wallet, if relevant
 	func parentIndexForIndexPathIfRelevant(indexPath: IndexPath) -> Int? {
+		var firstMetadata: WalletMetadata? = nil
+		for i in 1..<3 {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section))?.base as? WalletMetadata {
+				firstMetadata = obj
+				break
+			}
+		}
 		
-		if indexPath.row > 1, let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata, parentItem.type == .hd {
-			return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
+		if indexPath.row > 1, let parentItem = firstMetadata {
+			
+			switch parentItem.type {
+				case .regular, .regularShifted, .social:
+					return nil
+					
+				case .hd:
+					return DependencyManager.shared.walletList.hdWallets.firstIndex(where: { $0.address == parentItem.address })
+					
+				case .ledger:
+					return DependencyManager.shared.walletList.ledgerWallets.firstIndex(where: { $0.address == parentItem.address })
+			}
 		}
 		
 		return nil
 	}
 	
 	func isLastSubAccount(indexPath: IndexPath) -> Bool {
+		var firstMetadata: WalletMetadata? = nil
+		for i in 1..<3 {
+			if let obj = dataSource?.itemIdentifier(for: IndexPath(row: i, section: indexPath.section))?.base as? WalletMetadata {
+				firstMetadata = obj
+				break
+			}
+		}
+		
 		if indexPath.row > 1,
-		   let parentItem = dataSource?.itemIdentifier(for: IndexPath(row: 1, section: indexPath.section)) as? WalletMetadata,
-		   let selectedItem = dataSource?.itemIdentifier(for: indexPath) as? WalletMetadata,
-		   parentItem.type == .hd,
+		   let parentItem = firstMetadata,
+		   let selectedItem = dataSource?.itemIdentifier(for: indexPath)?.base as? WalletMetadata,
+		   (parentItem.type == .hd || parentItem.type == .ledger),
 		   parentItem.children.last?.address == selectedItem.address {
 			return true
 		}
@@ -339,15 +364,40 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let addAccount = UIAction(title: "Add Account", image: UIImage(named: "AddNewAccount")) { [weak self] action in
 			
 			vc.showLoadingView()
-			AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
-				vc.hideLoadingView()
-				if let title = errorTitle, let message = errorMessage {
-					vc.windowError(withTitle: title, description: message)
-				} else {
-					self?.shouldScrollToSelected = false
-					self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
-					self?.refresh(animate: true)
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: walletMetadata) { success in
+				guard success else {
+					vc.hideLoadingView()
+					LedgerService.shared.disconnectFromDevice()
+					return
 				}
+				
+				AddAccountViewModel.addAccount(forMetadata: walletMetadata, hdWalletIndex: hdWalletIndex, forceMainnet: false) { [weak self] errorTitle, errorMessage in
+					vc.hideLoadingView()
+					LedgerService.shared.disconnectFromDevice()
+					if let title = errorTitle, let message = errorMessage {
+						vc.windowError(withTitle: title, description: message)
+					} else {
+						self?.shouldScrollToSelected = false
+						self?.expandedSection = DependencyManager.shared.walletList.socialWallets.count > 0 ? hdWalletIndex+1 : hdWalletIndex
+						self?.refresh(animate: true)
+					}
+				}
+			}
+		}
+		
+		let customPath = UIAction(title: "Add Custom Path", image: UIImage(named: "CustomPath")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "custom-path", sender: meta)
+			}
+		}
+		
+		let migrateLedger = UIAction(title: "Migrate To New Device", image: UIImage(named: "WalletLedgerMenu")) { [weak self] action in
+			
+			// Fetch from store, otherwise it will be stale data
+			if let meta = DependencyManager.shared.walletList.metadata(forAddress: walletMetadata.address) {
+				self?.delegate?.performSegue(withIdentifier: "migrate-ledger", sender: meta)
 			}
 		}
 		
@@ -359,7 +409,15 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 		}
 		
-		return MenuViewController(actions: [[edit, addAccount, remove]], header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: 2, section: 0)], sourceViewController: vc)
+		
+		// Add different options depending on type of wallet
+		var options: [[UIAction]] = [[edit, addAccount]]
+		if walletMetadata.type == .ledger {
+			options[0].append(contentsOf: [customPath, migrateLedger])
+		}
+		
+		options[0].append(remove)
+		return MenuViewController(actions: options, header: walletMetadata.hdWalletGroupName, alertStyleIndexes: [IndexPath(row: options[0].count-1, section: 0)], sourceViewController: vc)
 	}
 	
 	func pullToRefresh(animate: Bool) {
@@ -388,5 +446,67 @@ class AccountsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.state = .failure(error, "Error occurred fetching tezos domains")
 			}
 		}
+	}
+	
+	public static func askToConnectToLedgerIfNeeded(walletMetadata: WalletMetadata, completion: @escaping ((Bool) -> Void)) {
+		guard walletMetadata.type == .ledger, LedgerService.shared.getConnectedDeviceUUID() == nil, let rootVc = UIApplication.shared.currentWindow?.rootViewController else {
+			completion(true)
+			return
+		}
+		
+		var topMostVc = rootVc
+		if let nav = rootVc as? UINavigationController, let last = nav.viewControllers.last {
+			topMostVc = last
+		}
+		
+		if let modal = rootVc.presentedViewController {
+			topMostVc = modal
+		}  else if let modal = topMostVc.presentedViewController {
+			topMostVc = modal
+		}
+		
+		if let menu = topMostVc as? MenuViewController, let parent = menu.presentingViewController {
+			topMostVc = parent
+		}
+		
+		guard let wallet = WalletCacheService().fetchWallet(forAddress: walletMetadata.address) as? LedgerWallet else {
+			rootVc.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			completion(false)
+			return
+		}
+		
+		topMostVc.alert(withTitle: "Connect?", andMessage: "Your Ledger device is not currently conencted. Would you like to connect now?",
+						okText: "Connect",
+						okAction: { action in
+							connectLedger(rootVc: rootVc, uuid: wallet.ledgerUUID, completion: completion)
+						},
+						cancelText: "Cancel",
+						cancelStyle: .destructive,
+						cancelAction: { action in
+							completion(false)
+						})
+	}
+	
+	public static func connectLedger(rootVc: UIViewController, uuid: String, completion: @escaping ((Bool) -> Void)) {
+		LedgerService.shared.connectTo(uuid: uuid)
+			.timeout(.seconds(10), scheduler: RunLoop.main, customError: {
+				return KukaiError.knownErrorMessage("Timed out waiting for device to connect. Check device/bluetooth is turned on and try again")
+			})
+			.sink(onError: { error in
+				rootVc.windowError(withTitle: "error".localized(), description: "\( error )")
+				completion(false)
+				staticBag = []
+				
+			}, onSuccess: { success in
+				if !success {
+					rootVc.windowError(withTitle: "error".localized(), description: "Unable to connect to device, please try again")
+					completion(false)
+				} else {
+					completion(true)
+				}
+				
+				staticBag = []
+			})
+			.store(in: &staticBag)
 	}
 }

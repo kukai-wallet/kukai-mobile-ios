@@ -235,6 +235,10 @@ public class TransactionService {
 		var batchData: BatchData
 	}
 	
+	public struct LedgerSetupData {
+		var selectedUUID: String?
+	}
+	
 	
 	
 	// MARK: - Shared Properties
@@ -255,6 +259,7 @@ public class TransactionService {
 	public var removeLiquidityData: RemoveLiquidityData
 	public var batchData: BatchData
 	public var walletConnectOperationData: WalletConnectOperationData
+	public var ledgerSetupData: LedgerSetupData
 	
 	private init() {
 		self.currentTransactionType = .none
@@ -282,6 +287,7 @@ public class TransactionService {
 																						  selectedOp: nil,
 																						  opSummaries: nil)
 		)
+		self.ledgerSetupData = LedgerSetupData(selectedUUID: nil)
 	}
 	
 	
@@ -302,6 +308,7 @@ public class TransactionService {
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
 		self.batchData = BatchData(operationCount: nil, selectedOp: nil, opSummaries: nil)
+		self.ledgerSetupData = LedgerSetupData(selectedUUID: nil)
 		
 		self.resetWalletConnectState()
 	}
@@ -340,27 +347,32 @@ public class TransactionService {
 		let currentNetwork = DependencyManager.shared.currentNetworkType
 		
 		if metadata.type != .social {
-			let image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
+			var image = UIImage(named: "Social_TZ_1color")?.resizedImage(size: imageSize)?.withTintColor(.colorNamed("BGB4")) ?? UIImage()
 			var title = ""
 			var subtitle: String? = ""
+			
+			let subAddresss = metadata.address.truncateTezosAddress()
+			let subDerivation = "(\(metadata.derivationPath ?? "0"))"
+			let subAddressDerivation = subAddresss + " " + subDerivation.replacingOccurrences(of: "m/44'/", with: "")
 			
 			if metadata.hasDomain(onNetwork: currentNetwork) {
 				
 				// check for tezos domains first
-				let image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
-				return (image: image, title: metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? "", subtitle: metadata.address.truncateTezosAddress())
+				image = UIImage(named: "Social_TZDomain_Color")?.resizedImage(size: imageSize) ?? UIImage()
+				title = metadata.primaryDomain(onNetwork: currentNetwork)?.domain.name ?? ""
+				subtitle = metadata.type != .ledger ? subAddresss : subAddressDerivation
 				
 			} else if let nickname = metadata.walletNickname {
 				
 				// If no domains, check for nicknames
 				title = nickname
-				subtitle =  metadata.address.truncateTezosAddress()
+				subtitle = metadata.type != .ledger ? subAddresss : subAddressDerivation
 				
 			} else {
 				
 				// Use address
-				title =  metadata.address.truncateTezosAddress()
-				subtitle = nil
+				title = metadata.address.truncateTezosAddress()
+				subtitle = metadata.type != .ledger ? nil : "(\(metadata.derivationPath ?? "0"))"
 			}
 			
 			return (image: image, title: title, subtitle: subtitle)

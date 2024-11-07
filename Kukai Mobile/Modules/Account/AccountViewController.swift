@@ -59,6 +59,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		viewModel.isVisible = true
 		viewModel.refresh(animate: false)
 	}
+	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		AccountViewModel.reconnectAccountActivityListenerIfNeeded()

@@ -21,7 +21,11 @@ class AccountItemCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		containerView.gradientType = .tableViewCell
+		
+		if reuseIdentifier == "AccountItemCell" {
+			containerView.gradientType = .tableViewCell
+		}
+		
 		titleLabel.accessibilityIdentifier = "accounts-item-title"
 		subtitleLabel.accessibilityIdentifier = "accounts-item-subtitle"
 		checkedImageView?.accessibilityIdentifier = "accounts-item-checked"

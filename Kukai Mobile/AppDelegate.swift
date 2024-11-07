@@ -33,6 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			SentrySDK.start { options in
 				options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
 				options.enableWatchdogTerminationTracking = false
+				options.enableSigtermReporting = false
 				options.beforeSend = { (event) -> Event? in
 					
 					// Scrub any identifiable data to keep users anonymous

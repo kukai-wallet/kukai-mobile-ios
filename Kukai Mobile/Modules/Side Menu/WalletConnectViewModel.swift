@@ -7,9 +7,9 @@
 
 import UIKit
 import KukaiCoreSwift
-import WalletConnectSign
+import ReownWalletKit
 
-struct PairObj: Hashable {
+struct SessionObj: Hashable {
 	let icon: URL?
 	let site: String
 	let address: String?
@@ -20,22 +20,22 @@ struct PairObj: Hashable {
 class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var peersSelected = true
 	
-	private var pairs: [PairObj] = []
+	private var sessions: [SessionObj] = []
 	
 	// MARK: - Functions
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let _ = item as? UUID {
+			if let _ = item.base as? UUID {
 				return tableView.dequeueReusableCell(withIdentifier: "empty", for: indexPath)
 				
-			} else if let obj = item as? PairObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
+			} else if let obj = item.base as? SessionObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ConnectedApp", for: indexPath) as? ConnectedAppCell {
 				let iconURL = MediaProxyService.url(fromUri: obj.icon, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				MediaProxyService.load(url: iconURL, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.siteLabel.text = obj.site
@@ -48,7 +48,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					cell.subtitleLabel.text = media.subtitle
 				} else {
 					cell.addressIconView.image = TransactionService.tezosLogo(ofSize: .size_20)
-					cell.titleLabel.text = obj.address
+					cell.titleLabel.text = obj.address?.truncateTezosAddress()
 					cell.subtitleLabel.text = ""
 				}
 				
@@ -69,36 +69,25 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Get data
-		let sortedPairs = Pair.instance.getPairings().sorted { lhs, rhs in
+		let sortedSessions = WalletKit.instance.getSessions().sorted { lhs, rhs in
 			return lhs.expiryDate < rhs.expiryDate
 		}
-		pairs = sortedPairs.compactMap({ pair -> PairObj? in
-			
-			let sessions = Sign.instance.getSessions().filter({ $0.pairingTopic == pair.topic })
-			
-			if pair.peer == nil || sessions.count == 0 {
-				return nil
-				
-			} else {
-				let firstSession = sessions.first
-				let firstAccount = firstSession?.accounts.first
-				let address = firstAccount?.address
-				let network = firstAccount?.blockchain.reference == "ghostnet" ? "Ghostnet" : "Mainnet"
-				let iconURL = URL(string: pair.peer?.icons.first ?? "")
-				
-				return PairObj(icon: iconURL, site: pair.peer?.name ?? " ", address: address, network: network, topic: pair.topic)
-			}
+		
+		sessions = sortedSessions.compactMap({ session -> SessionObj? in
+			let blockchainReferenceString = session.namespaces["tezos"]?.accounts.first?.reference
+			let network = blockchainReferenceString == "ghostnet" ? "Ghostnet" : "Mainnet"
+			let iconURL = URL(string: session.peer.icons.first ?? "")
+			return SessionObj(icon: iconURL, site: session.peer.name, address: session.accounts.first?.address ?? "", network: network, topic: session.topic)
 		})
 		
-		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
 		
-		if pairs.count > 0 {
-			snapshot.appendItems(pairs, toSection: 0)
+		if sessions.count > 0 {
+			snapshot.appendItems(sessions.map({.init($0)}), toSection: 0)
 		} else {
-			snapshot.appendItems([UUID()], toSection: 0)
+			snapshot.appendItems([.init(UUID())], toSection: 0)
 		}
 		
 		ds.applySnapshotUsingReloadData(snapshot)
@@ -107,7 +96,7 @@ class WalletConnectViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		self.state = .success(nil)
 	}
 	
-	func pairFor(indexPath: IndexPath) -> PairObj? {
-		return dataSource?.itemIdentifier(for: indexPath) as? PairObj
+	func sessionFor(indexPath: IndexPath) -> SessionObj? {
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? SessionObj
 	}
 }

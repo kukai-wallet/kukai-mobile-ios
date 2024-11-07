@@ -11,7 +11,7 @@ class AccountsSectionHeaderCell: UITableViewCell {
 	
 	@IBOutlet var iconView: UIImageView!
 	@IBOutlet var headingLabel: UILabel!
-	@IBOutlet weak var checkImage: UIImageView!
+	@IBOutlet weak var checkImage: UIImageView?
 	@IBOutlet var menuButton: CustomisableButton!
 	
 	private var menu: MenuViewController? = nil

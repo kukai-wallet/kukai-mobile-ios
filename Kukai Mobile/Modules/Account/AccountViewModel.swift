@@ -51,11 +51,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private var bag = [AnyCancellable]()
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var isPresentedForSelectingToken = false
 	var isVisible = false
 	var forceRefresh = false
@@ -107,17 +107,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { [weak self] tableView, indexPath, item in
 			tableView.register(UINib(nibName: "GhostnetWarningCell", bundle: nil), forCellReuseIdentifier: "GhostnetWarningCell")
 			
-			if let _ = item as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
+			if let _ = item.base as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
 				return cell
 				
-			} else if let _ = item as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
+			} else if let _ = item.base as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
 				return cell
 				
-			} else if let obj = item as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
+			} else if let obj = item.base as? MenuViewController, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceHeaderCell", for: indexPath) as? TokenBalanceHeaderCell {
 				cell.setup(menuVC: obj)
 				return cell
 				
-			} else if let amount = item as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+			} else if let amount = item.base as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "XTZ"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
 				cell.favCorner.isHidden = false
@@ -128,7 +128,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let token = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+			} else if let token = item.base as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				var symbol = token.symbol
 				if symbol == "" {
 					symbol = " "
@@ -150,7 +150,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let total = item as? TotalEstimatedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
+			} else if let total = item.base as? TotalEstimatedValue, let cell = tableView.dequeueReusableCell(withIdentifier: "EstimatedTotalCell", for: indexPath) as? EstimatedTotalCell {
 				
 				if total.tez.normalisedRepresentation == "-1" {
 					cell.balanceLabel.text = "--- XTZ"
@@ -167,22 +167,22 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return cell
 				}
 				
-			} else if let _ = item as? LoadingContainerCellObject, let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingContainerCell", for: indexPath) as? LoadingContainerCell {
+			} else if let _ = item.base as? LoadingContainerCellObject, let cell = tableView.dequeueReusableCell(withIdentifier: "LoadingContainerCell", for: indexPath) as? LoadingContainerCell {
 				cell.setup()
 				return cell
 				
-			} else if let _ = item as? AccountGettingStartedData {
+			} else if let _ = item.base as? AccountGettingStartedData {
 				return tableView.dequeueReusableCell(withIdentifier: "AccountGetStartedCell", for: indexPath)
 				
-			} else if let obj = item as? AccountButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountButtonCell", for: indexPath) as? AccountButtonCell {
+			} else if let obj = item.base as? AccountButtonData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountButtonCell", for: indexPath) as? AccountButtonCell {
 				cell.setup(data: obj, delegate: self?.tableViewButtonDelegate)
 				return cell
 				
-			} else if let _ = item as? AccountReceiveAssetsData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountReceiveAssetsCell", for: indexPath) as? AccountReceiveAssetsCell {
+			} else if let _ = item.base as? AccountReceiveAssetsData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountReceiveAssetsCell", for: indexPath) as? AccountReceiveAssetsCell {
 				cell.setup(delegate: self?.tableViewButtonDelegate)
 				return cell
 				
-			} else if let _ = item as? AccountDiscoverHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountDiscoverCell", for: indexPath) as? AccountDiscoverCell {
+			} else if let _ = item.base as? AccountDiscoverHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountDiscoverCell", for: indexPath) as? AccountDiscoverCell {
 				cell.setup()
 				return cell
 				
@@ -202,11 +202,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let metadata = DependencyManager.shared.selectedWalletMetadata
 		let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
 		let isTestnet = DependencyManager.shared.currentNetworkType == .ghostnet
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-		var data: [AnyHashable] = []
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+		var data: [AnyHashableSendable] = []
 		
 		if isTestnet {
-			data.append(GhostnetWarningCellObj())
+			data.append(.init(GhostnetWarningCellObj()))
 		}
 		
 		// If initial load, display shimmer views
@@ -222,12 +222,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 		} else {
-			let hashableData: [AnyHashable] = [
-				balancesMenuVC,
-				TotalEstimatedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: ""),
-				LoadingContainerCellObject(),
-				LoadingContainerCellObject(),
-				LoadingContainerCellObject()
+			let hashableData: [AnyHashableSendable] = [
+				.init(balancesMenuVC),
+				.init(TotalEstimatedValue(tez: XTZAmount(fromNormalisedAmount: -1), value: "")),
+				.init(LoadingContainerCellObject()),
+				.init(LoadingContainerCellObject()),
+				.init(LoadingContainerCellObject())
 			]
 			
 			data.append(contentsOf: hashableData)
@@ -255,7 +255,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		return (xtzBalance == .zero() && tokenCount == 0)
 	}
 	
-	private func handleRefreshForRegularUser(startingData: [AnyHashable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashable] {
+	private func handleRefreshForRegularUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashableSendable] {
 		var data = startingData
 		let currentAccount = DependencyManager.shared.balanceService.account
 		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
@@ -270,21 +270,21 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
 			- Contains 5 or more tokens
 		 */
-		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
 		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
 			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
 			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
 			currentAccountTokensCount >= 5
 		))
 		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
-			data.append(BackupCellData())
+			data.append(.init(BackupCellData()))
 		}
 		
 		
 		// App update logic
 		DependencyManager.shared.appUpdateService.checkVersions()
 		if DependencyManager.shared.appUpdateService.isRecommendedUpdate {
-			data.append(UpdateWarningCellData())
+			data.append(.init(UpdateWarningCellData()))
 		}
 		
 		
@@ -313,26 +313,26 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tokensToDisplay = tokensToDisplay.sorted(by: { ($0.favouriteSortIndex ?? tokensToDisplay.count) < ($1.favouriteSortIndex ?? tokensToDisplay.count) })
 		tokensToDisplay.append(contentsOf: nonFavourites)
 		
-		data.append(balancesMenuVC)
+		data.append(.init(balancesMenuVC))
 		
 		if tokensToDisplay.count > 0 {
-			data.append(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString))
+			data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
 		}
 		
-		data.append(DependencyManager.shared.balanceService.account.xtzBalance)
-		data.append(contentsOf: tokensToDisplay)
+		data.append(.init(DependencyManager.shared.balanceService.account.xtzBalance))
+		data.append(contentsOf: tokensToDisplay.map({.init($0)}))
 		
 		return data
 	}
 	
-	private func handleRefreshForNewUser(startingData: [AnyHashable], metadata: WalletMetadata?) -> [AnyHashable] {
+	private func handleRefreshForNewUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?) -> [AnyHashableSendable] {
 		var data = startingData
-		let hashableData: [AnyHashable] = [
-			AccountGettingStartedData(),
-			AccountButtonData(title: "Get Tez (XTZ)", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary),
-			AccountReceiveAssetsData(),
-			AccountDiscoverHeaderData(),
-			AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary)
+		let hashableData: [AnyHashableSendable] = [
+			.init(AccountGettingStartedData()),
+			.init(AccountButtonData(title: "Get Tez (XTZ)", accessibilityId: AccountViewModel.accessibilityIdentifiers.onramp, buttonType: .primary)),
+			.init(AccountReceiveAssetsData()),
+			.init(AccountDiscoverHeaderData()),
+			.init(AccountButtonData(title: "Go to Discover", accessibilityId: AccountViewModel.accessibilityIdentifiers.discover, buttonType: .secondary))
 		]
 		
 		data.append(contentsOf: hashableData)
@@ -354,7 +354,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
 		if obj is XTZAmount {
 			let account = DependencyManager.shared.balanceService.account
@@ -369,13 +369,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func isBackUpCell(atIndexPath: IndexPath) -> Bool {
-		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
 		return obj is BackupCellData
 	}
 	
 	func isUpdateWarningCell(atIndexPath: IndexPath) -> Bool {
-		let obj = dataSource?.itemIdentifier(for: atIndexPath)
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
 		return obj is UpdateWarningCellData
 	}

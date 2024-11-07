@@ -31,10 +31,26 @@ class SendAbstractConfirmViewController: UIViewController {
         super.viewDidLoad()
 		
 		presentationController?.delegate = self
+		
+		/*
+		LedgerService.shared
+			.$partialSuccessMessageReceived
+			.dropFirst()
+			.sink { [weak self] _ in
+				self?.showLoadingView()
+				self?.updateLoadingViewStatusLabel(message: "Please confirm the transaction on your Ledger device")
+			}
+			.store(in: &bag)
+		*/
+		
+		NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self] _ in
+			self?.ledgerCheck()
+		}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		UIApplication.shared.isIdleTimerDisabled = true
 		
 		// Monitor connection
 		if isWalletConnectOp {
@@ -52,11 +68,32 @@ class SendAbstractConfirmViewController: UIViewController {
 		}
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		ledgerCheck()
+	}
+	
+	private func ledgerCheck() {
+		if let meta = selectedMetadata, meta.type == .ledger {
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
+				if !success {
+					self.dismissAndReturn(collapseOnly: true)
+				}
+			}
+		}
+	}
+	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		UIApplication.shared.isIdleTimerDisabled = false
 		
 		if !didSend && isWalletConnectOp {
 			handleRejection(andDismiss: false)
+		}
+		
+		if LedgerService.shared.getConnectedDeviceUUID() != nil {
+			LedgerService.shared.disconnectFromDevice()
 		}
 	}
 	
@@ -70,6 +107,21 @@ class SendAbstractConfirmViewController: UIViewController {
 			if collapseOnly == false {
 				(self?.presentingViewController as? UINavigationController)?.popToHome()
 			}
+		}
+	}
+	
+	func checkForErrorsAndWarnings(errorStackView: UIStackView, errorLabel: UILabel, totalFee: XTZAmount) {
+		
+		if (totalFee.toNormalisedDecimal() ?? 0) > 10 {
+			// Warn user that the fee is very high
+			errorStackView.isHidden = false
+			errorLabel.isHidden = false
+			errorLabel.text = "warning-fee-very-high".localized()
+			errorLabel.textColor = .colorNamed("TxtB-alt4")
+		} else {
+			errorStackView.isHidden = true
+			errorLabel.isHidden = true
+			//errorLabel.textColor = .colorNamed("TxtAlert4")
 		}
 	}
 	
@@ -146,14 +198,22 @@ class SendAbstractConfirmViewController: UIViewController {
 		})
 	}
 	
-	public func blockInteraction() {
-		self.view.isUserInteractionEnabled = false
+	public func blockInteraction(exceptFor: [UIView]) {
 		self.swipeDownEnabled = false
+		
+		for view in self.view.subviews {
+			if !exceptFor.contains([view]) {
+				view.isUserInteractionEnabled = false
+			}
+		}
 	}
 	
 	public func unblockInteraction() {
-		self.view.isUserInteractionEnabled = true
 		self.swipeDownEnabled = true
+		
+		for view in self.view.subviews {
+			view.isUserInteractionEnabled = true
+		}
 	}
 	
 	public func performAuth() {
@@ -180,6 +240,22 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	public func authFailure() {
 		fatalError("SendAbstractConfirmViewController.authFailure must be overidden")
+	}
+	
+	public static func checkForExpectedLedgerErrors(_ kukaiError: KukaiError) -> String? {
+		if kukaiError.errorType == .internalApplication, let sub = kukaiError.subType {
+			if case KukaiCoreSwift.LedgerService.TezosAppErrorCodes.EXC_REJECT = sub {
+				return nil // Don't display error message for user choosing to reject the operation
+				
+			} else if case KukaiCoreSwift.LedgerService.GeneralErrorCodes.DEVICE_LOCKED = sub {
+				return "Please unlock the Ledger device and try again"
+				
+			} else if case KukaiCoreSwift.LedgerService.GeneralErrorCodes.APP_CLOSED = sub {
+				return "Please open the Tezos app on your ledger device and try again"
+			}
+		}
+		
+		return kukaiError.description
 	}
 }
 

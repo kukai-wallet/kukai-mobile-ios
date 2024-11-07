@@ -14,9 +14,9 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var tokensToDisplay: [Token] = []
 	
 	
@@ -45,14 +45,14 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
+			if let obj = item.base as? Token, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
 				MediaProxyService.load(url: obj.thumbnailURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.symbol
 				cell.balanceLabel.text = obj.balance.normalisedRepresentation
 				
 				return cell
 				
-			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
+			} else if let _ = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
 				return cell
 				
 			} else {
@@ -69,15 +69,15 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		tokensToDisplay = DependencyManager.shared.balanceService.account.tokens.filter({ $0.isHidden })
-		var section1Data: [AnyHashable] = tokensToDisplay
+		var section1Data: [AnyHashableSendable] = tokensToDisplay.map({ .init($0) })
 		
 		
 		if section1Data.count == 0 {
-			section1Data = [""]
+			section1Data = [.init("")]
 		}
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
 		snapshot.appendItems(section1Data, toSection: 0)
 		
@@ -86,7 +86,7 @@ class HiddenBalancesViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func token(atIndexPath: IndexPath) -> Token? {
-		if let token = dataSource?.itemIdentifier(for: atIndexPath) as? Token {
+		if let token = dataSource?.itemIdentifier(for: atIndexPath)?.base as? Token {
 			return token
 		}
 		

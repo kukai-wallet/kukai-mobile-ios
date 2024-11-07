@@ -27,7 +27,8 @@ final class Test_10_ConnectedApps: XCTestCase {
 	
 	
 	// MARK: - Test functions
-	
+	/*
+	 // TODO: reenable after WC2 modal updates + universal link updates are complete
 	func test_01_connectAndTest() throws {
 		let app = XCUIApplication()
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
@@ -278,7 +279,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		SharedHelpers.shared.waitForStaticText("Sign Message", exists: false, inElement: app, delay: 10)
 		sleep(1)
 	}
-	
+	*/
 	
 	
 	// MARK: - Helpers

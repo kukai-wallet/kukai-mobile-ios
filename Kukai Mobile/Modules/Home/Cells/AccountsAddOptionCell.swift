@@ -16,7 +16,7 @@ class AccountsAddOptionCell: UITableViewCell {
 	
 	override func awakeFromNib() {
 		super.awakeFromNib()
-		GradientView.add(toView: self.contentView, withType: .tableViewCell)
+		GradientView.add(toView: self.contentView, withType: .tableViewCellNoRounding)
 	}
 	
 	override func setSelected(_ selected: Bool, animated: Bool) {

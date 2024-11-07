@@ -79,7 +79,7 @@ struct BlankFooter: Hashable {
 class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private let mediaService = MediaProxyService()
@@ -124,34 +124,35 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath)
 			}
 			
-			if let item = item as? AttributeItem {
+			let itemBase = item.base
+			if let _ = itemBase as? AttributeItem {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeItemCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? MediaContent, item.isImage {
+			} else if let i = itemBase as? MediaContent, i.isImage {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailImageCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? MediaContent, !item.isImage {
+			} else if let i = itemBase as? MediaContent, !i.isImage {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAVCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? QuantityContent {
+			} else if let _ = itemBase as? QuantityContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailQuantityCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? NameContent {
+			} else if let _ = itemBase as? NameContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailNameCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? CreatorContent {
+			} else if let _ = itemBase as? CreatorContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailCreatorCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? SendContent {
+			} else if let _ = itemBase as? SendContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailSendCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? PricesContent {
+			} else if let _ = itemBase as? PricesContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailPricesCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? DescriptionContent {
+			} else if let _ = itemBase as? DescriptionContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailDescriptionCell", for: indexPath), withItem: item)
 				
-			} else if let item = item as? AttributesContent {
+			} else if let _ = itemBase as? AttributesContent {
 				return self.configure(cell: collectionView.dequeueReusableCell(withReuseIdentifier: "CollectibleDetailAttributeHeaderCell", for: indexPath), withItem: item)
 				
 			} else {
@@ -245,18 +246,18 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		let isVideo =  mainType == .videoOnly
 		quantityContent = QuantityContent(isOnSale: false, isAudio: isAudio, isInteractableModel: false, isVideo: isVideo, quantity: quantityString(forNFT: nft))
 		
-		section1Content.append(mediaContent)
-		section1Content.append(quantityContent)
-		section1Content.append(nameContent)
+		section1Content.append(.init(mediaContent))
+		section1Content.append(.init(quantityContent))
+		section1Content.append(.init(nameContent))
 		
 		if let creator = objktCollectionData?.creator?.alias {
-			section1Content.append(CreatorContent(creatorName: creator))
+			section1Content.append(.init(CreatorContent(creatorName: creator)))
 		}
 		
 		self.sendData = SendContent(enabled: !(DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false) )
-		section1Content.append(self.sendData)
+		section1Content.append(.init(self.sendData))
 		self.descriptionData = DescriptionContent(description: self.nft?.description ?? "")
-		section1Content.append(self.descriptionData)
+		section1Content.append(.init(self.descriptionData))
 		self.currentSnapshot.appendItems(section1Content, toSection: 0)
 		
 		ds.apply(self.currentSnapshot, animatingDifferences: animate) { [weak self] in
@@ -301,7 +302,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				let lastSaleString = lastSale == nil ? "---" : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
 				let floorPriceString = floorPrice == nil ? "---" : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
 				let priceData = PricesContent(lastSalePrice: lastSaleString, floorPrice: floorPriceString)
-				self.currentSnapshot.insertItems([priceData], afterItem: self.sendData)
+				self.currentSnapshot.insertItems([.init(priceData)], afterItem: .init(self.sendData))
 				needsUpdating = true
 			}
 			
@@ -320,8 +321,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				self.attributes = self.attributes.sorted { lhs, rhs in
 					return lhs.name < rhs.name
 				}
-				self.currentSnapshot.insertItems([self.attributesContent], afterItem: self.descriptionData)
-				self.currentSnapshot.appendItems(self.attributes, toSection: 1)
+				self.currentSnapshot.insertItems([.init(self.attributesContent)], afterItem: .init(self.descriptionData))
+				self.currentSnapshot.appendItems(self.attributes.map({ .init($0) }), toSection: 1)
 				needsUpdating = true
 			}
 			
@@ -369,7 +370,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			cell.setOpen()
 		}
 		
-		currentSnapshot.appendItems(attributes, toSection: 1)
+		currentSnapshot.appendItems(attributes.map({ .init($0) }), toSection: 1)
 		attributesContent.expanded = true
 	}
 	
@@ -378,7 +379,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			cell.setClosed()
 		}
 		
-		currentSnapshot.deleteItems(attributes)
+		currentSnapshot.deleteItems(attributes.map({ .init($0) }))
 		attributesContent.expanded = false
 	}
 	
@@ -391,20 +392,20 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			return UICollectionViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		}
 		
-		if let obj = item as? AttributeItem, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
+		if let obj = item.base as? AttributeItem, let parsedCell = cell as? CollectibleDetailAttributeItemCell {
 			parsedCell.keyLabel.text = obj.name
 			parsedCell.valueLabel.text = obj.value
 			parsedCell.percentLabel.text = obj.percentage
 			return parsedCell
 			
-		} else if let obj = item as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
+		} else if let obj = item.base as? MediaContent, obj.isImage, let parsedCell = cell as? CollectibleDetailImageCell {
 			if !parsedCell.setup {
 				parsedCell.setup(mediaContent: obj, layoutOnly: layoutOnly)
 			}
 			
 			return parsedCell
 			
-		} else if let obj = item as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailAVCell {
+		} else if let obj = item.base as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailAVCell {
 
 			if !parsedCell.setup, let url = obj.mediaURL, !layoutOnly {
 				
@@ -434,12 +435,12 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			return parsedCell
 			
-		} else if let obj = item as? QuantityContent, let parsedCell = cell as? CollectibleDetailQuantityCell {
+		} else if let obj = item.base as? QuantityContent, let parsedCell = cell as? CollectibleDetailQuantityCell {
 			parsedCell.setup(data: obj)
 			weakQuantityCell = parsedCell
 			return parsedCell
 			
-		} else if let obj = item as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
+		} else if let obj = item.base as? NameContent, let parsedCell = cell as? CollectibleDetailNameCell {
 			parsedCell.nameLabel.text = obj.name
 			parsedCell.websiteButton.setTitle(obj.collectionName, for: .normal)
 			
@@ -449,22 +450,22 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			return parsedCell
 			
-		} else if let obj = item as? CreatorContent, let parsedCell = cell as? CollectibleDetailCreatorCell {
+		} else if let obj = item.base as? CreatorContent, let parsedCell = cell as? CollectibleDetailCreatorCell {
 			parsedCell.creatorLabel.text = obj.creatorName
 			return parsedCell
 			
-		} else if let obj = item as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
+		} else if let obj = item.base as? SendContent, let parsedCell = cell as? CollectibleDetailSendCell {
 			parsedCell.sendButton.isEnabled = obj.enabled
 			parsedCell.setup(delegate: self.sendDelegate)
 			
 			return parsedCell
 			
-		} else if let obj = item as? PricesContent, let parsedCell = cell as? CollectibleDetailPricesCell {
+		} else if let obj = item.base as? PricesContent, let parsedCell = cell as? CollectibleDetailPricesCell {
 			parsedCell.lastSaleLabel.text = obj.lastSalePrice
 			parsedCell.floorPriceLabel.text = obj.floorPrice
 			return parsedCell
 			
-		} else if let obj = item as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
+		} else if let obj = item.base as? DescriptionContent, let parsedCell = cell as? CollectibleDetailDescriptionCell {
 			parsedCell.setup(withString: obj.description)
 			return parsedCell
 			
@@ -489,35 +490,36 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
 		let identifiers = currentSnapshot.itemIdentifiers(inSection: indexPath.section)
 		let item = identifiers[indexPath.row]
+		let itemBase = item.base
 		
-		if let item = item as? AttributeItem {
+		if let _ = itemBase as? AttributeItem {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeItemCell", ofType: CollectibleDetailAttributeItemCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? MediaContent, item.isImage {
+		} else if let i = itemBase as? MediaContent, i.isImage {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailImageCell", ofType: CollectibleDetailImageCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? MediaContent, !item.isImage {
+		} else if let i = itemBase as? MediaContent, !i.isImage {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAVCell", ofType: CollectibleDetailAVCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? QuantityContent {
+		} else if let _ = itemBase as? QuantityContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailQuantityCell", ofType: CollectibleDetailQuantityCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? NameContent {
+		} else if let _ = itemBase as? NameContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailNameCell", ofType: CollectibleDetailNameCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? CreatorContent {
+		} else if let _ = itemBase as? CreatorContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailCreatorCell", ofType: CollectibleDetailCreatorCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? SendContent {
+		} else if let _ = itemBase as? SendContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailSendCell", ofType: CollectibleDetailSendCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? PricesContent {
+		} else if let _ = itemBase as? PricesContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailPricesCell", ofType: CollectibleDetailPricesCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? DescriptionContent {
+		} else if let _ = itemBase as? DescriptionContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailDescriptionCell", ofType: CollectibleDetailDescriptionCell.self), withItem: item, layoutOnly: true)
 			
-		} else if let item = item as? AttributesContent {
+		} else if let _ = itemBase as? AttributesContent {
 			return self.configure(cell: UICollectionViewCell.loadFromNib(named: "CollectibleDetailAttributeHeaderCell", ofType: CollectibleDetailAttributeHeaderCell.self), withItem: item, layoutOnly: true)
 			
 		} else {

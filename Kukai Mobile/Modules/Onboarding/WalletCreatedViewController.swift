@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import KukaiCoreSwift
 
 class WalletCreatedViewController: UIViewController {
 	
@@ -26,6 +27,14 @@ class WalletCreatedViewController: UIViewController {
 		super.viewWillAppear(animated)
 		
 		self.navigationItem.hidesBackButton = true
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		if LedgerService.shared.getConnectedDeviceUUID() != nil {
+			LedgerService.shared.disconnectFromDevice()
+		}
 	}
 	
 	@IBAction func checkBoxButtonTapped(_ sender: Any) {

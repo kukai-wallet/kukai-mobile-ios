@@ -13,6 +13,7 @@ import OSLog
 struct SendHeaderObj: Hashable {
 	let icon: UIImage
 	let title: String
+	let subheader: String?
 }
 
 struct WalletObj: Hashable {
@@ -29,31 +30,37 @@ struct NoContacts: Hashable {
 class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	private var expandedSection: Int? = nil
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? SendHeaderObj, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
+			if let obj = item.base as? SendHeaderObj, obj.subheader == nil, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell", for: indexPath) as? ImageHeadingCell {
 				cell.iconView.image = obj.icon
 				cell.headingLabel.text = obj.title
 				return cell
 				
-			} else if let obj = item as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
+			} else if let obj = item.base as? SendHeaderObj, obj.subheader != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "ImageHeadingCell_subheading", for: indexPath) as? ImageHeadingCell {
+				cell.iconView.image = obj.icon
+				cell.headingLabel.text = obj.title
+				cell.subheadingLabel?.text = obj.subheader
+				return cell
+				
+			} else if let obj = item.base as? WalletObj, let cell = tableView.dequeueReusableCell(withIdentifier: "AddressChoiceCell", for: indexPath) as? AddressChoiceCell {
 				cell.iconView.image = obj.icon
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle
 				
 				return cell
 				
-			} else if let _ = item as? NoContacts, let cell = tableView.dequeueReusableCell(withIdentifier: "NoContactsCell", for: indexPath) as? NoContactsCell {
+			} else if let _ = item.base as? NoContacts, let cell = tableView.dequeueReusableCell(withIdentifier: "NoContactsCell", for: indexPath) as? NoContactsCell {
 				return cell
 				
-			} else if let obj = item as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
+			} else if let obj = item.base as? AccountsMoreObject, let cell = tableView.dequeueReusableCell(withIdentifier: "AccountsMoreCell", for: indexPath) as? AccountsMoreCell {
 				cell.setup(obj)
 				return cell
 				
@@ -78,10 +85,10 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		// Build arrays of data
 		let wallets = DependencyManager.shared.walletList
 		let walletImage = UIImage(named: "Wallet") ?? UIImage()
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		
 		var sections: [Int] = []
-		var sectionData: [[AnyHashable]] = []
+		var sectionData: [[AnyHashableSendable]] = []
 		
 		
 		// TODO: contacts not enabled yet
@@ -102,50 +109,14 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		if walletsToAdd.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Social Wallets")])
-			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
+			sectionData.append([.init(SendHeaderObj(icon: walletImage, title: "Social Wallets", subheader: nil))])
+			sectionData[sections.count-1].append(contentsOf: walletsToAdd.map({.init($0)}))
 		}
 		
 		
 		// HD's
-		for (index, metadata) in wallets.hdWallets.enumerated() {
-			walletsToAdd = []
-			/*
-			if metadata.address == selectedAddress && metadata.children.count == 0 {
-				continue
-			}
-			*/
-			
-			//if metadata.address != selectedAddress {
-				let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-				walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
-			//}
-			
-			let isSectionExpanded = (expandedSection == sections.count)
-			var totalChildCount = 0
-			for (_, childMetadata) in metadata.children.enumerated() {
-				//if childMetadata.address == selectedAddress { continue }
-				
-				totalChildCount += 1
-				
-				if isSectionExpanded || (!isSectionExpanded && totalChildCount < 3) {
-					let childWalletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
-					walletsToAdd.append(WalletObj(icon: childWalletMedia.image, title: childWalletMedia.title, subtitle: childWalletMedia.subtitle, address: childMetadata.address))
-				}
-			}
-			
-			if walletsToAdd.count > 0 {
-				sections.append(sections.count)
-				sectionData.append([SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "")])
-				sectionData[sections.count-1].append(contentsOf: walletsToAdd)
-			}
-			
-			// if there are more than 3 items total, display moreCell
-			if totalChildCount > 2 {
-				let moreData = AccountsMoreObject(count: totalChildCount-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
-				sectionData[sections.count-1].append(moreData)
-			}
-		}
+		handleGroupedData(metadataArray: wallets.hdWallets, walletImage: walletImage, sections: &sections, sectionData: &sectionData)
+		
 		
 		// Linear
 		walletsToAdd = []
@@ -155,22 +126,13 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		if walletsToAdd.count > 0 {
 			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Legacy Wallets")])
-			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
+			sectionData.append([.init(SendHeaderObj(icon: walletImage, title: "Legacy Wallets", subheader: nil))])
+			sectionData[sections.count-1].append(contentsOf: walletsToAdd.map({.init($0)}))
 		}
 		
 		
 		// Ledger
-		walletsToAdd = []
-		for metadata in wallets.ledgerWallets /*where metadata.address != selectedAddress*/ {
-			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
-			walletsToAdd.append(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address))
-		}
-		if walletsToAdd.count > 0 {
-			sections.append(sections.count)
-			sectionData.append([SendHeaderObj(icon: walletImage, title: "Ledger Wallets")])
-			sectionData[sections.count-1].append(contentsOf: walletsToAdd)
-		}
+		handleGroupedData(metadataArray: wallets.ledgerWallets, walletImage: walletImage, sections: &sections, sectionData: &sectionData)
 		
 		// Add it all
 		snapshot.appendSections(sections)
@@ -182,14 +144,41 @@ class SendToViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		state = .success(nil)
 	}
 	
+	private func handleGroupedData(metadataArray: [WalletMetadata], walletImage: UIImage, sections: inout [Int], sectionData: inout [[AnyHashableSendable]]) {
+		for (index, metadata) in metadataArray.enumerated() {
+			sections.append(sections.count)
+			sectionData.append([.init(SendHeaderObj(icon: walletImage, title: metadata.hdWalletGroupName ?? "", subheader: nil))])
+			
+			let isSectionExpanded = (expandedSection == sections.count-1)
+			let walletMedia = TransactionService.walletMedia(forWalletMetadata: metadata, ofSize: .size_22)
+			sectionData[sections.count-1].append(.init(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: metadata.address)))
+			
+			for (childIndex, childMetadata) in metadata.children.enumerated() {
+				
+				// If child should be visible
+				if isSectionExpanded || (!isSectionExpanded && childIndex < 2) {
+					
+					let walletMedia = TransactionService.walletMedia(forWalletMetadata: childMetadata, ofSize: .size_22)
+					sectionData[sections.count-1].append(.init(WalletObj(icon: walletMedia.image, title: walletMedia.title, subtitle: walletMedia.subtitle, address: childMetadata.address)))
+				}
+			}
+			
+			// if there are more than 3 items total, display moreCell
+			if metadata.children.count > 2 {
+				let moreData = AccountsMoreObject(count: metadata.children.count-2, isExpanded: isSectionExpanded, hdWalletIndex: index)
+				sectionData[sections.count-1].append(.init(moreData))
+			}
+		}
+	}
+	
 	func walletObj(forIndexPath indexPath: IndexPath) -> WalletObj? {
 		guard indexPath.row > 0 else { return nil }
 		
-		return dataSource?.itemIdentifier(for: indexPath) as? WalletObj
+		return dataSource?.itemIdentifier(for: indexPath)?.base as? WalletObj
 	}
 	
 	func handleMoreCellIfNeeded(indexPath: IndexPath) -> Bool {
-		guard let _ = dataSource?.itemIdentifier(for: indexPath) as? AccountsMoreObject else {
+		guard let _ = dataSource?.itemIdentifier(for: indexPath)?.base as? AccountsMoreObject else {
 			return false
 		}
 		

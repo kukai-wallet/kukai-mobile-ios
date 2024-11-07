@@ -11,4 +11,5 @@ class ImageHeadingCell: UITableViewCell {
 	
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var headingLabel: UILabel!
+	@IBOutlet weak var subheadingLabel: UILabel?
 }

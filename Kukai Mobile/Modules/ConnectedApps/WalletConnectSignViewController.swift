@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import WalletConnectSign
+import ReownWalletKit
 import KukaiCoreSwift
 import KukaiCryptoSwift
 import WalletConnectNetworking
@@ -15,6 +15,7 @@ import OSLog
 
 class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedProtocol, SlideButtonDelegate {
 	
+	@IBOutlet weak var closeButton: CustomisableButton!
 	@IBOutlet weak var iconView: UIImageView!
 	@IBOutlet weak var payloadTextView: UITextView!
 	@IBOutlet weak var nameLabel: UILabel!
@@ -32,7 +33,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = Sign.instance.getSessions().first(where: { $0.topic == currentTopic }) {
+		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic, let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
 			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
 				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
 				MediaProxyService.load(url: smallIconURL, to: self.iconView, withCacheType: .temporary, fallback: UIImage.unknownToken())
@@ -54,10 +55,27 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		
 		slideButton.delegate = self
 		presentationController?.delegate = self
+		
+		
+		/*
+		 // Listen for partial success messages from ledger devices (if applicable)
+		 LedgerService.shared
+		 .$partialSuccessMessageReceived
+		 .dropFirst()
+		 .sink { [weak self] _ in
+		 self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
+		 }
+		 .store(in: &bag)
+		 */
+		
+		NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification).sink { [weak self] _ in
+			self?.ledgerCheck()
+		}.store(in: &bag)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
+		UIApplication.shared.isIdleTimerDisabled = true
 		
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { [weak self] status in
@@ -73,22 +91,51 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 		}.store(in: &bag)
 	}
 	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		ledgerCheck()
+	}
+	
+	private func ledgerCheck() {
+		if let meta = DependencyManager.shared.walletList.metadata(forAddress: accountToSign), meta.type == .ledger {
+			AccountsViewModel.askToConnectToLedgerIfNeeded(walletMetadata: meta) { success in
+				if !success {
+					self.dismiss(animated: true)
+				}
+			}
+		}
+	}
+	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		UIApplication.shared.isIdleTimerDisabled = false
 		
 		if !didSend {
 			handleRejection(andDismiss: false)
 		}
+		
+		if LedgerService.shared.getConnectedDeviceUUID() != nil {
+			LedgerService.shared.disconnectFromDevice()
+		}
 	}
 	
 	public func blockInteraction() {
-		self.view.isUserInteractionEnabled = false
 		self.swipeDownEnabled = false
+		
+		for view in self.view.subviews {
+			if view != closeButton {
+				view.isUserInteractionEnabled = false
+			}
+		}
 	}
 	
 	public func unblockInteraction() {
-		self.view.isUserInteractionEnabled = true
 		self.swipeDownEnabled = true
+		
+		for view in self.view.subviews {
+			view.isUserInteractionEnabled = true
+		}
 	}
 	
 	@IBAction func copyButtonTapped(_ sender: UIButton) {
@@ -157,20 +204,7 @@ class WalletConnectSignViewController: UIViewController, BottomSheetCustomFixedP
 			return
 		}
 		
-		/*
-		// Listen for partial success messages from ledger devices (if applicable)
-		LedgerService.shared
-			.$partialSuccessMessageReceived
-			.dropFirst()
-			.sink { [weak self] _ in
-				self?.alert(withTitle: "Approve on Ledger", andMessage: "Please dismiss this alert, and then approve sign on ledger")
-			}
-			.store(in: &bag)
-		*/
-		
 		// Sign and continue
-		self.slideButton.markComplete(withText: "Complete")
-		
 		var str = self.stringToSign
 		if str.prefix(2) == "0x" {
 			let strIndex = str.index(str.startIndex, offsetBy: 2)

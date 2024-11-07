@@ -82,7 +82,7 @@ struct TokenDetailsMessageData: Hashable {
 public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private static var bakerRewardsCacheFilename: String {
 		get {
@@ -100,8 +100,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var tokenFiatPrice = ""
 	
 	// Set by VM
-	var currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	
 	weak var weakTokenHeaderCell: TokenDetailsHeaderCell? = nil
 	var tokenHeaderData = TokenDetailsHeaderData(tokenURL: nil, tokenImage: UIImage.unknownToken(), tokenName: "", fiatAmount: "", priceChangeText: "", isPriceChangePositive: true, priceRange: "")
@@ -143,21 +143,21 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			
 			guard let self = self else { return UITableViewCell() }
 			
-			if let obj = item as? TokenDetailsHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsHeaderCell") as? TokenDetailsHeaderCell {
+			if let obj = item.base as? TokenDetailsHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsHeaderCell") as? TokenDetailsHeaderCell {
 				weakTokenHeaderCell = cell
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let _ = item as? AllChartData, self.initialChartLoad == true, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			} else if let _ = item.base as? AllChartData, self.initialChartLoad == true, self.chartDataUnsucessful == false, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				cell.setup()
 				return cell
 				
-			} else if let obj = item as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
+			} else if let obj = item.base as? AllChartData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsChartCell", for: indexPath) as? TokenDetailsChartCell {
 				self.chartController.setDelegate(weakSelf)
 				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
 				return cell
 				
-			} else if let obj = item as? TokenDetailsBalanceAndBakerData {
+			} else if let obj = item.base as? TokenDetailsBalanceAndBakerData {
 				let reuse = obj.isDelegationPossible ? (obj.isDelegated ? "TokenDetailsBalanceAndBakerCell_baker" : "TokenDetailsBalanceAndBakerCell_nobaker") : "TokenDetailsBalanceAndBakerCell_nostaking"
 				
 				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
@@ -176,31 +176,31 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					
 					return cell
 				}
-			} else if let obj = item as? TokenDetailsSendData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsSendCell", for: indexPath) as? TokenDetailsSendCell {
+			} else if let obj = item.base as? TokenDetailsSendData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsSendCell", for: indexPath) as? TokenDetailsSendCell {
 				cell.sendButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.sendTapped), for: .touchUpInside)
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let _ = item as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
+			} else if let _ = item.base as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
 				cell.setup()
 				return cell
 				
-			} else if let obj = item as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
+			} else if let obj = item.base as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
 				cell.infoButton.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.stakingRewardsInfoTapped), for: .touchUpInside)
 				cell.setup(data: obj)
 				return cell
 				
-			} else if let obj = item as? TokenDetailsActivityHeader, obj.header == true, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell", for: indexPath) as? TokenDetailsActivityHeaderCell {
+			} else if let obj = item.base as? TokenDetailsActivityHeader, obj.header == true, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell", for: indexPath) as? TokenDetailsActivityHeaderCell {
 				return cell
 				
-			} else if let _ = item as? TokenDetailsActivityHeader, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell_footer", for: indexPath) as? TokenDetailsActivityHeaderCell {
+			} else if let _ = item.base as? TokenDetailsActivityHeader, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsActivityHeaderCell_footer", for: indexPath) as? TokenDetailsActivityHeaderCell {
 				return cell
 				
-			} else if let obj = item as? TokenDetailsMessageData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsMessageCell", for: indexPath) as? TokenDetailsMessageCell {
+			} else if let obj = item.base as? TokenDetailsMessageData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsMessageCell", for: indexPath) as? TokenDetailsMessageCell {
 				cell.messageLabel.text = obj.message
 				return cell
 				
-			} else if let obj = item as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
+			} else if let obj = item.base as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
 				return cell
 			}
@@ -223,36 +223,36 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
 		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		
-		var data: [AnyHashable] = [
-			tokenHeaderData,
-			chartData,
-			balanceAndBakerData,
-			sendData
+		var data: [AnyHashableSendable] = [
+			.init(tokenHeaderData),
+			.init(chartData),
+			.init(balanceAndBakerData),
+			.init(sendData)
 		]
 		
 		// TODO: remove testnet check in future when remote serivce supports ghostnet
 		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .ghostnet {
-			data.append(stakingRewardLoadingData)
+			data.append(.init(stakingRewardLoadingData))
 		}
 		
 		
 		
 		// Activity data gets loaded as part of token balances
-		var activitySection: [AnyHashable] = [activityHeaderData]
+		var activitySection: [AnyHashableSendable] = [.init(activityHeaderData)]
 		self.activityItems = DependencyManager.shared.activityService.filterSendReceive(forToken: token, count: 5)
 		if activityItems.count == 0 {
-			activitySection.append(self.noItemsData)
+			activitySection.append(.init(self.noItemsData))
 			
 		} else {
-			activitySection.append(contentsOf: activityItems)
-			activitySection.append(self.activityFooterData)
+			activitySection.append(contentsOf: activityItems.map({ .init($0) }))
+			activitySection.append(.init(self.activityFooterData))
 		}
 		data.append(contentsOf: activitySection)
 		
 		
 		
 		// Build snapshot
-		currentSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		currentSnapshot.appendSections([0])
 		currentSnapshot.appendItems(data, toSection: 0)
 		
@@ -267,9 +267,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			
 			switch result {
 				case .success(let data):
-					self.currentSnapshot.deleteItems([self.chartData])
+				self.currentSnapshot.deleteItems([.init(self.chartData)])
 					self.chartData = data
-					self.currentSnapshot.insertItems([self.chartData], afterItem: self.tokenHeaderData)
+				self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
 					
 					self.calculatePriceChange(point: nil)
 					self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
@@ -278,10 +278,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.state = .success(nil)
 					
 				case .failure(_):
-					self.currentSnapshot.deleteItems([self.chartData])
+				self.currentSnapshot.deleteItems([.init(self.chartData)])
 					self.chartDataUnsucessful = true
 					self.chartData = AllChartData(day: [], week: [], month: [], year: [])
-					self.currentSnapshot.insertItems([self.chartData], afterItem: self.tokenHeaderData)
+				self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					self.state = .success(nil)
@@ -295,9 +295,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 				switch result {
 					case .success(let data):
-						self.currentSnapshot.deleteItems([self.stakingRewardLoadingData])
+					self.currentSnapshot.deleteItems([.init(self.stakingRewardLoadingData)])
 						self.stakingRewardData = data
-						self.currentSnapshot.insertItems([data], afterItem: self.sendData)
+					self.currentSnapshot.insertItems([.init(data)], afterItem: .init(self.sendData))
 						
 						ds.apply(self.currentSnapshot, animatingDifferences: true)
 						

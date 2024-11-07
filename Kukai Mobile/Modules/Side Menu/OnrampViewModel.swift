@@ -18,16 +18,16 @@ public struct OnrampOption: Codable, Hashable {
 class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var ramps: [OnrampOption] = []
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? OnrampOption, let cell = tableView.dequeueReusableCell(withIdentifier: "TitleSubtitleImageContainerCell", for: indexPath) as? TitleSubtitleImageContainerCell {
+			if let obj = item.base as? OnrampOption, let cell = tableView.dequeueReusableCell(withIdentifier: "TitleSubtitleImageContainerCell", for: indexPath) as? TitleSubtitleImageContainerCell {
 				cell.iconView.image = UIImage(named: obj.imageName)
 				cell.titleLabel.text = obj.title
 				cell.subtitleLabel.text = obj.subtitle
@@ -48,13 +48,13 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
 		
 		snapshot.appendItems([
-			OnrampOption(title: "Coinbase", subtitle: "Transfer from your Coinbase account", imageName: "coinbase", key: "coinbase"),
-			OnrampOption(title: "Transak", subtitle: "Bank transfers & local payment methods in 120+ countries", imageName: "transak", key: "transak"),
-			OnrampOption(title: "Moonpay", subtitle: "Cards & banks transfers", imageName: "moonpay", key: "moonpay")
+			.init(OnrampOption(title: "Coinbase", subtitle: "Transfer from your Coinbase account", imageName: "coinbase", key: "coinbase")),
+			.init(OnrampOption(title: "Transak", subtitle: "Bank transfers & local payment methods in 120+ countries", imageName: "transak", key: "transak")),
+			.init(OnrampOption(title: "Moonpay", subtitle: "Cards & banks transfers", imageName: "moonpay", key: "moonpay"))
 		], toSection: 0)
 		
 		ds.applySnapshotUsingReloadData(snapshot)
@@ -63,7 +63,7 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	public func url(forIndexPath indexPath: IndexPath, completion: @escaping ((Result<URL, KukaiError>) -> Void)) {
-		guard let ramp = dataSource?.itemIdentifier(for: indexPath) as? OnrampOption, let currentAddress = DependencyManager.shared.selectedWalletAddress else {
+		guard let ramp = dataSource?.itemIdentifier(for: indexPath)?.base as? OnrampOption, let currentAddress = DependencyManager.shared.selectedWalletAddress else {
 			completion(Result.failure(KukaiError.unknown()))
 			return
 		}

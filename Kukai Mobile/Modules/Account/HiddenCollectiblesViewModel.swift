@@ -14,9 +14,9 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 	private var accountDataRefreshedCancellable: AnyCancellable?
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
-	var dataSource: UITableViewDiffableDataSource<Int, AnyHashable>? = nil
+	var dataSource: UITableViewDiffableDataSource<SectionEnum, CellDataType>? = nil
 	var collectiblesToDisplay: [NFT] = []
 	
 	
@@ -45,7 +45,7 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 	func makeDataSource(withTableView tableView: UITableView) {
 		dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, item in
 			
-			if let obj = item as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
+			if let obj = item.base as? NFT, let cell = tableView.dequeueReusableCell(withIdentifier: "HiddenTokenCell", for: indexPath) as? HiddenTokenCell {
 				let url = MediaProxyService.url(fromUri: obj.thumbnailURI, ofFormat: MediaProxyService.Format.small.rawFormat())
 				MediaProxyService.load(url: url, to: cell.tokenIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 				cell.symbolLabel.text = obj.name
@@ -53,7 +53,7 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 				
 				return cell
 				
-			} else if let _ = item as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
+			} else if let _ = item.base as? String, let cell = tableView.dequeueReusableCell(withIdentifier: "EmptyTableViewCell", for: indexPath) as? EmptyTableViewCell {
 				return cell
 				
 			} else {
@@ -82,16 +82,16 @@ class HiddenCollectiblesViewModel: ViewModel, UITableViewDiffableDataSourceHandl
 		}
 		
 		// Build snapshot
-		var snapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0])
-		snapshot.appendItems(section1Data, toSection: 0)
+		snapshot.appendItems(section1Data.map({ .init($0) }), toSection: 0)
 		
 		ds.apply(snapshot, animatingDifferences: animate)
 		self.state = .success(nil)
 	}
 	
 	func nft(atIndexPath: IndexPath) -> NFT? {
-		if let nft = dataSource?.itemIdentifier(for: atIndexPath) as? NFT {
+		if let nft = dataSource?.itemIdentifier(for: atIndexPath)?.base as? NFT {
 			return nft
 		}
 		

@@ -8,10 +8,10 @@ on:
 jobs:
   deploy:
     name: Deploying to Testflight
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_15.4.app/Contents/Developer'
+        run: sudo xcode-select -s '/Applications/Xcode_16.app/Contents/Developer'
         
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
@@ -31,7 +31,7 @@ jobs:
           echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}" >> $GITHUB_ENV
       
       - name: Setup env varibales for develop
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref != 'refs/heads/main'
         run: |
           echo "BUILD_PROVISION_PROFILE_BASE64=${{ secrets.BUILD_PROVISION_PROFILE_BETA_BASE64 }}" >> $GITHUB_ENV
       
@@ -74,7 +74,7 @@ jobs:
 
       # Auto increment build number on Dev builds only to avoid mismatch between TestFlight setups
       - name: Auto update build number
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref != 'refs/heads/main'
         run: agvtool next-version -all
 
       # Build and archive for main or develop
@@ -83,7 +83,7 @@ jobs:
         run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       - name: Build and Archive
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref != 'refs/heads/main'
         run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
 
       # Export .ipa for main or develop
@@ -92,7 +92,7 @@ jobs:
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
       - name: Export .ipa
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref != 'refs/heads/main'
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
 
@@ -123,7 +123,7 @@ jobs:
           fi
         
       - name: Commit new version number
-        if: ${{ github.ref == 'refs/heads/develop' && success() }}
+        if: ${{ github.ref != 'refs/heads/main' && success() }}
         run: |
           git add .
           git commit -m "bump version"

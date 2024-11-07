@@ -28,6 +28,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 	let blurEffectMaskLayer = CAShapeLayer()
 	let transparentView = UIView()
 	let modalBackButton = CustomisableButton()
+	private var isOnMac = ProcessInfo.processInfo.isiOSAppOnMac
 	
 	public var withTextField: Bool = false
 	let textfield = ValidatorTextField()
@@ -42,6 +43,10 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
+		if UIDevice.current.userInterfaceIdiom == .pad {
+			self.preferredContentSize = CGSize(width: 400, height: 600)
+		}
+		
 		setupNav()
 		setupPreviewView()
 		setupClearBox()
@@ -52,6 +57,8 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		super.viewWillAppear(animated)
 		
 		textfield.text = nil
+		
+		guard !isOnMac else { return }
 		
 		let status = AVCaptureDevice.authorizationStatus(for: .video)
 		if status == .authorized {
@@ -230,6 +237,8 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 				textfield.trailingAnchor.constraint(equalTo: self.pasteButton.leadingAnchor, constant: -16),
 				textfield.topAnchor.constraint(equalTo: self.previewContainerView.bottomAnchor, constant: 24),
 				textfield.heightAnchor.constraint(equalToConstant: 36),
+				
+				textfield.bottomAnchor.constraint(equalTo: self.scrollView.bottomAnchor, constant: -24),
 				
 				pasteButton.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
 				pasteButton.centerYAnchor.constraint(equalTo: self.textfield.centerYAnchor, constant: 0),

@@ -9,13 +9,28 @@ import UIKit
 
 class LedgerDeviceCell: UITableViewCell {
 
-	@IBOutlet weak var nameLabel: UILabel!
-	@IBOutlet weak var uuidLabel: UILabel!
+	@IBOutlet weak var containerView: GradientView!
+	@IBOutlet weak var titleLabel: UILabel!
+	@IBOutlet weak var subtitleLabel: UILabel!
+	@IBOutlet weak var checkedImage: UIImageView!
 	
-	public static let reuseIdentifier = "ledgerDeviceCell"
+	override func awakeFromNib() {
+		super.awakeFromNib()
+		containerView.gradientType = .tableViewCell
+	}
 	
-	func setup(name: String, uuid: String) {
-		self.nameLabel.text = name
-		self.uuidLabel.text = uuid
+	func setup(title: String, uuid: String) {
+		self.titleLabel.text = title
+		self.subtitleLabel.text = "UUID: \(uuid)"
+	}
+	
+	override func setSelected(_ selected: Bool, animated: Bool) {
+		super.setSelected(selected, animated: animated)
+		
+		if selected {
+			checkedImage?.image = UIImage(named: "btnChecked")
+		} else {
+			checkedImage?.image = UIImage(named: "btnUnchecked")
+		}
 	}
 }

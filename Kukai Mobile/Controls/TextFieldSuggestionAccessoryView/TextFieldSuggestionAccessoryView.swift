@@ -96,11 +96,16 @@ class TextFieldSuggestionAccessoryView: UIView, UICollectionViewDataSource, UICo
 	}
 	
 	func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextFieldSuggestionAccessoryViewCell", for: indexPath) as? TextFieldSuggestionAccessoryViewCell, indexPath.row < filteredSuggestions.count else {
-			return UICollectionViewCell()
+		guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TextFieldSuggestionAccessoryViewCell", for: indexPath) as? TextFieldSuggestionAccessoryViewCell else {
+			return TextFieldSuggestionAccessoryViewCell(frame: CGRect(x: 0, y: 0, width: 0, height: 0))
 		}
 		
-		cell.setup(withSuggestion: self.filteredSuggestions[indexPath.row])
+		if indexPath.row < filteredSuggestions.count {
+			cell.setup(withSuggestion: self.filteredSuggestions[indexPath.row])
+		} else {
+			cell.setup(withSuggestion: "")
+		}
+		
 		return cell
 	}
 	

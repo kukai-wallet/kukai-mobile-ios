@@ -19,12 +19,12 @@ struct CollectionDetailsHeaderObj: Hashable {
 class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
-	typealias CellDataType = AnyHashable
+	typealias CellDataType = AnyHashableSendable
 	
 	private var normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 	private var bag = [AnyCancellable]()
 	
-	var dataSource: UICollectionViewDiffableDataSource<Int, AnyHashable>?
+	var dataSource: UICollectionViewDiffableDataSource<SectionEnum, CellDataType>?
 	
 	public var isVisible = false
 	public var selectedToken: Token? = nil
@@ -61,20 +61,20 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		
 		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
 			
-			if let obj = item as? CollectionDetailsHeaderObj, obj.creator == nil, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderSmallCell", for: indexPath) as? CollectiblesCollectionHeaderSmallCell {
+			if let obj = item.base as? CollectionDetailsHeaderObj, obj.creator == nil, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderSmallCell", for: indexPath) as? CollectiblesCollectionHeaderSmallCell {
 				MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				
 				cell.titleLabel.text = obj.title
 				return cell
 				
-			} else if let obj = item as? CollectionDetailsHeaderObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderMediumCell", for: indexPath) as? CollectiblesCollectionHeaderMediumCell {
+			} else if let obj = item.base as? CollectionDetailsHeaderObj, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionHeaderMediumCell", for: indexPath) as? CollectiblesCollectionHeaderMediumCell {
 				MediaProxyService.load(url: obj.url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 				
 				cell.titleLabel.text = obj.title
 				cell.creatorLabel.text = obj.creator
 				return cell
 				
-			} else if let obj = item as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionItemLargeWithTextCell", for: indexPath) as? CollectiblesCollectionItemLargeWithTextCell {
+			} else if let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionItemLargeWithTextCell", for: indexPath) as? CollectiblesCollectionItemLargeWithTextCell {
 				let url = MediaProxyService.mediumURL(forNFT: obj)
 				let halfMegaByte: UInt = 500000
 				MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
@@ -107,7 +107,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		
 		
 		// Build snapshot
-		normalSnapshot = NSDiffableDataSourceSnapshot<Int, AnyHashable>()
+		normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		normalSnapshot.appendSections([0, 1])
 		
 		
@@ -116,13 +116,13 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 		let url = MediaProxyService.url(fromUri: tokenToView?.thumbnailURL, ofFormat: MediaProxyService.Format.small.rawFormat())
 		
 		if let creator = DependencyManager.shared.objktClient.collections[tokenToView?.tokenContractAddress ?? ""]?.creator?.alias {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: url, title: title, creator: creator) ], toSection: 0)
+			normalSnapshot.appendItems([ .init(CollectionDetailsHeaderObj(url: url, title: title, creator: creator)) ], toSection: 0)
 			
 		} else {
-			normalSnapshot.appendItems([ CollectionDetailsHeaderObj(url: url, title: title, creator: nil) ], toSection: 0)
+			normalSnapshot.appendItems([ .init(CollectionDetailsHeaderObj(url: url, title: title, creator: nil)) ], toSection: 0)
 		}
 		
-		let visibleNfts = (tokenToView?.nfts ?? []).filter({ !$0.isHidden })
+		let visibleNfts = (tokenToView?.nfts ?? []).filter({ !$0.isHidden }).map({ AnyHashableSendable($0) })
 		normalSnapshot.appendItems(visibleNfts, toSection: 1)
 		ds.applySnapshotUsingReloadData(normalSnapshot)
 		
@@ -132,7 +132,7 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	}
 	
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
-		if let nft = dataSource?.itemIdentifier(for: indexPath) as? NFT {
+		if let nft = dataSource?.itemIdentifier(for: indexPath)?.base as? NFT {
 			return nft
 		}
 		

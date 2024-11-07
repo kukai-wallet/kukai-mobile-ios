@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ey1-yw-mvK">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="ey1-yw-mvK">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
@@ -81,8 +81,56 @@
                                             <outlet property="iconView" destination="Oen-WS-9Iv" id="jcU-ji-33D"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ImageHeadingCell_subheading" rowHeight="50" id="r07-FQ-yPb" customClass="ImageHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="85.5" width="375" height="50"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r07-FQ-yPb" id="bfn-PO-aNa">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BT0-XR-wHd">
+                                                    <rect key="frame" x="16" y="4" width="16" height="16"/>
+                                                    <color key="tintColor" name="Txt10"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="16" id="nth-vO-SZI"/>
+                                                        <constraint firstAttribute="height" constant="16" id="uXo-L5-n8m"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;heading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SQG-NE-tia">
+                                                    <rect key="frame" x="40" y="2.5" width="303" height="19.5"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;subheading&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="li9-oF-aTA">
+                                                    <rect key="frame" x="40" y="22" width="303" height="24"/>
+                                                    <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                                                    <color key="textColor" name="Txt10"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="BT0-XR-wHd" firstAttribute="top" secondItem="bfn-PO-aNa" secondAttribute="top" constant="4" id="7GA-iq-f40"/>
+                                                <constraint firstItem="BT0-XR-wHd" firstAttribute="leading" secondItem="bfn-PO-aNa" secondAttribute="leading" constant="16" id="8Zs-Zr-oR0"/>
+                                                <constraint firstAttribute="bottom" secondItem="li9-oF-aTA" secondAttribute="bottom" constant="4" id="Ah9-Z1-out"/>
+                                                <constraint firstItem="li9-oF-aTA" firstAttribute="trailing" secondItem="SQG-NE-tia" secondAttribute="trailing" id="I7X-YB-EdP"/>
+                                                <constraint firstItem="SQG-NE-tia" firstAttribute="centerY" secondItem="BT0-XR-wHd" secondAttribute="centerY" id="Pjp-Zy-Sf4"/>
+                                                <constraint firstItem="li9-oF-aTA" firstAttribute="top" secondItem="SQG-NE-tia" secondAttribute="bottom" id="nHT-zG-5k2"/>
+                                                <constraint firstItem="SQG-NE-tia" firstAttribute="leading" secondItem="BT0-XR-wHd" secondAttribute="trailing" constant="8" id="rkO-33-8l8"/>
+                                                <constraint firstItem="li9-oF-aTA" firstAttribute="leading" secondItem="SQG-NE-tia" secondAttribute="leading" id="vqe-7S-ics"/>
+                                                <constraint firstAttribute="trailing" secondItem="SQG-NE-tia" secondAttribute="trailing" constant="32" id="yGG-65-qo7"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="headingLabel" destination="SQG-NE-tia" id="UTp-na-VaD"/>
+                                            <outlet property="iconView" destination="BT0-XR-wHd" id="wIr-Kc-8ez"/>
+                                            <outlet property="subheadingLabel" destination="li9-oF-aTA" id="WHd-UY-qV9"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddressChoiceCell" rowHeight="74" id="KUQ-Vf-hq2" customClass="AddressChoiceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="85.5" width="375" height="74"/>
+                                        <rect key="frame" x="0.0" y="135.5" width="375" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KUQ-Vf-hq2" id="II8-4z-ULW">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -143,7 +191,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddressChoiceCell_more" rowHeight="74" id="4Aa-Du-rXM" customClass="AddressChoiceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="159.5" width="375" height="74"/>
+                                        <rect key="frame" x="0.0" y="209.5" width="375" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Aa-Du-rXM" id="wKE-p3-yCf">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="74"/>
@@ -229,7 +277,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoContactsCell" rowHeight="60" id="eVR-2f-GQa" customClass="NoContactsCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="233.5" width="375" height="60"/>
+                                        <rect key="frame" x="0.0" y="283.5" width="375" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eVR-2f-GQa" id="EOg-G9-um9">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
@@ -284,7 +332,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountsMoreCell" id="rkw-s7-Nt6" customClass="AccountsMoreCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="293.5" width="375" height="39"/>
+                                        <rect key="frame" x="0.0" y="343.5" width="375" height="39"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rkw-s7-Nt6" id="Jdu-jQ-WJP">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="39"/>
@@ -320,6 +368,31 @@
                                             <outlet property="moreImage" destination="7zY-Up-ugZ" id="HOL-wz-KNX"/>
                                             <outlet property="moreLabel" destination="j5f-MJ-Xgq" id="bJI-D8-bAT"/>
                                         </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="custom-seperator" id="tPF-l8-FBy">
+                                        <rect key="frame" x="0.0" y="382.5" width="375" height="19"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="tPF-l8-FBy" id="hj9-SO-gSd">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="19"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bF0-qx-ZiO">
+                                                    <rect key="frame" x="16" y="16" width="343" height="1"/>
+                                                    <color key="backgroundColor" name="BG6"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="1" id="ElP-cm-moa"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="bF0-qx-ZiO" firstAttribute="top" secondItem="hj9-SO-gSd" secondAttribute="top" constant="16" id="Dek-oa-08o"/>
+                                                <constraint firstAttribute="trailing" secondItem="bF0-qx-ZiO" secondAttribute="trailing" constant="16" id="H0L-gj-VRE"/>
+                                                <constraint firstItem="bF0-qx-ZiO" firstAttribute="leading" secondItem="hj9-SO-gSd" secondAttribute="leading" constant="16" id="OMO-tT-ujK"/>
+                                                <constraint firstAttribute="bottom" secondItem="bF0-qx-ZiO" secondAttribute="bottom" constant="2" id="x8b-jB-eY5"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -377,7 +450,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yya-0g-BLN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="133.58778625954199" y="69.718309859154928"/>
+            <point key="canvasLocation" x="132" y="69.715142428785612"/>
         </scene>
         <!--Send-->
         <scene sceneID="yba-tQ-gc2">
@@ -821,7 +894,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KP0-f6-f1G">
-                                <rect key="frame" x="0.0" y="103" width="375" height="333"/>
+                                <rect key="frame" x="0.0" y="103" width="375" height="352.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zSd-e8-R4y">
                                         <rect key="frame" x="16" y="0.0" width="343" height="418"/>
@@ -1311,7 +1384,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="BJH-U4-7SH"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="sZg-sO-oee">
-                                <rect key="frame" x="16" y="452" width="343" height="168"/>
+                                <rect key="frame" x="16" y="471.5" width="343" height="148.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="QB6-pU-AiT">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="28"/>
@@ -1352,11 +1425,11 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="cKX-GE-bkB">
-                                                <rect key="frame" x="147.5" y="0.0" width="102.5" height="28"/>
+                                                <rect key="frame" x="147.5" y="0.0" width="115.5" height="28"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="33O-kl-RN2" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="254" y="0.0" width="89" height="28"/>
+                                                <rect key="frame" x="267" y="0.0" width="76" height="28"/>
                                                 <color key="backgroundColor" name="BtnSec1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="Ltq-4n-Vc3"/>
@@ -1397,19 +1470,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Gpe-K3-ZOs">
-                                        <rect key="frame" x="0.0" y="52" width="343" height="116"/>
+                                        <rect key="frame" x="0.0" y="52" width="343" height="96.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3t6-1h-mh7">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ledger Auto-Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCM-fy-8zW">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="19.5"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                        <color key="textColor" name="Txt10"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A0a-mk-jBs">
-                                                        <rect key="frame" x="0.0" y="19.5" width="343" height="14.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                         <color key="textColor" name="TxtAlert4"/>
                                                         <nil key="highlightedColor"/>
@@ -1417,7 +1484,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="HW0-gO-HUB">
-                                                <rect key="frame" x="0.0" y="54" width="343" height="62"/>
+                                                <rect key="frame" x="0.0" y="34.5" width="343" height="62"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Das-Fu-p2b" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="31.5" y="0.0" width="280" height="62"/>
@@ -1505,6 +1572,7 @@
                     <navigationItem key="navigationItem" id="ENF-dJ-0za"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="closeButton" destination="Zvs-Yl-Eam" id="bMp-8g-Adz"/>
                         <outlet property="connectedAppIcon" destination="u22-9U-SMW" id="FwT-tk-fbu"/>
                         <outlet property="connectedAppLabel" destination="pYM-nE-edA" id="mMd-83-9LF"/>
                         <outlet property="connectedAppMetadataStackView" destination="AR2-rK-feA" id="s6c-ke-ZoA"/>
@@ -1524,7 +1592,6 @@
                         <outlet property="largeDisplayIcon" destination="LuO-X5-FEC" id="nuY-fg-IHn"/>
                         <outlet property="largeDisplayStackView" destination="Uo3-nQ-XAE" id="Squ-2E-ZSx"/>
                         <outlet property="largeDisplaySymbol" destination="ZQ7-Fw-w3P" id="9iR-K5-Ipk"/>
-                        <outlet property="ledgerWarningLabel" destination="BCM-fy-8zW" id="ykb-fx-bTy"/>
                         <outlet property="scrollView" destination="KP0-f6-f1G" id="GvG-Zp-2ug"/>
                         <outlet property="slideButton" destination="Das-Fu-p2b" id="rI7-l1-XCs"/>
                         <outlet property="slideErrorStackView" destination="3t6-1h-mh7" id="LzQ-2b-Jnk"/>
@@ -2036,7 +2103,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SCc-iG-m08">
-                                <rect key="frame" x="0.0" y="103" width="375" height="333"/>
+                                <rect key="frame" x="0.0" y="103" width="375" height="352.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RaG-HT-5Ka">
                                         <rect key="frame" x="16" y="0.0" width="343" height="601.5"/>
@@ -2476,7 +2543,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="ai8-tp-t2I"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="I7b-z4-g1U">
-                                <rect key="frame" x="16" y="452" width="343" height="168"/>
+                                <rect key="frame" x="16" y="471.5" width="343" height="148.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Tas-Fh-ics">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="28"/>
@@ -2517,11 +2584,11 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Zdg-IE-mO6">
-                                                <rect key="frame" x="147.5" y="0.0" width="102.5" height="28"/>
+                                                <rect key="frame" x="147.5" y="0.0" width="115.5" height="28"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARH-fd-Xk3" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="254" y="0.0" width="89" height="28"/>
+                                                <rect key="frame" x="267" y="0.0" width="76" height="28"/>
                                                 <color key="backgroundColor" name="BtnSec1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="e6M-mO-nxK"/>
@@ -2562,19 +2629,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GD3-fX-aLU">
-                                        <rect key="frame" x="0.0" y="52" width="343" height="116"/>
+                                        <rect key="frame" x="0.0" y="52" width="343" height="96.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZUo-zX-n5w">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ledger Auto-Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BMe-Gl-Wym">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="19.5"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                        <color key="textColor" name="Txt10"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yb6-kz-XfO">
-                                                        <rect key="frame" x="0.0" y="19.5" width="343" height="14.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                         <color key="textColor" name="TxtAlert4"/>
                                                         <nil key="highlightedColor"/>
@@ -2582,7 +2643,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fEB-y3-h55">
-                                                <rect key="frame" x="0.0" y="54" width="343" height="62"/>
+                                                <rect key="frame" x="0.0" y="34.5" width="343" height="62"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pf0-I4-wqw" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="31.5" y="0.0" width="280" height="62"/>
@@ -2670,6 +2731,7 @@
                     <navigationItem key="navigationItem" id="y86-di-DVj"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="closeButton" destination="JuX-ap-QAZ" id="9H5-ST-czI"/>
                         <outlet property="collectibleImage" destination="NKZ-Vx-5kT" id="kwp-ek-ES8"/>
                         <outlet property="collectibleImageQuantityLabel" destination="Dma-2P-RHW" id="xqd-N2-DDn"/>
                         <outlet property="collectibleImageQuantityView" destination="zsQ-Ug-pgM" id="UfA-h3-rvF"/>
@@ -2689,7 +2751,6 @@
                         <outlet property="fromSocialIcon" destination="T3J-iv-Xi0" id="YhT-Yl-bYE"/>
                         <outlet property="fromStackViewRegular" destination="PXG-QF-w6D" id="iSl-ST-xXC"/>
                         <outlet property="fromStackViewSocial" destination="Gel-on-dby" id="zYL-Dc-OLu"/>
-                        <outlet property="ledgerWarningLabel" destination="BMe-Gl-Wym" id="f7b-Ny-EAD"/>
                         <outlet property="quantityStackView" destination="Ws3-ni-0Yu" id="2Ia-Nl-Cx1"/>
                         <outlet property="regularAddress" destination="Eju-i3-Xlx" id="bnX-aW-3UY"/>
                         <outlet property="scrollView" destination="SCc-iG-m08" id="Y3S-af-bnr"/>
@@ -2789,7 +2850,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sc5-4h-3Ch">
-                                <rect key="frame" x="0.0" y="103" width="375" height="325"/>
+                                <rect key="frame" x="0.0" y="103" width="375" height="344.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="joA-sP-jke">
                                         <rect key="frame" x="16" y="0.0" width="343" height="378"/>
@@ -3239,7 +3300,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="cJf-Sl-KB1"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="t2o-zv-Uz2">
-                                <rect key="frame" x="16" y="452" width="343" height="168"/>
+                                <rect key="frame" x="16" y="471.5" width="343" height="148.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="pwO-bI-Q4A">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="28"/>
@@ -3280,11 +3341,11 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Ey8-AT-W61">
-                                                <rect key="frame" x="147.5" y="0.0" width="102.5" height="28"/>
+                                                <rect key="frame" x="147.5" y="0.0" width="115.5" height="28"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KLt-HO-0E1" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="254" y="0.0" width="89" height="28"/>
+                                                <rect key="frame" x="267" y="0.0" width="76" height="28"/>
                                                 <color key="backgroundColor" name="BtnSec1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="le5-So-zaS"/>
@@ -3325,19 +3386,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="rjp-c5-AxY">
-                                        <rect key="frame" x="0.0" y="52" width="343" height="116"/>
+                                        <rect key="frame" x="0.0" y="52" width="343" height="96.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="7v3-sM-ojs">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ledger Auto-Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PQx-Kd-yYn">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="19.5"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                        <color key="textColor" name="Txt10"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sgt-Wf-ocZ">
-                                                        <rect key="frame" x="0.0" y="19.5" width="343" height="14.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                         <color key="textColor" name="TxtAlert4"/>
                                                         <nil key="highlightedColor"/>
@@ -3345,7 +3400,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="U2Z-1p-ZCs">
-                                                <rect key="frame" x="0.0" y="54" width="343" height="62"/>
+                                                <rect key="frame" x="0.0" y="34.5" width="343" height="62"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="glJ-5l-36g" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="31.5" y="0.0" width="280" height="62"/>
@@ -3433,6 +3488,7 @@
                     <navigationItem key="navigationItem" id="Moo-G5-1Xj"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="closeButton" destination="aGl-lg-ua4" id="4Th-Yf-LcD"/>
                         <outlet property="connectedAppIcon" destination="jSa-b9-zOW" id="MeY-eX-4wg"/>
                         <outlet property="connectedAppLabel" destination="lnj-PN-Z4L" id="EKD-UU-M8w"/>
                         <outlet property="connectedAppMetadataStackView" destination="Epm-X9-3ju" id="LpG-x4-7Co"/>
@@ -3452,7 +3508,6 @@
                         <outlet property="largeDisplayIcon" destination="GKC-UJ-YnL" id="EfG-ul-n5E"/>
                         <outlet property="largeDisplayStackView" destination="lc0-QO-K8F" id="HQL-vp-dFK"/>
                         <outlet property="largeDisplaySymbol" destination="HdM-NI-cfb" id="GQ0-cD-47a"/>
-                        <outlet property="ledgerWarningLabel" destination="PQx-Kd-yYn" id="5v3-8j-4ML"/>
                         <outlet property="scrollView" destination="sc5-4h-3Ch" id="8YL-ba-LJq"/>
                         <outlet property="slideButton" destination="glJ-5l-36g" id="53M-Oq-H4e"/>
                         <outlet property="slideErrorStackView" destination="7v3-sM-ojs" id="Ad7-66-L4R"/>
@@ -3647,7 +3702,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6lO-29-qxr" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="81.5" y="16" width="261.5" height="17"/>
+                                        <rect key="frame" x="81.5" y="10" width="261.5" height="29"/>
                                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                         <color key="tintColor" name="BGB4"/>
                                         <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
@@ -3789,7 +3844,7 @@
                                 </connections>
                             </button>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="965-k2-a04">
-                                <rect key="frame" x="0.0" y="103" width="375" height="325"/>
+                                <rect key="frame" x="0.0" y="103" width="375" height="344.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fgr-ez-JeW">
                                         <rect key="frame" x="16" y="0.0" width="343" height="443.5"/>
@@ -4042,7 +4097,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jz3-Oh-twp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                        <rect key="frame" x="88" y="16" width="255" height="17"/>
+                                                        <rect key="frame" x="88" y="10" width="255" height="29"/>
                                                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                         <color key="tintColor" name="BGB4"/>
                                                         <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
@@ -4093,7 +4148,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="mgg-Ak-igv"/>
                             </scrollView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="et6-l7-A7p">
-                                <rect key="frame" x="16" y="452" width="343" height="168"/>
+                                <rect key="frame" x="16" y="471.5" width="343" height="148.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="f62-Ot-O7l">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="28"/>
@@ -4134,11 +4189,11 @@
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Igf-71-olT">
-                                                <rect key="frame" x="145.5" y="0.0" width="104.5" height="28"/>
+                                                <rect key="frame" x="145.5" y="0.0" width="117.5" height="28"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WrO-Y2-xJO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                                <rect key="frame" x="254" y="0.0" width="89" height="28"/>
+                                                <rect key="frame" x="267" y="0.0" width="76" height="28"/>
                                                 <color key="backgroundColor" name="BtnSec1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="28" id="R88-3a-hNy"/>
@@ -4179,19 +4234,13 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="4eB-at-hw1">
-                                        <rect key="frame" x="0.0" y="52" width="343" height="116"/>
+                                        <rect key="frame" x="0.0" y="52" width="343" height="96.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eS9-EN-k3w">
-                                                <rect key="frame" x="0.0" y="0.0" width="343" height="34"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ledger Auto-Broadcast" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tSz-PN-TQc">
-                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="19.5"/>
-                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                        <color key="textColor" name="Txt10"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;error&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6h-2b-aS5">
-                                                        <rect key="frame" x="0.0" y="19.5" width="343" height="14.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="14.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                                         <color key="textColor" name="TxtAlert4"/>
                                                         <nil key="highlightedColor"/>
@@ -4199,7 +4248,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="uU4-uc-lpV">
-                                                <rect key="frame" x="0.0" y="54" width="343" height="62"/>
+                                                <rect key="frame" x="0.0" y="34.5" width="343" height="62"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EhJ-JP-3N2" customClass="SlideButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                         <rect key="frame" x="31.5" y="0.0" width="280" height="62"/>
@@ -4287,6 +4336,7 @@
                     <navigationItem key="navigationItem" id="3Yg-Rl-SM1"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="closeButton" destination="O3C-5h-FgY" id="cNu-6p-3as"/>
                         <outlet property="connectedAppIcon" destination="86W-Ic-KKQ" id="H1x-95-ufJ"/>
                         <outlet property="connectedAppLabel" destination="o7t-Fz-pgi" id="63S-NY-BQw"/>
                         <outlet property="connectedAppMetadataStackView" destination="kg9-xH-Aes" id="8ft-gw-AFs"/>
@@ -4301,7 +4351,6 @@
                         <outlet property="fromSocialIcon" destination="dKS-cY-bKh" id="T61-ca-pQ1"/>
                         <outlet property="fromStackViewRegular" destination="U1K-B6-3Cl" id="zHl-Yz-gMK"/>
                         <outlet property="fromStackViewSocial" destination="aDU-wh-MZs" id="5Rb-9U-dK8"/>
-                        <outlet property="ledgerWarningLabel" destination="tSz-PN-TQc" id="c0Y-VK-oU4"/>
                         <outlet property="moreButton" destination="jz3-Oh-twp" id="zaA-ia-bY6"/>
                         <outlet property="operationTextView" destination="w4B-HX-XpE" id="E2I-mV-AP9"/>
                         <outlet property="scrollView" destination="965-k2-a04" id="fUr-yx-TD3"/>
@@ -4426,7 +4475,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" semanticContentAttribute="forceRightToLeft" contentHorizontalAlignment="leading" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tot-14-1NF" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="81.5" y="16" width="261.5" height="17"/>
+                                        <rect key="frame" x="81.5" y="10" width="261.5" height="29"/>
                                         <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                         <color key="tintColor" name="BGB4"/>
                                         <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
@@ -4498,83 +4547,6 @@
             <point key="canvasLocation" x="3992" y="1249"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="33O-kl-RN2">
-            <size key="intrinsicContentSize" width="89" height="17"/>
-        </designable>
-        <designable name="4Vi-Qy-l87">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="6lO-29-qxr">
-            <size key="intrinsicContentSize" width="53" height="17"/>
-        </designable>
-        <designable name="ARH-fd-Xk3">
-            <size key="intrinsicContentSize" width="89" height="17"/>
-        </designable>
-        <designable name="C7F-BZ-S6c">
-            <size key="intrinsicContentSize" width="12" height="22"/>
-        </designable>
-        <designable name="CSp-au-4fV">
-            <size key="intrinsicContentSize" width="12" height="22"/>
-        </designable>
-        <designable name="IHv-Zx-7GN">
-            <size key="intrinsicContentSize" width="16" height="22"/>
-        </designable>
-        <designable name="JuX-ap-QAZ">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="KLt-HO-0E1">
-            <size key="intrinsicContentSize" width="89" height="17"/>
-        </designable>
-        <designable name="NEl-Gn-ZhC">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="O3C-5h-FgY">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="Tot-14-1NF">
-            <size key="intrinsicContentSize" width="53" height="17"/>
-        </designable>
-        <designable name="VCc-XV-wEO">
-            <size key="intrinsicContentSize" width="16" height="22"/>
-        </designable>
-        <designable name="WrO-Y2-xJO">
-            <size key="intrinsicContentSize" width="89" height="17"/>
-        </designable>
-        <designable name="Zvs-Yl-Eam">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="aGl-lg-ua4">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="hbD-NW-Okr">
-            <size key="intrinsicContentSize" width="68" height="36"/>
-        </designable>
-        <designable name="jz3-Oh-twp">
-            <size key="intrinsicContentSize" width="53" height="17"/>
-        </designable>
-        <designable name="nCs-Kh-fbt">
-            <size key="intrinsicContentSize" width="18" height="22"/>
-        </designable>
-        <designable name="nOX-VJ-iuZ">
-            <size key="intrinsicContentSize" width="94" height="22"/>
-        </designable>
-        <designable name="qGh-8Z-e69">
-            <size key="intrinsicContentSize" width="16" height="22"/>
-        </designable>
-        <designable name="sWK-Sm-eUa">
-            <size key="intrinsicContentSize" width="68" height="36"/>
-        </designable>
-        <designable name="sga-th-pVd">
-            <size key="intrinsicContentSize" width="22.5" height="42.5"/>
-        </designable>
-        <designable name="vrZ-mx-SMH">
-            <size key="intrinsicContentSize" width="12" height="22"/>
-        </designable>
-        <designable name="zPk-1v-2rU">
-            <size key="intrinsicContentSize" width="12" height="22"/>
-        </designable>
-    </designables>
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="ArrowDown" width="24" height="24"/>
@@ -4595,6 +4567,9 @@
         </namedColor>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG6">
+            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB-alt4">
             <color red="0.9179999828338623" green="0.62699997425079346" blue="0.046999998390674591" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

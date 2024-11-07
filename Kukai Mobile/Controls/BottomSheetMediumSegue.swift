@@ -14,7 +14,16 @@ public class BottomSheetMediumSegue: UIStoryboardSegue {
 			return
 		}
 		
-		dest.detents = [.medium()]
+		let isTooSmallForMeidum = (UIScreen.main.bounds.height < 700)
+		var detents: [UISheetPresentationController.Detent] = []
+		
+		if isTooSmallForMeidum {
+			detents = [.large()]
+		} else {
+			detents = [.medium()]
+		}
+		
+		dest.detents = detents
 		dest.prefersGrabberVisible = true
 		dest.preferredCornerRadius = 30
 		
