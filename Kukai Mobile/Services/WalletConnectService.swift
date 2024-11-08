@@ -222,6 +222,12 @@ public class WalletConnectService {
 		Logger.app.info("Processing WC2 request method: \(requestWrapper.request.method), for topic: \(requestWrapper.request.topic), with id: \(requestWrapper.request.id)")
 		TransactionService.shared.walletConnectOperationData.request = requestWrapper.request
 		
+		guard let _ = TransactionService.shared.walletConnectOperationData.request else {
+			WalletConnectService.rejectCurrentRequest(completion: nil)
+			delegateErrorOnMain(message: "error-wc2-invalid-request".localized(), error: nil)
+			return
+		}
+		
 		if requestWrapper.request.method != "tezos_getAccounts" {
 			self.delegate?.processingIncomingOperations()
 		}
@@ -243,6 +249,12 @@ public class WalletConnectService {
 	private func handleProposal(_ proposalWrapper: walletConnectPorposalTuple) {
 		Logger.app.info("Processing WC2 proposal: \(proposalWrapper.proposal.id)")
 		TransactionService.shared.walletConnectOperationData.proposal = proposalWrapper.proposal
+		
+		guard let _ = TransactionService.shared.walletConnectOperationData.proposal else {
+			WalletConnectService.rejectCurrentProposal(completion: nil)
+			delegateErrorOnMain(message: "error-wc2-invalid-proposal".localized(), error: nil)
+			return
+		}
 		
 		// Check if the proposal is for the network the app is currently on
 		self.checkValidNetwork(forProposal: proposalWrapper.proposal) { [weak self] isValid in
