@@ -80,11 +80,11 @@ jobs:
       # Build and archive for main or develop
       - name: Build and Archive
         if: github.ref == 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Release" -sdk iphoneos -configuration Release -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       - name: Build and Archive
         if: github.ref != 'refs/heads/main'
-        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive
+        run: xcodebuild -scheme "Kukai Mobile Beta" -sdk iphoneos -configuration Beta -archivePath $PWD/build/Kukai-mobile.xcarchive clean archive OTHER_SWIFT_FLAGS="-Xfrontend -internalize-at-link"
 
       # Export .ipa for main or develop
       - name: Export .ipa

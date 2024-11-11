@@ -2463,6 +2463,8 @@
 				);
 				MARKETING_VERSION = 1.1.0;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Debug Prov Dev";
@@ -2503,6 +2505,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.0;
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Prov Dist App Store";
@@ -2688,6 +2692,8 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.1.0;
+				OTHER_CFLAGS = "";
+				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "Kukai Mobile Beta Prov Dist App Store";
