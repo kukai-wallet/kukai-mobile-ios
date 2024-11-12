@@ -28,7 +28,6 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func error(message: String?, error: Error?)
 	func connectionStatusChanged(status: SocketConnectionStatus)
-	//func walletConnectSocketFailedToReconnect3Times()
 }
 
 public struct WalletConnectGetAccountObj: Codable {
@@ -80,9 +79,6 @@ public class WalletConnectService {
 	private typealias walletConnectRequestTuple = (request: Request, context: VerifyContext?)
 	private typealias walletConnectPorposalTuple = (proposal: Session.Proposal, context: VerifyContext?)
 	
-	//private var isReconnecting = false
-	//private var isManualDisconnection = true
-	
 	@Published public var sessionsUpdated: Bool = false
 	
 	private init() {}
@@ -125,28 +121,7 @@ public class WalletConnectService {
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { status in
 			Logger.app.info("WC2 - Connection status: changed to \(status == .connected ? "connected" : "disconnected")")
-			
-			if status == .disconnected {
-				WalletConnectService.shared.isConnected = false
-				
-				/*
-				 if self?.isManualDisconnection == false && self?.isReconnecting == false {
-				 WalletConnectService.shared.reconnect()
-				 
-				 } else if self?.isManualDisconnection == true {
-				 self?.isManualDisconnection = false
-				 }
-				 */
-				
-			} else {
-				WalletConnectService.shared.isConnected = true
-				
-				/*
-				 if let uri = self?.deepLinkPairingToConnect {
-				 self?.pairClient(uri: uri)
-				 }
-				 */
-			}
+			WalletConnectService.shared.isConnected = status == .connected
 			
 			DispatchQueue.main.async {
 				WalletConnectService.shared.delegate?.connectionStatusChanged(status: status)
