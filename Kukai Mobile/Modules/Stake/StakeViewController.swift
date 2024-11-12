@@ -56,13 +56,7 @@ class StakeViewController: UIViewController {
 		if address == "" {
 			let currentDelegate = DependencyManager.shared.balanceService.account.delegate
 			let name = currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress() ?? ""
-			var logo: String? = nil
-			
-			if let add = currentDelegate?.address {
-				logo = TzKTClient.avatarURL(forToken: add)?.absoluteString
-			}
-			
-			let baker = TzKTBaker(address: "", name: name, logo: logo)
+			let baker = TzKTBaker(address: "", name: name)
 			
 			TransactionService.shared.delegateData.chosenBaker = baker
 			TransactionService.shared.delegateData.isAdd = false
@@ -75,7 +69,7 @@ class StakeViewController: UIViewController {
 				TransactionService.shared.delegateData.isAdd = true
 				
 			} else {
-				let baker = TzKTBaker(address: address, name: address.truncateTezosAddress(), logo: nil)
+				let baker = TzKTBaker(address: address, name: address.truncateTezosAddress())
 				TransactionService.shared.delegateData.chosenBaker = baker
 				TransactionService.shared.delegateData.isAdd = true
 			}

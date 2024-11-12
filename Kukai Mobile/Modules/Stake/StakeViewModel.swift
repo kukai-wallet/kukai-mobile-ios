@@ -101,11 +101,11 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return false
 				}
 				
-				return baker.stakingCapacity > xtzBalanceAsDecimal && baker.openForDelegation && baker.serviceHealth != .dead && baker.serviceType != "exchange"
+				return baker.delegation.capacity > xtzBalanceAsDecimal && baker.status == TzKTBakerStatus.active
 			}
 			
 			let sortedResults = filteredResults.sorted(by: { lhs, rhs in
-				lhs.estimatedRoi > rhs.estimatedRoi
+				lhs.delegation.estimatedApy > rhs.delegation.estimatedApy
 			})
 			
 			
@@ -119,7 +119,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if let currentBaker = currentBaker {
 					self?.currentSnapshot.appendItems([.init(currentBaker)], toSection: 1)
 				} else {
-					self?.currentSnapshot.appendItems([.init(TzKTBaker(address: currentDelegate?.address ?? "", name: currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress(), logo: nil))], toSection: 1)
+					self?.currentSnapshot.appendItems([.init(TzKTBaker(address: currentDelegate?.address ?? "", name: currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress()))], toSection: 1)
 				}
 			}
 			

@@ -935,12 +935,12 @@ public class WalletConnectService {
 				if let matchingBaker = (bakers ?? []).filter({ $0.address == currentDelegate.address }).first {
 					TransactionService.shared.delegateData.chosenBaker = matchingBaker
 				} else {
-					let baker = TzKTBaker(address: currentDelegate.address, name: currentDelegate.alias ?? currentDelegate.address.truncateTezosAddress(), logo: nil)
+					let baker = TzKTBaker(address: currentDelegate.address, name: currentDelegate.alias ?? currentDelegate.address.truncateTezosAddress())
 					TransactionService.shared.delegateData.chosenBaker = baker
 				}
 				
 			} else {
-				let baker = TzKTBaker(address: "", name: "", logo: nil)
+				let baker = TzKTBaker(address: "", name: "")
 				TransactionService.shared.delegateData.chosenBaker = baker
 			}
 			
@@ -952,7 +952,7 @@ public class WalletConnectService {
 				TransactionService.shared.delegateData.chosenBaker = matchingBaker
 				
 			} else {
-				let baker = TzKTBaker(address: operationAddress, name: operationAddress.truncateTezosAddress(), logo: nil)
+				let baker = TzKTBaker(address: operationAddress, name: operationAddress.truncateTezosAddress())
 				TransactionService.shared.delegateData.chosenBaker = baker
 			}
 		}

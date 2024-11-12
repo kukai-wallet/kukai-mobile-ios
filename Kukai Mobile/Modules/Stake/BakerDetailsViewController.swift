@@ -16,8 +16,6 @@ class BakerDetailsViewController: UIViewController {
 	@IBOutlet weak var spaceLabel: UILabel!
 	@IBOutlet weak var rewardslabel: UILabel!
 	@IBOutlet weak var freeLabel: UILabel!
-	@IBOutlet weak var accuracyLabel: UILabel!
-	@IBOutlet weak var payoutStabilityLabel: UILabel!
 	
 	@IBOutlet weak var stakeButton: CustomisableButton!
 	
@@ -39,49 +37,13 @@ class BakerDetailsViewController: UIViewController {
 		
 		stakeButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
 		
-		MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-		splitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		spaceLabel.text = baker.stakingCapacity.rounded(scale: 0, roundingMode: .bankers).description + " XTZ"
-		rewardslabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		freeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
-		
-		switch baker.payoutAccuracy {
-			case .precise:
-				accuracyLabel.text = "PRECISE"
-				accuracyLabel.textColor = .colorNamed("TxtGood4")
-				
-			case .inaccurate:
-				accuracyLabel.text = "INACCURATE"
-				accuracyLabel.textColor = .colorNamed("TxtB-alt4")
-				
-			case .suspicious:
-				accuracyLabel.text = "SUSPICIOUS"
-				accuracyLabel.textColor = .colorNamed("TxtAlert4")
-				
-			case .no_data:
-				accuracyLabel.text = "NO DATA"
-				accuracyLabel.textColor = .colorNamed("Txt8")
-		}
-		
-		switch baker.payoutTiming {
-			case .stable:
-				payoutStabilityLabel.text = "STABLE"
-				payoutStabilityLabel.textColor = .colorNamed("TxtGood4")
-				
-			case .unstable:
-				payoutStabilityLabel.text = "UNSTABLE"
-				payoutStabilityLabel.textColor = .colorNamed("TxtB-alt4")
-				
-			case .suspicious:
-				payoutStabilityLabel.text = "SUSPICIOUS"
-				payoutStabilityLabel.textColor = .colorNamed("TxtAlert4")
-				
-			case .no_data:
-				payoutStabilityLabel.text = "NO DATA"
-				payoutStabilityLabel.textColor = .colorNamed("Txt8")
-		}
+		splitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+		spaceLabel.text = baker.delegation.capacity.rounded(scale: 0, roundingMode: .bankers).description + " XTZ"
+		rewardslabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+		freeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
