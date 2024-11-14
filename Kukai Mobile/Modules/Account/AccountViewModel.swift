@@ -19,6 +19,12 @@ struct BackupCellData: Hashable {
 	let id = UUID()
 }
 
+struct StakedXTZData: Hashable {
+	let id = UUID()
+	let tez: XTZAmount
+	let isUnstakePending: Bool
+}
+
 struct UpdateWarningCellData: Hashable {
 	let id = UUID()
 }
@@ -124,6 +130,17 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				
+				return cell
+				
+			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
+				cell.symbolLabel.text = "Staked XTZ"
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces)
+				cell.favCorner.isHidden = false
+				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
+				
+				let totalXtzValue = obj.tez * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 				
 				return cell
@@ -250,9 +267,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func isEmptyAccount() -> Bool {
 		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-		let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		return (xtzBalance == .zero() && tokenCount == 0)
+		return (xtzBalance == .zero() && currentAccountTokensCount == 0)
 	}
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashableSendable] {
@@ -319,7 +337,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
 		}
 		
-		data.append(.init(DependencyManager.shared.balanceService.account.xtzBalance))
+		data.append(.init(DependencyManager.shared.balanceService.account.availableBalance))
+		
+		let stakedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance
+		if stakedXtz > XTZAmount.zero() {
+			data.append(.init(StakedXTZData(tez: stakedXtz, isUnstakePending: false)))
+		}
+		
 		data.append(contentsOf: tokensToDisplay.map({.init($0)}))
 		
 		return data
@@ -356,7 +380,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func token(atIndexPath: IndexPath) -> Token? {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
-		if obj is XTZAmount {
+		if obj is XTZAmount || obj is StakedXTZData {
 			let account = DependencyManager.shared.balanceService.account
 			return Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
