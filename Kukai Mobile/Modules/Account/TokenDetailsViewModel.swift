@@ -46,19 +46,26 @@ struct TokenDetailsButtonData: Hashable, Identifiable {
 	let hasMoreButton: Bool
 }
 
-struct TokenDetailsBalanceAndBakerData: Hashable, Identifiable {
+struct TokenDetailsBalanceData: Hashable, Identifiable {
 	let id = UUID()
 	let balance: String
 	let value: String
-	let isDelegationPossible: Bool
-	let isDelegated: Bool
-	let isStaked: Bool
-	let bakerName: String
+	let availableBalance: String
+	let availableValue: String
 }
 
 struct TokenDetailsSendData: Hashable {
 	var isBuyTez: Bool
 	var isDisabled: Bool
+}
+
+struct TokenDetailsBakerData: Hashable {
+	let bakerIcon: URL?
+	let bakerName: String?
+	let bakerApy: Decimal
+	let regularlyVotes: Bool
+	let freeSpace: Decimal
+	let enoughSpaceForBalance: Bool
 }
 
 struct TokenDetailsActivityHeader: Hashable, Identifiable {
