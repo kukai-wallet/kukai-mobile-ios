@@ -17,7 +17,6 @@ class TokenDetailsBakerCell: UITableViewCell {
 
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerLabel: UILabel!
-	@IBOutlet weak var bakerLabelRightConstraint: NSLayoutConstraint!
 	@IBOutlet weak var bakerApyLabel: UILabel!
 	@IBOutlet weak var regularlyVotesTitle: UILabel!
 	@IBOutlet weak var regularlyVotesIcon: UIImageView!
@@ -39,7 +38,6 @@ class TokenDetailsBakerCell: UITableViewCell {
 			MediaProxyService.load(url: data.bakerIcon, to: bakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			bakerButton.setTitle("Change Baker", for: .normal)
-			bakerLabelRightConstraint.isActive = true
 			regularlyVotesTitle.isHidden = false
 			regularlyVotesIcon.isHidden = false
 			freeSpaceTitleLabel.isHidden = false
@@ -47,9 +45,10 @@ class TokenDetailsBakerCell: UITableViewCell {
 			
 			bakerLabel.text = bakerName
 			bakerApyLabel.text = "Est APY: \(data.bakerApy.rounded(scale: 2, roundingMode: .bankers))%"
-			regularlyVotesIcon.image = UIImage.init(named: "Check")?.withTintColor( data.regularlyVotes ? .colorNamed("BGGood4") : .colorNamed("TxtAlert4"))
+			regularlyVotesIcon.image = UIImage.init(named: "Check")
+			regularlyVotesIcon.tintColor = data.regularlyVotes ? .colorNamed("BGGood4") : .colorNamed("TxtAlert4")
 			
-			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: data.freeSpace, numberStyle: .currency, maximumFractionDigits: 0)
+			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: data.freeSpace, numberStyle: .decimal, maximumFractionDigits: 0)
 			if data.freeSpace > 0 && data.enoughSpaceForBalance {
 				freeSpaceTitleLabel.textColor = .colorNamed("Txt10")
 				freeSpaceValueLabel.textColor = .colorNamed("Txt8")
@@ -63,7 +62,6 @@ class TokenDetailsBakerCell: UITableViewCell {
 			bakerIcon.image = UIImage(named: "AlertKnockout")?.withTintColor(.colorNamed("BGB4"))
 			
 			bakerButton.setTitle("Start Staking", for: .normal)
-			bakerLabelRightConstraint.isActive = false
 			regularlyVotesTitle.isHidden = true
 			regularlyVotesIcon.isHidden = true
 			freeSpaceTitleLabel.isHidden = true

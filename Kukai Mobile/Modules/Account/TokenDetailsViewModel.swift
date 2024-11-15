@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import OSLog
 
 struct AllChartData: Hashable {
 	let id = UUID()
@@ -109,12 +110,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private var currentChartRange: TokenDetailsChartCellRange = .day
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
 	private var initialChartLoad = true
+	private var onlineXTZFetchGroup = DispatchGroup()
 	
 	// Set by VC
 	weak var delegate: TokenDetailsViewModelDelegate? = nil
 	
 	var token: Token? = nil
 	var tokenFiatPrice = ""
+	var needsToLoadOnlineXTZData = false
 	
 	// Set by VM
 	var currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
@@ -130,8 +133,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var sendData = TokenDetailsSendData(isBuyTez: false, isDisabled: false)
 	var bakerData: TokenDetailsBakerData? = nil
 	var stakeData: TokenDetailsStakeData? = nil
-	var stakingRewardLoadingData = LoadingData()
-	var stakingRewardData: AggregateRewardInformation? = nil
+	var onlineDataLoading = LoadingData()
+	var rewardData: AggregateRewardInformation? = nil
 	var activityHeaderData = TokenDetailsActivityHeader(header: true)
 	var activityFooterData = TokenDetailsActivityHeader(header: false)
 	var activityItems: [TzKTTransactionGroup] = []
@@ -145,10 +148,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func makeDataSource(withTableView tableView: UITableView) {
 		tableView.register(UINib(nibName: "TokenDetailsChartCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsChartCell")
-		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_baker", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_baker")
-		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_nobaker", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_nobaker")
-		tableView.register(UINib(nibName: "TokenDetailsBalanceAndBakerCell_nostaking", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceAndBakerCell_nostaking")
+		tableView.register(UINib(nibName: "TokenDetailsBalanceCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsBalanceCell")
 		tableView.register(UINib(nibName: "TokenDetailsSendCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsSendCell")
+		tableView.register(UINib(nibName: "TokenDetailsBakerCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsBakerCell")
+		tableView.register(UINib(nibName: "TokenDetailsStakeBalanceCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsStakeBalanceCell")
 		tableView.register(UINib(nibName: "TokenDetailsStakingRewardsCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsStakingRewardsCell")
 		tableView.register(UINib(nibName: "TokenDetailsActivityHeaderCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsActivityHeaderCell")
 		tableView.register(UINib(nibName: "TokenDetailsActivityHeaderCell_footer", bundle: nil), forCellReuseIdentifier: "TokenDetailsActivityHeaderCell_footer")
@@ -176,7 +179,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
 				return cell
 				
-			} else if let obj = item.base as? TokenDetailsBalanceData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsBalanceCell", for: indexPath) as? TokenDetailsBalanceAndBakerCell {
+			} else if let obj = item.base as? TokenDetailsBalanceData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsBalanceCell", for: indexPath) as? TokenDetailsBalanceCell {
 				if let tokenURL = self.tokenHeaderData.tokenURL {
 					MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 					
@@ -238,7 +241,15 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			return
 		}
 		
-		loadTokenData(token: token)
+		// Load instantly
+		// - token header
+		// - chart spinner
+		// - balance / available balance
+		// - Send button
+		// - if xtz, spinner
+		// - else, load activity
+		
+		loadOfflineData(token: token)
 		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
 		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		
@@ -249,25 +260,21 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			.init(sendData)
 		]
 		
-		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .ghostnet {
-			data.append(.init(stakingRewardLoadingData))
-		}
-		
-		
-		
-		// Activity data gets loaded as part of token balances
-		var activitySection: [AnyHashableSendable] = [.init(activityHeaderData)]
-		self.activityItems = DependencyManager.shared.activityService.filterSendReceive(forToken: token, count: 5)
-		if activityItems.count == 0 {
-			activitySection.append(.init(self.noItemsData))
+		if token.isXTZ() {
 			
+			// If XTZ and we have a delegate set, then we need to fetch more data before displaying anything else
+			// Otherwise load the baker onboarding flow
+			if DependencyManager.shared.balanceService.account.delegate != nil {
+				self.needsToLoadOnlineXTZData = true
+				data.append(.init(onlineDataLoading))
+			} else {
+				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, regularlyVotes: false, freeSpace: 0, enoughSpaceForBalance: false) ))
+			}
 		} else {
-			activitySection.append(contentsOf: activityItems.map({ .init($0) }))
-			activitySection.append(.init(self.activityFooterData))
+			
+			// If its not XTZ, then load the activity items (if any) and move on
+			data.append(contentsOf: loadActivitySection(token: token))
 		}
-		data.append(contentsOf: activitySection)
-		
 		
 		
 		// Build snapshot
@@ -279,16 +286,28 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		self.state = .success(nil)
 		
 		
-		// Trigger remote data fetching
+		
+		// When done
+		// - kick off chart data fetch
+		//    - replace chart cell when done
+		// - if xtz, kick off baker, baker rewards, + any other stake data fetch
+		//    - add baker view
+		//    - add stake view
+		//    - add pending unstake view
+		// 	  - add rewards view
+		//    - add activity
+		
+		
+		// Fetch any required remote data
 		loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
 			self.initialChartLoad = false
 			
 			switch result {
 				case .success(let data):
-				self.currentSnapshot.deleteItems([.init(self.chartData)])
+					self.currentSnapshot.deleteItems([.init(self.chartData)])
 					self.chartData = data
-				self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
+					self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
 					
 					self.calculatePriceChange(point: nil)
 					self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
@@ -297,32 +316,36 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self.state = .success(nil)
 					
 				case .failure(_):
-				self.currentSnapshot.deleteItems([.init(self.chartData)])
+					self.currentSnapshot.deleteItems([.init(self.chartData)])
 					self.chartDataUnsucessful = true
 					self.chartData = AllChartData(day: [], week: [], month: [], year: [])
-				self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
+					self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
 					
 					ds.apply(self.currentSnapshot, animatingDifferences: true)
 					self.state = .success(nil)
 			}
 		}
-		 
-		// TODO: remove testnet check in future when remote serivce supports ghostnet
-		if balanceAndBakerData?.isDelegationPossible == true && balanceAndBakerData?.isDelegated == true && DependencyManager.shared.currentNetworkType != .ghostnet {
-			loadBakerData { [weak self] result in
+		
+		if self.needsToLoadOnlineXTZData {
+			loadOnlineXTZData(token: token) { [weak self] in
 				guard let self = self else { return }
 				
-				switch result {
-					case .success(let data):
-					self.currentSnapshot.deleteItems([.init(self.stakingRewardLoadingData)])
-						self.stakingRewardData = data
-					self.currentSnapshot.insertItems([.init(data)], afterItem: .init(self.sendData))
-						
-						ds.apply(self.currentSnapshot, animatingDifferences: true)
-						
-					case .failure(let error):
-						self.state = .failure(error, "Unable to get baker data")
+				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
+				
+				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
+				/*
+				 pending unstake
+				 */
+				
+				if let rewardData = rewardData {
+					newData.append(.init(rewardData))
 				}
+				
+				newData.append(contentsOf: loadActivitySection(token: token))
+				self.currentSnapshot.insertItems(newData, afterItem: .init(self.sendData))
+				
+				ds.apply(self.currentSnapshot, animatingDifferences: true)
+				self.state = .success(nil)
 			}
 		}
 	}
@@ -335,7 +358,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		let _ = DiskService.delete(fileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
 	}
 	
-	func loadTokenData(token: Token) {
+	func loadOfflineData(token: Token) {
 		self.token = token
 		self.tokenHeaderData.tokenName = token.symbol
 		
@@ -350,39 +373,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			tokenFiatPrice = DependencyManager.shared.coinGeckoService.format(decimal: fiatPerToken, numberStyle: .currency, maximumFractionDigits: 2)
 			self.tokenHeaderData.fiatAmount = tokenFiatPrice
 			
-			let account = DependencyManager.shared.balanceService.account
-			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
+			let xtzValue = token.balance * fiatPerToken
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			let availableXtzValue = (token.availableBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let availableXtzValue = token.availableBalance * fiatPerToken
 			let availableValue = DependencyManager.shared.coinGeckoService.format(decimal: availableXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
 			balanceData = TokenDetailsBalanceData(balance: tokenBalance, value: tokenValue, availableBalance: availableTokenBalance, availableValue: availableValue)
-			
-			// TODO: fetch baker icon
-			// TODO: need to fetch bakerAPy
-			// TODO: need to fetch regularlyVotes
-			// TODO: need to fetch free space
-			let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
-			bakerData = TokenDetailsBakerData(bakerIcon: nil, bakerName: bakerString, bakerApy: 0, regularlyVotes: true, freeSpace: 1000, enoughSpaceForBalance: true)
-			
-			
-			let stakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.stakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-			let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
-			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-			
-			let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-			let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
-			let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-			
-			// TODO: only do this if relevant
-			// TODO: come up with logic to dictate if can stake (e.g. is free space, user has more than 1 XTZ, etc)
-			let canStake = true // is delegate and has funds
-			let canUnstake = token.stakedBalance > .zero()
-			let canFinalize = token.unstakedBalance > .zero()
-			
-			stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
 			
 		} else {
 			self.tokenHeaderData.tokenURL = token.thumbnailURL
@@ -421,38 +419,108 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 				}
 				
-				//balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
+				balanceData = TokenDetailsBalanceData(balance: tokenBalance, value: tokenBalanceValueString, availableBalance: tokenBalance, availableValue: tokenBalanceValueString)
 				
 			} else {
 				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
 				tokenHeaderData.fiatAmount = dashedString
-				//balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
+				balanceData = TokenDetailsBalanceData(balance: tokenBalance, value: dashedString, availableBalance: tokenBalance, availableValue: dashedString)
 			}
 		}
 	}
 	
-	func loadBakerData(completion: @escaping ((Result<AggregateRewardInformation, KukaiError>) -> Void)) {
-		let account = DependencyManager.shared.balanceService.account
-		guard let delegate = account.delegate else {
-			completion(Result.failure(KukaiError.unknown(withString: "Can't find baker details")))
+	func loadActivitySection(token: Token) -> [AnyHashableSendable] {
+		var data: [AnyHashableSendable] = [.init(activityHeaderData)]
+		self.activityItems = DependencyManager.shared.activityService.filterSendReceive(forToken: token, count: 5)
+		
+		if activityItems.count == 0 {
+			data.append(.init(self.noItemsData))
+			
+		} else {
+			data.append(contentsOf: activityItems.map({ .init($0) }))
+			data.append(.init(self.activityFooterData))
+		}
+		
+		return data
+	}
+	
+	func loadOnlineXTZData(token: Token, completion: @escaping (() -> Void)) {
+		guard let delegate = DependencyManager.shared.balanceService.account.delegate else {
+			completion()
 			return
 		}
 		
-		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
-			completion(Result.success(bakerRewardCache))
+		let account = DependencyManager.shared.balanceService.account
+		let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+		
+		// TODO: fetch baker icon
+		// TODO: need to fetch bakerAPy
+		// TODO: need to fetch regularlyVotes
+		// TODO: need to fetch free space
+		let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
+		bakerData = TokenDetailsBakerData(bakerIcon: nil, bakerName: bakerString, bakerApy: 0, regularlyVotes: true, freeSpace: 1000, enoughSpaceForBalance: true)
+		
+		
+		let stakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.stakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+		let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+		let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+		
+		let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+		let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+		let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+		
+		// TODO: only do this if relevant
+		// TODO: come up with logic to dictate if can stake (e.g. is free space, user has more than 1 XTZ, etc)
+		let canStake = true // is delegate and has funds
+		let canUnstake = token.stakedBalance > .zero()
+		let canFinalize = token.unstakedBalance > .zero()
+		
+		stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
+		
+		
+		
+		
 			
-		} else {
-			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { result in
-				if let res = try? result.get() {
-					let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
-					completion(Result.success(res))
+		// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
+		onlineXTZFetchGroup.enter()
+		
+		
+		onlineXTZFetchGroup.leave()
+		
+		
+		// Get rewards data from cache or remote
+		if DependencyManager.shared.currentNetworkType != .ghostnet {
+			onlineXTZFetchGroup.enter()
+			
+			if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+				self.rewardData = bakerRewardCache
+				onlineXTZFetchGroup.leave()
+				
+			} else {
+				DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
+					if let res = try? result.get() {
+						let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
+						self?.rewardData = res
+						
+					} else {
+						Logger.app.error("Error fetching baker data: \(result.getFailure())")
+					}
 					
-				} else {
-					completion(Result.failure(result.getFailure()))
+					self?.onlineXTZFetchGroup.leave()
 				}
 			}
 		}
+			
+		
+		
+		// Fire completion when everything is done
+		onlineXTZFetchGroup.notify(queue: .global(qos: .background)) {
+			completion()
+		}
 	}
+	
+	
+	
 	
 	
 	// MARK: - Chart

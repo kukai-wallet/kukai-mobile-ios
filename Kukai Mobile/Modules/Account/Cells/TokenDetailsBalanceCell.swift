@@ -8,7 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 
-class TokenDetailsBalanceAndBakerCell: UITableViewCell {
+class TokenDetailsBalanceCell: UITableViewCell {
 	
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var balance: UILabel!
