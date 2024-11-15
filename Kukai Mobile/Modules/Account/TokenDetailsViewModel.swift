@@ -68,6 +68,16 @@ struct TokenDetailsBakerData: Hashable {
 	let enoughSpaceForBalance: Bool
 }
 
+struct TokenDetailsStakeData: Hashable {
+	let stakedBalance: String
+	let stakedValue: String
+	let finalizeBalance: String
+	let finalizeValue: String
+	let canStake: Bool
+	let canUnstake: Bool
+	let canFinalize: Bool
+}
+
 struct TokenDetailsActivityHeader: Hashable, Identifiable {
 	let id = UUID()
 	let header: Bool
@@ -116,8 +126,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var chartData = AllChartData(day: [], week: [], month: [], year: [])
 	var chartDataUnsucessful = false
 	var buttonData: TokenDetailsButtonData? = nil
-	var balanceAndBakerData: TokenDetailsBalanceAndBakerData? = nil
+	var balanceData: TokenDetailsBalanceData? = nil
 	var sendData = TokenDetailsSendData(isBuyTez: false, isDisabled: false)
+	var bakerData: TokenDetailsBakerData? = nil
+	var stakeData: TokenDetailsStakeData? = nil
 	var stakingRewardLoadingData = LoadingData()
 	var stakingRewardData: AggregateRewardInformation? = nil
 	var activityHeaderData = TokenDetailsActivityHeader(header: true)
@@ -164,27 +176,27 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				cell.setup(delegate: self, chartController: self.chartController, allChartData: obj)
 				return cell
 				
-			} else if let obj = item.base as? TokenDetailsBalanceAndBakerData {
-				let reuse = obj.isDelegationPossible ? (obj.isDelegated ? "TokenDetailsBalanceAndBakerCell_baker" : "TokenDetailsBalanceAndBakerCell_nobaker") : "TokenDetailsBalanceAndBakerCell_nostaking"
-				
-				if let cell = tableView.dequeueReusableCell(withIdentifier: reuse, for: indexPath) as? TokenDetailsBalanceAndBakerCell {
+			} else if let obj = item.base as? TokenDetailsBalanceData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsBalanceCell", for: indexPath) as? TokenDetailsBalanceAndBakerCell {
+				if let tokenURL = self.tokenHeaderData.tokenURL {
+					MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 					
-					if let tokenURL = self.tokenHeaderData.tokenURL {
-						MediaProxyService.load(url: tokenURL, to: cell.tokenIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
-						
-					} else {
-						cell.tokenIcon.image = self.tokenHeaderData.tokenImage
-					}
-					
-					if DependencyManager.shared.selectedWalletMetadata?.isWatchOnly == false {
-						cell.bakerButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.setBakerTapped), for: .touchUpInside)
-					}
-					cell.setup(data: obj)
-					
-					return cell
+				} else {
+					cell.tokenIcon.image = self.tokenHeaderData.tokenImage
 				}
+				
+				cell.setup(data: obj)
+				return cell
+				
 			} else if let obj = item.base as? TokenDetailsSendData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsSendCell", for: indexPath) as? TokenDetailsSendCell {
 				cell.sendButton?.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.sendTapped), for: .touchUpInside)
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item.base as? TokenDetailsBakerData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsBakerCell", for: indexPath) as? TokenDetailsBakerCell {
+				cell.setup(data: obj)
+				return cell
+				
+			} else if let obj = item.base as? TokenDetailsStakeData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakeBalanceCell", for: indexPath) as? TokenDetailsStakeBalanceCell {
 				cell.setup(data: obj)
 				return cell
 				
@@ -233,7 +245,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		var data: [AnyHashableSendable] = [
 			.init(tokenHeaderData),
 			.init(chartData),
-			.init(balanceAndBakerData),
+			.init(balanceData),
 			.init(sendData)
 		]
 		
@@ -328,6 +340,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		self.tokenHeaderData.tokenName = token.symbol
 		
 		let tokenBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.balance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+		let availableTokenBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.availableBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 		
 		if token.isXTZ() {
 			self.tokenHeaderData.tokenImage = UIImage.tezosToken()
@@ -340,10 +353,36 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let account = DependencyManager.shared.balanceService.account
 			let xtzValue = (token.balance as? XTZAmount ?? .zero()) * fiatPerToken
 			let tokenValue = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-			let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
+			
+			let availableXtzValue = (token.availableBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let availableValue = DependencyManager.shared.coinGeckoService.format(decimal: availableXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			buttonData = TokenDetailsButtonData(isFavourited: true, canBeUnFavourited: false, isHidden: false, canBeHidden: false, canBePurchased: true, canBeViewedOnline: false, hasMoreButton: false)
-			balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenValue, isDelegationPossible: true, isDelegated: (account.delegate != nil), isStaked: account.xtzStakedBalance > .zero(), bakerName: bakerString)
+			balanceData = TokenDetailsBalanceData(balance: tokenBalance, value: tokenValue, availableBalance: availableTokenBalance, availableValue: availableValue)
+			
+			// TODO: fetch baker icon
+			// TODO: need to fetch bakerAPy
+			// TODO: need to fetch regularlyVotes
+			// TODO: need to fetch free space
+			let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
+			bakerData = TokenDetailsBakerData(bakerIcon: nil, bakerName: bakerString, bakerApy: 0, regularlyVotes: true, freeSpace: 1000, enoughSpaceForBalance: true)
+			
+			
+			let stakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.stakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			// TODO: only do this if relevant
+			// TODO: come up with logic to dictate if can stake (e.g. is free space, user has more than 1 XTZ, etc)
+			let canStake = true // is delegate and has funds
+			let canUnstake = token.stakedBalance > .zero()
+			let canFinalize = token.unstakedBalance > .zero()
+			
+			stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
 			
 		} else {
 			self.tokenHeaderData.tokenURL = token.thumbnailURL
@@ -382,12 +421,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					tokenBalanceValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzPrice, numberStyle: .currency, maximumFractionDigits: 2)
 				}
 				
-				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
+				//balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: tokenBalanceValueString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
 				
 			} else {
 				let dashedString = DependencyManager.shared.coinGeckoService.dashedCurrencyString()
 				tokenHeaderData.fiatAmount = dashedString
-				balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
+				//balanceAndBakerData = TokenDetailsBalanceAndBakerData(balance: tokenBalance, value: dashedString, isDelegationPossible: false, isDelegated: false, isStaked: false, bakerName: "")
 			}
 		}
 	}
