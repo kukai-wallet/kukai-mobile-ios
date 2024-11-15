@@ -91,15 +91,15 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 			confirmBakerRemoveView.isHidden = true
 			
 			bakerAddNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-			if baker.name == nil && baker.fee == 0 && baker.stakingCapacity == 0 && baker.estimatedRoi == 0 {
+			if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
 				bakerAddSplitLabel.text = "N/A"
 				bakerAddSpaceLabel.text = "N/A"
 				bakerAddEstimatedRewardLabel.text = "N/A"
 				
 			} else {
-				bakerAddSplitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
-				bakerAddEstimatedRewardLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
+				bakerAddEstimatedRewardLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 			}
 			
 		} else {
@@ -137,10 +137,10 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		}
 		
 		if self.currentDelegateData.isAdd == true {
-			MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerAddIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			MediaProxyService.load(url: baker.logo, to: bakerAddIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 			
 		} else {
-			MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerRemoveIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+			MediaProxyService.load(url: baker.logo, to: bakerRemoveIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		}
 	}
 	

@@ -28,7 +28,6 @@ public protocol WalletConnectServiceDelegate: AnyObject {
 	func processedOperations(ofType: WalletConnectOperationType)
 	func error(message: String?, error: Error?)
 	func connectionStatusChanged(status: SocketConnectionStatus)
-	//func walletConnectSocketFailedToReconnect3Times()
 }
 
 public struct WalletConnectGetAccountObj: Codable {
@@ -80,9 +79,6 @@ public class WalletConnectService {
 	private typealias walletConnectRequestTuple = (request: Request, context: VerifyContext?)
 	private typealias walletConnectPorposalTuple = (proposal: Session.Proposal, context: VerifyContext?)
 	
-	//private var isReconnecting = false
-	//private var isManualDisconnection = true
-	
 	@Published public var sessionsUpdated: Bool = false
 	
 	private init() {}
@@ -125,28 +121,7 @@ public class WalletConnectService {
 		// Monitor connection
 		Networking.instance.socketConnectionStatusPublisher.sink { status in
 			Logger.app.info("WC2 - Connection status: changed to \(status == .connected ? "connected" : "disconnected")")
-			
-			if status == .disconnected {
-				WalletConnectService.shared.isConnected = false
-				
-				/*
-				 if self?.isManualDisconnection == false && self?.isReconnecting == false {
-				 WalletConnectService.shared.reconnect()
-				 
-				 } else if self?.isManualDisconnection == true {
-				 self?.isManualDisconnection = false
-				 }
-				 */
-				
-			} else {
-				WalletConnectService.shared.isConnected = true
-				
-				/*
-				 if let uri = self?.deepLinkPairingToConnect {
-				 self?.pairClient(uri: uri)
-				 }
-				 */
-			}
+			WalletConnectService.shared.isConnected = status == .connected
 			
 			DispatchQueue.main.async {
 				WalletConnectService.shared.delegate?.connectionStatusChanged(status: status)
@@ -222,6 +197,12 @@ public class WalletConnectService {
 		Logger.app.info("Processing WC2 request method: \(requestWrapper.request.method), for topic: \(requestWrapper.request.topic), with id: \(requestWrapper.request.id)")
 		TransactionService.shared.walletConnectOperationData.request = requestWrapper.request
 		
+		guard let _ = TransactionService.shared.walletConnectOperationData.request else {
+			WalletConnectService.rejectCurrentRequest(completion: nil)
+			delegateErrorOnMain(message: "error-wc2-invalid-request".localized(), error: nil)
+			return
+		}
+		
 		if requestWrapper.request.method != "tezos_getAccounts" {
 			self.delegate?.processingIncomingOperations()
 		}
@@ -243,6 +224,12 @@ public class WalletConnectService {
 	private func handleProposal(_ proposalWrapper: walletConnectPorposalTuple) {
 		Logger.app.info("Processing WC2 proposal: \(proposalWrapper.proposal.id)")
 		TransactionService.shared.walletConnectOperationData.proposal = proposalWrapper.proposal
+		
+		guard let _ = TransactionService.shared.walletConnectOperationData.proposal else {
+			WalletConnectService.rejectCurrentProposal(completion: nil)
+			delegateErrorOnMain(message: "error-wc2-invalid-proposal".localized(), error: nil)
+			return
+		}
 		
 		// Check if the proposal is for the network the app is currently on
 		self.checkValidNetwork(forProposal: proposalWrapper.proposal) { [weak self] isValid in
@@ -923,12 +910,12 @@ public class WalletConnectService {
 				if let matchingBaker = (bakers ?? []).filter({ $0.address == currentDelegate.address }).first {
 					TransactionService.shared.delegateData.chosenBaker = matchingBaker
 				} else {
-					let baker = TzKTBaker(address: currentDelegate.address, name: currentDelegate.alias ?? currentDelegate.address.truncateTezosAddress(), logo: nil)
+					let baker = TzKTBaker(address: currentDelegate.address, name: currentDelegate.alias ?? currentDelegate.address.truncateTezosAddress())
 					TransactionService.shared.delegateData.chosenBaker = baker
 				}
 				
 			} else {
-				let baker = TzKTBaker(address: "", name: "", logo: nil)
+				let baker = TzKTBaker(address: "", name: "")
 				TransactionService.shared.delegateData.chosenBaker = baker
 			}
 			
@@ -940,7 +927,7 @@ public class WalletConnectService {
 				TransactionService.shared.delegateData.chosenBaker = matchingBaker
 				
 			} else {
-				let baker = TzKTBaker(address: operationAddress, name: operationAddress.truncateTezosAddress(), logo: nil)
+				let baker = TzKTBaker(address: operationAddress, name: operationAddress.truncateTezosAddress())
 				TransactionService.shared.delegateData.chosenBaker = baker
 			}
 		}

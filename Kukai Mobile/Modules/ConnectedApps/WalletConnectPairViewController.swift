@@ -54,6 +54,7 @@ class WalletConnectPairViewController: UIViewController, BottomSheetCustomFixedP
 		rejectButton.customButtonType = .secondary
 		
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal else {
+			self.nameLabel.text = "..."
 			return
 		}
 		

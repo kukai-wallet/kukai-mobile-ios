@@ -27,7 +27,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var gradientLayers: [CAGradientLayer] = []
 	private var highlightedGradient = CAGradientLayer()
 	private var sideMenuVc: SideMenuViewController? = nil
-	private var walletConnectActivity = UIActivityIndicatorView()
 	
 	private var activityAnimationFrames: [UIImage] = []
 	private var activityTabBarImageView: UIImageView? = nil
@@ -67,7 +66,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
-					//self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						DependencyManager.shared.addressLoaded = address
@@ -90,7 +88,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				
 				DispatchQueue.global(qos: .background).async {
 					DependencyManager.shared.balanceService.loadCache(address: address)
-					//self?.reconnectWalletConnectIfNeeded()
 					
 					DispatchQueue.main.async {
 						
@@ -126,8 +123,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.dropFirst()
 			.sink { [weak self] address in
 				
-				//self?.reconnectWalletConnectIfNeeded()
-				
 				if DependencyManager.shared.appUpdateService.isRequiredUpdate {
 					self?.displayUpdateRequired()
 				}
@@ -148,7 +143,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		DependencyManager.shared.balanceService.$addressErrored
 			.dropFirst()
 			.sink { [weak self] obj in
-				//self?.reconnectWalletConnectIfNeeded()
 				
 				if let obj = obj, obj.address == DependencyManager.shared.selectedWalletAddress {
 					
@@ -167,14 +161,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			self?.supressAutoRefreshError = true
 			self?.refreshType = .refreshEverything
 			self?.refresh(addresses: nil)
-			
-			/*
-			// When returning from a long background, WC2 can sometimes be stuck in a disconnected state.
-			// Give it a few seconds to try connect by itself, and then try manual intervention
-			DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-				self?.recheckWalletConnectAnimation(tryManualReconnect: true)
-			}
-			*/
 		}.store(in: &bag)
 		
 		ThemeManager.shared.$themeDidChange
@@ -264,25 +250,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		} else {
 			stopActivityAnimationIfNecessary()
 		}
-	}
-	
-	public override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		//recheckWalletConnectAnimation()
-	}
-	
-	// When returning from background, WC2 socket can get stuck sometimes.
-	// First we double check that no event was missed by running the logic again
-	// Second we have an optional request to attempt to reconnect the socket by re-initalising the WC2 singletons
-	public func recheckWalletConnectAnimation(tryManualReconnect: Bool = false) {
-		/*let isConnected = WalletConnectService.shared.isConnected
-		connectionStatusChanged(status: isConnected ? .connected : .disconnected)
-		
-		if !isConnected && tryManualReconnect {
-			attemptWC2Reconnect()
-		}
-		*/
 	}
 	
 	public override func viewDidLayoutSubviews() {
@@ -525,46 +492,8 @@ extension HomeTabBarController: ScanViewControllerDelegate {
 extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func connectionStatusChanged(status: SocketConnectionStatus) {
-		/*if status == .disconnected {
-			
-			if walletConnectActivity.superview == nil {
-				self.walletConnectActivity.frame = self.scanButton.frame
-				self.walletConnectActivity.isUserInteractionEnabled = true
-				self.walletConnectActivity.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(attemptWC2Reconnect)))
-				self.scanButton.addSubview(self.walletConnectActivity)
-			}
-			
-			self.scanButton.setImage(UIImage(), for: .normal) // passing in nil doesn't work sometimes, needs to be an empty image
-			self.walletConnectActivity.color = ThemeManager.shared.currentInterfaceStyle() == .dark ? .white : .black
-			self.walletConnectActivity.startAnimating()
-			
-		} else {
-			self.scanButton.setImage(UIImage(named: "ScanQR"), for: .normal)
-			self.walletConnectActivity.stopAnimating()
-			self.walletConnectActivity.removeFromSuperview()
-		}
-		 */
+		
 	}
-	
-	@objc private func attemptWC2Reconnect() {
-		//WalletConnectService.shared.setup(force: true)
-	}
-	
-	/*
-	public func walletConnectSocketFailedToReconnect3Times() {
-		DispatchQueue.main.async {
-			self.windowError(withTitle: "error".localized(), description: "error-wc2-reconnect".localized())
-		}
-	}
-	*/
-	
-	/*
-	public func reconnectWalletConnectIfNeeded() {
-		if !WalletConnectService.shared.isConnected {
-			WalletConnectService.shared.reconnect()
-		}
-	}
-	*/
 	
 	public func pairRequested() {
 		if self.presentedViewController == nil {

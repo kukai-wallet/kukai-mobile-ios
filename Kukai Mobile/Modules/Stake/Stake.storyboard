@@ -347,13 +347,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;bakerName&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YAn-It-EhK">
-                                <rect key="frame" x="16" y="178" width="382" height="126"/>
+                                <rect key="frame" x="16" y="178" width="382" height="202"/>
                                 <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="Rc3-Iz-S72">
-                                <rect key="frame" x="16" y="328" width="382" height="242"/>
+                                <rect key="frame" x="16" y="404" width="382" height="166"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="XU3-Ne-q4m">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="19.5"/>
@@ -451,47 +451,6 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                             <constraint firstAttribute="height" constant="1" id="JKD-mS-Juv"/>
                                         </constraints>
                                     </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="wEV-op-6pj">
-                                        <rect key="frame" x="0.0" y="178" width="382" height="19.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accuracy:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eva-f8-lVe">
-                                                <rect key="frame" x="0.0" y="0.0" width="73.5" height="19.5"/>
-                                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
-                                                <color key="textColor" name="Txt10"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;accuracy&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="59N-Et-egO">
-                                                <rect key="frame" x="81.5" y="0.0" width="300.5" height="19.5"/>
-                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                <color key="textColor" name="TxtGood4"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fQM-bd-z2y">
-                                        <rect key="frame" x="0.0" y="209.5" width="382" height="1"/>
-                                        <color key="backgroundColor" name="BG4"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="daT-Jt-duu"/>
-                                        </constraints>
-                                    </view>
-                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="87i-00-Uhc">
-                                        <rect key="frame" x="0.0" y="222.5" width="382" height="19.5"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Payout Stability:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I1Q-KZ-wMI">
-                                                <rect key="frame" x="0.0" y="0.0" width="120" height="19.5"/>
-                                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="16"/>
-                                                <color key="textColor" name="Txt10"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="&lt;payoutStability&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qqs-Tc-JBw">
-                                                <rect key="frame" x="128" y="0.0" width="254" height="19.5"/>
-                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
-                                                <color key="textColor" name="TxtB-alt6"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="isB-kD-FJg" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -540,11 +499,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     </view>
                     <size key="freeformSize" width="414" height="700"/>
                     <connections>
-                        <outlet property="accuracyLabel" destination="59N-Et-egO" id="Ibb-AX-tmA"/>
                         <outlet property="bakerIcon" destination="0JM-ha-ita" id="Sm1-Bz-Rle"/>
                         <outlet property="bakerNameLabel" destination="YAn-It-EhK" id="IQc-92-tRh"/>
                         <outlet property="freeLabel" destination="FBg-PG-g4o" id="4S1-ma-UBK"/>
-                        <outlet property="payoutStabilityLabel" destination="qqs-Tc-JBw" id="fan-wc-1dk"/>
                         <outlet property="rewardslabel" destination="1ps-kB-UPA" id="GR0-KP-MDV"/>
                         <outlet property="spaceLabel" destination="Hcq-fx-SOt" id="KqS-xl-7QB"/>
                         <outlet property="splitLabel" destination="AUl-Ic-vfV" id="N9z-Ef-dcK"/>
@@ -1138,9 +1095,6 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
         <namedColor name="TxtAlert4">
             <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="TxtB-alt6">
-            <color red="1" green="0.83899998664855957" blue="0.42399999499320984" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <namedColor name="TxtB2">
             <color red="0.33300000429153442" green="0.36100000143051147" blue="0.79199999570846558" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -1155,9 +1109,6 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
         </namedColor>
         <namedColor name="TxtBtnSec4">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
-        <namedColor name="TxtGood4">
-            <color red="0.035000000149011612" green="0.68199998140335083" blue="0.29399999976158142" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtTestState">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

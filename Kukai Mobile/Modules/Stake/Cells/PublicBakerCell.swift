@@ -23,12 +23,12 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 	}
 	
 	public func setup(withBaker baker: TzKTBaker) {
-		MediaProxyService.load(url: URL(string: baker.logo ?? ""), to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-		splitLabel.text = (Decimal(baker.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		spaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.freeSpace, decimalPlaces: 0) + " XTZ"
-		estRewardsLabel.text = (baker.estimatedRoi * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+		splitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+		spaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
+		estRewardsLabel.text = Decimal((baker.delegation.estimatedApy * 100)).rounded(scale: 2, roundingMode: .bankers).description + "%"
 		
 		bakerNameLabel.accessibilityIdentifier = "baker-list-name"
 	}
