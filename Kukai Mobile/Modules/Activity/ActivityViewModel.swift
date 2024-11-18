@@ -136,7 +136,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let confirmed = DependencyManager.shared.activityService.transactionGroups
 		
-		var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
+		var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender?.address == currentAddress })
 		
 		pending.append(contentsOf: confirmed)
 		pending = pending.sorted { groupLeft, groupRight in

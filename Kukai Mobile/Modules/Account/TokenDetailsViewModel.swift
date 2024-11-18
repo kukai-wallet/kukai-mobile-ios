@@ -64,7 +64,7 @@ struct TokenDetailsBakerData: Hashable {
 	let bakerIcon: URL?
 	let bakerName: String?
 	let bakerApy: Decimal
-	let regularlyVotes: Bool
+	let votingParticipation: [Bool]
 	let freeSpace: Decimal
 	let enoughSpaceForBalance: Bool
 }
@@ -268,7 +268,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				self.needsToLoadOnlineXTZData = true
 				data.append(.init(onlineDataLoading))
 			} else {
-				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, regularlyVotes: false, freeSpace: 0, enoughSpaceForBalance: false) ))
+				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false) ))
 			}
 		} else {
 			
@@ -451,47 +451,31 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		let account = DependencyManager.shared.balanceService.account
-		let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-		
-		// TODO: fetch baker icon
-		// TODO: need to fetch bakerAPy
-		// TODO: need to fetch regularlyVotes
-		// TODO: need to fetch free space
-		let bakerString = (account.delegate?.alias ?? account.delegate?.address.truncateTezosAddress() ?? "") + "  "
-		bakerData = TokenDetailsBakerData(bakerIcon: nil, bakerName: bakerString, bakerApy: 0, regularlyVotes: true, freeSpace: 1000, enoughSpaceForBalance: true)
-		
-		
-		let stakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.stakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-		let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
-		let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-		
-		let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-		let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
-		let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
-		
-		// TODO: only do this if relevant
-		// TODO: come up with logic to dictate if can stake (e.g. is free space, user has more than 1 XTZ, etc)
-		let canStake = true // is delegate and has funds
-		let canUnstake = token.stakedBalance > .zero()
-		let canFinalize = token.unstakedBalance > .zero()
-		
-		stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
-		
-		
+		var baker: TzKTBaker? = nil
+		var votingParticipation: [Bool] = []
 		
 		
 			
 		// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
 		onlineXTZFetchGroup.enter()
-		
-		
-		onlineXTZFetchGroup.leave()
-		
-		
-		// Get rewards data from cache or remote
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
-			onlineXTZFetchGroup.enter()
+		DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
+			guard let res = try? result.get() else {
+				// TODO: handle error
+				self?.onlineXTZFetchGroup.leave()
+				return
+			}
 			
+			// TODO: add baker voting to query
+			baker = res
+			self?.onlineXTZFetchGroup.leave()
+		}
+		
+		
+		// Certain things only work or make sense on mainnet
+		if DependencyManager.shared.currentNetworkType != .ghostnet {
+			
+			// Get rewards data from cache or remote
+			onlineXTZFetchGroup.enter()
 			if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
 				self.rewardData = bakerRewardCache
 				onlineXTZFetchGroup.leave()
@@ -500,7 +484,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
 					if let res = try? result.get() {
 						let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
-						self?.rewardData = res
+						self?.rewardData = res // TODO: add staking reward values as well
 						
 					} else {
 						Logger.app.error("Error fetching baker data: \(result.getFailure())")
@@ -509,13 +493,66 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self?.onlineXTZFetchGroup.leave()
 				}
 			}
+			
+			
+			// Check voting participation
+			onlineXTZFetchGroup.enter()
+			DependencyManager.shared.tzktClient.checkBakerVoteParticipation(forAddress: delegate.address) {[weak self] result in
+				guard let res = try? result.get() else {
+					// TODO: handle error
+					self?.onlineXTZFetchGroup.leave()
+					return
+				}
+				
+				votingParticipation = res
+				self?.onlineXTZFetchGroup.leave()
+			}
 		}
 			
 		
 		
 		// Fire completion when everything is done
-		onlineXTZFetchGroup.notify(queue: .global(qos: .background)) {
-			completion()
+		onlineXTZFetchGroup.notify(queue: .global(qos: .background)) { [weak self] in
+			guard let baker = baker else {
+				// TODO: handle error
+				DispatchQueue.main.async { completion() }
+				return
+			}
+			
+			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			let isStaking = account.xtzStakedBalance > .zero()
+			
+			let bakerString = delegate.alias ?? delegate.address.truncateTezosAddress()
+			let freeSpace = isStaking ? baker.staking.freeSpace : baker.delegation.freeSpace
+			let enoughSpace = isStaking ? account.availableBalance < XTZAmount(fromNormalisedAmount: baker.staking.freeSpace) : account.xtzBalance < XTZAmount(fromNormalisedAmount: baker.delegation.freeSpace)
+			
+			let delegationApy = Decimal(baker.delegation.estimatedApy)
+			let stakingApy = Decimal(baker.staking.estimatedApy)
+			let percentOfFundsStaked = ((account.xtzStakedBalance.toNormalisedDecimal() ?? 0) / (account.xtzBalance.toNormalisedDecimal() ?? 0))
+			let percentOfFundsDelegated = 1 - percentOfFundsStaked
+			let estimatedApy = (((delegationApy * percentOfFundsDelegated) + (stakingApy * percentOfFundsStaked)) * 100).rounded(scale: 2, roundingMode: .bankers)
+			
+			self?.bakerData = TokenDetailsBakerData(bakerIcon: baker.logo, bakerName: bakerString, bakerApy: estimatedApy, votingParticipation: votingParticipation, freeSpace: freeSpace, enoughSpaceForBalance: enoughSpace)
+			
+			
+			
+			let stakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.stakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
+			let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			
+			// We need to prevent users from staking their entire balance so that they have enough balance to unstake
+			// User can also only stake if the baker has enough free space for them
+			let canStake = (account.availableBalance > XTZAmount(fromNormalisedAmount: 1) && enoughSpace)
+			let canUnstake = token.stakedBalance > .zero()
+			let canFinalize = token.unstakedBalance > .zero()
+			
+			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
+			
+			DispatchQueue.main.async { completion() }
 		}
 	}
 	

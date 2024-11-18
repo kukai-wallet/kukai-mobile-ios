@@ -45,8 +45,22 @@ class TokenDetailsBakerCell: UITableViewCell {
 			
 			bakerLabel.text = bakerName
 			bakerApyLabel.text = "Est APY: \(data.bakerApy.rounded(scale: 2, roundingMode: .bankers))%"
-			regularlyVotesIcon.image = UIImage.init(named: "Check")
-			regularlyVotesIcon.tintColor = data.regularlyVotes ? .colorNamed("BGGood4") : .colorNamed("TxtAlert4")
+			
+			
+			let filterTrueVotes = data.votingParticipation.filter { $0 }
+			if filterTrueVotes.count == 5 {
+				regularlyVotesIcon.image = UIImage.init(named: "Check")
+				regularlyVotesIcon.tintColor = .colorNamed("BGGood4")
+				
+			} else if filterTrueVotes.count >= 3 {
+				regularlyVotesIcon.image = UIImage.init(named: "AlertKnockout")
+				regularlyVotesIcon.tintColor = .colorNamed("TxtB-alt4")
+				
+			} else {
+				regularlyVotesIcon.image = UIImage.init(named: "Close")
+				regularlyVotesIcon.tintColor = .colorNamed("TxtAlert4")
+			}
+			
 			
 			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: data.freeSpace, numberStyle: .decimal, maximumFractionDigits: 0)
 			if data.freeSpace > 0 && data.enoughSpaceForBalance {
