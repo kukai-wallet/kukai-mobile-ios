@@ -348,7 +348,7 @@ public class CoinGeckoService {
 		return outputString
 	}
 	
-	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int) -> String {
+	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int, includeThousand: Bool = false, maximumFractionDigits: Int = 3) -> String {
 		var reducedNumber: Decimal = 0
 		var reducedNumberSymbol: String? = nil
 		
@@ -364,7 +364,11 @@ public class CoinGeckoService {
 			case 1_000_000...:
 				reducedNumber = num / 1_000_000
 				reducedNumberSymbol = "m"
-				
+			
+			case 1_000... where includeThousand:
+				reducedNumber = num / 1_000
+				reducedNumberSymbol = "k"
+			
 			case 0...:
 				reducedNumber = num
 				
@@ -374,7 +378,7 @@ public class CoinGeckoService {
 		
 		var stringToReturn = ""
 		if let symbol = reducedNumberSymbol {
-			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: 3)
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: maximumFractionDigits)
 			stringToReturn += symbol
 			
 		} else {

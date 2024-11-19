@@ -64,6 +64,7 @@ class LoginViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		/*
 		// Hide biometric button if its not enabled, or we are in the middle of the edit passcode flow
 		if isEditPasscodeMode() || CurrentDevice.biometricTypeAuthorized() == .none || StorageService.isBiometricEnabled() == false {
 			useBiometricsButton.isHidden = true
@@ -83,6 +84,10 @@ class LoginViewController: UIViewController {
 			// Edit passcode popup
 			self.hiddenTextfield.becomeFirstResponder()
 		}
+		*/
+		
+		// TODO: remove
+		LoginViewController.reconnectAndDismiss()
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {

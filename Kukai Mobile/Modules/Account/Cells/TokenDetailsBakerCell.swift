@@ -30,7 +30,8 @@ class TokenDetailsBakerCell: UITableViewCell {
 	
 	func setup(data: TokenDetailsBakerData) {
 		
-		bakerButton.customButtonType = .secondary
+		bakerButton.customButtonType = .tertiary
+		learnButton.customButtonType = .secondary
 		
 		if let bakerName = data.bakerName {
 			
@@ -62,7 +63,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 			}
 			
 			
-			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.format(decimal: data.freeSpace, numberStyle: .decimal, maximumFractionDigits: 0)
+			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(data.freeSpace, decimalPlaces: 6, includeThousand: true, maximumFractionDigits: 0)
 			if data.freeSpace > 0 && data.enoughSpaceForBalance {
 				freeSpaceTitleLabel.textColor = .colorNamed("Txt10")
 				freeSpaceValueLabel.textColor = .colorNamed("Txt8")
@@ -73,7 +74,8 @@ class TokenDetailsBakerCell: UITableViewCell {
 		} else {
 			
 			// Else show new user style info
-			bakerIcon.image = UIImage(named: "AlertKnockout")?.withTintColor(.colorNamed("BGB4"))
+			bakerIcon.image = UIImage(named: "AlertKnockout")
+			bakerIcon.tintColor = .colorNamed("BGB4")
 			
 			bakerButton.setTitle("Start Staking", for: .normal)
 			regularlyVotesTitle.isHidden = true
@@ -82,7 +84,9 @@ class TokenDetailsBakerCell: UITableViewCell {
 			freeSpaceValueLabel.isHidden = true
 			
 			bakerLabel.text = "No baker chosen"
+			bakerLabel.textColor = .colorNamed("Txt2")
 			bakerApyLabel.text = "Delegate and stake your XYZ to participate in on chain governance and earn interest."
+			bakerApyLabel.textColor = .colorNamed("Txt8")
 		}
 		
 	}

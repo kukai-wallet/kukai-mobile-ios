@@ -241,14 +241,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			return
 		}
 		
-		// Load instantly
-		// - token header
-		// - chart spinner
-		// - balance / available balance
-		// - Send button
-		// - if xtz, spinner
-		// - else, load activity
-		
+		// Immediately load balance, logo, buttons and placeholder chart
 		loadOfflineData(token: token)
 		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
 		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
@@ -262,12 +255,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		if token.isXTZ() {
 			
-			// If XTZ and we have a delegate set, then we need to fetch more data before displaying anything else
-			// Otherwise load the baker onboarding flow
+			// If XTZ, user has a blance, and we have a delegate set, then we need to fetch more data before displaying anything else
+			// Otherwise load the baker onboarding flow, if user has a balance
 			if DependencyManager.shared.balanceService.account.delegate != nil {
-				self.needsToLoadOnlineXTZData = true
+				self.needsToLoadOnlineXTZData = !sendData.isBuyTez
 				data.append(.init(onlineDataLoading))
-			} else {
+				
+			} else /* TODO: re-enable if !sendData.isBuyTez*/ {
 				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false) ))
 			}
 		} else {
@@ -287,18 +281,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		
 		
-		// When done
-		// - kick off chart data fetch
-		//    - replace chart cell when done
-		// - if xtz, kick off baker, baker rewards, + any other stake data fetch
-		//    - add baker view
-		//    - add stake view
-		//    - add pending unstake view
-		// 	  - add rewards view
-		//    - add activity
-		
-		
-		// Fetch any required remote data
+		// After UI is updated, fetch the data for chart and reload that 1 cell
 		loadChartData(token: token) { [weak self] result in
 			guard let self = self else { return }
 			self.initialChartLoad = false
@@ -326,6 +309,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 		}
 		
+		
+		
+		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
 		if self.needsToLoadOnlineXTZData {
 			loadOnlineXTZData(token: token) { [weak self] in
 				guard let self = self else { return }
@@ -334,7 +320,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
 				/*
-				 pending unstake
+				 TODO: pending unstake
 				 */
 				
 				if let rewardData = rewardData {
@@ -494,7 +480,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				}
 			}
 			
-			
+			// TODO: cache this and only retrieve no more than once per day
 			// Check voting participation
 			onlineXTZFetchGroup.enter()
 			DependencyManager.shared.tzktClient.checkBakerVoteParticipation(forAddress: delegate.address) {[weak self] result in
