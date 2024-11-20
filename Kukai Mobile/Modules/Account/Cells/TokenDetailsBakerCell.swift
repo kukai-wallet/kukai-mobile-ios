@@ -32,6 +32,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 		
 		bakerButton.customButtonType = .tertiary
 		learnButton.customButtonType = .secondary
+		bakerButton.isEnabled = !data.bakerChangeDisabled
 		
 		if let bakerName = data.bakerName {
 			

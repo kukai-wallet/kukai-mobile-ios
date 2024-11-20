@@ -67,6 +67,7 @@ struct TokenDetailsBakerData: Hashable {
 	let votingParticipation: [Bool]
 	let freeSpace: Decimal
 	let enoughSpaceForBalance: Bool
+	let bakerChangeDisabled: Bool
 }
 
 struct TokenDetailsStakeData: Hashable {
@@ -77,6 +78,7 @@ struct TokenDetailsStakeData: Hashable {
 	let canStake: Bool
 	let canUnstake: Bool
 	let canFinalize: Bool
+	let buttonsDisabled: Bool
 }
 
 struct TokenDetailsActivityHeader: Hashable, Identifiable {
@@ -91,9 +93,7 @@ struct TokenDetailsMessageData: Hashable {
 
 
 @objc protocol TokenDetailsViewModelDelegate: AnyObject {
-	func setBakerTapped()
 	func sendTapped()
-	func stakingRewardsInfoTapped()
 	func launchExternalBrowser(withURL url: URL)
 }
 
@@ -113,7 +113,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private var onlineXTZFetchGroup = DispatchGroup()
 	
 	// Set by VC
-	weak var delegate: TokenDetailsViewModelDelegate? = nil
+	weak var delegate: (TokenDetailsViewModelDelegate & TokenDetailsBakerDelegate & TokenDetailsStakeBalanceDelegate)? = nil
 	
 	var token: Token? = nil
 	var tokenFiatPrice = ""
@@ -197,10 +197,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 			} else if let obj = item.base as? TokenDetailsBakerData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsBakerCell", for: indexPath) as? TokenDetailsBakerCell {
 				cell.setup(data: obj)
+				cell.delegate = self.delegate
 				return cell
 				
 			} else if let obj = item.base as? TokenDetailsStakeData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakeBalanceCell", for: indexPath) as? TokenDetailsStakeBalanceCell {
 				cell.setup(data: obj)
+				cell.delegate = self.delegate
 				return cell
 				
 			} else if let _ = item.base as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
@@ -208,7 +210,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return cell
 				
 			} else if let obj = item.base as? AggregateRewardInformation, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakingRewardsCell", for: indexPath) as? TokenDetailsStakingRewardsCell {
-				cell.infoButton.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.stakingRewardsInfoTapped), for: .touchUpInside)
+				//cell.infoButton.addTarget(self.delegate, action: #selector(TokenDetailsViewModelDelegate.stakingRewardsInfoTapped), for: .touchUpInside)
 				cell.setup(data: obj)
 				return cell
 				
@@ -241,10 +243,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			return
 		}
 		
+		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
+		
 		// Immediately load balance, logo, buttons and placeholder chart
 		loadOfflineData(token: token)
 		sendData.isBuyTez = (token.isXTZ() && token.balance == .zero())
-		sendData.isDisabled = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
+		sendData.isDisabled = isWatchWallet
 		
 		var data: [AnyHashableSendable] = [
 			.init(tokenHeaderData),
@@ -262,7 +266,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				data.append(.init(onlineDataLoading))
 				
 			} else /* TODO: re-enable if !sendData.isBuyTez*/ {
-				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false) ))
+				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false, bakerChangeDisabled: isWatchWallet) ))
 			}
 		} else {
 			
@@ -436,12 +440,12 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			return
 		}
 		
+		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		let account = DependencyManager.shared.balanceService.account
 		var baker: TzKTBaker? = nil
 		var votingParticipation: [Bool] = []
 		
 		
-			
 		// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
 		onlineXTZFetchGroup.enter()
 		DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
@@ -479,6 +483,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 					self?.onlineXTZFetchGroup.leave()
 				}
 			}
+			
 			
 			// TODO: cache this and only retrieve no more than once per day
 			// Check voting participation
@@ -518,7 +523,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let percentOfFundsDelegated = 1 - percentOfFundsStaked
 			let estimatedApy = (((delegationApy * percentOfFundsDelegated) + (stakingApy * percentOfFundsStaked)) * 100).rounded(scale: 2, roundingMode: .bankers)
 			
-			self?.bakerData = TokenDetailsBakerData(bakerIcon: baker.logo, bakerName: bakerString, bakerApy: estimatedApy, votingParticipation: votingParticipation, freeSpace: freeSpace, enoughSpaceForBalance: enoughSpace)
+			self?.bakerData = TokenDetailsBakerData(bakerIcon: baker.logo, bakerName: bakerString, bakerApy: estimatedApy, votingParticipation: votingParticipation, freeSpace: freeSpace, enoughSpaceForBalance: enoughSpace, bakerChangeDisabled: isWatchWallet)
 			
 			
 			
@@ -536,7 +541,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let canUnstake = token.stakedBalance > .zero()
 			let canFinalize = token.unstakedBalance > .zero()
 			
-			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize)
+			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize, buttonsDisabled: isWatchWallet)
 			
 			DispatchQueue.main.async { completion() }
 		}
@@ -677,6 +682,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func chartRangeChanged(to: TokenDetailsChartCellRange) {
 		currentChartRange = to
+	}
+	
+	func isNewBakerFlow() -> Bool {
+		return bakerData?.bakerName == nil
 	}
 }
 

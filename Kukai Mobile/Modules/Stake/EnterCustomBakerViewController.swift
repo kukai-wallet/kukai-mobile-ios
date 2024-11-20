@@ -28,7 +28,7 @@ class EnterCustomBakerViewController: UIViewController, EnterAddressComponentDel
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 			
 			if ofType == .tezosAddress {
-				let parent = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? StakeViewController)
+				let parent = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? ChooseBakerViewController)
 				parent?.enteredCustomBaker(address: entered)
 				self?.dismissBottomSheet()
 				
@@ -50,7 +50,7 @@ class EnterCustomBakerViewController: UIViewController, EnterAddressComponentDel
 				return
 			}
 			
-			let parent = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? StakeViewController)
+			let parent = ((self?.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? ChooseBakerViewController)
 			parent?.enteredCustomBaker(address: res.address)
 			self?.hideLoadingView()
 			self?.dismissBottomSheet()

@@ -10,12 +10,12 @@ import KukaiCoreSwift
 import Combine
 import OSLog
 
-struct StakeHeaderData: Hashable {
+struct ChooseBakerHeaderData: Hashable {
 	let title: String
 	let actionTitle: String?
 }
 
-class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	typealias SectionEnum = Int
 	typealias CellDataType = AnyHashableSendable
@@ -58,12 +58,12 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.setup(withBaker: obj)
 				return cell
 				
-			} else if let obj = item.base as? StakeHeaderData, obj.actionTitle != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingAndActionCell", for: indexPath) as? StakeHeadingCell {
+			} else if let obj = item.base as? ChooseBakerHeaderData, obj.actionTitle != nil, let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseBakerHeadingAndActionCell", for: indexPath) as? ChooseBakerHeadingCell {
 				cell.headingLabel.text = obj.title
 				cell.actionTitleLabel?.text = obj.actionTitle
 				return cell
 				
-			} else if let obj = item.base as? StakeHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "StakeHeadingCell", for: indexPath) as? StakeHeadingCell {
+			} else if let obj = item.base as? ChooseBakerHeaderData, let cell = tableView.dequeueReusableCell(withIdentifier: "ChooseBakerHeadingCell", for: indexPath) as? ChooseBakerHeadingCell {
 				cell.headingLabel.text = obj.title
 				return cell
 				
@@ -114,7 +114,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			if currentDelegate != nil {
 				self?.currentSnapshot.appendSections([0, 1])
-				self?.currentSnapshot.appendItems([.init(StakeHeaderData(title: "CURRENT BAKER", actionTitle: nil))], toSection: 0)
+				self?.currentSnapshot.appendItems([.init(ChooseBakerHeaderData(title: "CURRENT BAKER", actionTitle: nil))], toSection: 0)
 				
 				if let currentBaker = currentBaker {
 					self?.currentSnapshot.appendItems([.init(currentBaker)], toSection: 1)
@@ -129,7 +129,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			}
 			
 			self?.currentSnapshot.appendSections(Array(nextSectionIndex..<(sortedResults.count + nextSectionIndex + 1)))
-			self?.currentSnapshot.appendItems([.init(StakeHeaderData(title: "SELECT BAKER", actionTitle: "Enter Custom Baker"))], toSection: nextSectionIndex)
+			self?.currentSnapshot.appendItems([.init(ChooseBakerHeaderData(title: "SELECT BAKER", actionTitle: "Enter Custom Baker"))], toSection: nextSectionIndex)
 			nextSectionIndex += 1
 			
 			for baker in sortedResults {
@@ -159,7 +159,7 @@ class StakeViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func isEnterCustom(indexPath: IndexPath) -> Bool {
-		if let obj = dataSource?.itemIdentifier(for: indexPath)?.base as? StakeHeaderData {
+		if let obj = dataSource?.itemIdentifier(for: indexPath)?.base as? ChooseBakerHeaderData {
 			return obj.actionTitle != nil
 		}
 		

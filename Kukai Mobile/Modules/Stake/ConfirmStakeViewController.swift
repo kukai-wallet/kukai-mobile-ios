@@ -1,5 +1,5 @@
 //
-//  ConfirmStakeViewController.swift
+//  ConfirmChooseBakerViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 21/07/2023.
@@ -10,7 +10,7 @@ import KukaiCoreSwift
 import ReownWalletKit
 import os.log
 
-class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet weak var closeButton: CustomisableButton!
 	
@@ -215,7 +215,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	}
 }
 
-extension ConfirmStakeViewController: BottomSheetCustomCalculateProtocol {
+extension ConfirmChooseBakerViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()

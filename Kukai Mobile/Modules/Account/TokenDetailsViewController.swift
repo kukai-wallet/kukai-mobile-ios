@@ -197,19 +197,42 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 
 extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	
-	func setBakerTapped() {
-		self.performSegue(withIdentifier: "stake", sender: nil)
-	}
-	
 	func sendTapped() {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
-	func stakingRewardsInfoTapped() {
-		self.performSegue(withIdentifier: "stakingInfo", sender: nil)
-	}
-	
 	func launchExternalBrowser(withURL url: URL) {
 		UIApplication.shared.open(url)
+	}
+}
+
+extension TokenDetailsViewController: TokenDetailsBakerDelegate {
+	
+	func changeTapped() {
+		
+		if viewModel.isNewBakerFlow() {
+			
+		} else {
+			self.performSegue(withIdentifier: "stake", sender: nil)
+		}
+	}
+	
+	func learnTapped() {
+		
+	}
+}
+
+extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
+	
+	func stakeTapped() {
+		
+	}
+	
+	func unstakeTapped() {
+		
+	}
+	
+	func finalizeTapped() {
+		
 	}
 }

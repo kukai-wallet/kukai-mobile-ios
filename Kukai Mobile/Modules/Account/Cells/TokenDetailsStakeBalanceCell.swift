@@ -38,9 +38,9 @@ class TokenDetailsStakeBalanceCell: UITableViewCell {
 		finalizeBalanceLabel.text = data.finalizeBalance
 		finalizeValueLabel.text = data.finalizeValue
 		
-		stakeButton.isEnabled = data.canStake
-		unstakeButton.isEnabled = data.canUnstake
-		finalizeButton.isEnabled = data.canFinalize
+		stakeButton.isEnabled = !data.buttonsDisabled && data.canStake
+		unstakeButton.isEnabled = !data.buttonsDisabled && data.canUnstake
+		finalizeButton.isEnabled = !data.buttonsDisabled && data.canFinalize
 	}
 	
 	@IBAction func stakeTapped(_ sender: Any) {

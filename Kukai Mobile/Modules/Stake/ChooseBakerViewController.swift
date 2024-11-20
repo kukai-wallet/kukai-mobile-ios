@@ -9,11 +9,11 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 
-class StakeViewController: UIViewController {
+class ChooseBakerViewController: UIViewController {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
-	private let viewModel = StakeViewModel()
+	private let viewModel = ChooseBakerViewModel()
 	private var cancellable: AnyCancellable?
 	private let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 2))
 	private let blankView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
@@ -78,7 +78,7 @@ class StakeViewController: UIViewController {
 		createOperationsAndConfirm(toAddress: address)
 	}
 	
-	public func stakeTapped() {
+	public func delegateTapped() {
 		self.showLoadingView()
 		
 		if let baker = TransactionService.shared.delegateData.chosenBaker {
@@ -109,7 +109,7 @@ class StakeViewController: UIViewController {
 	}
 }
 
-extension StakeViewController: UITableViewDelegate {
+extension ChooseBakerViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 0

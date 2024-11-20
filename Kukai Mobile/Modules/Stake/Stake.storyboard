@@ -24,7 +24,7 @@
         <!--Delegate-->
         <scene sceneID="s0d-6b-0kx">
             <objects>
-                <viewController id="Y6W-OH-hqX" customClass="StakeViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Y6W-OH-hqX" customClass="ChooseBakerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -33,7 +33,7 @@
                                 <rect key="frame" x="0.0" y="92" width="414" height="804"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="StakeHeadingCell" id="5yv-f6-Oll" customClass="StakeHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ChooseBakerHeadingCell" id="5yv-f6-Oll" customClass="ChooseBakerHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="20" y="55.5" width="374" height="37"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5yv-f6-Oll" id="04q-Sx-PdH">
@@ -59,7 +59,7 @@
                                             <outlet property="headingLabel" destination="7b3-AR-06W" id="HZg-ex-x3A"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="StakeHeadingAndActionCell" id="Bjc-eH-JuB" customClass="StakeHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ChooseBakerHeadingAndActionCell" id="Bjc-eH-JuB" customClass="ChooseBakerHeadingCell" customModule="Kukai_Mobile" customModuleProvider="target">
                                         <rect key="frame" x="20" y="92.5" width="374" height="41"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bjc-eH-JuB" id="I6Q-ei-YW9">
@@ -470,7 +470,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="stakeTapped:" destination="GiC-as-5nH" eventType="touchUpInside" id="hsu-zZ-aqa"/>
+                                    <action selector="delegateTapped:" destination="GiC-as-5nH" eventType="touchUpInside" id="Xwv-Rh-fDn"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -501,11 +501,11 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     <connections>
                         <outlet property="bakerIcon" destination="0JM-ha-ita" id="Sm1-Bz-Rle"/>
                         <outlet property="bakerNameLabel" destination="YAn-It-EhK" id="IQc-92-tRh"/>
+                        <outlet property="delegateButton" destination="isB-kD-FJg" id="6vQ-Bg-iHx"/>
                         <outlet property="freeLabel" destination="FBg-PG-g4o" id="4S1-ma-UBK"/>
                         <outlet property="rewardslabel" destination="1ps-kB-UPA" id="GR0-KP-MDV"/>
                         <outlet property="spaceLabel" destination="Hcq-fx-SOt" id="KqS-xl-7QB"/>
                         <outlet property="splitLabel" destination="AUl-Ic-vfV" id="N9z-Ef-dcK"/>
-                        <outlet property="stakeButton" destination="isB-kD-FJg" id="YDy-1o-htm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LP8-uE-b7e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -553,10 +553,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             </objects>
             <point key="canvasLocation" x="728" y="882"/>
         </scene>
-        <!--Confirm Stake View Controller-->
+        <!--Confirm Choose Baker View Controller-->
         <scene sceneID="dai-sD-MYE">
             <objects>
-                <viewController storyboardIdentifier="confirm-stake" id="VKw-S5-tXn" customClass="ConfirmStakeViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirm-baker" id="VKw-S5-tXn" customClass="ConfirmChooseBakerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kxW-TZ-56a">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
