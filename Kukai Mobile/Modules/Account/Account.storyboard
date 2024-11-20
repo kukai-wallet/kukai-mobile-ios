@@ -1417,7 +1417,8 @@
                         <outlet property="tableView" destination="ITw-HP-Zep" id="hbb-Sc-2gf"/>
                         <segue destination="5px-c7-QlA" kind="custom" identifier="tokenContract" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="b5W-IZ-X2h"/>
                         <segue destination="B45-4v-gNa" kind="show" identifier="send" id="MP4-fT-iEx"/>
-                        <segue destination="DOo-M8-i54" kind="show" identifier="stake" id="Ogz-o0-4kt"/>
+                        <segue destination="DOo-M8-i54" kind="show" identifier="choose-baker" id="Ogz-o0-4kt"/>
+                        <segue destination="PWG-eK-k0x" kind="custom" identifier="stake-amount" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="YLb-S2-9f9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sib-vO-ppd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1800,7 +1801,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6h4-T7-hA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2782" y="-495"/>
+            <point key="canvasLocation" x="-2782" y="-561"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="YVw-vf-N1y">
@@ -1841,6 +1842,14 @@ The estimate uses exchange data that might not be up to date and does not take i
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TT3-wq-V65" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1793" y="-1420"/>
+        </scene>
+        <!--stake-amount-->
+        <scene sceneID="1oo-2m-Qw9">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-amount" id="PWG-eK-k0x" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Y7s-GY-vAv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2744" y="-488"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

@@ -116,6 +116,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	weak var delegate: (TokenDetailsViewModelDelegate & TokenDetailsBakerDelegate & TokenDetailsStakeBalanceDelegate)? = nil
 	
 	var token: Token? = nil
+	var baker: TzKTBaker? = nil
 	var tokenFiatPrice = ""
 	var needsToLoadOnlineXTZData = false
 	
@@ -442,7 +443,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		let account = DependencyManager.shared.balanceService.account
-		var baker: TzKTBaker? = nil
 		var votingParticipation: [Bool] = []
 		
 		
@@ -456,7 +456,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 			
 			// TODO: add baker voting to query
-			baker = res
+			self?.baker = res
 			self?.onlineXTZFetchGroup.leave()
 		}
 		
@@ -504,7 +504,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		// Fire completion when everything is done
 		onlineXTZFetchGroup.notify(queue: .global(qos: .background)) { [weak self] in
-			guard let baker = baker else {
+			guard let baker = self?.baker else {
 				// TODO: handle error
 				DispatchQueue.main.async { completion() }
 				return

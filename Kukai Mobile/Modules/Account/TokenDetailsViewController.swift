@@ -211,28 +211,30 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 	func changeTapped() {
 		
 		if viewModel.isNewBakerFlow() {
-			
+			self.alert(errorWithMessage: "Under Construction")
 		} else {
-			self.performSegue(withIdentifier: "stake", sender: nil)
+			self.performSegue(withIdentifier: "choose-baker", sender: nil)
 		}
 	}
 	
 	func learnTapped() {
-		
+		self.alert(errorWithMessage: "Under Construction")
 	}
 }
 
 extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	
 	func stakeTapped() {
-		
+		TransactionService.shared.stakeData.chosenBaker = viewModel.baker
+		TransactionService.shared.stakeData.chosenToken = viewModel.token
+		self.performSegue(withIdentifier: "stake-amount", sender: nil)
 	}
 	
 	func unstakeTapped() {
-		
+		self.alert(errorWithMessage: "Under Construction")
 	}
 	
 	func finalizeTapped() {
-		
+		self.alert(errorWithMessage: "Under Construction")
 	}
 }

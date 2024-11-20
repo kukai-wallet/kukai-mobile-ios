@@ -1105,7 +1105,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="GgY-XI-5hz">
                                 <rect key="frame" x="16" y="116.5" width="382" height="110"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYN-fT-0eJ" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mYN-fT-0eJ">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="110"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="g4D-bu-wym">
@@ -1364,7 +1364,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         <color key="textColor" name="TxtB-alt4"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid amount entered" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7H-re-JFO">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invalid amount entered. You must leave at least 1 XTZ in your balance" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K7H-re-JFO">
                                         <rect key="frame" x="0.0" y="22.5" width="382" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtAlert4"/>
@@ -1452,9 +1452,6 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="bakerRewardsValueLabel" destination="MbM-Q2-RAy" id="wln-fO-0gz"/>
                         <outlet property="bakerSpaceValueLabel" destination="u8t-9a-eoB" id="1jb-cT-PeY"/>
                         <outlet property="bakerSplitValueLabel" destination="kwH-17-0zL" id="Akf-cH-eW6"/>
-                        <outlet property="closeButton" destination="MfJ-Pt-l9I" id="Ef3-Db-oF1"/>
-                        <outlet property="confirmBakerAddView" destination="GvV-gV-rxV" id="a4E-W7-yOc"/>
-                        <outlet property="containerView" destination="mYN-fT-0eJ" id="t2m-j8-eSx"/>
                         <outlet property="errorLabel" destination="K7H-re-JFO" id="VaS-du-1hp"/>
                         <outlet property="fiatLabel" destination="Dmr-Gb-zld" id="0nz-Ov-HNP"/>
                         <outlet property="maxButton" destination="NVt-DE-FIQ" id="USq-YH-Gyf"/>

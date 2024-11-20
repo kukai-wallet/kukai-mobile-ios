@@ -30,19 +30,28 @@ class StakeAmountViewController: UIViewController {
 	@IBOutlet weak var reviewButton: CustomisableButton!
 	
 	private var selectedToken: Token? = nil
+	private var selectedBaker: TzKTBaker? = nil
+	
+	var dimBackground: Bool = true
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		selectedToken = TransactionService.shared.sendData.chosenToken
-		guard let token = selectedToken else {
+		selectedToken = TransactionService.shared.stakeData.chosenToken
+		selectedBaker = TransactionService.shared.stakeData.chosenBaker
+		guard let token = selectedToken, let baker = selectedBaker else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
+			self.dismissBottomSheet()
 			return
 		}
 		
 		// To section
-		
+		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
+		bakerSplitValueLabel.text = "\(baker.staking.fee * 100)%"
+		bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: token.decimalPlaces, includeThousand: true, maximumFractionDigits: 0)
+		bakerRewardsValueLabel.text = "\(baker.staking.estimatedApy * 100)%"
 		
 		
 		// Token data
@@ -54,7 +63,7 @@ class StakeAmountViewController: UIViewController {
 		
 		// Textfield
 		textfield.validatorTextFieldDelegate = self
-		textfield.validator = TokenAmountValidator(balanceLimit: token.availableBalance, decimalPlaces: token.decimalPlaces)
+		textfield.validator = TokenAmountValidator(balanceLimit: (token.availableBalance - TokenAmount(fromNormalisedAmount: 1, decimalPlaces: token.decimalPlaces)), decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
 		textfield.numericAndSeperatorOnly = true
 		
@@ -79,16 +88,16 @@ class StakeAmountViewController: UIViewController {
 	}
 	
 	func estimateFeeAndNavigate() {
-		guard let destination = TransactionService.shared.sendData.destination, let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
+		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-destination".localized())
 			return
 		}
 		
-		if let token = TransactionService.shared.sendData.chosenToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
+		if let token = TransactionService.shared.stakeData.chosenToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
 			self.showLoadingView()
 			
-			let operations = OperationFactory.sendOperation(amount, of: token, from: selectedWalletMetadata.address, to: destination)
-			TransactionService.shared.sendData.chosenAmount = amount
+			let operations = OperationFactory.stakeOperation(from: selectedWalletMetadata.address, amount: amount)
+			TransactionService.shared.stakeData.chosenAmount = amount
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
@@ -157,5 +166,12 @@ extension StakeAmountViewController: ValidatorTextFieldDelegate {
 		} else {
 			warningLabel.isHidden = true
 		}
+	}
+}
+
+extension StakeAmountViewController: BottomSheetCustomCalculateProtocol {
+	
+	func bottomSheetHeight() -> CGFloat {
+		return 400
 	}
 }
