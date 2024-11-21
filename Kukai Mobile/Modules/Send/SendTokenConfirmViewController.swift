@@ -24,34 +24,20 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	// From
 	@IBOutlet weak var fromContainer: UIView!
 	
-	@IBOutlet weak var fromStackViewSocial: UIStackView!
-	@IBOutlet weak var fromSocialIcon: UIImageView!
-	@IBOutlet weak var fromSocialAlias: UILabel!
-	@IBOutlet weak var fromSocialAddress: UILabel!
-	
-	@IBOutlet weak var fromStackViewRegular: UIStackView!
-	@IBOutlet weak var fromRegularAddress: UILabel!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
 	
 	// Send
-	@IBOutlet weak var largeDisplayStackView: UIStackView!
-	@IBOutlet weak var largeDisplayIcon: UIImageView!
-	@IBOutlet weak var largeDisplayAmount: UILabel!
-	@IBOutlet weak var largeDisplaySymbol: UILabel!
-	@IBOutlet weak var largeDisplayFiat: UILabel!
-	
-	@IBOutlet weak var smallDisplayStackView: UIStackView!
-	@IBOutlet weak var smallDisplayIcon: UIImageView!
-	@IBOutlet weak var smallDisplayAmount: UILabel!
-	@IBOutlet weak var smallDisplayFiat: UILabel!
+	@IBOutlet weak var tokenIcon: UIImageView!
+	@IBOutlet weak var tokenAmount: UILabel!
+	@IBOutlet weak var tokenSymbol: UILabel!
+	@IBOutlet weak var tokenFiat: UILabel!
 	
 	// To
-	@IBOutlet weak var toStackViewSocial: UIStackView!
-	@IBOutlet weak var toSocialIcon: UIImageView!
-	@IBOutlet weak var toSocialAlias: UILabel!
-	@IBOutlet weak var toSocialAddress: UILabel!
-	
-	@IBOutlet weak var toStackViewRegular: UIStackView!
-	@IBOutlet weak var toRegularAddress: UILabel!
+	@IBOutlet weak var toIcon: UIImageView!
+	@IBOutlet weak var toAlias: UILabel!
+	@IBOutlet weak var toAddress: UILabel!
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -97,17 +83,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 				connectedAppURL = smallIconURL
 			}
 			
-			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
-			if let subtitle = media.subtitle {
-				fromStackViewRegular.isHidden = true
-				fromSocialAlias.text = media.title
-				fromSocialIcon.image = media.image
-				fromSocialAddress.text = subtitle
-			} else {
-				fromStackViewSocial.isHidden = true
-				fromRegularAddress.text = media.title
-			}
-			
 		} else {
 			self.isWalletConnectOp = false
 			self.currentSendData = TransactionService.shared.sendData
@@ -115,22 +90,38 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
-			fromContainer.isHidden = true
+		}
+		
+		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
 		}
 		
 		
 		// Destination view configuration
 		if let alias = currentSendData.destinationAlias {
-			// social display
-			toStackViewRegular.isHidden = true
-			toSocialAlias.text = alias
-			toSocialIcon.image = currentSendData.destinationIcon
-			toSocialAddress.text = currentSendData.destination?.truncateTezosAddress()
+			toIcon.image = currentSendData.destinationIcon
+			toAlias.text = alias
+			toAddress.text = currentSendData.destination?.truncateTezosAddress()
 			
 		} else {
-			// basic display
-			toStackViewSocial.isHidden = true
-			toRegularAddress.text = currentSendData.destination?.truncateTezosAddress()
+			toIcon.image = currentSendData.destinationIcon
+			toAlias.text = currentSendData.destination?.truncateTezosAddress()
+			toAddress.isHidden = true
 		}
 		
 		
@@ -209,40 +200,18 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	func updateAmountDisplay(withValue value: TokenAmount) {
 		guard let token = currentSendData.chosenToken else {
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.image = UIImage.unknownToken()
-			smallDisplayAmount.text = "0"
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
+			tokenIcon.image = UIImage.unknownToken()
+			tokenAmount.text = "0"
+			tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
-		let approxSizeOfOccupiedSpace: CGFloat = 180 // Yes "magic number", deal with it, very unique business logic at play
-		let remainder = UIScreen.main.bounds.width - approxSizeOfOccupiedSpace
 		let amountText = DependencyManager.shared.coinGeckoService.format(decimal: value.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: value.decimalPlaces)
 		
-		var amountWidth = amountText.widthOfString(usingFont: largeDisplayAmount.font)
-		amountWidth.round(.up)
-		
-		var symbolWidth = token.symbol.widthOfString(usingFont: largeDisplaySymbol.font)
-		symbolWidth.round(.up)
-		
-		if (amountWidth + symbolWidth) > remainder {
-			
-			// Display with more room for long length numbers
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + " " + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-		} else {
-			
-			// Display with less room and more detail
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-		}
+		tokenIcon.addTokenIcon(token: token)
+		tokenAmount.text = amountText
+		tokenSymbol.text = token.symbol
+		tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 	}
 	
 	func updateFees(isFirstCall: Bool = false) {

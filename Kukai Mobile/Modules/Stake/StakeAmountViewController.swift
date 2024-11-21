@@ -161,7 +161,7 @@ extension StakeAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validateMaxXTZ(input: String) {
-		if selectedToken?.isXTZ() == true, let balance = selectedToken?.availableBalance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount  {
+		if selectedToken?.isXTZ() == true, let balance = selectedToken?.availableBalance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount {
 			warningLabel.isHidden = false
 		} else {
 			warningLabel.isHidden = true

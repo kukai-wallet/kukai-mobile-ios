@@ -1237,9 +1237,6 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="110" id="ydt-Le-bwM"/>
-                                </constraints>
                             </stackView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="XTZ" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kyx-xh-DBw">
                                 <rect key="frame" x="16" y="242.5" width="30.5" height="19.5"/>
@@ -1469,10 +1466,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             </objects>
             <point key="canvasLocation" x="2803" y="139"/>
         </scene>
-        <!--Confirm Choose Baker View Controller-->
+        <!--Stake Confirm View Controller-->
         <scene sceneID="lDe-HY-IeJ">
             <objects>
-                <viewController storyboardIdentifier="confirm-stake" id="SO9-Nl-Tsa" customClass="ConfirmChooseBakerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="confirm-stake" id="SO9-Nl-Tsa" customClass="StakeConfirmViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8O9-Xh-rdP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="800"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1480,13 +1477,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="gTO-JZ-bJ5">
                                 <rect key="frame" x="16" y="78" width="382" height="41"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Delegate" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tRr-h3-EHQ">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Stake" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tRr-h3-EHQ">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="26.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                         <color key="textColor" name="Txt2"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S78-1e-ZQN">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Connect" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ixi-ma-deh">
                                         <rect key="frame" x="0.0" y="26.5" width="382" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt8"/>
@@ -1521,21 +1518,21 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ppg-DG-wgg">
                                 <rect key="frame" x="16" y="131" width="382" height="453.5"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jk3-JU-dfO">
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nAA-MS-hLd">
                                         <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="69a-w9-wp8">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GYN-YU-aRS">
                                                 <rect key="frame" x="0.0" y="0.0" width="146.5" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e0g-FD-p1c">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BBM-ro-sww">
                                                 <rect key="frame" x="146.5" y="0.0" width="89" height="44"/>
                                                 <subviews>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BBg-bV-Uof">
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="93G-JU-xa4">
                                                         <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="28" id="6DS-cc-jCB"/>
-                                                            <constraint firstAttribute="width" constant="28" id="AkR-nh-c4W"/>
+                                                            <constraint firstAttribute="width" constant="28" id="0pp-fg-1mh"/>
+                                                            <constraint firstAttribute="height" constant="28" id="RYE-ZB-QR1"/>
                                                         </constraints>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -1544,7 +1541,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;name&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f1x-CP-LjI">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;name&gt;" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LiX-Gf-ugB">
                                                         <rect key="frame" x="36" y="0.0" width="53" height="28"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                         <color key="textColor" name="TxtB2"/>
@@ -1553,32 +1550,32 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                 </subviews>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
-                                                    <constraint firstItem="BBg-bV-Uof" firstAttribute="top" secondItem="e0g-FD-p1c" secondAttribute="top" id="52Q-UN-rlp"/>
-                                                    <constraint firstAttribute="bottom" secondItem="BBg-bV-Uof" secondAttribute="bottom" constant="16" id="5yY-DG-HYZ"/>
-                                                    <constraint firstItem="f1x-CP-LjI" firstAttribute="leading" secondItem="BBg-bV-Uof" secondAttribute="trailing" constant="8" id="FhU-PY-uRb"/>
-                                                    <constraint firstAttribute="trailing" secondItem="f1x-CP-LjI" secondAttribute="trailing" id="PzU-k5-h4i"/>
-                                                    <constraint firstItem="BBg-bV-Uof" firstAttribute="leading" secondItem="e0g-FD-p1c" secondAttribute="leading" id="Tuw-Tb-rZg"/>
-                                                    <constraint firstAttribute="bottom" secondItem="f1x-CP-LjI" secondAttribute="bottom" constant="16" id="WVA-xW-WhV"/>
-                                                    <constraint firstItem="f1x-CP-LjI" firstAttribute="top" secondItem="e0g-FD-p1c" secondAttribute="top" id="nkB-Ux-uS8"/>
+                                                    <constraint firstAttribute="bottom" secondItem="LiX-Gf-ugB" secondAttribute="bottom" constant="16" id="2tS-FB-jPm"/>
+                                                    <constraint firstAttribute="bottom" secondItem="93G-JU-xa4" secondAttribute="bottom" constant="16" id="6LK-4A-CCN"/>
+                                                    <constraint firstItem="LiX-Gf-ugB" firstAttribute="top" secondItem="BBM-ro-sww" secondAttribute="top" id="Jo5-KO-bqY"/>
+                                                    <constraint firstItem="LiX-Gf-ugB" firstAttribute="leading" secondItem="93G-JU-xa4" secondAttribute="trailing" constant="8" id="dTw-ha-VoC"/>
+                                                    <constraint firstAttribute="trailing" secondItem="LiX-Gf-ugB" secondAttribute="trailing" id="jr2-8O-LaM"/>
+                                                    <constraint firstItem="93G-JU-xa4" firstAttribute="leading" secondItem="BBM-ro-sww" secondAttribute="leading" id="ogC-Fp-aQU"/>
+                                                    <constraint firstItem="93G-JU-xa4" firstAttribute="top" secondItem="BBM-ro-sww" secondAttribute="top" id="sdp-L3-g2w"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="euY-wP-hXU">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TIh-9G-MfR">
                                                 <rect key="frame" x="235.5" y="0.0" width="146.5" height="44"/>
                                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </view>
                                         </subviews>
                                         <constraints>
-                                            <constraint firstItem="69a-w9-wp8" firstAttribute="width" secondItem="euY-wP-hXU" secondAttribute="width" id="64o-hp-3sV"/>
+                                            <constraint firstItem="GYN-YU-aRS" firstAttribute="width" secondItem="TIh-9G-MfR" secondAttribute="width" id="i8p-fp-lTn"/>
                                         </constraints>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GIM-Ka-YlK" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="52" width="382" height="401.5"/>
+                                        <rect key="frame" x="0.0" y="52" width="382" height="271.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="iGj-hb-Vto">
-                                                <rect key="frame" x="0.0" y="0.0" width="382" height="401.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="382" height="271.5"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mOD-d8-cHv">
-                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="401.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="382" height="271.5"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="DJ8-fX-Mh9">
                                                                 <rect key="frame" x="14" y="10" width="40" height="40"/>
@@ -1600,10 +1597,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ene-7C-WJX">
-                                                                <rect key="frame" x="14" y="60" width="354" height="331.5"/>
+                                                                <rect key="frame" x="14" y="60" width="354" height="201.5"/>
                                                                 <subviews>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="lol-j0-F66">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="84.5" height="331.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="84.5" height="201.5"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Split" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2bg-Jf-mQ0">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="84.5" height="14.5"/>
@@ -1612,7 +1609,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;split&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ern-4J-0hD">
-                                                                                <rect key="frame" x="0.0" y="14.5" width="84.5" height="317"/>
+                                                                                <rect key="frame" x="0.0" y="14.5" width="84.5" height="187"/>
                                                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                                 <color key="textColor" name="Txt8"/>
                                                                                 <nil key="highlightedColor"/>
@@ -1620,7 +1617,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ko4-n6-c1F">
-                                                                        <rect key="frame" x="92.5" y="0.0" width="169" height="331.5"/>
+                                                                        <rect key="frame" x="92.5" y="0.0" width="169" height="201.5"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Space" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1D-6z-txm">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="169" height="14.5"/>
@@ -1629,7 +1626,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;space&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1UQ-pV-XPJ">
-                                                                                <rect key="frame" x="0.0" y="14.5" width="169" height="317"/>
+                                                                                <rect key="frame" x="0.0" y="14.5" width="169" height="187"/>
                                                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                                 <color key="textColor" name="Txt8"/>
                                                                                 <nil key="highlightedColor"/>
@@ -1637,7 +1634,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                         </subviews>
                                                                     </stackView>
                                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="64l-qv-mv8">
-                                                                        <rect key="frame" x="269.5" y="0.0" width="84.5" height="331.5"/>
+                                                                        <rect key="frame" x="269.5" y="0.0" width="84.5" height="201.5"/>
                                                                         <subviews>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est Rewards" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2rJ-E1-jko">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="84.5" height="14.5"/>
@@ -1646,7 +1643,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                                 <nil key="highlightedColor"/>
                                                                             </label>
                                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;estRewards&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mft-eQ-nKR">
-                                                                                <rect key="frame" x="0.0" y="14.5" width="84.5" height="317"/>
+                                                                                <rect key="frame" x="0.0" y="14.5" width="84.5" height="187"/>
                                                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                                 <color key="textColor" name="Txt8"/>
                                                                                 <nil key="highlightedColor"/>
@@ -1682,6 +1679,179 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                             <constraint firstItem="iGj-hb-Vto" firstAttribute="top" secondItem="GIM-Ka-YlK" secondAttribute="top" id="Ian-mx-cwP"/>
                                             <constraint firstAttribute="trailing" secondItem="iGj-hb-Vto" secondAttribute="trailing" id="OXG-J7-hHF"/>
                                             <constraint firstItem="iGj-hb-Vto" firstAttribute="leading" secondItem="GIM-Ka-YlK" secondAttribute="leading" id="qxX-SA-Fvu"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                <real key="value" value="8"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGf-u2-3Ui" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="331.5" width="382" height="122"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cGP-Zx-eIZ">
+                                                <rect key="frame" x="18" y="16" width="346" height="98"/>
+                                                <subviews>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jh7-aB-wU0">
+                                                        <rect key="frame" x="0.0" y="0.0" width="346" height="56"/>
+                                                        <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Stake:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xUp-X5-C3a">
+                                                                <rect key="frame" x="0.0" y="0.0" width="41" height="56"/>
+                                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                                <color key="textColor" name="Txt10"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="WUn-4x-P6t">
+                                                                <rect key="frame" x="41" y="0.0" width="34" height="56"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="4" id="57h-Wm-YhM"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5kp-rh-2cf">
+                                                                <rect key="frame" x="75" y="0.0" width="48" height="56"/>
+                                                                <subviews>
+                                                                    <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Sm4-Gb-IJq">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="48" height="4"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uz5-ux-qWd">
+                                                                        <rect key="frame" x="0.0" y="4" width="48" height="48"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="48" id="Zt7-7Q-chA"/>
+                                                                            <constraint firstAttribute="height" constant="48" id="yda-Fi-MjP"/>
+                                                                        </constraints>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                                <real key="value" value="24"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                    </imageView>
+                                                                    <view contentMode="scaleToFill" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="68u-cc-dcF">
+                                                                        <rect key="frame" x="0.0" y="52" width="48" height="4"/>
+                                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </view>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="Sm4-Gb-IJq" firstAttribute="height" secondItem="68u-cc-dcF" secondAttribute="height" id="rcy-dp-LiZ"/>
+                                                                </constraints>
+                                                            </stackView>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="a0l-ws-gor">
+                                                                <rect key="frame" x="123" y="0.0" width="164" height="56"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="&lt;am&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WJk-Zn-vpF">
+                                                                        <rect key="frame" x="8" y="0.0" width="81" height="36"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
+                                                                        <color key="textColor" name="Txt2"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="&lt;fiat&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGe-vO-IDe">
+                                                                        <rect key="frame" x="8" y="36" width="156" height="20"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
+                                                                        <color key="textColor" name="Txt10"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" text="&lt;sym&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7f4-JX-LUE">
+                                                                        <rect key="frame" x="93" y="7.5" width="71" height="26.5"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                                                        <color key="textColor" name="Txt2"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="WJk-Zn-vpF" firstAttribute="leading" secondItem="a0l-ws-gor" secondAttribute="leading" constant="8" id="70w-cu-9jM"/>
+                                                                    <constraint firstItem="7f4-JX-LUE" firstAttribute="leading" secondItem="WJk-Zn-vpF" secondAttribute="trailing" constant="4" id="FEl-rn-qil"/>
+                                                                    <constraint firstItem="7f4-JX-LUE" firstAttribute="firstBaseline" secondItem="WJk-Zn-vpF" secondAttribute="firstBaseline" id="KyR-dx-R4T"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="jGe-vO-IDe" secondAttribute="bottom" id="Z6S-mF-zgQ"/>
+                                                                    <constraint firstItem="jGe-vO-IDe" firstAttribute="top" secondItem="WJk-Zn-vpF" secondAttribute="bottom" id="axm-1Y-7C5"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="jGe-vO-IDe" secondAttribute="trailing" id="bKt-Hk-uqY"/>
+                                                                    <constraint firstItem="WJk-Zn-vpF" firstAttribute="top" secondItem="a0l-ws-gor" secondAttribute="top" id="cLU-b1-tQA"/>
+                                                                    <constraint firstItem="jGe-vO-IDe" firstAttribute="leading" secondItem="a0l-ws-gor" secondAttribute="leading" constant="8" id="ozc-dv-UMa"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="7f4-JX-LUE" secondAttribute="trailing" id="xxd-sf-8Ws"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="3bz-P1-JjR">
+                                                                <rect key="frame" x="287" y="0.0" width="59" height="56"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </view>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="3bz-P1-JjR" firstAttribute="width" secondItem="WUn-4x-P6t" secondAttribute="width" multiplier="1.75" id="Zny-lF-DYA"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGL-at-duK">
+                                                        <rect key="frame" x="0.0" y="56" width="346" height="42"/>
+                                                        <subviews>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="WHa-ZR-4Bw">
+                                                                <rect key="frame" x="0.0" y="0.0" width="110" height="42"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </view>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="rI7-70-9yc">
+                                                                <rect key="frame" x="110" y="0.0" width="42" height="42"/>
+                                                                <subviews>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wcE-X7-Uoe">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="42" height="42"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="width" constant="42" id="Ogv-YN-TrN"/>
+                                                                            <constraint firstAttribute="height" constant="42" id="Rgs-vA-PAP"/>
+                                                                        </constraints>
+                                                                        <userDefinedRuntimeAttributes>
+                                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                                <real key="value" value="21"/>
+                                                                            </userDefinedRuntimeAttribute>
+                                                                        </userDefinedRuntimeAttributes>
+                                                                    </imageView>
+                                                                </subviews>
+                                                            </stackView>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="N4S-IJ-jPZ">
+                                                                <rect key="frame" x="152" y="0.0" width="57" height="42"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="&lt;am&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="14" translatesAutoresizingMaskIntoConstraints="NO" id="hML-pi-cAP">
+                                                                        <rect key="frame" x="8" y="0.0" width="49" height="22"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                                                        <color key="textColor" name="Txt2"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" horizontalCompressionResistancePriority="1000" text="&lt;fiat&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7w9-H8-pt0">
+                                                                        <rect key="frame" x="8" y="22" width="49" height="20"/>
+                                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                                                        <color key="textColor" name="Txt10"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <constraints>
+                                                                    <constraint firstItem="7w9-H8-pt0" firstAttribute="leading" secondItem="N4S-IJ-jPZ" secondAttribute="leading" constant="8" id="5rA-Ht-l8p"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="hML-pi-cAP" secondAttribute="trailing" id="MSe-bJ-fG1"/>
+                                                                    <constraint firstItem="7w9-H8-pt0" firstAttribute="top" secondItem="hML-pi-cAP" secondAttribute="bottom" id="QPQ-X6-5se"/>
+                                                                    <constraint firstItem="hML-pi-cAP" firstAttribute="top" secondItem="N4S-IJ-jPZ" secondAttribute="top" id="irC-8L-Zoz"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="7w9-H8-pt0" secondAttribute="bottom" id="iwz-Mp-Zon"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="7w9-H8-pt0" secondAttribute="trailing" id="qqv-Sa-sw5"/>
+                                                                    <constraint firstItem="hML-pi-cAP" firstAttribute="leading" secondItem="N4S-IJ-jPZ" secondAttribute="leading" constant="8" id="sJK-iw-GhC"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="pGq-Hg-HM8">
+                                                                <rect key="frame" x="209" y="0.0" width="137" height="42"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </view>
+                                                        </subviews>
+                                                        <constraints>
+                                                            <constraint firstItem="pGq-Hg-HM8" firstAttribute="width" secondItem="WHa-ZR-4Bw" secondAttribute="width" multiplier="1.25" id="nyU-mQ-TVH"/>
+                                                        </constraints>
+                                                    </stackView>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstItem="cGP-Zx-eIZ" firstAttribute="top" secondItem="pGf-u2-3Ui" secondAttribute="top" constant="16" id="4kf-U9-CIN"/>
+                                            <constraint firstAttribute="bottom" secondItem="cGP-Zx-eIZ" secondAttribute="bottom" constant="8" id="LKg-FC-qWH"/>
+                                            <constraint firstAttribute="trailing" secondItem="cGP-Zx-eIZ" secondAttribute="trailing" constant="18" id="ssV-Rf-01T"/>
+                                            <constraint firstItem="cGP-Zx-eIZ" firstAttribute="leading" secondItem="pGf-u2-3Ui" secondAttribute="leading" constant="18" id="wC3-qz-YpL"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
@@ -1872,23 +2042,32 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     </view>
                     <size key="freeformSize" width="414" height="800"/>
                     <connections>
-                        <outlet property="bakerAddEstimatedRewardLabel" destination="mft-eQ-nKR" id="Anb-NE-XJo"/>
-                        <outlet property="bakerAddIcon" destination="DJ8-fX-Mh9" id="ffZ-31-ahf"/>
-                        <outlet property="bakerAddNameLabel" destination="tA8-an-Ihb" id="mo9-Rz-svy"/>
-                        <outlet property="bakerAddSpaceLabel" destination="1UQ-pV-XPJ" id="3qw-tH-AyR"/>
-                        <outlet property="bakerAddSplitLabel" destination="ern-4J-0hD" id="3yv-0y-0yo"/>
+                        <outlet property="bakerIcon" destination="DJ8-fX-Mh9" id="MHV-nT-Cje"/>
+                        <outlet property="bakerNameLabel" destination="tA8-an-Ihb" id="YOJ-FC-Pdg"/>
+                        <outlet property="bakerRewardsValueLabel" destination="mft-eQ-nKR" id="PST-jC-We6"/>
+                        <outlet property="bakerSpaceValueLabel" destination="1UQ-pV-XPJ" id="IQ5-5M-cm9"/>
+                        <outlet property="bakerSplitValueLabel" destination="ern-4J-0hD" id="LA5-ZZ-jz8"/>
                         <outlet property="closeButton" destination="eaa-1q-ZCJ" id="rVS-PN-ho3"/>
-                        <outlet property="confirmBakerAddView" destination="mOD-d8-cHv" id="C19-te-aFH"/>
-                        <outlet property="connectedAppIcon" destination="BBg-bV-Uof" id="0ao-mB-Rx2"/>
-                        <outlet property="connectedAppLabel" destination="S78-1e-ZQN" id="0q5-6U-2Dj"/>
-                        <outlet property="connectedAppMetadataStackView" destination="Jk3-JU-dfO" id="8Ye-jF-NO2"/>
-                        <outlet property="connectedAppNameLabel" destination="f1x-CP-LjI" id="2Ua-4o-jL7"/>
-                        <outlet property="containerView" destination="GIM-Ka-YlK" id="UR6-nT-Qxa"/>
+                        <outlet property="connectedAppIcon" destination="93G-JU-xa4" id="Zix-vv-cIS"/>
+                        <outlet property="connectedAppLabel" destination="Ixi-ma-deh" id="pDu-An-5kj"/>
+                        <outlet property="connectedAppMetadataStackView" destination="nAA-MS-hLd" id="gVg-4L-D0G"/>
+                        <outlet property="connectedAppNameLabel" destination="LiX-Gf-ugB" id="wVW-Eo-ei1"/>
+                        <outlet property="containerView" destination="GIM-Ka-YlK" id="gVX-pn-Nsc"/>
+                        <outlet property="containerViewStake" destination="pGf-u2-3Ui" id="w9Z-Sv-TbY"/>
                         <outlet property="errorLabel" destination="SHx-Xb-Dr6" id="DDf-MY-ias"/>
                         <outlet property="feeButton" destination="Sfl-O1-4o3" id="MVo-KK-q00"/>
                         <outlet property="feeValueLabel" destination="BX3-Cu-BPw" id="Npz-9u-HB9"/>
+                        <outlet property="largeDisplayAmount" destination="WJk-Zn-vpF" id="Y7P-I5-mdT"/>
+                        <outlet property="largeDisplayFiat" destination="jGe-vO-IDe" id="LPt-XB-eF3"/>
+                        <outlet property="largeDisplayIcon" destination="uz5-ux-qWd" id="4Uf-TM-wGK"/>
+                        <outlet property="largeDisplayStackView" destination="jh7-aB-wU0" id="QJY-VQ-H6c"/>
+                        <outlet property="largeDisplaySymbol" destination="7f4-JX-LUE" id="laI-VP-SJ5"/>
                         <outlet property="slideButton" destination="pu4-YP-4tb" id="qZm-Cc-QpW"/>
                         <outlet property="slideErrorStackView" destination="b8A-No-paU" id="bgl-Ve-Jd7"/>
+                        <outlet property="smallDisplayAmount" destination="hML-pi-cAP" id="ZqN-yF-ehM"/>
+                        <outlet property="smallDisplayFiat" destination="7w9-H8-pt0" id="GD0-Pi-ZTB"/>
+                        <outlet property="smallDisplayIcon" destination="wcE-X7-Uoe" id="VoK-8E-1H9"/>
+                        <outlet property="smallDisplayStackView" destination="dGL-at-duK" id="CKL-85-jeB"/>
                         <outlet property="testnetWarningView" destination="4Zk-nx-41X" id="F7N-ls-9sJ"/>
                     </connections>
                 </viewController>

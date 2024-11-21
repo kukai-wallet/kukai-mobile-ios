@@ -23,14 +23,9 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	
 	// From
 	@IBOutlet weak var fromContainer: UIView!
-	
-	@IBOutlet weak var fromStackViewSocial: UIStackView!
-	@IBOutlet weak var fromSocialIcon: UIImageView!
-	@IBOutlet weak var fromSocialAlias: UILabel!
-	@IBOutlet weak var fromSocialAddress: UILabel!
-	
-	@IBOutlet weak var fromStackViewRegular: UIStackView!
-	@IBOutlet weak var fromRegularAddress: UILabel!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
 	
 	// Send
 	@IBOutlet weak var collectibleImage: UIImageView!
@@ -40,13 +35,9 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 	@IBOutlet weak var quantityStackView: UIStackView!
 	@IBOutlet weak var collectibleQuantityLabel: UILabel!
 	
-	@IBOutlet weak var toStackViewSocial: UIStackView!
-	@IBOutlet weak var socialIcon: UIImageView!
-	@IBOutlet weak var socialAlias: UILabel!
-	@IBOutlet weak var socialAddress: UILabel!
-	
-	@IBOutlet weak var toStackViewRegular: UIStackView!
-	@IBOutlet weak var regularAddress: UILabel!
+	@IBOutlet weak var toIcon: UIImageView!
+	@IBOutlet weak var toAlias: UILabel!
+	@IBOutlet weak var toAddress: UILabel!
 	
 	@IBOutlet weak var feeValueLabel: UILabel!
 	@IBOutlet weak var feeButton: CustomisableButton!
@@ -89,17 +80,6 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 				connectedAppURL = smallIconURL
 			}
 			
-			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
-			if let subtitle = media.subtitle {
-				fromStackViewRegular.isHidden = true
-				fromSocialAlias.text = media.title
-				fromSocialIcon.image = media.image
-				fromSocialAddress.text = subtitle
-			} else {
-				fromStackViewSocial.isHidden = true
-				fromRegularAddress.text = media.title
-			}
-			
 		} else {
 			self.isWalletConnectOp = false
 			self.currentSendData = TransactionService.shared.sendData
@@ -115,18 +95,35 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 		updateAmountDisplay()
 		
 		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
+		}
+		
+		
 		// Destination view configuration
 		if let alias = currentSendData.destinationAlias {
-			// social display
-			toStackViewRegular.isHidden = true
-			socialAlias.text = alias
-			socialIcon.image = currentSendData.destinationIcon
-			socialAddress.text = currentSendData.destination?.truncateTezosAddress()
+			toIcon.image = currentSendData.destinationIcon
+			toAlias.text = alias
+			toAddress.text = currentSendData.destination?.truncateTezosAddress()
 			
 		} else {
-			// basic display
-			toStackViewSocial.isHidden = true
-			regularAddress.text = currentSendData.destination?.truncateTezosAddress()
+			toIcon.image = currentSendData.destinationIcon
+			toAlias.text = currentSendData.destination?.truncateTezosAddress()
+			toAddress.isHidden = true
 		}
 		
 		
