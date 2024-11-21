@@ -87,7 +87,6 @@ class SendCollectibleConfirmViewController: SendAbstractConfirmViewController, S
 			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
-			fromContainer.isHidden = true
 		}
 		
 		
