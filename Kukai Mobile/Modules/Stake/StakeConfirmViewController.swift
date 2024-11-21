@@ -12,6 +12,7 @@ import os.log
 
 class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
+	@IBOutlet var scrollView: UIScrollView!
 	@IBOutlet weak var closeButton: CustomisableButton!
 	
 	// Connected app
@@ -20,8 +21,13 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var connectedAppNameLabel: UILabel!
 	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
 	
+	// From
+	@IBOutlet weak var fromContainer: UIView!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
+	
 	// Baker
-	@IBOutlet weak var containerViewBaker: GradientView!
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
 	@IBOutlet weak var bakerSplitValueLabel: UILabel!
@@ -29,17 +35,10 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var bakerRewardsValueLabel: UILabel!
 	
 	// Stake
-	@IBOutlet weak var containerViewStake: GradientView!
-	@IBOutlet weak var largeDisplayStackView: UIStackView!
-	@IBOutlet weak var largeDisplayIcon: UIImageView!
-	@IBOutlet weak var largeDisplayAmount: UILabel!
-	@IBOutlet weak var largeDisplaySymbol: UILabel!
-	@IBOutlet weak var largeDisplayFiat: UILabel!
-	
-	@IBOutlet weak var smallDisplayStackView: UIStackView!
-	@IBOutlet weak var smallDisplayIcon: UIImageView!
-	@IBOutlet weak var smallDisplayAmount: UILabel!
-	@IBOutlet weak var smallDisplayFiat: UILabel!
+	@IBOutlet weak var tokenIcon: UIImageView!
+	@IBOutlet weak var tokenAmount: UILabel!
+	@IBOutlet weak var tokenSymbol: UILabel!
+	@IBOutlet weak var tokenFiat: UILabel!
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -65,18 +64,12 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		
 		selectedToken = TransactionService.shared.stakeData.chosenToken
 		selectedBaker = TransactionService.shared.stakeData.chosenBaker
-		guard let token = selectedToken, let baker = selectedBaker else {
+		guard let baker = selectedBaker else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			self.dismissBottomSheet()
 			return
 		}
 		
-		
-		// TODO: add "from" to all confirms
-		// TODO: put this "handle wallet connect data" stuff in abstract helper method
-		// TODO: Remove the two types of from (social and normal). We only have 1 type
-		// TODO: Maybe remove the 2 types of token display, large and small. Need to simplify the shit out of this UI mess
-		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
 		   let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
@@ -89,7 +82,6 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			}
 			
 			self.isWalletConnectOp = true
-			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
 			self.selectedMetadata = walletMetadataForRequestedAccount
 			self.connectedAppNameLabel.text = session.peer.name
 			
@@ -100,7 +92,6 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			
 		} else {
 			self.isWalletConnectOp = false
-			self.currentSendData = TransactionService.shared.sendData
 			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
 			
 			connectedAppMetadataStackView.isHidden = true
@@ -108,88 +99,54 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		}
 		
 		
-		
-		
-		
-		/*
-		self.currentDelegateData = TransactionService.shared.delegateData
-		guard let baker = self.currentDelegateData.chosenBaker else {
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
 			return
 		}
 		
-		// Handle wallet connect data
-		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
-		   let session = WalletKit.instance.getSessions().first(where: { $0.topic == currentTopic }) {
-			
-			guard let account = WalletConnectService.accountFromRequest(TransactionService.shared.walletConnectOperationData.request),
-				  let walletMetadataForRequestedAccount = DependencyManager.shared.walletList.metadata(forAddress: account) else {
-				self.windowError(withTitle: "error".localized(), description: "error-no-account".localized())
-				self.handleRejection()
-				return
-			}
-			
-			self.isWalletConnectOp = true
-			self.selectedMetadata = walletMetadataForRequestedAccount
-			self.connectedAppNameLabel.text = session.peer.name
-			
-			if let iconString = session.peer.icons.first, let iconUrl = URL(string: iconString) {
-				let smallIconURL = MediaProxyService.url(fromUri: iconUrl, ofFormat: MediaProxyService.Format.icon.rawFormat())
-				connectedAppURL = smallIconURL
-			}
-			
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
 		} else {
-			self.isWalletConnectOp = false
-			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
-			
-			connectedAppMetadataStackView.isHidden = true
-			connectedAppLabel.isHidden = true
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
 		}
 		
 		
 		// Baker info config
-		if self.currentDelegateData.isAdd == true {
-			confirmBakerRemoveView.isHidden = true
-			
-			bakerAddNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-			if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
-				bakerAddSplitLabel.text = "N/A"
-				bakerAddSpaceLabel.text = "N/A"
-				bakerAddEstimatedRewardLabel.text = "N/A"
-				
-			} else {
-				bakerAddSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
-				bakerAddEstimatedRewardLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-			}
+		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
+		if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
+			bakerSplitValueLabel.text = "N/A"
+			bakerSpaceValueLabel.text = "N/A"
+			bakerRewardsValueLabel.text = "N/A"
 			
 		} else {
-			confirmBakerAddView.isHidden = true
-			bakerRemoveNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
+			bakerSplitValueLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
+			bakerRewardsValueLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 		}
 		
 		
 		// Fees and amount view config
 		slideErrorStackView.isHidden = true
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
+		feeButton.customButtonType = .secondary
 		
 		slideButton.delegate = self
-		*/
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
 		updateFees(isFirstCall: true)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
-			/*
-		guard let baker = self.currentDelegateData.chosenBaker else {
-			self.windowError(withTitle: "error".localized(), description: "error-chosen-baker".localized())
-			self.dismissBottomSheet()
-			return
-		}
 		
 		if let connectedAppURL = connectedAppURL {
 			MediaProxyService.load(url: connectedAppURL, to: self.connectedAppIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
@@ -197,13 +154,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			self.connectedAppIcon.image = UIImage.unknownToken()
 		}
 		
-		if self.currentDelegateData.isAdd == true {
-			MediaProxyService.load(url: baker.logo, to: bakerAddIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
-			
-		} else {
-			MediaProxyService.load(url: baker.logo, to: bakerRemoveIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
-		}
-		*/
+		MediaProxyService.load(url: self.selectedBaker?.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
@@ -253,53 +204,20 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	}
 	
 	func updateAmountDisplay(withValue value: TokenAmount) {
-		guard let token = currentSendData.chosenToken else {
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.image = UIImage.unknownToken()
-			smallDisplayAmount.text = "0"
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
+		guard let token = selectedToken else {
+			tokenIcon.image = UIImage.unknownToken()
+			tokenAmount.text = "0"
+			tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
-		let approxSizeOfOccupiedSpace: CGFloat = 180 // Yes "magic number", deal with it, very unique business logic at play
-		let remainder = UIScreen.main.bounds.width - approxSizeOfOccupiedSpace
 		let amountText = DependencyManager.shared.coinGeckoService.format(decimal: value.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: value.decimalPlaces)
 		
-		var amountWidth = amountText.widthOfString(usingFont: largeDisplayAmount.font)
-		amountWidth.round(.up)
-		
-		var symbolWidth = token.symbol.widthOfString(usingFont: largeDisplaySymbol.font)
-		symbolWidth.round(.up)
-		
-		if (amountWidth + symbolWidth) > remainder {
-			
-			// Display with more room for long length numbers
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + " " + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-		} else {
-			
-			// Display with less room and more detail
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
-		}
+		tokenIcon.addTokenIcon(token: token)
+		tokenAmount.text = amountText
+		tokenSymbol.text = token.symbol
+		tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: value)
 	}
-	
-	/*
-	func updateFees(isFirstCall: Bool = false) {
-		let feesAndData = TransactionService.shared.currentOperationsAndFeesData
-		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
-		
-		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
-		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
-		feeButton.setTitle(feesAndData.type.displayName(), for: .normal)
-	}
-	*/
 	
 	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
@@ -311,8 +229,9 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
-		if !isWalletConnectOp, let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.availableBalance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
-			let updatedValue = ((token.availableBalance - oneMutez) - fee)
+		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = TransactionService.shared.stakeData.chosenAmount, (amount + fee) >= token.availableBalance {
+			let oneTez = XTZAmount(fromNormalisedAmount: 1)
+			let updatedValue = ((token.availableBalance - oneTez) - fee)
 			
 			if updatedValue < .zero() {
 				updateAmountDisplay(withValue: .zero())
@@ -339,7 +258,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
 			}
 		} else {
-			updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
+			updateAmountDisplay(withValue: TransactionService.shared.stakeData.chosenAmount ?? .zero())
 		}
 	}
 	
@@ -347,6 +266,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		handleRejection(collapseOnly: true)
 	}
 	
+	// TODO: update pending transaction
 	func addPendingTransaction(opHash: String) {
 		guard let selectedWalletMetadata = selectedMetadata, let baker = TransactionService.shared.delegateData.chosenBaker else { return }
 		
@@ -364,9 +284,14 @@ extension StakeConfirmViewController: BottomSheetCustomCalculateProtocol {
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()
 		
+		scrollView.setNeedsLayout()
 		view.setNeedsLayout()
+		scrollView.layoutIfNeeded()
 		view.layoutIfNeeded()
 		
-		return view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		height += scrollView.contentSize.height
+		
+		return height
 	}
 }
