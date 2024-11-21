@@ -1,5 +1,5 @@
 //
-//  ConfirmChooseBakerViewController.swift
+//  ChooseBakerConfirmViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 21/07/2023.
@@ -10,8 +10,9 @@ import KukaiCoreSwift
 import ReownWalletKit
 import os.log
 
-class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
+	@IBOutlet var scrollView: UIScrollView!
 	@IBOutlet weak var closeButton: CustomisableButton!
 	
 	// Connected app
@@ -20,7 +21,13 @@ class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var connectedAppNameLabel: UILabel!
 	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
 	
-	@IBOutlet weak var containerView: GradientView!
+	// From
+	@IBOutlet weak var fromContainer: UIView!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
+	
+	// Baker
 	@IBOutlet weak var confirmBakerAddView: UIView!
 	@IBOutlet weak var bakerAddIcon: UIImageView!
 	@IBOutlet weak var bakerAddNameLabel: UILabel!
@@ -86,6 +93,25 @@ class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, Slide
 		}
 		
 		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
+		}
+		
+		
 		// Baker info config
 		if self.currentDelegateData.isAdd == true {
 			confirmBakerRemoveView.isHidden = true
@@ -110,14 +136,14 @@ class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, Slide
 		
 		// Fees and amount view config
 		slideErrorStackView.isHidden = true
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
+		feeButton.customButtonType = .secondary
 		
 		slideButton.delegate = self
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		containerView.gradientType = .tableViewCell
-		
 		updateFees(isFirstCall: true)
 	}
 	
@@ -215,14 +241,19 @@ class ConfirmChooseBakerViewController: SendAbstractConfirmViewController, Slide
 	}
 }
 
-extension ConfirmChooseBakerViewController: BottomSheetCustomCalculateProtocol {
+extension ChooseBakerConfirmViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()
 		
+		scrollView.setNeedsLayout()
 		view.setNeedsLayout()
+		scrollView.layoutIfNeeded()
 		view.layoutIfNeeded()
 		
-		return view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		height += scrollView.contentSize.height
+		
+		return height
 	}
 }

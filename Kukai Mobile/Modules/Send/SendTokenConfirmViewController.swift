@@ -23,7 +23,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	// From
 	@IBOutlet weak var fromContainer: UIView!
-	
 	@IBOutlet weak var fromIcon: UIImageView!
 	@IBOutlet weak var fromAlias: UILabel!
 	@IBOutlet weak var fromAddress: UILabel!

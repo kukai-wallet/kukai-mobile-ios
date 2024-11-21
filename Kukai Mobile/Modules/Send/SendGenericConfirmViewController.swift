@@ -80,7 +80,6 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
-			fromContainer.isHidden = true
 		}
 		
 		
