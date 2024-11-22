@@ -14,6 +14,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	
 	@IBOutlet var scrollView: UIScrollView!
 	@IBOutlet weak var closeButton: CustomisableButton!
+	@IBOutlet weak var titleLabel: UILabel!
 	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
@@ -35,6 +36,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var bakerRewardsValueLabel: UILabel!
 	
 	// Stake
+	@IBOutlet weak var actionTitleLabel: UILabel!
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var tokenAmount: UILabel!
 	@IBOutlet weak var tokenSymbol: UILabel!
@@ -50,6 +52,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	
 	private var selectedToken: Token? = nil
 	private var selectedBaker: TzKTBaker? = nil
+	private var isStake = true
 	private var isSendingMaxTez = false
 	
 	var dimBackground: Bool = true
@@ -62,13 +65,18 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			testnetWarningView.isHidden = true
 		}
 		
-		selectedToken = TransactionService.shared.stakeData.chosenToken
-		selectedBaker = TransactionService.shared.stakeData.chosenBaker
+		isStake = TransactionService.shared.currentTransactionType == .stake
+		selectedToken = isStake ? TransactionService.shared.stakeData.chosenToken : TransactionService.shared.unstakeData.chosenToken
+		selectedBaker = isStake ? TransactionService.shared.stakeData.chosenBaker : TransactionService.shared.unstakeData.chosenBaker
+		
 		guard let baker = selectedBaker else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			self.dismissBottomSheet()
 			return
 		}
+		
+		self.titleLabel.text = isStake ? "Confirm Stake" : "Confirm Unstake"
+		self.actionTitleLabel.text = isStake ? "Stake" : "Unstake"
 		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
@@ -222,6 +230,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
+		let chosenAmount = isStake ? TransactionService.shared.stakeData.chosenAmount : TransactionService.shared.unstakeData.chosenAmount
 		
 		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
@@ -229,7 +238,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
-		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = TransactionService.shared.stakeData.chosenAmount, (amount + fee) >= token.availableBalance {
+		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = chosenAmount, (amount + fee) >= token.availableBalance {
 			let oneTez = XTZAmount(fromNormalisedAmount: 1)
 			let updatedValue = ((token.availableBalance - oneTez) - fee)
 			
@@ -258,7 +267,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
 			}
 		} else {
-			updateAmountDisplay(withValue: TransactionService.shared.stakeData.chosenAmount ?? .zero())
+			updateAmountDisplay(withValue: chosenAmount ?? .zero())
 		}
 	}
 	

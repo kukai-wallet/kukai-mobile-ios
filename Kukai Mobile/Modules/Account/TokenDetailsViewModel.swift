@@ -90,6 +90,17 @@ struct TokenDetailsMessageData: Hashable {
 	let message: String
 }
 
+struct TokenDetailsSmallSectionHeader: Hashable {
+	let message: String
+}
+
+struct PendingUnstakeData: Hashable {
+	let id = UUID()
+	let amount: XTZAmount
+	let fiat: String
+	let timeRemaining: String
+}
+
 
 
 @objc protocol TokenDetailsViewModelDelegate: AnyObject {
@@ -134,6 +145,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var sendData = TokenDetailsSendData(isBuyTez: false, isDisabled: false)
 	var bakerData: TokenDetailsBakerData? = nil
 	var stakeData: TokenDetailsStakeData? = nil
+	var pendingUnstakes: [PendingUnstakeData] = []
 	var onlineDataLoading = LoadingData()
 	var rewardData: AggregateRewardInformation? = nil
 	var activityHeaderData = TokenDetailsActivityHeader(header: true)
@@ -158,6 +170,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		tableView.register(UINib(nibName: "TokenDetailsActivityHeaderCell_footer", bundle: nil), forCellReuseIdentifier: "TokenDetailsActivityHeaderCell_footer")
 		tableView.register(UINib(nibName: "TokenDetailsLoadingCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsLoadingCell")
 		tableView.register(UINib(nibName: "TokenDetailsMessageCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsMessageCell")
+		tableView.register(UINib(nibName: "TokenDetailsPendingUnstakeCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsPendingUnstakeCell")
+		tableView.register(UINib(nibName: "TokenDetailsSmallHeadingCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsSmallHeadingCell")
 		
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
 		
@@ -204,6 +218,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			} else if let obj = item.base as? TokenDetailsStakeData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsStakeBalanceCell", for: indexPath) as? TokenDetailsStakeBalanceCell {
 				cell.setup(data: obj)
 				cell.delegate = self.delegate
+				return cell
+				
+			} else if let obj = item.base as? TokenDetailsSmallSectionHeader, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsSmallHeadingCell", for: indexPath) as? TokenDetailsSmallHeadingCell {
+				cell.headingLabel.text = obj.message
+				return cell
+				
+			} else if let obj = item.base as? PendingUnstakeData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsPendingUnstakeCell", for: indexPath) as? TokenDetailsPendingUnstakeCell {
+				cell.setup(data: obj)
 				return cell
 				
 			} else if let _ = item.base as? LoadingData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenDetailsLoadingCell", for: indexPath) as? TokenDetailsLoadingCell {
@@ -324,11 +346,14 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
 				
 				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
-				/*
-				 TODO: pending unstake
-				 */
+				
+				if pendingUnstakes.count > 0 {
+					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
+					newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))
+				}
 				
 				if let rewardData = rewardData {
+					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Delegation & Staking Rewards")))
 					newData.append(.init(rewardData))
 				}
 				
@@ -455,8 +480,29 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				return
 			}
 			
-			// TODO: add baker voting to query
 			self?.baker = res
+			self?.onlineXTZFetchGroup.leave()
+		}
+		
+		
+		// Fetch all the pending unstake items
+		onlineXTZFetchGroup.enter()
+		DependencyManager.shared.tzktClient.pendingStakingUpdates(forAddress: account.walletAddress, ofType: "unstake") { [weak self] result in
+			guard let res = try? result.get() else {
+				// TODO: handle error
+				self?.onlineXTZFetchGroup.leave()
+				return
+			}
+			
+			let fiatPerToken = DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+			self?.pendingUnstakes = res.map { item in
+				let xtzAmount = item.xtzAmount
+				let xtzValue = xtzAmount * fiatPerToken
+				let xtzValueString = DependencyManager.shared.coinGeckoService.format(decimal: xtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				
+				return PendingUnstakeData(amount: item.xtzAmount, fiat: xtzValueString, timeRemaining: item.dateTime.timeAgoDisplay())
+			}
+			
 			self?.onlineXTZFetchGroup.leave()
 		}
 		
@@ -531,17 +577,19 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let stakeXtzValue = (token.stakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
 			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
-			let unstakeBalance = DependencyManager.shared.coinGeckoService.format(decimal: token.unstakedBalance.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-			let unstakeXtzValue = (token.unstakedBalance as? XTZAmount ?? .zero()) * fiatPerToken
-			let unstakeValue = DependencyManager.shared.coinGeckoService.format(decimal: unstakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+			let totalAmountOfPendingUnstake = self?.pendingUnstakes.map({ $0.amount }).reduce(.zero(), +)
+			let finaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			let finaliseBalance = DependencyManager.shared.coinGeckoService.format(decimal: finaliseableAmount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let finaliseXtzValue = finaliseableAmount * fiatPerToken
+			let finaliseValue = DependencyManager.shared.coinGeckoService.format(decimal: finaliseXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			// We need to prevent users from staking their entire balance so that they have enough balance to unstake
 			// User can also only stake if the baker has enough free space for them
 			let canStake = (account.availableBalance > XTZAmount(fromNormalisedAmount: 1) && enoughSpace)
 			let canUnstake = token.stakedBalance > .zero()
-			let canFinalize = token.unstakedBalance > .zero()
+			let canFinalize = finaliseableAmount > .zero()
 			
-			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: unstakeBalance, finalizeValue: unstakeValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize, buttonsDisabled: isWatchWallet)
+			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: finaliseBalance, finalizeValue: finaliseValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize, buttonsDisabled: isWatchWallet)
 			
 			DispatchQueue.main.async { completion() }
 		}

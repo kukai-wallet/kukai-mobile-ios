@@ -225,13 +225,17 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	
 	func stakeTapped() {
+		TransactionService.shared.currentTransactionType = .stake
 		TransactionService.shared.stakeData.chosenBaker = viewModel.baker
 		TransactionService.shared.stakeData.chosenToken = viewModel.token
 		self.performSegue(withIdentifier: "stake-amount", sender: nil)
 	}
 	
 	func unstakeTapped() {
-		self.alert(errorWithMessage: "Under Construction")
+		TransactionService.shared.currentTransactionType = .unstake
+		TransactionService.shared.unstakeData.chosenBaker = viewModel.baker
+		TransactionService.shared.unstakeData.chosenToken = viewModel.token
+		self.performSegue(withIdentifier: "stake-amount", sender: nil)
 	}
 	
 	func finalizeTapped() {

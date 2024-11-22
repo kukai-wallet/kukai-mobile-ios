@@ -17,6 +17,7 @@ class StakeAmountViewController: UIViewController {
 	@IBOutlet weak var bakerRewardsValueLabel: UILabel!
 	
 	@IBOutlet weak var tokenNameLabel: UILabel!
+	@IBOutlet weak var tokenBalanceTitleLabel: UILabel!
 	@IBOutlet weak var tokenBalanceLabel: UILabel!
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var tokenSysmbolLabel: UILabel!
@@ -31,6 +32,8 @@ class StakeAmountViewController: UIViewController {
 	
 	private var selectedToken: Token? = nil
 	private var selectedBaker: TzKTBaker? = nil
+	private var isStake = true
+	private var maxAmount: TokenAmount? = nil
 	
 	var dimBackground: Bool = true
 	
@@ -38,13 +41,18 @@ class StakeAmountViewController: UIViewController {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		selectedToken = TransactionService.shared.stakeData.chosenToken
-		selectedBaker = TransactionService.shared.stakeData.chosenBaker
+		isStake = TransactionService.shared.currentTransactionType == .stake
+		selectedToken = isStake ? TransactionService.shared.stakeData.chosenToken : TransactionService.shared.unstakeData.chosenToken
+		selectedBaker = isStake ? TransactionService.shared.stakeData.chosenBaker : TransactionService.shared.unstakeData.chosenBaker
+		
 		guard let token = selectedToken, let baker = selectedBaker else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
 			self.dismissBottomSheet()
 			return
 		}
+		
+		self.title = isStake ? "Stake Amount" : "Unstake Amount"
+		self.tokenBalanceTitleLabel.text = isStake ? "Balance" : "Staked Balance"
 		
 		// To section
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
@@ -55,15 +63,16 @@ class StakeAmountViewController: UIViewController {
 		
 		
 		// Token data
-		tokenBalanceLabel.text = token.availableBalance.normalisedRepresentation
+		tokenBalanceLabel.text = isStake ? token.availableBalance.normalisedRepresentation : token.stakedBalance.normalisedRepresentation
 		tokenSysmbolLabel.text = token.symbol
 		fiatLabel?.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: .zero())
 		tokenIcon.addTokenIcon(token: token)
 		
 		
 		// Textfield
+		maxAmount = isStake ? (token.availableBalance - TokenAmount(fromNormalisedAmount: 1, decimalPlaces: token.decimalPlaces)) : token.stakedBalance
 		textfield.validatorTextFieldDelegate = self
-		textfield.validator = TokenAmountValidator(balanceLimit: (token.availableBalance - TokenAmount(fromNormalisedAmount: 1, decimalPlaces: token.decimalPlaces)), decimalPlaces: token.decimalPlaces)
+		textfield.validator = TokenAmountValidator(balanceLimit: maxAmount ?? .zero(), decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
 		textfield.numericAndSeperatorOnly = true
 		
@@ -83,7 +92,7 @@ class StakeAmountViewController: UIViewController {
 	}
 	
 	@IBAction func maxTapped(_ sender: Any) {
-		textfield.text = ((selectedToken?.availableBalance ?? .zero()) - XTZAmount(fromNormalisedAmount: 1)).normalisedRepresentation
+		textfield.text = maxAmount?.normalisedRepresentation
 		let _ = textfield.revalidateTextfield()
 	}
 	
@@ -93,11 +102,11 @@ class StakeAmountViewController: UIViewController {
 			return
 		}
 		
-		if let token = TransactionService.shared.stakeData.chosenToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
+		if let token = selectedToken, let amount = TokenAmount(fromNormalisedAmount: textfield.text ?? "", decimalPlaces: token.decimalPlaces) {
 			self.showLoadingView()
 			
-			let operations = OperationFactory.stakeOperation(from: selectedWalletMetadata.address, amount: amount)
-			TransactionService.shared.stakeData.chosenAmount = amount
+			let operations = isStake ? OperationFactory.stakeOperation(from: selectedWalletMetadata.address, amount: amount) : OperationFactory.unstakeOperation(from: selectedWalletMetadata.address, amount: amount)
+			if isStake { TransactionService.shared.stakeData.chosenAmount = amount } else { TransactionService.shared.unstakeData.chosenAmount = amount }
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
@@ -133,7 +142,7 @@ extension StakeAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validated(_ validated: Bool, textfield: ValidatorTextField, forText text: String) {
-		guard let token = TransactionService.shared.sendData.chosenToken else {
+		guard let token = selectedToken else {
 			return
 		}
 		
@@ -161,7 +170,7 @@ extension StakeAmountViewController: ValidatorTextFieldDelegate {
 	}
 	
 	func validateMaxXTZ(input: String) {
-		if selectedToken?.isXTZ() == true, let balance = selectedToken?.availableBalance, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), balance == inputAmount {
+		if selectedToken?.isXTZ() == true, let inputAmount = XTZAmount(fromNormalisedAmount: input, decimalPlaces: 6), maxAmount == inputAmount, isStake {
 			warningLabel.isHidden = false
 		} else {
 			warningLabel.isHidden = true

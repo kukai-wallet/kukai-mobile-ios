@@ -910,6 +910,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="reviewButton" destination="Ous-JW-5Xp" id="E8d-0b-vmd"/>
                         <outlet property="textfield" destination="xsj-yH-S3f" id="xrh-1H-mzh"/>
                         <outlet property="tokenBalanceLabel" destination="dLK-oO-rcD" id="d8U-86-T9r"/>
+                        <outlet property="tokenBalanceTitleLabel" destination="IQ5-gJ-6hJ" id="zOU-yE-cqD"/>
                         <outlet property="tokenIcon" destination="ZTp-uu-2LW" id="sX8-Ch-z7U"/>
                         <outlet property="tokenNameLabel" destination="Kyx-xh-DBw" id="FoA-nB-Q3t"/>
                         <outlet property="tokenSysmbolLabel" destination="vm9-cz-AEQ" id="dwp-gX-lCN"/>
@@ -1579,7 +1580,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <rect key="frame" x="0.0" y="131" width="414" height="553.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="RsF-bh-dkj">
-                                        <rect key="frame" x="16" y="0.0" width="382" height="312"/>
+                                        <rect key="frame" x="16" y="0.0" width="382" height="316"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epM-C8-GAt">
                                                 <rect key="frame" x="0.0" y="0.0" width="382" height="44"/>
@@ -1635,7 +1636,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                 <rect key="frame" x="0.0" y="52" width="382" height="60"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="From:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vT9-ih-gD3">
-                                                        <rect key="frame" x="10" y="13.5" width="40" height="17"/>
+                                                        <rect key="frame" x="10" y="13.5" width="52.5" height="17"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="l5F-wg-dsd"/>
                                                         </constraints>
@@ -1644,7 +1645,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="udM-kO-pzd">
-                                                        <rect key="frame" x="66" y="4" width="308" height="52"/>
+                                                        <rect key="frame" x="78.5" y="4" width="295.5" height="52"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Social_TZ_Ovalcolor" translatesAutoresizingMaskIntoConstraints="NO" id="aaQ-bm-HgI">
                                                                 <rect key="frame" x="4" y="9" width="18" height="18"/>
@@ -1654,16 +1655,16 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                 </constraints>
                                                             </imageView>
                                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="zu2-79-iVG">
-                                                                <rect key="frame" x="26" y="8" width="278" height="40"/>
+                                                                <rect key="frame" x="26" y="8" width="265.5" height="40"/>
                                                                 <subviews>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="&lt;alias&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dN4-1U-GnP">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="278" height="19.5"/>
+                                                                        <rect key="frame" x="0.0" y="0.0" width="265.5" height="19.5"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                         <color key="textColor" name="Txt2"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="&lt;address&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jKW-fE-c3T">
-                                                                        <rect key="frame" x="0.0" y="19.5" width="278" height="20.5"/>
+                                                                        <rect key="frame" x="0.0" y="19.5" width="265.5" height="20.5"/>
                                                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                         <color key="textColor" name="Txt10"/>
                                                                         <nil key="highlightedColor"/>
@@ -1831,10 +1832,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GHf-Pt-LtS">
-                                                <rect key="frame" x="0.0" y="238" width="382" height="74"/>
+                                                <rect key="frame" x="0.0" y="238" width="382" height="78"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Send:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FvW-eZ-Sen">
-                                                        <rect key="frame" x="10" y="21.5" width="40" height="17"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Unstake" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FvW-eZ-Sen">
+                                                        <rect key="frame" x="10" y="21.5" width="52.5" height="17"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="40" id="7k2-t1-K01"/>
                                                         </constraints>
@@ -1843,7 +1844,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MJe-ds-sCY">
-                                                        <rect key="frame" x="66" y="0.0" width="300" height="74"/>
+                                                        <rect key="frame" x="78.5" y="0.0" width="287.5" height="78"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6ET-Ji-TcM">
                                                                 <rect key="frame" x="4" y="16" width="42" height="42"/>
@@ -1865,13 +1866,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="999" text="&lt;sym&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="YsP-eh-3hy">
-                                                                <rect key="frame" x="135" y="19.5" width="165" height="26.5"/>
+                                                                <rect key="frame" x="135" y="19.5" width="152.5" height="26.5"/>
                                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                                                 <color key="textColor" name="Txt2"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" text="&lt;fiat&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3o8-rx-70v">
-                                                                <rect key="frame" x="50" y="48" width="242" height="22"/>
+                                                                <rect key="frame" x="50" y="48" width="229.5" height="22"/>
                                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="18"/>
                                                                 <color key="textColor" name="Txt10"/>
                                                                 <nil key="highlightedColor"/>
@@ -1883,7 +1884,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                             <constraint firstItem="6ET-Ji-TcM" firstAttribute="top" secondItem="MJe-ds-sCY" secondAttribute="top" constant="16" id="1TG-VE-XKd"/>
                                                             <constraint firstItem="3o8-rx-70v" firstAttribute="leading" secondItem="n8P-9k-EhJ" secondAttribute="leading" id="35f-eI-TMc"/>
                                                             <constraint firstAttribute="trailing" secondItem="3o8-rx-70v" secondAttribute="trailing" constant="8" id="4vL-wr-z03"/>
-                                                            <constraint firstAttribute="bottom" secondItem="3o8-rx-70v" secondAttribute="bottom" constant="4" id="78e-6w-VEV"/>
+                                                            <constraint firstAttribute="bottom" secondItem="3o8-rx-70v" secondAttribute="bottom" constant="8" id="78e-6w-VEV"/>
                                                             <constraint firstItem="3o8-rx-70v" firstAttribute="top" secondItem="n8P-9k-EhJ" secondAttribute="bottom" id="7ld-6L-0YF"/>
                                                             <constraint firstItem="YsP-eh-3hy" firstAttribute="baseline" secondItem="n8P-9k-EhJ" secondAttribute="baseline" id="CD7-un-fIF"/>
                                                             <constraint firstItem="YsP-eh-3hy" firstAttribute="leading" secondItem="n8P-9k-EhJ" secondAttribute="trailing" constant="4" id="RZY-Qf-DM0"/>
@@ -1916,6 +1917,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                         </subviews>
+                                        <constraints>
+                                            <constraint firstItem="FvW-eZ-Sen" firstAttribute="width" secondItem="vT9-ih-gD3" secondAttribute="width" id="jrc-rK-TCK"/>
+                                        </constraints>
                                     </stackView>
                                 </subviews>
                                 <constraints>
@@ -2116,6 +2120,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     <navigationItem key="navigationItem" id="AOc-NI-Rjn"/>
                     <nil key="simulatedTopBarMetrics"/>
                     <connections>
+                        <outlet property="actionTitleLabel" destination="FvW-eZ-Sen" id="CPb-r4-guz"/>
                         <outlet property="bakerIcon" destination="5QN-zI-14s" id="ejF-Pj-EC4"/>
                         <outlet property="bakerNameLabel" destination="1yU-Uu-eio" id="49e-Qk-ovq"/>
                         <outlet property="bakerRewardsValueLabel" destination="3uY-yL-gTZ" id="fMx-Jp-LY7"/>
@@ -2137,6 +2142,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="slideButton" destination="nUN-gu-4nn" id="FlG-9I-wCl"/>
                         <outlet property="slideErrorStackView" destination="Uhm-7s-n5P" id="5kk-b8-yMc"/>
                         <outlet property="testnetWarningView" destination="Gm0-lD-f5X" id="2aF-m9-yvz"/>
+                        <outlet property="titleLabel" destination="ucQ-JB-dDK" id="a0V-O0-s1t"/>
                         <outlet property="tokenAmount" destination="n8P-9k-EhJ" id="RMc-In-kMu"/>
                         <outlet property="tokenFiat" destination="3o8-rx-70v" id="2YB-o8-x6o"/>
                         <outlet property="tokenIcon" destination="6ET-Ji-TcM" id="UKR-hj-4z5"/>
