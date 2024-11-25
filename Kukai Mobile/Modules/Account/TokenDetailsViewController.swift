@@ -218,7 +218,7 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 	}
 	
 	func learnTapped() {
-		self.alert(errorWithMessage: "Under Construction")
+		self.performSegue(withIdentifier: "learn-more", sender: nil)
 	}
 }
 

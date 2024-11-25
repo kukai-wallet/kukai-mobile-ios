@@ -144,6 +144,10 @@
 		C049E73E28819E2800887B64 /* DiscoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049E73D28819E2800887B64 /* DiscoverViewController.swift */; };
 		C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C049E73F28819E3800887B64 /* DiscoverViewModel.swift */; };
 		C04B20A52930E1AF00C008CD /* ActivityService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04B20A42930E1AF00C008CD /* ActivityService.swift */; };
+		C04BA1EE2CF4CFAF00951249 /* LearnMoreSectionHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04BA1ED2CF4CFAF00951249 /* LearnMoreSectionHeaderCell.swift */; };
+		C04BA1F02CF4CFBE00951249 /* LearnMoreItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04BA1EF2CF4CFBE00951249 /* LearnMoreItemCell.swift */; };
+		C04BA1F22CF4D02A00951249 /* TokenDetailsLearnMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04BA1F12CF4D02A00951249 /* TokenDetailsLearnMoreViewController.swift */; };
+		C04BA1F42CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04BA1F32CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift */; };
 		C04D98562CE64938009491BD /* TokenDetailsBakerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D98542CE64938009491BD /* TokenDetailsBakerCell.swift */; };
 		C04D98572CE64938009491BD /* TokenDetailsBakerCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C04D98552CE64938009491BD /* TokenDetailsBakerCell.xib */; };
 		C04D985A2CE65884009491BD /* TokenDetailsStakeBalanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D98582CE65884009491BD /* TokenDetailsStakeBalanceCell.swift */; };
@@ -576,6 +580,10 @@
 		C049E73D28819E2800887B64 /* DiscoverViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewController.swift; sourceTree = "<group>"; };
 		C049E73F28819E3800887B64 /* DiscoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoverViewModel.swift; sourceTree = "<group>"; };
 		C04B20A42930E1AF00C008CD /* ActivityService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityService.swift; sourceTree = "<group>"; };
+		C04BA1ED2CF4CFAF00951249 /* LearnMoreSectionHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreSectionHeaderCell.swift; sourceTree = "<group>"; };
+		C04BA1EF2CF4CFBE00951249 /* LearnMoreItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearnMoreItemCell.swift; sourceTree = "<group>"; };
+		C04BA1F12CF4D02A00951249 /* TokenDetailsLearnMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsLearnMoreViewController.swift; sourceTree = "<group>"; };
+		C04BA1F32CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsLearnMoreViewModel.swift; sourceTree = "<group>"; };
 		C04D98542CE64938009491BD /* TokenDetailsBakerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsBakerCell.swift; sourceTree = "<group>"; };
 		C04D98552CE64938009491BD /* TokenDetailsBakerCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TokenDetailsBakerCell.xib; sourceTree = "<group>"; };
 		C04D98582CE65884009491BD /* TokenDetailsStakeBalanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenDetailsStakeBalanceCell.swift; sourceTree = "<group>"; };
@@ -1643,6 +1651,8 @@
 				C0FBC890292C12E200B29921 /* FavouriteBalancesViewController.swift */,
 				C0FBC894292C163600B29921 /* FavouriteBalancesViewModel.swift */,
 				C0BF19A22938FB490044D942 /* TokenContractViewController.swift */,
+				C04BA1F12CF4D02A00951249 /* TokenDetailsLearnMoreViewController.swift */,
+				C04BA1F32CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -1685,6 +1695,8 @@
 				C008D4122A979B5B000B4503 /* AccountButtonCell.swift */,
 				C008D4142A979D22000B4503 /* AccountReceiveAssetsCell.swift */,
 				C008D4162A979D3A000B4503 /* AccountDiscoverCell.swift */,
+				C04BA1ED2CF4CFAF00951249 /* LearnMoreSectionHeaderCell.swift */,
+				C04BA1EF2CF4CFBE00951249 /* LearnMoreItemCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -1762,7 +1774,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1250;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					C0B0363E269EE2070071ACD0 = {
 						CreatedOnToolsVersion = 12.5;
@@ -2053,6 +2065,7 @@
 				C0E6BCBB2A332FE900F86577 /* BalanceService.swift in Sources */,
 				C0FBC895292C163600B29921 /* FavouriteBalancesViewModel.swift in Sources */,
 				C034F2C52A6AD2E5000F4C4C /* BakerDetailsViewController.swift in Sources */,
+				C04BA1F22CF4D02A00951249 /* TokenDetailsLearnMoreViewController.swift in Sources */,
 				C008D4172A979D3A000B4503 /* AccountDiscoverCell.swift in Sources */,
 				C001D5AA2A027EB40089EC7A /* CollectiblesRecentsViewController.swift in Sources */,
 				C0FE411C2A5306FA0022EB6D /* ConnectedAppCell.swift in Sources */,
@@ -2080,6 +2093,7 @@
 				C044E1372AAF66F80085652F /* SideMenuSecurityViewModel.swift in Sources */,
 				C0D6D50628B66B07001B8130 /* EditFeesViewController.swift in Sources */,
 				C08C973F2908192A00249959 /* UICollectionViewCell+extensions.swift in Sources */,
+				C04BA1EE2CF4CFAF00951249 /* LearnMoreSectionHeaderCell.swift in Sources */,
 				C07DE53A28BCFD2800C32D42 /* AddLiquidityViewModel.swift in Sources */,
 				C02D7CAE27BEB240006A8E39 /* CurrencyViewController.swift in Sources */,
 				C0EA19C029096D9400E6B40D /* CollectibleDetailImageCell.swift in Sources */,
@@ -2136,6 +2150,7 @@
 				C049E74028819E3800887B64 /* DiscoverViewModel.swift in Sources */,
 				C0C6B5CF28CA27AF00368AEA /* ChooseBakerViewController.swift in Sources */,
 				C03BF88D2A279836003BD343 /* ActivityItemBatchCell.swift in Sources */,
+				C04BA1F02CF4CFBE00951249 /* LearnMoreItemCell.swift in Sources */,
 				C01372B229B206FF0083E297 /* MenuHeaderCell.swift in Sources */,
 				C06AEDFF2C00998D005CFDAA /* AddAccountViewModel.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
@@ -2177,6 +2192,7 @@
 				C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */,
 				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
 				C065AF112AB0A6690061CC64 /* SideMenuBackupViewModel.swift in Sources */,
+				C04BA1F42CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift in Sources */,
 				C06E0D65287C3E66007A580B /* WalletConnectSignViewController.swift in Sources */,
 				C04E0EB62ADE92CA001BF56F /* AppUpdateService.swift in Sources */,
 				C0BAFEB328A165110045832E /* ChooseLiquidityTokenViewController.swift in Sources */,
