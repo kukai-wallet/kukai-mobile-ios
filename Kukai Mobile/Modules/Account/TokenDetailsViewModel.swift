@@ -338,10 +338,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		
-		// TODO: build finalise UI
 		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
 		if self.needsToLoadOnlineXTZData {
-			loadOnlineXTZData(token: token) { [weak self] in
+			loadOnlineXTZData(token: token) { [weak self] error in
+				if let err = error {
+					self?.state = .failure(err, err.rpcErrorString ?? err.description)
+				}
+				
 				guard let self = self else { return }
 				
 				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
@@ -461,9 +464,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		return data
 	}
 	
-	func loadOnlineXTZData(token: Token, completion: @escaping (() -> Void)) {
+	func loadOnlineXTZData(token: Token, completion: @escaping ((KukaiError?) -> Void)) {
 		guard let delegate = DependencyManager.shared.balanceService.account.delegate else {
-			completion()
+			completion(nil)
 			return
 		}
 		
@@ -476,7 +479,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		onlineXTZFetchGroup.enter()
 		DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
 			guard let res = try? result.get() else {
-				// TODO: handle error
 				self?.onlineXTZFetchGroup.leave()
 				return
 			}
@@ -490,7 +492,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		onlineXTZFetchGroup.enter()
 		DependencyManager.shared.tzktClient.pendingStakingUpdates(forAddress: account.walletAddress, ofType: "unstake") { [weak self] result in
 			guard let res = try? result.get() else {
-				// TODO: handle error
 				self?.onlineXTZFetchGroup.leave()
 				return
 			}
@@ -532,12 +533,10 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		// Certain things only work or make sense on mainnet
 		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			
-			// TODO: cache this and only retrieve no more than once per day
 			// Check voting participation
 			onlineXTZFetchGroup.enter()
 			DependencyManager.shared.tzktClient.checkBakerVoteParticipation(forAddress: delegate.address) {[weak self] result in
 				guard let res = try? result.get() else {
-					// TODO: handle error
 					self?.onlineXTZFetchGroup.leave()
 					return
 				}
@@ -552,8 +551,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		// Fire completion when everything is done
 		onlineXTZFetchGroup.notify(queue: .global(qos: .background)) { [weak self] in
 			guard let baker = self?.baker else {
-				// TODO: handle error
-				DispatchQueue.main.async { completion() }
+				DispatchQueue.main.async { completion(KukaiError.unknown(withString: "Unable to fetch information about the current baker. Please try again later")) }
 				return
 			}
 			
@@ -593,7 +591,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			
 			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: finaliseBalance, finalizeValue: finaliseValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize, buttonsDisabled: isWatchWallet)
 			
-			DispatchQueue.main.async { completion() }
+			DispatchQueue.main.async { completion(nil) }
 		}
 	}
 	

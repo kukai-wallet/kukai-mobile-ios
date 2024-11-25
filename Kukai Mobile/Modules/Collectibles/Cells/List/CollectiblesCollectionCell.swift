@@ -82,26 +82,6 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 		}
 	}
 	
-	// TODO: gradient
-	/*
-	override func layoutSubviews() {
-		super.layoutSubviews()
-		
-		if self.previousGradientBounds.width != self.contentView.bounds.width {
-			addGradientBackground() // Strange loading issue. First time it loads these cells, width is 50% of what it should be
-		}
-	}
-	
-	public func addGradientBackground() {
-		contentView.customCornerRadius = 8
-		contentView.maskToBounds = true
-		gradientLayer?.removeFromSuperlayer()
-		gradientLayer = self.contentView.addGradientPanelRows(withFrame: self.contentView.bounds)
-		
-		self.previousGradientBounds = self.contentView.bounds
-	}
-	*/
-	
 	override func prepareForReuse() {
 		for imageView in imageViews {
 			imageView.image = nil
