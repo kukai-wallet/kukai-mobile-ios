@@ -337,7 +337,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		
-		
+		// TODO: build finalise UI
 		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
 		if self.needsToLoadOnlineXTZData {
 			loadOnlineXTZData(token: token) { [weak self] in
