@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jPJ-eK-beO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jPJ-eK-beO">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1419,6 +1419,7 @@
                         <segue destination="B45-4v-gNa" kind="show" identifier="send" id="MP4-fT-iEx"/>
                         <segue destination="DOo-M8-i54" kind="show" identifier="choose-baker" id="Ogz-o0-4kt"/>
                         <segue destination="PWG-eK-k0x" kind="show" identifier="stake-amount" id="9XZ-Zm-YHq"/>
+                        <segue destination="Eio-fg-4gA" kind="custom" identifier="confirm-stake" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="fyO-ky-HY5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sib-vO-ppd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1851,7 +1852,17 @@ The estimate uses exchange data that might not be up to date and does not take i
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7s-GY-vAv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2744" y="-480"/>
+            <point key="canvasLocation" x="-2744" y="-494"/>
+        </scene>
+        <!--confirm-stake-->
+        <scene sceneID="ofB-Go-gui">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="confirm-stake" id="Eio-fg-4gA" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="d7B-D9-nuR"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ede-Mk-z8Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2744" y="-430"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>

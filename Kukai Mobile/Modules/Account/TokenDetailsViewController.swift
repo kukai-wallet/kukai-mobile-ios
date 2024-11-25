@@ -239,6 +239,10 @@ extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	}
 	
 	func finalizeTapped() {
-		self.alert(errorWithMessage: "Under Construction")
+		self.showLoadingView()
+		viewModel.createFinaliseOperations { [weak self] errorMessage in
+			self?.loadingViewHideActivityAndFade()
+			self?.performSegue(withIdentifier: "confirm-stake", sender: nil)
+		}
 	}
 }

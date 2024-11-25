@@ -200,6 +200,8 @@ public class TransactionService {
 	
 	public struct FinaliseUnstakeData {
 		var chosenBaker: TzKTBaker?
+		var chosenToken: Token? // Incase coming from a dApp for another account
+		var chosenAmount: TokenAmount?
 	}
 	
 	public struct ExchangeData {

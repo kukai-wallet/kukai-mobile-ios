@@ -65,9 +65,26 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			testnetWarningView.isHidden = true
 		}
 		
-		isStake = TransactionService.shared.currentTransactionType == .stake
-		selectedToken = isStake ? TransactionService.shared.stakeData.chosenToken : TransactionService.shared.unstakeData.chosenToken
-		selectedBaker = isStake ? TransactionService.shared.stakeData.chosenBaker : TransactionService.shared.unstakeData.chosenBaker
+		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				self.titleLabel.text = "Confirm Stake"
+				self.actionTitleLabel.text = "Stake:"
+				self.selectedToken = TransactionService.shared.stakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.stakeData.chosenBaker
+				
+			case .unstake:
+				self.titleLabel.text = "Confirm Unstake"
+				self.actionTitleLabel.text = "Unstake:"
+				self.selectedToken = TransactionService.shared.unstakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.unstakeData.chosenBaker
+				
+			default:
+				self.titleLabel.text = "Confirm Finalise"
+				self.actionTitleLabel.text = "Finalise:"
+				self.selectedToken = TransactionService.shared.finaliseUnstakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.finaliseUnstakeData.chosenBaker
+		}
 		
 		guard let baker = selectedBaker else {
 			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
@@ -75,8 +92,6 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			return
 		}
 		
-		self.titleLabel.text = isStake ? "Confirm Stake" : "Confirm Unstake"
-		self.actionTitleLabel.text = isStake ? "Stake" : "Unstake"
 		
 		// Handle wallet connect data
 		if let currentTopic = TransactionService.shared.walletConnectOperationData.request?.topic,
@@ -230,7 +245,18 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
-		let chosenAmount = isStake ? TransactionService.shared.stakeData.chosenAmount : TransactionService.shared.unstakeData.chosenAmount
+		var chosenAmount: TokenAmount? = nil
+		
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				chosenAmount = TransactionService.shared.stakeData.chosenAmount
+				
+			case .unstake:
+				chosenAmount = TransactionService.shared.unstakeData.chosenAmount
+				
+			default:
+				chosenAmount = TransactionService.shared.finaliseUnstakeData.chosenAmount
+		}
 		
 		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"

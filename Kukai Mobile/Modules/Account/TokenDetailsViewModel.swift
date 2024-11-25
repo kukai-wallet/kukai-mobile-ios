@@ -152,6 +152,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var activityFooterData = TokenDetailsActivityHeader(header: false)
 	var activityItems: [TzKTTransactionGroup] = []
 	var noItemsData = TokenDetailsMessageData(message: "No items avaialble at this time, check again later")
+	var finaliseableAmount: TokenAmount = .zero()
 	
 	
 	
@@ -507,29 +508,29 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		
+		// Get rewards data from cache or remote
+		onlineXTZFetchGroup.enter()
+		if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
+			self.rewardData = bakerRewardCache
+			onlineXTZFetchGroup.leave()
+			
+		} else {
+			DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
+				if let res = try? result.get() {
+					let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
+					self?.rewardData = res
+					
+				} else {
+					Logger.app.error("Error fetching baker data: \(result.getFailure())")
+				}
+				
+				self?.onlineXTZFetchGroup.leave()
+			}
+		}
+		
+		
 		// Certain things only work or make sense on mainnet
 		if DependencyManager.shared.currentNetworkType != .ghostnet {
-			
-			// Get rewards data from cache or remote
-			onlineXTZFetchGroup.enter()
-			if let bakerRewardCache = DiskService.read(type: AggregateRewardInformation.self, fromFileName: TokenDetailsViewModel.bakerRewardsCacheFilename), !bakerRewardCache.isOutOfDate(), !bakerRewardCache.moreThan1CycleBetweenPreiousAndNext() {
-				self.rewardData = bakerRewardCache
-				onlineXTZFetchGroup.leave()
-				
-			} else {
-				DependencyManager.shared.tzktClient.estimateLastAndNextReward(forAddress: account.walletAddress, delegate: delegate) { [weak self] result in
-					if let res = try? result.get() {
-						let _ = DiskService.write(encodable: res, toFileName: TokenDetailsViewModel.bakerRewardsCacheFilename)
-						self?.rewardData = res // TODO: add staking reward values as well
-						
-					} else {
-						Logger.app.error("Error fetching baker data: \(result.getFailure())")
-					}
-					
-					self?.onlineXTZFetchGroup.leave()
-				}
-			}
-			
 			
 			// TODO: cache this and only retrieve no more than once per day
 			// Check voting participation
@@ -578,16 +579,17 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			let totalAmountOfPendingUnstake = self?.pendingUnstakes.map({ $0.amount }).reduce(.zero(), +)
-			let finaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
-			let finaliseBalance = DependencyManager.shared.coinGeckoService.format(decimal: finaliseableAmount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-			let finaliseXtzValue = finaliseableAmount * fiatPerToken
+			let actualFinaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			self?.finaliseableAmount = actualFinaliseableAmount
+			let finaliseBalance = DependencyManager.shared.coinGeckoService.format(decimal: actualFinaliseableAmount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
+			let finaliseXtzValue = actualFinaliseableAmount * fiatPerToken
 			let finaliseValue = DependencyManager.shared.coinGeckoService.format(decimal: finaliseXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			// We need to prevent users from staking their entire balance so that they have enough balance to unstake
 			// User can also only stake if the baker has enough free space for them
 			let canStake = (account.availableBalance > XTZAmount(fromNormalisedAmount: 1) && enoughSpace)
 			let canUnstake = token.stakedBalance > .zero()
-			let canFinalize = finaliseableAmount > .zero()
+			let canFinalize = actualFinaliseableAmount > .zero()
 			
 			self?.stakeData = TokenDetailsStakeData(stakedBalance: stakeBalance, stakedValue: stakeValue, finalizeBalance: finaliseBalance, finalizeValue: finaliseValue, canStake: canStake, canUnstake: canUnstake, canFinalize: canFinalize, buttonsDisabled: isWatchWallet)
 			
@@ -734,6 +736,33 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	
 	func isNewBakerFlow() -> Bool {
 		return bakerData?.bakerName == nil
+	}
+	
+	func createFinaliseOperations(completion: @escaping ((String?) -> Void)) {
+		guard let selectedWalletMetadata = DependencyManager.shared.selectedWalletMetadata else {
+			completion("error-no-destination".localized())
+			return
+		}
+		
+		TransactionService.shared.currentTransactionType = .finaliseUnstake
+		TransactionService.shared.finaliseUnstakeData.chosenAmount = finaliseableAmount
+		TransactionService.shared.finaliseUnstakeData.chosenBaker = baker
+		TransactionService.shared.finaliseUnstakeData.chosenToken = token
+		let operations = OperationFactory.finaliseUnstakeOperation(from: selectedWalletMetadata.address)
+		
+		// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { estimationResult in
+			
+			switch estimationResult {
+				case .success(let estimationResult):
+					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
+					TransactionService.shared.currentForgedString = estimationResult.forgedString
+					completion(nil)
+					
+				case .failure(let estimationError):
+					completion(estimationError.description)
+			}
+		}
 	}
 }
 
