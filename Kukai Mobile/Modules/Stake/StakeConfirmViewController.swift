@@ -301,13 +301,37 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		handleRejection(collapseOnly: true)
 	}
 	
-	// TODO: update pending transaction
 	func addPendingTransaction(opHash: String) {
-		guard let selectedWalletMetadata = selectedMetadata, let baker = TransactionService.shared.delegateData.chosenBaker else { return }
+		var amount: TokenAmount = .zero()
+		var parameters: [String: String] = [:]
+		
+		guard let selectedWalletMetadata = selectedMetadata else { return }
+		
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				amount = TransactionService.shared.stakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "stake", "value": "[\"prim\": \"Unit\"]"]
+				
+			case .unstake:
+				amount = TransactionService.shared.unstakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "unstake", "value": "[\"prim\": \"Unit\"]"]
+				
+			default:
+				amount = TransactionService.shared.finaliseUnstakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "finalize_unstake", "value": "[\"prim\": \"Unit\"]"]
+		}
 		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash, type: .delegation, counter: counter, fromWallet: selectedWalletMetadata, newDelegate: TzKTAddress(alias: baker.name, address: baker.address))
+		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
+																				   type: .transaction,
+																				   counter: counter,
+																				   fromWallet: selectedWalletMetadata,
+																				   destinationAddress: selectedWalletMetadata.address,
+																				   destinationAlias: nil,
+																				   xtzAmount: amount,
+																				   parameters: parameters,
+																				   primaryToken: selectedToken)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
