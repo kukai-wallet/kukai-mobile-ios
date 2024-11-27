@@ -295,6 +295,139 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             </objects>
             <point key="canvasLocation" x="-1132" y="882"/>
         </scene>
+        <!--Start Staking-->
+        <scene sceneID="DcC-Wm-fjn">
+            <objects>
+                <viewController storyboardIdentifier="onboarding" title="Start Staking" id="ctD-mO-Cuv" customClass="StakeOnboardingContainerViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VBf-pN-V7d">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="loc-pD-84F">
+                                <rect key="frame" x="38" y="120" width="84.5" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="69r-t5-LIb"/>
+                                </constraints>
+                                <color key="progressTintColor" name="BGB4"/>
+                                <color key="trackTintColor" name="BG6"/>
+                            </progressView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="sZA-2i-eKY">
+                                <rect key="frame" x="122.5" y="120" width="84.5" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="7SA-yb-1o0"/>
+                                </constraints>
+                                <color key="progressTintColor" name="BGB4"/>
+                                <color key="trackTintColor" name="BG6"/>
+                            </progressView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="EmJ-R3-jPN">
+                                <rect key="frame" x="207" y="120" width="84.5" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="QZl-3p-1YF"/>
+                                </constraints>
+                                <color key="progressTintColor" name="BGB4"/>
+                                <color key="trackTintColor" name="BG6"/>
+                            </progressView>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="XwF-ad-PJv">
+                                <rect key="frame" x="291.5" y="120" width="84.5" height="5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="4" id="qJ9-Ry-NDf"/>
+                                </constraints>
+                                <color key="progressTintColor" name="BGB4"/>
+                                <color key="trackTintColor" name="BG6"/>
+                            </progressView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-MX-56d">
+                                <rect key="frame" x="24" y="108" width="366" height="28"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="f9o-Xl-taL" userLabel="Page Indicator Container" customClass="PageIndicatorContainerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.0" width="28" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="28" id="4xu-9I-0aw"/>
+                                            <constraint firstAttribute="height" constant="28" id="FeA-oO-8jM"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="l67-7d-QQb" userLabel="Page Indicator Container" customClass="PageIndicatorContainerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="84.5" y="0.0" width="28" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="28" id="BHC-et-VFF"/>
+                                            <constraint firstAttribute="height" constant="28" id="Qko-MJ-RtX"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AXv-sP-xIL" userLabel="Page Indicator Container" customClass="PageIndicatorContainerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="169" y="0.0" width="28" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="28" id="a1y-uo-Yxg"/>
+                                            <constraint firstAttribute="width" constant="28" id="yRF-V4-vSI"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="HwO-lS-lot" userLabel="Page Indicator Container" customClass="PageIndicatorContainerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="253.5" y="0.0" width="28" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="28" id="ely-mt-Ke0"/>
+                                            <constraint firstAttribute="height" constant="28" id="gbg-gh-8DB"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" horizontalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="h0D-Ow-7tO" userLabel="Page Indicator Container" customClass="PageIndicatorContainerView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="338" y="0.0" width="28" height="28"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="28" id="BIA-8D-qUv"/>
+                                            <constraint firstAttribute="height" constant="28" id="rSo-ns-PJs"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Klz-bW-ld0"/>
+                        <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="cTx-MX-56d" firstAttribute="leading" secondItem="Klz-bW-ld0" secondAttribute="leading" constant="24" id="0h2-P1-B8Y"/>
+                            <constraint firstItem="XwF-ad-PJv" firstAttribute="centerY" secondItem="HwO-lS-lot" secondAttribute="centerY" id="3FR-DQ-Vog"/>
+                            <constraint firstItem="sZA-2i-eKY" firstAttribute="trailing" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="7oH-yK-rcW"/>
+                            <constraint firstItem="loc-pD-84F" firstAttribute="trailing" secondItem="l67-7d-QQb" secondAttribute="centerX" id="C8U-Tg-lLK"/>
+                            <constraint firstItem="sZA-2i-eKY" firstAttribute="leading" secondItem="l67-7d-QQb" secondAttribute="centerX" id="Lle-6A-hhy"/>
+                            <constraint firstItem="cTx-MX-56d" firstAttribute="top" secondItem="Klz-bW-ld0" secondAttribute="top" constant="16" id="Olg-J6-5kq"/>
+                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="leading" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="Pqg-Rg-zif"/>
+                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="trailing" secondItem="HwO-lS-lot" secondAttribute="centerX" id="XgP-x3-3aA"/>
+                            <constraint firstItem="loc-pD-84F" firstAttribute="leading" secondItem="f9o-Xl-taL" secondAttribute="centerX" id="ZXV-1h-6uq"/>
+                            <constraint firstItem="sZA-2i-eKY" firstAttribute="centerY" secondItem="l67-7d-QQb" secondAttribute="centerY" id="a5c-fL-QIB"/>
+                            <constraint firstItem="loc-pD-84F" firstAttribute="centerY" secondItem="f9o-Xl-taL" secondAttribute="centerY" id="gju-dR-aOK"/>
+                            <constraint firstItem="Klz-bW-ld0" firstAttribute="trailing" secondItem="cTx-MX-56d" secondAttribute="trailing" constant="24" id="iEh-FS-Swj"/>
+                            <constraint firstItem="XwF-ad-PJv" firstAttribute="trailing" secondItem="h0D-Ow-7tO" secondAttribute="centerX" id="lr5-XF-On0"/>
+                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="centerY" secondItem="AXv-sP-xIL" secondAttribute="centerY" id="rNw-eg-qwY"/>
+                            <constraint firstItem="XwF-ad-PJv" firstAttribute="leading" secondItem="HwO-lS-lot" secondAttribute="centerX" id="tsl-3D-J6b"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Start Staking" id="Ttg-ij-bB9">
+                        <barButtonItem key="rightBarButtonItem" id="TTT-Bt-m51">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="psw-GO-4xU">
+                                <rect key="frame" x="319" y="3" width="75" height="38"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="Close"/>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="pageIndicator1" destination="f9o-Xl-taL" id="QBJ-fG-BKY"/>
+                        <outlet property="pageIndicator2" destination="l67-7d-QQb" id="VEn-Q2-qd7"/>
+                        <outlet property="pageIndicator3" destination="AXv-sP-xIL" id="Zyf-ZW-IeK"/>
+                        <outlet property="pageIndicator4" destination="HwO-lS-lot" id="Vb7-5B-7eg"/>
+                        <outlet property="pageIndicator5" destination="h0D-Ow-7tO" id="8Uw-qS-9HH"/>
+                        <outlet property="progressSegment1" destination="loc-pD-84F" id="xkp-pm-eX3"/>
+                        <outlet property="progressSegment2" destination="sZA-2i-eKY" id="cXC-yw-Jha"/>
+                        <outlet property="progressSegment3" destination="EmJ-R3-jPN" id="vpU-Wh-CKC"/>
+                        <outlet property="progressSegment4" destination="XwF-ad-PJv" id="HvR-Rr-JwT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="v8S-XN-0D9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1133.3333333333335" y="1975.4464285714284"/>
+        </scene>
         <!--Baker Details View Controller-->
         <scene sceneID="IXl-5o-OZm">
             <objects>
@@ -2182,6 +2315,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
         </namedColor>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG6">
+            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

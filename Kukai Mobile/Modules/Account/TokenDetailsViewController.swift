@@ -211,7 +211,7 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 	func changeTapped() {
 		
 		if viewModel.isNewBakerFlow() {
-			self.alert(errorWithMessage: "Under Construction")
+			self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
 		} else {
 			self.performSegue(withIdentifier: "choose-baker", sender: nil)
 		}
