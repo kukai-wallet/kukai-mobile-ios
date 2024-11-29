@@ -380,25 +380,51 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     </view>
                                 </subviews>
                             </stackView>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oRV-Yl-8Rc">
+                                <rect key="frame" x="0.0" y="152" width="414" height="614"/>
+                                <connections>
+                                    <segue destination="Hdd-Op-0DG" kind="embed" identifier="embed" id="lhv-u5-bXX"/>
+                                </connections>
+                            </containerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffS-He-fcb" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="97" y="790" width="220" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="ipe-8w-bBD"/>
+                                    <constraint firstAttribute="width" constant="220" id="rud-Vg-v0r"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="tintColor" name="TxtBtnPrim1"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" title="Next"/>
+                                <connections>
+                                    <action selector="actionButtonTapped:" destination="ctD-mO-Cuv" eventType="touchUpInside" id="bIo-Re-wuZ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Klz-bW-ld0"/>
                         <color key="backgroundColor" name="BG2"/>
                         <constraints>
                             <constraint firstItem="cTx-MX-56d" firstAttribute="leading" secondItem="Klz-bW-ld0" secondAttribute="leading" constant="24" id="0h2-P1-B8Y"/>
+                            <constraint firstItem="ffS-He-fcb" firstAttribute="top" secondItem="oRV-Yl-8Rc" secondAttribute="bottom" constant="24" id="3Bs-EG-fgy"/>
                             <constraint firstItem="XwF-ad-PJv" firstAttribute="centerY" secondItem="HwO-lS-lot" secondAttribute="centerY" id="3FR-DQ-Vog"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="trailing" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="7oH-yK-rcW"/>
+                            <constraint firstItem="oRV-Yl-8Rc" firstAttribute="leading" secondItem="Klz-bW-ld0" secondAttribute="leading" id="9wi-PJ-KcV"/>
                             <constraint firstItem="loc-pD-84F" firstAttribute="trailing" secondItem="l67-7d-QQb" secondAttribute="centerX" id="C8U-Tg-lLK"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="leading" secondItem="l67-7d-QQb" secondAttribute="centerX" id="Lle-6A-hhy"/>
                             <constraint firstItem="cTx-MX-56d" firstAttribute="top" secondItem="Klz-bW-ld0" secondAttribute="top" constant="16" id="Olg-J6-5kq"/>
                             <constraint firstItem="EmJ-R3-jPN" firstAttribute="leading" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="Pqg-Rg-zif"/>
+                            <constraint firstItem="ffS-He-fcb" firstAttribute="bottom" secondItem="Klz-bW-ld0" secondAttribute="bottom" constant="-16" id="Q5h-VS-dZP"/>
                             <constraint firstItem="EmJ-R3-jPN" firstAttribute="trailing" secondItem="HwO-lS-lot" secondAttribute="centerX" id="XgP-x3-3aA"/>
                             <constraint firstItem="loc-pD-84F" firstAttribute="leading" secondItem="f9o-Xl-taL" secondAttribute="centerX" id="ZXV-1h-6uq"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="centerY" secondItem="l67-7d-QQb" secondAttribute="centerY" id="a5c-fL-QIB"/>
                             <constraint firstItem="loc-pD-84F" firstAttribute="centerY" secondItem="f9o-Xl-taL" secondAttribute="centerY" id="gju-dR-aOK"/>
+                            <constraint firstItem="ffS-He-fcb" firstAttribute="centerX" secondItem="Klz-bW-ld0" secondAttribute="centerX" id="hAg-R6-hYA"/>
                             <constraint firstItem="Klz-bW-ld0" firstAttribute="trailing" secondItem="cTx-MX-56d" secondAttribute="trailing" constant="24" id="iEh-FS-Swj"/>
+                            <constraint firstItem="oRV-Yl-8Rc" firstAttribute="trailing" secondItem="Klz-bW-ld0" secondAttribute="trailing" id="iRY-Nq-cwh"/>
                             <constraint firstItem="XwF-ad-PJv" firstAttribute="trailing" secondItem="h0D-Ow-7tO" secondAttribute="centerX" id="lr5-XF-On0"/>
                             <constraint firstItem="EmJ-R3-jPN" firstAttribute="centerY" secondItem="AXv-sP-xIL" secondAttribute="centerY" id="rNw-eg-qwY"/>
                             <constraint firstItem="XwF-ad-PJv" firstAttribute="leading" secondItem="HwO-lS-lot" secondAttribute="centerX" id="tsl-3D-J6b"/>
+                            <constraint firstItem="oRV-Yl-8Rc" firstAttribute="top" secondItem="cTx-MX-56d" secondAttribute="bottom" constant="16" id="x4d-cU-M7k"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Start Staking" id="Ttg-ij-bB9">
@@ -413,6 +439,8 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="actionButton" destination="ffS-He-fcb" id="83R-eb-CkG"/>
+                        <outlet property="navigationContainerView" destination="oRV-Yl-8Rc" id="wmI-LA-wc7"/>
                         <outlet property="pageIndicator1" destination="f9o-Xl-taL" id="QBJ-fG-BKY"/>
                         <outlet property="pageIndicator2" destination="l67-7d-QQb" id="VEn-Q2-qd7"/>
                         <outlet property="pageIndicator3" destination="AXv-sP-xIL" id="Zyf-ZW-IeK"/>
@@ -422,11 +450,44 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="progressSegment2" destination="sZA-2i-eKY" id="cXC-yw-Jha"/>
                         <outlet property="progressSegment3" destination="EmJ-R3-jPN" id="vpU-Wh-CKC"/>
                         <outlet property="progressSegment4" destination="XwF-ad-PJv" id="HvR-Rr-JwT"/>
+                        <segue destination="T2d-SR-jEL" kind="custom" identifier="chooseBaker" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="gj1-ox-b8E"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v8S-XN-0D9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1133.3333333333335" y="1975.4464285714284"/>
+        </scene>
+        <!--Stake Onboarding Container Nav Controller-->
+        <scene sceneID="kz2-Zo-wZj">
+            <objects>
+                <navigationController id="T2d-SR-jEL" customClass="StakeOnboardingContainerNavController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="3ao-Yv-gdJ">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="Y6W-OH-hqX" kind="relationship" relationship="rootViewController" id="nOU-9d-YXt"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vwP-dm-rIQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-109" y="1975"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="s9n-qy-ahX">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="Hdd-Op-0DG" sceneMemberID="viewController">
+                    <nil key="simulatedTopBarMetrics"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gn1-2L-PcA">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="pMI-kW-rpK" kind="relationship" relationship="rootViewController" id="hSV-8t-UeW"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Vg-XM-oRf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1133" y="2697"/>
         </scene>
         <!--Baker Details View Controller-->
         <scene sceneID="IXl-5o-OZm">
@@ -2302,10 +2363,703 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             </objects>
             <point key="canvasLocation" x="3138" y="1323"/>
         </scene>
+        <!--step1-->
+        <scene sceneID="J02-Md-6Yu">
+            <objects>
+                <viewController storyboardIdentifier="step1" title="step1" id="pMI-kW-rpK" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="uV7-UW-vtf">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How do I start?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmZ-eJ-2Vy">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Xyf-au-oif">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="FF4-2x-pF3"/>
+                                    <constraint firstAttribute="height" constant="100" id="rBZ-zt-epu"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es7-67-lZn">
+                                <rect key="frame" x="32" y="242" width="350" height="84"/>
+                                <string key="text">Before we can start staking and earning interest on our XTZ, we first have to delegate to a baker. Don’t worry, we are here to explain everything step by step. First lets understand some of the phrases used so you are informed of what's going on.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="VRo-Dt-Bsn"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="RmZ-eJ-2Vy" firstAttribute="top" secondItem="VRo-Dt-Bsn" secondAttribute="top" constant="30" id="NfX-7s-DHe"/>
+                            <constraint firstItem="VRo-Dt-Bsn" firstAttribute="trailing" secondItem="es7-67-lZn" secondAttribute="trailing" constant="32" id="VFj-Zi-rj1"/>
+                            <constraint firstItem="es7-67-lZn" firstAttribute="leading" secondItem="VRo-Dt-Bsn" secondAttribute="leading" constant="32" id="Wmv-Xs-qnk"/>
+                            <constraint firstItem="Xyf-au-oif" firstAttribute="top" secondItem="RmZ-eJ-2Vy" secondAttribute="bottom" constant="24" id="g73-EC-WuE"/>
+                            <constraint firstItem="RmZ-eJ-2Vy" firstAttribute="leading" secondItem="VRo-Dt-Bsn" secondAttribute="leading" constant="16" id="iD8-aG-JM3"/>
+                            <constraint firstItem="Xyf-au-oif" firstAttribute="centerX" secondItem="VRo-Dt-Bsn" secondAttribute="centerX" id="iHe-3P-TwK"/>
+                            <constraint firstItem="es7-67-lZn" firstAttribute="top" secondItem="Xyf-au-oif" secondAttribute="bottom" constant="16" id="ioN-lD-YiB"/>
+                            <constraint firstItem="VRo-Dt-Bsn" firstAttribute="trailing" secondItem="RmZ-eJ-2Vy" secondAttribute="trailing" constant="16" id="vAD-xQ-nK8"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="wq1-tH-eAx"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="ymZ-W6-fTm" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="RlO-BM-gfb"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4np-E5-zql" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1132" y="3469"/>
+        </scene>
+        <!--step2-->
+        <scene sceneID="w4W-fF-lDx">
+            <objects>
+                <viewController storyboardIdentifier="step2" title="step2" id="ymZ-W6-fTm" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kRY-gv-92Z">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="nVZ-Ym-UtV"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="aJ3-qH-FDQ"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="stake-learn-more-1,stake-learn-more-2,stake-learn-more-3,stake-learn-more-6"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="KGK-Ea-8Bo" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="31r-M1-4c6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jK0-Yt-RsY" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-109" y="3469"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="Uzv-7Y-adW">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-1" id="aXv-8w-zIA" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="9HI-EA-8ku">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is Delegating?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ihg-Gz-OQi">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="ltI-4P-5Bo">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="DVc-Lx-Fxd"/>
+                                    <constraint firstAttribute="width" constant="100" id="lKe-JE-zCl"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UNo-SO-wc1">
+                                <rect key="frame" x="32" y="242" width="350" height="151.5"/>
+                                <string key="text">Delegating is when you choose a baker to run and protect the network on your behalf. Bakers receive special privileges based on the total amount of XTZ delegated to them. When a user delegates to a baker, all of their XTZ remains unlocked and accessible to them at all times. Bakers have no ability to access the funds. Bakers manually reward users with a small percentage of interest for choosing them to run the network.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Y7m-xl-ZsW"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Y7m-xl-ZsW" firstAttribute="trailing" secondItem="UNo-SO-wc1" secondAttribute="trailing" constant="32" id="AVI-1f-TRY"/>
+                            <constraint firstItem="Ihg-Gz-OQi" firstAttribute="top" secondItem="Y7m-xl-ZsW" secondAttribute="top" constant="30" id="Pcp-mR-FCX"/>
+                            <constraint firstItem="ltI-4P-5Bo" firstAttribute="centerX" secondItem="Y7m-xl-ZsW" secondAttribute="centerX" id="SnL-8h-5E6"/>
+                            <constraint firstItem="UNo-SO-wc1" firstAttribute="leading" secondItem="Y7m-xl-ZsW" secondAttribute="leading" constant="32" id="goq-hC-Ybd"/>
+                            <constraint firstItem="UNo-SO-wc1" firstAttribute="top" secondItem="ltI-4P-5Bo" secondAttribute="bottom" constant="16" id="u7o-Qm-4f4"/>
+                            <constraint firstItem="Ihg-Gz-OQi" firstAttribute="leading" secondItem="Y7m-xl-ZsW" secondAttribute="leading" constant="16" id="um5-0z-tvT"/>
+                            <constraint firstItem="ltI-4P-5Bo" firstAttribute="top" secondItem="Ihg-Gz-OQi" secondAttribute="bottom" constant="24" id="w5I-0H-gAj"/>
+                            <constraint firstItem="Y7m-xl-ZsW" firstAttribute="trailing" secondItem="Ihg-Gz-OQi" secondAttribute="trailing" constant="16" id="yvz-s0-BT7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fZO-Z1-uEo"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZlE-6a-LqO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1133" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="Mjj-n7-sfA">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-7" id="PEY-rO-Ver" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="EKz-HZ-9Uu">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is Staking?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OW7-wm-cSA">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="mso-Bj-in1">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="3eL-HN-9Yk"/>
+                                    <constraint firstAttribute="width" constant="100" id="exV-uW-ARY"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BCn-cP-xMw">
+                                <rect key="frame" x="32" y="242" width="350" height="118"/>
+                                <string key="text">Kukai estimates the minimal fee necessary to process your transaction (gas fee) and also the maximum storage cost of the storage used.
+
+You will always pay the specified fee amount, but the storage cost will often end up lower than estimated and never higher.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SZL-dk-feH"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="BCn-cP-xMw" firstAttribute="leading" secondItem="SZL-dk-feH" secondAttribute="leading" constant="32" id="1Ir-4F-zG4"/>
+                            <constraint firstItem="mso-Bj-in1" firstAttribute="centerX" secondItem="SZL-dk-feH" secondAttribute="centerX" id="4hR-bZ-jMY"/>
+                            <constraint firstItem="SZL-dk-feH" firstAttribute="trailing" secondItem="OW7-wm-cSA" secondAttribute="trailing" constant="16" id="KMD-Ku-ol2"/>
+                            <constraint firstItem="mso-Bj-in1" firstAttribute="top" secondItem="OW7-wm-cSA" secondAttribute="bottom" constant="24" id="Ko1-uo-0cu"/>
+                            <constraint firstItem="OW7-wm-cSA" firstAttribute="leading" secondItem="SZL-dk-feH" secondAttribute="leading" constant="16" id="VYt-tv-4kU"/>
+                            <constraint firstItem="SZL-dk-feH" firstAttribute="trailing" secondItem="BCn-cP-xMw" secondAttribute="trailing" constant="32" id="cN1-Yu-wXO"/>
+                            <constraint firstItem="OW7-wm-cSA" firstAttribute="top" secondItem="SZL-dk-feH" secondAttribute="top" constant="30" id="l8Z-fa-V4i"/>
+                            <constraint firstItem="BCn-cP-xMw" firstAttribute="top" secondItem="mso-Bj-in1" secondAttribute="bottom" constant="16" id="yfG-dx-xtB"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6Ay-HN-Kwh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2664" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="WaL-XP-WMd">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-10" id="mWu-Ge-NQX" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="NfI-Fq-Lp1">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No free space in Baker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="51O-UD-zA2">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="4G2-e8-vpX">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="2al-Se-IuH"/>
+                                    <constraint firstAttribute="width" constant="100" id="aac-QZ-pRK"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjN-gT-IJ2">
+                                <rect key="frame" x="32" y="242" width="350" height="168.5"/>
+                                <string key="text">Bakers are only allowed to accept delegations and staked XTZ from other users once they have locked their own XTZ. The amount of delegated/staked XTZ they can receive is based on how much they lock themselves. It is possible for bakers to become over-delegated or over-staked over time. If this happens users will receive less rewards than they expect. You should monitor your bakers status from time to time and make sure your baker has sufficient space for your funds</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="0x6-Cb-Ucv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4G2-e8-vpX" firstAttribute="centerX" secondItem="0x6-Cb-Ucv" secondAttribute="centerX" id="Cle-QV-cWl"/>
+                            <constraint firstItem="xjN-gT-IJ2" firstAttribute="leading" secondItem="0x6-Cb-Ucv" secondAttribute="leading" constant="32" id="RZA-NG-X23"/>
+                            <constraint firstItem="0x6-Cb-Ucv" firstAttribute="trailing" secondItem="xjN-gT-IJ2" secondAttribute="trailing" constant="32" id="cB8-Jr-kBc"/>
+                            <constraint firstItem="0x6-Cb-Ucv" firstAttribute="trailing" secondItem="51O-UD-zA2" secondAttribute="trailing" constant="16" id="dxq-DF-GJ8"/>
+                            <constraint firstItem="51O-UD-zA2" firstAttribute="leading" secondItem="0x6-Cb-Ucv" secondAttribute="leading" constant="16" id="fFl-Y7-6Ki"/>
+                            <constraint firstItem="51O-UD-zA2" firstAttribute="top" secondItem="0x6-Cb-Ucv" secondAttribute="top" constant="30" id="gEC-3j-Byn"/>
+                            <constraint firstItem="4G2-e8-vpX" firstAttribute="top" secondItem="51O-UD-zA2" secondAttribute="bottom" constant="24" id="kB6-vu-g2r"/>
+                            <constraint firstItem="xjN-gT-IJ2" firstAttribute="top" secondItem="4G2-e8-vpX" secondAttribute="bottom" constant="16" id="pkp-6n-PGq"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NDc-l8-6Tq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4557" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="LTM-X2-jhv">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-11" id="1Dr-dC-hAq" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3c7-6R-uyW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Baker not voting" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqo-jq-T5M">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="vrj-aE-JZd">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="DSt-ua-XZX"/>
+                                    <constraint firstAttribute="height" constant="100" id="jIo-3N-tEc"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y7n-eB-fWH">
+                                <rect key="frame" x="32" y="242" width="350" height="202"/>
+                                <string key="text">Every few months, new proposals can be submitted to the Tezos blockchain which kicks off a multi-step process over the course of a few months. First bakers must vote on which proposal to accept, then test it and give it a thumbs up or a thumbs down, etc. This is a critical aspect of the Tezos blockchain that bakers are required to do on behalf of their users. It is important for users to monitor their baker and ensure that they regularly vote. Voting is a manual process for bakers, and can be missed from time to time. However consistently not voting can damage the network and needs to be avoided</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="hhr-Lk-Zm4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="y7n-eB-fWH" firstAttribute="top" secondItem="vrj-aE-JZd" secondAttribute="bottom" constant="16" id="480-SE-Hyg"/>
+                            <constraint firstItem="vrj-aE-JZd" firstAttribute="top" secondItem="Pqo-jq-T5M" secondAttribute="bottom" constant="24" id="6Zn-KU-ODR"/>
+                            <constraint firstItem="y7n-eB-fWH" firstAttribute="leading" secondItem="hhr-Lk-Zm4" secondAttribute="leading" constant="32" id="BwV-O6-68c"/>
+                            <constraint firstItem="vrj-aE-JZd" firstAttribute="centerX" secondItem="hhr-Lk-Zm4" secondAttribute="centerX" id="URN-TQ-vAu"/>
+                            <constraint firstItem="Pqo-jq-T5M" firstAttribute="top" secondItem="hhr-Lk-Zm4" secondAttribute="top" constant="30" id="foY-hG-X7j"/>
+                            <constraint firstItem="Pqo-jq-T5M" firstAttribute="leading" secondItem="hhr-Lk-Zm4" secondAttribute="leading" constant="16" id="vJC-Cf-I8A"/>
+                            <constraint firstItem="hhr-Lk-Zm4" firstAttribute="trailing" secondItem="Pqo-jq-T5M" secondAttribute="trailing" constant="16" id="xhB-fW-yjT"/>
+                            <constraint firstItem="hhr-Lk-Zm4" firstAttribute="trailing" secondItem="y7n-eB-fWH" secondAttribute="trailing" constant="32" id="zkq-jv-fRF"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Osz-pO-NwT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5186" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="bQ0-sV-ygY">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-9" id="7se-6U-qWt" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="AS0-on-JhM">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hKm-x5-lvW">
+                                <rect key="frame" x="16" y="78" width="382" height="48"/>
+                                <string key="text">How do I get my rewards?
+(Staking)</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="9IX-r4-kyL">
+                                <rect key="frame" x="157" y="150" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="GoK-hz-PHv"/>
+                                    <constraint firstAttribute="height" constant="100" id="Zby-Rm-PgS"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="urB-56-M0f">
+                                <rect key="frame" x="32" y="266" width="350" height="84"/>
+                                <string key="text">Staking rewards are paid out automatically by the network and applied directly to your staked balance at the end of every block. This will automatically compound for you. Users must unstake a portion or all of their balance in order to use these funds</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="dvz-bD-OeV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="urB-56-M0f" firstAttribute="top" secondItem="9IX-r4-kyL" secondAttribute="bottom" constant="16" id="2Jx-oO-zBg"/>
+                            <constraint firstItem="hKm-x5-lvW" firstAttribute="top" secondItem="dvz-bD-OeV" secondAttribute="top" constant="30" id="7NC-oQ-u9s"/>
+                            <constraint firstItem="dvz-bD-OeV" firstAttribute="trailing" secondItem="urB-56-M0f" secondAttribute="trailing" constant="32" id="Qjf-ij-khs"/>
+                            <constraint firstItem="9IX-r4-kyL" firstAttribute="centerX" secondItem="dvz-bD-OeV" secondAttribute="centerX" id="S4n-aI-NJG"/>
+                            <constraint firstItem="dvz-bD-OeV" firstAttribute="trailing" secondItem="hKm-x5-lvW" secondAttribute="trailing" constant="16" id="V8O-Zx-Q3P"/>
+                            <constraint firstItem="urB-56-M0f" firstAttribute="leading" secondItem="dvz-bD-OeV" secondAttribute="leading" constant="32" id="XyS-ik-9un"/>
+                            <constraint firstItem="hKm-x5-lvW" firstAttribute="leading" secondItem="dvz-bD-OeV" secondAttribute="leading" constant="16" id="eez-4j-g3c"/>
+                            <constraint firstItem="9IX-r4-kyL" firstAttribute="top" secondItem="hKm-x5-lvW" secondAttribute="bottom" constant="24" id="tTa-TM-06f"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="twL-C6-YXo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3925" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="nqC-cE-HnI">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-8" id="CRv-YU-pWc" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Ds-tP-pGh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="97I-9w-ruc">
+                                <rect key="frame" x="16" y="78" width="382" height="48"/>
+                                <string key="text">Are there any risks?
+(Staking)</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="oGK-g5-45U">
+                                <rect key="frame" x="157" y="150" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Yv3-Xr-pIZ"/>
+                                    <constraint firstAttribute="height" constant="100" id="aar-aH-RUG"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XAn-kp-crj">
+                                <rect key="frame" x="32" y="266" width="350" height="67.5"/>
+                                <string key="text">Staking comes with a slight risk. If a baker attempts to perform a bad action, that baker's staked funds will be slashed by a percentage. This also applies to users staked funds. Slashing events are incredibly rare</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="49r-oe-Fg2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XAn-kp-crj" firstAttribute="top" secondItem="oGK-g5-45U" secondAttribute="bottom" constant="16" id="7CB-y3-y3S"/>
+                            <constraint firstItem="97I-9w-ruc" firstAttribute="leading" secondItem="49r-oe-Fg2" secondAttribute="leading" constant="16" id="Ccg-FA-Tdr"/>
+                            <constraint firstItem="97I-9w-ruc" firstAttribute="top" secondItem="49r-oe-Fg2" secondAttribute="top" constant="30" id="MXe-NQ-lqC"/>
+                            <constraint firstItem="49r-oe-Fg2" firstAttribute="trailing" secondItem="97I-9w-ruc" secondAttribute="trailing" constant="16" id="NVE-pU-dWe"/>
+                            <constraint firstItem="oGK-g5-45U" firstAttribute="centerX" secondItem="49r-oe-Fg2" secondAttribute="centerX" id="Nmy-5f-zlb"/>
+                            <constraint firstItem="XAn-kp-crj" firstAttribute="leading" secondItem="49r-oe-Fg2" secondAttribute="leading" constant="32" id="Xfc-8T-RCT"/>
+                            <constraint firstItem="oGK-g5-45U" firstAttribute="top" secondItem="97I-9w-ruc" secondAttribute="bottom" constant="24" id="bhn-Qb-grN"/>
+                            <constraint firstItem="49r-oe-Fg2" firstAttribute="trailing" secondItem="XAn-kp-crj" secondAttribute="trailing" constant="32" id="nhG-5A-I5g"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VS5-84-bcU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3299" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="jAk-Ov-1p5">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-6" id="TsR-w2-dfX" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dKS-m8-y6f">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UTP-Wy-vBS">
+                                <rect key="frame" x="16" y="78" width="382" height="48"/>
+                                <string key="text">How do I get my rewards?
+(Delegating)</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="SbW-ng-Ujm">
+                                <rect key="frame" x="157" y="150" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="9pf-Cb-fHa"/>
+                                    <constraint firstAttribute="width" constant="100" id="zgT-Ms-Jkn"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rbp-0Z-78D">
+                                <rect key="frame" x="32" y="266" width="350" height="84"/>
+                                <string key="text">Delegation rewards are paid manually by bakers at the end of every blockchain cycle (currently roughly 3 days). Bakers will send XTZ directly to your wallet and it does not require unstaking to access. These funds will also auto compound for you</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="DRw-G1-dKg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="UTP-Wy-vBS" firstAttribute="leading" secondItem="DRw-G1-dKg" secondAttribute="leading" constant="16" id="3Gu-Rz-sSX"/>
+                            <constraint firstItem="SbW-ng-Ujm" firstAttribute="top" secondItem="UTP-Wy-vBS" secondAttribute="bottom" constant="24" id="7NL-HK-q3p"/>
+                            <constraint firstItem="Rbp-0Z-78D" firstAttribute="leading" secondItem="DRw-G1-dKg" secondAttribute="leading" constant="32" id="BfF-AR-gnP"/>
+                            <constraint firstItem="UTP-Wy-vBS" firstAttribute="top" secondItem="DRw-G1-dKg" secondAttribute="top" constant="30" id="EDF-Tb-pq4"/>
+                            <constraint firstItem="DRw-G1-dKg" firstAttribute="trailing" secondItem="Rbp-0Z-78D" secondAttribute="trailing" constant="32" id="X56-ou-pLb"/>
+                            <constraint firstItem="SbW-ng-Ujm" firstAttribute="centerX" secondItem="DRw-G1-dKg" secondAttribute="centerX" id="aJt-5L-D9h"/>
+                            <constraint firstItem="DRw-G1-dKg" firstAttribute="trailing" secondItem="UTP-Wy-vBS" secondAttribute="trailing" constant="16" id="gqr-4P-ODK"/>
+                            <constraint firstItem="Rbp-0Z-78D" firstAttribute="top" secondItem="SbW-ng-Ujm" secondAttribute="bottom" constant="16" id="juR-Eg-nfq"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EZg-gE-7Qh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2023" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="xA9-RZ-DEN">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-5" id="1ne-n9-k1q" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jB7-Sq-cyP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whS-IM-vdW">
+                                <rect key="frame" x="16" y="78" width="382" height="48"/>
+                                <string key="text">Are there any risks? 
+(Delegating)</string>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Tof-81-2fg">
+                                <rect key="frame" x="157" y="150" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="Yyp-RT-HLi"/>
+                                    <constraint firstAttribute="width" constant="100" id="mBK-FX-pDf"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dyD-Vy-M9k">
+                                <rect key="frame" x="32" y="266" width="350" height="84"/>
+                                <string key="text">Delegating comes with no risks, all user funds remain in the users control and never leave the wallet. The network merely records what balance the user had at set points, and uses that to decide what rights bakers get</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Gzs-t2-PI1"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Tof-81-2fg" firstAttribute="centerX" secondItem="Gzs-t2-PI1" secondAttribute="centerX" id="3cX-SY-Xgd"/>
+                            <constraint firstItem="whS-IM-vdW" firstAttribute="leading" secondItem="Gzs-t2-PI1" secondAttribute="leading" constant="16" id="T1V-9U-83N"/>
+                            <constraint firstItem="Gzs-t2-PI1" firstAttribute="trailing" secondItem="dyD-Vy-M9k" secondAttribute="trailing" constant="32" id="W8X-1G-la3"/>
+                            <constraint firstItem="Gzs-t2-PI1" firstAttribute="trailing" secondItem="whS-IM-vdW" secondAttribute="trailing" constant="16" id="ZlP-ft-haE"/>
+                            <constraint firstItem="Tof-81-2fg" firstAttribute="top" secondItem="whS-IM-vdW" secondAttribute="bottom" constant="24" id="gIf-WN-Mo3"/>
+                            <constraint firstItem="dyD-Vy-M9k" firstAttribute="leading" secondItem="Gzs-t2-PI1" secondAttribute="leading" constant="32" id="oz2-Hz-IG6"/>
+                            <constraint firstItem="dyD-Vy-M9k" firstAttribute="top" secondItem="Tof-81-2fg" secondAttribute="bottom" constant="16" id="p1i-bA-g65"/>
+                            <constraint firstItem="whS-IM-vdW" firstAttribute="top" secondItem="Gzs-t2-PI1" secondAttribute="top" constant="30" id="zh8-M0-BZC"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tIM-Lt-4V6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1403" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="i9i-kA-VM9">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-4" id="g7g-tI-Mql" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jAT-ym-zCU">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is a Cycle?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HdU-bG-YWo">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="bSl-mS-rKy">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="HPd-Ia-tWA"/>
+                                    <constraint firstAttribute="width" constant="100" id="aoc-dV-PlK"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iYT-gP-fQ2">
+                                <rect key="frame" x="32" y="242" width="350" height="168.5"/>
+                                <string key="text">A block is produced for the blockchain every X seconds. Certain aspects of running the blockchain take time, such as: allowing bakers time to review and vote on proposals, allowing bakers to payout delegation rewards, etc. In order to facilitate this Tezos created the term “cycle” to correspond to a number of blocks. A cycle takes roughly 3 days, and most aspects of the blockchain are measured in cycles. Bakers payout rewards at the end of every cycle, bakers have 7 cycles to cast their votes, etc.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SFN-vh-Ppg"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="SFN-vh-Ppg" firstAttribute="trailing" secondItem="HdU-bG-YWo" secondAttribute="trailing" constant="16" id="A4P-xN-ABT"/>
+                            <constraint firstItem="iYT-gP-fQ2" firstAttribute="top" secondItem="bSl-mS-rKy" secondAttribute="bottom" constant="16" id="Dpl-PX-Mzc"/>
+                            <constraint firstItem="HdU-bG-YWo" firstAttribute="leading" secondItem="SFN-vh-Ppg" secondAttribute="leading" constant="16" id="GEe-po-6eM"/>
+                            <constraint firstItem="iYT-gP-fQ2" firstAttribute="leading" secondItem="SFN-vh-Ppg" secondAttribute="leading" constant="32" id="K8e-Qu-ieR"/>
+                            <constraint firstItem="SFN-vh-Ppg" firstAttribute="trailing" secondItem="iYT-gP-fQ2" secondAttribute="trailing" constant="32" id="ado-C0-0wc"/>
+                            <constraint firstItem="HdU-bG-YWo" firstAttribute="top" secondItem="SFN-vh-Ppg" secondAttribute="top" constant="30" id="dFE-q7-qaG"/>
+                            <constraint firstItem="bSl-mS-rKy" firstAttribute="centerX" secondItem="SFN-vh-Ppg" secondAttribute="centerX" id="lyE-yn-teK"/>
+                            <constraint firstItem="bSl-mS-rKy" firstAttribute="top" secondItem="HdU-bG-YWo" secondAttribute="bottom" constant="24" id="ycW-p5-1fL"/>
+                        </constraints>
+                    </view>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SY6-dO-kbf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="775" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="1on-zR-Oi6">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-3" id="reI-Ll-5gT" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aHr-hV-2ha">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is Governance?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAb-9R-XWf">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="p8Y-hz-Mi1">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="5gY-hN-rHN"/>
+                                    <constraint firstAttribute="width" constant="100" id="75J-vX-6aW"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TYQ-cO-2J0">
+                                <rect key="frame" x="32" y="242" width="350" height="168.5"/>
+                                <string key="text">The Tezos blockchain is able to update itself to add new features or change the way existing features work. These changes come in the form of proposals submitted to the chain during a set window. Bakers vote on which changes to accept or reject, on behalf of all the users who delegate to them. It’s critically important to choose an active baker in order to keep the network moving and advancing. Most bakers run social media accounts where they discuss upcoming proposals and how they intend to vote</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5UK-cz-XBx"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dAb-9R-XWf" firstAttribute="leading" secondItem="5UK-cz-XBx" secondAttribute="leading" constant="16" id="FiS-U8-j0U"/>
+                            <constraint firstItem="TYQ-cO-2J0" firstAttribute="leading" secondItem="5UK-cz-XBx" secondAttribute="leading" constant="32" id="NK9-AG-m6v"/>
+                            <constraint firstItem="dAb-9R-XWf" firstAttribute="top" secondItem="5UK-cz-XBx" secondAttribute="top" constant="30" id="VUd-UR-qRL"/>
+                            <constraint firstItem="TYQ-cO-2J0" firstAttribute="top" secondItem="p8Y-hz-Mi1" secondAttribute="bottom" constant="16" id="Vx9-Bs-24Y"/>
+                            <constraint firstItem="p8Y-hz-Mi1" firstAttribute="centerX" secondItem="5UK-cz-XBx" secondAttribute="centerX" id="WcP-O5-eA6"/>
+                            <constraint firstItem="5UK-cz-XBx" firstAttribute="trailing" secondItem="dAb-9R-XWf" secondAttribute="trailing" constant="16" id="ZIF-2M-FjN"/>
+                            <constraint firstItem="5UK-cz-XBx" firstAttribute="trailing" secondItem="TYQ-cO-2J0" secondAttribute="trailing" constant="32" id="geA-cR-bah"/>
+                            <constraint firstItem="p8Y-hz-Mi1" firstAttribute="top" secondItem="dAb-9R-XWf" secondAttribute="bottom" constant="24" id="qFg-Op-gE5"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="M7b-ur-t0p"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vol-Ri-yvq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="145" y="4349"/>
+        </scene>
+        <!--Fee Info View Controller-->
+        <scene sceneID="nIY-EC-WD0">
+            <objects>
+                <viewController storyboardIdentifier="stake-learn-more-2" id="iU4-WP-hDT" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="R6c-Z4-HKP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What is a Baker?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="du0-E0-UoQ">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Fm3-Ot-DaR">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="7U6-Xp-Fne"/>
+                                    <constraint firstAttribute="height" constant="100" id="fRh-1o-6o0"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Uq-m9-yai">
+                                <rect key="frame" x="32" y="242" width="350" height="218.5"/>
+                                <string key="text">A baker is a user that has provided a computer to help run the network. Bakers must first lock an amount of XTZ as a security bond, and then their computer is allowed to produce blocks for the blockchain, earning themselves a reward. The number of blocks a baker is allowed to produce are based on the amount of XTZ delegated to the baker from users. So bakers in turn manually payout a percentage of their rewards to users to encourage users to select them. Bakers can not access delegated funds in any way.
+
+Bakers also vote on behalf of users to make changes to the network, during the Governance process.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="avf-tG-XnX"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Fm3-Ot-DaR" firstAttribute="centerX" secondItem="avf-tG-XnX" secondAttribute="centerX" id="0tH-qx-r0A"/>
+                            <constraint firstItem="Fm3-Ot-DaR" firstAttribute="top" secondItem="du0-E0-UoQ" secondAttribute="bottom" constant="24" id="30J-nN-z6Q"/>
+                            <constraint firstItem="avf-tG-XnX" firstAttribute="trailing" secondItem="5Uq-m9-yai" secondAttribute="trailing" constant="32" id="86E-Si-TPG"/>
+                            <constraint firstItem="5Uq-m9-yai" firstAttribute="top" secondItem="Fm3-Ot-DaR" secondAttribute="bottom" constant="16" id="KcP-VC-4AW"/>
+                            <constraint firstItem="avf-tG-XnX" firstAttribute="trailing" secondItem="du0-E0-UoQ" secondAttribute="trailing" constant="16" id="QvN-BB-waQ"/>
+                            <constraint firstItem="du0-E0-UoQ" firstAttribute="top" secondItem="avf-tG-XnX" secondAttribute="top" constant="30" id="eng-sQ-UAv"/>
+                            <constraint firstItem="5Uq-m9-yai" firstAttribute="leading" secondItem="avf-tG-XnX" secondAttribute="leading" constant="32" id="iA8-Mv-c3A"/>
+                            <constraint firstItem="du0-E0-UoQ" firstAttribute="leading" secondItem="avf-tG-XnX" secondAttribute="leading" constant="16" id="xV4-ge-XZV"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="jlH-sq-HEh"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="6AR-gy-2Jc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-481" y="4349"/>
+        </scene>
+        <!--step3-->
+        <scene sceneID="64t-MC-muH">
+            <objects>
+                <viewController storyboardIdentifier="step3" title="step3" id="KGK-Ea-8Bo" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="72P-Xf-rKQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a Baker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWM-zX-K4T">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Oeh-JO-QWk">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="3ek-qf-W2D"/>
+                                    <constraint firstAttribute="width" constant="100" id="8DW-sh-hyC"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD7-RR-7Ei">
+                                <rect key="frame" x="32" y="242" width="350" height="67.5"/>
+                                <string key="text">Now that we understand the basics, it's time for you to choose a baker from the list of public bakers we have found for you. Don’t worry, you can change your baker at any time later on.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="K2z-rE-cDl"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="GD7-RR-7Ei" firstAttribute="top" secondItem="Oeh-JO-QWk" secondAttribute="bottom" constant="16" id="2S8-LU-KHY"/>
+                            <constraint firstItem="GD7-RR-7Ei" firstAttribute="leading" secondItem="K2z-rE-cDl" secondAttribute="leading" constant="32" id="Gz8-ah-61V"/>
+                            <constraint firstItem="WWM-zX-K4T" firstAttribute="leading" secondItem="K2z-rE-cDl" secondAttribute="leading" constant="16" id="NyD-5f-2ro"/>
+                            <constraint firstItem="Oeh-JO-QWk" firstAttribute="centerX" secondItem="K2z-rE-cDl" secondAttribute="centerX" id="VVd-st-EDl"/>
+                            <constraint firstItem="K2z-rE-cDl" firstAttribute="trailing" secondItem="WWM-zX-K4T" secondAttribute="trailing" constant="16" id="dtB-b0-WQD"/>
+                            <constraint firstItem="K2z-rE-cDl" firstAttribute="trailing" secondItem="GD7-RR-7Ei" secondAttribute="trailing" constant="32" id="hgo-oC-4Mn"/>
+                            <constraint firstItem="Oeh-JO-QWk" firstAttribute="top" secondItem="WWM-zX-K4T" secondAttribute="bottom" constant="24" id="r46-hU-DDt"/>
+                            <constraint firstItem="WWM-zX-K4T" firstAttribute="top" secondItem="K2z-rE-cDl" secondAttribute="top" constant="30" id="zNc-ON-wPK"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="74x-lI-CB4"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="btm-Rs-fxw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="938" y="3469"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="Close" width="24" height="24"/>
+        <image name="Fee_Fee" width="100" height="100"/>
         <image name="Social_TZ_Ovalcolor" width="30" height="30"/>
         <image name="Timer" width="24" height="24"/>
         <image name="btnInfoKnockout" width="36" height="36"/>
@@ -2348,6 +3102,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
         </namedColor>
         <namedColor name="Txt2">
             <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt6">
+            <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt8">
             <color red="0.41200000047683716" green="0.41600000858306885" blue="0.50199997425079346" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

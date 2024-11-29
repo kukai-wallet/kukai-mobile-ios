@@ -57,21 +57,21 @@ class TokenDetailsLearnMoreViewModel: ViewModel, UITableViewDiffableDataSourceHa
 		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		let data: [[AnyHashableSendable]] = [
 			[.init(LearnMoreHeaderData(title: "Delegating"))],
-			[.init(LearnMoreItemData(title: "What is Delegating?", segueId: "token-details-learn-more-1"))],
-			[.init(LearnMoreItemData(title: "What is a Baker?", segueId: "token-details-learn-more-2"))],
-			[.init(LearnMoreItemData(title: "What is Governance?", segueId: "token-details-learn-more-3"))],
-			[.init(LearnMoreItemData(title: "What is a Cycle?", segueId: "token-details-learn-more-4"))],
-			[.init(LearnMoreItemData(title: "Are there any risks? (Delegating)", segueId: "token-details-learn-more-5"))],
-			[.init(LearnMoreItemData(title: "How do I get my rewards? (Delegating)", segueId: "token-details-learn-more-6"))],
+			[.init(LearnMoreItemData(title: "What is Delegating?", segueId: "stake-learn-more-1"))],
+			[.init(LearnMoreItemData(title: "What is a Baker?", segueId: "stake-learn-more-2"))],
+			[.init(LearnMoreItemData(title: "What is Governance?", segueId: "stake-learn-more-3"))],
+			[.init(LearnMoreItemData(title: "What is a Cycle?", segueId: "stake-learn-more-4"))],
+			[.init(LearnMoreItemData(title: "Are there any risks? (Delegating)", segueId: "stake-learn-more-5"))],
+			[.init(LearnMoreItemData(title: "How do I get my rewards? (Delegating)", segueId: "stake-learn-more-6"))],
 			
 			[.init(LearnMoreHeaderData(title: "Staking"))],
-			[.init(LearnMoreItemData(title: "What is Staking?", segueId: "token-details-learn-more-7"))],
-			[.init(LearnMoreItemData(title: "Are there any risks? (Staking)", segueId: "token-details-learn-more-8"))],
-			[.init(LearnMoreItemData(title: "How do I get my rewards? (Staking)", segueId: "token-details-learn-more-9"))],
+			[.init(LearnMoreItemData(title: "What is Staking?", segueId: "stake-learn-more-7"))],
+			[.init(LearnMoreItemData(title: "Are there any risks? (Staking)", segueId: "stake-learn-more-8"))],
+			[.init(LearnMoreItemData(title: "How do I get my rewards? (Staking)", segueId: "stake-learn-more-9"))],
 			
 			[.init(LearnMoreHeaderData(title: "Monitor your Baker"))],
-			[.init(LearnMoreItemData(title: "No free space in Baker", segueId: "token-details-learn-more-10"))],
-			[.init(LearnMoreItemData(title: "Baker not voting", segueId: "token-details-learn-more-11"))],
+			[.init(LearnMoreItemData(title: "No free space in Baker", segueId: "stake-learn-more-10"))],
+			[.init(LearnMoreItemData(title: "Baker not voting", segueId: "stake-learn-more-11"))],
 		]
 		
 		snapshot.appendSections(Array(0..<data.count))

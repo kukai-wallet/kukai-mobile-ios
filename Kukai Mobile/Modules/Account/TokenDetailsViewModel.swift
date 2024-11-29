@@ -289,7 +289,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				self.needsToLoadOnlineXTZData = !sendData.isBuyTez
 				data.append(.init(onlineDataLoading))
 				
-			} else /* TODO: re-enable if !sendData.isBuyTez*/ {
+			} else if !sendData.isBuyTez {
 				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false, bakerChangeDisabled: isWatchWallet) ))
 			}
 		} else {

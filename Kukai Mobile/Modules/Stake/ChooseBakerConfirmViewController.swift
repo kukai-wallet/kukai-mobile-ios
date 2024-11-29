@@ -181,7 +181,10 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 	
 	func didCompleteSlide() {
 		self.blockInteraction(exceptFor: [closeButton])
-		self.performAuth()
+		
+		// TODO: swap back
+		//self.performAuth()
+		self.handleApproval(opHash: "", slideButton: self.slideButton)
 	}
 	
 	override func authSuccessful() {

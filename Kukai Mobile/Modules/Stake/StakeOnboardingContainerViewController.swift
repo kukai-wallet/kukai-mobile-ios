@@ -18,16 +18,26 @@ class StakeOnboardingContainerViewController: UIViewController {
 	@IBOutlet weak var pageIndicator4: PageIndicatorContainerView!
 	@IBOutlet weak var progressSegment4: UIProgressView!
 	@IBOutlet weak var pageIndicator5: PageIndicatorContainerView!
+	@IBOutlet weak var actionButton: CustomisableButton!
+	
+	@IBOutlet weak var navigationContainerView: UIView!
+	private var childNavigationController: UINavigationController? = nil
+	private var currentChildViewController: UIViewController? = nil
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		GradientView.add(toView: self.view, withType: .fullScreenBackground)
+		
+		actionButton.customButtonType = .primary
+		self.pageIndicator1.setInprogress(pageNumber: 1)
+		
+		//NotificationCenter.default.addObserver(self, selector: #selector(bakerConfirmation), name: ChooseBakerViewController.notificationNameBakerChosen, object: nil)
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		self.pageIndicator1.setInprogress(pageNumber: 1)
-		
+		/*
 		DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
 			self?.pageIndicator1.setComplete()
 			self?.setProgressSegmentComplete(self?.progressSegment1)
@@ -55,6 +65,13 @@ class StakeOnboardingContainerViewController: UIViewController {
 		DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
 			self?.pageIndicator5.setComplete()
 		}
+		*/
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		//NotificationCenter.default.removeObserver(self, name: ChooseBakerViewController.notificationNameBakerChosen, object: nil)
 	}
 	
 	func setProgressSegmentComplete(_ view: UIProgressView?) {
@@ -62,4 +79,65 @@ class StakeOnboardingContainerViewController: UIViewController {
 			view?.setProgress(1, animated: true)
 		}
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if segue.identifier == "embed", let dest = segue.destination as? UINavigationController {
+			childNavigationController = dest
+			
+		}
+	}
+	
+	@IBAction func actionButtonTapped(_ sender: Any) {
+		guard let childNav = childNavigationController, let currentChildVc = childNav.viewControllers.last else {
+			self.windowError(withTitle: "error".localized(), description: "Unknown error")
+			return
+		}
+		
+		currentChildViewController = currentChildVc
+		switch currentChildVc.title {
+			case "step1":
+				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				self.pageIndicator1.setComplete()
+				self.setProgressSegmentComplete(self.progressSegment1)
+				self.pageIndicator2.setInprogress(pageNumber: 2)
+				
+			case "step2":
+				if handlePageControllerNext(vc: currentChildVc) == true {
+					actionButton.setTitle("Choose Baker", for: .normal)
+					self.pageIndicator2.setComplete()
+					self.setProgressSegmentComplete(self.progressSegment2)
+					self.pageIndicator3.setInprogress(pageNumber: 3)
+				}
+				
+			case "step3":
+				self.performSegue(withIdentifier: "chooseBaker", sender: nil)
+				
+			default:
+				self.windowError(withTitle: "error".localized(), description: "Unknown error")
+		}
+	}
+	
+	private func handlePageControllerNext(vc: UIViewController) -> Bool? {
+		guard let pageController = (vc as? OnboardingPageViewController), let pageControl = pageController.pageControl else {
+			self.windowError(withTitle: "error".localized(), description: "Unknown error")
+			return nil
+		}
+		
+		if pageControl.currentPage == pageControl.numberOfPages-1 {
+			vc.performSegue(withIdentifier: "next", sender: nil)
+			return true
+		} else {
+			pageController.scrollTo(index: (pageController.pageControl?.currentPage ?? 0) + 1)
+			return false
+		}
+	}
+	
+	/*
+	@objc private func bakerConfirmation() {
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+			self?.hideLoadingView()
+			self?.performSegue(withIdentifier: "confirmBaker", sender: nil)
+		}
+	}
+	*/
 }

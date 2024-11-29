@@ -97,6 +97,11 @@ public class PageIndicatorContainerView: UIView {
 		checkImageView.alpha = 0
 	}
 	
+	/**
+	 - Animate the size of pagePendingView to the size of pageInprogressView
+	 - After a brief delay to allow effect to show, start hiding pagePendingView and start showing pageInprogressView
+	 - Setup the next stage by transforming checkImageView to a fraction of its current size
+	 */
 	public func setInprogress(pageNumber: Int) {
 		pageNumberLabel.text = pageNumber.description
 		UIView.animate(withDuration: 0.3) { [weak self] in
@@ -105,6 +110,7 @@ public class PageIndicatorContainerView: UIView {
 		} completion: { [weak self] _ in
 			self?.pageCompleteView.alpha = 0
 			self?.checkImageView.alpha = 0
+			self?.checkImageView.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
 		}
 		
 		UIView.animate(withDuration: 0.3, delay: 0.2) { [weak self] in
@@ -115,6 +121,10 @@ public class PageIndicatorContainerView: UIView {
 		}
 	}
 	
+	/**
+	 - Animate hiding pageNumberLabel, and animate showing pageCompleteView
+	 - Afterwards transform checkImageView back to its size, to give the appearance of it popping into the control
+	 */
 	public func setComplete() {
 		UIView.animate(withDuration: 0.3) { [weak self] in
 			self?.pageNumberLabel.alpha = 0
@@ -123,6 +133,7 @@ public class PageIndicatorContainerView: UIView {
 		} completion: { _ in
 			UIView.animate(withDuration: 0.3) { [weak self] in
 				self?.checkImageView.alpha = 1
+				self?.checkImageView.transform = CGAffineTransform(scaleX: 1, y: 1)
 			}
 		}
 

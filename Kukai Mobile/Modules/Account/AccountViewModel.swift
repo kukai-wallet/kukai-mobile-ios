@@ -230,14 +230,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let balanceService = DependencyManager.shared.balanceService
 		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
-			// TODO: uncomment
-			/*
 			if isEmptyAccount() {
 				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 				
-			} else {*/
+			} else {
 				data = handleRefreshForRegularUser(startingData: data, metadata: metadata, parentMetadata: parentMetadata, selectedAddress: selectedAddress)
-			//}
+			}
 			
 		} else {
 			let hashableData: [AnyHashableSendable] = [

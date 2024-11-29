@@ -18,6 +18,8 @@ class ChooseBakerViewController: UIViewController {
 	private let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 2))
 	private let blankView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
 	
+	public static let notificationNameBakerChosen = Notification.Name("notification-baker-chosen")
+	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
@@ -82,7 +84,10 @@ class ChooseBakerViewController: UIViewController {
 		self.showLoadingView()
 		
 		if let baker = TransactionService.shared.delegateData.chosenBaker {
-			createOperationsAndConfirm(toAddress: baker.address)
+			// Add a breif delay so that multiple animations can finish
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+				self?.createOperationsAndConfirm(toAddress: baker.address)
+			}
 		}
 	}
 	
