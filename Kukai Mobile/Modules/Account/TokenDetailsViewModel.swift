@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 import OSLog
 
 struct AllChartData: Hashable {
@@ -122,6 +123,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private let chartDateFormatter = DateFormatter(withFormat: "MMM dd HH:mm a")
 	private var initialChartLoad = true
 	private var onlineXTZFetchGroup = DispatchGroup()
+	private var bag = [AnyCancellable]()
 	
 	// Set by VC
 	weak var delegate: (TokenDetailsViewModelDelegate & TokenDetailsBakerDelegate & TokenDetailsStakeBalanceDelegate)? = nil
@@ -155,6 +157,22 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var finaliseableAmount: TokenAmount = .zero()
 	
 	
+	override init() {
+		super.init()
+		
+		DependencyManager.shared.$addressRefreshed
+			.dropFirst()
+			.sink { [weak self] address in
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if self?.dataSource != nil && selectedAddress == address {
+					self?.refresh(animate: true)
+				}
+			}.store(in: &bag)
+	}
+	
+	deinit {
+		bag.forEach({ $0.cancel() })
+	}
 	
 	
 	

@@ -32,15 +32,6 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	override init() {
 		super.init()
-		
-		DependencyManager.shared.$addressRefreshed
-			.dropFirst()
-			.sink { [weak self] address in
-				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-				if self?.dataSource != nil && selectedAddress == address {
-					self?.refresh(animate: true)
-				}
-			}.store(in: &bag)
 	}
 	
 	deinit {

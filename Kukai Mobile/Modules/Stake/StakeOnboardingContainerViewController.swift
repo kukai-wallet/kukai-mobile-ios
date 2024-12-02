@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import KukaiCoreSwift
+import Combine
 
 class StakeOnboardingContainerViewController: UIViewController {
 	
@@ -23,55 +25,41 @@ class StakeOnboardingContainerViewController: UIViewController {
 	@IBOutlet weak var navigationContainerView: UIView!
 	private var childNavigationController: UINavigationController? = nil
 	private var currentChildViewController: UIViewController? = nil
+	private var bag = [AnyCancellable]()
+	private var currentStep: String = ""
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		actionButton.customButtonType = .primary
-		self.pageIndicator1.setInprogress(pageNumber: 1)
 		
-		//NotificationCenter.default.addObserver(self, selector: #selector(bakerConfirmation), name: ChooseBakerViewController.notificationNameBakerChosen, object: nil)
-	}
-	
-	override func viewDidAppear(_ animated: Bool) {
-		super.viewDidAppear(animated)
-		
-		/*
-		DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
-			self?.pageIndicator1.setComplete()
-			self?.setProgressSegmentComplete(self?.progressSegment1)
-			self?.pageIndicator2.setInprogress(pageNumber: 2)
-		}
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 6) { [weak self] in
-			self?.pageIndicator2.setComplete()
-			self?.setProgressSegmentComplete(self?.progressSegment2)
-			self?.pageIndicator3.setInprogress(pageNumber: 3)
-		}
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 9) { [weak self] in
-			self?.pageIndicator3.setComplete()
-			self?.setProgressSegmentComplete(self?.progressSegment3)
-			self?.pageIndicator4.setInprogress(pageNumber: 4)
-		}
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 12) { [weak self] in
-			self?.pageIndicator4.setComplete()
-			self?.setProgressSegmentComplete(self?.progressSegment4)
-			self?.pageIndicator5.setInprogress(pageNumber: 5)
-		}
-		
-		DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
-			self?.pageIndicator5.setComplete()
-		}
-		*/
+		DependencyManager.shared.activityService.$addressesWithPendingOperation
+			.dropFirst()
+			.sink { [weak self] addresses in
+				guard let address = DependencyManager.shared.selectedWalletAddress else {
+					return
+				}
+				
+				DispatchQueue.main.async { [weak self] in
+					if addresses.contains([address]) {
+						self?.showLoadingView()
+						self?.updateLoadingViewStatusLabel(message: "Waiting for transaction to complete \n\nThis should only take a few seconds")
+						
+					} else {
+						self?.hideLoadingView()
+						self?.handleOperationComplete()
+					}
+				}
+			}.store(in: &bag)
 	}
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
-		
-		//NotificationCenter.default.removeObserver(self, name: ChooseBakerViewController.notificationNameBakerChosen, object: nil)
+	}
+	
+	@IBAction func closeTapped(_ sender: Any) {
+		self.navigationController?.popToDetails()
 	}
 	
 	func setProgressSegmentComplete(_ view: UIProgressView?) {
@@ -83,7 +71,6 @@ class StakeOnboardingContainerViewController: UIViewController {
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		if segue.identifier == "embed", let dest = segue.destination as? UINavigationController {
 			childNavigationController = dest
-			
 		}
 	}
 	
@@ -94,23 +81,64 @@ class StakeOnboardingContainerViewController: UIViewController {
 		}
 		
 		currentChildViewController = currentChildVc
+		currentStep = currentChildVc.title ?? ""
+		
 		switch currentChildVc.title {
 			case "step1":
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
-				self.pageIndicator1.setComplete()
-				self.setProgressSegmentComplete(self.progressSegment1)
-				self.pageIndicator2.setInprogress(pageNumber: 2)
+				self.pageIndicator1.setInprogress(pageNumber: 1)
 				
 			case "step2":
 				if handlePageControllerNext(vc: currentChildVc) == true {
 					actionButton.setTitle("Choose Baker", for: .normal)
-					self.pageIndicator2.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment2)
-					self.pageIndicator3.setInprogress(pageNumber: 3)
+					self.pageIndicator1.setComplete()
+					self.setProgressSegmentComplete(self.progressSegment1)
+					self.pageIndicator2.setInprogress(pageNumber: 2)
 				}
 				
 			case "step3":
 				self.performSegue(withIdentifier: "chooseBaker", sender: nil)
+				
+			case "step4":
+				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				
+			case "step5":
+				if handlePageControllerNext(vc: currentChildVc) == true {
+					actionButton.setTitle("Stake", for: .normal)
+					self.pageIndicator3.setComplete()
+					self.setProgressSegmentComplete(self.progressSegment3)
+					self.pageIndicator4.setInprogress(pageNumber: 4)
+				}
+				
+			case "step6":
+				TransactionService.shared.currentTransactionType = .stake
+				TransactionService.shared.stakeData.chosenToken = Token.xtz(withAmount: DependencyManager.shared.balanceService.account.xtzBalance)
+				// chosenBaker will be set inside the the delegation flow
+				self.performSegue(withIdentifier: "stake", sender: nil)
+				
+			case "step7":
+				self.navigationController?.popToDetails()
+				
+			default:
+				self.windowError(withTitle: "error".localized(), description: "Unknown error")
+		}
+	}
+	
+	private func handleOperationComplete() {
+		switch currentStep {
+			case "step3":
+				self.pageIndicator2.setComplete()
+				self.setProgressSegmentComplete(self.progressSegment2)
+				self.pageIndicator3.setInprogress(pageNumber: 3)
+				self.currentChildViewController?.performSegue(withIdentifier: "next", sender: nil)
+				self.actionButton.setTitle("Next", for: .normal)
+				
+			case "step6":
+				self.pageIndicator4.setComplete()
+				self.setProgressSegmentComplete(self.progressSegment4)
+				self.pageIndicator5.setInprogress(pageNumber: 5)
+				self.currentChildViewController?.performSegue(withIdentifier: "next", sender: nil)
+				self.actionButton.setTitle("Done", for: .normal)
 				
 			default:
 				self.windowError(withTitle: "error".localized(), description: "Unknown error")
@@ -131,13 +159,4 @@ class StakeOnboardingContainerViewController: UIViewController {
 			return false
 		}
 	}
-	
-	/*
-	@objc private func bakerConfirmation() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-			self?.hideLoadingView()
-			self?.performSegue(withIdentifier: "confirmBaker", sender: nil)
-		}
-	}
-	*/
 }

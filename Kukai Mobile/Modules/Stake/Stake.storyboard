@@ -253,7 +253,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137.68115942028987" y="138.61607142857142"/>
+            <point key="canvasLocation" x="1016" y="-293"/>
         </scene>
         <!--Info Bottom Sheet View Controller-->
         <scene sceneID="IIq-EC-juc">
@@ -293,7 +293,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yil-Eo-uJS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1132" y="882"/>
+            <point key="canvasLocation" x="-255" y="450"/>
         </scene>
         <!--Start Staking-->
         <scene sceneID="DcC-Wm-fjn">
@@ -434,6 +434,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="Close"/>
+                                <connections>
+                                    <action selector="closeTapped:" destination="ctD-mO-Cuv" eventType="touchUpInside" id="Lqw-fU-cEm"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
@@ -451,6 +454,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="progressSegment3" destination="EmJ-R3-jPN" id="vpU-Wh-CKC"/>
                         <outlet property="progressSegment4" destination="XwF-ad-PJv" id="HvR-Rr-JwT"/>
                         <segue destination="T2d-SR-jEL" kind="custom" identifier="chooseBaker" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="gj1-ox-b8E"/>
+                        <segue destination="aCF-K3-anG" kind="custom" identifier="stake" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="XDY-FJ-dZU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="v8S-XN-0D9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -471,7 +475,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vwP-dm-rIQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-109" y="1975"/>
+            <point key="canvasLocation" x="-135" y="1675"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="s9n-qy-ahX">
@@ -704,7 +708,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LP8-uE-b7e" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-207" y="816"/>
+            <point key="canvasLocation" x="671" y="384"/>
         </scene>
         <!--Enter Custom Baker View Controller-->
         <scene sceneID="OeO-8b-cN9">
@@ -745,7 +749,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lWl-Pa-YwX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="728" y="882"/>
+            <point key="canvasLocation" x="1606" y="450"/>
         </scene>
         <!--Stake Amount-->
         <scene sceneID="PSg-NM-qt6">
@@ -1090,6 +1094,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             <constraint firstItem="Kyx-xh-DBw" firstAttribute="top" secondItem="GgY-XI-5hz" secondAttribute="bottom" constant="24" id="x62-u9-IC6"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="1x0-pd-ho8"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <size key="freeformSize" width="414" height="800"/>
                     <connections>
@@ -1114,7 +1119,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ptS-BB-7Cg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3367" y="139"/>
+            <point key="canvasLocation" x="5326" y="153"/>
         </scene>
         <!--Choose Baker Confirm View Controller-->
         <scene sceneID="2bm-0A-xMI">
@@ -1703,7 +1708,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="McL-Ud-wLi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1578" y="882"/>
+            <point key="canvasLocation" x="2455" y="450"/>
         </scene>
         <!--Fees-->
         <scene sceneID="aVU-j7-w5s">
@@ -1711,7 +1716,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 <viewControllerPlaceholder storyboardName="Fees" id="sO1-86-Uki" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3tH-PS-THL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1834" y="1323"/>
+            <point key="canvasLocation" x="2711" y="891"/>
         </scene>
         <!--fee-page-1-->
         <scene sceneID="EDk-jl-8sO">
@@ -1719,7 +1724,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 <viewControllerPlaceholder storyboardName="Fees" referencedIdentifier="fee-page-1" id="c2T-eb-TRE" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7PR-Ba-X7J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1347" y="1323"/>
+            <point key="canvasLocation" x="2224" y="891"/>
         </scene>
         <!--Stake Confirm View Controller-->
         <scene sceneID="x3Y-ec-oes">
@@ -2345,7 +2350,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iSa-Qk-yKh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3365" y="882"/>
+            <point key="canvasLocation" x="5323" y="896"/>
         </scene>
         <!--Fees-->
         <scene sceneID="5pH-kz-vG6">
@@ -2353,7 +2358,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 <viewControllerPlaceholder storyboardName="Fees" id="a7Q-au-iZa" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QFa-KW-Lfc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3621" y="1323"/>
+            <point key="canvasLocation" x="5579" y="1337"/>
         </scene>
         <!--fee-page-1-->
         <scene sceneID="iJZ-b3-2wp">
@@ -2361,7 +2366,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 <viewControllerPlaceholder storyboardName="Fees" referencedIdentifier="fee-page-1" id="0Aj-Sl-N08" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="niB-2s-Uuq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3138" y="1323"/>
+            <point key="canvasLocation" x="5096" y="1337"/>
         </scene>
         <!--step1-->
         <scene sceneID="J02-Md-6Yu">
@@ -3050,10 +3055,218 @@ Bakers also vote on behalf of users to make changes to the network, during the G
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
                     </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="4bt-5V-zUK" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="f7K-zn-INT"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="btm-Rs-fxw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="938" y="3469"/>
+        </scene>
+        <!--step4-->
+        <scene sceneID="Zpw-9c-SOU">
+            <objects>
+                <viewController storyboardIdentifier="step4" title="step4" id="4bt-5V-zUK" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="VY3-Wf-6z0">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learn about staking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AhJ-vn-cG2">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="zPw-Lu-hPy">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="Ufy-ZQ-jg8"/>
+                                    <constraint firstAttribute="height" constant="100" id="n0f-fn-GfB"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TsQ-2W-Me0">
+                                <rect key="frame" x="32" y="242" width="350" height="84"/>
+                                <string key="text">Now that we have delegated to a baker, it's time to maximize our rewards by staking a portion or all of our XTZ. Once again, we are here to explain everything step by step. Let's learn a little bit about staking before we continue.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="4Qs-iD-tVM"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="zPw-Lu-hPy" firstAttribute="top" secondItem="AhJ-vn-cG2" secondAttribute="bottom" constant="24" id="30K-g8-6k8"/>
+                            <constraint firstItem="zPw-Lu-hPy" firstAttribute="centerX" secondItem="4Qs-iD-tVM" secondAttribute="centerX" id="5WX-Mk-GvK"/>
+                            <constraint firstItem="AhJ-vn-cG2" firstAttribute="top" secondItem="4Qs-iD-tVM" secondAttribute="top" constant="30" id="ELB-LX-CeJ"/>
+                            <constraint firstItem="4Qs-iD-tVM" firstAttribute="trailing" secondItem="TsQ-2W-Me0" secondAttribute="trailing" constant="32" id="QEP-h1-VNA"/>
+                            <constraint firstItem="TsQ-2W-Me0" firstAttribute="top" secondItem="zPw-Lu-hPy" secondAttribute="bottom" constant="16" id="Wkb-Ti-oLD"/>
+                            <constraint firstItem="TsQ-2W-Me0" firstAttribute="leading" secondItem="4Qs-iD-tVM" secondAttribute="leading" constant="32" id="bIe-DX-X1c"/>
+                            <constraint firstItem="AhJ-vn-cG2" firstAttribute="leading" secondItem="4Qs-iD-tVM" secondAttribute="leading" constant="16" id="doz-HY-Za0"/>
+                            <constraint firstItem="4Qs-iD-tVM" firstAttribute="trailing" secondItem="AhJ-vn-cG2" secondAttribute="trailing" constant="16" id="y03-ZO-lkX"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="oCZ-NI-cuk"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="E44-3v-yBA" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="3vd-Ds-uxc"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JQ8-EC-vEq" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1997" y="3469"/>
+        </scene>
+        <!--step5-->
+        <scene sceneID="xLi-Mr-jZ4">
+            <objects>
+                <viewController storyboardIdentifier="step5" title="step5" id="E44-3v-yBA" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="hlm-Ow-gpW">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="GaP-Sw-thW"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="yaU-RN-bHF"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="stake-learn-more-7,stake-learn-more-8"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="UYg-eD-ReE" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="KRy-lM-rBr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qkx-hj-KQR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3026" y="3469"/>
+        </scene>
+        <!--step6-->
+        <scene sceneID="TXE-Uc-mF8">
+            <objects>
+                <viewController storyboardIdentifier="step6" title="step6" id="UYg-eD-ReE" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aeG-IX-7hb">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Staking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCs-nJ-h9i">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Wfa-2s-MFI">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="5uG-KH-DBD"/>
+                                    <constraint firstAttribute="width" constant="100" id="YSx-0C-cVn"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WQF-hJ-dgh">
+                                <rect key="frame" x="32" y="242" width="350" height="84"/>
+                                <string key="text">Now that we understand the basics, it’s time to start staking. Unlike delegating, to stake you must choose a specific amount to lock up. You should leave at least 1 XTZ in your account to cover any future transaction fees.</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="maa-7w-K9m"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Wfa-2s-MFI" firstAttribute="centerX" secondItem="maa-7w-K9m" secondAttribute="centerX" id="Dfr-cq-s9H"/>
+                            <constraint firstItem="maa-7w-K9m" firstAttribute="trailing" secondItem="WQF-hJ-dgh" secondAttribute="trailing" constant="32" id="Kp2-uN-Sht"/>
+                            <constraint firstItem="WQF-hJ-dgh" firstAttribute="leading" secondItem="maa-7w-K9m" secondAttribute="leading" constant="32" id="Ogk-xu-WEu"/>
+                            <constraint firstItem="ZCs-nJ-h9i" firstAttribute="top" secondItem="maa-7w-K9m" secondAttribute="top" constant="30" id="XtH-fb-YjD"/>
+                            <constraint firstItem="ZCs-nJ-h9i" firstAttribute="leading" secondItem="maa-7w-K9m" secondAttribute="leading" constant="16" id="YGd-XR-x5F"/>
+                            <constraint firstItem="WQF-hJ-dgh" firstAttribute="top" secondItem="Wfa-2s-MFI" secondAttribute="bottom" constant="16" id="b8e-Lt-oG7"/>
+                            <constraint firstItem="Wfa-2s-MFI" firstAttribute="top" secondItem="ZCs-nJ-h9i" secondAttribute="bottom" constant="24" id="dhT-GI-XAg"/>
+                            <constraint firstItem="maa-7w-K9m" firstAttribute="trailing" secondItem="ZCs-nJ-h9i" secondAttribute="trailing" constant="16" id="gqn-rI-ErH"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hxb-42-Yfe"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="Hp3-Bf-fEw" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="EYM-J8-ZHz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5gp-N7-XaT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4045" y="3469"/>
+        </scene>
+        <!--step7-->
+        <scene sceneID="A9A-V2-rdP">
+            <objects>
+                <viewController storyboardIdentifier="step7" title="step7" id="Hp3-Bf-fEw" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="gIl-u7-kxD">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yt-ax-suH">
+                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="qLU-Mt-hqg">
+                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="9St-mV-JiD"/>
+                                    <constraint firstAttribute="width" constant="100" id="SgR-aW-9us"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcY-fM-5FE">
+                                <rect key="frame" x="32" y="242" width="350" height="218.5"/>
+                                <string key="text">You have successfully delegated and staked to a baker, and are now helping secure the network! 
+
+You will begin receiving:
+
+Delegation rewards: in roughly 21 days
+Staking rewards: in small peices every few minutes
+
+You can see these rewards, change your baker, stake more, unstake, or finalise your unstake by tapping on your XTZ balance on the main account page to view more details at any time.
+</string>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vMw-7Y-DnN"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="mcY-fM-5FE" firstAttribute="top" secondItem="qLU-Mt-hqg" secondAttribute="bottom" constant="16" id="0W1-G9-gfR"/>
+                            <constraint firstItem="vMw-7Y-DnN" firstAttribute="trailing" secondItem="6yt-ax-suH" secondAttribute="trailing" constant="16" id="1jS-jK-YSF"/>
+                            <constraint firstItem="6yt-ax-suH" firstAttribute="top" secondItem="vMw-7Y-DnN" secondAttribute="top" constant="30" id="Imo-x1-FY8"/>
+                            <constraint firstItem="mcY-fM-5FE" firstAttribute="leading" secondItem="vMw-7Y-DnN" secondAttribute="leading" constant="32" id="PDf-hh-HUs"/>
+                            <constraint firstItem="qLU-Mt-hqg" firstAttribute="top" secondItem="6yt-ax-suH" secondAttribute="bottom" constant="24" id="TVx-H2-gwC"/>
+                            <constraint firstItem="6yt-ax-suH" firstAttribute="leading" secondItem="vMw-7Y-DnN" secondAttribute="leading" constant="16" id="Unx-T6-62H"/>
+                            <constraint firstItem="qLU-Mt-hqg" firstAttribute="centerX" secondItem="vMw-7Y-DnN" secondAttribute="centerX" id="ZwN-bV-f5U"/>
+                            <constraint firstItem="vMw-7Y-DnN" firstAttribute="trailing" secondItem="mcY-fM-5FE" secondAttribute="trailing" constant="32" id="zzU-Va-QnL"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="oOa-mU-759"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rdX-Rb-ehC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5054" y="3469"/>
+        </scene>
+        <!--Stake Onboarding Container Nav Controller-->
+        <scene sceneID="fDD-UL-2hi">
+            <objects>
+                <navigationController id="aCF-K3-anG" customClass="StakeOnboardingContainerNavController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Jba-a6-jKE">
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="iLw-Ex-Bl9" kind="relationship" relationship="rootViewController" id="XXw-WR-L6d"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bkS-Ez-5kT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-109" y="2367"/>
         </scene>
     </scenes>
     <resources>

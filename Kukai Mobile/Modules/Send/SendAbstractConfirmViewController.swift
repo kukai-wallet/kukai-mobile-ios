@@ -114,6 +114,7 @@ class SendAbstractConfirmViewController: UIViewController {
 			if collapseOnly == false {
 				if isDuringStakeOnboardingFlow {
 					topMostNavigationController?.dismiss(animated: true)
+					
 				} else {
 					(self?.presentingViewController as? UINavigationController)?.popToHome()
 				}

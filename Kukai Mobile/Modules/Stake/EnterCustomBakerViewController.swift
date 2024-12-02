@@ -18,6 +18,7 @@ class EnterCustomBakerViewController: UIViewController, EnterAddressComponentDel
 		enterAddressComponent.headerLabel.text = "Baker:"
 		enterAddressComponent.updateAvilableAddressTypes([.tezosAddress, .tezosDomain])
 		enterAddressComponent.delegate = self
+		enterAddressComponent.allowEmpty = true // undelegate by entering blank into field
     }
 	
 	func validatedInput(entered: String, validAddress: Bool, ofType: AddressType) {
