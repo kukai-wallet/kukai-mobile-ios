@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,46 +18,18 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsStakingRewardsCell" rowHeight="229" id="shR-bU-kJL" customClass="TokenDetailsStakingRewardsCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="230"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsStakingRewardsCell" rowHeight="283" id="shR-bU-kJL" customClass="TokenDetailsStakingRewardsCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="284"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="shR-bU-kJL" id="IxO-tQ-5vU">
-                <rect key="frame" x="0.0" y="0.0" width="393" height="230"/>
+                <rect key="frame" x="0.0" y="0.0" width="393" height="284"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uH2-Vg-gBh" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="16" y="0.0" width="361" height="230"/>
+                        <rect key="frame" x="16" y="0.0" width="361" height="284"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DELEGATE REWARDS" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NrG-Jy-xbR">
-                                <rect key="frame" x="120.33333333333334" y="16" width="120.66666666666666" height="14.666666666666664"/>
-                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
-                                <color key="textColor" name="Txt8"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0PP-Cq-QVG" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="323" y="8" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="30" id="M1V-9h-gvc"/>
-                                    <constraint firstAttribute="height" constant="30" id="tf9-h8-fi4"/>
-                                </constraints>
-                                <color key="tintColor" name="Txt10"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="image" keyPath="customImage" value="btnInfoKnockout"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="imageWidth">
-                                        <real key="value" value="14"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="imageHeight">
-                                        <real key="value" value="14"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="color" keyPath="customImageTint">
-                                        <color key="value" name="Txt10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="o5X-yu-XHY">
-                                <rect key="frame" x="16" y="46.666666666666671" width="142.66666666666666" height="167.33333333333331"/>
+                                <rect key="frame" x="16" y="16" width="142.66666666666666" height="252"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Pbp-74-fBM">
                                         <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="28"/>
@@ -95,16 +67,37 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="VUH-x6-dEt">
-                                        <rect key="frame" x="0.0" y="37.000000000000014" width="142.66666666666666" height="35.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="37" width="142.66666666666666" height="50"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zX5-8G-bza">
-                                                <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="14.666666666666666"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zX5-8G-bza">
+                                                <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="29"/>
+                                                <string key="text">Delegation
+Reward (fee)</string>
                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                 <color key="textColor" name="Txt10"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;amount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AsY-M3-P9Y">
-                                                <rect key="frame" x="0.0" y="18.666666666666657" width="142.66666666666666" height="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;delAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AsY-M3-P9Y">
+                                                <rect key="frame" x="0.0" y="33" width="142.66666666666666" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt2"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="v9Y-yb-I8A">
+                                        <rect key="frame" x="0.0" y="96" width="142.66666666666666" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Zsg-ke-gbm">
+                                                <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="29"/>
+                                                <string key="text">Staking
+Est Reward (fee)</string>
+                                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
+                                                <color key="textColor" name="Txt10"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;stakeAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jos-8s-x1O">
+                                                <rect key="frame" x="0.0" y="33" width="142.66666666666666" height="17"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                 <color key="textColor" name="Txt2"/>
                                                 <nil key="highlightedColor"/>
@@ -112,7 +105,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="lNg-0O-cYK">
-                                        <rect key="frame" x="0.0" y="81.666666666666686" width="142.66666666666666" height="35.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="155" width="142.66666666666666" height="35.666666666666657"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uiC-Cl-xdT">
                                                 <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="14.666666666666666"/>
@@ -129,7 +122,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="JPj-Oh-Rv0">
-                                        <rect key="frame" x="0.0" y="126.33333333333334" width="142.66666666666666" height="41"/>
+                                        <rect key="frame" x="0.0" y="199.66666666666666" width="142.66666666666666" height="52.333333333333343"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="01i-7m-Nej">
                                                 <rect key="frame" x="0.0" y="0.0" width="142.66666666666666" height="14.666666666666666"/>
@@ -138,7 +131,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="&lt;cycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PR8-Ox-teK">
-                                                <rect key="frame" x="0.0" y="18.666666666666657" width="142.66666666666666" height="22.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="18.666666666666682" width="142.66666666666666" height="33.666666666666657"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                 <color key="textColor" name="Txt2"/>
                                                 <nil key="highlightedColor"/>
@@ -148,7 +141,7 @@
                                 </subviews>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="cgC-jj-2Pq">
-                                <rect key="frame" x="202.66666666666663" y="46.666666666666671" width="142.33333333333337" height="167.33333333333331"/>
+                                <rect key="frame" x="202.66666666666663" y="16" width="142.33333333333337" height="252"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ckm-yk-7sr">
                                         <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="28"/>
@@ -186,16 +179,37 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="PWX-vl-OXp">
-                                        <rect key="frame" x="0.0" y="37.000000000000014" width="142.33333333333334" height="35.666666666666671"/>
+                                        <rect key="frame" x="0.0" y="37" width="142.33333333333334" height="50"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est Amount (fee)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Km-tS-Jbz">
-                                                <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="14.666666666666666"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Km-tS-Jbz">
+                                                <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="29"/>
+                                                <string key="text">Delegation
+Est Reward (fee)</string>
                                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
                                                 <color key="textColor" name="Txt10"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;estAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysN-Zl-PZN">
-                                                <rect key="frame" x="0.0" y="18.666666666666657" width="142.33333333333334" height="17"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;estDelAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysN-Zl-PZN">
+                                                <rect key="frame" x="0.0" y="33" width="142.33333333333334" height="17"/>
+                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt2"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="rOA-Hi-na5">
+                                        <rect key="frame" x="0.0" y="96" width="142.33333333333334" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tpO-Bi-cwb">
+                                                <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="29"/>
+                                                <string key="text">Staking
+Est Reward (fee)</string>
+                                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
+                                                <color key="textColor" name="Txt10"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;estStakeAmount&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IqW-W3-xZ4">
+                                                <rect key="frame" x="0.0" y="33" width="142.33333333333334" height="17"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                 <color key="textColor" name="Txt2"/>
                                                 <nil key="highlightedColor"/>
@@ -203,7 +217,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="UAA-IS-zg7">
-                                        <rect key="frame" x="0.0" y="81.666666666666686" width="142.33333333333334" height="35.666666666666657"/>
+                                        <rect key="frame" x="0.0" y="155" width="142.33333333333334" height="35.666666666666657"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Est Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oMQ-5B-30K">
                                                 <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="14.666666666666666"/>
@@ -220,7 +234,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="52N-jT-dji">
-                                        <rect key="frame" x="0.0" y="126.33333333333334" width="142.33333333333334" height="41"/>
+                                        <rect key="frame" x="0.0" y="199.66666666666666" width="142.33333333333334" height="52.333333333333343"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cycle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GsJ-Cw-Ieh">
                                                 <rect key="frame" x="0.0" y="0.0" width="142.33333333333334" height="14.666666666666666"/>
@@ -229,7 +243,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="&lt;estCycle&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sTd-t7-2nl">
-                                                <rect key="frame" x="0.0" y="18.666666666666657" width="142.33333333333334" height="22.333333333333329"/>
+                                                <rect key="frame" x="0.0" y="18.666666666666682" width="142.33333333333334" height="33.666666666666657"/>
                                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                                 <color key="textColor" name="Txt2"/>
                                                 <nil key="highlightedColor"/>
@@ -239,7 +253,7 @@
                                 </subviews>
                             </stackView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ArrowDirectiRightFilled" translatesAutoresizingMaskIntoConstraints="NO" id="i2b-ye-lhv">
-                                <rect key="frame" x="158.66666666666666" y="97" width="36" height="36"/>
+                                <rect key="frame" x="158.66666666666666" y="124" width="36" height="36"/>
                                 <color key="tintColor" name="BGB4"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="MJd-rX-M8G"/>
@@ -249,19 +263,15 @@
                         </subviews>
                         <constraints>
                             <constraint firstItem="cgC-jj-2Pq" firstAttribute="leading" secondItem="i2b-ye-lhv" secondAttribute="trailing" constant="8" id="57J-be-Kjk"/>
-                            <constraint firstItem="o5X-yu-XHY" firstAttribute="top" secondItem="NrG-Jy-xbR" secondAttribute="bottom" constant="16" id="7No-75-OXV"/>
-                            <constraint firstAttribute="trailing" secondItem="0PP-Cq-QVG" secondAttribute="trailing" constant="8" id="MIm-LD-AuZ"/>
                             <constraint firstAttribute="bottom" secondItem="cgC-jj-2Pq" secondAttribute="bottom" constant="16" id="Mkr-Fs-00l"/>
                             <constraint firstItem="i2b-ye-lhv" firstAttribute="leading" secondItem="o5X-yu-XHY" secondAttribute="trailing" id="Msh-4F-qaG"/>
                             <constraint firstAttribute="trailing" secondItem="cgC-jj-2Pq" secondAttribute="trailing" constant="16" id="UGA-q5-nGr"/>
-                            <constraint firstItem="0PP-Cq-QVG" firstAttribute="top" secondItem="uH2-Vg-gBh" secondAttribute="top" constant="8" id="fyb-ui-h8s"/>
-                            <constraint firstItem="cgC-jj-2Pq" firstAttribute="top" secondItem="NrG-Jy-xbR" secondAttribute="bottom" constant="16" id="jDY-BI-36H"/>
+                            <constraint firstItem="cgC-jj-2Pq" firstAttribute="top" secondItem="uH2-Vg-gBh" secondAttribute="top" constant="16" id="bab-ZW-kld"/>
                             <constraint firstItem="o5X-yu-XHY" firstAttribute="leading" secondItem="uH2-Vg-gBh" secondAttribute="leading" constant="16" id="jIG-NP-1n7"/>
                             <constraint firstItem="i2b-ye-lhv" firstAttribute="centerY" secondItem="uH2-Vg-gBh" secondAttribute="centerY" id="nIV-03-GIf"/>
                             <constraint firstAttribute="bottom" secondItem="o5X-yu-XHY" secondAttribute="bottom" constant="16" id="npN-fm-qmK"/>
                             <constraint firstItem="cgC-jj-2Pq" firstAttribute="width" secondItem="o5X-yu-XHY" secondAttribute="width" id="u6K-FQ-as7"/>
-                            <constraint firstItem="NrG-Jy-xbR" firstAttribute="top" secondItem="uH2-Vg-gBh" secondAttribute="top" constant="16" id="v7R-06-JDZ"/>
-                            <constraint firstItem="NrG-Jy-xbR" firstAttribute="centerX" secondItem="uH2-Vg-gBh" secondAttribute="centerX" id="zVp-6j-VLn"/>
+                            <constraint firstItem="o5X-yu-XHY" firstAttribute="top" secondItem="uH2-Vg-gBh" secondAttribute="top" constant="16" id="ymt-qe-Phm"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
@@ -282,32 +292,27 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="containerView" destination="uH2-Vg-gBh" id="YtY-EB-bxx"/>
-                <outlet property="infoButton" destination="0PP-Cq-QVG" id="xBq-6k-2Xj"/>
-                <outlet property="lastAmount" destination="AsY-M3-P9Y" id="gva-is-nLd"/>
-                <outlet property="lastAmountTitle" destination="zX5-8G-bza" id="bmv-5P-oLa"/>
                 <outlet property="lastBaker" destination="ubc-vp-oLJ" id="By1-Y9-3s0"/>
                 <outlet property="lastBakerIcon" destination="EoA-2N-bkY" id="pDF-EQ-WPz"/>
                 <outlet property="lastCycle" destination="PR8-Ox-teK" id="yDm-fO-W3E"/>
                 <outlet property="lastCycleTitle" destination="01i-7m-Nej" id="MpD-AM-FZ9"/>
+                <outlet property="lastDelegationAmount" destination="AsY-M3-P9Y" id="1tL-FC-Koj"/>
+                <outlet property="lastDelegationAmountTitle" destination="zX5-8G-bza" id="NRu-KK-oRb"/>
+                <outlet property="lastStakeAmount" destination="jos-8s-x1O" id="LuC-wY-kqd"/>
                 <outlet property="lastTime" destination="nL5-3k-JIz" id="bUC-hF-Hnl"/>
                 <outlet property="lastTimeTitle" destination="uiC-Cl-xdT" id="Ao1-tw-Atc"/>
-                <outlet property="nextAmount" destination="ysN-Zl-PZN" id="ZcL-Dx-OcY"/>
                 <outlet property="nextBaker" destination="MlS-Vu-VoM" id="Rv4-2P-zpy"/>
                 <outlet property="nextBakerIcon" destination="okW-3M-ofV" id="5He-aX-NBT"/>
                 <outlet property="nextCycle" destination="sTd-t7-2nl" id="TUC-cj-ivT"/>
+                <outlet property="nextDelegationAmount" destination="ysN-Zl-PZN" id="U3v-dI-QBB"/>
+                <outlet property="nextStakeAmount" destination="IqW-W3-xZ4" id="fiX-eJ-Xmo"/>
                 <outlet property="nextTime" destination="Wok-60-ixL" id="ndq-pd-v07"/>
             </connections>
-            <point key="canvasLocation" x="84.732824427480907" y="23.239436619718312"/>
+            <point key="canvasLocation" x="84.732824427480907" y="42.253521126760567"/>
         </tableViewCell>
     </objects>
-    <designables>
-        <designable name="0PP-Cq-QVG">
-            <size key="intrinsicContentSize" width="38" height="28"/>
-        </designable>
-    </designables>
     <resources>
         <image name="ArrowDirectiRightFilled" width="24" height="24"/>
-        <image name="btnInfoKnockout" width="36" height="36"/>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

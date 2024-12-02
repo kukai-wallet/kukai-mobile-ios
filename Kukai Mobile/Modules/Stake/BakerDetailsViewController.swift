@@ -17,7 +17,7 @@ class BakerDetailsViewController: UIViewController {
 	@IBOutlet weak var rewardslabel: UILabel!
 	@IBOutlet weak var freeLabel: UILabel!
 	
-	@IBOutlet weak var stakeButton: CustomisableButton!
+	@IBOutlet weak var delegateButton: CustomisableButton!
 	
 	var dimBackground: Bool = false
 	
@@ -25,7 +25,7 @@ class BakerDetailsViewController: UIViewController {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		stakeButton.customButtonType = .primary
+		delegateButton.customButtonType = .primary
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -35,7 +35,7 @@ class BakerDetailsViewController: UIViewController {
 			return
 		}
 		
-		stakeButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
+		delegateButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
 		
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		
@@ -50,9 +50,9 @@ class BakerDetailsViewController: UIViewController {
 		self.dismissBottomSheet()
 	}
 	
-	@IBAction func stakeTapped(_ sender: Any) {
-		let parent = ((self.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? StakeViewController)
-		parent?.stakeTapped()
+	@IBAction func delegateTapped(_ sender: Any) {
+		let parent = ((self.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? ChooseBakerViewController)
+		parent?.delegateTapped()
 		self.dismissBottomSheet()
 	}
 }

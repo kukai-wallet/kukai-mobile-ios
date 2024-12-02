@@ -1,19 +1,20 @@
 //
-//  SendTokenConfirmViewController.swift
+//  StakeConfirmViewController.swift
 //  Kukai Mobile
 //
-//  Created by Simon Mcloughlin on 31/01/2023.
+//  Created by Simon Mcloughlin on 21/11/2024.
 //
 
 import UIKit
 import KukaiCoreSwift
 import ReownWalletKit
-import OSLog
+import os.log
 
-class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
 	@IBOutlet var scrollView: UIScrollView!
 	@IBOutlet weak var closeButton: CustomisableButton!
+	@IBOutlet weak var titleLabel: UILabel!
 	
 	// Connected app
 	@IBOutlet weak var connectedAppLabel: UILabel!
@@ -27,16 +28,19 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var fromAlias: UILabel!
 	@IBOutlet weak var fromAddress: UILabel!
 	
-	// Send
+	// Baker
+	@IBOutlet weak var bakerIcon: UIImageView!
+	@IBOutlet weak var bakerNameLabel: UILabel!
+	@IBOutlet weak var bakerSplitValueLabel: UILabel!
+	@IBOutlet weak var bakerSpaceValueLabel: UILabel!
+	@IBOutlet weak var bakerRewardsValueLabel: UILabel!
+	
+	// Stake
+	@IBOutlet weak var actionTitleLabel: UILabel!
 	@IBOutlet weak var tokenIcon: UIImageView!
 	@IBOutlet weak var tokenAmount: UILabel!
 	@IBOutlet weak var tokenSymbol: UILabel!
 	@IBOutlet weak var tokenFiat: UILabel!
-	
-	// To
-	@IBOutlet weak var toIcon: UIImageView!
-	@IBOutlet weak var toAlias: UILabel!
-	@IBOutlet weak var toAddress: UILabel!
 	
 	// Fee
 	@IBOutlet weak var feeValueLabel: UILabel!
@@ -46,6 +50,9 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
 	
+	private var selectedToken: Token? = nil
+	private var selectedBaker: TzKTBaker? = nil
+	private var isStake = true
 	private var isSendingMaxTez = false
 	
 	var dimBackground: Bool = true
@@ -54,10 +61,35 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		feeButton.accessibilityIdentifier = "fee-button"
-		
 		if DependencyManager.shared.currentNetworkType != .ghostnet {
 			testnetWarningView.isHidden = true
+		}
+		
+		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				self.titleLabel.text = "Confirm Stake"
+				self.actionTitleLabel.text = "Stake:"
+				self.selectedToken = TransactionService.shared.stakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.stakeData.chosenBaker
+				
+			case .unstake:
+				self.titleLabel.text = "Confirm Unstake"
+				self.actionTitleLabel.text = "Unstake:"
+				self.selectedToken = TransactionService.shared.unstakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.unstakeData.chosenBaker
+				
+			default:
+				self.titleLabel.text = "Confirm Finalise"
+				self.actionTitleLabel.text = "Finalise:"
+				self.selectedToken = TransactionService.shared.finaliseUnstakeData.chosenToken
+				self.selectedBaker = TransactionService.shared.finaliseUnstakeData.chosenBaker
+		}
+		
+		guard let baker = selectedBaker else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-token".localized())
+			self.dismissBottomSheet()
+			return
 		}
 		
 		
@@ -73,7 +105,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			}
 			
 			self.isWalletConnectOp = true
-			self.currentSendData = TransactionService.shared.walletConnectOperationData.sendData
 			self.selectedMetadata = walletMetadataForRequestedAccount
 			self.connectedAppNameLabel.text = session.peer.name
 			
@@ -84,7 +115,6 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			
 		} else {
 			self.isWalletConnectOp = false
-			self.currentSendData = TransactionService.shared.sendData
 			self.selectedMetadata = DependencyManager.shared.selectedWalletMetadata
 			
 			connectedAppMetadataStackView.isHidden = true
@@ -111,33 +141,30 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		}
 		
 		
-		// Destination view configuration
-		if let alias = currentSendData.destinationAlias {
-			toIcon.image = currentSendData.destinationIcon
-			toAlias.text = alias
-			toAddress.text = currentSendData.destination?.truncateTezosAddress()
+		// Baker info config
+		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
+		if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
+			bakerSplitValueLabel.text = "N/A"
+			bakerSpaceValueLabel.text = "N/A"
+			bakerRewardsValueLabel.text = "N/A"
 			
 		} else {
-			toIcon.image = currentSendData.destinationIcon
-			toAlias.text = currentSendData.destination?.truncateTezosAddress()
-			toAddress.isHidden = true
+			bakerSplitValueLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
+			bakerRewardsValueLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 		}
 		
 		
 		// Fees and amount view config
+		slideErrorStackView.isHidden = true
 		feeValueLabel.accessibilityIdentifier = "fee-amount"
 		feeButton.customButtonType = .secondary
-		
-		
-		// Ledger check
-		slideErrorStackView.isHidden = true
 		
 		slideButton.delegate = self
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
 		updateFees(isFirstCall: true)
 	}
 	
@@ -149,6 +176,8 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		} else {
 			self.connectedAppIcon.image = UIImage.unknownToken()
 		}
+		
+		MediaProxyService.load(url: self.selectedBaker?.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 	}
 	
 	private func selectedOperationsAndFees() -> [KukaiCoreSwift.Operation] {
@@ -175,19 +204,19 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
 			switch sendResult {
-				case .success(let opHash):
-					Logger.app.info("Sent: \(opHash)")
-					self?.didSend = true
-					self?.addPendingTransaction(opHash: opHash)
-					self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
-					
-				case .failure(let sendError):
-					self?.unblockInteraction()
-					self?.slideButton?.resetSlider()
-					
-					if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
-						self?.windowError(withTitle: "error".localized(), description: message)
-					}
+			case .success(let opHash):
+				Logger.app.info("Sent: \(opHash)")
+				self?.didSend = true
+				self?.addPendingTransaction(opHash: opHash)
+				self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
+				
+			case .failure(let sendError):
+				self?.unblockInteraction()
+				self?.slideButton?.resetSlider()
+				
+				if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
+					self?.windowError(withTitle: "error".localized(), description: message)
+				}
 			}
 		}
 	}
@@ -198,7 +227,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func updateAmountDisplay(withValue value: TokenAmount) {
-		guard let token = currentSendData.chosenToken else {
+		guard let token = selectedToken else {
 			tokenIcon.image = UIImage.unknownToken()
 			tokenAmount.text = "0"
 			tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
@@ -216,6 +245,18 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	func updateFees(isFirstCall: Bool = false) {
 		let feesAndData = isWalletConnectOp ? TransactionService.shared.currentRemoteOperationsAndFeesData : TransactionService.shared.currentOperationsAndFeesData
 		let fee = (feesAndData.fee + feesAndData.maxStorageCost)
+		var chosenAmount: TokenAmount? = nil
+		
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				chosenAmount = TransactionService.shared.stakeData.chosenAmount
+				
+			case .unstake:
+				chosenAmount = TransactionService.shared.unstakeData.chosenAmount
+				
+			default:
+				chosenAmount = TransactionService.shared.finaliseUnstakeData.chosenAmount
+		}
 		
 		checkForErrorsAndWarnings(errorStackView: slideErrorStackView, errorLabel: errorLabel, totalFee: fee)
 		feeValueLabel.text = fee.normalisedRepresentation + " XTZ"
@@ -223,8 +264,9 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
-		if !isWalletConnectOp, let token = currentSendData.chosenToken, token.isXTZ(), let amount = currentSendData.chosenAmount, (amount + fee) >= token.availableBalance, let oneMutez = XTZAmount(fromRpcAmount: "1") {
-			let updatedValue = ((token.availableBalance - oneMutez) - fee)
+		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = chosenAmount, (amount + fee) >= token.availableBalance {
+			let oneTez = XTZAmount(fromNormalisedAmount: 1)
+			let updatedValue = ((token.availableBalance - oneTez) - fee)
 			
 			if updatedValue < .zero() {
 				updateAmountDisplay(withValue: .zero())
@@ -251,7 +293,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
 			}
 		} else {
-			updateAmountDisplay(withValue: currentSendData.chosenAmount ?? .zero())
+			updateAmountDisplay(withValue: chosenAmount ?? .zero())
 		}
 	}
 	
@@ -260,47 +302,43 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	}
 	
 	func addPendingTransaction(opHash: String) {
+		var amount: TokenAmount = .zero()
+		var parameters: [String: String] = [:]
+		
 		guard let selectedWalletMetadata = selectedMetadata else { return }
 		
-		let destinationAddress = currentSendData.destination ?? ""
-		let destinationAlias = currentSendData.destinationAlias
-		let amount = currentSendData.chosenAmount ?? .zero()
-		let token = currentSendData.chosenToken
+		switch TransactionService.shared.currentTransactionType {
+			case .stake:
+				amount = TransactionService.shared.stakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "stake", "value": "[\"prim\": \"Unit\"]"]
+				
+			case .unstake:
+				amount = TransactionService.shared.unstakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "unstake", "value": "[\"prim\": \"Unit\"]"]
+				
+			default:
+				amount = TransactionService.shared.finaliseUnstakeData.chosenAmount ?? .zero()
+				parameters = ["entrypoint": "finalize_unstake", "value": "[\"prim\": \"Unit\"]"]
+		}
 		
 		let currentOps = selectedOperationsAndFees()
 		let counter = Decimal(string: currentOps.last?.counter ?? "0") ?? 0
-		let parameters = (currentOps.last(where: { $0.operationKind == .transaction }) as? OperationTransaction)?.parameters as? [String: String]
-		
-		var addPendingResult = true
-		if token?.isXTZ() ?? true {
-			addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
+		let addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
 																				   type: .transaction,
 																				   counter: counter,
 																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: destinationAddress,
-																				   destinationAlias: destinationAlias,
+																				   destinationAddress: selectedWalletMetadata.address,
+																				   destinationAlias: nil,
 																				   xtzAmount: amount,
 																				   parameters: parameters,
-																				   primaryToken: nil)
-		} else {
-			let newToken = Token(name: token?.name, symbol: token?.symbol ?? "", tokenType: token?.tokenType ?? .fungible, faVersion: token?.faVersion, balance: amount, thumbnailURL: token?.thumbnailURL, tokenContractAddress: token?.tokenContractAddress, tokenId: token?.tokenId, nfts: token?.nfts, mintingTool: token?.mintingTool)
-			addPendingResult = DependencyManager.shared.activityService.addPending(opHash: opHash,
-																				   type: .transaction,
-																				   counter: counter,
-																				   fromWallet: selectedWalletMetadata,
-																				   destinationAddress: destinationAddress,
-																				   destinationAlias: destinationAlias,
-																				   xtzAmount: .zero(),
-																				   parameters: parameters,
-																				   primaryToken: newToken)
-		}
+																				   primaryToken: selectedToken)
 		
 		DependencyManager.shared.activityService.addUniqueAddressToPendingOperation(address: selectedWalletMetadata.address)
 		Logger.app.info("Recorded pending transaction: \(addPendingResult)")
 	}
 }
 
-extension SendTokenConfirmViewController: BottomSheetCustomCalculateProtocol {
+extension StakeConfirmViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()

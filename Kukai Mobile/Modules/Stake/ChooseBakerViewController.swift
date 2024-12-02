@@ -9,14 +9,16 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 
-class StakeViewController: UIViewController {
+class ChooseBakerViewController: UIViewController {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
-	private let viewModel = StakeViewModel()
+	private var viewModel = ChooseBakerViewModel()
 	private var cancellable: AnyCancellable?
 	private let footerView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 2))
 	private let blankView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
+	
+	public static let notificationNameBakerChosen = Notification.Name("notification-baker-chosen")
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +49,10 @@ class StakeViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.refresh(animate: false)
+		
+		if viewModel.bakers.count == 0 {
+			viewModel.refresh(animate: false)
+		}
 	}
 	
 	public func enteredCustomBaker(address: String) {
@@ -56,9 +61,10 @@ class StakeViewController: UIViewController {
 		if address == "" {
 			let currentDelegate = DependencyManager.shared.balanceService.account.delegate
 			let name = currentDelegate?.alias ?? currentDelegate?.address.truncateTezosAddress() ?? ""
-			let baker = TzKTBaker(address: "", name: name)
+			let baker = TzKTBaker(address: currentDelegate?.address ?? "", name: name)
 			
 			TransactionService.shared.delegateData.chosenBaker = baker
+			TransactionService.shared.stakeData.chosenBaker = baker
 			TransactionService.shared.delegateData.isAdd = false
 			
 		} else {
@@ -66,11 +72,13 @@ class StakeViewController: UIViewController {
 			
 			if let foundBaker = viewModel.bakerFor(address: address) {
 				TransactionService.shared.delegateData.chosenBaker = foundBaker
+				TransactionService.shared.stakeData.chosenBaker = foundBaker
 				TransactionService.shared.delegateData.isAdd = true
 				
 			} else {
 				let baker = TzKTBaker(address: address, name: address.truncateTezosAddress())
 				TransactionService.shared.delegateData.chosenBaker = baker
+				TransactionService.shared.stakeData.chosenBaker = baker
 				TransactionService.shared.delegateData.isAdd = true
 			}
 		}
@@ -78,11 +86,14 @@ class StakeViewController: UIViewController {
 		createOperationsAndConfirm(toAddress: address)
 	}
 	
-	public func stakeTapped() {
+	public func delegateTapped() {
 		self.showLoadingView()
 		
 		if let baker = TransactionService.shared.delegateData.chosenBaker {
-			createOperationsAndConfirm(toAddress: baker.address)
+			// Add a breif delay so that multiple animations can finish
+			DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+				self?.createOperationsAndConfirm(toAddress: baker.address)
+			}
 		}
 	}
 	
@@ -92,7 +103,13 @@ class StakeViewController: UIViewController {
 			return
 		}
 		
-		let operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
+		var operations: [KukaiCoreSwift.Operation] = []
+		if TransactionService.shared.delegateData.isAdd == true {
+			operations = OperationFactory.delegateOperation(to: toAddress, from: selectedWallet.address)
+		} else {
+			operations = OperationFactory.undelegateOperation(address: selectedWallet.address)
+		}
+		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { [weak self] estimationResult in
 			self?.hideLoadingView()
 			
@@ -109,7 +126,7 @@ class StakeViewController: UIViewController {
 	}
 }
 
-extension StakeViewController: UITableViewDelegate {
+extension ChooseBakerViewController: UITableViewDelegate {
 	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 0
@@ -127,6 +144,7 @@ extension StakeViewController: UITableViewDelegate {
 		if let baker = viewModel.bakerFor(indexPath: indexPath) {
 			
 			TransactionService.shared.delegateData.chosenBaker = baker
+			TransactionService.shared.stakeData.chosenBaker = baker
 			TransactionService.shared.delegateData.isAdd = true
 			self.performSegue(withIdentifier: "details", sender: nil)
 			

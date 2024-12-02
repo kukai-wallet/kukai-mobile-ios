@@ -23,26 +23,15 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	// From
 	@IBOutlet weak var fromContainer: UIView!
-	
-	@IBOutlet weak var fromStackViewSocial: UIStackView!
-	@IBOutlet weak var fromSocialIcon: UIImageView!
-	@IBOutlet weak var fromSocialAlias: UILabel!
-	@IBOutlet weak var fromSocialAddress: UILabel!
-	
-	@IBOutlet weak var fromStackViewRegular: UIStackView!
-	@IBOutlet weak var fromRegularAddress: UILabel!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
 	
 	// Send
-	@IBOutlet weak var largeDisplayStackView: UIStackView!
-	@IBOutlet weak var largeDisplayIcon: UIImageView!
-	@IBOutlet weak var largeDisplayAmount: UILabel!
-	@IBOutlet weak var largeDisplaySymbol: UILabel!
-	@IBOutlet weak var largeDisplayFiat: UILabel!
-	
-	@IBOutlet weak var smallDisplayStackView: UIStackView!
-	@IBOutlet weak var smallDisplayIcon: UIImageView!
-	@IBOutlet weak var smallDisplayAmount: UILabel!
-	@IBOutlet weak var smallDisplayFiat: UILabel!
+	@IBOutlet weak var tokenIcon: UIImageView!
+	@IBOutlet weak var tokenAmount: UILabel!
+	@IBOutlet weak var tokenSymbol: UILabel!
+	@IBOutlet weak var tokenFiat: UILabel!
 	
 	// To
 	@IBOutlet weak var toBatchView: UIView!
@@ -93,17 +82,6 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 				connectedAppURL = smallIconURL
 			}
 			
-			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
-			if let subtitle = media.subtitle {
-				fromStackViewRegular.isHidden = true
-				fromSocialAlias.text = media.title
-				fromSocialIcon.image = media.image
-				fromSocialAddress.text = subtitle
-			} else {
-				fromStackViewSocial.isHidden = true
-				fromRegularAddress.text = media.title
-			}
-			
 		} else {
 			self.isWalletConnectOp = false
 			self.currentBatchData = TransactionService.shared.batchData
@@ -111,7 +89,24 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
-			fromContainer.isHidden = true
+		}
+		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
 		}
 		
 		
@@ -208,40 +203,16 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 	
 	func updateAmountDisplay() {
 		guard let token = self.currentBatchData.mainDisplayToken, let amount = self.currentBatchData.mainDisplayAmount else {
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.image = UIImage.unknownToken()
-			smallDisplayAmount.text = "0"
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
+			tokenIcon.image = UIImage.unknownToken()
+			tokenAmount.text = "0"
+			tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: Token.xtz(), ofAmount: TokenAmount.zero())
 			return
 		}
 		
-		let approxSizeOfOccupiedSpace: CGFloat = 180 // Yes "magic number", deal with it, very unique business logic at play
-		let remainder = UIScreen.main.bounds.width - approxSizeOfOccupiedSpace
 		let amountText = DependencyManager.shared.coinGeckoService.format(decimal: amount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
-		
-		var amountWidth = amountText.widthOfString(usingFont: largeDisplayAmount.font)
-		amountWidth.round(.up)
-		
-		var symbolWidth = token.symbol.widthOfString(usingFont: largeDisplaySymbol.font)
-		symbolWidth.round(.up)
-		
-		if (amountWidth + symbolWidth) > remainder {
-			
-			// Display with more room for long length numbers
-			largeDisplayStackView.isHidden = true
-			smallDisplayIcon.addTokenIcon(token: token)
-			smallDisplayAmount.text = amountText + " " + token.symbol
-			smallDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-		} else {
-			
-			// Display with less room and more detail
-			smallDisplayStackView.isHidden = true
-			largeDisplayIcon.addTokenIcon(token: token)
-			largeDisplayAmount.text = amountText
-			
-			largeDisplaySymbol.text = token.symbol
-			largeDisplayFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
-		}
+		tokenIcon.addTokenIcon(token: token)
+		tokenAmount.text = amountText + " " + token.symbol
+		tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 	}
 	
 	func updateFees(isFirstCall: Bool = false) {

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,15 +15,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsSendCell" rowHeight="86" id="Eed-4g-EYo" customClass="TokenDetailsSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsSendCell" rowHeight="97" id="Eed-4g-EYo" customClass="TokenDetailsSendCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="97"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Eed-4g-EYo" id="c1R-x4-9S0">
-                <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+                <rect key="frame" x="0.0" y="0.0" width="393" height="97"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EHB-IL-xZp" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                        <rect key="frame" x="86.666666666666686" y="16" width="220" height="56"/>
+                        <rect key="frame" x="86.666666666666686" y="24" width="220" height="56"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="56" id="bCR-C6-WDv"/>
                             <constraint firstAttribute="width" constant="220" id="ihr-LC-9yI"/>
@@ -45,23 +45,18 @@
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstAttribute="bottom" secondItem="EHB-IL-xZp" secondAttribute="bottom" constant="16" id="0QK-XP-Rd9"/>
+                    <constraint firstAttribute="bottom" secondItem="EHB-IL-xZp" secondAttribute="bottom" constant="24" id="0QK-XP-Rd9"/>
                     <constraint firstItem="EHB-IL-xZp" firstAttribute="centerX" secondItem="c1R-x4-9S0" secondAttribute="centerX" id="mrh-ca-obr"/>
-                    <constraint firstItem="EHB-IL-xZp" firstAttribute="top" secondItem="c1R-x4-9S0" secondAttribute="top" constant="16" id="rur-s7-62A"/>
+                    <constraint firstItem="EHB-IL-xZp" firstAttribute="top" secondItem="c1R-x4-9S0" secondAttribute="top" constant="24" id="rur-s7-62A"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <connections>
                 <outlet property="sendButton" destination="EHB-IL-xZp" id="z3v-xr-yf2"/>
             </connections>
-            <point key="canvasLocation" x="-283" y="21"/>
+            <point key="canvasLocation" x="-283.20610687022901" y="24.295774647887324"/>
         </tableViewCell>
     </objects>
-    <designables>
-        <designable name="EHB-IL-xZp">
-            <size key="intrinsicContentSize" width="71" height="37.333333333333336"/>
-        </designable>
-    </designables>
     <resources>
         <image name="ArrowUp-right" width="128" height="128"/>
         <namedColor name="TxtBtnPrim1">

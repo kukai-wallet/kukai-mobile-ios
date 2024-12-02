@@ -261,10 +261,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, Activi
 				destinationIcon.image = UIImage(named: record.iconName)
 			}
 		} else {
-			let record = LookupService.shared.lookupFor(address: tx.sender.address)
+			let record = LookupService.shared.lookupFor(address: tx.sender?.address ?? "")
 			if record.type == .address {
 				destinationIconStackView.isHidden = true
-				destinationLabel.text = tx.sender.alias ?? record.displayText.truncateTezosAddress()
+				destinationLabel.text = tx.sender?.alias ?? record.displayText.truncateTezosAddress()
 				
 			} else {
 				destinationIconStackView.isHidden = false

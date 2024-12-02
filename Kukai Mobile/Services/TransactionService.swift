@@ -18,6 +18,9 @@ public class TransactionService {
 	public enum TransactionType {
 		case send
 		case delegate
+		case stake
+		case unstake
+		case finaliseUnstake
 		case exchange
 		case addLiquidity
 		case removeLiquidity
@@ -183,6 +186,24 @@ public class TransactionService {
 		var isAdd: Bool?
 	}
 	
+	public struct StakeData {
+		var chosenBaker: TzKTBaker?
+		var chosenToken: Token? // Incase coming from a dApp for another account
+		var chosenAmount: TokenAmount?
+	}
+	
+	public struct UnstakeData {
+		var chosenBaker: TzKTBaker?
+		var chosenToken: Token? // Incase coming from a dApp for another account
+		var chosenAmount: TokenAmount?
+	}
+	
+	public struct FinaliseUnstakeData {
+		var chosenBaker: TzKTBaker?
+		var chosenToken: Token? // Incase coming from a dApp for another account
+		var chosenAmount: TokenAmount?
+	}
+	
 	public struct ExchangeData {
 		var selectedExchangeAndToken: DipDupExchange?
 		var calculationResult: DexSwapCalculationResult?
@@ -253,6 +274,9 @@ public class TransactionService {
 	
 	public var sendData: SendData
 	public var delegateData: DelegateData
+	public var stakeData: StakeData
+	public var unstakeData: UnstakeData
+	public var finaliseUnstakeData: FinaliseUnstakeData
 	public var exchangeData: ExchangeData
 	public var liquidityDetails: LiquidityDetails
 	public var addLiquidityData: AddLiquidityData
@@ -268,6 +292,9 @@ public class TransactionService {
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.delegateData = DelegateData(chosenBaker: nil, isAdd: nil)
+		self.stakeData = StakeData(chosenBaker: nil)
+		self.unstakeData = UnstakeData(chosenBaker: nil)
+		self.finaliseUnstakeData = FinaliseUnstakeData(chosenBaker: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)
@@ -303,6 +330,9 @@ public class TransactionService {
 		
 		self.sendData = SendData(chosenToken: nil, chosenNFT: nil, chosenAmount: nil, destination: nil, destinationAlias: nil, destinationIcon: nil)
 		self.delegateData = DelegateData(chosenBaker: nil, isAdd: nil)
+		self.stakeData = StakeData(chosenBaker: nil, chosenToken: nil, chosenAmount: nil)
+		self.unstakeData = UnstakeData(chosenBaker: nil)
+		self.finaliseUnstakeData = FinaliseUnstakeData(chosenBaker: nil)
 		self.exchangeData = ExchangeData(selectedExchangeAndToken: nil, calculationResult: nil, isXtzToToken: nil, fromAmount: nil, toAmount: nil, exchangeRateString: nil)
 		self.liquidityDetails = LiquidityDetails(selectedPosition: nil)
 		self.addLiquidityData = AddLiquidityData(selectedExchangeAndToken: nil, calculationResult: nil, token1: nil, token2: nil)

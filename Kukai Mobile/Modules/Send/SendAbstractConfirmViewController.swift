@@ -99,13 +99,25 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	func dismissAndReturn(collapseOnly: Bool) {
 		DispatchQueue.main.async { [weak self] in
-			self?.dismiss(animated: true, completion: {
-				UIViewController.removeLoadingView()
-				UIViewController.removeLoadingModal()
-			})
+			let topMostNavigationController = ((self?.presentationController?.presentingViewController as? UINavigationController)?.presentationController?.presentingViewController as? UINavigationController)
+			let isDuringStakeOnboardingFlow = topMostNavigationController?.viewControllers.contains(where: { $0 is StakeOnboardingContainerViewController }) ?? false
 			
+			// Only directly dismiss the current confirmation screen if its not part of the stake onboarding flow, as that requires a special dismiss to avoid temporary screens popping up
+			if !(isDuringStakeOnboardingFlow && collapseOnly == false) {
+				self?.dismiss(animated: true, completion: {
+					UIViewController.removeLoadingView()
+					UIViewController.removeLoadingModal()
+				})
+			}
+			
+			// If we are part of stake onboarding flow we want to just dismiss the entire thing in one action. Otherwise we need two types of animations
 			if collapseOnly == false {
-				(self?.presentingViewController as? UINavigationController)?.popToHome()
+				if isDuringStakeOnboardingFlow {
+					topMostNavigationController?.dismiss(animated: true)
+					
+				} else {
+					(self?.presentingViewController as? UINavigationController)?.popToHome()
+				}
 			}
 		}
 	}

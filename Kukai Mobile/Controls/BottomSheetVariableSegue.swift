@@ -48,7 +48,7 @@ public class BottomSheetCustomSegue: UIStoryboardSegue {
 		} else {
 			let customId = UISheetPresentationController.Detent.Identifier("large-minus-background-effect")
 			let customDetent = UISheetPresentationController.Detent.custom(identifier: customId) { context in
-				return context.maximumDetentValue - 0.1
+				return context.maximumDetentValue - 1
 			}
 			dest.detents = [customDetent]
 		}

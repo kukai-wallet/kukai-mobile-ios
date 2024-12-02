@@ -12,13 +12,10 @@ import KukaiCoreSwift
 class SendCollectibleAmountViewController: UIViewController {
 	
 	@IBOutlet weak var scrollView: UIScrollView!
-	@IBOutlet weak var toStackViewSocial: UIStackView!
-	@IBOutlet weak var toStackViewRegular: UIStackView!
 	
 	@IBOutlet weak var addressIcon: UIImageView!
 	@IBOutlet weak var addressAliasLabel: UILabel!
 	@IBOutlet weak var addressLabel: UILabel!
-	@IBOutlet weak var regularAddressLabel: UILabel!
 	
 	@IBOutlet weak var collectibleImage: UIImageView!
 	@IBOutlet weak var collectibleName: UILabel!
@@ -46,14 +43,14 @@ class SendCollectibleAmountViewController: UIViewController {
 		
 		// To section
 		if let alias = TransactionService.shared.sendData.destinationAlias {
-			toStackViewRegular.isHidden = true
-			addressAliasLabel.text = alias
 			addressIcon.image = TransactionService.shared.sendData.destinationIcon
+			addressAliasLabel.text = alias
 			addressLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
 			
 		} else {
-			toStackViewSocial.isHidden = true
-			regularAddressLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			addressIcon.image = TransactionService.shared.sendData.destinationIcon
+			addressAliasLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			addressLabel.isHidden = true
 		}
 		
 		

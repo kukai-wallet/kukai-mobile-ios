@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TokenDetailsStakeBalanceCell" rowHeight="162" id="KGk-i7-Jjw" customClass="TokenDetailsStakeBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="499" height="162"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="499" height="162"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Staked Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QYH-jk-CbB">
+                        <rect key="frame" x="16" y="7.9999999999999991" width="85" height="14.666666666666661"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="&lt;stakedBalance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J8b-TF-6Hl">
+                        <rect key="frame" x="16" y="30.666666666666671" width="111" height="17"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                        <color key="textColor" name="Txt2"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="&lt;stakedValue&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbg-U1-Vir">
+                        <rect key="frame" x="16" y="51.666666666666664" width="82" height="14.999999999999993"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Ready to Finalize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vjw-0d-izd">
+                        <rect key="frame" x="389" y="7.9999999999999991" width="94" height="14.666666666666661"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="&lt;finalizeBalance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RRG-JJ-Snd">
+                        <rect key="frame" x="368.66666666666669" y="30.666666666666671" width="114.33333333333331" height="17"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
+                        <color key="textColor" name="Txt2"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="249" verticalCompressionResistancePriority="751" text="&lt;finalizeValue&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aCg-AW-Y9w">
+                        <rect key="frame" x="398" y="51.666666666666664" width="85" height="22.333333333333336"/>
+                        <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3eF-f5-i5r" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                        <rect key="frame" x="16" y="90" width="145" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="56" id="NhZ-9p-ek6"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                        <color key="tintColor" name="TxtBtnSec1"/>
+                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                        <buttonConfiguration key="configuration" style="plain" title="Stake">
+                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                        </buttonConfiguration>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="stakeTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="QJn-vc-uLQ"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qC8-4j-66U" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                        <rect key="frame" x="177" y="90" width="145" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="56" id="d7F-6k-4Ni"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                        <color key="tintColor" name="TxtBtnSec1"/>
+                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                        <buttonConfiguration key="configuration" style="plain" title="Unstake">
+                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                        </buttonConfiguration>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="unstakeTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="FzG-Jt-kgn"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jFx-84-BB4" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                        <rect key="frame" x="338" y="90" width="145" height="56"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="56" id="w3y-lu-WLs"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                        <color key="tintColor" name="TxtBtnSec1"/>
+                        <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                        <state key="normal" title="Send" image="ArrowUp-right"/>
+                        <buttonConfiguration key="configuration" style="plain" title="Finalize">
+                            <fontDescription key="titleFontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                        </buttonConfiguration>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="12"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                        </userDefinedRuntimeAttributes>
+                        <connections>
+                            <action selector="finalizeTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DSb-J6-NJV"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="aCg-AW-Y9w" firstAttribute="trailing" secondItem="RRG-JJ-Snd" secondAttribute="trailing" id="1rd-Ss-4W2"/>
+                    <constraint firstItem="aCg-AW-Y9w" firstAttribute="top" secondItem="RRG-JJ-Snd" secondAttribute="bottom" constant="4" id="3Lj-qg-fGb"/>
+                    <constraint firstItem="3eF-f5-i5r" firstAttribute="centerY" secondItem="qC8-4j-66U" secondAttribute="centerY" id="MOJ-0k-cxS"/>
+                    <constraint firstItem="jFx-84-BB4" firstAttribute="centerY" secondItem="qC8-4j-66U" secondAttribute="centerY" id="Rtq-QO-EXF"/>
+                    <constraint firstItem="qC8-4j-66U" firstAttribute="leading" secondItem="3eF-f5-i5r" secondAttribute="trailing" constant="16" id="Su7-xG-1Ih"/>
+                    <constraint firstItem="qC8-4j-66U" firstAttribute="top" secondItem="aCg-AW-Y9w" secondAttribute="bottom" constant="16" id="U6n-ug-Ucx"/>
+                    <constraint firstItem="qC8-4j-66U" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="VBR-xp-alz"/>
+                    <constraint firstItem="RRG-JJ-Snd" firstAttribute="trailing" secondItem="Vjw-0d-izd" secondAttribute="trailing" id="VE9-Qq-FwU"/>
+                    <constraint firstItem="QYH-jk-CbB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="WAe-rm-EeW"/>
+                    <constraint firstAttribute="trailing" secondItem="Vjw-0d-izd" secondAttribute="trailing" constant="16" id="WQd-ci-caG"/>
+                    <constraint firstItem="wbg-U1-Vir" firstAttribute="leading" secondItem="J8b-TF-6Hl" secondAttribute="leading" id="ZkN-JL-eQ0"/>
+                    <constraint firstItem="jFx-84-BB4" firstAttribute="leading" secondItem="qC8-4j-66U" secondAttribute="trailing" constant="16" id="aUN-vB-Y7q"/>
+                    <constraint firstItem="qC8-4j-66U" firstAttribute="width" secondItem="jFx-84-BB4" secondAttribute="width" id="b1x-Vy-ysY"/>
+                    <constraint firstItem="RRG-JJ-Snd" firstAttribute="top" secondItem="Vjw-0d-izd" secondAttribute="bottom" constant="8" id="cMn-Vj-uh9"/>
+                    <constraint firstAttribute="bottom" secondItem="qC8-4j-66U" secondAttribute="bottom" constant="16" id="elY-09-boM"/>
+                    <constraint firstItem="3eF-f5-i5r" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="frU-o3-Ke1"/>
+                    <constraint firstItem="J8b-TF-6Hl" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="g7r-xL-pdy"/>
+                    <constraint firstItem="qC8-4j-66U" firstAttribute="width" secondItem="3eF-f5-i5r" secondAttribute="width" id="qdA-3W-oVZ"/>
+                    <constraint firstItem="wbg-U1-Vir" firstAttribute="top" secondItem="J8b-TF-6Hl" secondAttribute="bottom" constant="4" id="t7W-AY-e68"/>
+                    <constraint firstItem="J8b-TF-6Hl" firstAttribute="top" secondItem="QYH-jk-CbB" secondAttribute="bottom" constant="8" id="vCn-Pb-fmx"/>
+                    <constraint firstAttribute="trailing" secondItem="jFx-84-BB4" secondAttribute="trailing" constant="16" id="w1a-Kt-CA1"/>
+                    <constraint firstItem="QYH-jk-CbB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="xqi-UT-man"/>
+                    <constraint firstItem="Vjw-0d-izd" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="yKh-Df-5bA"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="finalizeBalanceLabel" destination="RRG-JJ-Snd" id="XDc-A7-W8x"/>
+                <outlet property="finalizeButton" destination="jFx-84-BB4" id="px4-KI-lEc"/>
+                <outlet property="finalizeValueLabel" destination="aCg-AW-Y9w" id="MTW-Ig-Vyn"/>
+                <outlet property="stakeButton" destination="3eF-f5-i5r" id="kCI-G5-Xfi"/>
+                <outlet property="stakedBalanceLabel" destination="J8b-TF-6Hl" id="cBl-fA-Hvq"/>
+                <outlet property="stakedValueLabel" destination="wbg-U1-Vir" id="akG-Q0-jdW"/>
+                <outlet property="unstakeButton" destination="qC8-4j-66U" id="vtl-DQ-6Oo"/>
+            </connections>
+            <point key="canvasLocation" x="225.19083969465649" y="61.971830985915496"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ArrowUp-right" width="128" height="128"/>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxtBtnSec1">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>
