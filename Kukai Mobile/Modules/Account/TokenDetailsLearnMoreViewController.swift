@@ -57,6 +57,12 @@ class TokenDetailsLearnMoreViewController: UIViewController {
 		
 		viewModel.refresh(animate: true)
 	}
+	
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let dest = segue.destination as? FeeInfoViewController {
+			dest.addGradient = true
+		}
+	}
 }
 
 extension TokenDetailsLearnMoreViewController: UITableViewDelegate {
