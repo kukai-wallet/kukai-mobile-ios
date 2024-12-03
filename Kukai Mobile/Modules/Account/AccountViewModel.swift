@@ -125,7 +125,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let amount = item.base as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
@@ -136,7 +136,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "Staked XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
@@ -153,7 +153,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				cell.favCorner.isHidden = !token.isFavourite
 				cell.symbolLabel.text = symbol
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces, allowNegative: false)
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {

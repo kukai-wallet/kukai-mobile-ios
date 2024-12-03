@@ -7,17 +7,18 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
 class BakerDetailsViewController: UIViewController {
 	
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
-	@IBOutlet weak var splitLabel: UILabel!
-	@IBOutlet weak var spaceLabel: UILabel!
-	@IBOutlet weak var rewardslabel: UILabel!
-	@IBOutlet weak var freeLabel: UILabel!
+	@IBOutlet weak var tableView: UITableView!
 	
 	@IBOutlet weak var delegateButton: CustomisableButton!
+	
+	private var viewModel = BakerDetailsViewModel()
+	private var cancellable: AnyCancellable?
 	
 	var dimBackground: Bool = false
 	
@@ -26,6 +27,22 @@ class BakerDetailsViewController: UIViewController {
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
 		delegateButton.customButtonType = .primary
+		
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
+		
+		cancellable = viewModel.$state.sink { [weak self] state in
+			switch state {
+				case .loading:
+					let _ = ""
+					
+				case .failure(_, let errorString):
+					self?.windowError(withTitle: "error".localized(), description: errorString)
+					
+				case .success(_):
+					let _ = ""
+			}
+		}
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -36,14 +53,10 @@ class BakerDetailsViewController: UIViewController {
 		}
 		
 		delegateButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
-		
+		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		
-		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-		splitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		spaceLabel.text = baker.delegation.capacity.rounded(scale: 0, roundingMode: .bankers).description + " XTZ"
-		rewardslabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-		freeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
+		viewModel.refresh(animate: false)
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
@@ -54,17 +67,5 @@ class BakerDetailsViewController: UIViewController {
 		let parent = ((self.presentationController?.presentingViewController as? UINavigationController)?.viewControllers.last as? ChooseBakerViewController)
 		parent?.delegateTapped()
 		self.dismissBottomSheet()
-	}
-}
-
-extension BakerDetailsViewController: BottomSheetCustomCalculateProtocol {
-	
-	func bottomSheetHeight() -> CGFloat {
-		viewDidLoad()
-		
-		view.setNeedsLayout()
-		view.layoutIfNeeded()
-		
-		return view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
 	}
 }

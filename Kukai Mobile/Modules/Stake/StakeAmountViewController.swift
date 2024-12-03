@@ -58,7 +58,7 @@ class StakeAmountViewController: UIViewController {
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		bakerSplitValueLabel.text = "\(baker.staking.fee * 100)%"
-		bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: token.decimalPlaces, includeThousand: true, maximumFractionDigits: 0)
+		bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: token.decimalPlaces, includeThousand: true, allowNegative: true, maximumFractionDigits: 0)
 		bakerRewardsValueLabel.text = "\(baker.staking.estimatedApy * 100)%"
 		
 		
