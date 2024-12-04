@@ -67,7 +67,7 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let ds = dataSource, let xtzBalanceAsDecimal = DependencyManager.shared.balanceService.account.xtzBalance.toNormalisedDecimal() else {
+		guard let ds = dataSource, let xtzAvailableBalance = DependencyManager.shared.balanceService.account.availableBalance.toNormalisedDecimal() else {
 			state = .failure(KukaiError.unknown(withString: "Unable to locate wallet"), "Unable to find datasource")
 			return
 		}
@@ -92,11 +92,11 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return false
 				}
 				
-				return baker.delegation.capacity > xtzBalanceAsDecimal && baker.status == TzKTBakerStatus.active
+				return baker.delegation.capacity > xtzAvailableBalance && baker.staking.capacity > xtzAvailableBalance && baker.status == TzKTBakerStatus.active
 			}
 			
 			let sortedResults = filteredResults.sorted(by: { lhs, rhs in
-				lhs.delegation.estimatedApy > rhs.delegation.estimatedApy
+				lhs.staking.estimatedApy > rhs.staking.estimatedApy
 			})
 			
 			

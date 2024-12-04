@@ -31,9 +31,12 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var confirmBakerAddView: UIView!
 	@IBOutlet weak var bakerAddIcon: UIImageView!
 	@IBOutlet weak var bakerAddNameLabel: UILabel!
-	@IBOutlet weak var bakerAddSplitLabel: UILabel!
-	@IBOutlet weak var bakerAddSpaceLabel: UILabel!
-	@IBOutlet weak var bakerAddEstimatedRewardLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationSplitLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationApyLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationFreeSpaceLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingSplitLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingApyLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingFreeSpaceLabel: UILabel!
 	
 	@IBOutlet weak var confirmBakerRemoveView: UIView!
 	@IBOutlet weak var bakerRemoveIcon: UIImageView!
@@ -118,14 +121,33 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 			
 			bakerAddNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 			if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
-				bakerAddSplitLabel.text = "N/A"
-				bakerAddSpaceLabel.text = "N/A"
-				bakerAddEstimatedRewardLabel.text = "N/A"
+				bakerAddDelegationSplitLabel.text = "N/A"
+				bakerAddDelegationApyLabel.text = "N/A"
+				bakerAddDelegationFreeSpaceLabel.text = "N/A"
+				bakerAddStakingSplitLabel.text = "N/A"
+				bakerAddStakingApyLabel.text = "N/A"
+				bakerAddStakingFreeSpaceLabel.text = "N/A"
 				
 			} else {
-				bakerAddSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
-				bakerAddEstimatedRewardLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationApyLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+				
+				if baker.delegation.freeSpace < 0 {
+					bakerAddDelegationFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
+				} else {
+					bakerAddDelegationFreeSpaceLabel.textColor = .colorNamed("Txt8")
+				}
+				
+				bakerAddStakingSplitLabel.text = (Decimal(baker.staking.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddStakingApyLabel.text = Decimal(baker.staking.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddStakingFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+				
+				if baker.staking.freeSpace < 0 {
+					bakerAddStakingFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
+				} else {
+					bakerAddStakingFreeSpaceLabel.textColor = .colorNamed("Txt8")
+				}
 			}
 			
 		} else {

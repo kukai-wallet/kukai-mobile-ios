@@ -323,11 +323,11 @@ public class CoinGeckoService {
 		return numberFormatter.string(from: 0.00) ?? "0"
 	}
 	
-	public func format(decimal: Decimal, numberStyle: NumberFormatter.Style, maximumFractionDigits: Int? = nil) -> String {
+	public func format(decimal: Decimal, numberStyle: NumberFormatter.Style, allowNegative: Bool = false, maximumFractionDigits: Int? = nil) -> String {
 		let numberFormatter = sharedNumberFormatter()
 		numberFormatter.numberStyle = numberStyle
 		
-		guard decimal >= 0 else {
+		guard decimal >= 0 || allowNegative else {
 			if numberStyle == .decimal {
 				return dashedString()
 			} else {
@@ -348,11 +348,11 @@ public class CoinGeckoService {
 		return outputString
 	}
 	
-	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int, includeThousand: Bool = false, maximumFractionDigits: Int = 3) -> String {
+	func formatLargeTokenDisplay(_ num: Decimal, decimalPlaces: Int, includeThousand: Bool = false, allowNegative: Bool, maximumFractionDigits: Int = 3) -> String {
 		var reducedNumber: Decimal = 0
 		var reducedNumberSymbol: String? = nil
 		
-		switch num {
+		switch abs(num) {
 			case 1_000_000_000_000...:
 				reducedNumber = num / 1_000_000_000
 				reducedNumberSymbol = "t"
@@ -378,11 +378,11 @@ public class CoinGeckoService {
 		
 		var stringToReturn = ""
 		if let symbol = reducedNumberSymbol {
-			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: maximumFractionDigits)
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, allowNegative: allowNegative, maximumFractionDigits: maximumFractionDigits)
 			stringToReturn += symbol
 			
 		} else {
-			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, maximumFractionDigits: decimalPlaces)
+			stringToReturn = format(decimal: reducedNumber, numberStyle: .decimal, allowNegative: allowNegative, maximumFractionDigits: decimalPlaces)
 		}
 		
 		return stringToReturn

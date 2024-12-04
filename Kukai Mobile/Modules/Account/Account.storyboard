@@ -29,11 +29,11 @@
             <objects>
                 <viewController storyboardIdentifier="account-home" automaticallyAdjustsScrollViewInsets="NO" id="jPJ-eK-beO" customClass="AccountViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="M7I-Dt-kRs">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="749"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="1397"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Bx0-JG-6Gg">
-                                <rect key="frame" x="0.0" y="2" width="393" height="713"/>
+                                <rect key="frame" x="0.0" y="2" width="393" height="1361"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="BackUpCell" rowHeight="78" id="uTi-xw-5WX" customClass="BackUpCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -48,7 +48,7 @@
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="fSL-04-2kd">
                                                             <rect key="frame" x="10" y="12" width="40" height="40"/>
-                                                            <color key="tintColor" name="TxtAlert4"/>
+                                                            <color key="tintColor" name="TxtAlert2"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="JBT-fu-Pja"/>
                                                                 <constraint firstAttribute="width" constant="40" id="anr-7d-GzG"/>
@@ -63,7 +63,7 @@
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Backup your wallet, keep your assets safe." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DEU-hH-MdO">
                                                             <rect key="frame" x="57.999999999999986" y="27" width="193.66666666666663" height="29"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="12"/>
-                                                            <color key="textColor" name="TxtAlert4"/>
+                                                            <color key="textColor" name="TxtAlert2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mc4-MV-VSh" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -84,7 +84,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </button>
                                                     </subviews>
-                                                    <color key="backgroundColor" name="BG3"/>
+                                                    <color key="backgroundColor" name="BGAlert1"/>
                                                     <constraints>
                                                         <constraint firstItem="DEU-hH-MdO" firstAttribute="leading" secondItem="fSL-04-2kd" secondAttribute="trailing" constant="8" id="7IL-yy-jdC"/>
                                                         <constraint firstItem="fSL-04-2kd" firstAttribute="leading" secondItem="5JT-bm-ZMG" secondAttribute="leading" constant="10" id="AwO-0N-wA9"/>
@@ -106,7 +106,7 @@
                                                         </userDefinedRuntimeAttribute>
                                                         <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
                                                         <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                            <color key="value" name="BGAlert2"/>
+                                                            <color key="value" name="BGAlert6"/>
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </view>
@@ -124,8 +124,86 @@
                                             <outlet property="backUpButton" destination="mc4-MV-VSh" id="Kh8-Pp-K5z"/>
                                         </connections>
                                     </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="SuggestedActionCell" rowHeight="97" id="MQP-lj-ygZ" customClass="SuggestedActionCell" customModule="Kukai_Mobile" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="128" width="393" height="97"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="MQP-lj-ygZ" id="maC-9a-etv">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="97"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NId-X4-X5X">
+                                                    <rect key="frame" x="16" y="12" width="361" height="83"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AccountOn" translatesAutoresizingMaskIntoConstraints="NO" id="rem-aZ-ABI">
+                                                            <rect key="frame" x="10" y="8" width="40" height="40"/>
+                                                            <color key="tintColor" name="BGB4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="40" id="Pyk-eF-3pz"/>
+                                                                <constraint firstAttribute="height" constant="40" id="tan-FO-RX2"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested Action" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M67-L6-D1a">
+                                                            <rect key="frame" x="58" y="8" width="262.66666666666669" height="20"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
+                                                            <color key="textColor" name="Txt2"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Start staking to earn passive income, and participate in on-chain governance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWi-UQ-7HW">
+                                                            <rect key="frame" x="58" y="30" width="262.66666666666669" height="45"/>
+                                                            <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                                            <color key="textColor" name="Txt6"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="7gN-0B-1vE">
+                                                            <rect key="frame" x="330.66666666666669" y="32.666666666666664" width="20.333333333333314" height="18"/>
+                                                            <color key="tintColor" name="BGB4"/>
+                                                        </imageView>
+                                                    </subviews>
+                                                    <color key="backgroundColor" name="BG3"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="QWi-UQ-7HW" secondAttribute="bottom" constant="8" id="1F8-87-B5c"/>
+                                                        <constraint firstItem="rem-aZ-ABI" firstAttribute="top" secondItem="NId-X4-X5X" secondAttribute="top" constant="8" id="2Hl-02-QTX"/>
+                                                        <constraint firstItem="M67-L6-D1a" firstAttribute="trailing" secondItem="QWi-UQ-7HW" secondAttribute="trailing" id="81d-o2-knR"/>
+                                                        <constraint firstItem="QWi-UQ-7HW" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="8" id="9oi-b7-f6C"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7gN-0B-1vE" secondAttribute="trailing" constant="10" id="BOG-Yh-yA2"/>
+                                                        <constraint firstItem="7gN-0B-1vE" firstAttribute="leading" secondItem="QWi-UQ-7HW" secondAttribute="trailing" constant="10" id="OAb-eE-gsV"/>
+                                                        <constraint firstItem="M67-L6-D1a" firstAttribute="top" secondItem="NId-X4-X5X" secondAttribute="top" constant="8" id="PRE-ur-FMt"/>
+                                                        <constraint firstItem="7gN-0B-1vE" firstAttribute="centerY" secondItem="NId-X4-X5X" secondAttribute="centerY" id="Vel-6K-d37"/>
+                                                        <constraint firstItem="rem-aZ-ABI" firstAttribute="leading" secondItem="NId-X4-X5X" secondAttribute="leading" constant="10" id="aeF-mP-bKt"/>
+                                                        <constraint firstItem="M67-L6-D1a" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="8" id="kFo-gT-Tss"/>
+                                                        <constraint firstItem="QWi-UQ-7HW" firstAttribute="top" secondItem="M67-L6-D1a" secondAttribute="bottom" constant="2" id="yD4-4b-KJR"/>
+                                                    </constraints>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                            <real key="value" value="1"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                            <real key="value" value="8"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                            <color key="value" name="BG6"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                </view>
+                                            </subviews>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="NId-X4-X5X" firstAttribute="top" secondItem="maC-9a-etv" secondAttribute="top" constant="12" id="7aY-XI-nE0"/>
+                                                <constraint firstItem="NId-X4-X5X" firstAttribute="leading" secondItem="maC-9a-etv" secondAttribute="leading" constant="16" id="Hrf-eZ-Lsw"/>
+                                                <constraint firstAttribute="bottom" secondItem="NId-X4-X5X" secondAttribute="bottom" constant="2" id="Idt-oS-pzY"/>
+                                                <constraint firstAttribute="trailing" secondItem="NId-X4-X5X" secondAttribute="trailing" constant="16" id="WPu-1g-YMN"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="QWi-UQ-7HW" id="Xob-em-Vo2"/>
+                                            <outlet property="iconView" destination="rem-aZ-ABI" id="veC-iM-UeR"/>
+                                            <outlet property="titleLabel" destination="M67-L6-D1a" id="R2d-Xj-lhJ"/>
+                                        </connections>
+                                    </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="UpdateWarningCell" rowHeight="78" id="r0A-mQ-94R" customClass="UpdateWarningCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="128" width="393" height="78"/>
+                                        <rect key="frame" x="0.0" y="225" width="393" height="78"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="r0A-mQ-94R" id="qme-Po-8Ji">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="78"/>
@@ -213,7 +291,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="58" id="c9F-pE-jDL" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="206" width="393" height="58"/>
+                                        <rect key="frame" x="0.0" y="303" width="393" height="58"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="c9F-pE-jDL" id="rMO-1e-A9t">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="58"/>
@@ -266,7 +344,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="EstimatedTotalCell" rowHeight="52" id="fLd-MK-ZQo" customClass="EstimatedTotalCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="264" width="393" height="52"/>
+                                        <rect key="frame" x="0.0" y="361" width="393" height="52"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fLd-MK-ZQo" id="fZ4-yB-WXZ">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="52"/>
@@ -329,7 +407,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceCell" rowHeight="80" id="Kcw-mz-qlU" customClass="TokenBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="316" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="413" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Kcw-mz-qlU" id="LLJ-Pv-DUc">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -441,7 +519,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LoadingContainerCell" rowHeight="80" id="2KM-oc-IJC" customClass="LoadingContainerCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="396" width="393" height="80"/>
+                                        <rect key="frame" x="0.0" y="493" width="393" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="2KM-oc-IJC" id="Hdf-Mg-Mpn">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="80"/>
@@ -544,7 +622,7 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountDiscoverCell" rowHeight="239" id="rbS-sZ-0Ld" customClass="AccountDiscoverCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="476" width="393" height="239"/>
+                                        <rect key="frame" x="0.0" y="573" width="393" height="239"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rbS-sZ-0Ld" id="tlj-Je-KXe">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="239"/>
@@ -752,29 +830,29 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountGetStartedCell" rowHeight="91" id="CLh-3P-Dcp">
-                                        <rect key="frame" x="0.0" y="715" width="393" height="91"/>
+                                        <rect key="frame" x="0.0" y="812" width="393" height="91"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CLh-3P-Dcp" id="oyr-Oc-xnC">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="91"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dIV-vR-veM">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dIV-vR-veM">
                                                     <rect key="frame" x="16" y="16" width="361" height="59"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Getting Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaX-dE-p7M">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Getting Started" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaX-dE-p7M">
                                                             <rect key="frame" x="12" y="20.333333333333336" width="159" height="26.666666666666664"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="account-getting-started-header"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Copy here about needing some XTZ to get started etc and how to get XTZ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUd-ec-WyL">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copy here about needing some XTZ to get started etc and how to get XTZ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WUd-ec-WyL">
                                                             <rect key="frame" x="16" y="59" width="329" height="0.0"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt6"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="Social_TZ_Ovalcolor" translatesAutoresizingMaskIntoConstraints="NO" id="0XZ-Q7-XG3">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Social_TZ_Ovalcolor" translatesAutoresizingMaskIntoConstraints="NO" id="0XZ-Q7-XG3">
                                                             <rect key="frame" x="311" y="16" width="38" height="35"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="38" id="VwN-8M-Lxz"/>
@@ -805,13 +883,13 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountButtonCell" rowHeight="63" id="CMT-OD-6aT" customClass="AccountButtonCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="806" width="393" height="63"/>
+                                        <rect key="frame" x="0.0" y="903" width="393" height="63"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="CMT-OD-6aT" id="Uz6-eX-q7G">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="63"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ao-zL-OIA" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Ao-zL-OIA" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                     <rect key="frame" x="28" y="8" width="337" height="47"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="48" id="NL4-wV-VUW"/>
@@ -837,28 +915,28 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AccountReceiveAssetsCell" rowHeight="212" id="I2q-rN-gX7" customClass="AccountReceiveAssetsCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="869" width="393" height="212"/>
+                                        <rect key="frame" x="0.0" y="966" width="393" height="212"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="I2q-rN-gX7" id="FCq-RG-Ahy">
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="212"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="p5E-1m-530" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p5E-1m-530" customClass="GradientView" customModule="Kukai_Mobile" customModuleProvider="target">
                                                     <rect key="frame" x="16" y="16" width="361" height="180"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Receive Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ij-BE-VqB">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive Assets" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ij-BE-VqB">
                                                             <rect key="frame" x="12" y="21.666666666666664" width="153.33333333333334" height="26.666666666666664"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="You can also copy your address by tapping the top left button and choose copy in the side menu" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Juv-Ge-4u3">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can also copy your address by tapping the top left button and choose copy in the side menu" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Juv-Ge-4u3">
                                                             <rect key="frame" x="12" y="62" width="337" height="38"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt6"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="btnQR_Outline_Dark" translatesAutoresizingMaskIntoConstraints="NO" id="BGW-ha-UIr">
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btnQR_Outline_Dark" translatesAutoresizingMaskIntoConstraints="NO" id="BGW-ha-UIr">
                                                             <rect key="frame" x="311" y="16" width="38" height="38"/>
                                                             <color key="tintColor" name="BGB4"/>
                                                             <constraints>
@@ -866,7 +944,7 @@
                                                                 <constraint firstAttribute="width" constant="38" id="NlK-3x-MQg"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EKG-xY-HYO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EKG-xY-HYO" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                             <rect key="frame" x="12" y="116" width="164.66666666666666" height="48"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -875,7 +953,7 @@
                                                                 <action selector="qrButtonTapped:" destination="I2q-rN-gX7" eventType="touchUpInside" id="plX-QU-ZkK"/>
                                                             </connections>
                                                         </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rdt-d8-lSF" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rdt-d8-lSF" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                             <rect key="frame" x="184.66666666666663" y="116" width="164.33333333333337" height="48"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="48" id="7e9-HA-La6"/>
@@ -938,6 +1016,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <tabBarItem key="tabBarItem" title="Account" image="Account" selectedImage="AccountOn" id="C6v-aT-auG"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <size key="freeformSize" width="393" height="1500"/>
                     <connections>
                         <outlet property="tableView" destination="Bx0-JG-6Gg" id="3RY-12-3OS"/>
                         <segue destination="coy-OE-NPZ" kind="show" identifier="hidden" id="D3A-Jh-dg3"/>
@@ -946,11 +1025,12 @@
                         <segue destination="afZ-no-uZ1" kind="show" identifier="recover" id="lv2-Xs-Dwb"/>
                         <segue destination="gR5-I4-y5S" kind="show" identifier="onramp" id="cfv-eY-Nia"/>
                         <segue destination="LdT-JN-wgl" kind="custom" identifier="total-estimated-info" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="1e7-qw-UYx"/>
+                        <segue destination="AkR-D9-ihp" kind="show" identifier="stake-onboarding" id="hL3-Uj-YWG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3475.5725190839694" y="-1420.4225352112676"/>
+            <point key="canvasLocation" x="-3477.0992366412211" y="-1545.0704225352113"/>
         </scene>
         <!--onramp-->
         <scene sceneID="3fE-ol-mgf">
@@ -970,7 +1050,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FWf-TM-nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2592" y="-1527"/>
+            <point key="canvasLocation" x="-2592" y="-1545"/>
         </scene>
         <!--Hidden Tokens-->
         <scene sceneID="Qrr-xS-5hQ">
@@ -1421,12 +1501,12 @@
                         <segue destination="PWG-eK-k0x" kind="show" identifier="stake-amount" id="9XZ-Zm-YHq"/>
                         <segue destination="Eio-fg-4gA" kind="custom" identifier="confirm-stake" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="fyO-ky-HY5"/>
                         <segue destination="Gkl-6q-oYo" kind="show" identifier="learn-more" id="RqP-rK-Agd"/>
-                        <segue destination="qd3-OS-NAj" kind="show" identifier="stake-onboarding" id="nx0-hN-1Gu"/>
+                        <segue destination="AkR-D9-ihp" kind="show" identifier="stake-onboarding" id="REq-Jb-cj8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sib-vO-ppd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3477.0992366412211" y="-561.26760563380287"/>
+            <point key="canvasLocation" x="-3476" y="-534"/>
         </scene>
         <!--Token Contract View Controller-->
         <scene sceneID="h6A-z5-F9j">
@@ -1794,7 +1874,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ywx-rf-ATo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2785" y="-644"/>
+            <point key="canvasLocation" x="-2642" y="-616"/>
         </scene>
         <!--Stake-->
         <scene sceneID="Tu6-UP-AWy">
@@ -1804,7 +1884,7 @@
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6h4-T7-hA7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2782" y="-561"/>
+            <point key="canvasLocation" x="-2639" y="-533"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="YVw-vf-N1y">
@@ -1854,7 +1934,7 @@ The estimate uses exchange data that might not be up to date and does not take i
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Y7s-GY-vAv" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2744" y="-494"/>
+            <point key="canvasLocation" x="-2601" y="-466"/>
         </scene>
         <!--confirm-stake-->
         <scene sceneID="ofB-Go-gui">
@@ -1864,17 +1944,7 @@ The estimate uses exchange data that might not be up to date and does not take i
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ede-Mk-z8Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2744" y="-430"/>
-        </scene>
-        <!--onboarding-->
-        <scene sceneID="jps-UJ-zrK">
-            <objects>
-                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="onboarding" id="qd3-OS-NAj" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="qrx-8E-AKz"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2g6-mK-SOo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2756" y="-370"/>
+            <point key="canvasLocation" x="-2602" y="-402"/>
         </scene>
         <!--Learn More-->
         <scene sceneID="wGx-Qv-PjD">
@@ -1987,7 +2057,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-1-->
         <scene sceneID="XKz-GV-cnt">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-1" id="lfl-Q8-h2H" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-1" id="lfl-Q8-h2H" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZMu-sD-KS5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2032" y="-90"/>
@@ -1995,7 +2065,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-11-->
         <scene sceneID="IvQ-Iz-ITC">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-11" id="8yg-DC-r08" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-11" id="8yg-DC-r08" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GL5-1q-T8J" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2029" y="492"/>
@@ -2003,7 +2073,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-10-->
         <scene sceneID="J4F-hQ-pav">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-10" id="MbS-vC-Tlt" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-10" id="MbS-vC-Tlt" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qsF-z9-dZE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2026" y="439"/>
@@ -2011,7 +2081,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-9-->
         <scene sceneID="B5q-Mw-97l">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-9" id="TG1-Yo-Vxq" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-9" id="TG1-Yo-Vxq" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QjO-jb-0Xa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="378"/>
@@ -2019,7 +2089,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-8-->
         <scene sceneID="EbH-hy-7ZA">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-8" id="4Ye-I4-FzC" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-8" id="4Ye-I4-FzC" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sEo-YG-3vg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2032" y="316"/>
@@ -2027,7 +2097,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-7-->
         <scene sceneID="KoB-RQ-iQN">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-7" id="fHF-Pu-LEC" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-7" id="fHF-Pu-LEC" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fpo-he-BR6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="251"/>
@@ -2035,7 +2105,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-6-->
         <scene sceneID="d54-sx-rs4">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-6" id="fWw-BH-6e1" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-6" id="fWw-BH-6e1" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bZe-T5-7AE" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="193"/>
@@ -2043,7 +2113,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-5-->
         <scene sceneID="YkE-er-LxE">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-5" id="t2X-lG-KGa" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-5" id="t2X-lG-KGa" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OL8-br-oe8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="133"/>
@@ -2051,7 +2121,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-4-->
         <scene sceneID="tKB-BC-qST">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-4" id="NYP-cA-MbF" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-4" id="NYP-cA-MbF" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ylj-6b-sHZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="73"/>
@@ -2059,7 +2129,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-3-->
         <scene sceneID="WLk-Hb-cEg">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-3" id="LHm-ZI-TTQ" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-3" id="LHm-ZI-TTQ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yi9-oK-X0i" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2032" y="17"/>
@@ -2067,13 +2137,24 @@ The estimate uses exchange data that might not be up to date and does not take i
         <!--stake-learn-more-2-->
         <scene sceneID="HLQ-qZ-tFe">
             <objects>
-                <viewControllerPlaceholder storyboardName="stake" referencedIdentifier="stake-learn-more-2" id="ige-l0-XK4" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-learn-more-2" id="ige-l0-XK4" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gOr-70-6B3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2031" y="-36"/>
         </scene>
+        <!--stake-onboarding-->
+        <scene sceneID="cIR-vL-iTZ">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="stake-onboarding" id="AkR-D9-ihp" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="jqI-CD-HT2"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RyO-WN-fit" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2585" y="-1211"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+        <segue reference="REq-Jb-cj8"/>
         <segue reference="zcN-zW-iIF"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -2106,7 +2187,13 @@ The estimate uses exchange data that might not be up to date and does not take i
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="BGAlert2">
+        <namedColor name="BG6">
+            <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BGAlert6">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGB0">
@@ -2142,8 +2229,8 @@ The estimate uses exchange data that might not be up to date and does not take i
         <namedColor name="Txt6">
             <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
-        <namedColor name="TxtAlert4">
-            <color red="0.82700002193450928" green="0.29800000786781311" blue="0.45500001311302185" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <namedColor name="TxtAlert2">
+            <color red="0.62352941176470589" green="0.15294117647058825" blue="0.29411764705882354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="TxtB6">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

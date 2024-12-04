@@ -19,6 +19,14 @@ struct BackupCellData: Hashable {
 	let id = UUID()
 }
 
+struct SuggestedActionData: Hashable {
+	let id = UUID()
+	let image: UIImage?
+	let title: String
+	let description: String
+	let segue: String
+}
+
 struct StakedXTZData: Hashable {
 	let id = UUID()
 	let tez: XTZAmount
@@ -116,6 +124,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let _ = item.base as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
 				return cell
 				
+			} else if let obj = item.base as? SuggestedActionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedActionCell", for: indexPath) as? SuggestedActionCell {
+				cell.setup(data: obj)
+				return cell
+				
 			} else if let _ = item.base as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
 				return cell
 				
@@ -125,7 +137,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let amount = item.base as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
@@ -136,7 +148,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "Staked XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
@@ -153,7 +165,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				cell.favCorner.isHidden = !token.isFavourite
 				cell.symbolLabel.text = symbol
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces, allowNegative: false)
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
@@ -274,27 +286,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashableSendable] {
 		var data = startingData
-		let currentAccount = DependencyManager.shared.balanceService.account
-		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		/**
-		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
-		 
-		 -or-
-		 
-		 Is a social wallet, is not backed up and whose balance is either:
-			- Greater than or equal to 10 XTZ
-			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
-			- Contains 5 or more tokens
-		 */
-		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
-		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
-			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
-			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
-			currentAccountTokensCount >= 5
-		))
-		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
-			data.append(.init(BackupCellData()))
+		// Check if we need to add an action banner
+		if let userAction = handleUserActionBanners(metadata: metadata, parentMetadata: parentMetadata) {
+			data.append(userAction)
 		}
 		
 		
@@ -346,6 +341,47 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		data.append(contentsOf: tokensToDisplay.map({.init($0)}))
 		
 		return data
+	}
+	
+	/// Only 1 banner will be displayed at a time, in order of custom preference
+	private func handleUserActionBanners(metadata: WalletMetadata?, parentMetadata: WalletMetadata?) -> AnyHashableSendable? {
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
+		
+		/**
+		 1. Backup warning, most important for security
+		 
+		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
+		 
+		 -or-
+		 
+		 Is a social wallet, is not backed up and whose balance is either:
+			- Greater than or equal to 10 XTZ
+			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
+			- Contains 5 or more tokens
+		 */
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
+			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
+			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
+			currentAccountTokensCount >= 5
+		))
+		
+		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
+			return .init(BackupCellData())
+		}
+		
+		
+		/**
+		 2. Suggested action, staking. Staking is important in order to secure the network and promote bakers who actively help the network
+		 */
+		if currentAccount.delegate == nil || currentAccount.xtzStakedBalance == .zero() {
+			return .init(SuggestedActionData(image: UIImage(named: "Lock"), title: "Suggested Action", description: "Start staking to earn passive income, and participate in on-chain governance", segue: "stake-onboarding"))
+		}
+		
+		
+		// Else display nothing
+		return nil
 	}
 	
 	private func handleRefreshForNewUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?) -> [AnyHashableSendable] {
@@ -401,6 +437,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
 		return obj is UpdateWarningCellData
+	}
+	
+	func isSuggestedAction(atIndexPath: IndexPath) -> String? {
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
+		
+		return (obj as? SuggestedActionData)?.segue
 	}
 	
 	static func setupAccountActivityListener() {

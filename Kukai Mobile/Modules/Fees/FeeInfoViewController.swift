@@ -14,9 +14,13 @@ class FeeInfoViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 		self.view.backgroundColor = .clear
+    }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
 		if addGradient {
 			GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		}
-    }
+	}
 }

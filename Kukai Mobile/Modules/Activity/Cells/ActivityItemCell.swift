@@ -136,7 +136,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, Activi
 			iconView.customCornerRadius = 20
 			
 			let token = data.primaryToken
-			let balanceDsiplay = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token?.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token?.decimalPlaces ?? 6)
+			let balanceDsiplay = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token?.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token?.decimalPlaces ?? 6, allowNegative: false)
 			
 			if data.subType == .stake {
 				titleLabel.text = "Stake: \(balanceDsiplay) XTZ"

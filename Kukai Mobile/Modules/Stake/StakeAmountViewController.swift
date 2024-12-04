@@ -12,9 +12,12 @@ class StakeAmountViewController: UIViewController {
 
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
-	@IBOutlet weak var bakerSplitValueLabel: UILabel!
-	@IBOutlet weak var bakerSpaceValueLabel: UILabel!
-	@IBOutlet weak var bakerRewardsValueLabel: UILabel!
+	@IBOutlet weak var bakerDelegationSplitValueLabel: UILabel!
+	@IBOutlet weak var bakerDelegationApyValueLabel: UILabel!
+	@IBOutlet weak var bakerDelegationFreeSpaceValueLabel: UILabel!
+	@IBOutlet weak var bakerStakingSplitValueLabel: UILabel!
+	@IBOutlet weak var bakerStakingApyValueLabel: UILabel!
+	@IBOutlet weak var bakerStakingFreeSpaceValueLabel: UILabel!
 	
 	@IBOutlet weak var tokenNameLabel: UILabel!
 	@IBOutlet weak var tokenBalanceTitleLabel: UILabel!
@@ -57,9 +60,35 @@ class StakeAmountViewController: UIViewController {
 		// To section
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-		bakerSplitValueLabel.text = "\(baker.staking.fee * 100)%"
-		bakerSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: token.decimalPlaces, includeThousand: true, maximumFractionDigits: 0)
-		bakerRewardsValueLabel.text = "\(baker.staking.estimatedApy * 100)%"
+		if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
+			bakerDelegationSplitValueLabel.text = "N/A"
+			bakerDelegationApyValueLabel.text = "N/A"
+			bakerDelegationFreeSpaceValueLabel.text = "N/A"
+			bakerStakingSplitValueLabel.text = "N/A"
+			bakerStakingApyValueLabel.text = "N/A"
+			bakerStakingFreeSpaceValueLabel.text = "N/A"
+			
+		} else {
+			bakerDelegationSplitValueLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerDelegationApyValueLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerDelegationFreeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+			
+			if baker.delegation.freeSpace < 0 {
+				bakerDelegationFreeSpaceValueLabel.textColor = .colorNamed("TxtAlert4")
+			} else {
+				bakerDelegationFreeSpaceValueLabel.textColor = .colorNamed("Txt8")
+			}
+			
+			bakerStakingSplitValueLabel.text = (Decimal(baker.staking.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerStakingApyValueLabel.text = Decimal(baker.staking.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+			bakerStakingFreeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+			
+			if baker.delegation.freeSpace < 0 {
+				bakerStakingFreeSpaceValueLabel.textColor = .colorNamed("TxtAlert4")
+			} else {
+				bakerStakingFreeSpaceValueLabel.textColor = .colorNamed("Txt8")
+			}
+		}
 		
 		
 		// Token data
