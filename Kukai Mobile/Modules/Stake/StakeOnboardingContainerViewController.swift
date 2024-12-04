@@ -11,6 +11,10 @@ import Combine
 
 class StakeOnboardingContainerViewController: UIViewController {
 	
+	@IBOutlet weak var indicatorStackview: UIStackView!
+	@IBOutlet weak var indicatorStackviewLeadingConstraint: NSLayoutConstraint!
+	@IBOutlet weak var indicatorStackviewTrailingConstraint: NSLayoutConstraint!
+	
 	@IBOutlet weak var pageIndicator1: PageIndicatorContainerView!
 	@IBOutlet weak var progressSegment1: UIProgressView!
 	@IBOutlet weak var pageIndicator2: PageIndicatorContainerView!
@@ -18,21 +22,51 @@ class StakeOnboardingContainerViewController: UIViewController {
 	@IBOutlet weak var pageIndicator3: PageIndicatorContainerView!
 	@IBOutlet weak var progressSegment3: UIProgressView!
 	@IBOutlet weak var pageIndicator4: PageIndicatorContainerView!
-	@IBOutlet weak var progressSegment4: UIProgressView!
-	@IBOutlet weak var pageIndicator5: PageIndicatorContainerView!
 	@IBOutlet weak var actionButton: CustomisableButton!
 	
-	@IBOutlet weak var navigationContainerView: UIView!
+	@IBOutlet weak var delegateAndStakeContainer: UIView!
+	@IBOutlet weak var stakeOnlyContainer: UIView!
+	
 	private var childNavigationController: UINavigationController? = nil
 	private var currentChildViewController: UIViewController? = nil
 	private var bag = [AnyCancellable]()
 	private var currentStep: String = ""
+	private var isStakeOnly = false
+	
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+		
+		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
-		
 		actionButton.customButtonType = .primary
+		
+		
+		// If user only needs to stake we hide the first few screens and 2 steps
+		delegateAndStakeContainer.isHidden = isStakeOnly
+		stakeOnlyContainer.isHidden = !isStakeOnly
+		
+		if isStakeOnly {
+			indicatorStackview.removeArrangedSubview(pageIndicator1)
+			pageIndicator1.isHidden = true
+			indicatorStackview.removeArrangedSubview(pageIndicator2)
+			pageIndicator2.isHidden = true
+			progressSegment1.removeFromSuperview()
+			
+			// With only 2 steps it looks odd to have it the full length of the screen, reduce it a bit
+			indicatorStackviewLeadingConstraint.constant = 24 * 5
+			indicatorStackviewTrailingConstraint.constant = 24 * 5
+		}
+		
 		
 		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
@@ -58,10 +92,6 @@ class StakeOnboardingContainerViewController: UIViewController {
 		super.viewDidDisappear(animated)
 	}
 	
-	@IBAction func closeTapped(_ sender: Any) {
-		self.navigationController?.popToDetails()
-	}
-	
 	func setProgressSegmentComplete(_ view: UIProgressView?) {
 		UIView.animate(withDuration: 0.7) {
 			view?.setProgress(1, animated: true)
@@ -69,7 +99,10 @@ class StakeOnboardingContainerViewController: UIViewController {
 	}
 	
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if segue.identifier == "embed", let dest = segue.destination as? UINavigationController {
+		if !isStakeOnly, segue.identifier == "embed-delegate", let dest = segue.destination as? UINavigationController {
+			childNavigationController = dest
+			
+		} else if isStakeOnly, segue.identifier == "embed-stake", let dest = segue.destination as? UINavigationController {
 			childNavigationController = dest
 		}
 	}
@@ -102,12 +135,16 @@ class StakeOnboardingContainerViewController: UIViewController {
 			case "step4":
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				
+				if isStakeOnly {
+					self.pageIndicator3.setInprogress(pageNumber: 1)
+				}
+				
 			case "step5":
 				if handlePageControllerNext(vc: currentChildVc) == true {
 					actionButton.setTitle("Stake", for: .normal)
 					self.pageIndicator3.setComplete()
 					self.setProgressSegmentComplete(self.progressSegment3)
-					self.pageIndicator4.setInprogress(pageNumber: 4)
+					self.pageIndicator4.setInprogress(pageNumber: isStakeOnly ? 2 : 4)
 				}
 				
 			case "step6":
@@ -135,8 +172,6 @@ class StakeOnboardingContainerViewController: UIViewController {
 				
 			case "step6":
 				self.pageIndicator4.setComplete()
-				self.setProgressSegmentComplete(self.progressSegment4)
-				self.pageIndicator5.setInprogress(pageNumber: 5)
 				self.currentChildViewController?.performSegue(withIdentifier: "next", sender: nil)
 				self.actionButton.setTitle("Done", for: .normal)
 				

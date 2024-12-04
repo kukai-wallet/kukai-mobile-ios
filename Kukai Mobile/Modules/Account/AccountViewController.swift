@@ -84,6 +84,26 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
 			UIApplication.shared.open(AppUpdateService.appStoreURL)
+			
+		} else if let segue = viewModel.isSuggestedAction(atIndexPath: indexPath) {
+			
+			if let delegate = DependencyManager.shared.balanceService.account.delegate?.address {
+				self.showLoadingView()
+				
+				DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self] result in
+					self?.hideLoadingView()
+					
+					guard let res = try? result.get() else {
+						self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
+						return
+					}
+					
+					TransactionService.shared.stakeData.chosenBaker = res
+					self?.performSegue(withIdentifier: segue, sender: nil)
+				}
+			} else {
+				self.performSegue(withIdentifier: segue, sender: nil)
+			}
 		}
 	}
 	
