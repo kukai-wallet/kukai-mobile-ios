@@ -139,7 +139,6 @@ class LoginViewController: UIViewController {
 			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
-						StorageService.setLastLogin()
 						self?.next()
 						
 					} else {
@@ -186,6 +185,7 @@ class LoginViewController: UIViewController {
 		
 		reestablishConnectionsAfterLogin()
 		sceneDelegate.hidePrivacyProtectionWindow()
+		StorageService.setLastLogin()
 	}
 	
 	private static func reestablishConnectionsAfterLogin() {
@@ -221,7 +221,6 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 				if result {
 					LoginViewController.wrongGuessCount = 0
 					LoginViewController.wrongGuessDelay = 0
-					StorageService.setLastLogin()
 					self?.next()
 				} else {
 					self?.displayErrorAndReset()
