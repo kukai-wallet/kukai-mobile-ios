@@ -17,6 +17,7 @@ public enum WalletConnectOperationType {
 	case sendNft
 	case batch
 	case delegate
+	case stake
 	case generic
 }
 
@@ -682,8 +683,15 @@ public class WalletConnectService {
 		TransactionService.shared.currentRemoteOperationsAndFeesData = operationsObj
 		TransactionService.shared.currentRemoteForgedString = estimationResult.forgedString
 		
-		DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-			let xtzBalance = (try? res.get()) ?? .zero()
+		
+		DependencyManager.shared.tzktClient.getAccount(forAddress: forWallet.address) { [weak self] result in
+			guard let res = try? result.get() else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			let xtzBalance = res.xtzAvailableBalance
 			let xtzSend = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
 			
 			if (xtzSend + operationsObj.fee) > xtzBalance {
@@ -691,12 +699,12 @@ public class WalletConnectService {
 				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, (xtzSend + operationsObj.fee).normalisedRepresentation), error: nil)
 				
 			} else {
-				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance)
+				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance, delegate: res.delegate?.address)
 			}
 		}
 	}
 	
-	private func processTransactionsAfterBalance(operationsObj: TransactionService.OperationsAndFeesData, operations: [KukaiCoreSwift.Operation], forWallet: Wallet, xtzBalance: XTZAmount) {
+	private func processTransactionsAfterBalance(operationsObj: TransactionService.OperationsAndFeesData, operations: [KukaiCoreSwift.Operation], forWallet: Wallet, xtzBalance: XTZAmount, delegate: String?) {
 		
 		if let op = OperationFactory.Extractor.isTezTransfer(operations: operations) {
 			let xtzAmount = XTZAmount(fromRpcAmount: op.amount) ?? .zero()
@@ -731,6 +739,69 @@ public class WalletConnectService {
 				}
 				
 				self?.checkForBaker(delegateOperation: delegateOperation, bakers: res)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isStake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .stake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self] result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.stakeData.chosenBaker = res
+				TransactionService.shared.stakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.stakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isUnstake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .unstake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self]  result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.unstakeData.chosenBaker = res
+				TransactionService.shared.unstakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.unstakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isFinaliseUnstake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .finaliseUnstake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self]  result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.finaliseUnstakeData.chosenBaker = res
+				TransactionService.shared.finaliseUnstakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.finaliseUnstakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
 			}
 			
 		} else if OperationFactory.Extractor.containsAnUnknownOperation(operations: operations) {

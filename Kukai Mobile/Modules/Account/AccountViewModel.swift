@@ -115,7 +115,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.refresh(animate: true)
 				}
 				
-				if TransactionService.shared.didUnstake {
+				if TransactionService.shared.didUnstake && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
 					self?.popupDelegate?.unstakePreformed()
 				}
 			}.store(in: &bag)
