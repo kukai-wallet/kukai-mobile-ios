@@ -21,7 +21,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	
 	@Published var dismissedPrivacyProtectionWindow = false
 	
-	private var privacyProtectionWindow: UIWindow = UIWindow()
+	//private var privacyProtectionWindow: UIWindow = UIWindow()
+	private var loginVc: UIViewController? = nil
 	
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -30,7 +31,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		// This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 		guard let scene = (scene as? UIWindowScene) else { return }
 		
-		privacyProtectionWindow = UIWindow(windowScene: scene)
+		//privacyProtectionWindow = UIWindow(windowScene: scene)
+		loginVc = UIStoryboard(name: "Login", bundle: nil).instantiateInitialViewController()
 		WalletConnectService.shared.setup()
 		
 		scene.windows.forEach { window in
@@ -109,6 +111,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	// MARK: - Non system functions
 	
 	func showPrivacyProtectionWindow() {
+		/*
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "calling showPrivacyProtectionWindow"))
 		
 		guard !privacyProtectionWindowVisible else {
@@ -123,10 +126,26 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		privacyProtectionWindow.alpha = 1
 		privacyProtectionWindow.isHidden = false
 		privacyProtectionWindow.makeKeyAndVisible()
+		*/
+		
+		
+		guard let login = loginVc, let currentWindow = UIApplication.shared.currentWindowIncludingSuspended, login.view.superview == nil else {
+			return
+		}
+		
+		currentWindow.addSubview(login.view)
+		
+		NSLayoutConstraint.activate([
+			login.view.leadingAnchor.constraint(equalTo: currentWindow.leadingAnchor),
+			login.view.trailingAnchor.constraint(equalTo: currentWindow.trailingAnchor),
+			login.view.topAnchor.constraint(equalTo: currentWindow.topAnchor),
+			login.view.bottomAnchor.constraint(equalTo: currentWindow.bottomAnchor)
+		])
 	}
 	
 	
 	func hidePrivacyProtectionWindow() {
+		/*
 		SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "calling hidePrivacyProtectionWindow"))
 		
 		guard privacyProtectionWindowVisible else {
@@ -144,6 +163,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			self?.dismissedPrivacyProtectionWindow = true
 			SentrySDK.addBreadcrumb(Breadcrumb(level: .info, category: "kukai", message: "done animating hidePrivacyProtectionWindow"))
 		}
+		*/
+		
+		
+		loginVc?.view.removeFromSuperview()
 	}
 	
 	private func handleDeeplink(url: URL) {
@@ -176,3 +199,4 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		}
 	}
 }
+

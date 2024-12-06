@@ -16,4 +16,11 @@ extension UIApplication {
 			.flatMap({ $0 as? UIWindowScene })?.windows
 			.first(where: \.isKeyWindow)
 	}
+	
+	var currentWindowIncludingSuspended: UIWindow? {
+		return UIApplication.shared.connectedScenes
+			.first(where: { $0 is UIWindowScene })
+			.flatMap({ $0 as? UIWindowScene })?.windows
+			.first(where: \.isKeyWindow)
+	}
 }
