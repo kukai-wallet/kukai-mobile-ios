@@ -84,8 +84,7 @@ public class BalanceService {
 	// MARK: - Init
 	
 	init() {
-		lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
-		tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+		
 	}
 	
 	
@@ -176,29 +175,41 @@ public class BalanceService {
 		return cacheLoadingInProgress
 	}
 	
-	public func loadCache(address: String?) {
-		cacheLoadingInProgress = true
-		loadCachedExchangeDataIfNotLoaded()
-		loadEstimatedTotalsIfNotLoaded()
+	public func loadCache(address: String?, completion: (() -> Void)?) {
+		print("inside load cache call")
 		
-		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)) {
+		DispatchQueue.global(qos: .background).async { [weak self] in
 			
-			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
-			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
-			DependencyManager.shared.activityService.loadCache(address: address)
+			if self?.lastFullRefreshDates.values.count == 0 {
+				self?.lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
+				self?.tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+			}
 			
-			// Had to be moved to here as if its called during transaction fetching, it can result in the pending being removed long before the refresh comes in to say groups were updated
-			// But the removal of pending is also what triggers the removal of the activity tab spinner, so it needs to be performed along side balance refreshing being finished
-			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
+			self?.cacheLoadingInProgress = true
+			self?.loadCachedExchangeDataIfNotLoaded()
+			self?.loadEstimatedTotalsIfNotLoaded()
 			
-			self.account = account
+			if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)) {
+				
+				DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
+				DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
+				DependencyManager.shared.activityService.loadCache(address: address)
+				
+				// Had to be moved to here as if its called during transaction fetching, it can result in the pending being removed long before the refresh comes in to say groups were updated
+				// But the removal of pending is also what triggers the removal of the activity tab spinner, so it needs to be performed along side balance refreshing being finished
+				DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
+				
+				self?.account = account
+				
+			} else if let add = address {
+				// If local cache fails to parse, models must have change. Delete everything, will trigger a network refresh
+				self?.deleteAccountCachcedData(forAddress: add)
+			}
 			
-		} else if let add = address {
-			// If local cache fails to parse, models must have change. Delete everything, will trigger a network refresh
-			deleteAccountCachcedData(forAddress: add)
+			self?.cacheLoadingInProgress = false
+			
+			DispatchQueue.main.async { completion?() }
 		}
-		
-		cacheLoadingInProgress = false
 	}
 	
 	public func estimatedTotalXtz(forAddress: String) -> XTZAmount {

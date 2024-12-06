@@ -182,6 +182,7 @@ class DependencyManager {
 	@Published var addressRefreshed: String = ""
 	@Published var sideMenuOpen: Bool = false
 	@Published var walletDeleted: Bool = false
+	@Published var loginActive: Bool = false
 	
 	
 	
@@ -294,6 +295,7 @@ class DependencyManager {
 		coinGeckoService.stubPrice = self.stubXtzPrice
 		
 		if !supressUpdateNotification {
+			exploreService.loadCache()
 			networkDidChange = true
 		}
 	}

@@ -17,11 +17,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	var window: UIWindow?
 	
 	public var firstLoad = true
-	public var privacyProtectionWindowVisible = false
-	
-	@Published var dismissedPrivacyProtectionWindow = false
-	
+	//public var privacyProtectionWindowVisible = false
 	//private var privacyProtectionWindow: UIWindow = UIWindow()
+	
 	private var loginVc: UIViewController? = nil
 	
 	
@@ -133,6 +131,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			return
 		}
 		
+		DependencyManager.shared.loginActive = true
 		currentWindow.addSubview(login.view)
 		
 		NSLayoutConstraint.activate([
@@ -167,6 +166,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		
 		loginVc?.view.removeFromSuperview()
+		DependencyManager.shared.loginActive = false
 	}
 	
 	private func handleDeeplink(url: URL) {
