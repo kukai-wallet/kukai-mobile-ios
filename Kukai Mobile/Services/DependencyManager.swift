@@ -27,7 +27,7 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_mainnet = URL(string: "https://api.tezos.domains/graphql")!
 	static let defaultObjktURL_mainnet = URL(string: "https://data.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURLs_ghostnet = [URL(string: "https://ghostnet.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
+	static let defaultNodeURLs_ghostnet = [URL(string: "https://ghostnet.tezos.ecadinfra.com")!, URL(string: "https://rpc.ghostnet.tzboot.net")!, URL(string: "https://ghostnet.smartpy.io")!]
 	static let defaultTzktURL_ghostnet = URL(string: "https://api.ghostnet.tzkt.io")!
 	static let defaultExplorerURL_ghostnet = URL(string: "https://ghostnet.tzkt.io")!
 	static let defaultBcdURL_ghostnet = URL(string: "https://api.better-call.dev")!

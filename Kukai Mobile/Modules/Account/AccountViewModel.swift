@@ -55,6 +55,15 @@ struct AccountButtonData: Hashable {
 	let buttonType: CustomisableButton.customButtonType
 }
 
+enum AccountViewModelError: Error {
+	case networkError
+	case calendarAccessError
+}
+
+protocol AccountViewModelPopups: AnyObject {
+	func unstakePreformed()
+}
+
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	struct accessibilityIdentifiers {
@@ -78,6 +87,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
 	
 	weak var tableViewButtonDelegate: UITableViewCellButtonDelegate? = nil
+	weak var popupDelegate: AccountViewModelPopups? = nil
 	
 	
 	// MARK: - Init
@@ -103,6 +113,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
+				}
+				
+				if TransactionService.shared.didUnstake && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
+					self?.popupDelegate?.unstakePreformed()
 				}
 			}.store(in: &bag)
 		

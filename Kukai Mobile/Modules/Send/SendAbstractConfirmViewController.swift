@@ -176,6 +176,7 @@ class SendAbstractConfirmViewController: UIViewController {
 		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
 		
 		if !isWalletConnectOp {
+			TransactionService.shared.resetAllState()
 			self.dismissAndReturn(collapseOnly: false)
 			return
 		}
