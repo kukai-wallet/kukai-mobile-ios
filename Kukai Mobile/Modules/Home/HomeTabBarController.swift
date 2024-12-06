@@ -232,7 +232,6 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
-		TransactionService.shared.resetAllState()
 		updateAccountButton()
 		runWatchWalletChecks()
 		

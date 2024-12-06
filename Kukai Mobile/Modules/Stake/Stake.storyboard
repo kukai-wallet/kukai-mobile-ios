@@ -3391,12 +3391,135 @@ You can see these rewards, change your baker, stake more, unstake, or finalise y
             </objects>
             <point key="canvasLocation" x="-768" y="2699"/>
         </scene>
+        <!--Unstake Reminder View Controller-->
+        <scene sceneID="wTb-KH-5HP">
+            <objects>
+                <viewController storyboardIdentifier="unstake-reminder" id="mX6-UB-XUa" customClass="UnstakeReminderViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l0E-Lo-iED">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zDy-Eq-oUi">
+                                <rect key="frame" x="16" y="268.5" width="382" height="373.5"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BackupWallet" translatesAutoresizingMaskIntoConstraints="NO" id="SAA-iq-44D">
+                                        <rect key="frame" x="152" y="24" width="78" height="78"/>
+                                        <color key="tintColor" name="BGAlert4"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="78" id="r23-xl-8va"/>
+                                            <constraint firstAttribute="height" constant="78" id="yAj-05-qMS"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create an unstake reminder?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eTk-Un-0bi">
+                                        <rect key="frame" x="16" y="118" width="350" height="26.5"/>
+                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="22"/>
+                                        <color key="textColor" name="Txt2"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="BaM-Ea-pQ0">
+                                        <rect key="frame" x="16" y="168.5" width="350" height="181"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ilk-Rq-G0p">
+                                                <rect key="frame" x="0.0" y="0.0" width="350" height="101"/>
+                                                <string key="text">Your unstake request has been submitted to the blockchain successfully. This will take x days to process, after which you must "Finalise" the request.
+
+Would you like to add a reminder to your calendar to alert you when this is ready?</string>
+                                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                                <color key="textColor" name="Txt6"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="H7u-j5-fH4">
+                                                <rect key="frame" x="0.0" y="125" width="350" height="56"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kSq-aX-qOf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="167" height="56"/>
+                                                        <color key="backgroundColor" name="BtnAlert1"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="EYl-hi-FHq"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Create">
+                                                            <color key="titleColor" name="TxTBtnAlert1"/>
+                                                        </state>
+                                                        <connections>
+                                                            <action selector="createTapped:" destination="mX6-UB-XUa" eventType="touchUpInside" id="KXM-bh-pXN"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fFA-fK-doI" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                                        <rect key="frame" x="183" y="0.0" width="167" height="56"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
+                                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                                        <state key="normal" title="Cancel">
+                                                            <color key="titleColor" name="TxtBtnPrim1"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                                <real key="value" value="12"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.0"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="cancelTapped:" destination="mX6-UB-XUa" eventType="touchUpInside" id="hP3-ua-ZcM"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <constraints>
+                                                    <constraint firstItem="kSq-aX-qOf" firstAttribute="width" secondItem="fFA-fK-doI" secondAttribute="width" id="dCW-Rc-KpT"/>
+                                                </constraints>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="BaM-Ea-pQ0" secondAttribute="bottom" constant="24" id="CeM-hg-mZS"/>
+                                    <constraint firstItem="BaM-Ea-pQ0" firstAttribute="leading" secondItem="zDy-Eq-oUi" secondAttribute="leading" constant="16" id="Rhm-vm-OhM"/>
+                                    <constraint firstItem="BaM-Ea-pQ0" firstAttribute="top" secondItem="eTk-Un-0bi" secondAttribute="bottom" constant="24" id="SKF-aE-9eb"/>
+                                    <constraint firstItem="eTk-Un-0bi" firstAttribute="leading" secondItem="zDy-Eq-oUi" secondAttribute="leading" constant="16" id="WBH-Hj-7vC"/>
+                                    <constraint firstItem="SAA-iq-44D" firstAttribute="centerX" secondItem="zDy-Eq-oUi" secondAttribute="centerX" id="WfL-wy-vdM"/>
+                                    <constraint firstItem="SAA-iq-44D" firstAttribute="top" secondItem="zDy-Eq-oUi" secondAttribute="top" constant="24" id="c6J-os-oI2"/>
+                                    <constraint firstAttribute="trailing" secondItem="BaM-Ea-pQ0" secondAttribute="trailing" constant="16" id="i01-rl-UXx"/>
+                                    <constraint firstItem="eTk-Un-0bi" firstAttribute="top" secondItem="SAA-iq-44D" secondAttribute="bottom" constant="16" id="qN1-Yf-NKQ"/>
+                                    <constraint firstAttribute="trailing" secondItem="eTk-Un-0bi" secondAttribute="trailing" constant="16" id="xYY-h7-GTk"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="qH9-YB-VIf"/>
+                        <color key="backgroundColor" name="TintGeneral"/>
+                        <constraints>
+                            <constraint firstItem="zDy-Eq-oUi" firstAttribute="leading" secondItem="qH9-YB-VIf" secondAttribute="leading" constant="16" id="NDR-Ne-0Vu"/>
+                            <constraint firstItem="qH9-YB-VIf" firstAttribute="trailing" secondItem="zDy-Eq-oUi" secondAttribute="trailing" constant="16" id="RdW-ug-8Oi"/>
+                            <constraint firstItem="zDy-Eq-oUi" firstAttribute="centerY" secondItem="qH9-YB-VIf" secondAttribute="centerY" id="nhx-gs-Ivb"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="cancelButton" destination="fFA-fK-doI" id="UVs-YN-ABj"/>
+                        <outlet property="containerView" destination="zDy-Eq-oUi" id="JP1-m9-aoW"/>
+                        <outlet property="createButton" destination="kSq-aX-qOf" id="JlM-gr-S8c"/>
+                        <outlet property="messageLabel" destination="Ilk-Rq-G0p" id="Buo-tS-8c9"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9r7-AW-ySO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7210" y="153"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="f7K-zn-INT"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
+        <image name="BackupWallet" width="150" height="150"/>
         <image name="Close" width="24" height="24"/>
         <image name="Fee_Fee" width="100" height="100"/>
         <image name="Social_TZ_Ovalcolor" width="30" height="30"/>
@@ -3412,11 +3535,17 @@ You can see these rewards, change your baker, stake more, unstake, or finalise y
         <namedColor name="BG6">
             <color red="0.83499997854232788" green="0.83899998664855957" blue="0.9100000262260437" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="BGAlert4">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="BGB4">
             <color red="0.42699998617172241" green="0.45899999141693115" blue="0.9570000171661377" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BGTestState">
             <color red="1" green="0.36470588235294116" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BtnAlert1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BtnMicro1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3428,6 +3557,12 @@ You can see these rewards, change your baker, stake more, unstake, or finalise y
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BtnStrokeSec1">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TintGeneral">
+            <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="TxTBtnAlert1">
             <color red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="Txt10">

@@ -143,13 +143,13 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested Action" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M67-L6-D1a">
-                                                            <rect key="frame" x="58" y="8" width="262.66666666666669" height="20"/>
+                                                            <rect key="frame" x="58" y="8.0000000000000018" width="262.66666666666669" height="18.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Start staking to earn passive income, and participate in on-chain governance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWi-UQ-7HW">
-                                                            <rect key="frame" x="58" y="30" width="262.66666666666669" height="45"/>
+                                                            <rect key="frame" x="58" y="28.666666666666661" width="262.66666666666669" height="46.333333333333343"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt6"/>
                                                             <nil key="highlightedColor"/>
@@ -1026,6 +1026,7 @@
                         <segue destination="gR5-I4-y5S" kind="show" identifier="onramp" id="cfv-eY-Nia"/>
                         <segue destination="LdT-JN-wgl" kind="custom" identifier="total-estimated-info" customClass="BottomSheetMediumSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="1e7-qw-UYx"/>
                         <segue destination="AkR-D9-ihp" kind="show" identifier="stake-onboarding" id="hL3-Uj-YWG"/>
+                        <segue destination="UXe-18-6v7" kind="presentation" identifier="unstake-reminder" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="rgC-MN-A70"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SsA-5r-8s8" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1051,6 +1052,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FWf-TM-nq9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2592" y="-1545"/>
+        </scene>
+        <!--unstake-reminder-->
+        <scene sceneID="jlJ-gV-7ue">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="unstake-reminder" id="UXe-18-6v7" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OAz-Os-ahN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2595" y="-1412"/>
         </scene>
         <!--Hidden Tokens-->
         <scene sceneID="Qrr-xS-5hQ">
@@ -1959,14 +1968,14 @@ The estimate uses exchange data that might not be up to date and does not take i
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LearnMoreSectionHeaderCell" id="8tE-dd-LS5" customClass="LearnMoreSectionHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="55.333332061767578" width="353" height="52"/>
+                                        <rect key="frame" x="20" y="55.333332061767578" width="353" height="50.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="8tE-dd-LS5" id="9Xd-08-7t7">
-                                            <rect key="frame" x="0.0" y="0.0" width="353" height="52"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="353" height="50.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mln-Wy-ono">
-                                                    <rect key="frame" x="0.0" y="24" width="343" height="20"/>
+                                                    <rect key="frame" x="0.0" y="24" width="343" height="18.666666666666671"/>
                                                     <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                     <color key="textColor" name="Txt10"/>
                                                     <nil key="highlightedColor"/>
@@ -1986,7 +1995,7 @@ The estimate uses exchange data that might not be up to date and does not take i
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="LearnMoreItemCell" rowHeight="73" id="w8m-cu-iS3" customClass="LearnMoreItemCell" customModule="Kukai_Mobile" customModuleProvider="target">
-                                        <rect key="frame" x="20" y="107.33333206176758" width="353" height="73"/>
+                                        <rect key="frame" x="20" y="106" width="353" height="73"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="w8m-cu-iS3" id="Fy2-WR-Ha9">
                                             <rect key="frame" x="0.0" y="0.0" width="353" height="73"/>
@@ -2154,7 +2163,7 @@ The estimate uses exchange data that might not be up to date and does not take i
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="REq-Jb-cj8"/>
+        <segue reference="hL3-Uj-YWG"/>
         <segue reference="zcN-zW-iIF"/>
     </inferredMetricsTieBreakers>
     <resources>

@@ -285,6 +285,8 @@ public class TransactionService {
 	public var walletConnectOperationData: WalletConnectOperationData
 	public var ledgerSetupData: LedgerSetupData
 	
+	public var didUnstake = false
+	
 	private init() {
 		self.currentTransactionType = .none
 		self.currentOperationsAndFeesData = OperationsAndFeesData(estimatedOperations: [])
@@ -339,8 +341,6 @@ public class TransactionService {
 		self.removeLiquidityData = RemoveLiquidityData(position: nil, tokenAmount: nil, calculationResult: nil)
 		self.batchData = BatchData(operationCount: nil, selectedOp: nil, opSummaries: nil)
 		self.ledgerSetupData = LedgerSetupData(selectedUUID: nil)
-		
-		self.resetWalletConnectState()
 	}
 	
 	public func resetWalletConnectState() {

@@ -25,6 +25,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.estimatedTotalCellDelegate = self
 		viewModel.tableViewButtonDelegate = self
+		viewModel.popupDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -74,7 +75,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if let token = viewModel.token(atIndexPath: indexPath) {
-			TransactionService.shared.resetAllState()
 			TransactionService.shared.sendData.chosenToken = token
 			TransactionService.shared.sendData.chosenNFT = nil
 			self.performSegue(withIdentifier: "details", sender: self)
@@ -175,5 +175,12 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 			default:
 				self.windowError(withTitle: "error".localized(), description: "error-unsupport-action".localized())
 		}
+	}
+}
+
+extension AccountViewController: AccountViewModelPopups {
+	
+	func unstakePreformed() {
+		self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
 	}
 }
