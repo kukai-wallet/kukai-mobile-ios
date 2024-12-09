@@ -458,10 +458,15 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			records.append(BalanceService.FetchRequestRecord(address: address, type: refreshType))
 		}
 		
+		
+		// If no address is passed in, thats short hand for refreshing the current address. However refreshing the current address will simply trigger an expensive cacheLoad if the data is not stale
+		// Until we move to middleware, simply add another check here. If its not stale, just skip and avoid the reload
 		if records.count == 0 {
 			let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 			if DependencyManager.shared.balanceService.account.walletAddress == currentAddress, !DependencyManager.shared.balanceService.isCacheStale(forAddress: currentAddress) {
 				// Do nothing for now
+				return
+				
 			} else {
 				records.append(BalanceService.FetchRequestRecord(address: DependencyManager.shared.selectedWalletAddress ?? "", type: refreshType))
 			}
