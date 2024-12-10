@@ -12,6 +12,7 @@ import EventKit
 class UnstakeReminderViewController: UIViewController {
 
 	@IBOutlet weak var containerView: UIView!
+	@IBOutlet weak var titleLabel: UILabel!
 	@IBOutlet weak var messageLabel: UILabel!
 	@IBOutlet weak var createButton: CustomisableButton!
 	@IBOutlet weak var cancelButton: CustomisableButton!
@@ -23,7 +24,11 @@ class UnstakeReminderViewController: UIViewController {
 		createButton.customButtonType = .primary
 		cancelButton.customButtonType = .secondary
 		
+		titleLabel.accessibilityIdentifier = "create-unstake-reminder-title"
 		messageLabel.text = "Your unstake request has been submitted to the blockchain successfully. This will take ~\(UnstakeReminderViewController.numberOfDaysToUnstakeFormatted()) days to process, after which you must \"Finalise\" the request. \n\nWould you like to add a reminder to your calendar to alert you when this is ready?"
+		
+		createButton.accessibilityIdentifier = "create-button"
+		cancelButton.accessibilityIdentifier = "cancel-button"
     }
 	
 	@IBAction func createTapped(_ sender: Any) {

@@ -46,8 +46,8 @@ final class Test_04_Account: XCTestCase {
 		// Check baker rewards loads correctly
 		sleep(4)
 		
-		SharedHelpers.shared.waitForStaticText("token-detials-staking=rewards-last-baker", exists: true, inElement: app.tables, delay: 3)
-		SharedHelpers.shared.waitForStaticText("token-detials-staking=rewards-next-baker", exists: true, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.waitForStaticText("token-detials-staking-rewards-last-baker", exists: true, inElement: app.tables, delay: 3)
+		SharedHelpers.shared.waitForStaticText("token-detials-staking-rewards-next-baker", exists: true, inElement: app.tables, delay: 3)
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
@@ -156,6 +156,7 @@ final class Test_04_Account: XCTestCase {
 	public func testXTZTokenDetails() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
 		
 		
 		// Go to Tez token details
@@ -186,10 +187,6 @@ final class Test_04_Account: XCTestCase {
 		tablesQuery.staticTexts["1Y"].tap()
 		sleep(1)
 		checkAnnotationsExistAndNotZero(tablesQuery: tablesQuery)
-		
-		
-		// Check staking
-		XCTAssert(tablesQuery.staticTexts["Delegated"].exists)
 		
 		
 		// Check balance not zero
@@ -227,7 +224,7 @@ final class Test_04_Account: XCTestCase {
 		// Check and record whatever symbol is in third place
 		let tablesQuery = app.tables
 		let balanceCells = app.tables.cells.containing(.staticText, identifier: "account-token-balance")
-		let thirdCell = balanceCells.element(boundBy: 2)
+		let thirdCell = balanceCells.element(boundBy: 3)
 		symbolOfThirdCell = thirdCell.staticTexts["account-token-symbol"].label
 		
 		XCTAssert(thirdCell.staticTexts[symbolOfThirdCell].exists)
@@ -247,7 +244,7 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		let cellToCheck = balanceCells.element(boundBy: 1)
+		let cellToCheck = balanceCells.element(boundBy: 2)
 		
 		XCTAssert(cellToCheck.staticTexts[symbolOfThirdCell].exists)
 		
@@ -272,7 +269,7 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		XCTAssert(balanceCells.count == 2)
+		XCTAssert(balanceCells.count == 3, balanceCells.count.description)
 		
 		
 		// Unhide and check it appears back
@@ -289,7 +286,7 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		XCTAssert(balanceCells.count == 3)
+		XCTAssert(balanceCells.count == 4, balanceCells.count.description)
 	}
 	
 	public func testSendXTZ() {
@@ -348,7 +345,7 @@ final class Test_04_Account: XCTestCase {
 	
 	private func sendToken(to: String, inApp app: XCUIApplication) {
 		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
-		let tokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 1).staticTexts["account-token-balance"].label
+		let tokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 2).staticTexts["account-token-balance"].label
 		let currentTokenBalance = SharedHelpers.sanitizeStringToDecimal(tokenString)
 		
 		
@@ -417,6 +414,66 @@ final class Test_04_Account: XCTestCase {
 	public func testStakeXTZ() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.openTokenDetailsAndWait(app: app)
+		
+		let initialXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+		let initialFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
+		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-last-baker"].exists)
+		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-next-baker"].exists)
+		
+		// Finalize takes ~3 days to be ready on ghostnet, so we we always stake/unstake, but only sometimes finalize
+		if initialFinalisedBalance > 0 {
+			app.buttons["Finalize"].tap()
+			Test_04_Account.handleFinalise(app: app)
+			Test_04_Account.openTokenDetailsAndWait(app: app)
+			
+			let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+			let newFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
+			XCTAssert(newXTZBalance > initialXTZBalance, "\(newXTZBalance) > \(initialXTZBalance)")
+			XCTAssert(newFinalisedBalance == 0, newFinalisedBalance.description)
+		}
+		
+		
+		// Stake a small amount
+		let initialStakedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "staked-balance-label", in: app.tables)
+		
+		app.buttons["Stake"].tap()
+		Test_04_Account.handleStake(app: app)
+		Test_04_Account.openTokenDetailsAndWait(app: app)
+		
+		let newStakedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "staked-balance-label", in: app.tables)
+		XCTAssert(newStakedBalance > initialStakedBalance, "\(newStakedBalance) > \(initialStakedBalance)")
+		
+		
+		// Unstake half of current balance
+		let initialPendingUnstakeCount = app.tables.cells.containing(.staticText, identifier: "pending-unstake-amount-label").count
+		
+		app.buttons["Unstake"].tap()
+		Test_04_Account.handleUnstake(app: app, currentStakedBalance: newStakedBalance)
+		sleep(2)
+		
+		if app.staticTexts["create-unstake-reminder-title"].exists {
+			app.buttons["create-button"].tap()
+			Test_10_ConnectedApps.handlePermissionsIfNecessary(app: app)
+			sleep(2)
+		}
+		
+		Test_04_Account.openTokenDetailsAndWait(app: app)
+		
+		let newPendingUnstakeCount = app.tables.cells.containing(.staticText, identifier: "pending-unstake-amount-label").count
+		XCTAssert(newPendingUnstakeCount > initialPendingUnstakeCount, "\(newPendingUnstakeCount) > \(initialPendingUnstakeCount)")
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
 		
 		// Change baker
 		let tablesQuery = app.tables
@@ -465,8 +522,21 @@ final class Test_04_Account: XCTestCase {
 		
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 		sleep(2)
+		 */
 	}
 	
+	/*
+	public func testStakeOnboarding() {
+		// Go to sub account
+		// undelegate if delegated
+		// tap on "Suggested action"
+		// navigate through screens, complete baker selection
+		// complete stake
+		// unstake
+		
+		// ... how to deal with need to finalise?
+	}
+	*/
 	
 	
 	// MARK: - Helpers
@@ -477,6 +547,54 @@ final class Test_04_Account: XCTestCase {
 			"account-token-balance",
 			"account-getting-started-header"
 		], exists: true, inElement: app.tables, delay: 10)
+	}
+	
+	public static func openTokenDetailsAndWait(app: XCUIApplication) {
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["XTZ"].tap()
+		SharedHelpers.shared.waitForStaticText("baker-name-label", exists: true, inElement: app.tables, delay: 30)
+	}
+	
+	public static func handleStake(app: XCUIApplication) {
+		sleep(2)
+		app.textFields.firstMatch.tap()
+		
+		let randomDigit1 = Int.random(in: 0..<10)
+		let randomDigit2 = Int.random(in: 0..<10)
+		let randomDigit3 = Int.random(in: 0..<10)
+		let inputString = "1.\(randomDigit1)\(randomDigit2)\(randomDigit3)"
+		SharedHelpers.shared.type(app: app, text: inputString)
+		
+		app.buttons["primary-button"].tap()
+		sleep(4)
+		
+		SharedHelpers.shared.waitForStaticText("Confirm Stake", exists: true, inElement: app, delay: 30)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+	}
+	
+	public static func handleUnstake(app: XCUIApplication, currentStakedBalance: Decimal) {
+		sleep(2)
+		app.textFields.firstMatch.tap()
+		
+		let half = (currentStakedBalance / 2)
+		SharedHelpers.shared.type(app: app, text: half.description)
+		
+		app.buttons["primary-button"].tap()
+		sleep(4)
+		
+		SharedHelpers.shared.waitForStaticText("Confirm Unstake", exists: true, inElement: app, delay: 30)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+	}
+	
+	public static func handleFinalise(app: XCUIApplication) {
+		SharedHelpers.shared.waitForStaticText("Confirm Finalise", exists: true, inElement: app, delay: 30)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 	}
 	
 	public static func check(app: XCUIApplication, estimatedTotalIs: String, fiatIs: String) {

@@ -33,6 +33,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 		bakerButton.customButtonType = .tertiary
 		learnButton.customButtonType = .secondary
 		bakerButton.isEnabled = !data.bakerChangeDisabled
+		bakerButton.accessibilityIdentifier = "baker-edit-button"
 		
 		if let bakerName = data.bakerName {
 			
@@ -46,6 +47,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 			freeSpaceValueLabel.isHidden = false
 			
 			bakerLabel.text = bakerName
+			bakerLabel.accessibilityIdentifier = "baker-name-label"
 			bakerApyLabel.text = "Est APY: \(data.bakerApy.rounded(scale: 2, roundingMode: .bankers))%"
 			
 			

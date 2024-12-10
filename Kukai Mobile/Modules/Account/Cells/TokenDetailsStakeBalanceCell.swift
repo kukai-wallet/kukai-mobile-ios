@@ -34,8 +34,10 @@ class TokenDetailsStakeBalanceCell: UITableViewCell {
 		finalizeButton.customButtonType = .secondary
 		
 		stakedBalanceLabel.text = data.stakedBalance
+		stakedBalanceLabel.accessibilityIdentifier = "staked-balance-label"
 		stakedValueLabel.text = data.stakedValue
 		finalizeBalanceLabel.text = data.finalizeBalance
+		finalizeBalanceLabel.accessibilityIdentifier = "finalised-balance-label"
 		finalizeValueLabel.text = data.finalizeValue
 		
 		stakeButton.isEnabled = !data.buttonsDisabled && data.canStake

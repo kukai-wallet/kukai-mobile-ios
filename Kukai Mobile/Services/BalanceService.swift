@@ -176,8 +176,6 @@ public class BalanceService {
 	}
 	
 	public func loadCache(address: String?, completion: (() -> Void)?) {
-		print("inside load cache call")
-		
 		DispatchQueue.global(qos: .background).async { [weak self] in
 			
 			if self?.lastFullRefreshDates.values.count == 0 {

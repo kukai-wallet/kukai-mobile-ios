@@ -19,6 +19,7 @@ class TokenDetailsPendingUnstakeCell: UITableViewCell {
 		containerView.gradientType = .tableViewCell
 		
 		amountLabel.text = data.amount.normalisedRepresentation
+		amountLabel.accessibilityIdentifier = "pending-unstake-amount-label"
 		symbolLabel.text = "XTZ"
 		fiatLabel.text = data.fiat
 		timeLabel.text = data.timeRemaining
