@@ -389,7 +389,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		/**
 		 2. Suggested action, staking. Staking is important in order to secure the network and promote bakers who actively help the network
 		 */
-		if currentAccount.availableBalance > XTZAmount(fromNormalisedAmount: 3) && (currentAccount.delegate == nil || currentAccount.xtzStakedBalance == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
+		if currentAccount.availableBalance >= XTZAmount(fromNormalisedAmount: 3) && (currentAccount.delegate == nil || currentAccount.xtzStakedBalance == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
 			return .init(SuggestedActionData(image: UIImage(named: "Lock"), title: "Suggested Action", description: "Start staking to earn passive income, and participate in on-chain governance", segue: "stake-onboarding"))
 		}
 		

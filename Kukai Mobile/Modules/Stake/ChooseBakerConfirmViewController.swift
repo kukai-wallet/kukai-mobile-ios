@@ -218,9 +218,14 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 			switch sendResult {
 				case .success(let opHash):
 					Logger.app.info("Sent: \(opHash)")
+					
+					let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
+					
 					self?.didSend = true
 					self?.addPendingTransaction(opHash: opHash)
 					self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
+					
+					TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
 					
 				case .failure(let sendError):
 					self?.unblockInteraction()

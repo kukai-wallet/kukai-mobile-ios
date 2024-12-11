@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import KukaiCryptoSwift
 
 final class Test_04_Account: XCTestCase {
 	
@@ -463,80 +464,67 @@ final class Test_04_Account: XCTestCase {
 		
 		let newPendingUnstakeCount = app.tables.cells.containing(.staticText, identifier: "pending-unstake-amount-label").count
 		XCTAssert(newPendingUnstakeCount > initialPendingUnstakeCount, "\(newPendingUnstakeCount) > \(initialPendingUnstakeCount)")
-		
-		
-		
-		
-		
-		
-		
-		
-		/*
-		let app = XCUIApplication()
-		Test_03_Home.handleLoginIfNeeded(app: app)
-		
-		// Change baker
-		let tablesQuery = app.tables
-		tablesQuery.staticTexts["XTZ"].tap()
-		
-		let bakerButton = tablesQuery.buttons["token-detials-baker-button"]
-		let currentBakerName = bakerButton.label
-		
-		bakerButton.tap()
-		sleep(2)
-		
-		app.tables.cells.containing(.staticText, identifier: "baker-list-name").element(boundBy: 2).tap()
-		sleep(2)
-		
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(4)
-		
-		Test_04_Account.slideButtonToComplete(inApp: app)
-		sleep(2)
-		
-		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
-		sleep(2)
-		
-		// Check baker no longer matches
-		tablesQuery.staticTexts["XTZ"].tap()
-		XCTAssert(bakerButton.label != currentBakerName, bakerButton.label)
-		
-		
-		// Switch back to bestie, baking benjamins
-		bakerButton.tap()
-		sleep(2)
-		
-		let name = "Baking Benjamins"
-		if app.tables.staticTexts[name].exists {
-			app.tables.staticTexts["Baking Benjamins"].tap()
-		} else {
-			app.tables.staticTexts["tz1YgDU...4jnD"].tap()
-		}
-		sleep(2)
-		
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(4)
-		
-		Test_04_Account.slideButtonToComplete(inApp: app)
-		sleep(2)
-		
-		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
-		sleep(2)
-		 */
 	}
 	
-	/*
 	public func testStakeOnboarding() {
-		// Go to sub account
-		// undelegate if delegated
-		// tap on "Suggested action"
-		// navigate through screens, complete baker selection
-		// complete stake
-		// unstake
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.createNewHDWalletAndSeedWithXTZ(app: app)
 		
-		// ... how to deal with need to finalise?
+		sleep(2)
+		app.tables.staticTexts["Suggested Action"].tap()
+		
+		// Section 1 Start
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		
+		// Delegation info
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		
+		// Choose Baker
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		app.tables.staticTexts["Baking Benjamins"].tap()
+		app.buttons["Delegate"].tap()
+		SharedHelpers.shared.waitForStaticText("Confirm Delegate", exists: true, inElement: app, delay: 30)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		SharedHelpers.shared.waitForStaticText("Learn about staking", exists: true, inElement: app, delay: 60)
+		
+		// Section 2 start
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		
+		// Staking Info
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		
+		// Stake
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
+		app.textFields.firstMatch.tap()
+		SharedHelpers.shared.type(app: app, text: "1.5")
+		app.buttons["Review"].tap()
+		SharedHelpers.shared.waitForStaticText("Confirm Stake", exists: true, inElement: app, delay: 30)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		SharedHelpers.shared.waitForStaticText("Congratulations", exists: true, inElement: app, delay: 60)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		
+		// Confirm back home and values are correct
+		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
+		Test_04_Account.check(app: app, xtzStakingBalanceIsNotZero: true)
+		
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
 	}
-	*/
 	
 	
 	// MARK: - Helpers
@@ -597,6 +585,43 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 	}
 	
+	public static func createNewHDWalletAndSeedWithXTZ(app: XCUIApplication) {
+		// Instead of creating a new HD wallet, which will cover the suggested action with backup warnings
+		// we can skip this step by instead importing a newly created Mnemonic instead
+		Test_03_Home.handleOpenWalletManagement(app: app)
+		Test_05_WalletManagement.addMore(app: app)
+		
+		let mnemonic = try? Mnemonic(numberOfWords: .twelve, in: .english)
+		let phrase = mnemonic?.words.joined(separator: " ") ?? ""
+		let currentWallet = Test_05_WalletManagement.addExisting(app: app, withMnemonic: phrase)
+		let addressOfNewWallet = app.tables.cells.containing(.staticText, identifier: "accounts-item-title").element(boundBy: 2).staticTexts["accounts-item-title"].label
+		
+		app.tables.staticTexts[currentWallet].tap()
+		
+		Test_04_Account.sendXTZ(app: app, amount: 3, to: addressOfNewWallet)
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: addressOfNewWallet)
+	}
+	
+	public static func sendXTZ(app: XCUIApplication, amount: Decimal, to: String) {
+		let testConfig: TestConfig = EnvironmentVariables.shared.config()
+		
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["XTZ"].tap()
+		tablesQuery.buttons["primary-button"].tap()
+		tablesQuery.staticTexts[to].tap()
+		
+		SharedHelpers.shared.type(app: app, text: amount.description)
+		
+		app.buttons["primary-button"].tap()
+		sleep(4)
+		
+		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
+		Test_04_Account.slideButtonToComplete(inApp: app)
+		
+		sleep(2)
+		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
+	}
+	
 	public static func check(app: XCUIApplication, estimatedTotalIs: String, fiatIs: String) {
 		let estimatedXTZ = app.tables.staticTexts["account-total-xtz"].label
 		let estimatedFiat = app.tables.staticTexts["account-total-fiat"].label
@@ -627,6 +652,26 @@ final class Test_04_Account: XCTestCase {
 		let fiatDecimal = Decimal(string: sanatisedFiat) ?? 0
 		
 		if xtzBalanceIsNotZero {
+			XCTAssert(xtzDecimal > 0, xtzDecimal.description)
+			XCTAssert(fiatDecimal > 0, fiatDecimal.description)
+		} else {
+			XCTAssert(xtzDecimal == 0)
+			XCTAssert(fiatDecimal == 0)
+		}
+	}
+	
+	public static func check(app: XCUIApplication, xtzStakingBalanceIsNotZero: Bool) {
+		let xtz = app.tables.staticTexts.matching(identifier: "account-token-balance").element(boundBy: 1).label
+		let fiat = app.staticTexts["account-token-fiat"].firstMatch.label
+		
+		let sanatisedXTZ = xtz.replacingOccurrences(of: ",", with: "")
+		var sanatisedFiat = fiat.replacingOccurrences(of: ",", with: "")
+		sanatisedFiat = String(sanatisedFiat.dropFirst())
+		
+		let xtzDecimal = Decimal(string: sanatisedXTZ) ?? 0
+		let fiatDecimal = Decimal(string: sanatisedFiat) ?? 0
+		
+		if xtzStakingBalanceIsNotZero {
 			XCTAssert(xtzDecimal > 0, xtzDecimal.description)
 			XCTAssert(fiatDecimal > 0, fiatDecimal.description)
 		} else {

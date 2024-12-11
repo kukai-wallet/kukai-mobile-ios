@@ -35,7 +35,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		Test_03_Home.handleOpenWalletManagement(app: app)
 		sleep(2)
 		
-		app.tables.buttons["accounts-section-header-more"].tap()
+		app.tables.buttons["accounts-section-header-more"].firstMatch.tap()
 		app.popovers.tables.staticTexts["Add Account"].tap()
 		sleep(2)
 		
@@ -69,7 +69,7 @@ final class Test_05_WalletManagement: XCTestCase {
 	}
 	
 	private func changeGroupName(to: String, inApp app: XCUIApplication) {
-		app.tables.buttons["accounts-section-header-more"].tap()
+		app.tables.buttons["accounts-section-header-more"].firstMatch.tap()
 		app.popovers.tables.staticTexts["Edit Name"].tap()
 		sleep(2)
 		
@@ -133,7 +133,7 @@ final class Test_05_WalletManagement: XCTestCase {
 		let newExists = app.tables.staticTexts["NEW!"].exists
 		let countOfNew = app.tables.staticTexts.matching(identifier: "NEW!").count
 		
-		XCTAssert(count == 3)
+		XCTAssert(count == 4)
 		XCTAssert(newExists)
 		XCTAssert(countOfNew == 1)
 	}
@@ -244,6 +244,23 @@ final class Test_05_WalletManagement: XCTestCase {
 	
 	public static func addMore(app: XCUIApplication) {
 		app.navigationBars.buttons["accounts-nav-add"].tap()
+	}
+	
+	public static func addExisting(app: XCUIApplication, withMnemonic: String) -> String {
+		app.tables.staticTexts["Add Existing Wallet"].tap()
+		app.tables.staticTexts["Restore with Recovery Phrase"].tap()
+		
+		sleep(2)
+		app.scrollViews.children(matching: .textView).element.tap()
+		sleep(2)
+		app.typeText(withMnemonic)
+		
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		
+		let mainWallet = EnvironmentVariables.shared.config().walletAddress_HD.truncateTezosAddress()
+		SharedHelpers.shared.waitForStaticText(mainWallet, exists: true, inElement: app.tables, delay: 30)
+		
+		return mainWallet
 	}
 	
 	public static func handleSwitchingTo(app: XCUIApplication, address: String) {
