@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -1479,6 +1479,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <outlet property="walletAddressTextField" destination="zN1-he-MJi" id="9KH-4y-avt"/>
                         <outlet property="warningView" destination="5d7-tx-uDZ" id="VPm-kl-0qd"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="nii-SC-NQy"/>
+                        <segue destination="A0n-oG-wCz" kind="presentation" identifier="screenshotWarning" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="P3X-me-cU0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8J-us-3ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1688,6 +1689,14 @@ You will not be able to transact in this wallet.</string>
             </objects>
             <point key="canvasLocation" x="-9532" y="2304"/>
         </scene>
+        <!--screenshot-warning-->
+        <scene sceneID="9dV-2s-Nkn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RecoveryPhrase" referencedIdentifier="screenshot-warning" id="A0n-oG-wCz" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NEl-AM-muA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10280" y="2853"/>
+        </scene>
         <!--Account Scanning View Controller-->
         <scene sceneID="qbm-47-wc0">
             <objects>
@@ -1764,7 +1773,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2zy-z4-nIW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10551" y="3112"/>
+            <point key="canvasLocation" x="-10921" y="3141"/>
         </scene>
         <!--Looking for Devices-->
         <scene sceneID="ZYF-AR-5og">
@@ -1924,13 +1933,13 @@ You will not be able to transact in this wallet.</string>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="x9X-Lr-Ybp">
                                                             <rect key="frame" x="8" y="10.5" width="235" height="40.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
                                                                     <rect key="frame" x="0.0" y="0.0" width="235" height="19.5"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                     <color key="textColor" name="Txt2"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
                                                                     <rect key="frame" x="0.0" y="23.5" width="235" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Txt10"/>
@@ -2913,7 +2922,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="l1U-wH-5Pn"/>
+        <segue reference="nii-SC-NQy"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>

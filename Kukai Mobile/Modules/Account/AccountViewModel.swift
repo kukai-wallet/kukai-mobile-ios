@@ -29,7 +29,8 @@ struct SuggestedActionData: Hashable {
 
 struct StakedXTZData: Hashable {
 	let id = UUID()
-	let tez: XTZAmount
+	let xtz: XTZAmount
+	let stake: XTZAmount
 	let isUnstakePending: Bool
 }
 
@@ -160,14 +161,16 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				return cell
 				
-			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
-				cell.symbolLabel.text = "Staked XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.tez.toNormalisedDecimal() ?? 0, decimalPlaces: obj.tez.decimalPlaces, allowNegative: false)
+			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TezAndStakeCell", for: indexPath) as? TezAndStakeCell {
+				cell.topBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.xtz.toNormalisedDecimal() ?? 0, decimalPlaces: obj.xtz.decimalPlaces, allowNegative: false)
+				cell.bottomBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.stake.toNormalisedDecimal() ?? 0, decimalPlaces: obj.stake.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
-				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
-				let totalXtzValue = obj.tez * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
-				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				let totalXtzValue = obj.xtz * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.topValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				
+				let totalStakeValue = obj.stake * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.bottomValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalStakeValue, numberStyle: .currency, maximumFractionDigits: 2)
 				
 				return cell
 				
@@ -345,11 +348,11 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
 		}
 		
-		data.append(.init(DependencyManager.shared.balanceService.account.availableBalance))
-		
-		let stakedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance
+		let stakedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
 		if stakedXtz > XTZAmount.zero() {
-			data.append(.init(StakedXTZData(tez: stakedXtz, isUnstakePending: false)))
+			data.append(.init(StakedXTZData(xtz: DependencyManager.shared.balanceService.account.availableBalance, stake: stakedXtz, isUnstakePending: false)))
+		} else {
+			data.append(.init(DependencyManager.shared.balanceService.account.availableBalance))
 		}
 		
 		data.append(contentsOf: tokensToDisplay.map({.init($0)}))

@@ -75,11 +75,15 @@ class ImportWalletViewController: UIViewController {
 		
 		self.scrollView.setupAutoScroll(focusView: extraWordTextField, parentView: self.view)
 		self.scrollView.autoScrollDelegate = self
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.scrollView.stopAutoScroll()
+		
+		NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
 	@IBAction func advancedButtonTapped(_ sender: Any) {
@@ -290,6 +294,10 @@ class ImportWalletViewController: UIViewController {
 		} completion: { done in
 			vc.view.removeFromSuperview()
 		}
+	}
+	
+	@objc func screenshotTaken() {
+		self.performSegue(withIdentifier: "screenshotWarning", sender: nil)
 	}
 }
 

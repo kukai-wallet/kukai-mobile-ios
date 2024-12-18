@@ -529,6 +529,17 @@ final class Test_04_Account: XCTestCase {
 	
 	// MARK: - Helpers
 	
+	/**
+	 New accessibility id's for XTZ/staked cell
+	 
+	 topBalanceLabel.accessibilityIdentifier = "account-xtz-balance"
+	 topValuelabel.accessibilityIdentifier = "account-xtz-fiat"
+	 topSymbolLabel.accessibilityIdentifier = "account-xtz-symbol"
+	 bottomBalanceLabel.accessibilityIdentifier = "account-stake-balance"
+	 bottomValuelabel.accessibilityIdentifier = "account-stake-fiat"
+	 bottomSymbolLabel.accessibilityIdentifier = "account-stake-symbol"
+	 */
+	
 	public static func waitForInitalLoad(app: XCUIApplication) {
 		sleep(2)
 		SharedHelpers.shared.waitForAnyStaticText([
