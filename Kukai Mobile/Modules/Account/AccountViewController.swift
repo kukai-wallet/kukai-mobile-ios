@@ -108,17 +108,21 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let token = viewModel.token(atIndexPath: indexPath), let c = cell as? TokenBalanceCell else {
+		guard let token = viewModel.token(atIndexPath: indexPath) else {
 			return
 		}
 		
-		if token.isXTZ() {
-			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-		} else {
-			c.iconView.backgroundColor = .colorNamed("BG4")
-			MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
-				c.iconView.backgroundColor = .white
+		if let c = cell as? TokenBalanceCell {
+			if token.isXTZ() {
+				c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
+			} else {
+				c.iconView.backgroundColor = .colorNamed("BG4")
+				MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
+					c.iconView.backgroundColor = .white
+				}
 			}
+		} else if let c = cell as? TezAndStakeCell {
+			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 		}
 	}
 	
