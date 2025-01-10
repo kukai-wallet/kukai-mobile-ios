@@ -8,6 +8,7 @@
 import UIKit
 import KukaiCoreSwift
 import Combine
+import OSLog
 
 class StakeOnboardingContainerViewController: UIViewController {
 	
@@ -32,6 +33,12 @@ class StakeOnboardingContainerViewController: UIViewController {
 	private var bag = [AnyCancellable]()
 	private var currentStep: String = ""
 	private var isStakeOnly = false
+	
+	private var backupTimer: Timer? = nil
+	private var numberOfTimesPendingCalled = 0
+	private var pendingHandledByAutomaticChecker = false
+	private var pendingHandledByManualChecker = false
+	private var numberOfManualChecks = 0
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -80,10 +87,20 @@ class StakeOnboardingContainerViewController: UIViewController {
 				
 				DispatchQueue.main.async { [weak self] in
 					if addresses.contains([address]) {
+						self?.numberOfTimesPendingCalled += 1
+						self?.pendingHandledByAutomaticChecker = false
+						self?.pendingHandledByManualChecker = false
+						self?.numberOfManualChecks = 0
+						self?.backupOperationCompleteChecker(withTime: 12)
+						
 						self?.showLoadingView()
 						self?.updateLoadingViewStatusLabel(message: "Waiting for transaction to complete \n\nThis should only take a few seconds")
 						
 					} else {
+						self?.backupTimer?.invalidate()
+						self?.backupTimer = nil
+						self?.pendingHandledByAutomaticChecker = true
+						
 						self?.hideLoadingView()
 						self?.handleOperationComplete()
 					}
@@ -93,11 +110,70 @@ class StakeOnboardingContainerViewController: UIViewController {
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		
+		backupTimer?.invalidate()
+		backupTimer = nil
 	}
 	
 	func setProgressSegmentComplete(_ view: UIProgressView?) {
 		UIView.animate(withDuration: 0.7) {
 			view?.setProgress(1, animated: true)
+		}
+	}
+	
+	private func backupOperationCompleteChecker(withTime: TimeInterval) {
+		
+		self.backupTimer = Timer.scheduledTimer(withTimeInterval: withTime, repeats: false, block: { [weak self] t in
+			guard self?.pendingHandledByAutomaticChecker == false else {
+				Logger.app.info("backupOperationCompleteChecker exiting due to automatic check succeeding")
+				return
+			}
+			
+			Logger.app.info("backupOperationCompleteChecker proceeding due to automatic check failing")
+			let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			DependencyManager.shared.tzktClient.getAccount(forAddress: currentAddress) { result in
+				self?.numberOfManualChecks += 1
+				
+				guard let res = try? result.get() else {
+					self?.backupOperationCheckerFail()
+					Logger.app.error("backupOperationCompleteChecker encountered failure fetching account")
+					return
+				}
+				
+				if self?.numberOfTimesPendingCalled == 1 && self?.isStakeOnly == false {
+					if res.delegate != nil {
+						Logger.app.info("backupOperationCompleteChecker delegation check succeeded")
+						self?.backupOperationCheckerSuccess()
+					} else {
+						Logger.app.error("backupOperationCompleteChecker delegation check failed")
+						self?.backupOperationCheckerFail()
+					}
+					
+				} else if (self?.numberOfTimesPendingCalled == 2 && self?.isStakeOnly == false) || self?.isStakeOnly == true {
+					if (res.stakedBalance ?? 0) > 0 {
+						Logger.app.info("backupOperationCompleteChecker stake check succeeded")
+						self?.backupOperationCheckerSuccess()
+					} else {
+						Logger.app.error("backupOperationCompleteChecker stake check failed")
+						self?.backupOperationCheckerFail()
+					}
+				}
+			}
+		})
+	}
+	
+	private func backupOperationCheckerSuccess() {
+		hideLoadingView()
+		handleOperationComplete()
+	}
+	
+	private func backupOperationCheckerFail() {
+		if numberOfManualChecks == 0 {
+			backupOperationCompleteChecker(withTime: 5)
+		} else {
+			hideLoadingView()
+			self.windowError(withTitle: "error".localized(), description: "error-stake-wizard-unknown".localized())
+			self.navigationController?.popToDetails()
 		}
 	}
 	

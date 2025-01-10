@@ -69,6 +69,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+		refreshControl.didMoveToSuperview()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
