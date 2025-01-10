@@ -170,7 +170,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}.store(in: &bag)
 	}
 	
+	// deinit doesn't reliably call, even when the parent VC does call deinit.
+	// add backup for now until more testing can be done
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	

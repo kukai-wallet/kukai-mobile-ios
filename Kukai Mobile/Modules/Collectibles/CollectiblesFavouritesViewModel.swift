@@ -57,6 +57,10 @@ class CollectiblesFavouritesViewModel: ViewModel, UICollectionViewDiffableDataSo
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	

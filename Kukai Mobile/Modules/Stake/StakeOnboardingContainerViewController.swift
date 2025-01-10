@@ -67,7 +67,10 @@ class StakeOnboardingContainerViewController: UIViewController {
 			indicatorStackviewTrailingConstraint.constant = 24 * 5
 		}
 		
+		// triple make sure activity listener is up and running before we start
+		AccountViewModel.setupAccountActivityListener()
 		
+		// Listen for requests to add pending operations
 		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
 			.sink { [weak self] addresses in

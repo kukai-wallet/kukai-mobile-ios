@@ -47,6 +47,11 @@ class ChooseBakerViewController: UIViewController {
 		}
     }
 	
+	deinit {
+		cancellable?.cancel()
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		

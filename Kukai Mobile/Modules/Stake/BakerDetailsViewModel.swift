@@ -36,6 +36,10 @@ class BakerDetailsViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	

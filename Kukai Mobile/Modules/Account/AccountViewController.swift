@@ -54,6 +54,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}.store(in: &bag)
 	}
 	
+	deinit {
+		bag.forEach({ $0.cancel() })
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)

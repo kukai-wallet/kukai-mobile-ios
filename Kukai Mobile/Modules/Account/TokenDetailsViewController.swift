@@ -62,6 +62,11 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	deinit {
+		cancellable = nil
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
