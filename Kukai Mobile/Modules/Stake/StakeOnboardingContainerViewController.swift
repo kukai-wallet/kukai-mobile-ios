@@ -57,7 +57,6 @@ class StakeOnboardingContainerViewController: UIViewController {
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		actionButton.customButtonType = .primary
 		
-		
 		// If user only needs to stake we hide the first few screens and 2 steps
 		delegateAndStakeContainer.isHidden = isStakeOnly
 		stakeOnlyContainer.isHidden = !isStakeOnly
