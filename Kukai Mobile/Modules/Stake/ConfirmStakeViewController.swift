@@ -110,6 +110,8 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		
 		// Fees and amount view config
 		slideErrorStackView.isHidden = true
+		feeValueLabel.accessibilityIdentifier = "fee-amount"
+		feeButton.customButtonType = .secondary
 		
 		slideButton.delegate = self
     }
