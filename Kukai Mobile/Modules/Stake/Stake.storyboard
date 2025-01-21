@@ -2522,24 +2522,24 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             <objects>
                 <viewController storyboardIdentifier="step1" title="step1" id="pMI-kW-rpK" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uV7-UW-vtf">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How do I start?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RmZ-eJ-2Vy">
-                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <rect key="frame" x="16" y="78" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Xyf-au-oif">
-                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <rect key="frame" x="137.5" y="126" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="FF4-2x-pF3"/>
                                     <constraint firstAttribute="height" constant="100" id="rBZ-zt-epu"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="es7-67-lZn">
-                                <rect key="frame" x="32" y="242" width="350" height="84"/>
+                                <rect key="frame" x="32" y="242" width="311" height="101"/>
                                 <string key="text">Before we can start staking and earning interest on our XTZ, we first have to delegate to a baker. Don’t worry, we are here to explain everything step by step. First lets understand some of the phrases used so you are informed of what's going on.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
@@ -2576,7 +2576,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
             <objects>
                 <viewController storyboardIdentifier="step2" title="step2" id="ymZ-W6-fTm" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kRY-gv-92Z">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="nVZ-Ym-UtV"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2766,22 +2766,99 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y7n-eB-fWH">
-                                <rect key="frame" x="32" y="242" width="350" height="202"/>
-                                <string key="text">Every few months, new proposals can be submitted to the Tezos blockchain which kicks off a multi-step process over the course of a few months. First bakers must vote on which proposal to accept, then test it and give it a thumbs up or a thumbs down, etc. This is a critical aspect of the Tezos blockchain that bakers are required to do on behalf of their users. It is important for users to monitor their baker and ensure that they regularly vote. Voting is a manual process for bakers, and can be missed from time to time. However consistently not voting can damage the network and needs to be avoided</string>
+                                <rect key="frame" x="32" y="242" width="350" height="185"/>
+                                <string key="text">Every few months, new proposals can be submitted to the Tezos blockchain which kicks off a multi-step process over the course of a few months. First bakers must vote on which proposal to accept, then test it and give it a thumbs up or a thumbs down, etc. This is a critical aspect of the Tezos blockchain that bakers are required to do on behalf of their users. It is important for users to monitor their baker and ensure that they regularly vote.
+
+Symbol explanation:</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="has voted in the last 5 voting periods" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XVr-oO-BcO">
+                                <rect key="frame" x="66" y="455.5" width="316" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" translatesAutoresizingMaskIntoConstraints="NO" id="PT6-OG-17Z">
+                                <rect key="frame" x="32" y="451" width="26" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="2Gt-vq-gvP"/>
+                                    <constraint firstAttribute="height" constant="26" id="Ja3-cd-txZ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hasn't voted in the current period yet" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JEo-T1-NYS">
+                                <rect key="frame" x="66" y="493.5" width="316" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="Wjo-R4-MmE">
+                                <rect key="frame" x="32" y="489" width="26" height="26"/>
+                                <color key="tintColor" name="TxtB-alt4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="FZK-UL-ONQ"/>
+                                    <constraint firstAttribute="width" constant="26" id="k3r-TM-PjU"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="has voted, but has missed several" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="U6X-hT-sB9">
+                                <rect key="frame" x="66" y="531.5" width="316" height="17"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" translatesAutoresizingMaskIntoConstraints="NO" id="qcy-sa-TaJ">
+                                <rect key="frame" x="32" y="527" width="26" height="26"/>
+                                <color key="tintColor" name="TxtB-alt4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="glM-ie-mIR"/>
+                                    <constraint firstAttribute="width" constant="26" id="jSl-cm-Cwb"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="has missed all of the last 5 periods. Another baker should be chosen" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6KO-R9-Ubq">
+                                <rect key="frame" x="66" y="561" width="316" height="34"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
+                                <color key="textColor" name="Txt6"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Close" translatesAutoresizingMaskIntoConstraints="NO" id="XKn-hE-Y0i">
+                                <rect key="frame" x="32" y="565" width="26" height="26"/>
+                                <color key="tintColor" name="TxtAlert4"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="26" id="FF8-Aj-Te3"/>
+                                    <constraint firstAttribute="width" constant="26" id="f98-sw-m2N"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="hhr-Lk-Zm4"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="y7n-eB-fWH" firstAttribute="top" secondItem="vrj-aE-JZd" secondAttribute="bottom" constant="16" id="480-SE-Hyg"/>
+                            <constraint firstItem="JEo-T1-NYS" firstAttribute="leading" secondItem="Wjo-R4-MmE" secondAttribute="trailing" constant="8" symbolic="YES" id="5hO-U4-nT7"/>
                             <constraint firstItem="vrj-aE-JZd" firstAttribute="top" secondItem="Pqo-jq-T5M" secondAttribute="bottom" constant="24" id="6Zn-KU-ODR"/>
                             <constraint firstItem="y7n-eB-fWH" firstAttribute="leading" secondItem="hhr-Lk-Zm4" secondAttribute="leading" constant="32" id="BwV-O6-68c"/>
+                            <constraint firstItem="6KO-R9-Ubq" firstAttribute="trailing" secondItem="U6X-hT-sB9" secondAttribute="trailing" id="EVD-rZ-8qa"/>
+                            <constraint firstItem="JEo-T1-NYS" firstAttribute="trailing" secondItem="XVr-oO-BcO" secondAttribute="trailing" id="FU1-uT-c3B"/>
+                            <constraint firstItem="qcy-sa-TaJ" firstAttribute="leading" secondItem="Wjo-R4-MmE" secondAttribute="leading" id="Gxn-lS-42h"/>
+                            <constraint firstItem="6KO-R9-Ubq" firstAttribute="leading" secondItem="XKn-hE-Y0i" secondAttribute="trailing" constant="8" symbolic="YES" id="H0e-UA-7Ag"/>
+                            <constraint firstItem="XKn-hE-Y0i" firstAttribute="leading" secondItem="qcy-sa-TaJ" secondAttribute="leading" id="Hoi-NG-f68"/>
+                            <constraint firstItem="XVr-oO-BcO" firstAttribute="trailing" secondItem="y7n-eB-fWH" secondAttribute="trailing" id="Je3-LX-bSJ"/>
+                            <constraint firstItem="PT6-OG-17Z" firstAttribute="leading" secondItem="y7n-eB-fWH" secondAttribute="leading" id="MzM-2Z-tTL"/>
+                            <constraint firstItem="6KO-R9-Ubq" firstAttribute="centerY" secondItem="XKn-hE-Y0i" secondAttribute="centerY" id="OOG-zo-1gf"/>
                             <constraint firstItem="vrj-aE-JZd" firstAttribute="centerX" secondItem="hhr-Lk-Zm4" secondAttribute="centerX" id="URN-TQ-vAu"/>
+                            <constraint firstItem="Wjo-R4-MmE" firstAttribute="top" secondItem="PT6-OG-17Z" secondAttribute="bottom" constant="12" id="cEE-Mn-Uck"/>
+                            <constraint firstItem="JEo-T1-NYS" firstAttribute="centerY" secondItem="Wjo-R4-MmE" secondAttribute="centerY" id="e4K-Rd-YuB"/>
+                            <constraint firstItem="qcy-sa-TaJ" firstAttribute="top" secondItem="Wjo-R4-MmE" secondAttribute="bottom" constant="12" id="fJd-qn-PZ9"/>
                             <constraint firstItem="Pqo-jq-T5M" firstAttribute="top" secondItem="hhr-Lk-Zm4" secondAttribute="top" constant="30" id="foY-hG-X7j"/>
+                            <constraint firstItem="XKn-hE-Y0i" firstAttribute="top" secondItem="qcy-sa-TaJ" secondAttribute="bottom" constant="12" id="gtE-1p-WaI"/>
+                            <constraint firstItem="Wjo-R4-MmE" firstAttribute="leading" secondItem="PT6-OG-17Z" secondAttribute="leading" id="gud-HN-Kf1"/>
+                            <constraint firstItem="U6X-hT-sB9" firstAttribute="trailing" secondItem="JEo-T1-NYS" secondAttribute="trailing" id="iHu-ZZ-x83"/>
+                            <constraint firstItem="U6X-hT-sB9" firstAttribute="centerY" secondItem="qcy-sa-TaJ" secondAttribute="centerY" id="q6M-i2-GwE"/>
+                            <constraint firstItem="XVr-oO-BcO" firstAttribute="leading" secondItem="PT6-OG-17Z" secondAttribute="trailing" constant="8" symbolic="YES" id="r9h-av-P9u"/>
+                            <constraint firstItem="PT6-OG-17Z" firstAttribute="top" secondItem="y7n-eB-fWH" secondAttribute="bottom" constant="24" id="rtG-1v-C3i"/>
+                            <constraint firstItem="XVr-oO-BcO" firstAttribute="centerY" secondItem="PT6-OG-17Z" secondAttribute="centerY" id="skC-nD-PzJ"/>
                             <constraint firstItem="Pqo-jq-T5M" firstAttribute="leading" secondItem="hhr-Lk-Zm4" secondAttribute="leading" constant="16" id="vJC-Cf-I8A"/>
+                            <constraint firstItem="U6X-hT-sB9" firstAttribute="leading" secondItem="qcy-sa-TaJ" secondAttribute="trailing" constant="8" symbolic="YES" id="xQA-tj-cgz"/>
                             <constraint firstItem="hhr-Lk-Zm4" firstAttribute="trailing" secondItem="Pqo-jq-T5M" secondAttribute="trailing" constant="16" id="xhB-fW-yjT"/>
                             <constraint firstItem="hhr-Lk-Zm4" firstAttribute="trailing" secondItem="y7n-eB-fWH" secondAttribute="trailing" constant="32" id="zkq-jv-fRF"/>
                         </constraints>
@@ -2792,7 +2869,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Osz-pO-NwT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5186" y="4349"/>
+            <point key="canvasLocation" x="5185.507246376812" y="4347.9910714285716"/>
         </scene>
         <!--Fee Info View Controller-->
         <scene sceneID="bQ0-sV-ygY">
@@ -3161,24 +3238,24 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             <objects>
                 <viewController storyboardIdentifier="step3" title="step3" id="KGK-Ea-8Bo" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="72P-Xf-rKQ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Choose a Baker" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WWM-zX-K4T">
-                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <rect key="frame" x="16" y="78" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Oeh-JO-QWk">
-                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <rect key="frame" x="137.5" y="126" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="3ek-qf-W2D"/>
                                     <constraint firstAttribute="width" constant="100" id="8DW-sh-hyC"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GD7-RR-7Ei">
-                                <rect key="frame" x="32" y="242" width="350" height="67.5"/>
+                                <rect key="frame" x="32" y="242" width="311" height="67.5"/>
                                 <string key="text">Now that we understand the basics, it's time for you to choose a baker from the list of public bakers we have found for you. Don’t worry, you can change your baker at any time later on.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
@@ -3215,24 +3292,24 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             <objects>
                 <viewController storyboardIdentifier="step4" title="step4" id="4bt-5V-zUK" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VY3-Wf-6z0">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learn about staking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AhJ-vn-cG2">
-                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <rect key="frame" x="16" y="78" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="zPw-Lu-hPy">
-                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <rect key="frame" x="137.5" y="126" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="Ufy-ZQ-jg8"/>
                                     <constraint firstAttribute="height" constant="100" id="n0f-fn-GfB"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TsQ-2W-Me0">
-                                <rect key="frame" x="32" y="242" width="350" height="67.5"/>
+                                <rect key="frame" x="32" y="242" width="311" height="67.5"/>
                                 <string key="text">It's time to maximize our rewards by staking a portion or all of our XTZ. As always, we are here to explain everything step by step. Let's learn a little bit about staking before we continue.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
@@ -3269,7 +3346,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             <objects>
                 <viewController storyboardIdentifier="step5" title="step5" id="E44-3v-yBA" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="hlm-Ow-gpW">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="GaP-Sw-thW"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3291,24 +3368,24 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             <objects>
                 <viewController storyboardIdentifier="step6" title="step6" id="UYg-eD-ReE" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="aeG-IX-7hb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Staking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZCs-nJ-h9i">
-                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <rect key="frame" x="16" y="78" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="Wfa-2s-MFI">
-                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <rect key="frame" x="137.5" y="126" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="5uG-KH-DBD"/>
                                     <constraint firstAttribute="width" constant="100" id="YSx-0C-cVn"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WQF-hJ-dgh">
-                                <rect key="frame" x="32" y="242" width="350" height="84"/>
+                                <rect key="frame" x="32" y="242" width="311" height="84"/>
                                 <string key="text">Now that we understand the basics, it’s time to start staking. Unlike delegating, to stake you must choose a specific amount to lock up. You should leave at least 1 XTZ in your account to cover any future transaction fees.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
@@ -3345,24 +3422,24 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             <objects>
                 <viewController storyboardIdentifier="step7" title="step7" id="Hp3-Bf-fEw" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="gIl-u7-kxD">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="447"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Congratulations" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6yt-ax-suH">
-                                <rect key="frame" x="16" y="78" width="382" height="24"/>
+                                <rect key="frame" x="16" y="78" width="343" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Fee_Fee" translatesAutoresizingMaskIntoConstraints="NO" id="qLU-Mt-hqg">
-                                <rect key="frame" x="157" y="126" width="100" height="100"/>
+                                <rect key="frame" x="137.5" y="126" width="100" height="100"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="9St-mV-JiD"/>
                                     <constraint firstAttribute="width" constant="100" id="SgR-aW-9us"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mcY-fM-5FE">
-                                <rect key="frame" x="32" y="242" width="350" height="218.5"/>
+                                <rect key="frame" x="32" y="242" width="311" height="235.5"/>
                                 <string key="text">You have successfully delegated and staked to a baker, and are now helping secure the network! 
 
 You will begin receiving:
@@ -3561,6 +3638,7 @@ Would you like to add a reminder to your calendar to alert you when this is read
     <resources>
         <image name="AlertKnockout" width="24" height="24"/>
         <image name="BackupWallet" width="150" height="150"/>
+        <image name="Check" width="24" height="24"/>
         <image name="Close" width="24" height="24"/>
         <image name="Fee_Fee" width="100" height="100"/>
         <image name="Social_TZ_Ovalcolor" width="30" height="30"/>
