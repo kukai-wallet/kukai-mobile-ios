@@ -28,6 +28,7 @@ class StakeOnboardingContainerViewController: UIViewController {
 	@IBOutlet weak var progressSegment3_stackview: UIStackView!
 	@IBOutlet weak var progressSegment3_1: UIProgressView!
 	@IBOutlet weak var progressSegment3_2: UIProgressView!
+	@IBOutlet weak var progressSegment3_3: UIProgressView!
 	@IBOutlet weak var pageIndicator4: PageIndicatorContainerView!
 	@IBOutlet weak var actionButton: CustomisableButton!
 	
@@ -236,10 +237,14 @@ class StakeOnboardingContainerViewController: UIViewController {
 				if handlePageControllerNext(vc: currentChildVc) == true {
 					actionButton.setTitle("Stake", for: .normal)
 					self.pageIndicator3.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment3_2)
+					self.setProgressSegmentComplete(self.progressSegment3_3)
 					self.pageIndicator4.setInprogress(pageNumber: isStakeOnly ? 2 : 4)
 				} else {
-					self.setProgressSegmentComplete(self.progressSegment3_1)
+					if self.progressSegment3_1.progress == 0 {
+						self.setProgressSegmentComplete(self.progressSegment3_1)
+					} else if self.progressSegment3_2.progress == 0 {
+						self.setProgressSegmentComplete(self.progressSegment3_2)
+					}
 				}
 				
 			case "step6":

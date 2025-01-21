@@ -377,20 +377,29 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <color key="progressTintColor" name="BGB4"/>
                                 <color key="trackTintColor" name="BG6"/>
                             </progressView>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vac-Ck-w9O">
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vac-Ck-w9O">
                                 <rect key="frame" x="263.5" y="121.5" width="112.5" height="1.5"/>
                                 <subviews>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="47U-4c-m8p">
-                                        <rect key="frame" x="0.0" y="0.0" width="54" height="2.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="41.5" height="2.5"/>
                                         <color key="progressTintColor" name="BGB4"/>
                                         <color key="trackTintColor" name="BG6"/>
                                     </progressView>
                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="hi2-wv-ZML">
-                                        <rect key="frame" x="58" y="0.0" width="54.5" height="2.5"/>
+                                        <rect key="frame" x="45.5" y="0.0" width="21" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="caO-0z-9SV">
+                                        <rect key="frame" x="70.5" y="0.0" width="42" height="2.5"/>
                                         <color key="progressTintColor" name="BGB4"/>
                                         <color key="trackTintColor" name="BG6"/>
                                     </progressView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="47U-4c-m8p" firstAttribute="width" secondItem="hi2-wv-ZML" secondAttribute="width" multiplier="2" id="Fdr-Yf-3G4"/>
+                                    <constraint firstItem="caO-0z-9SV" firstAttribute="width" secondItem="47U-4c-m8p" secondAttribute="width" id="Jzp-Sb-v8P"/>
+                                </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-MX-56d">
                                 <rect key="frame" x="24" y="108" width="366" height="28"/>
@@ -503,6 +512,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="progressSegment2" destination="sZA-2i-eKY" id="cXC-yw-Jha"/>
                         <outlet property="progressSegment3_1" destination="47U-4c-m8p" id="WWi-C8-0T7"/>
                         <outlet property="progressSegment3_2" destination="hi2-wv-ZML" id="UQI-kl-dtg"/>
+                        <outlet property="progressSegment3_3" destination="caO-0z-9SV" id="rrz-tP-hsw"/>
                         <outlet property="progressSegment3_stackview" destination="vac-Ck-w9O" id="3Qp-ee-6Ox"/>
                         <outlet property="stakeOnlyContainer" destination="4GH-FH-3rP" id="IsI-bN-5QV"/>
                         <segue destination="T2d-SR-jEL" kind="custom" identifier="chooseBaker" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="gj1-ox-b8E"/>
@@ -3266,7 +3276,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
                     </view>
                     <navigationItem key="navigationItem" id="yaU-RN-bHF"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="stake-learn-more-7,stake-learn-more-8"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="stake-learn-more-7,stake-learn-more-8,stake-learn-more-9"/>
                     </userDefinedRuntimeAttributes>
                     <connections>
                         <segue destination="UYg-eD-ReE" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="KRy-lM-rBr"/>
