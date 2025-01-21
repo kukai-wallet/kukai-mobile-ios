@@ -39,6 +39,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					// Scrub any identifiable data to keep users anonymous
 					event.context?["app"]?.removeValue(forKey: "device_app_hash")
 					event.user = nil
+					
+					// Sentry for some bizarre reason relies on stacktraces to group everything. So `captureMessage()`'s in the same file will all be grouped together based on function name
+					// rather than based on message text. Overriding this behaviour globally (hopefully `.info` is only used for messages), as it makes no sense
+					if event.level == .info, let message = event.message {
+						event.fingerprint = [message.formatted]
+					}
 				
 					return event
 				}
