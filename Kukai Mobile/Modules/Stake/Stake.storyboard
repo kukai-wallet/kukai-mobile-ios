@@ -342,30 +342,56 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="loc-pD-84F">
-                                <rect key="frame" x="38" y="120" width="112.5" height="5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="E7p-cQ-dwD">
+                                <rect key="frame" x="38" y="121.5" width="112.5" height="1.5"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="loc-pD-84F">
+                                        <rect key="frame" x="0.0" y="0.0" width="33.5" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="SM1-te-UWc">
+                                        <rect key="frame" x="37.5" y="0.0" width="17" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Eta-GC-tH5">
+                                        <rect key="frame" x="58.5" y="0.0" width="16.5" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="Lt2-5G-YDL">
+                                        <rect key="frame" x="79" y="0.0" width="33.5" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="4" id="69r-t5-LIb"/>
+                                    <constraint firstItem="SM1-te-UWc" firstAttribute="width" secondItem="Eta-GC-tH5" secondAttribute="width" id="5FO-ue-jZf"/>
+                                    <constraint firstItem="Lt2-5G-YDL" firstAttribute="width" secondItem="loc-pD-84F" secondAttribute="width" id="m1w-id-uKe"/>
+                                    <constraint firstItem="loc-pD-84F" firstAttribute="width" secondItem="SM1-te-UWc" secondAttribute="width" multiplier="2" id="uLN-1w-21u"/>
                                 </constraints>
-                                <color key="progressTintColor" name="BGB4"/>
-                                <color key="trackTintColor" name="BG6"/>
-                            </progressView>
+                            </stackView>
                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="sZA-2i-eKY">
-                                <rect key="frame" x="150.5" y="120" width="113" height="5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="4" id="7SA-yb-1o0"/>
-                                </constraints>
+                                <rect key="frame" x="150.5" y="121.5" width="113" height="2.5"/>
                                 <color key="progressTintColor" name="BGB4"/>
                                 <color key="trackTintColor" name="BG6"/>
                             </progressView>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="EmJ-R3-jPN">
-                                <rect key="frame" x="263.5" y="120" width="112.5" height="5"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="4" id="QZl-3p-1YF"/>
-                                </constraints>
-                                <color key="progressTintColor" name="BGB4"/>
-                                <color key="trackTintColor" name="BG6"/>
-                            </progressView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="vac-Ck-w9O">
+                                <rect key="frame" x="263.5" y="121.5" width="112.5" height="1.5"/>
+                                <subviews>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="47U-4c-m8p">
+                                        <rect key="frame" x="0.0" y="0.0" width="54" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="hi2-wv-ZML">
+                                        <rect key="frame" x="58" y="0.0" width="54.5" height="2.5"/>
+                                        <color key="progressTintColor" name="BGB4"/>
+                                        <color key="trackTintColor" name="BG6"/>
+                                    </progressView>
+                                </subviews>
+                            </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cTx-MX-56d">
                                 <rect key="frame" x="24" y="108" width="366" height="28"/>
                                 <subviews>
@@ -438,22 +464,22 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                             <constraint firstItem="ffS-He-fcb" firstAttribute="top" secondItem="oRV-Yl-8Rc" secondAttribute="bottom" constant="24" id="3Bs-EG-fgy"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="trailing" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="7oH-yK-rcW"/>
                             <constraint firstItem="oRV-Yl-8Rc" firstAttribute="leading" secondItem="Klz-bW-ld0" secondAttribute="leading" id="9wi-PJ-KcV"/>
-                            <constraint firstItem="loc-pD-84F" firstAttribute="trailing" secondItem="l67-7d-QQb" secondAttribute="centerX" id="C8U-Tg-lLK"/>
                             <constraint firstItem="4GH-FH-3rP" firstAttribute="top" secondItem="cTx-MX-56d" secondAttribute="bottom" constant="16" id="DWC-qO-bth"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="leading" secondItem="l67-7d-QQb" secondAttribute="centerX" id="Lle-6A-hhy"/>
                             <constraint firstItem="cTx-MX-56d" firstAttribute="top" secondItem="Klz-bW-ld0" secondAttribute="top" constant="16" id="Olg-J6-5kq"/>
-                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="leading" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="Pqg-Rg-zif"/>
                             <constraint firstItem="ffS-He-fcb" firstAttribute="bottom" secondItem="Klz-bW-ld0" secondAttribute="bottom" constant="-16" id="Q5h-VS-dZP"/>
-                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="trailing" secondItem="HwO-lS-lot" secondAttribute="centerX" id="XgP-x3-3aA"/>
-                            <constraint firstItem="loc-pD-84F" firstAttribute="leading" secondItem="f9o-Xl-taL" secondAttribute="centerX" id="ZXV-1h-6uq"/>
                             <constraint firstItem="sZA-2i-eKY" firstAttribute="centerY" secondItem="l67-7d-QQb" secondAttribute="centerY" id="a5c-fL-QIB"/>
-                            <constraint firstItem="loc-pD-84F" firstAttribute="centerY" secondItem="f9o-Xl-taL" secondAttribute="centerY" id="gju-dR-aOK"/>
+                            <constraint firstItem="vac-Ck-w9O" firstAttribute="centerY" secondItem="HwO-lS-lot" secondAttribute="centerY" id="ds5-XG-MyO"/>
                             <constraint firstItem="ffS-He-fcb" firstAttribute="centerX" secondItem="Klz-bW-ld0" secondAttribute="centerX" id="hAg-R6-hYA"/>
                             <constraint firstItem="Klz-bW-ld0" firstAttribute="trailing" secondItem="cTx-MX-56d" secondAttribute="trailing" constant="24" id="iEh-FS-Swj"/>
                             <constraint firstItem="oRV-Yl-8Rc" firstAttribute="trailing" secondItem="Klz-bW-ld0" secondAttribute="trailing" id="iRY-Nq-cwh"/>
+                            <constraint firstItem="vac-Ck-w9O" firstAttribute="trailing" secondItem="HwO-lS-lot" secondAttribute="centerX" id="igf-JW-zRh"/>
+                            <constraint firstItem="E7p-cQ-dwD" firstAttribute="centerY" secondItem="sZA-2i-eKY" secondAttribute="centerY" id="jBO-H0-boM"/>
                             <constraint firstItem="Klz-bW-ld0" firstAttribute="trailing" secondItem="4GH-FH-3rP" secondAttribute="trailing" id="pK2-7v-m66"/>
-                            <constraint firstItem="EmJ-R3-jPN" firstAttribute="centerY" secondItem="AXv-sP-xIL" secondAttribute="centerY" id="rNw-eg-qwY"/>
+                            <constraint firstItem="E7p-cQ-dwD" firstAttribute="trailing" secondItem="l67-7d-QQb" secondAttribute="centerX" id="pP6-b8-jyB"/>
+                            <constraint firstItem="vac-Ck-w9O" firstAttribute="leading" secondItem="AXv-sP-xIL" secondAttribute="centerX" id="r6X-Zu-fbB"/>
                             <constraint firstItem="oRV-Yl-8Rc" firstAttribute="top" secondItem="cTx-MX-56d" secondAttribute="bottom" constant="16" id="x4d-cU-M7k"/>
+                            <constraint firstItem="E7p-cQ-dwD" firstAttribute="leading" secondItem="f9o-Xl-taL" secondAttribute="centerX" id="z1n-FG-meX"/>
                             <constraint firstItem="4GH-FH-3rP" firstAttribute="leading" secondItem="Klz-bW-ld0" secondAttribute="leading" id="zvQ-wv-MiY"/>
                         </constraints>
                     </view>
@@ -469,9 +495,15 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                         <outlet property="pageIndicator2" destination="l67-7d-QQb" id="VEn-Q2-qd7"/>
                         <outlet property="pageIndicator3" destination="AXv-sP-xIL" id="Zyf-ZW-IeK"/>
                         <outlet property="pageIndicator4" destination="HwO-lS-lot" id="Vb7-5B-7eg"/>
-                        <outlet property="progressSegment1" destination="loc-pD-84F" id="xkp-pm-eX3"/>
+                        <outlet property="progressSegment1_1" destination="loc-pD-84F" id="Oe3-6Z-Nuw"/>
+                        <outlet property="progressSegment1_2" destination="SM1-te-UWc" id="8su-ku-5GY"/>
+                        <outlet property="progressSegment1_3" destination="Eta-GC-tH5" id="Dpa-xq-pw8"/>
+                        <outlet property="progressSegment1_4" destination="Lt2-5G-YDL" id="PHE-5N-HWe"/>
+                        <outlet property="progressSegment1_stackview" destination="E7p-cQ-dwD" id="stk-HU-uEn"/>
                         <outlet property="progressSegment2" destination="sZA-2i-eKY" id="cXC-yw-Jha"/>
-                        <outlet property="progressSegment3" destination="EmJ-R3-jPN" id="vpU-Wh-CKC"/>
+                        <outlet property="progressSegment3_1" destination="47U-4c-m8p" id="WWi-C8-0T7"/>
+                        <outlet property="progressSegment3_2" destination="hi2-wv-ZML" id="UQI-kl-dtg"/>
+                        <outlet property="progressSegment3_stackview" destination="vac-Ck-w9O" id="3Qp-ee-6Ox"/>
                         <outlet property="stakeOnlyContainer" destination="4GH-FH-3rP" id="IsI-bN-5QV"/>
                         <segue destination="T2d-SR-jEL" kind="custom" identifier="chooseBaker" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="gj1-ox-b8E"/>
                         <segue destination="aCF-K3-anG" kind="custom" identifier="stake" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="XDY-FJ-dZU"/>
