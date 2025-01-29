@@ -247,7 +247,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		
 		
 		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
-			if let url = URL(string: "https://objkt.com/collection/\(nft.parentContract)") {
+			if let url = URL(string: "https://objkt.com/tokens/\(nft.parentContract)/\(nft.tokenId)") {
 				UIApplication.shared.open(url)
 			}
 		}
