@@ -24,6 +24,7 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 	private var isPlaying = false
 	private var imageView: SDAnimatedImageView? = nil
 	private weak var playerController: AVPlayerViewController? = nil
+	private weak var modelController: ThreeDimensionModelViewController? = nil
 	
 	private var airPlayName: String = ""
 	private var airPlayArtist: String = ""
@@ -170,6 +171,20 @@ class CollectibleDetailAVCell: UICollectionViewCell {
 			avplayerController.player?.allowsExternalPlayback = true
 			avplayerController.player?.isMuted = true
 		}
+		
+		setup = true
+	}
+	
+	func setup(mediaContent: MediaContent, modelController: ThreeDimensionModelViewController, layoutOnly: Bool) {
+		
+		// Ignore everything else if only setting up the collectionview layout
+		if layoutOnly { return }
+		
+		mediaActivityView.isHidden = true
+		self.modelController = modelController
+		placeholderView.addSubview(modelController.view)
+		modelController.view.frame = placeholderView.bounds
+		modelController.setAssetUrl(mediaContent.mediaURL)
 		
 		setup = true
 	}

@@ -45,7 +45,9 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		let selectedNetwork = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
 		
 		let imageCacheSize = MediaProxyService.sizeOf(cache: .temporary).description
-		let int64 = Int64(imageCacheSize) ?? 0
+		let modelCacheSize = DiskService.sizeOfFolder("models") ?? 0
+		var int64 = Int64(imageCacheSize) ?? 0
+		int64 += Int64(modelCacheSize)
 		let collectibleStorageSize = ByteCountFormatter().string(fromByteCount: int64)
 		
 		// Build snapshot
