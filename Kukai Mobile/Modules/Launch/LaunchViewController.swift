@@ -68,8 +68,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		// TODO: uncomment
-		/*
 		super.viewWillAppear(animated)
 		hasWallet = DependencyManager.shared.walletList.count() > 0
 		
@@ -101,16 +99,11 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		
 		self.navigationItem.hidesBackButton = true
 		self.navigationItem.backButtonDisplayMode = .minimal
-		*/
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		// TODO: uncomment
-		self.performSegue(withIdentifier: "test", sender: nil)
-		
-		/*
 		if !runOnce && !hasWallet {
 			animate()
 			
@@ -123,7 +116,6 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 				self?.transition()
 			}
 		}
-		*/
 	}
 	
 	private func animate() {

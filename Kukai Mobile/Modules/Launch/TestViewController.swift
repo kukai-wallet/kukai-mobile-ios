@@ -27,10 +27,4 @@ class TestViewController: UIViewController {
 		let urlToDownload = URL(string: "https://data.mantodev.com/media/mobile900/ipfs/QmVD7jNTXZZZWzRQWpkyrjxdAMEjSgTnYnVzvECDndgNQu")!
 		modelVc.setAssetUrl(urlToDownload)
 	}
-	
-	override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		//modelVc.view.bounds = self.placeholder.bounds
-	}
 }

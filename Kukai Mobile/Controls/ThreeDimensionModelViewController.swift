@@ -9,9 +9,14 @@ import UIKit
 import SceneKit
 import GLTFKit2
 import KukaiCoreSwift
-import SDWebImage
+
+protocol ThreeDimensionModelViewControllerDelegate: AnyObject {
+	func threeDimensionModelLoadingError(_ error: Error?)
+}
 
 class ThreeDimensionModelViewController: UIViewController {
+	
+	public weak var delegate: ThreeDimensionModelViewControllerDelegate? = nil
 	
 	private let sceneView = SCNView()
 	private let camera = SCNCamera()
@@ -229,13 +234,13 @@ class ThreeDimensionModelViewController: UIViewController {
 	public func setAssetUrl(_ url: URL) {
 		DiskService.fetchRemoteFile(url: url, storeInFolder: "models") { [weak self] result in
 			guard let res = try? result.get() else {
-				self?.alert(errorWithMessage: "Error downlaoding") // TODO: figure out errors
+				self?.delegate?.threeDimensionModelLoadingError(try? result.getError())
 				return
 			}
 			
 			GLTFAsset.load(with: res, options: [:]) { [weak self] progress, status, asset, error, _ in
 				if let err = error {
-					self?.alert(errorWithMessage: "Error") // TODO: figure out errors
+					self?.delegate?.threeDimensionModelLoadingError(err)
 				} else {
 					self?.asset = asset
 				}
