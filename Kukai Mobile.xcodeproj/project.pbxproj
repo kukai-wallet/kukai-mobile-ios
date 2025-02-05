@@ -301,6 +301,9 @@
 		C0A321DA27C68C4F00D7788B /* TezosAddressValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */; };
 		C0A321DC27C6943900D7788B /* TokenAmountValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */; };
 		C0A33B8F29F6BE3D00A53EAE /* WalletManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */; };
+		C0A6CE922D523D4300ECA381 /* GLTFKit2 in Frameworks */ = {isa = PBXBuildFile; productRef = C0A6CE912D523D4300ECA381 /* GLTFKit2 */; };
+		C0A6CE962D52402D00ECA381 /* ThreeDimensionModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */; };
+		C0A6CE982D5240A600ECA381 /* TestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CE972D5240A600ECA381 /* TestViewController.swift */; };
 		C0A9865729895A6A0092EA2F /* SendCollectibleAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */; };
 		C0ABB81029AFB315002F1BF7 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */; };
 		C0ABB81229AFB31E002F1BF7 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */; };
@@ -750,6 +753,8 @@
 		C0A321D927C68C4F00D7788B /* TezosAddressValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TezosAddressValidator.swift; sourceTree = "<group>"; };
 		C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAmountValidator.swift; sourceTree = "<group>"; };
 		C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagementService.swift; sourceTree = "<group>"; };
+		C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDimensionModelViewController.swift; sourceTree = "<group>"; };
+		C0A6CE972D5240A600ECA381 /* TestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestViewController.swift; sourceTree = "<group>"; };
 		C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleAmountViewController.swift; sourceTree = "<group>"; };
 		C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
@@ -893,6 +898,7 @@
 				C01D227227F5E2DD00D3AF4B /* CloudKit.framework in Frameworks */,
 				C05240A72770D6DA0031B5D1 /* KukaiCoreSwift in Frameworks */,
 				C0BBD2A526A9A7980097B63A /* Sentry in Frameworks */,
+				C0A6CE922D523D4300ECA381 /* GLTFKit2 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1105,6 +1111,7 @@
 				C0B0364D269EE2070071ACD0 /* LaunchScreen.storyboard */,
 				C0503659271ED88700E7A664 /* Main.storyboard */,
 				C049B5A626A04DCA00F1C5E0 /* LaunchViewController.swift */,
+				C0A6CE972D5240A600ECA381 /* TestViewController.swift */,
 			);
 			path = Launch;
 			sourceTree = "<group>";
@@ -1253,6 +1260,7 @@
 				C0CA53AC2C4FE123003AACFF /* GradientView.swift */,
 				C04BA1F72CF766DA00951249 /* PageIndicatorContainerView.swift */,
 				C0C6D9B22CF8C6F100ABB0A7 /* SlideSegue.swift */,
+				C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1754,6 +1762,7 @@
 				C0CB9C202A4C512C000E12FA /* KeychainSwift */,
 				C07A2DEF2AEA76BF00550E32 /* Starscream */,
 				C044B14E2CC7A4F100132B7F /* ReownWalletKit */,
+				C0A6CE912D523D4300ECA381 /* GLTFKit2 */,
 			);
 			productName = "Kukai Mobile";
 			productReference = C0B0363F269EE2070071ACD0 /* Kukai Mobile.app */;
@@ -1834,6 +1843,7 @@
 				C0CB9C1F2A4C512C000E12FA /* XCRemoteSwiftPackageReference "keychain-swift" */,
 				C07A2DEE2AEA76BF00550E32 /* XCRemoteSwiftPackageReference "Starscream" */,
 				C044B14D2CC7A4F100132B7F /* XCRemoteSwiftPackageReference "reown-swift" */,
+				C0A6CE902D523D4300ECA381 /* XCRemoteSwiftPackageReference "GLTFKit2" */,
 			);
 			productRefGroup = C0B03640269EE2070071ACD0 /* Products */;
 			projectDirPath = "";
@@ -2157,6 +2167,7 @@
 				C08C974129081F3D00249959 /* CollectibleDetailLayout.swift in Sources */,
 				C005BA322822D3DC00D8369D /* AddWalletViewController.swift in Sources */,
 				C0172A0A2A98EE4D00163179 /* TitleSubtitleImageContainerCell.swift in Sources */,
+				C0A6CE982D5240A600ECA381 /* TestViewController.swift in Sources */,
 				C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */,
 				C008D4132A979B5B000B4503 /* AccountButtonCell.swift in Sources */,
 				C0DB48172785C6DD00D3B4F9 /* FadeSegue.swift in Sources */,
@@ -2178,6 +2189,7 @@
 				C00AE0032886F66A00184DF7 /* SwapViewController.swift in Sources */,
 				C0D921D2293E49A20020E0BF /* TokenBalanceHeaderCell.swift in Sources */,
 				C0D6B94D294B8511004F2F2D /* HiddenCollectiblesViewModel.swift in Sources */,
+				C0A6CE962D52402D00ECA381 /* ThreeDimensionModelViewController.swift in Sources */,
 				C0151B272A15256900C7F250 /* SendBatchConfirmViewController.swift in Sources */,
 				C095EEEC2C6D0A2200761290 /* DerivationPathValidator.swift in Sources */,
 				C0F7113729DCBE0500FA59E0 /* RecoveryPhraseScreenshotWarningViewController.swift in Sources */,
@@ -2911,6 +2923,14 @@
 				minimumVersion = 3.1.2;
 			};
 		};
+		C0A6CE902D523D4300ECA381 /* XCRemoteSwiftPackageReference "GLTFKit2" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/warrenm/GLTFKit2";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.5.12;
+			};
+		};
 		C0BBD2A326A9A7980097B63A /* XCRemoteSwiftPackageReference "sentry-cocoa" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/getsentry/sentry-cocoa";
@@ -2954,6 +2974,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C07A2DEE2AEA76BF00550E32 /* XCRemoteSwiftPackageReference "Starscream" */;
 			productName = Starscream;
+		};
+		C0A6CE912D523D4300ECA381 /* GLTFKit2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C0A6CE902D523D4300ECA381 /* XCRemoteSwiftPackageReference "GLTFKit2" */;
+			productName = GLTFKit2;
 		};
 		C0BBD2A426A9A7980097B63A /* Sentry */ = {
 			isa = XCSwiftPackageProductDependency;

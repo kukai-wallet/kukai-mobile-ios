@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dp3-KA-w54">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -39,6 +40,48 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="trw-99-FrK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="986" y="-7"/>
+        </scene>
+        <!--Test View Controller-->
+        <scene sceneID="ym0-SU-a3S">
+            <objects>
+                <viewController id="0j1-Ku-aNe" customClass="TestViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CDn-Xy-gnN">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zmt-4E-wPn">
+                                <rect key="frame" x="57" y="192" width="300" height="300"/>
+                                <color key="backgroundColor" systemColor="systemGray2Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="lf5-wb-8Qs"/>
+                                    <constraint firstAttribute="width" constant="300" id="vuu-hw-RPq"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test content below" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ztz-r9-kbF">
+                                <rect key="frame" x="0.0" y="532" width="414" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="SdW-xL-lST"/>
+                        <color key="backgroundColor" name="BG2"/>
+                        <constraints>
+                            <constraint firstItem="SdW-xL-lST" firstAttribute="trailing" secondItem="ztz-r9-kbF" secondAttribute="trailing" id="JHI-aO-hF2"/>
+                            <constraint firstItem="ztz-r9-kbF" firstAttribute="top" secondItem="zmt-4E-wPn" secondAttribute="bottom" constant="40" id="bA2-3p-Kdk"/>
+                            <constraint firstItem="ztz-r9-kbF" firstAttribute="leading" secondItem="SdW-xL-lST" secondAttribute="leading" id="ffK-q8-l1J"/>
+                            <constraint firstItem="zmt-4E-wPn" firstAttribute="centerX" secondItem="SdW-xL-lST" secondAttribute="centerX" id="l1d-Q9-nEW"/>
+                            <constraint firstItem="zmt-4E-wPn" firstAttribute="top" secondItem="SdW-xL-lST" secondAttribute="top" constant="100" id="rnV-vd-0Vl"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="bLg-cu-X6d"/>
+                    <connections>
+                        <outlet property="placeholder" destination="zmt-4E-wPn" id="9N7-De-Om6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FJA-8n-0Hp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1698.5507246376812" y="122.54464285714285"/>
         </scene>
         <!--Home-->
         <scene sceneID="TCV-Of-zIe">
@@ -95,6 +138,7 @@ for your Digital Assets</string>
                         <outlet property="logoWidthConstraint" destination="aEX-bH-nvi" id="nUS-MR-64i"/>
                         <segue destination="u9J-qk-3Bf" kind="show" identifier="onboarding" customClass="FadeSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="cXp-Id-QMn"/>
                         <segue destination="8m8-pH-KTs" kind="show" identifier="home" id="4yH-5V-vYY"/>
+                        <segue destination="0j1-Ku-aNe" kind="show" identifier="test" id="8I3-dC-WVC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iwm-mZ-HDy" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -110,5 +154,8 @@ for your Digital Assets</string>
         <namedColor name="Txt6">
             <color red="0.3059999942779541" green="0.31400001049041748" blue="0.40000000596046448" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
     </resources>
 </document>
