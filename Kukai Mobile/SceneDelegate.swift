@@ -73,6 +73,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		
 		// Remove any old assets to avoid clogging up users device too much
 		MediaProxyService.clearExpiredImages()
+		
+		// Remove any old 3D models
+		DiskService.clearFiles(inFolder: "models", olderThanDays: 3) { _ in
+			
+		}
 	}
 	
 	func sceneDidEnterBackground(_ scene: UIScene) {

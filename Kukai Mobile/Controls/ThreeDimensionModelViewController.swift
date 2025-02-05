@@ -31,6 +31,7 @@ class ThreeDimensionModelViewController: UIViewController {
 	private var controlButtonDisplayTimer: Timer? = nil
 	private var previousSuperView: UIView? = nil
 	private var fullscreenButtonYConstraint = NSLayoutConstraint()
+	private var globalPoint: CGPoint = CGPoint(x: 0, y: 0)
 	
 	private var asset: GLTFAsset? = nil {
 		didSet {
@@ -84,13 +85,15 @@ class ThreeDimensionModelViewController: UIViewController {
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		
-		previousSuperView = self.view.superview
-		setupActivity()
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(true)
+		
+		if previousSuperView == nil {
+			previousSuperView = self.view.superview
+			setupActivity()
+		}
 	}
 	
 	override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -105,7 +108,7 @@ class ThreeDimensionModelViewController: UIViewController {
 		activityIndicator.color = .white
 		activityIndicator.startAnimating()
 		activityIndicator.center = self.view.center
-		self.view.addSubview(activityIndicator)
+		self.sceneView.addSubview(activityIndicator)
 	}
 	
 	func stopActivity() {
@@ -128,7 +131,7 @@ class ThreeDimensionModelViewController: UIViewController {
 		}
 		
 		// Move view to window and making sure its set to the same position
-		let globalPoint = self.view.superview?.convert(self.view.frame.origin, to: nil) ?? CGPoint(x: -1, y: -1)
+		globalPoint = self.view.superview?.convert(self.view.frame.origin, to: nil) ?? CGPoint(x: -1, y: -1)
 		currentWindow.addSubview(self.view)
 		self.view.frame = CGRect(x: globalPoint.x, y: globalPoint.y, width: self.view.frame.width, height: self.view.frame.height)
 		self.view.layoutIfNeeded()
@@ -178,7 +181,7 @@ class ThreeDimensionModelViewController: UIViewController {
 			
 		} completion: { [weak self] _ in
 			UIView.animate(withDuration: 0.3) { [weak self] in
-				self?.view.frame = previousSuperView.frame
+				self?.view.frame = CGRect(x: self?.globalPoint.x ?? 0, y: self?.globalPoint.y ?? 0, width: previousSuperView.frame.size.width, height: previousSuperView.frame.size.height)
 				self?.view.layoutIfNeeded()
 				
 			} completion: { [weak self] _ in
@@ -231,7 +234,11 @@ class ThreeDimensionModelViewController: UIViewController {
 		controlButtonDisplayTimer = nil
 	}
 	
-	public func setAssetUrl(_ url: URL) {
+	public func setAssetUrl(_ url: URL?) {
+		guard let url = url else {
+			return
+		}
+		
 		DiskService.fetchRemoteFile(url: url, storeInFolder: "models") { [weak self] result in
 			guard let res = try? result.get() else {
 				self?.delegate?.threeDimensionModelLoadingError(try? result.getError())
