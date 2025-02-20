@@ -49,6 +49,7 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
+	@IBOutlet weak var testnetWarningNetworkLabel: UILabel!
 	
 	private var currentDelegateData: TransactionService.DelegateData = TransactionService.DelegateData()
 	
@@ -58,8 +59,10 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
+		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
+		} else {
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
 		}
 		
 		self.currentDelegateData = TransactionService.shared.delegateData

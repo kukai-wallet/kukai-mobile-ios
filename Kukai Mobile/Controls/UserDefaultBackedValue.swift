@@ -31,7 +31,7 @@ extension Optional: AnyOptional {
 			if Value.self == [URL].self, let storage = storage.value(forKey: key) as? [String] {
 			   return (storage.compactMap({ URL(string: $0) }) as? Value) ?? defaultValue
 			   
-			} else if Value.self == URL.self, let storage = storage.value(forKey: key) as? String, let newVal = URL(string: storage) {
+			} else if (Value.self == URL.self || Value.self == Optional<URL>.self), let storage = storage.value(forKey: key) as? String, let newVal = URL(string: storage) {
 				return (newVal as? Value) ?? defaultValue
 				
 			} else if Value.self == TezosNodeClientConfig.NetworkType.self, let storage = storage.value(forKey: key) as? String, let newVal = TezosNodeClientConfig.NetworkType(rawValue: storage) {

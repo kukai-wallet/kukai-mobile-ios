@@ -62,6 +62,8 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build snapshot
+		let protocolName_proto = DependencyManager.NetworkManagement.protocolName(forNetworkType: .protocolnet) ?? "?"
+		let protocolName_next = DependencyManager.NetworkManagement.protocolName(forNetworkType: .nextnet) ?? "?"
 		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		snapshot.appendSections([0, 1])
 		
@@ -73,8 +75,8 @@ class NetworkChooserViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		snapshot.appendItems([
 			.init(NetworkChoiceObj(title: "Advanced", networkType: nil, description: "", isMore: false, isHeading: true)),
-			.init(NetworkChoiceObj(title: "Protocolnet", networkType: .protocolnet, description: "A short-lived test network currently running the XXXXX protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
-			.init(NetworkChoiceObj(title: "Nextnet", networkType: .nextnet, description: "A short-lived test network running the next unreleased protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
+			.init(NetworkChoiceObj(title: "Protocolnet", networkType: .protocolnet, description: "A short-lived test network currently running the \(protocolName_proto) protocol, with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
+			.init(NetworkChoiceObj(title: "Nextnet", networkType: .nextnet, description: "A short-lived test network running the next unreleased protocol, \"\(protocolName_next)\", with fake XTZ and tokens with no monetary value", isMore: false, isHeading: false)),
 			.init(NetworkChoiceObj(title: "Experimental", networkType: .experimental, description: "For advanced users only, such as protocol developers. Enter your own RPC URL and optionally a TzKT URL", isMore: true, isHeading: false))
 		], toSection: 1)
 		

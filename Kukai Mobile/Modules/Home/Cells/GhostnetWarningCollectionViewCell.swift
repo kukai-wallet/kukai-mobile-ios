@@ -9,4 +9,11 @@ import UIKit
 
 class GhostnetWarningCollectionViewCell: UICollectionViewCell {
 	
+	@IBOutlet weak var titleLbl: UILabel!
+	
+	override func layoutSubviews() {
+		super.layoutSubviews()
+		
+		titleLbl.text = "\(DependencyManager.NetworkManagement.name() ?? "")   Test Only"
+	}
 }

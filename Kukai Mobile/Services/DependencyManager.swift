@@ -58,23 +58,26 @@ class DependencyManager {
 		static let protocolnetFaucet = URL(string: "https://faucet.quebecnet.teztnets.com/")!
 		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250203.teztnets.com/")!
 		
-		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType) -> String? {
+		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
+				case .mainnet:
+					return "Mainnet"
+					
 				case .ghostnet:
 					return "Ghostnet"
 					
 				case .protocolnet:
-					return "Quebecnet"
+					return "Protocolnet - Quebec"
 					
 				case .nextnet:
-					return "Rnet"
-					
-				default:
-					return nil
+					return "Nextnet - R"
+				
+				case .experimental:
+					return "Experimentalnet"
 			}
 		}
 		
-		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType) -> String? {
+		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
 				case .ghostnet:
 					return "Quebec"
@@ -84,13 +87,16 @@ class DependencyManager {
 					
 				case .nextnet:
 					return "R"
+				
+				case .experimental:
+					return "Experimental"
 					
 				default:
 					return nil
 			}
 		}
 		
-		static func faucet(forNetworkType networkType: TezosNodeClientConfig.NetworkType) -> URL? {
+		static func faucet(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> URL? {
 			switch networkType {
 				case .ghostnet:
 					return ghostnetFaucet
@@ -312,13 +318,14 @@ class DependencyManager {
 			case .experimental:
 				
 				// UI should make sure this never happens by not enabling the switch until a valid value is supplied
-				// Due to security reasons it should be left empty initially and only set if user is trying to use it though, so we need an optional
+				// This is an advanced feature so it should be left empty and only used if users supply a value
 				if let nodeURL = DependencyManager.shared.experimentalNodeUrl {
 					currentNodeURLs = [nodeURL]
 				} else {
 					currentNodeURLs = []
 				}
 				
+				// Under this mode, tzkt urls are optional, as they might not be available. The client will simply return an error when used under this mode
 				currentTzktURL = DependencyManager.shared.experimentalTzktUrl
 				currentExplorerURL = DependencyManager.shared.experimentalExplorerUrl
 				currentTezosDomainsURL = nil

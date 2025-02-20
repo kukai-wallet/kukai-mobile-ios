@@ -155,8 +155,9 @@ public class BalanceService {
 	// MARK: - Cache
 	
 	public static func addressCacheKey(forAddress address: String) -> String {
-		if DependencyManager.shared.currentNetworkType == .ghostnet {
-			return address + "-ghostnet"
+		let current = DependencyManager.shared.currentNetworkType
+		if current != .mainnet {
+			return address + "-\(current.rawValue)"
 		}
 		
 		return address
@@ -436,7 +437,9 @@ public class BalanceService {
 		
 		// When everything fetched, process data
 		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
-			if let err = error {
+			
+			// ignore missing base URL errors, as this only happens on testnet setups where some of the tooling doesn't exist
+			if let err = error, !err.isMissingBaseURLError() {
 				self?.updateCacheDate(forAddress: address)
 				DispatchQueue.main.async { completion(err) }
 				
