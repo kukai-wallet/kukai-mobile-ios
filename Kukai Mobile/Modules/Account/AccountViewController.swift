@@ -164,7 +164,8 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 		switch sender.accessibilityIdentifier {
 			case AccountViewModel.accessibilityIdentifiers.onramp:
 				if DependencyManager.shared.currentNetworkType == .ghostnet {
-					UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
+					// TODO: update
+					//UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
 					
 				} else {
 					self.performSegue(withIdentifier: "onramp", sender: nil)
