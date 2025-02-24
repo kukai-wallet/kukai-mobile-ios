@@ -73,7 +73,7 @@ class DependencyManager {
 					return "Nextnet - R"
 				
 				case .experimental:
-					return "Experimentalnet"
+					return "Experimental"
 			}
 		}
 		

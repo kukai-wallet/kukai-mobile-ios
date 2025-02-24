@@ -52,7 +52,8 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate {
 		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 		
 		if networkType == .experimental {
-			// TODO: build new screen
+			self.performSegue(withIdentifier: "experimental", sender: nil)
+			
 		} else {
 			DependencyManager.shared.setNetworkTo(networkTo: networkType)
 			self.navigationController?.popToHome()
