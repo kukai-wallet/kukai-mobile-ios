@@ -34,9 +34,9 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.quebecnet.teztnets.com")!]
-	static let defaultTzktURL_protocolnet = URL(string: "https://api.quebecnet.tzkt.io")!
-	static let defaultExplorerURL_protocolnet = URL(string: "https://quebecnet.tzkt.io")!
+	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.rionet.teztnets.com")!]
+	static let defaultTzktURL_protocolnet = URL(string: "https://api.rionet.tzkt.io")!
+	static let defaultExplorerURL_protocolnet = URL(string: "https://rionet.tzkt.io")!
 	
 	static let defaultNodeURLs_nextnet = [URL(string: "https://rpc.nextnet-20250203.teztnets.com")!]
 	static let defaultTzktURL_nextnet = URL(string: "https://api.nextnet.tzkt.io")!
@@ -55,7 +55,7 @@ class DependencyManager {
 	
 	struct NetworkManagement {
 		static let ghostnetFaucet = URL(string: "https://faucet.ghostnet.teztnets.com/")!
-		static let protocolnetFaucet = URL(string: "https://faucet.quebecnet.teztnets.com/")!
+		static let protocolnetFaucet = URL(string: "https://faucet.rionet.teztnets.com/")!
 		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250203.teztnets.com/")!
 		
 		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
@@ -67,7 +67,7 @@ class DependencyManager {
 					return "Ghostnet"
 					
 				case .protocolnet:
-					return "Protocolnet - Quebec"
+					return "Protocolnet - Rio"
 					
 				case .nextnet:
 					return "Nextnet - R"
@@ -83,7 +83,7 @@ class DependencyManager {
 					return "Quebec"
 					
 				case .protocolnet:
-					return "Quebec"
+					return "Rio"
 					
 				case .nextnet:
 					return "R"
