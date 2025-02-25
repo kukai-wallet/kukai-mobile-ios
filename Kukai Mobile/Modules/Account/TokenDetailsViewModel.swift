@@ -495,20 +495,33 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
+		let isExperimental = (DependencyManager.shared.currentNetworkType == .experimental && DependencyManager.shared.currentTzktURL == nil)
 		let account = DependencyManager.shared.balanceService.account
 		var votingParticipation: [Bool] = []
 		
 		
-		// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
-		onlineXTZFetchGroup.enter()
-		DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
-			guard let res = try? result.get() else {
-				self?.onlineXTZFetchGroup.leave()
-				return
-			}
+		if isExperimental {
+			// If we are running on experimental, we have no way of finding much of this data. However, this blocks access to UI elements
+			// Experimental users should be advanced enough to understand how to verify these things themseleves, so we create some fake inputs that will pass the later logic checks
+			let account = DependencyManager.shared.balanceService.account
+			let doubleBalance = (account.xtzBalance * 2).toNormalisedDecimal() ?? 0
+			let bakerAddress = account.delegate?.address ?? ""
+			let settings = TzKTBakerSettings(enabled: true, minBalance: 0, fee: 0.05, capacity: doubleBalance, freeSpace: doubleBalance, estimatedApy: 5)
 			
-			self?.baker = res
-			self?.onlineXTZFetchGroup.leave()
+			self.baker = TzKTBaker(address: bakerAddress, name: nil, status: .active, balance: doubleBalance, delegation: settings, staking: settings)
+			
+		} else {
+			// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
+			onlineXTZFetchGroup.enter()
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
+				guard let res = try? result.get() else {
+					self?.onlineXTZFetchGroup.leave()
+					return
+				}
+				
+				self?.baker = res
+				self?.onlineXTZFetchGroup.leave()
+			}
 		}
 		
 		
@@ -569,7 +582,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				self?.onlineXTZFetchGroup.leave()
 			}
 		}
-			
 		
 		
 		// Fire completion when everything is done
@@ -601,7 +613,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			let totalAmountOfPendingUnstake = self?.pendingUnstakes.map({ $0.amount }).reduce(.zero(), +)
-			let actualFinaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			var actualFinaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			
+			if isExperimental {
+				// If we are running on experimental mode without tzkt, finalisable balance comes from somewhere else
+				actualFinaliseableAmount = account.xtzFinalisedBalance ?? .zero()
+			}
+			
 			self?.finaliseableAmount = actualFinaliseableAmount
 			let finaliseBalance = DependencyManager.shared.coinGeckoService.format(decimal: actualFinaliseableAmount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 			let finaliseXtzValue = actualFinaliseableAmount * fiatPerToken
