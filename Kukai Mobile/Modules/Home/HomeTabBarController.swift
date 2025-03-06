@@ -33,6 +33,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
 	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
+	private var activityAnimationExperimentalTimer: Timer? = nil // Timer for use in experimental mode to replace tzkt account change monitoring
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -392,6 +393,17 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	func startActivityAnimationIfNecessary(addressesToBeRefreshed addresses: [String]) {
 		if !self.activityAnimationInProgress, let selectedAddress = DependencyManager.shared.selectedWalletAddress, addresses.contains([selectedAddress]) {
+			
+			// If RPC only mode, setup manual timer to assume transaction made it into the next block
+			if DependencyManager.shared.isRpcOnlyMode {
+				let seconds = DependencyManager.shared.tezosNodeClient.networkConstants?.secondsBetweenBlocks() ?? 8
+				activityAnimationExperimentalTimer = Timer.scheduledTimer(withTimeInterval: Double(seconds), repeats: false, block: { [weak self] _ in
+					Logger.app.info("Manual RPC only refresh trigger for address: \(addresses)")
+					self?.refreshType = .refreshEverything
+					self?.refresh(addresses: addresses)
+				})
+			}
+			
 			self.startActivityAnimation()
 		}
 	}
@@ -409,6 +421,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	func stopActivityAnimationIfNecessary() {
 		if self.activityAnimationInProgress {
+			self.activityAnimationExperimentalTimer?.invalidate()
+			self.activityAnimationExperimentalTimer = nil
 			self.stopActivityAnimation(success: true)
 		}
 	}

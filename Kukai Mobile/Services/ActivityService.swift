@@ -184,12 +184,20 @@ public class ActivityService {
 	public func checkAndUpdatePendingTransactions(forAddress address: String, comparedToGroups: [TzKTTransactionGroup]) {
 		Logger.app.info("ActivityService: checking pending for \(address)")
 		let now = Date()
+		let isRpcOnly = DependencyManager.shared.isRpcOnlyMode
 		var indexesToRemove: [Int] = []
 		
 		var pending = DiskService.read(type: [TzKTTransactionGroup].self, fromFileName: ActivityService.pendingTransactionsCacheFilename(withAddress: address)) ?? []
 		for (index, pendingGroup) in pending.enumerated() {
 			
 			let timeSinceNow = pendingGroup.transactions.first?.date?.timeIntervalSince(now) ?? 0
+			
+			// Experimental RPC only mode has no tzkt account change detection. A manual refresh will be triggered by a timer, if this happens, just assume tx was complete in order to stop animations
+			if isRpcOnly {
+				indexesToRemove.append(index)
+				continue
+			}
+			
 			// If more than 2 hours has passed, it either made it in, or was dropped from mempool, either way its not pending anymore
 			if timeSinceNow < -7200 {
 				indexesToRemove.append(index)

@@ -206,6 +206,10 @@ class DependencyManager {
 		}
 	}
 	
+	var isRpcOnlyMode: Bool {
+		return (DependencyManager.shared.currentNetworkType == .experimental && DependencyManager.shared.currentTzktURL == nil)
+	}
+	
 	// For use during WC2 flow where a user tentively selects an account, and we want to wait until its confirmed before switching
 	var temporarySelectedWalletMetadata: WalletMetadata?
 	var temporarySelectedWalletAddress: String? {
