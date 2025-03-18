@@ -674,6 +674,51 @@ public class WalletConnectService {
 		}
 	}
 	
+	
+	
+	
+	
+	// TODO: remove these when 1.2.0 allows us to access the updated version of kukaiCoreSwift
+	/**
+	 Filter and verify only 1 transaction exists thats performing an unstake operation. If so return this operation, otherwise return nil
+	 */
+	private static func temp_isUnstake(operations: [KukaiCoreSwift.Operation]) -> OperationTransaction? {
+		let filteredOperations = OperationFactory.Extractor.filterReveal(operations: operations)
+		if filteredOperations.count == 1,
+		   let op = filteredOperations.first as? OperationTransaction,
+		   op.parameters?["entrypoint"] as? String == "unstake",
+		   let valueDict = op.parameters?["value"] as? [String: String],
+		   Array(valueDict.keys) == ["prim"],
+		   Array(valueDict.values) == ["Unit"]
+		{
+			return op
+		}
+		
+		return nil
+	}
+	
+	/**
+	 Filter and verify only 1 transaction exists thats performing a finalise unstake operation If so return this operation, otherwise return nil
+	 */
+	private static func temp_isFinaliseUnstake(operations: [KukaiCoreSwift.Operation]) -> OperationTransaction? {
+		let filteredOperations = OperationFactory.Extractor.filterReveal(operations: operations)
+		if filteredOperations.count == 1,
+		   let op = filteredOperations.first as? OperationTransaction,
+		   op.parameters?["entrypoint"] as? String == "finalize_unstake",
+		   let valueDict = op.parameters?["value"] as? [String: String],
+		   Array(valueDict.keys) == ["prim"],
+		   Array(valueDict.values) == ["Unit"]
+		{
+			return op
+		}
+		
+		return nil
+	}
+	
+	
+	
+	
+	
 	// Central place to act somewhat as a viewModel to parse the incoming payload and add some hints to TransactionService on how to display it
 	private func processTransactions(estimationResult: FeeEstimatorService.EstimationResult, forWallet: Wallet) {
 		let operationsObj = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
@@ -686,7 +731,11 @@ public class WalletConnectService {
 			let xtzBalance = (try? res.get()) ?? .zero()
 			let xtzSend = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
 			
-			if (xtzSend + operationsObj.fee) > xtzBalance {
+			// Pop up XTZ lack of funds warning error, only if its not a unstake, or finalise_unstake operation, as those have different rules
+			if WalletConnectService.temp_isUnstake(operations: operations) == nil,
+			   WalletConnectService.temp_isFinaliseUnstake(operations: operations) == nil,
+			   (xtzSend + operationsObj.fee) > xtzBalance {
+				
 				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, (xtzSend + operationsObj.fee).normalisedRepresentation), error: nil)
 				
