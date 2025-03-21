@@ -230,6 +230,7 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	
 	func stakeTapped() {
+		TransactionService.shared.resetAllState()
 		TransactionService.shared.currentTransactionType = .stake
 		TransactionService.shared.stakeData.chosenBaker = viewModel.baker
 		TransactionService.shared.stakeData.chosenToken = viewModel.token
@@ -237,6 +238,7 @@ extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	}
 	
 	func unstakeTapped() {
+		TransactionService.shared.resetAllState()
 		TransactionService.shared.currentTransactionType = .unstake
 		TransactionService.shared.unstakeData.chosenBaker = viewModel.baker
 		TransactionService.shared.unstakeData.chosenToken = viewModel.token
@@ -244,6 +246,7 @@ extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	}
 	
 	func finalizeTapped() {
+		TransactionService.shared.resetAllState()
 		self.showLoadingView()
 		viewModel.createFinaliseOperations { [weak self] errorMessage in
 			self?.loadingViewHideActivityAndFade()

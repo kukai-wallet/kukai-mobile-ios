@@ -81,6 +81,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		tableView.deselectRow(at: indexPath, animated: true)
 		
 		if let token = viewModel.token(atIndexPath: indexPath) {
+			TransactionService.shared.resetAllState()
 			TransactionService.shared.sendData.chosenToken = token
 			TransactionService.shared.sendData.chosenNFT = nil
 			self.performSegue(withIdentifier: "details", sender: self)
@@ -104,6 +105,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 						return
 					}
 					
+					TransactionService.shared.resetAllState()
 					TransactionService.shared.stakeData.chosenBaker = res
 					self?.performSegue(withIdentifier: segue, sender: nil)
 				}

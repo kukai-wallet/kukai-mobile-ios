@@ -270,6 +270,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 extension CollectiblesDetailsViewController: CollectibleDetailSendDelegate {
 	
 	func sendTapped() {
+		TransactionService.shared.resetAllState()
 		TransactionService.shared.sendData.chosenNFT = viewModel.nft
 		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
 		self.performSegue(withIdentifier: "send", sender: nil)
