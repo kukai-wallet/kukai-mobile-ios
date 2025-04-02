@@ -84,13 +84,16 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		var currentBaker: TzKTBaker? = nil
 		
 		DependencyManager.shared.tzktClient.bakers { [weak self] result in
-			guard let res = try? result.get() else {
+			let res = try? result.get()
+			let err = result.getFailure()
+			
+			if res == nil && !err.isMissingBaseURLError() {
 				self?.state = .failure(KukaiError.unknown(withString: "Unable to fetch bakers, please try again"), "Unable to fetch bakers, please try again")
 				return
 			}
 			
-			self?.bakers = res
-			let filteredResults = res.filter { baker in
+			self?.bakers = res ?? []
+			let filteredResults = (res ?? []).filter { baker in
 				if baker.address == currentDelegate?.address {
 					currentBaker = baker
 					return false

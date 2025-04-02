@@ -52,6 +52,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
+	@IBOutlet weak var testnetWarningNetworkLabel: UILabel!
 	
 	private var selectedToken: Token? = nil
 	private var selectedBaker: TzKTBaker? = nil
@@ -64,8 +65,10 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
+		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
+		} else {
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
 		}
 		
 		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences

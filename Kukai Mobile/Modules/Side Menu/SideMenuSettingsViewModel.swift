@@ -42,7 +42,7 @@ class SideMenuSettingsViewModel: ViewModel, UITableViewDiffableDataSourceHandler
 		let selectedCurrency = DependencyManager.shared.coinGeckoService.selectedCurrency.uppercased()
 		let selectedTheme = ThemeManager.shared.currentTheme()
 		let themeImage = (selectedTheme == "Dark" ? UIImage(named: "Darkmode") : UIImage(named: "Lightmode")) ?? UIImage.unknownToken()
-		let selectedNetwork = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+		let selectedNetwork = DependencyManager.NetworkManagement.name()
 		
 		let imageCacheSize = MediaProxyService.sizeOf(cache: .temporary).description
 		let modelCacheSize = DiskService.sizeOfFolder("models") ?? 0

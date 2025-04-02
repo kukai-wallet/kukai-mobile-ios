@@ -303,6 +303,10 @@
 		C0A33B8F29F6BE3D00A53EAE /* WalletManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */; };
 		C0A6CE922D523D4300ECA381 /* GLTFKit2 in Frameworks */ = {isa = PBXBuildFile; productRef = C0A6CE912D523D4300ECA381 /* GLTFKit2 */; };
 		C0A6CE962D52402D00ECA381 /* ThreeDimensionModelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */; };
+		C0A6CE9E2D5E3D3600ECA381 /* NetworkChooserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CE9D2D5E3D3600ECA381 /* NetworkChooserViewModel.swift */; };
+		C0A6CEA02D66029300ECA381 /* UserDefaultBackedValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CE9F2D66027F00ECA381 /* UserDefaultBackedValue.swift */; };
+		C0A6CEA22D6889C800ECA381 /* ExperimentalNetworkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CEA12D6889C800ECA381 /* ExperimentalNetworkViewController.swift */; };
+		C0A6CEA42D689A8100ECA381 /* URLValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6CEA32D689A7A00ECA381 /* URLValidator.swift */; };
 		C0A9865729895A6A0092EA2F /* SendCollectibleAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */; };
 		C0ABB81029AFB315002F1BF7 /* Activity.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */; };
 		C0ABB81229AFB31E002F1BF7 /* Discover.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */; };
@@ -753,6 +757,10 @@
 		C0A321DB27C6943900D7788B /* TokenAmountValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenAmountValidator.swift; sourceTree = "<group>"; };
 		C0A33B8E29F6BE3D00A53EAE /* WalletManagementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagementService.swift; sourceTree = "<group>"; };
 		C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreeDimensionModelViewController.swift; sourceTree = "<group>"; };
+		C0A6CE9D2D5E3D3600ECA381 /* NetworkChooserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkChooserViewModel.swift; sourceTree = "<group>"; };
+		C0A6CE9F2D66027F00ECA381 /* UserDefaultBackedValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultBackedValue.swift; sourceTree = "<group>"; };
+		C0A6CEA12D6889C800ECA381 /* ExperimentalNetworkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalNetworkViewController.swift; sourceTree = "<group>"; };
+		C0A6CEA32D689A7A00ECA381 /* URLValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLValidator.swift; sourceTree = "<group>"; };
 		C0A9865629895A6A0092EA2F /* SendCollectibleAmountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendCollectibleAmountViewController.swift; sourceTree = "<group>"; };
 		C0ABB80F29AFB315002F1BF7 /* Activity.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Activity.storyboard; sourceTree = "<group>"; };
 		C0ABB81129AFB31E002F1BF7 /* Discover.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Discover.storyboard; sourceTree = "<group>"; };
@@ -1258,6 +1266,7 @@
 				C04BA1F72CF766DA00951249 /* PageIndicatorContainerView.swift */,
 				C0C6D9B22CF8C6F100ABB0A7 /* SlideSegue.swift */,
 				C0A6CE952D52402D00ECA381 /* ThreeDimensionModelViewController.swift */,
+				C0A6CE9F2D66027F00ECA381 /* UserDefaultBackedValue.swift */,
 			);
 			path = Controls;
 			sourceTree = "<group>";
@@ -1408,6 +1417,7 @@
 				C09536802A0A94E4001B20C4 /* LengthValidator.swift */,
 				C09536822A0A9587001B20C4 /* ConfirmationValidator.swift */,
 				C095EEEB2C6D0A2200761290 /* DerivationPathValidator.swift */,
+				C0A6CEA32D689A7A00ECA381 /* URLValidator.swift */,
 			);
 			path = Validators;
 			sourceTree = "<group>";
@@ -1574,6 +1584,8 @@
 				C02D7CAF27BEB34F006A8E39 /* CurrencyViewModel.swift */,
 				C05848A7280EF5CC007933CA /* ThemePickerViewController.swift */,
 				C049B5B026A07A1000F1C5E0 /* NetworkChooserViewController.swift */,
+				C0A6CE9D2D5E3D3600ECA381 /* NetworkChooserViewModel.swift */,
+				C0A6CEA12D6889C800ECA381 /* ExperimentalNetworkViewController.swift */,
 				C044E1322AAF61650085652F /* SideMenuStorageViewController.swift */,
 				C064D4D22B87B13E008F5947 /* SideMenuLookupViewController.swift */,
 				C044E1342AAF66520085652F /* SideMenuSecurityViewController.swift */,
@@ -2165,6 +2177,7 @@
 				C005BA322822D3DC00D8369D /* AddWalletViewController.swift in Sources */,
 				C0172A0A2A98EE4D00163179 /* TitleSubtitleImageContainerCell.swift in Sources */,
 				C049B5B926A084A500F1C5E0 /* UIView+extensions.swift in Sources */,
+				C0A6CE9E2D5E3D3600ECA381 /* NetworkChooserViewModel.swift in Sources */,
 				C008D4132A979B5B000B4503 /* AccountButtonCell.swift in Sources */,
 				C0DB48172785C6DD00D3B4F9 /* FadeSegue.swift in Sources */,
 				C06BA0142C04CC5600FA6EEB /* ImportPrivateKeyViewController.swift in Sources */,
@@ -2200,6 +2213,7 @@
 				C06AEDFF2C00998D005CFDAA /* AddAccountViewModel.swift in Sources */,
 				C08F6913273ABD7300CCB6E3 /* SwapTokenViewModel.swift in Sources */,
 				C09860BB27C3E20400F888AF /* EnterAddressComponent.swift in Sources */,
+				C0A6CEA42D689A8100ECA381 /* URLValidator.swift in Sources */,
 				C0E44BAC2A41FDEE00C2A7C0 /* WatchWalletViewController.swift in Sources */,
 				C0846243291925A100B7D62D /* CAGradientLayer+extensions.swift in Sources */,
 				C08E62EC29DB185F004D8DF0 /* CreateWithSocialViewController.swift in Sources */,
@@ -2236,6 +2250,7 @@
 				C0E921ED270C8C7B00F3B0B9 /* LedgerDeviceCell.swift in Sources */,
 				C04E0EB22ADE7EE7001BF56F /* UpdateWarningCell.swift in Sources */,
 				C003CECB27FDE9C900F64B4C /* CloudKitService.swift in Sources */,
+				C0A6CEA22D6889C800ECA381 /* ExperimentalNetworkViewController.swift in Sources */,
 				C031D3ED27D114D000EABBE6 /* CollectiblesDetailsViewModel.swift in Sources */,
 				C065AF112AB0A6690061CC64 /* SideMenuBackupViewModel.swift in Sources */,
 				C04BA1F42CF4D04A00951249 /* TokenDetailsLearnMoreViewModel.swift in Sources */,
@@ -2253,6 +2268,7 @@
 				C083E65D2A6EC91500B3BEBE /* DiscoverShowMoreCell.swift in Sources */,
 				C082BBC528941F1A002B1E42 /* AddLiquidityViewController.swift in Sources */,
 				C06C529D29FC09EF0073A2FE /* RemoveWalletViewController.swift in Sources */,
+				C0A6CEA02D66029300ECA381 /* UserDefaultBackedValue.swift in Sources */,
 				C095EEEA2C6D04F000761290 /* AddCustomPathViewController.swift in Sources */,
 				C07E283829E84BE000E8529A /* AccountsSectionHeaderCell.swift in Sources */,
 				C0258921292D1166000D59F6 /* FavouriteTokenCell.swift in Sources */,
@@ -2538,7 +2554,7 @@
 				CODE_SIGN_ENTITLEMENTS = "Kukai Mobile/Kukai Mobile-dev.entitlements";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 365;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
@@ -2555,7 +2571,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "";
@@ -2582,7 +2598,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 365;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
@@ -2598,7 +2614,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";
@@ -2768,7 +2784,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 363;
+				CURRENT_PROJECT_VERSION = 365;
 				DEVELOPMENT_TEAM = TK7KK2VPJP;
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = TK7KK2VPJP;
 				ENABLE_BITCODE = NO;
@@ -2785,7 +2801,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.0;
+				MARKETING_VERSION = 1.2.1;
 				OTHER_CFLAGS = "";
 				OTHER_SWIFT_FLAGS = "-Xfrontend -internalize-at-link";
 				PRODUCT_BUNDLE_IDENTIFIER = "app.kukai.mobile${BUNDLE_ID_SUFFIX}";

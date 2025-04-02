@@ -31,6 +31,12 @@ class UnstakeReminderViewController: UIViewController {
 		cancelButton.accessibilityIdentifier = "cancel-button"
     }
 	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		TransactionService.shared.didUnstake = false
+	}
+	
 	@IBAction func createTapped(_ sender: Any) {
 		self.showLoadingView()
 		UnstakeReminderViewController.createUnstakeReminder { [weak self] error in

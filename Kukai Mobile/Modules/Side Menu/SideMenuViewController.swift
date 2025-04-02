@@ -185,7 +185,8 @@ class SideMenuViewController: UIViewController {
 		self.closeTapped(self)
 		
 		if DependencyManager.shared.currentNetworkType == .ghostnet {
-			UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
+			// TODO: update
+			//UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
 			
 		} else {
 			homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)

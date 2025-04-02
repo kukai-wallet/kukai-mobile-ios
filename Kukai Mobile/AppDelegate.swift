@@ -60,11 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		processXCUITestArguments()
 		
 		// Reset server URL list cache, incase its edited between versions
-		if DependencyManager.shared.currentNetworkType == .mainnet {
-			DependencyManager.shared.setDefaultMainnetURLs()
-		} else {
-			DependencyManager.shared.setDefaultGhostnetURLs()
-		}
+		DependencyManager.shared.setNetworkTo(networkTo: DependencyManager.shared.currentNetworkType)
 		
 		return true
 	}

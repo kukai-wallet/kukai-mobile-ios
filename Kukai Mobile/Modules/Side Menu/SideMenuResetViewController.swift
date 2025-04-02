@@ -57,7 +57,7 @@ class SideMenuResetViewController: UIViewController {
 	public static func resetAllDataAndCaches(completion: @escaping (() -> Void)) {
 		resetAllData()
 		
-		DependencyManager.shared.setDefaultMainnetURLs(supressUpdateNotification: true)
+		DependencyManager.shared.setNetworkTo(networkTo: .mainnet, supressUpdateNotification: true)
 		
 		MediaProxyService.removeAllImages(completion: completion)
 	}

@@ -35,6 +35,10 @@ struct TokenDetailsHeaderData: Hashable, Identifiable {
 	var priceChangeText: String
 	var isPriceChangePositive: Bool
 	var priceRange: String
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 struct TokenDetailsButtonData: Hashable, Identifiable {
@@ -46,6 +50,10 @@ struct TokenDetailsButtonData: Hashable, Identifiable {
 	let canBePurchased: Bool
 	let canBeViewedOnline: Bool
 	let hasMoreButton: Bool
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 struct TokenDetailsBalanceData: Hashable, Identifiable {
@@ -54,6 +62,10 @@ struct TokenDetailsBalanceData: Hashable, Identifiable {
 	let value: String
 	let availableBalance: String
 	let availableValue: String
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 struct TokenDetailsSendData: Hashable {
@@ -85,6 +97,10 @@ struct TokenDetailsStakeData: Hashable {
 struct TokenDetailsActivityHeader: Hashable, Identifiable {
 	let id = UUID()
 	let header: Bool
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 struct TokenDetailsMessageData: Hashable {
@@ -100,6 +116,10 @@ struct PendingUnstakeData: Hashable {
 	let amount: XTZAmount
 	let fiat: String
 	let timeRemaining: String
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
 }
 
 
@@ -332,64 +352,67 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		self.state = .success(nil)
 		
 		
-		
-		// After UI is updated, fetch the data for chart and reload that 1 cell
-		loadChartData(token: token) { [weak self] result in
-			guard let self = self else { return }
-			self.initialChartLoad = false
+		// Strange crash reports indicate this may be running too fast for iOS to keep up, in instances where the pricing call fails quickly
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 			
-			switch result {
-				case .success(let data):
-					self.currentSnapshot.deleteItems([.init(self.chartData)])
-					self.chartData = data
-					self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
-					
-					self.calculatePriceChange(point: nil)
-					self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
-					
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
-					self.state = .success(nil)
-					
-				case .failure(_):
-					self.currentSnapshot.deleteItems([.init(self.chartData)])
-					self.chartDataUnsucessful = true
-					self.chartData = AllChartData(day: [], week: [], month: [], year: [])
-					self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
-					
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
-					self.state = .success(nil)
+			// After UI is updated, fetch the data for chart and reload that 1 cell
+			self?.loadChartData(token: token) { [weak self] result in
+				guard let self = self/*, let _ = self.currentSnapshot.itemIdentifiers.firstIndex(of: .init(self.tokenHeaderData))*/ else { return }
+				self.initialChartLoad = false
+				
+				switch result {
+					case .success(let data):
+						self.currentSnapshot.deleteItems([.init(self.chartData)])
+						self.chartData = data
+						self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
+						
+						self.calculatePriceChange(point: nil)
+						self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
+						
+						ds.apply(self.currentSnapshot, animatingDifferences: true)
+						self.state = .success(nil)
+						
+					case .failure(_):
+						self.currentSnapshot.deleteItems([.init(self.chartData)])
+						self.chartDataUnsucessful = true
+						self.chartData = AllChartData(day: [], week: [], month: [], year: [])
+						self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
+						
+						ds.apply(self.currentSnapshot, animatingDifferences: true)
+						self.state = .success(nil)
+				}
 			}
-		}
-		
-		
-		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
-		if self.needsToLoadOnlineXTZData {
-			loadOnlineXTZData(token: token) { [weak self] error in
-				if let err = error {
-					self?.state = .failure(err, err.rpcErrorString ?? err.description)
+			
+			
+			// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
+			if self?.needsToLoadOnlineXTZData == true {
+				self?.loadOnlineXTZData(token: token) { [weak self] error in
+					if let err = error {
+						self?.state = .failure(err, err.rpcErrorString ?? err.description)
+					}
+					
+					guard let self = self, let _ = self.currentSnapshot.itemIdentifiers.firstIndex(of: .init(self.sendData)) else { return }
+					
+					self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
+					
+					var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
+					
+					if pendingUnstakes.count > 0 {
+						newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
+						newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))
+					}
+					
+					if let rewardData = rewardData {
+						newData.append(.init(TokenDetailsSmallSectionHeader(message: "Delegation & Staking Rewards")))
+						newData.append(.init(rewardData))
+					}
+					
+					newData.append(contentsOf: loadActivitySection(token: token))
+					self.currentSnapshot.insertItems(newData, afterItem: .init(self.sendData))
+					
+					ds.apply(self.currentSnapshot, animatingDifferences: true)
+					self.state = .success(nil)
 				}
-				
-				guard let self = self else { return }
-				
-				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
-				
-				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
-				
-				if pendingUnstakes.count > 0 {
-					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
-					newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))
-				}
-				
-				if let rewardData = rewardData {
-					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Delegation & Staking Rewards")))
-					newData.append(.init(rewardData))
-				}
-				
-				newData.append(contentsOf: loadActivitySection(token: token))
-				self.currentSnapshot.insertItems(newData, afterItem: .init(self.sendData))
-				
-				ds.apply(self.currentSnapshot, animatingDifferences: true)
-				self.state = .success(nil)
 			}
 		}
 	}
@@ -495,20 +518,33 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		}
 		
 		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
+		let isExperimental = (DependencyManager.shared.currentNetworkType == .experimental && DependencyManager.shared.currentTzktURL == nil)
 		let account = DependencyManager.shared.balanceService.account
 		var votingParticipation: [Bool] = []
 		
 		
-		// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
-		onlineXTZFetchGroup.enter()
-		DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
-			guard let res = try? result.get() else {
-				self?.onlineXTZFetchGroup.leave()
-				return
-			}
+		if isExperimental {
+			// If we are running on experimental, we have no way of finding much of this data. However, this blocks access to UI elements
+			// Experimental users should be advanced enough to understand how to verify these things themseleves, so we create some fake inputs that will pass the later logic checks
+			let account = DependencyManager.shared.balanceService.account
+			let doubleBalance = (account.xtzBalance * 2).toNormalisedDecimal() ?? 0
+			let bakerAddress = account.delegate?.address ?? ""
+			let settings = TzKTBakerSettings(enabled: true, minBalance: 0, fee: 0.05, capacity: doubleBalance, freeSpace: doubleBalance, estimatedApy: 5)
 			
-			self?.baker = res
-			self?.onlineXTZFetchGroup.leave()
+			self.baker = TzKTBaker(address: bakerAddress, name: nil, status: .active, balance: doubleBalance, delegation: settings, staking: settings)
+			
+		} else {
+			// Get fresh baker data, as rewards are cached for an entire cycle and free space could change very regularly
+			onlineXTZFetchGroup.enter()
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate.address) { [weak self] result in
+				guard let res = try? result.get() else {
+					self?.onlineXTZFetchGroup.leave()
+					return
+				}
+				
+				self?.baker = res
+				self?.onlineXTZFetchGroup.leave()
+			}
 		}
 		
 		
@@ -569,7 +605,6 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				self?.onlineXTZFetchGroup.leave()
 			}
 		}
-			
 		
 		
 		// Fire completion when everything is done
@@ -601,7 +636,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let stakeValue = DependencyManager.shared.coinGeckoService.format(decimal: stakeXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
 			
 			let totalAmountOfPendingUnstake = self?.pendingUnstakes.map({ $0.amount }).reduce(.zero(), +)
-			let actualFinaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			var actualFinaliseableAmount = token.unstakedBalance - (totalAmountOfPendingUnstake ?? .zero())
+			
+			if isExperimental {
+				// If we are running on experimental mode without tzkt, finalisable balance comes from somewhere else
+				actualFinaliseableAmount = account.xtzFinalisedBalance ?? .zero()
+			}
+			
 			self?.finaliseableAmount = actualFinaliseableAmount
 			let finaliseBalance = DependencyManager.shared.coinGeckoService.format(decimal: actualFinaliseableAmount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 			let finaliseXtzValue = actualFinaliseableAmount * fiatPerToken

@@ -34,14 +34,91 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
-	static let ghostnetFaucetLink = URL(string: "https://faucet.ghostnet.teztnets.com/")!
+	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.rionet.teztnets.com")!]
+	static let defaultTzktURL_protocolnet = URL(string: "https://api.rionet.tzkt.io")!
+	static let defaultExplorerURL_protocolnet = URL(string: "https://rionet.tzkt.io")!
+	
+	static let defaultNodeURLs_nextnet = [URL(string: "https://rpc.nextnet-20250203.teztnets.com")!]
+	static let defaultTzktURL_nextnet = URL(string: "https://api.nextnet.tzkt.io")!
+	static let defaultExplorerURL_nextnet = URL(string: "https://nextnet.tzkt.io")!
+	
+	@UserDefaultsBacked(key: "app.kukai.mobile.experimental.node.url")
+	var experimentalNodeUrl: URL?
+	
+	@UserDefaultsBacked(key: "app.kukai.mobile.experimental.tzkt.url")
+	var experimentalTzktUrl: URL?
+	
+	@UserDefaultsBacked(key: "app.kukai.mobile.experimental.explorer.url")
+	var experimentalExplorerUrl: URL?
+	
+	
+	
+	struct NetworkManagement {
+		static let ghostnetFaucet = URL(string: "https://faucet.ghostnet.teztnets.com/")!
+		static let protocolnetFaucet = URL(string: "https://faucet.rionet.teztnets.com/")!
+		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250203.teztnets.com/")!
+		
+		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
+			switch networkType {
+				case .mainnet:
+					return "Mainnet"
+					
+				case .ghostnet:
+					return "Ghostnet"
+					
+				case .protocolnet:
+					return "Protocolnet - Rio"
+					
+				case .nextnet:
+					return "Nextnet - R"
+				
+				case .experimental:
+					return "Experimental"
+			}
+		}
+		
+		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
+			switch networkType {
+				case .ghostnet:
+					return "Quebec"
+					
+				case .protocolnet:
+					return "Rio"
+					
+				case .nextnet:
+					return "R"
+				
+				case .experimental:
+					return "Experimental"
+					
+				default:
+					return nil
+			}
+		}
+		
+		static func faucet(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> URL? {
+			switch networkType {
+				case .ghostnet:
+					return ghostnetFaucet
+					
+				case .protocolnet:
+					return protocolnetFaucet
+					
+				case .nextnet:
+					return nextnetFaucet
+					
+				default:
+					return nil
+			}
+		}
+	}
+	
 	
 	
 	// Kukai Core clients and properties
 	var tezosClientConfig: TezosNodeClientConfig
 	var tezosNodeClient: TezosNodeClient
 	var tzktClient: TzKTClient
-	var betterCallDevClient: BetterCallDevClient
 	var torusAuthService: TorusAuthService
 	var dipDupClient: DipDupClient
 	var objktClient: ObjktClient
@@ -63,58 +140,23 @@ class DependencyManager {
 	var torusTestnetKeys: [String: String] = [:]
 	
 	// Stored URL's and network info
-	var currentNodeURLs: [URL] {
-		set {
-			let arrayOfStrings = newValue.map({ $0.absoluteString })
-			UserDefaults.standard.setValue(arrayOfStrings, forKey: "app.kukai.mobile.node.url")
-		}
-		get {
-			let arrayOfString = UserDefaults.standard.array(forKey: "app.kukai.mobile.node.url") as? [String] ?? []
-			var urls: [URL] = []
-			
-			for str in arrayOfString {
-				if let url = URL(string: str) {
-					urls.append(url)
-				}
-			}
-			
-			if urls.count == 0 {
-				urls = DependencyManager.defaultNodeURLs_mainnet
-			}
-			
-			return urls
-		}
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.node.url")
+	var currentNodeURLs: [URL] = DependencyManager.defaultNodeURLs_mainnet
 	
-	var currentTzktURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tzkt.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tzkt.url") ?? "") ?? DependencyManager.defaultTzktURL_mainnet }
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.tzkt.url")
+	var currentTzktURL: URL?
 	
-	var currentExplorerURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.explorer.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.explorer.url") ?? "") ?? DependencyManager.defaultExplorerURL_mainnet }
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.explorer.url")
+	var currentExplorerURL: URL?
 	
-	var currentBcdURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.bcd.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.bcd.url") ?? "") ?? DependencyManager.defaultBcdURL_mainnet }
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.tezos-domains.url")
+	var currentTezosDomainsURL: URL?
 	
-	var currentTezosDomainsURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.tezos-domains.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.tezos-domains.url") ?? "") ?? DependencyManager.defaultTezosDomainsURL_mainnet }
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.objkt.url")
+	var currentObjktURL: URL?
 	
-	var currentObjktURL: URL {
-		set { UserDefaults.standard.setValue(newValue.absoluteString, forKey: "app.kukai.mobile.objkt.url") }
-		get { return URL(string: UserDefaults.standard.string(forKey: "app.kukai.mobile.objkt.url") ?? "") ?? DependencyManager.defaultObjktURL_mainnet }
-	}
-	
-	var currentNetworkType: TezosNodeClientConfig.NetworkType {
-		set { UserDefaults.standard.setValue(newValue.rawValue, forKey: "app.kukai.mobile.network.type") }
-		get { return TezosNodeClientConfig.NetworkType(rawValue: UserDefaults.standard.string(forKey: "app.kukai.mobile.network.type") ?? "") ?? .mainnet }
-	}
+	@UserDefaultsBacked(key: "app.kukai.mobile.network.url")
+	var currentNetworkType: TezosNodeClientConfig.NetworkType = .mainnet
 	
 	
 	
@@ -164,6 +206,10 @@ class DependencyManager {
 		}
 	}
 	
+	var isRpcOnlyMode: Bool {
+		return (DependencyManager.shared.currentNetworkType == .experimental && DependencyManager.shared.currentTzktURL == nil)
+	}
+	
 	// For use during WC2 flow where a user tentively selects an account, and we want to wait until its confirmed before switching
 	var temporarySelectedWalletMetadata: WalletMetadata?
 	var temporarySelectedWalletAddress: String? {
@@ -209,10 +255,9 @@ class DependencyManager {
 		// To avoid code duplication, we setup the properties with default values and then call the shared func
 		tezosClientConfig = TezosNodeClientConfig(withDefaultsForNetworkType: .mainnet)
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
-		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
+		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, dipDupClient: dipDupClient)
 		torusAuthService = TorusAuthService(networkService: tezosNodeClient.networkService, verifiers: torusVerifiers, web3AuthClientId: "")
 		balanceService = BalanceService()
 		activityService = ActivityService()
@@ -244,27 +289,56 @@ class DependencyManager {
 		}
 	}
 	
-	func setDefaultMainnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURLs = DependencyManager.defaultNodeURLs_mainnet
-		currentTzktURL = DependencyManager.defaultTzktURL_mainnet
-		currentExplorerURL = DependencyManager.defaultExplorerURL_mainnet
-		currentBcdURL = DependencyManager.defaultBcdURL_mainnet
-		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
-		currentObjktURL = DependencyManager.defaultObjktURL_mainnet
-		currentNetworkType = .mainnet
+	func setNetworkTo(networkTo: TezosNodeClientConfig.NetworkType, supressUpdateNotification: Bool = false) {
+		switch networkTo {
+			case .mainnet:
+				currentNodeURLs = DependencyManager.defaultNodeURLs_mainnet
+				currentTzktURL = DependencyManager.defaultTzktURL_mainnet
+				currentExplorerURL = DependencyManager.defaultExplorerURL_mainnet
+				currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_mainnet
+				currentObjktURL = DependencyManager.defaultObjktURL_mainnet
+				
+			case .ghostnet:
+				currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
+				currentTzktURL = DependencyManager.defaultTzktURL_ghostnet
+				currentExplorerURL = DependencyManager.defaultExplorerURL_ghostnet
+				currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_ghostnet
+				currentObjktURL = DependencyManager.defaultObjktURL_ghostnet
+				
+			case .protocolnet:
+				currentNodeURLs = DependencyManager.defaultNodeURLs_protocolnet
+				currentTzktURL = DependencyManager.defaultTzktURL_protocolnet
+				currentExplorerURL = DependencyManager.defaultExplorerURL_protocolnet
+				currentTezosDomainsURL = nil
+				currentObjktURL = nil
+				
+			case .nextnet:
+				currentNodeURLs = DependencyManager.defaultNodeURLs_nextnet
+				currentTzktURL = DependencyManager.defaultTzktURL_nextnet
+				currentExplorerURL = DependencyManager.defaultExplorerURL_nextnet
+				currentTezosDomainsURL = nil
+				currentObjktURL = nil
+				
+			case .experimental:
+				
+				// UI should make sure this never happens by not enabling the switch until a valid value is supplied
+				// This is an advanced feature so it should be left empty and only used if users supply a value
+				if let nodeURL = DependencyManager.shared.experimentalNodeUrl {
+					currentNodeURLs = [nodeURL]
+				} else {
+					currentNodeURLs = []
+				}
+				
+				// Under this mode, tzkt urls are optional, as they might not be available. The client will simply return an error when used under this mode
+				currentTzktURL = DependencyManager.shared.experimentalTzktUrl
+				currentExplorerURL = DependencyManager.shared.experimentalExplorerUrl
+				currentTezosDomainsURL = nil
+				currentObjktURL = nil
+		}
 		
-		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
-	}
-	
-	func setDefaultGhostnetURLs(supressUpdateNotification: Bool = false) {
-		currentNodeURLs = DependencyManager.defaultNodeURLs_ghostnet
-		currentTzktURL = DependencyManager.defaultTzktURL_ghostnet
-		currentExplorerURL = DependencyManager.defaultExplorerURL_ghostnet
-		currentBcdURL = DependencyManager.defaultBcdURL_ghostnet
-		currentTezosDomainsURL = DependencyManager.defaultTezosDomainsURL_ghostnet
-		currentObjktURL = DependencyManager.defaultObjktURL_ghostnet
-		currentNetworkType = .ghostnet
+		currentNetworkType = networkTo
 		
+		DependencyManager.shared.tezosNodeClient.networkVersion = nil
 		updateKukaiCoreClients(supressUpdateNotification: supressUpdateNotification)
 	}
 	
@@ -274,7 +348,6 @@ class DependencyManager {
 		tezosClientConfig = TezosNodeClientConfig.configWithLocalForge(
 			nodeURLs: currentNodeURLs,
 			tzktURL: currentTzktURL,
-			betterCallDevURL: currentBcdURL,
 			tezosDomainsURL: currentTezosDomainsURL,
 			objktApiURL: currentObjktURL,
 			urlSession: sharedSession,
@@ -282,10 +355,9 @@ class DependencyManager {
 		)
 		
 		tezosNodeClient = TezosNodeClient(config: tezosClientConfig)
-		betterCallDevClient = BetterCallDevClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		dipDupClient = DipDupClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		objktClient = ObjktClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
-		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, betterCallDevClient: betterCallDevClient, dipDupClient: dipDupClient)
+		tzktClient = TzKTClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig, dipDupClient: dipDupClient)
 		coinGeckoService = CoinGeckoService(networkService: tezosNodeClient.networkService)
 		tezosDomainsClient = TezosDomainsClient(networkService: tezosNodeClient.networkService, config: tezosClientConfig)
 		exploreService = ExploreService(networkService: tezosNodeClient.networkService, networkType: currentNetworkType)

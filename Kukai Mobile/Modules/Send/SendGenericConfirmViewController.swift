@@ -38,6 +38,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
+	@IBOutlet weak var testnetWarningNetworkLabel: UILabel!
 	
 	var dimBackground: Bool = true
 	
@@ -47,8 +48,10 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		feeButton.accessibilityIdentifier = "fee-button"
 		
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
+		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
+		} else {
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
 		}
 		
 		
