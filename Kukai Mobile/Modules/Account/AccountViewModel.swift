@@ -347,10 +347,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tokensToDisplay.append(contentsOf: nonFavourites)
 		
 		data.append(.init(balancesMenuVC))
-		
-		if tokensToDisplay.count > 0 {
-			data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
-		}
+		data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
 		
 		let stakedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
 		if stakedXtz > XTZAmount.zero() {

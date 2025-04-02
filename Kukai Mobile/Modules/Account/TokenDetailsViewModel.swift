@@ -386,6 +386,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			
 			// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
 			if self?.needsToLoadOnlineXTZData == true {
+				
+				// Need to grab the XTZ token again, as these details might change during background refreshes
+				let account = DependencyManager.shared.balanceService.account
+				let token = Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
+				
 				self?.loadOnlineXTZData(token: token) { [weak self] error in
 					if let err = error {
 						self?.state = .failure(err, err.rpcErrorString ?? err.description)
