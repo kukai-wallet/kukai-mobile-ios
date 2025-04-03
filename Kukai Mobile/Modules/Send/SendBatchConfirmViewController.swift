@@ -214,7 +214,8 @@ class SendBatchConfirmViewController: SendAbstractConfirmViewController, SlideBu
 		
 		let amountText = DependencyManager.shared.coinGeckoService.format(decimal: amount.toNormalisedDecimal() ?? 0, numberStyle: .decimal, maximumFractionDigits: token.decimalPlaces)
 		tokenIcon.addTokenIcon(token: token)
-		tokenAmount.text = amountText + " " + token.symbol
+		tokenAmount.text = amountText
+		tokenSymbol.text = token.symbol
 		tokenFiat.text = DependencyManager.shared.balanceService.fiatAmountDisplayString(forToken: token, ofAmount: amount)
 	}
 	

@@ -115,7 +115,7 @@ class ChooseBakerViewController: UIViewController {
 			operations = OperationFactory.undelegateOperation(address: selectedWallet.address)
 		}
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded()) { [weak self] estimationResult in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded(), isRemote: false) { [weak self] estimationResult in
 			self?.hideLoadingView()
 			
 			switch estimationResult {

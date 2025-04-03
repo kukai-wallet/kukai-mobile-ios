@@ -664,7 +664,7 @@ public class WalletConnectService {
 		// Map all wallet connect objects to kuaki objects
 		let convertedOps = params.kukaiOperations()
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded(), isRemote: true) { [weak self] result in
 			guard let estimationResult = try? result.get() else {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: "Unable to estimate fees", error: result.getFailure())
@@ -692,18 +692,7 @@ public class WalletConnectService {
 			}
 			
 			let xtzBalance = res.xtzAvailableBalance
-			let xtzSend = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
-			
-			if OperationFactory.Extractor.isUnstake(operations: operations) == nil,
-			   OperationFactory.Extractor.isFinaliseUnstake(operations: operations) == nil,
-			   (xtzSend + operationsObj.fee) > xtzBalance {
-				
-				WalletConnectService.rejectCurrentRequest(completion: nil)
-				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, (xtzSend + operationsObj.fee).normalisedRepresentation), error: nil)
-				
-			} else {
-				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance, delegate: res.delegate?.address)
-			}
+			self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance, delegate: res.delegate?.address)
 		}
 	}
 	

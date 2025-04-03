@@ -138,7 +138,7 @@ class StakeAmountViewController: UIViewController {
 			if isStake { TransactionService.shared.stakeData.chosenAmount = amount } else { TransactionService.shared.unstakeData.chosenAmount = amount }
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
-			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey, isRemote: false) { [weak self] estimationResult in
 				
 				switch estimationResult {
 					case .success(let estimationResult):
