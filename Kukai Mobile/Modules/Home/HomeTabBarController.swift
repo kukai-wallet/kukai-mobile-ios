@@ -34,6 +34,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationInProgress = false
 	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
 	private var activityAnimationExperimentalTimer: Timer? = nil // Timer for use in experimental mode to replace tzkt account change monitoring
+	private var walletConnectOperationTypeOnResume: WalletConnectOperationType? = nil
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -169,6 +170,14 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 					self?.supressAutoRefreshError = true
 					self?.refreshType = .refreshEverything
 					self?.refresh(addresses: nil)
+					
+					if let type = self?.walletConnectOperationTypeOnResume {
+						DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+							self?.processedOperations(ofType: type)
+							self?.walletConnectOperationTypeOnResume = nil
+						}
+					}
+						
 				}
 			}.store(in: &bag)
 		
@@ -565,6 +574,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	
 	public func processedOperations(ofType: WalletConnectOperationType) {
 		self.loadingViewHideActivityAndFade(withDuration: 0.5)
+		
+		guard !DependencyManager.shared.loginActive else {
+			walletConnectOperationTypeOnResume = ofType
+			return
+		}
 		
 		if self.presentedViewController == nil {
 			switch ofType {
