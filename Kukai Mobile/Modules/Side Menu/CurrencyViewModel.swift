@@ -11,6 +11,7 @@ import Combine
 import OSLog
 
 struct CurrencyObj: Hashable {
+	let id = UUID()
 	let code: String
 	let name: String
 }
@@ -74,7 +75,6 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		for key in fiatOnly.keys.sorted(by: <) where !popularKeys.contains(key) {
 			otherCells.append(CurrencyObj(code: key.uppercased(), name: fiatOnly[key]?.name ?? ""))
 		}
-		
 		
 		// Build snapshot
 		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()

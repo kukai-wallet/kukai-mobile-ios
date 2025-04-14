@@ -184,9 +184,8 @@ class SideMenuViewController: UIViewController {
 	@IBAction func getTezTapped(_ sender: Any) {
 		self.closeTapped(self)
 		
-		if DependencyManager.shared.currentNetworkType == .ghostnet {
-			// TODO: update
-			//UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
+		if DependencyManager.shared.currentNetworkType != .mainnet, let url = DependencyManager.NetworkManagement.faucet() {
+			UIApplication.shared.open(url)
 			
 		} else {
 			homeTabBarController?.performSegue(withIdentifier: "side-menu-show-onramp", sender: nil)
@@ -269,7 +268,7 @@ extension SideMenuViewController: UITableViewDelegate {
 			}
 			
 		} else {
-			shareURL()
+			shareURL(indexPath: indexPath)
 		}
 	}
 	
@@ -285,10 +284,16 @@ extension SideMenuViewController: UITableViewDelegate {
 		}
 	}
 	
-	func shareURL() {
+	func shareURL(indexPath: IndexPath) {
 		if let shareURL = NSURL(string: "https://kukai.app") {
 			let objectsToShare = [shareURL]
 			let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+			
+			if activityVC.popoverPresentationController != nil {
+				activityVC.popoverPresentationController?.sourceView = self.view
+				activityVC.popoverPresentationController?.sourceItem = self.tableView?.cellForRow(at: indexPath)
+			}
+			
 			self.present(activityVC, animated: true, completion: nil)
 		}
 	}

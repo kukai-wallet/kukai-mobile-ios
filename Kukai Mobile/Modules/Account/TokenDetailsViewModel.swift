@@ -369,8 +369,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 						self.calculatePriceChange(point: nil)
 						self.weakTokenHeaderCell?.changePriceDisplay(data: self.tokenHeaderData)
 						
-						ds.apply(self.currentSnapshot, animatingDifferences: true)
-						self.state = .success(nil)
+						self.loadXTZOnlineIfNecessary(ds: ds)
 						
 					case .failure(_):
 						self.currentSnapshot.deleteItems([.init(self.chartData)])
@@ -378,46 +377,47 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 						self.chartData = AllChartData(day: [], week: [], month: [], year: [])
 						self.currentSnapshot.insertItems([.init(self.chartData)], afterItem: .init(self.tokenHeaderData))
 						
-						ds.apply(self.currentSnapshot, animatingDifferences: true)
-						self.state = .success(nil)
+						self.loadXTZOnlineIfNecessary(ds: ds)
 				}
 			}
+		}
+	}
+	
+	private func loadXTZOnlineIfNecessary(ds: UITableViewDiffableDataSource<SectionEnum, CellDataType>) {
+		
+		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
+		if self.needsToLoadOnlineXTZData == true {
 			
+			// Need to grab the XTZ token again, as these details might change during background refreshes
+			let account = DependencyManager.shared.balanceService.account
+			let token = Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
-			// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
-			if self?.needsToLoadOnlineXTZData == true {
-				
-				// Need to grab the XTZ token again, as these details might change during background refreshes
-				let account = DependencyManager.shared.balanceService.account
-				let token = Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
-				
-				self?.loadOnlineXTZData(token: token) { [weak self] error in
-					if let err = error {
-						self?.state = .failure(err, err.rpcErrorString ?? err.description)
-					}
-					
-					guard let self = self, let _ = self.currentSnapshot.itemIdentifiers.firstIndex(of: .init(self.sendData)) else { return }
-					
-					self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
-					
-					var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
-					
-					if pendingUnstakes.count > 0 {
-						newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
-						newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))
-					}
-					
-					if let rewardData = rewardData {
-						newData.append(.init(TokenDetailsSmallSectionHeader(message: "Delegation & Staking Rewards")))
-						newData.append(.init(rewardData))
-					}
-					
-					newData.append(contentsOf: loadActivitySection(token: token))
-					self.currentSnapshot.insertItems(newData, afterItem: .init(self.sendData))
-					
-					ds.apply(self.currentSnapshot, animatingDifferences: true)
-					self.state = .success(nil)
+			self.loadOnlineXTZData(token: token) { [weak self] error in
+				if let err = error {
+					self?.state = .failure(err, err.rpcErrorString ?? err.description)
 				}
+				
+				guard let self = self, let _ = self.currentSnapshot.itemIdentifiers.firstIndex(of: .init(self.sendData)) else { return }
+				
+				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
+				
+				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
+				
+				if pendingUnstakes.count > 0 {
+					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
+					newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))
+				}
+				
+				if let rewardData = rewardData {
+					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Delegation & Staking Rewards")))
+					newData.append(.init(rewardData))
+				}
+				
+				newData.append(contentsOf: loadActivitySection(token: token))
+				self.currentSnapshot.insertItems(newData, afterItem: .init(self.sendData))
+				
+				ds.apply(self.currentSnapshot, animatingDifferences: true)
+				self.state = .success(nil)
 			}
 		}
 	}
