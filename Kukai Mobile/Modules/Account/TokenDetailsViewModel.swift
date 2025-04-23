@@ -325,6 +325,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			.init(sendData)
 		]
 		
+		// TODO: uncomment
+		/*
 		if token.isXTZ() {
 			
 			// If XTZ, user has a blance, and we have a delegate set, then we need to fetch more data before displaying anything else
@@ -341,7 +343,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			// If its not XTZ, then load the activity items (if any) and move on
 			data.append(contentsOf: loadActivitySection(token: token))
 		}
-		
+		*/
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
@@ -351,7 +353,8 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		ds.apply(currentSnapshot, animatingDifferences: animate)
 		self.state = .success(nil)
 		
-		
+		// TODO: uncomment
+		/*
 		// Strange crash reports indicate this may be running too fast for iOS to keep up, in instances where the pricing call fails quickly
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 			
@@ -381,6 +384,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				}
 			}
 		}
+		*/
 	}
 	
 	private func loadXTZOnlineIfNecessary(ds: UITableViewDiffableDataSource<SectionEnum, CellDataType>) {

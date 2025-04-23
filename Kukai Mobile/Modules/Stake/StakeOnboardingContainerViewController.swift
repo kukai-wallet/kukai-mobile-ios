@@ -17,18 +17,11 @@ class StakeOnboardingContainerViewController: UIViewController {
 	@IBOutlet weak var indicatorStackviewTrailingConstraint: NSLayoutConstraint!
 	
 	@IBOutlet weak var pageIndicator1: PageIndicatorContainerView!
-	@IBOutlet weak var progressSegment1_stackview: UIStackView!
-	@IBOutlet weak var progressSegment1_1: UIProgressView!
-	@IBOutlet weak var progressSegment1_2: UIProgressView!
-	@IBOutlet weak var progressSegment1_3: UIProgressView!
-	@IBOutlet weak var progressSegment1_4: UIProgressView!
+	@IBOutlet weak var progressSegment1: UIProgressView!
 	@IBOutlet weak var pageIndicator2: PageIndicatorContainerView!
 	@IBOutlet weak var progressSegment2: UIProgressView!
 	@IBOutlet weak var pageIndicator3: PageIndicatorContainerView!
-	@IBOutlet weak var progressSegment3_stackview: UIStackView!
-	@IBOutlet weak var progressSegment3_1: UIProgressView!
-	@IBOutlet weak var progressSegment3_2: UIProgressView!
-	@IBOutlet weak var progressSegment3_3: UIProgressView!
+	@IBOutlet weak var progressSegment3: UIProgressView!
 	@IBOutlet weak var pageIndicator4: PageIndicatorContainerView!
 	@IBOutlet weak var actionButton: CustomisableButton!
 	
@@ -50,13 +43,15 @@ class StakeOnboardingContainerViewController: UIViewController {
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		
-		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+		// TODO: uncomment
+		//isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
 	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+		// TODO: uncomment
+		//isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
 	}
 	
 	override func viewDidLoad() {
@@ -73,7 +68,7 @@ class StakeOnboardingContainerViewController: UIViewController {
 			pageIndicator1.isHidden = true
 			indicatorStackview.removeArrangedSubview(pageIndicator2)
 			pageIndicator2.isHidden = true
-			progressSegment1_stackview.removeFromSuperview()
+			progressSegment1.removeFromSuperview()
 			
 			// With only 2 steps it looks odd to have it the full length of the screen, reduce it a bit
 			indicatorStackviewLeadingConstraint.constant = 24 * 5
@@ -210,17 +205,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 				if handlePageControllerNext(vc: currentChildVc) == true {
 					actionButton.setTitle("Choose Baker", for: .normal)
 					self.pageIndicator1.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment1_4)
+					self.setProgressSegmentComplete(self.progressSegment1)
 					self.pageIndicator2.setInprogress(pageNumber: 2)
-				} else {
-					
-					if self.progressSegment1_1.progress == 0 {
-						self.setProgressSegmentComplete(self.progressSegment1_1)
-					} else if self.progressSegment1_2.progress == 0 {
-						self.setProgressSegmentComplete(self.progressSegment1_2)
-					} else if self.progressSegment1_3.progress == 0 {
-						self.setProgressSegmentComplete(self.progressSegment1_3)
-					}
 				}
 				
 			case "step3":
@@ -237,14 +223,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 				if handlePageControllerNext(vc: currentChildVc) == true {
 					actionButton.setTitle("Stake", for: .normal)
 					self.pageIndicator3.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment3_3)
+					self.setProgressSegmentComplete(self.progressSegment3)
 					self.pageIndicator4.setInprogress(pageNumber: isStakeOnly ? 2 : 4)
-				} else {
-					if self.progressSegment3_1.progress == 0 {
-						self.setProgressSegmentComplete(self.progressSegment3_1)
-					} else if self.progressSegment3_2.progress == 0 {
-						self.setProgressSegmentComplete(self.progressSegment3_2)
-					}
 				}
 				
 			case "step6":

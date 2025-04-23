@@ -204,6 +204,12 @@ public class ActivityService {
 				continue
 			}
 			
+			// During testing, we create fake pending operations to allow full simulated env
+			if pendingGroup.transactions.first?.hash == "test" {
+				indexesToRemove.append(index)
+				continue
+			}
+			
 			for group in comparedToGroups {
 				if pendingGroup.hash == group.hash {
 					

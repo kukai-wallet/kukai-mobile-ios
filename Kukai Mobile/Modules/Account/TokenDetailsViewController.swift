@@ -203,7 +203,9 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	
 	func sendTapped() {
-		self.performSegue(withIdentifier: "send", sender: nil)
+		// TODO: reverse
+		//self.performSegue(withIdentifier: "send", sender: nil)
+		self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
 	}
 	
 	func launchExternalBrowser(withURL url: URL) {

@@ -205,8 +205,19 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 	}
 	
 	func didCompleteSlide() {
-		self.blockInteraction(exceptFor: [closeButton])
-		self.performAuth()
+		// TODO: reverse
+		//self.blockInteraction(exceptFor: [closeButton])
+		//self.performAuth()
+		
+		self.didSend = true
+		self.addPendingTransaction(opHash: "test")
+		self.handleApproval(opHash: "test", slideButton: self.slideButton)
+		TransactionService.shared.stakeData.chosenBaker = TransactionService.shared.delegateData.chosenBaker
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+			let current = DependencyManager.shared.selectedWalletAddress ?? ""
+			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: current, comparedToGroups: [])
+		}
 	}
 	
 	override func authSuccessful() {

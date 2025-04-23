@@ -478,7 +478,8 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	static func reconnectAccountActivityListenerIfNeeded() {
 		if DependencyManager.shared.tzktClient.isListening == false {
-			AccountViewModel.setupAccountActivityListener()
+			// TODO: uncomment
+			//AccountViewModel.setupAccountActivityListener()
 		}
 	}
 }
