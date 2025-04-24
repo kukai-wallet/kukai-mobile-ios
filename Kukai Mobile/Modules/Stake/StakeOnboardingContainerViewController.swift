@@ -94,15 +94,19 @@ class StakeOnboardingContainerViewController: UIViewController {
 						self?.numberOfManualChecks = 0
 						self?.backupOperationCompleteChecker(withTime: 12)
 						
-						self?.showLoadingView()
-						self?.updateLoadingViewStatusLabel(message: "Waiting for transaction to complete \n\nThis should only take a few seconds")
+						if let childNav = self?.childNavigationController, let currentChildVc = childNav.viewControllers.last {
+							currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+							self?.navigationController?.navigationBar.isHidden = true
+							self?.actionButton.isHidden = true
+							self?.hideStepIndicator()
+							self?.actionButton.setTitle("Continue", for: .normal)
+						}
 						
 					} else {
 						self?.backupTimer?.invalidate()
 						self?.backupTimer = nil
 						self?.pendingHandledByAutomaticChecker = true
 						
-						self?.hideLoadingView()
 						self?.handleOperationComplete()
 					}
 				}
@@ -120,6 +124,26 @@ class StakeOnboardingContainerViewController: UIViewController {
 		UIView.animate(withDuration: 0.7) {
 			view?.setProgress(1, animated: true)
 		}
+	}
+	
+	@objc private func handleDisplayTransactionPending() {
+		self.performSegue(withIdentifier: "transaction-processing-1", sender: nil)
+	}
+	
+	func hideStepIndicator() {
+		progressSegment1.isHidden = true
+		progressSegment2.isHidden = true
+		progressSegment3.isHidden = true
+		
+		indicatorStackview.isHidden = true
+	}
+	
+	func showStepIndicator() {
+		progressSegment1.isHidden = false
+		progressSegment2.isHidden = false
+		progressSegment3.isHidden = false
+		
+		indicatorStackview.isHidden = false
 	}
 	
 	private func backupOperationCompleteChecker(withTime: TimeInterval) {
@@ -202,18 +226,18 @@ class StakeOnboardingContainerViewController: UIViewController {
 				self.pageIndicator1.setInprogress(pageNumber: 1)
 				
 			case "step2":
-				if handlePageControllerNext(vc: currentChildVc) == true {
-					actionButton.setTitle("Choose Baker", for: .normal)
-					self.pageIndicator1.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment1)
-					self.pageIndicator2.setInprogress(pageNumber: 2)
-				}
+				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				actionButton.setTitle("Select Baker", for: .normal)
+				self.pageIndicator1.setComplete()
+				self.setProgressSegmentComplete(self.progressSegment1)
+				self.pageIndicator2.setInprogress(pageNumber: 2)
 				
 			case "step3":
 				self.performSegue(withIdentifier: "chooseBaker", sender: nil)
 				
 			case "step4":
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				self.showStepIndicator()
 				
 				if isStakeOnly {
 					self.pageIndicator3.setInprogress(pageNumber: 1)
@@ -247,8 +271,9 @@ class StakeOnboardingContainerViewController: UIViewController {
 				self.pageIndicator2.setComplete()
 				self.setProgressSegmentComplete(self.progressSegment2)
 				self.pageIndicator3.setInprogress(pageNumber: 3)
-				self.currentChildViewController?.performSegue(withIdentifier: "next", sender: nil)
+				
 				self.actionButton.setTitle("Next", for: .normal)
+				self.actionButton.isHidden = false
 				
 			case "step6":
 				self.pageIndicator4.setComplete()
