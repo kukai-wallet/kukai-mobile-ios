@@ -64,6 +64,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 		stakeOnlyContainer.isHidden = !isStakeOnly
 		
 		if isStakeOnly {
+			self.title = "Earn Staking Rewards"
+			
 			indicatorStackview.removeArrangedSubview(pageIndicator1)
 			pageIndicator1.isHidden = true
 			indicatorStackview.removeArrangedSubview(pageIndicator2)
@@ -253,6 +255,7 @@ class StakeOnboardingContainerViewController: UIViewController {
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				self.showStepIndicator()
 				self.navigationController?.navigationBar.isHidden = false
+				self.title = "Earn Staking Rewards"
 				
 				if isStakeOnly {
 					self.pageIndicator3.setInprogress(pageNumber: 1)
