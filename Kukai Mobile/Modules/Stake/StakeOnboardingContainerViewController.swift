@@ -99,7 +99,12 @@ class StakeOnboardingContainerViewController: UIViewController {
 							self?.navigationController?.navigationBar.isHidden = true
 							self?.actionButton.isHidden = true
 							self?.hideStepIndicator()
-							self?.actionButton.setTitle("Continue", for: .normal)
+							
+							if self?.currentStep == "step6" {
+								self?.actionButton.setTitle("Continue", for: .normal)
+							} else {
+								self?.actionButton.setTitle("Done", for: .normal)
+							}
 						}
 						
 					} else {
@@ -238,18 +243,18 @@ class StakeOnboardingContainerViewController: UIViewController {
 			case "step4":
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				self.showStepIndicator()
+				self.navigationController?.navigationBar.isHidden = false
 				
 				if isStakeOnly {
 					self.pageIndicator3.setInprogress(pageNumber: 1)
 				}
 				
 			case "step5":
-				if handlePageControllerNext(vc: currentChildVc) == true {
-					actionButton.setTitle("Stake", for: .normal)
-					self.pageIndicator3.setComplete()
-					self.setProgressSegmentComplete(self.progressSegment3)
-					self.pageIndicator4.setInprogress(pageNumber: isStakeOnly ? 2 : 4)
-				}
+				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				actionButton.setTitle("Enter Amount", for: .normal)
+				self.pageIndicator3.setComplete()
+				self.setProgressSegmentComplete(self.progressSegment3)
+				self.pageIndicator4.setInprogress(pageNumber: isStakeOnly ? 2 : 4)
 				
 			case "step6":
 				TransactionService.shared.currentTransactionType = .stake
@@ -277,8 +282,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 				
 			case "step6":
 				self.pageIndicator4.setComplete()
-				self.currentChildViewController?.performSegue(withIdentifier: "next", sender: nil)
 				self.actionButton.setTitle("Done", for: .normal)
+				self.actionButton.isHidden = false
 				
 			default:
 				self.windowError(withTitle: "error".localized(), description: "Unknown error")

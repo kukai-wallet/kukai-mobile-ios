@@ -211,8 +211,12 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		self.didSend = true
 		self.addPendingTransaction(opHash: "test")
+		
+		let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
+		
 		self.handleApproval(opHash: "test", slideButton: self.slideButton)
-		TransactionService.shared.stakeData.chosenBaker = TransactionService.shared.delegateData.chosenBaker
+		
+		TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
 		
 		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
 			let current = DependencyManager.shared.selectedWalletAddress ?? ""

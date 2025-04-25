@@ -9,11 +9,13 @@ import UIKit
 import Combine
 
 class StakeTransactionProcessingViewController: UIViewController {
-
+	
+	@IBInspectable var isStaking: Bool = false
+	
 	@IBOutlet weak var activityIndicator: UIActivityIndicatorView!
 	@IBOutlet weak var checkImage: UIImageView!
 	@IBOutlet weak var titleLabel: UILabel!
-	@IBOutlet weak var continueText: UILabel!
+	@IBOutlet weak var continueText: UILabel?
 	
 	private var bag = [AnyCancellable]()
 	
@@ -22,7 +24,7 @@ class StakeTransactionProcessingViewController: UIViewController {
 		
 		checkImage.isHidden = true
 		activityIndicator.startAnimating()
-		continueText.isHidden = true
+		continueText?.isHidden = true
 		
 		DependencyManager.shared.activityService.$addressesWithPendingOperation
 			.dropFirst()
@@ -40,10 +42,17 @@ class StakeTransactionProcessingViewController: UIViewController {
     }
 	
 	public func transactionProcessed() {
-		titleLabel.text = "Success, you are delegating!"
+		
+		if isStaking {
+			titleLabel.text = "Staking complete"
+			
+		} else {
+			titleLabel.text = "Success, you are delegating!"
+		}
+		
 		activityIndicator.stopAnimating()
 		activityIndicator.isHidden = true
 		checkImage.isHidden = false
-		continueText.isHidden = false
+		continueText?.isHidden = false
 	}
 }

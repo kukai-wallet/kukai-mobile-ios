@@ -215,8 +215,18 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	}
 	
 	func didCompleteSlide() {
-		self.blockInteraction(exceptFor: [closeButton])
-		self.performAuth()
+		// TODO: reverse
+		//self.blockInteraction(exceptFor: [closeButton])
+		//self.performAuth()
+		
+		self.didSend = true
+		self.addPendingTransaction(opHash: "test")
+		self.handleApproval(opHash: "test", slideButton: self.slideButton)
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+			let current = DependencyManager.shared.selectedWalletAddress ?? ""
+			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: current, comparedToGroups: [])
+		}
 	}
 	
 	override func authSuccessful() {
