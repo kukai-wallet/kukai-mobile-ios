@@ -3156,6 +3156,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bzf-n1-DwT">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <connections>
+                        <segue destination="kvv-N6-slZ" kind="relationship" relationship="rootViewController" id="jKo-bS-iFy"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="U5T-Oe-aMZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4248,7 +4251,144 @@ Bakers also vote on behalf of users to make changes to the network, during the G
             </objects>
             <point key="canvasLocation" x="4354" y="3469"/>
         </scene>
+        <!--step4-->
+        <scene sceneID="cjz-xj-MxA">
+            <objects>
+                <viewController storyboardIdentifier="stake-only-wizard-1" title="step4" id="kvv-N6-slZ" customClass="FeeInfoViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Jnd-Wp-4pg">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="614"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Start Staking" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="euq-a0-kpw">
+                                <rect key="frame" x="16" y="72" width="382" height="31.5"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="26"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We will guide you to Stake to earn higher staking rewards in addition to your delegation rewards." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O8u-oR-MkX">
+                                <rect key="frame" x="16" y="115.5" width="382" height="72"/>
+                                <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="20"/>
+                                <color key="textColor" name="Txt8"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XxR-Za-n54">
+                                <rect key="frame" x="16" y="211.5" width="382" height="197"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="Ksk-m4-hdi">
+                                        <rect key="frame" x="8" y="24" width="366" height="149"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="KWu-5h-0jp">
+                                                <rect key="frame" x="0.0" y="0.0" width="366" height="62.5"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Check" translatesAutoresizingMaskIntoConstraints="NO" id="8Lo-G1-MRg">
+                                                        <rect key="frame" x="8" y="13.5" width="36" height="36"/>
+                                                        <color key="tintColor" name="BGGood4"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="36" id="bXT-DZ-5r9"/>
+                                                            <constraint firstAttribute="width" constant="36" id="vnN-QX-CIs"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You are delegated to a baker and earning delegation rewards.  " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kdr-Cd-cC0">
+                                                        <rect key="frame" x="58" y="12" width="300" height="38.5"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
+                                                        <color key="textColor" name="Txt6"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <directionalEdgeInsets key="directionalLayoutMargins" top="12" leading="8" bottom="12" trailing="8"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" name="BG4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="14" translatesAutoresizingMaskIntoConstraints="NO" id="A76-j7-5kK">
+                                                <rect key="frame" x="0.0" y="86.5" width="366" height="62.5"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Currency" translatesAutoresizingMaskIntoConstraints="NO" id="XKa-rm-Kf1">
+                                                        <rect key="frame" x="8" y="13.5" width="36" height="36"/>
+                                                        <color key="tintColor" name="BGB4"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="36" id="kTU-PK-OSp"/>
+                                                            <constraint firstAttribute="width" constant="36" id="sdK-RA-urb"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stake with low risk to earn higher rewards." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eet-q7-tSi">
+                                                        <rect key="frame" x="58" y="12" width="300" height="38.5"/>
+                                                        <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
+                                                        <color key="textColor" name="Txt6"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                                <directionalEdgeInsets key="directionalLayoutMargins" top="12" leading="8" bottom="12" trailing="8"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                        <real key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                                        <real key="value" value="8"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                        <color key="value" name="BG4"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </stackView>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="Ksk-m4-hdi" secondAttribute="bottom" constant="24" id="aRG-Sn-Amd"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ksk-m4-hdi" secondAttribute="trailing" constant="8" id="j8s-eH-vQW"/>
+                                    <constraint firstItem="Ksk-m4-hdi" firstAttribute="leading" secondItem="XxR-Za-n54" secondAttribute="leading" constant="8" id="m3e-FA-AQA"/>
+                                    <constraint firstItem="Ksk-m4-hdi" firstAttribute="top" secondItem="XxR-Za-n54" secondAttribute="top" constant="24" id="rsJ-Qv-beF"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="euU-sZ-kEv"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="XxR-Za-n54" firstAttribute="leading" secondItem="euU-sZ-kEv" secondAttribute="leading" constant="16" id="1zR-Lf-xN4"/>
+                            <constraint firstItem="O8u-oR-MkX" firstAttribute="leading" secondItem="euU-sZ-kEv" secondAttribute="leading" constant="16" id="2U0-Js-pfs"/>
+                            <constraint firstItem="euq-a0-kpw" firstAttribute="top" secondItem="euU-sZ-kEv" secondAttribute="top" constant="24" id="Oqg-8D-1jL"/>
+                            <constraint firstItem="XxR-Za-n54" firstAttribute="top" secondItem="O8u-oR-MkX" secondAttribute="bottom" constant="24" id="Zfm-On-j5f"/>
+                            <constraint firstItem="euU-sZ-kEv" firstAttribute="trailing" secondItem="O8u-oR-MkX" secondAttribute="trailing" constant="16" id="dem-kD-qUe"/>
+                            <constraint firstItem="euU-sZ-kEv" firstAttribute="trailing" secondItem="euq-a0-kpw" secondAttribute="trailing" constant="16" id="nhX-eb-6gh"/>
+                            <constraint firstItem="O8u-oR-MkX" firstAttribute="top" secondItem="euq-a0-kpw" secondAttribute="bottom" constant="12" id="pwo-Ns-8Rm"/>
+                            <constraint firstItem="euU-sZ-kEv" firstAttribute="trailing" secondItem="XxR-Za-n54" secondAttribute="trailing" constant="16" id="zJf-6e-tXc"/>
+                            <constraint firstItem="euq-a0-kpw" firstAttribute="leading" secondItem="euU-sZ-kEv" secondAttribute="leading" constant="16" id="zfH-uC-vHV"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="oU7-up-dEU"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="addGradient" value="NO"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="reI-Ll-5gT" kind="show" identifier="next" customClass="SlideSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="lHZ-jc-mzh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i1J-Nd-LZR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2309" y="2899"/>
+        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="lHZ-jc-mzh"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="Activity" width="26" height="26"/>
         <image name="Alert" width="24" height="24"/>

@@ -136,17 +136,26 @@ class StakeOnboardingContainerViewController: UIViewController {
 	}
 	
 	func hideStepIndicator() {
-		progressSegment1.isHidden = true
-		progressSegment2.isHidden = true
-		progressSegment3.isHidden = true
+		
+		if isStakeOnly {
+			progressSegment3.isHidden = true
+		} else {
+			progressSegment1.isHidden = true
+			progressSegment2.isHidden = true
+			progressSegment3.isHidden = true
+		}
 		
 		indicatorStackview.isHidden = true
 	}
 	
 	func showStepIndicator() {
-		progressSegment1.isHidden = false
-		progressSegment2.isHidden = false
-		progressSegment3.isHidden = false
+		if isStakeOnly {
+			progressSegment3.isHidden = false
+		} else {
+			progressSegment1.isHidden = false
+			progressSegment2.isHidden = false
+			progressSegment3.isHidden = false
+		}
 		
 		indicatorStackview.isHidden = false
 	}
