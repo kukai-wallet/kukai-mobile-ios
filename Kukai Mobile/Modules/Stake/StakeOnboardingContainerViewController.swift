@@ -280,6 +280,7 @@ class StakeOnboardingContainerViewController: UIViewController {
 				self.performSegue(withIdentifier: "stake", sender: nil)
 				
 			case "step7":
+				self.navigationController?.navigationBar.isHidden = false
 				self.navigationController?.popToDetails()
 				
 			default:

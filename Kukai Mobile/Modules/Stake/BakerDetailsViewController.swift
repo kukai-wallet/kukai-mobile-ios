@@ -30,7 +30,7 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 	@IBOutlet weak var delegateButton: CustomisableButton!
 	
 	var dimBackground: Bool = false
-	var bottomSheetMaxHeight: CGFloat = 625
+	var bottomSheetMaxHeight: CGFloat = 600
 	
 	override func viewDidLoad() {
         super.viewDidLoad()

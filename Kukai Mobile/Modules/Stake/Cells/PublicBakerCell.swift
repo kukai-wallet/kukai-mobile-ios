@@ -34,7 +34,7 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 		if baker.delegation.enabled {
 			delegationSplit.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 			delegationAPY.text = Decimal((baker.delegation.estimatedApy * 100)).rounded(scale: 2, roundingMode: .bankers).description + "%"
-			delegationFreeSpace.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, includeThousand: true, allowNegative: true) + " XTZ"
+			delegationFreeSpace.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, includeThousand: true, allowNegative: true)
 			
 			if baker.delegation.freeSpace < .zero {
 				delegationFreeSpace.textColor = .colorNamed("TxtAlert4")
@@ -50,7 +50,7 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 		if baker.staking.enabled {
 			stakingSplit.text = (Decimal(baker.staking.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 			stakingAPY.text = Decimal((baker.staking.estimatedApy * 100)).rounded(scale: 2, roundingMode: .bankers).description + "%"
-			stakingFreeSpace.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, includeThousand: true, allowNegative: true) + " XTZ"
+			stakingFreeSpace.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, includeThousand: true, allowNegative: true)
 			
 			if baker.staking.freeSpace < .zero {
 				stakingFreeSpace.textColor = .colorNamed("TxtAlert4")

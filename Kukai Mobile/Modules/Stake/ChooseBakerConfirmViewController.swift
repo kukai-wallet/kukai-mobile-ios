@@ -134,7 +134,7 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 			} else {
 				bakerAddDelegationSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 				bakerAddDelegationApyLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddDelegationFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+				bakerAddDelegationFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, allowNegative: true)
 				
 				if baker.delegation.freeSpace < 0 {
 					bakerAddDelegationFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
@@ -144,7 +144,7 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 				
 				bakerAddStakingSplitLabel.text = (Decimal(baker.staking.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 				bakerAddStakingApyLabel.text = Decimal(baker.staking.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddStakingFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true) + " XTZ"
+				bakerAddStakingFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true)
 				
 				if baker.staking.freeSpace < 0 {
 					bakerAddStakingFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
