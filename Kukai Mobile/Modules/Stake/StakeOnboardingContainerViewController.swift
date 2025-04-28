@@ -64,7 +64,7 @@ class StakeOnboardingContainerViewController: UIViewController {
 		stakeOnlyContainer.isHidden = !isStakeOnly
 		
 		if isStakeOnly {
-			self.title = "Earn Staking Rewards"
+			self.title = "Start Staking"
 			
 			indicatorStackview.removeArrangedSubview(pageIndicator1)
 			pageIndicator1.isHidden = true
@@ -75,6 +75,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 			// With only 2 steps it looks odd to have it the full length of the screen, reduce it a bit
 			indicatorStackviewLeadingConstraint.constant = 24 * 5
 			indicatorStackviewTrailingConstraint.constant = 24 * 5
+		} else {
+			self.title = "Getting Started"
 		}
 		
 		// triple make sure activity listener is up and running before we start
@@ -238,10 +240,12 @@ class StakeOnboardingContainerViewController: UIViewController {
 		
 		switch currentChildVc.title {
 			case "step1":
+				self.title = "Start by Delegating"
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				self.pageIndicator1.setInprogress(pageNumber: 1)
 				
 			case "step2":
+				self.title = "Bakers and Governance"
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				actionButton.setTitle("Select Baker", for: .normal)
 				self.pageIndicator1.setComplete()
@@ -252,16 +256,17 @@ class StakeOnboardingContainerViewController: UIViewController {
 				self.performSegue(withIdentifier: "chooseBaker", sender: nil)
 				
 			case "step4":
+				self.title = "Stake for Higher Rewards"
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				self.showStepIndicator()
 				self.navigationController?.navigationBar.isHidden = false
-				self.title = "Earn Staking Rewards"
 				
 				if isStakeOnly {
 					self.pageIndicator3.setInprogress(pageNumber: 1)
 				}
 				
 			case "step5":
+				self.title = "Stake Amount"
 				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
 				actionButton.setTitle("Enter Amount", for: .normal)
 				self.pageIndicator3.setComplete()

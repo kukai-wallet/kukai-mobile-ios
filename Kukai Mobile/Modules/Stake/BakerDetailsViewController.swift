@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import Combine
 
-class BakerDetailsViewController: UIViewController {
+class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
@@ -26,12 +26,11 @@ class BakerDetailsViewController: UIViewController {
 	@IBOutlet weak var delegationMinLabel: UILabel!
 	@IBOutlet weak var stakeMinLabel: UILabel!
 	
+	@IBOutlet weak var changeBakerWarningLabel: UILabel!
 	@IBOutlet weak var delegateButton: CustomisableButton!
 	
-	//private var viewModel = BakerDetailsViewModel()
-	//private var cancellable: AnyCancellable?
-	
 	var dimBackground: Bool = false
+	var bottomSheetMaxHeight: CGFloat = 625
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,23 +38,24 @@ class BakerDetailsViewController: UIViewController {
 		
 		delegateButton.customButtonType = .primary
 		
-		/*
-		viewModel.makeDataSource(withTableView: tableView)
-		tableView.dataSource = viewModel.dataSource
 		
-		cancellable = viewModel.$state.sink { [weak self] state in
-			switch state {
-				case .loading:
-					let _ = ""
-					
-				case .failure(_, let errorString):
-					self?.windowError(withTitle: "error".localized(), description: errorString)
-					
-				case .success(_):
-					let _ = ""
-			}
+		// Change button based off users action, and ptionally display some staking warning text
+		let account = DependencyManager.shared.balanceService.account
+		if account.delegate == nil {
+			delegateButton.setTitle("Delegate", for: .normal)
+			delegateButton.titleLabel?.font = .custom(ofType: .bold, andSize: 20)
+		} else {
+			delegateButton.setTitle("Change Baker", for: .normal)
+			delegateButton.titleLabel?.font = .custom(ofType: .bold, andSize: 20)
 		}
-		*/
+		
+		if account.xtzStakedBalance > XTZAmount.zero() {
+			changeBakerWarningLabel.isHidden = false
+		} else {
+			changeBakerWarningLabel.isHidden = true
+		}
+		
+		
 		
 		GradientView.add(toView: infoContainer, withType: .tableViewCell)
 		let baker = TransactionService.shared.delegateData.chosenBaker ?? TzKTBaker(address: "", name: "")
@@ -99,11 +99,6 @@ class BakerDetailsViewController: UIViewController {
 		}
     }
 	
-	deinit {
-		//cancellable?.cancel()
-		//viewModel.cleanup()
-	}
-	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -114,8 +109,6 @@ class BakerDetailsViewController: UIViewController {
 		delegateButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
-		
-		//viewModel.refresh(animate: false)
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {
