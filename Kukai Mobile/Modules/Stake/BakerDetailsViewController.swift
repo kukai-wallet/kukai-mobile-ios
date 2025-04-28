@@ -55,10 +55,9 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			changeBakerWarningLabel.isHidden = true
 		}
 		
-		
-		
 		GradientView.add(toView: infoContainer, withType: .tableViewCell)
 		let baker = TransactionService.shared.delegateData.chosenBaker ?? TzKTBaker(address: "", name: "")
+		let availableBalance = DependencyManager.shared.balanceService.account.availableBalance
 		
 		if baker.delegation.enabled {
 			let freeSpace = baker.delegation.freeSpace
@@ -70,6 +69,12 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			delegationFreeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(freeSpace, decimalPlaces: 0, allowNegative: true)
 			delegationCapacityLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(capacity, decimalPlaces: 0, allowNegative: true)
 			delegationMinLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(minBalance, decimalPlaces: 0, allowNegative: true)
+			
+			if freeSpace < (availableBalance.toNormalisedDecimal() ?? freeSpace) {
+				delegationFreeLabel.textColor = .colorNamed("TxtAlert4")
+			} else {
+				delegationFreeLabel.textColor = .colorNamed("Txt8")
+			}
 			
 		} else {
 			delegationFeeLabel.text = "N/A"
@@ -89,6 +94,12 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			stakeFreeLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(freeSpace, decimalPlaces: 0, allowNegative: true)
 			stakeCapacityLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(capacity, decimalPlaces: 0, allowNegative: true)
 			stakeMinLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(minBalance, decimalPlaces: 0, allowNegative: true)
+			
+			if freeSpace < (availableBalance.toNormalisedDecimal() ?? freeSpace) {
+				stakeFreeLabel.textColor = .colorNamed("TxtAlert4")
+			} else {
+				stakeFreeLabel.textColor = .colorNamed("Txt8")
+			}
 			
 		} else {
 			stakeFeeLabel.text = "N/A"
