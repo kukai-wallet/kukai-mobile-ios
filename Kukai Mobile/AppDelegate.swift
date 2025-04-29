@@ -60,7 +60,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		processXCUITestArguments()
 		
 		// Reset server URL list cache, incase its edited between versions
-		DependencyManager.shared.setNetworkTo(networkTo: DependencyManager.shared.currentNetworkType)
+		if !StorageService.isPrewarming() {
+			DependencyManager.shared.setNetworkTo(networkTo: DependencyManager.shared.currentNetworkType)
+		}
 		
 		return true
 	}
