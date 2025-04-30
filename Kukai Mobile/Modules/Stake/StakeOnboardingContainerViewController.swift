@@ -43,15 +43,13 @@ class StakeOnboardingContainerViewController: UIViewController {
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		
-		// TODO: uncomment
-		//isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
 	}
 	
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 		
-		// TODO: uncomment
-		//isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
+		isStakeOnly = (DependencyManager.shared.balanceService.account.delegate != nil)
 	}
 	
 	override func viewDidLoad() {
@@ -257,9 +255,12 @@ class StakeOnboardingContainerViewController: UIViewController {
 				
 			case "step4":
 				self.title = "Stake for Higher Rewards"
-				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
-				self.showStepIndicator()
 				self.navigationController?.navigationBar.isHidden = false
+				self.view.setNeedsLayout()
+				
+				currentChildVc.performSegue(withIdentifier: "next", sender: nil)
+				
+				self.showStepIndicator()
 				
 				if isStakeOnly {
 					self.pageIndicator3.setInprogress(pageNumber: 1)

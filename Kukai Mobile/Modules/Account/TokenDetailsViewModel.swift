@@ -427,7 +427,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				// We either display baker and stake data
 				// or baker and stake onboarding if user has a minimum balance
 				var newData: [AnyHashableSendable] = [.init(self.bakerData)]
-				if token.stakedBalance > .zero() {
+				if token.stakedBalance > .zero() || token.unstakedBalance > .zero() || pendingUnstakes.count > 0 || finaliseableAmount > .zero() {
 					newData.append(.init(self.stakeData))
 					
 				} else if token.availableBalance >= AccountViewModel.minXTZforStakeOnboarding {
@@ -453,6 +453,9 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				ds.apply(self.currentSnapshot, animatingDifferences: true)
 				self.state = .success(nil)
 			}
+		} else {
+			ds.apply(self.currentSnapshot, animatingDifferences: true)
+			self.state = .success(nil)
 		}
 	}
 	

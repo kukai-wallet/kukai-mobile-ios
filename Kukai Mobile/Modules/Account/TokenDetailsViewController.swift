@@ -203,9 +203,7 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	
 	func sendTapped() {
-		// TODO: reverse
-		//self.performSegue(withIdentifier: "send", sender: nil)
-		self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
+		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
 	func launchExternalBrowser(withURL url: URL) {
@@ -216,12 +214,7 @@ extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 	
 	func changeTapped() {
-		
-		if viewModel.isNewBakerFlow() {
-			self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
-		} else {
-			self.performSegue(withIdentifier: "choose-baker", sender: nil)
-		}
+		self.performSegue(withIdentifier: "choose-baker", sender: nil)
 	}
 	
 	func learnTapped() {
@@ -232,6 +225,14 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 extension TokenDetailsViewController: TokenDetailsStakePromoDelegate {
 	
 	func earnTapped() {
+		
+		if viewModel.stakePromoData.isStakeOnly {
+			TransactionService.shared.resetAllState()
+			TransactionService.shared.currentTransactionType = .stake
+			TransactionService.shared.stakeData.chosenBaker = viewModel.baker
+			TransactionService.shared.stakeData.chosenToken = viewModel.token
+		}
+		
 		self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
 	}
 }
@@ -239,7 +240,6 @@ extension TokenDetailsViewController: TokenDetailsStakePromoDelegate {
 extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	
 	func stakeTapped() {
-		// TODO: needs to optionally trigger onboarding here
 		TransactionService.shared.resetAllState()
 		TransactionService.shared.currentTransactionType = .stake
 		TransactionService.shared.stakeData.chosenBaker = viewModel.baker

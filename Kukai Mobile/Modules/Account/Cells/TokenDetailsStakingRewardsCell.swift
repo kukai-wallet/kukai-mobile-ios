@@ -74,6 +74,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			
 			lastBaker.text = "N/A"
 			lastDelegationAmount.text = "N/A"
+			lastStakeAmount.text = "N/A"
 			lastTime.text = "N/A"
 			lastCycle.text = "N/A"
 		}
@@ -95,6 +96,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			
 			nextBaker.text = "N/A"
 			nextDelegationAmount.text = "N/A"
+			nextStakeAmount.text = "N/A"
 			nextTime.text = "N/A"
 			nextCycle.text = "N/A"
 		}

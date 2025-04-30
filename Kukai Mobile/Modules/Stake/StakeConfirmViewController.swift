@@ -215,10 +215,11 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 	}
 	
 	func didCompleteSlide() {
-		// TODO: reverse
-		//self.blockInteraction(exceptFor: [closeButton])
-		//self.performAuth()
+		self.blockInteraction(exceptFor: [closeButton])
+		self.performAuth()
 		
+		// Leaving here for now, allows to mock the the send/update flow for testing UI only
+		/*
 		self.didSend = true
 		self.addPendingTransaction(opHash: "test")
 		self.handleApproval(opHash: "test", slideButton: self.slideButton)
@@ -227,6 +228,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 			let current = DependencyManager.shared.selectedWalletAddress ?? ""
 			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: current, comparedToGroups: [])
 		}
+		*/
 	}
 	
 	override func authSuccessful() {

@@ -29,9 +29,14 @@ class TokenDetailsBakerCell: UITableViewCell {
 	
 	public weak var delegate: TokenDetailsBakerDelegate? = nil
 	
-	func setup(data: TokenDetailsBakerData) {
+	override func awakeFromNib() {
+		super.awakeFromNib()
 		
 		GradientView.add(toView: containerView, withType: .tableViewCell)
+	}
+	
+	func setup(data: TokenDetailsBakerData) {
+		
 		bakerButton.customButtonType = .secondary
 		learnButton.customButtonType = .secondary
 		bakerButton.isEnabled = !data.bakerChangeDisabled
