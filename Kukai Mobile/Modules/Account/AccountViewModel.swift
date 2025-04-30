@@ -67,6 +67,8 @@ protocol AccountViewModelPopups: AnyObject {
 
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
+	public static let minXTZforStakeOnboarding = XTZAmount(fromNormalisedAmount: 3)
+	
 	struct accessibilityIdentifiers {
 		static let onramp = "account-onramp"
 		static let discover = "account-discover"
@@ -394,7 +396,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		 2. Suggested action, staking. Staking is important in order to secure the network and promote bakers who actively help the network
 		 */
 		let lockedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
-		if currentAccount.availableBalance >= XTZAmount(fromNormalisedAmount: 3) && (currentAccount.delegate == nil || lockedXtz == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
+		if currentAccount.availableBalance >= AccountViewModel.minXTZforStakeOnboarding && (currentAccount.delegate == nil || lockedXtz == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
 			return .init(SuggestedActionData(image: UIImage(named: "Lock"), title: "Suggested Action", description: "Start staking to earn passive income, and participate in on-chain governance", segue: "stake-onboarding"))
 		}
 		

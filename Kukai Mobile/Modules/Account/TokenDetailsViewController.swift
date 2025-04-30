@@ -229,9 +229,17 @@ extension TokenDetailsViewController: TokenDetailsBakerDelegate {
 	}
 }
 
+extension TokenDetailsViewController: TokenDetailsStakePromoDelegate {
+	
+	func earnTapped() {
+		self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
+	}
+}
+
 extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
 	
 	func stakeTapped() {
+		// TODO: needs to optionally trigger onboarding here
 		TransactionService.shared.resetAllState()
 		TransactionService.shared.currentTransactionType = .stake
 		TransactionService.shared.stakeData.chosenBaker = viewModel.baker

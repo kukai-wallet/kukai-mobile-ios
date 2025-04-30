@@ -15,6 +15,7 @@ protocol TokenDetailsBakerDelegate: AnyObject {
 
 class TokenDetailsBakerCell: UITableViewCell {
 
+	@IBOutlet weak var containerView: UIView!
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerLabel: UILabel!
 	@IBOutlet weak var bakerApyLabel: UILabel!
@@ -30,7 +31,8 @@ class TokenDetailsBakerCell: UITableViewCell {
 	
 	func setup(data: TokenDetailsBakerData) {
 		
-		bakerButton.customButtonType = .tertiary
+		GradientView.add(toView: containerView, withType: .tableViewCell)
+		bakerButton.customButtonType = .secondary
 		learnButton.customButtonType = .secondary
 		bakerButton.isEnabled = !data.bakerChangeDisabled
 		bakerButton.accessibilityIdentifier = "baker-edit-button"

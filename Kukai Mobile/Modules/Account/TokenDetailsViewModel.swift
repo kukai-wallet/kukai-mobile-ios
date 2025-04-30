@@ -122,6 +122,16 @@ struct PendingUnstakeData: Hashable {
 	}
 }
 
+struct StakePromoData: Hashable, Identifiable {
+	let id = UUID()
+	let isStakeOnly: Bool
+	let isDisplayed: Bool
+	
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
+	}
+}
+
 
 
 @objc protocol TokenDetailsViewModelDelegate: AnyObject {
@@ -146,7 +156,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	private var bag = [AnyCancellable]()
 	
 	// Set by VC
-	weak var delegate: (TokenDetailsViewModelDelegate & TokenDetailsBakerDelegate & TokenDetailsStakeBalanceDelegate)? = nil
+	weak var delegate: (TokenDetailsViewModelDelegate & TokenDetailsBakerDelegate & TokenDetailsStakeBalanceDelegate & TokenDetailsStakePromoDelegate)? = nil
 	
 	var token: Token? = nil
 	var baker: TzKTBaker? = nil
@@ -175,6 +185,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	var activityItems: [TzKTTransactionGroup] = []
 	var noItemsData = TokenDetailsMessageData(message: "No items avaialble at this time, check again later")
 	var finaliseableAmount: TokenAmount = .zero()
+	var stakePromoData: StakePromoData = StakePromoData(isStakeOnly: false, isDisplayed: false)
 	
 	
 	override init() {
@@ -217,6 +228,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		tableView.register(UINib(nibName: "TokenDetailsMessageCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsMessageCell")
 		tableView.register(UINib(nibName: "TokenDetailsPendingUnstakeCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsPendingUnstakeCell")
 		tableView.register(UINib(nibName: "TokenDetailsSmallHeadingCell", bundle: nil), forCellReuseIdentifier: "TokenDetailsSmallHeadingCell")
+		tableView.register(UINib(nibName: "StakePromoCell", bundle: nil), forCellReuseIdentifier: "StakePromoCell")
 		
 		tableView.register(UINib(nibName: "ActivityItemCell", bundle: nil), forCellReuseIdentifier: "ActivityItemCell")
 		
@@ -295,6 +307,11 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			} else if let obj = item.base as? TzKTTransactionGroup, let cell = tableView.dequeueReusableCell(withIdentifier: "ActivityItemCell", for: indexPath) as? ActivityItemCell {
 				cell.setup(data: obj)
 				return cell
+				
+			} else if let obj = item.base as? StakePromoData, let cell = tableView.dequeueReusableCell(withIdentifier: "StakePromoCell", for: indexPath) as? StakePromoCell {
+				cell.setup(isStakeOnly: obj.isStakeOnly)
+				cell.delegate = self.delegate
+				return cell
 			}
 			
 			let backupCell = UITableViewCell()
@@ -307,9 +324,16 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
+		if token?.isXTZ() == true {
+			// Get updated values as during refresh this can change if user purcahses or stakes
+			let account = DependencyManager.shared.balanceService.account
+			token = Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
+		}
+		
 		guard let ds = dataSource, let token = self.token else {
 			return
 		}
+		
 		
 		let isWatchWallet = DependencyManager.shared.selectedWalletMetadata?.isWatchOnly ?? false
 		
@@ -325,25 +349,23 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			.init(sendData)
 		]
 		
-		// TODO: uncomment
-		/*
 		if token.isXTZ() {
 			
 			// If XTZ, user has a blance, and we have a delegate set, then we need to fetch more data before displaying anything else
-			// Otherwise load the baker onboarding flow, if user has a balance
+			// Otherwise if the user has the minimum balance needed, display the stake onboarding
 			if DependencyManager.shared.balanceService.account.delegate != nil {
 				self.needsToLoadOnlineXTZData = !sendData.isBuyTez
 				data.append(.init(onlineDataLoading))
 				
-			} else if !sendData.isBuyTez {
-				data.append(.init(TokenDetailsBakerData(bakerIcon: nil, bakerName: nil, bakerApy: 0, votingParticipation: [], freeSpace: 0, enoughSpaceForBalance: false, bakerChangeDisabled: isWatchWallet) ))
+			} else if token.availableBalance >= AccountViewModel.minXTZforStakeOnboarding {
+				stakePromoData = StakePromoData(isStakeOnly: false, isDisplayed: true)
+				data.append(.init( stakePromoData ))
 			}
 		} else {
 			
 			// If its not XTZ, then load the activity items (if any) and move on
 			data.append(contentsOf: loadActivitySection(token: token))
 		}
-		*/
 		
 		// Build snapshot
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
@@ -353,8 +375,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		ds.apply(currentSnapshot, animatingDifferences: animate)
 		self.state = .success(nil)
 		
-		// TODO: uncomment
-		/*
+		
 		// Strange crash reports indicate this may be running too fast for iOS to keep up, in instances where the pricing call fails quickly
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
 			
@@ -384,17 +405,13 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				}
 			}
 		}
-		*/
 	}
 	
 	private func loadXTZOnlineIfNecessary(ds: UITableViewDiffableDataSource<SectionEnum, CellDataType>) {
+		guard let token = self.token else { return }
 		
 		// At the same time, if we should, load all the other XTZ related content, like baker, staking view, delegation/staking rewards, etc
 		if self.needsToLoadOnlineXTZData == true {
-			
-			// Need to grab the XTZ token again, as these details might change during background refreshes
-			let account = DependencyManager.shared.balanceService.account
-			let token = Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
 			self.loadOnlineXTZData(token: token) { [weak self] error in
 				if let err = error {
@@ -405,8 +422,21 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 				
 				self.currentSnapshot.deleteItems([.init(self.onlineDataLoading)])
 				
-				var newData: [AnyHashableSendable] = [.init(self.bakerData), .init(self.stakeData)]
 				
+				// If we've gotten here, the user is at least delegated
+				// We either display baker and stake data
+				// or baker and stake onboarding if user has a minimum balance
+				var newData: [AnyHashableSendable] = [.init(self.bakerData)]
+				if token.stakedBalance > .zero() {
+					newData.append(.init(self.stakeData))
+					
+				} else if token.availableBalance >= AccountViewModel.minXTZforStakeOnboarding {
+					self.stakePromoData = StakePromoData(isStakeOnly: true, isDisplayed: true)
+					newData = [.init(self.bakerData), .init(self.stakePromoData)]
+				}
+				
+				
+				//
 				if pendingUnstakes.count > 0 {
 					newData.append(.init(TokenDetailsSmallSectionHeader(message: "Pending Unstake Requests")))
 					newData.append(contentsOf: pendingUnstakes.map({ .init($0) }))

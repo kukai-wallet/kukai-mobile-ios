@@ -46,7 +46,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			let stakingPercentage = Decimal(previousReward.stakeFee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
 			lastBaker.text = previousReward.bakerAlias
-			lastDelegationAmountTitle.text = "Delegation \nAmount (fee)"
+			lastDelegationAmountTitle.text = "Delegation Reward (fee)"
 			lastDelegationAmount.text = previousReward.delegateAmount.normalisedRepresentation + " (\(delegationPercentage)%)"
 			lastStakeAmount.text = previousReward.stakeAmount.normalisedRepresentation + " (\(stakingPercentage)%)"
 			lastTimeTitle.text = "Time"
@@ -61,7 +61,7 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			let stakingPercentage = Decimal(previousReward.stakeFee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
 			lastBaker.text = previousReward.bakerAlias
-			lastDelegationAmountTitle.text = "Delegation \nEst Amount (fee)"
+			lastDelegationAmountTitle.text = "Delegation Est Reward (fee)"
 			lastDelegationAmount.text = previousReward.delegateAmount.normalisedRepresentation + " (\(delegationPercentage)%)"
 			lastStakeAmount.text = previousReward.stakeAmount.normalisedRepresentation + " (\(stakingPercentage)%)"
 			lastTimeTitle.text = "Est Time"
