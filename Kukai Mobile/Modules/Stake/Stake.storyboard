@@ -3025,7 +3025,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                             <constraint firstAttribute="width" constant="36" id="ONa-by-5MI"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It takes ~11 days to unstake and remove the lock" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6v-Vq-qZy">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="It takes ~4 days to unstake and remove the lock" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6v-Vq-qZy">
                                                         <rect key="frame" x="50" y="0.0" width="261" height="38.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
@@ -3440,7 +3440,7 @@ Would you like to add a reminder to your calendar to alert you when this is read
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z4-KG-wz5">
                                 <rect key="frame" x="32" y="214" width="311" height="151.5"/>
-                                <string key="text">Staking is when you lock all or a portion of a token in order to help protect the network from attacks. To incentivise users to do this, locked XTZ receives interest automatically from the network based on the amount locked. Rewards begin to pay out after the XTZ has been locked for X days. On the Tezos network XTZ takes ~11 days to unlock, and requires a small transaction fee to do so.</string>
+                                <string key="text">Staking is when you lock all or a portion of a token in order to help protect the network from attacks. To incentivise users to do this, locked XTZ receives interest automatically from the network based on the amount locked. Rewards begin to pay out after the XTZ has been locked for X days. On the Tezos network XTZ takes ~4 days to unlock, and requires a small transaction fee to do so.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3773,8 +3773,12 @@ Symbol explanation:</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHd-UP-LgQ">
-                                <rect key="frame" x="32" y="238" width="311" height="101"/>
-                                <string key="text">Delegation rewards are paid manually by bakers at the end of every blockchain cycle (currently roughly 3 days). Bakers will send XTZ directly to your wallet and it does not require unstaking to access. These funds will also auto compound for you</string>
+                                <rect key="frame" x="32" y="238" width="311" height="168.5"/>
+                                <string key="text">The first time you delegate it takes roughly 3-4 days for it to take effect on the network. 
+
+Delegation rewards are then paid manually by bakers at the end of every blockchain cycle (currently roughly 1 day). 
+
+Bakers will send XTZ directly to your wallet and it does not require unstaking to access. These funds will also auto compound for you</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3875,8 +3879,8 @@ Symbol explanation:</string>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v0y-Gb-Fou">
-                                <rect key="frame" x="32" y="214" width="311" height="185"/>
-                                <string key="text">A block is produced for the blockchain every X seconds. Certain aspects of running the blockchain take time, such as: allowing bakers time to review and vote on proposals, allowing bakers to payout delegation rewards, etc. In order to facilitate this Tezos created the term “cycle” to correspond to a number of blocks. A cycle takes roughly 3 days, and most aspects of the blockchain are measured in cycles. Bakers payout rewards at the end of every cycle, bakers have 7 cycles to cast their votes, etc.</string>
+                                <rect key="frame" x="32" y="214" width="311" height="168.5"/>
+                                <string key="text">A block is produced for the blockchain currently every 8 seconds. Certain aspects of running the blockchain take time, such as: allowing bakers time to review and vote on proposals, allowing bakers to payout delegation rewards, etc. In order to facilitate this Tezos created the term “cycle” to correspond to a number of blocks. A cycle takes roughly 1 day, and most aspects of the blockchain are measured in cycles. Bakers payout rewards at the end of every cycle, etc.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -4021,7 +4025,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegation rewards are paid manually by bakers about every 3 days." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yx-SC-CuW">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegation rewards are paid manually by bakers about every 1-3 days." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yx-SC-CuW">
                                 <rect key="frame" x="16" y="135.5" width="343" height="48"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt8"/>
@@ -4044,7 +4048,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
                                                             <constraint firstAttribute="height" constant="15" id="rUs-nQ-fS0"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You first reward will be paid in ~16 days, then again every ~3 days" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15j-59-KkM">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You first reward will be paid in ~6-8 days, then again every ~1-3 days" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15j-59-KkM">
                                                         <rect key="frame" x="39" y="0.0" width="256" height="38.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
@@ -4238,7 +4242,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
                                                             <constraint firstAttribute="height" constant="15" id="nAJ-tS-NJg"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unstaking takes about 10 days" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vi2-jy-r7U">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Unstaking takes about 4 days" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vi2-jy-r7U">
                                                         <rect key="frame" x="39" y="0.0" width="256" height="19.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
@@ -4457,7 +4461,7 @@ Bakers also vote on behalf of users to make changes to the network, during the G
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lHZ-jc-mzh"/>
+        <segue reference="gpA-x0-Lrr"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Activity" width="26" height="26"/>

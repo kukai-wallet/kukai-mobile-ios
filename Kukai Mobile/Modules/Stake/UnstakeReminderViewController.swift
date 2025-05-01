@@ -56,10 +56,11 @@ class UnstakeReminderViewController: UIViewController {
 	}
 	
 	public static func secondsToUnstake() -> Double {
-		let secondsPerBlock = DependencyManager.shared.tezosNodeClient.networkConstants?.secondsBetweenBlocks() ?? 10
-		let blocksPerCycle = DependencyManager.shared.tezosNodeClient.networkConstants?.blocks_per_cycle ?? 24576
+		let secondsPerBlock = DependencyManager.shared.tezosNodeClient.networkConstants?.secondsBetweenBlocks() ?? 8
+		let blocksPerCycle = DependencyManager.shared.tezosNodeClient.networkConstants?.blocks_per_cycle ?? 10800
+		let unstakeCycleDelay = DependencyManager.shared.tezosNodeClient.networkConstants?.unstake_finalization_delay ?? 3
 		
-		return Double((blocksPerCycle * secondsPerBlock) * 4)
+		return Double((blocksPerCycle * secondsPerBlock) * unstakeCycleDelay)
 	}
 	
 	public static func numberOfDaysToUnstake() -> Double {

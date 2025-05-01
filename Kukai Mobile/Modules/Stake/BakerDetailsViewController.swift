@@ -117,7 +117,12 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			return
 		}
 		
-		delegateButton.isHidden = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
+		let isCurrent = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
+		if DependencyManager.shared.balanceService.account.delegate?.address != nil {
+			changeBakerWarningLabel.isHidden = isCurrent
+		}
+		delegateButton.isHidden = isCurrent
+		
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 	}

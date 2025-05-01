@@ -55,7 +55,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 			
 			bakerLabel.text = bakerName
 			bakerLabel.accessibilityIdentifier = "baker-name-label"
-			bakerApyLabel.text = "Est APY: \(data.bakerApy.rounded(scale: 2, roundingMode: .bankers))%"
+			bakerApyLabel.text = "Est Rewards: \(data.bakerApy.rounded(scale: 2, roundingMode: .bankers))%"
 			
 			
 			let filterTrueVotes = data.votingParticipation.filter { $0 }
