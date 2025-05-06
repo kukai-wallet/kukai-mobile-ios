@@ -397,7 +397,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		 */
 		let lockedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
 		if currentAccount.availableBalance >= AccountViewModel.minXTZforStakeOnboarding && (currentAccount.delegate == nil || lockedXtz == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
-			return .init(SuggestedActionData(image: UIImage(named: "Lock"), title: "Suggested Action", description: "Start staking to earn passive income, and participate in on-chain governance", segue: "stake-onboarding"))
+			return .init(SuggestedActionData(image: UIImage(named: "Currency"), title: "Suggested Action", description: "Start staking to maximize your rewards", segue: "stake-onboarding"))
 		}
 		
 		

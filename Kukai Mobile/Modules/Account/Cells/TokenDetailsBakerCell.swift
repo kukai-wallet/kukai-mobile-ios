@@ -39,6 +39,9 @@ class TokenDetailsBakerCell: UITableViewCell {
 		
 		bakerButton.customButtonType = .secondary
 		learnButton.customButtonType = .secondary
+		bakerButton.customCornerRadius = 6
+		learnButton.customCornerRadius = 6
+		
 		bakerButton.isEnabled = !data.bakerChangeDisabled
 		bakerButton.accessibilityIdentifier = "baker-edit-button"
 		
@@ -66,7 +69,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 				
 			} else if filterTrueVotes.count >= 1 && data.votingParticipation.last == false {
 				// Hasn't voted in most recent period = yellow warning
-				regularlyVotesIcon.image = UIImage.init(named: "AlertKnockout")
+				regularlyVotesIcon.image = UIImage.init(named: "CircleSlash")
 				regularlyVotesIcon.tintColor = .colorNamed("TxtB-alt4")
 				
 			} else if filterTrueVotes.count >= 2 || data.votingParticipation.last == true {

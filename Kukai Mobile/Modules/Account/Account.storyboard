@@ -143,20 +143,23 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Suggested Action" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M67-L6-D1a">
-                                                            <rect key="frame" x="58" y="8.0000000000000018" width="262.66666666666669" height="18.666666666666671"/>
+                                                            <rect key="frame" x="60" y="8.0000000000000018" width="273" height="18.666666666666671"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                             <color key="textColor" name="Txt2"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Start staking to earn passive income, and participate in on-chain governance" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QWi-UQ-7HW">
-                                                            <rect key="frame" x="58" y="28.666666666666661" width="262.66666666666669" height="46.333333333333343"/>
+                                                            <rect key="frame" x="60" y="28.666666666666661" width="273" height="46.333333333333343"/>
                                                             <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                                             <color key="textColor" name="Txt6"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ChevronRight" translatesAutoresizingMaskIntoConstraints="NO" id="7gN-0B-1vE">
-                                                            <rect key="frame" x="330.66666666666669" y="32.666666666666664" width="20.333333333333314" height="18"/>
+                                                            <rect key="frame" x="343" y="32.666666666666664" width="10" height="18"/>
                                                             <color key="tintColor" name="BGB4"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" constant="10" id="nlg-dE-hCH"/>
+                                                            </constraints>
                                                         </imageView>
                                                     </subviews>
                                                     <color key="backgroundColor" name="BG3"/>
@@ -164,13 +167,14 @@
                                                         <constraint firstAttribute="bottom" secondItem="QWi-UQ-7HW" secondAttribute="bottom" constant="8" id="1F8-87-B5c"/>
                                                         <constraint firstItem="rem-aZ-ABI" firstAttribute="top" secondItem="NId-X4-X5X" secondAttribute="top" constant="8" id="2Hl-02-QTX"/>
                                                         <constraint firstItem="M67-L6-D1a" firstAttribute="trailing" secondItem="QWi-UQ-7HW" secondAttribute="trailing" id="81d-o2-knR"/>
-                                                        <constraint firstItem="QWi-UQ-7HW" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="8" id="9oi-b7-f6C"/>
-                                                        <constraint firstAttribute="trailing" secondItem="7gN-0B-1vE" secondAttribute="trailing" constant="10" id="BOG-Yh-yA2"/>
+                                                        <constraint firstItem="QWi-UQ-7HW" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="10" id="9oi-b7-f6C"/>
+                                                        <constraint firstAttribute="trailing" secondItem="7gN-0B-1vE" secondAttribute="trailing" constant="8" id="BOG-Yh-yA2"/>
                                                         <constraint firstItem="7gN-0B-1vE" firstAttribute="leading" secondItem="QWi-UQ-7HW" secondAttribute="trailing" constant="10" id="OAb-eE-gsV"/>
                                                         <constraint firstItem="M67-L6-D1a" firstAttribute="top" secondItem="NId-X4-X5X" secondAttribute="top" constant="8" id="PRE-ur-FMt"/>
                                                         <constraint firstItem="7gN-0B-1vE" firstAttribute="centerY" secondItem="NId-X4-X5X" secondAttribute="centerY" id="Vel-6K-d37"/>
+                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="rem-aZ-ABI" secondAttribute="bottom" constant="8" id="aHC-hB-vHW"/>
                                                         <constraint firstItem="rem-aZ-ABI" firstAttribute="leading" secondItem="NId-X4-X5X" secondAttribute="leading" constant="10" id="aeF-mP-bKt"/>
-                                                        <constraint firstItem="M67-L6-D1a" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="8" id="kFo-gT-Tss"/>
+                                                        <constraint firstItem="M67-L6-D1a" firstAttribute="leading" secondItem="rem-aZ-ABI" secondAttribute="trailing" constant="10" id="kFo-gT-Tss"/>
                                                         <constraint firstItem="QWi-UQ-7HW" firstAttribute="top" secondItem="M67-L6-D1a" secondAttribute="bottom" constant="2" id="yD4-4b-KJR"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
