@@ -11,8 +11,10 @@ import Combine
 
 class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtocol {
 	
+	@IBOutlet weak var customActivtyView: UIActivityIndicatorView!
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
+	@IBOutlet weak var votingIcon: UIImageView!
 	
 	@IBOutlet weak var infoContainer: UIView!
 	@IBOutlet weak var delegationFeeLabel: UILabel!
@@ -30,7 +32,8 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 	@IBOutlet weak var delegateButton: CustomisableButton!
 	
 	var dimBackground: Bool = false
-	var bottomSheetMaxHeight: CGFloat = 600
+	var bottomSheetMaxHeight: CGFloat = 620
+	var votingParticipation: [Bool] = []
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -108,6 +111,13 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			stakeCapacityLabel.text = "N/A"
 			stakeMinLabel.text = "N/A"
 		}
+		
+		// TODO:
+		// Not intended to fetch data on this screen,but needed temporarily. Remove later when we have a better API
+		self.hideAllSubviews()
+		self.customActivtyView.isHidden = false
+		self.customActivtyView.startAnimating()
+		
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -117,14 +127,65 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 			return
 		}
 		
+		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
+		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		guard let baker = TransactionService.shared.delegateData.chosenBaker else {
+			self.customActivtyView.stopAnimating()
+			self.customActivtyView.isHidden = true
+			self.showAllSubviews()
+			return
+		}
+		
+		DependencyManager.shared.tzktClient.checkBakerVoteParticipation(forAddress: baker.address) { [weak self] result in
+			guard let res = try? result.get() else {
+				self?.hideLoadingView()
+				self?.showAllSubviews()
+				return
+			}
+			
+			self?.showAllSubviews()
+			self?.votingParticipation = res
+			self?.setupVoteIcon(baker: baker)
+			self?.customActivtyView.stopAnimating()
+			self?.customActivtyView.isHidden = true
+		}
+	}
+	
+	private func setupVoteIcon(baker: TzKTBaker) {
+		let filterTrueVotes = votingParticipation.filter { $0 }
+		if filterTrueVotes.count == 5 {
+			// Voted in last 5 available periods = green tick
+			votingIcon.image = UIImage.init(named: "vote_check")
+			votingIcon.tintColor = .colorNamed("BGGood4")
+			
+		} else if filterTrueVotes.count >= 1 && votingParticipation.last == false {
+			// Hasn't voted in most recent period = yellow warning
+			votingIcon.image = UIImage.init(named: "vote_alert")
+			votingIcon.tintColor = .colorNamed("TxtB-alt4")
+			
+		} else if filterTrueVotes.count >= 2 || votingParticipation.last == true {
+			// Voted in at least 2 periods, or voted in most recent = yellow tick
+			votingIcon.image = UIImage.init(named: "vote_check")
+			votingIcon.tintColor = .colorNamed("TxtB-alt4")
+			
+		} else {
+			votingIcon.image = UIImage.init(named: "vote_x")
+			votingIcon.tintColor = .colorNamed("TxtAlert4")
+		}
+		
 		let isCurrent = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
 		if DependencyManager.shared.balanceService.account.delegate?.address != nil {
 			changeBakerWarningLabel.isHidden = isCurrent
+		} else {
+			changeBakerWarningLabel.isHidden = true
 		}
-		delegateButton.isHidden = isCurrent
 		
-		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
-		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
+		delegateButton.isHidden = isCurrent
 	}
 	
 	@IBAction func closeTapped(_ sender: Any) {

@@ -194,6 +194,10 @@ extension UIViewController {
 	
 	func hideAllSubviews() {
 		for v in view.subviews {
+			guard !(v is GradientView) else {
+				continue
+			}
+			
 			v.isHidden = true
 		}
 	}
