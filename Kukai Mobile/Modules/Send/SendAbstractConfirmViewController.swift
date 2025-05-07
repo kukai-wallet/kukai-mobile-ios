@@ -99,7 +99,9 @@ class SendAbstractConfirmViewController: UIViewController {
 	
 	func dismissAndReturn(collapseOnly: Bool) {
 		DispatchQueue.main.async { [weak self] in
-			let topMostNavigationController = ((self?.presentationController?.presentingViewController as? UINavigationController)?.presentationController?.presentingViewController as? UINavigationController)
+			let recentNav = (self?.presentationController?.presentingViewController as? UINavigationController)
+			let topMostNavigationController = (recentNav?.presentationController?.presentingViewController as? UINavigationController)
+			
 			let isDuringStakeOnboardingFlow = topMostNavigationController?.viewControllers.contains(where: { $0 is StakeOnboardingContainerViewController }) ?? false
 			
 			// Only directly dismiss the current confirmation screen if its not part of the stake onboarding flow, as that requires a special dismiss to avoid temporary screens popping up

@@ -10,6 +10,8 @@ import KukaiCoreSwift
 
 class StakeAmountViewController: UIViewController {
 
+	@IBOutlet weak var bottomSheetHeader: UIStackView!
+	@IBOutlet weak var bottomSheetHeaderTitle: UILabel!
 	@IBOutlet weak var bakerIcon: UIImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
 	@IBOutlet weak var bakerDelegationSplitValueLabel: UILabel!
@@ -54,7 +56,14 @@ class StakeAmountViewController: UIViewController {
 			return
 		}
 		
-		self.title = isStake ? "Stake Amount" : "Unstake Amount"
+		if self.navigationController?.navigationBar.isHidden == true {
+			self.bottomSheetHeader.isHidden = false
+			self.bottomSheetHeaderTitle.text = isStake ? "Stake Amount" : "Unstake Amount"
+		} else {
+			self.bottomSheetHeader.isHidden = true
+			self.title = isStake ? "Stake Amount" : "Unstake Amount"
+		}
+		
 		self.tokenBalanceTitleLabel.text = isStake ? "Balance" : "Staked Balance"
 		
 		// To section
