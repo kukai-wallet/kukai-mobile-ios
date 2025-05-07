@@ -209,8 +209,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 	}
 	
 	private func backupOperationCheckerFail() {
-		if numberOfManualChecks == 0 {
-			backupOperationCompleteChecker(withTime: 5)
+		if numberOfManualChecks <= 1 {
+			backupOperationCompleteChecker(withTime: 12)
 		} else {
 			hideLoadingView()
 			self.windowError(withTitle: "error".localized(), description: "error-stake-wizard-unknown".localized())
