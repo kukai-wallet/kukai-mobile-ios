@@ -305,7 +305,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 				self.actionButton.isHidden = false
 				
 			default:
-				self.windowError(withTitle: "error".localized(), description: "Unknown error")
+				let _ = ""
+				//self.windowError(withTitle: "error".localized(), description: "Unknown error")
 		}
 	}
 	
