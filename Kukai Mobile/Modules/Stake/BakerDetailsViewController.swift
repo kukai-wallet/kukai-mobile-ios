@@ -179,7 +179,8 @@ class BakerDetailsViewController: UIViewController, BottomSheetCustomFixedProtoc
 		}
 		
 		let isCurrent = DependencyManager.shared.balanceService.account.delegate?.address == baker.address
-		if DependencyManager.shared.balanceService.account.delegate?.address != nil {
+		let account = DependencyManager.shared.balanceService.account
+		if account.delegate?.address != nil && account.xtzStakedBalance > .zero() {
 			changeBakerWarningLabel.isHidden = isCurrent
 		} else {
 			changeBakerWarningLabel.isHidden = true
