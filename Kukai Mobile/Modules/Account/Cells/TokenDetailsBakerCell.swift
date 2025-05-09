@@ -85,10 +85,8 @@ class TokenDetailsBakerCell: UITableViewCell {
 			
 			freeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(data.freeSpace, decimalPlaces: 6, includeThousand: true, allowNegative: true, maximumFractionDigits: 0)
 			if data.freeSpace > 0 && data.enoughSpaceForBalance {
-				freeSpaceTitleLabel.textColor = .colorNamed("Txt10")
 				freeSpaceValueLabel.textColor = .colorNamed("Txt8")
 			} else {
-				freeSpaceTitleLabel.textColor = .colorNamed("TxtAlert4")
 				freeSpaceValueLabel.textColor = .colorNamed("TxtAlert4")
 			}
 		} else {
