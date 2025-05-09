@@ -99,7 +99,10 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					return false
 				}
 				
-				return baker.delegation.capacity > xtzAvailableBalance && baker.staking.capacity > xtzAvailableBalance && baker.status == TzKTBakerStatus.active
+				return baker.delegation.capacity > xtzAvailableBalance &&
+						baker.delegation.minBalance < xtzAvailableBalance &&
+						baker.staking.capacity > xtzAvailableBalance &&
+						baker.status == TzKTBakerStatus.active
 			}
 			
 			let sortedResults = filteredResults.sorted(by: { lhs, rhs in
