@@ -92,7 +92,7 @@ class StakeAmountViewController: UIViewController {
 			bakerStakingApyValueLabel.text = Decimal(baker.staking.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
 			bakerStakingFreeSpaceValueLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true)
 			
-			if baker.delegation.freeSpace < 0 {
+			if baker.staking.freeSpace < 0 {
 				bakerStakingFreeSpaceValueLabel.textColor = .colorNamed("TxtAlert4")
 			} else {
 				bakerStakingFreeSpaceValueLabel.textColor = .colorNamed("Txt8")
