@@ -3502,9 +3502,15 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z4-KG-wz5">
-                                <rect key="frame" x="32" y="98" width="311" height="151.5"/>
-                                <string key="text">Staking is when you lock all or a portion of a token in order to help protect the network from attacks. To incentivise users to do this, locked XTZ receives interest automatically from the network based on the amount locked. Rewards begin to pay out after the XTZ has been locked for X days. On the Tezos network XTZ takes ~4 days to unlock, and requires a small transaction fee to do so.</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1z4-KG-wz5">
+                                <rect key="frame" x="32" y="98" width="311" height="269"/>
+                                <mutableString key="text">Staking is when you lock a portion of your XTZ to secure the network. Your staked XTZ remains in your account but it is not available until you unstake it.
+
+The baker you selected participates in network security, and helps run the network by following the rules of the Tezos protocol to earn rewards.
+
+Because your staked XTZ is locked and at small risk of loss, the rewards are 3 times higher than delegation.
+
+To unstake you pay a very small transaction fee to submit the request, and it takes approximately 3 to 4 days for the amount to be unstaked.</mutableString>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3543,9 +3549,15 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zn-hL-6TN">
-                                <rect key="frame" x="32" y="98" width="311" height="185"/>
-                                <string key="text">Bakers are only allowed to accept delegations and staked XTZ from other users once they have locked their own XTZ. The amount of delegated/staked XTZ they can receive is based on how much they lock themselves. It is possible for bakers to become over-delegated or over-staked over time. If this happens users will receive less rewards than they expect. You should monitor your bakers status from time to time and make sure your baker has sufficient space for your funds</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2zn-hL-6TN">
+                                <rect key="frame" x="32" y="98" width="311" height="269"/>
+                                <string key="text">Bakers must first lock an amount of XTZ to help secure the network before they can accept any delegation or staking.
+
+A baker is limited in how many rewards they can earn based on how much of their own XTZ they lock.
+
+If they receive too much delegation or staking, then the users will earn fewer rewards than they would with a baker that is not over the limit known as “free space”.
+
+You should monitor your baker’s status from time to time and make sure your baker has sufficient space for your funds.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3585,14 +3597,20 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ck-5T-JFM">
-                                <rect key="frame" x="16" y="98" width="343" height="77"/>
-                                <string key="text">This is a critical aspect of the Tezos blockchain that bakers are required to do on behalf of their users. It is important for users to monitor their baker and ensure that they regularly vote</string>
+                                <rect key="frame" x="16" y="98" width="343" height="269"/>
+                                <string key="text">A very important feature of the Tezos network is that it can upgrade itself. This is done by community proposals which are voted on by the Bakers.
+
+This process is known as governance, and if not enough bakers cast votes then the upgrade is delayed.
+
+When users delegate to a baker they give that baker more voting power.
+
+Users should monitor their baker and ensure that they regularly vote.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vv4-bH-f8W">
-                                <rect key="frame" x="16" y="199" width="343" height="243.5"/>
+                                <rect key="frame" x="16" y="391" width="343" height="243.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Symbol Explanation" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iss-Xc-nhT">
                                         <rect key="frame" x="20" y="14" width="303" height="19.5"/>
@@ -3671,7 +3689,7 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                                             <constraint firstAttribute="width" constant="34" id="Rfb-4O-lLE"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Missed last 5 votes in a row" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="ksw-A4-zdQ">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Has missed the last 5 voting periods" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="ksw-A4-zdQ">
                                                         <rect key="frame" x="46" y="0.0" width="257" height="34"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt8"/>
@@ -3744,9 +3762,15 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZL-9Y-ZBi">
-                                <rect key="frame" x="32" y="122" width="311" height="101"/>
-                                <string key="text">Staking rewards are paid out automatically by the network and applied directly to your staked balance at the end of every block. This will automatically compound for you. Users must unstake a portion or all of their balance in order to use these funds</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OZL-9Y-ZBi">
+                                <rect key="frame" x="32" y="122" width="311" height="269"/>
+                                <mutableString key="text">Staking rewards are paid out automatically by the Tezos network and added directly to your staked balance. Staking rewards will not appear in your activity history.
+
+You do not need to wait for a manual payout from your baker, staking rewards appear immediately when your baker earns them.
+
+Because staking rewards are paid into your staked balance, they are auto-staked and start earning rewards without you needing to take any action.
+
+If you want to make your rewards available to spend, you need to unstake them first.</mutableString>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3787,9 +3811,15 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUa-nC-o7S">
-                                <rect key="frame" x="32" y="122" width="311" height="84"/>
-                                <string key="text">Staking comes with a slight risk. If a baker attempts to perform a bad action, that baker's staked funds will be slashed by a percentage. This also applies to users staked funds. Slashing events are incredibly rare</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PUa-nC-o7S">
+                                <rect key="frame" x="32" y="122" width="311" height="252.5"/>
+                                <string key="text">Staking comes with low risk of loss. 
+
+The baker you selected participates in network security by following the rules of the Tezos protocol to earn rewards.
+
+If your baker breaks the rules, they get penalized (known as slashing) and lose a portion of their own bond amount that they staked. If this happens, all users who staked with that baker also get penalized.
+
+Bakers earn rewards for following the rules. Slashing penalties are extremely rare because bakers have their own funds at risk.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3830,13 +3860,15 @@ The baker earns rewards from your delegation. Your baker will split the rewards 
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHd-UP-LgQ">
-                                <rect key="frame" x="32" y="122" width="311" height="168.5"/>
-                                <string key="text">The first time you delegate it takes roughly 3-4 days for it to take effect on the network. 
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHd-UP-LgQ">
+                                <rect key="frame" x="32" y="122" width="311" height="235.5"/>
+                                <string key="text">When you delegate to a baker it takes approximately 3 to 4 days for it to take effect on the network.
 
-Delegation rewards are then paid manually by bakers at the end of every blockchain cycle (currently roughly 1 day). 
+Your baker will then begin earning rewards from your delegation and will manually pay your share directly to your account. 
 
-Bakers will send XTZ directly to your wallet and it does not require unstaking to access. These funds will also auto compound for you</string>
+Most bakers pay at the end of every blockchain cycle (roughly 1 day).
+
+Your rewards will auto-delegate as soon as you receive them. There is no need to delegate them again.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -3877,9 +3909,11 @@ Bakers will send XTZ directly to your wallet and it does not require unstaking t
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="If5-84-lya">
-                                <rect key="frame" x="32" y="122" width="311" height="84"/>
-                                <string key="text">Delegating comes with no risks, all user funds remain in the users control and never leave the wallet. The network merely records what balance the user had at set points, and uses that to decide what rights bakers get</string>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="If5-84-lya">
+                                <rect key="frame" x="32" y="122" width="311" height="101"/>
+                                <string key="text">There is no risk to your funds when you delegate. Your XTZ remains in your account and available at all times.
+
+Your XTZ is not locked when you delegate and the baker is not able to access your funds.</string>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -4014,12 +4048,12 @@ Most bakers run social media accounts where they discuss upcoming proposals and 
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mmo-9u-2xO">
-                                <rect key="frame" x="32" y="98" width="311" height="384"/>
-                                <mutableString key="text">A Baker uses their computing resources to help run the Tezos network by providing security and stability.
+                                <rect key="frame" x="32" y="98" width="311" height="403.5"/>
+                                <mutableString key="text">Baking is the process of creating new blocks, filled with transactions, for the Tezos blockchain.
 
-Bakers must first lock an amount of XTZ on the network as a security bond.  Then they are allowed to propose and endorse blocks to earn rewards.
+A baker is a person or organisation that locks up an amount of XTZ as a security bond, and provides a computer to run the Tezos software to bake blocks.
 
-The rewards earned are based on the amount of XTZ the baker locked plus the amount of XTZ delegated and staked to them by users.
+Bakers earn rewards per block baked. The number of blocks they are allowed to produce is based on the amount of XTZ they lock up, plus the amount delegated and staked to them.
 
 Bakers split the rewards with users and pay out manually, keeping a % as their fee.
 
