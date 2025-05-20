@@ -207,10 +207,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Load
 		if forceRefresh {
-			brieflyHideCells(true)
+			//brieflyHideCells(true)
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
 			self.forceRefresh = false
-			brieflyHideCells(false)
+			//brieflyHideCells(false)
 			
 		} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
