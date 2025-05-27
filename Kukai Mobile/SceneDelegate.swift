@@ -20,7 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	//public var privacyProtectionWindowVisible = false
 	//private var privacyProtectionWindow: UIWindow = UIWindow()
 	
-	private var loginVc: UIViewController? = nil
+	private var loginVc: UINavigationController? = nil
 	
 	
 	func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
