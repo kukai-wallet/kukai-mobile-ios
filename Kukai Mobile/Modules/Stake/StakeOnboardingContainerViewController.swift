@@ -40,6 +40,8 @@ class StakeOnboardingContainerViewController: UIViewController {
 	private var pendingHandledByManualChecker = false
 	private var numberOfManualChecks = 0
 	
+	private let backButton = UIButton(type: .custom)
+	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		
@@ -56,6 +58,9 @@ class StakeOnboardingContainerViewController: UIViewController {
 		super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		actionButton.customButtonType = .primary
+		
+		self.navigationItem.setHidesBackButton(true, animated: false)
+		addBackButton()
 		
 		// If user only needs to stake we hide the first few screens and 2 steps
 		delegateAndStakeContainer.isHidden = isStakeOnly
@@ -122,14 +127,41 @@ class StakeOnboardingContainerViewController: UIViewController {
 	
 	override func viewDidDisappear(_ animated: Bool) {
 		super.viewDidDisappear(animated)
+		self.navigationItem.setHidesBackButton(false, animated: false)
 		
 		backupTimer?.invalidate()
 		backupTimer = nil
 	}
 	
+	func addBackButton() {
+		backButton.setImage(UIImage(named: "ChevronLeft"), for: .normal)
+		backButton.setTitle("  ", for: .normal)
+		backButton.addTarget(self, action: #selector(handleBackButtonTapped), for: .touchUpInside)
+		
+		self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: backButton)
+	}
+	
+	// Custom back button handler, so user doesn't have to back all the way out to re-read something
+	@objc func handleBackButtonTapped() {
+		guard let childNav = childNavigationController else {return}
+		
+		if childNav.viewControllers.count == 1 || (self.title == "Stake for Higher Rewards" && childNav.viewControllers.count > 2) {
+			self.navigationController?.popViewController(animated: true)
+		} else {
+			childNavigationController?.popViewController(animated: true)
+			updateProgressBarForCustomBack()
+		}
+	}
+	
 	func setProgressSegmentComplete(_ view: UIProgressView?) {
 		UIView.animate(withDuration: 0.7) {
 			view?.setProgress(1, animated: true)
+		}
+	}
+	
+	func setProgressSegmentIncomplete(_ view: UIProgressView?) {
+		UIView.animate(withDuration: 0.7) {
+			view?.setProgress(0, animated: true)
 		}
 	}
 	
@@ -286,6 +318,54 @@ class StakeOnboardingContainerViewController: UIViewController {
 				
 			default:
 				self.windowError(withTitle: "error".localized(), description: "Unknown error")
+		}
+	}
+	
+	private func updateProgressBarForCustomBack() {
+		// quick hacky way for now, should be cleaned up and made more generic/reusable later when we use this control more
+		
+		guard let childNav = childNavigationController, let currentChildVc = childNav.viewControllers.last else {
+			self.windowError(withTitle: "error".localized(), description: "Unknown error")
+			return
+		}
+		
+		currentChildViewController = currentChildVc
+		currentStep = currentChildVc.title ?? ""
+		let newStepNumber = (Int(String(currentStep.last ?? "2")) ?? 2) - 1
+		let newStep = "step\(newStepNumber)"
+		
+		switch newStep {
+			case "step0":
+				self.title = "Getting Started"
+				self.pageIndicator1.setPending()
+				
+			case "step1":
+				self.title = "Start by Delegating"
+				self.pageIndicator1.setInprogress(pageNumber: 1)
+				self.setProgressSegmentIncomplete(self.progressSegment1)
+				self.pageIndicator2.setPending()
+			
+			case "step3":
+				// only possible in stake-only flow
+				self.title = "Start Staking"
+				self.pageIndicator3.setPending()
+				
+			
+			case "step4":
+				self.title = "Stake for Higher Rewards"
+				
+				self.pageIndicator3.setInprogress(pageNumber: 3)
+				self.setProgressSegmentIncomplete(self.progressSegment3)
+				self.pageIndicator4.setPending()
+				
+				if isStakeOnly {
+					self.pageIndicator3.setInprogress(pageNumber: 1)
+					self.setProgressSegmentIncomplete(self.progressSegment3)
+					self.pageIndicator4.setPending()
+				}
+				
+			default:
+				let _ = ""
 		}
 	}
 	

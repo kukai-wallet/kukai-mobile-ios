@@ -223,7 +223,7 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 			let current = DependencyManager.shared.selectedWalletAddress ?? ""
 			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: current, comparedToGroups: [])
 		}
-		*/
+		 */
 	}
 	
 	override func authSuccessful() {

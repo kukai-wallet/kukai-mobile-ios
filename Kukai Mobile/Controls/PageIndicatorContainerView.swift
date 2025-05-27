@@ -95,6 +95,10 @@ public class PageIndicatorContainerView: UIView {
 		pageNumberLabel.alpha = 0
 		pageCompleteView.alpha = 0
 		checkImageView.alpha = 0
+		
+		UIView.animate(withDuration: 0.3, animations: { [weak self] in
+			self?.pagePendingView.transform = CGAffineTransform.identity
+		})
 	}
 	
 	/**

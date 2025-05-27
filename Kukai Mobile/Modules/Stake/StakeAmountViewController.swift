@@ -108,7 +108,7 @@ class StakeAmountViewController: UIViewController {
 		
 		
 		// Textfield
-		maxAmount = isStake ? (token.availableBalance - TokenAmount(fromNormalisedAmount: 1, decimalPlaces: token.decimalPlaces)) : token.stakedBalance
+		maxAmount = isStake ? (token.availableBalance - TokenAmount(fromNormalisedAmount: 0.1, decimalPlaces: token.decimalPlaces)) : token.stakedBalance
 		textfield.validatorTextFieldDelegate = self
 		textfield.validator = TokenAmountValidator(balanceLimit: maxAmount ?? .zero(), decimalPlaces: token.decimalPlaces)
 		textfield.addDoneToolbar()
