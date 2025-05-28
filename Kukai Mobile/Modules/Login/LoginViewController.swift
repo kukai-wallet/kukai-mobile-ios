@@ -64,7 +64,9 @@ class LoginViewController: UIViewController {
 		
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
-			self?.runAuthChecks()
+			if !StorageService.canSkipLogin() {
+				self?.runAuthChecks()
+			}
 		}.store(in: &bag)
     }
 	
