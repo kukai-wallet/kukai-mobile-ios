@@ -75,11 +75,15 @@ class ImportWalletViewController: UIViewController {
 		
 		self.scrollView.setupAutoScroll(focusView: extraWordTextField, parentView: self.view)
 		self.scrollView.autoScrollDelegate = self
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(screenshotTaken), name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		self.scrollView.stopAutoScroll()
+		
+		NotificationCenter.default.removeObserver(self, name: UIApplication.userDidTakeScreenshotNotification, object: nil)
 	}
 	
 	@IBAction func advancedButtonTapped(_ sender: Any) {
@@ -137,6 +141,7 @@ class ImportWalletViewController: UIViewController {
 	@IBAction func importTapped(_ sender: Any) {
 		textView.resignFirstResponder()
 		textView.text = textView.text.lowercased()
+		textView.text = hanleUxEdgeCases(input: textView.text ?? "")
 		
 		// Check if we can create a Mnemonic object
 		guard let mnemonic = try? Mnemonic(seedPhrase: textView.text) else {
@@ -230,13 +235,29 @@ class ImportWalletViewController: UIViewController {
 	private func doesTextViewPassValidation(fullstring: String? = nil) -> Bool {
 		var textViewText = fullstring ?? textView.text ?? ""
 		textViewText = textViewText.trimmingCharacters(in: .whitespacesAndNewlines)
+		textViewText = hanleUxEdgeCases(input: textViewText)
 		
+		// Check for valid words
 		let words = textViewText.components(separatedBy: " ")
 		if (words.count >= 12 && words.count <= 24), let _ = try? Mnemonic(seedPhrase: textViewText) {
 			return true
 		}
 		
 		return false
+	}
+	
+	private func hanleUxEdgeCases(input: String) -> String {
+		var inputCopy = input
+		
+		// Someone complained of a double space showing up and being unable to see the difference. Replace them so it doesn't cause issues
+		inputCopy = inputCopy.replacingOccurrences(of: "  ", with: " ")
+		
+		// User accidentally typed a space first and couldn't see the issue
+		if inputCopy.first == " " {
+			inputCopy = String(inputCopy.dropFirst())
+		}
+		
+		return inputCopy
 	}
 	
 	private func doesAdvancedOptionsPassValidtion() -> Bool {
@@ -290,6 +311,10 @@ class ImportWalletViewController: UIViewController {
 		} completion: { done in
 			vc.view.removeFromSuperview()
 		}
+	}
+	
+	@objc func screenshotTaken() {
+		self.performSegue(withIdentifier: "screenshotWarning", sender: nil)
 	}
 }
 

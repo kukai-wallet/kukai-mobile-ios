@@ -66,6 +66,12 @@ public class DiscoverService {
 	/// Fetch items, which automatically get primaryKey added. Map them into a dictionary based on UUID and store in `items`
 	public func fetchItems(completion: @escaping ((Result<Bool, KukaiError>) -> Void)) {
 		let currentNetworkType = DependencyManager.shared.currentNetworkType
+		
+		guard currentNetworkType == .mainnet || currentNetworkType == .ghostnet else {
+			completion(Result.success(true))
+			return
+		}
+		
 		let urlToUse = currentNetworkType == .mainnet ? discoverURL_mainnet : discoverURL_ghostnet
 		let cacheKeyToUse = currentNetworkType == .mainnet ? discoverCacheKey_mainnet : discoverCacheKey_ghostnet
 		

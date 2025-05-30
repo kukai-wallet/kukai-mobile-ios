@@ -42,7 +42,7 @@ extension UIViewController {
 		activityViewStatusLabel.font = UIFont.custom(ofType: .medium, andSize: 16)
 		activityViewStatusLabel.textColor = UIColor.white
 		activityViewStatusLabel.textAlignment = .center
-		activityViewStatusLabel.frame = CGRect(x: view.center.x, y: view.center.y, width: view.frame.width - 64, height: 50)
+		activityViewStatusLabel.frame = CGRect(x: view.center.x, y: view.center.y, width: view.frame.width - 64, height: 200)
 		
 		UIViewController.activityViewActivityIndicator.color = UIColor.white
 		
@@ -194,6 +194,10 @@ extension UIViewController {
 	
 	func hideAllSubviews() {
 		for v in view.subviews {
+			guard !(v is GradientView) else {
+				continue
+			}
+			
 			v.isHidden = true
 		}
 	}

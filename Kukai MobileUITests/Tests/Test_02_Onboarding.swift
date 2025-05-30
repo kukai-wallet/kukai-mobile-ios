@@ -150,7 +150,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 4)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		
@@ -325,7 +325,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 4)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		

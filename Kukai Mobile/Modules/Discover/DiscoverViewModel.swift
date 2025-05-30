@@ -49,6 +49,10 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	

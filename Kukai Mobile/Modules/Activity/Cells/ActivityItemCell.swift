@@ -136,7 +136,7 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, Activi
 			iconView.customCornerRadius = 20
 			
 			let token = data.primaryToken
-			let balanceDsiplay = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token?.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token?.decimalPlaces ?? 6)
+			let balanceDsiplay = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token?.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token?.decimalPlaces ?? 6, allowNegative: false)
 			
 			if data.subType == .stake {
 				titleLabel.text = "Stake: \(balanceDsiplay) XTZ"
@@ -261,10 +261,10 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, Activi
 				destinationIcon.image = UIImage(named: record.iconName)
 			}
 		} else {
-			let record = LookupService.shared.lookupFor(address: tx.sender.address)
+			let record = LookupService.shared.lookupFor(address: tx.sender?.address ?? "")
 			if record.type == .address {
 				destinationIconStackView.isHidden = true
-				destinationLabel.text = tx.sender.alias ?? record.displayText.truncateTezosAddress()
+				destinationLabel.text = tx.sender?.alias ?? record.displayText.truncateTezosAddress()
 				
 			} else {
 				destinationIconStackView.isHidden = false

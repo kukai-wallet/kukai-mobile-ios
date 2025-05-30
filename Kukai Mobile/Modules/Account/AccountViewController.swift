@@ -25,6 +25,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		viewModel.balancesMenuVC = menuVCForBalancesMore()
 		viewModel.estimatedTotalCellDelegate = self
 		viewModel.tableViewButtonDelegate = self
+		viewModel.popupDelegate = self
 		viewModel.makeDataSource(withTableView: tableView)
 		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
@@ -53,6 +54,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}.store(in: &bag)
 	}
 	
+	deinit {
+		bag.forEach({ $0.cancel() })
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
@@ -63,6 +69,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+		refreshControl.didMoveToSuperview()
 	}
 	
 	override func viewWillDisappear(_ animated: Bool) {
@@ -84,21 +91,46 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 			
 		} else if viewModel.isUpdateWarningCell(atIndexPath: indexPath) {
 			UIApplication.shared.open(AppUpdateService.appStoreURL)
+			
+		} else if let segue = viewModel.isSuggestedAction(atIndexPath: indexPath) {
+			
+			if let delegate = DependencyManager.shared.balanceService.account.delegate?.address {
+				self.showLoadingView()
+				
+				DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self] result in
+					self?.hideLoadingView()
+					
+					guard let res = try? result.get() else {
+						self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
+						return
+					}
+					
+					TransactionService.shared.resetAllState()
+					TransactionService.shared.stakeData.chosenBaker = res
+					self?.performSegue(withIdentifier: segue, sender: nil)
+				}
+			} else {
+				self.performSegue(withIdentifier: segue, sender: nil)
+			}
 		}
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let token = viewModel.token(atIndexPath: indexPath), let c = cell as? TokenBalanceCell else {
+		guard let token = viewModel.token(atIndexPath: indexPath) else {
 			return
 		}
 		
-		if token.isXTZ() {
-			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-		} else {
-			c.iconView.backgroundColor = .colorNamed("BG4")
-			MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
-				c.iconView.backgroundColor = .white
+		if let c = cell as? TokenBalanceCell {
+			if token.isXTZ() {
+				c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
+			} else {
+				c.iconView.backgroundColor = .colorNamed("BG4")
+				MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
+					c.iconView.backgroundColor = .white
+				}
 			}
+		} else if let c = cell as? TezAndStakeCell {
+			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 		}
 	}
 	
@@ -133,8 +165,8 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 	func tableViewCellButtonTapped(sender: UIButton) {
 		switch sender.accessibilityIdentifier {
 			case AccountViewModel.accessibilityIdentifiers.onramp:
-				if DependencyManager.shared.currentNetworkType == .ghostnet {
-					UIApplication.shared.open(DependencyManager.ghostnetFaucetLink)
+				if DependencyManager.shared.currentNetworkType != .mainnet, let url = DependencyManager.NetworkManagement.faucet() {
+					UIApplication.shared.open(url)
 					
 				} else {
 					self.performSegue(withIdentifier: "onramp", sender: nil)
@@ -155,5 +187,12 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 			default:
 				self.windowError(withTitle: "error".localized(), description: "error-unsupport-action".localized())
 		}
+	}
+}
+
+extension AccountViewController: AccountViewModelPopups {
+	
+	func unstakePreformed() {
+		self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
 	}
 }

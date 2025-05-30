@@ -62,6 +62,11 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
+	deinit {
+		cancellable = nil
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
@@ -197,19 +202,65 @@ class TokenDetailsViewController: UIViewController, UITableViewDelegate {
 
 extension TokenDetailsViewController: TokenDetailsViewModelDelegate {
 	
-	func setBakerTapped() {
-		self.performSegue(withIdentifier: "stake", sender: nil)
-	}
-	
 	func sendTapped() {
 		self.performSegue(withIdentifier: "send", sender: nil)
 	}
 	
-	func stakingRewardsInfoTapped() {
-		self.performSegue(withIdentifier: "stakingInfo", sender: nil)
-	}
-	
 	func launchExternalBrowser(withURL url: URL) {
 		UIApplication.shared.open(url)
+	}
+}
+
+extension TokenDetailsViewController: TokenDetailsBakerDelegate {
+	
+	func changeTapped() {
+		self.performSegue(withIdentifier: "choose-baker", sender: nil)
+	}
+	
+	func learnTapped() {
+		self.performSegue(withIdentifier: "learn-more", sender: nil)
+	}
+}
+
+extension TokenDetailsViewController: TokenDetailsStakePromoDelegate {
+	
+	func earnTapped() {
+		
+		if viewModel.stakePromoData.isStakeOnly {
+			TransactionService.shared.resetAllState()
+			TransactionService.shared.currentTransactionType = .stake
+			TransactionService.shared.stakeData.chosenBaker = viewModel.baker
+			TransactionService.shared.stakeData.chosenToken = viewModel.token
+		}
+		
+		self.performSegue(withIdentifier: "stake-onboarding", sender: nil)
+	}
+}
+
+extension TokenDetailsViewController: TokenDetailsStakeBalanceDelegate {
+	
+	func stakeTapped() {
+		TransactionService.shared.resetAllState()
+		TransactionService.shared.currentTransactionType = .stake
+		TransactionService.shared.stakeData.chosenBaker = viewModel.baker
+		TransactionService.shared.stakeData.chosenToken = viewModel.token
+		self.performSegue(withIdentifier: "stake-amount", sender: nil)
+	}
+	
+	func unstakeTapped() {
+		TransactionService.shared.resetAllState()
+		TransactionService.shared.currentTransactionType = .unstake
+		TransactionService.shared.unstakeData.chosenBaker = viewModel.baker
+		TransactionService.shared.unstakeData.chosenToken = viewModel.token
+		self.performSegue(withIdentifier: "stake-amount", sender: nil)
+	}
+	
+	func finalizeTapped() {
+		TransactionService.shared.resetAllState()
+		self.showLoadingView()
+		viewModel.createFinaliseOperations { [weak self] errorMessage in
+			self?.loadingViewHideActivityAndFade()
+			self?.performSegue(withIdentifier: "confirm-stake", sender: nil)
+		}
 	}
 }

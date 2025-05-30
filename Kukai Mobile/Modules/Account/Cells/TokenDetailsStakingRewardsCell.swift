@@ -11,12 +11,12 @@ import KukaiCoreSwift
 class TokenDetailsStakingRewardsCell: UITableViewCell {
 	
 	@IBOutlet weak var containerView: GradientView!
-	@IBOutlet weak var infoButton: CustomisableButton!
 	
 	@IBOutlet weak var lastBakerIcon: UIImageView!
 	@IBOutlet weak var lastBaker: UILabel!
-	@IBOutlet weak var lastAmountTitle: UILabel!
-	@IBOutlet weak var lastAmount: UILabel!
+	@IBOutlet weak var lastDelegationAmountTitle: UILabel!
+	@IBOutlet weak var lastDelegationAmount: UILabel!
+	@IBOutlet weak var lastStakeAmount: UILabel!
 	@IBOutlet weak var lastTimeTitle: UILabel!
 	@IBOutlet weak var lastTime: UILabel!
 	@IBOutlet weak var lastCycleTitle: UILabel!
@@ -24,7 +24,8 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 	
 	@IBOutlet weak var nextBakerIcon: UIImageView!
 	@IBOutlet weak var nextBaker: UILabel!
-	@IBOutlet weak var nextAmount: UILabel!
+	@IBOutlet weak var nextDelegationAmount: UILabel!
+	@IBOutlet weak var nextStakeAmount: UILabel!
 	@IBOutlet weak var nextTime: UILabel!
 	@IBOutlet weak var nextCycle: UILabel!
 	
@@ -35,17 +36,19 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 	
 	func setup(data: AggregateRewardInformation) {
 		
-		lastBaker.accessibilityIdentifier = "token-detials-staking=rewards-last-baker"
-		nextBaker.accessibilityIdentifier = "token-detials-staking=rewards-next-baker"
+		lastBaker.accessibilityIdentifier = "token-detials-staking-rewards-last-baker"
+		nextBaker.accessibilityIdentifier = "token-detials-staking-rewards-next-baker"
 		
 		if let previousReward = data.previousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
-			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let delegationPercentage = Decimal(previousReward.delegateFee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let stakingPercentage = Decimal(previousReward.stakeFee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
 			lastBaker.text = previousReward.bakerAlias
-			lastAmountTitle.text = "Amount (fee)"
-			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(percentage)%)"
+			lastDelegationAmountTitle.text = "Delegation Reward (fee)"
+			lastDelegationAmount.text = previousReward.delegateAmount.normalisedRepresentation + " (\(delegationPercentage)%)"
+			lastStakeAmount.text = previousReward.stakeAmount.normalisedRepresentation + " (\(stakingPercentage)%)"
 			lastTimeTitle.text = "Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Cycle"
@@ -54,11 +57,13 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 		} else if let previousReward = data.estimatedPreviousReward {
 			MediaProxyService.load(url: previousReward.bakerLogo, to: lastBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
-			let percentage = Decimal(previousReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let delegationPercentage = Decimal(previousReward.delegateFee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let stakingPercentage = Decimal(previousReward.stakeFee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
 			lastBaker.text = previousReward.bakerAlias
-			lastAmountTitle.text = "Est Amount (fee)"
-			lastAmount.text = previousReward.amount.normalisedRepresentation + " (\(percentage)%)"
+			lastDelegationAmountTitle.text = "Delegation Est Reward (fee)"
+			lastDelegationAmount.text = previousReward.delegateAmount.normalisedRepresentation + " (\(delegationPercentage)%)"
+			lastStakeAmount.text = previousReward.stakeAmount.normalisedRepresentation + " (\(stakingPercentage)%)"
 			lastTimeTitle.text = "Est Time"
 			lastTime.text = previousReward.dateOfPayment.timeAgoDisplay()
 			lastCycleTitle.text = "Est Cycle"
@@ -68,7 +73,8 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			lastBakerIcon.image = UIImage.unknownToken()
 			
 			lastBaker.text = "N/A"
-			lastAmount.text = "N/A"
+			lastDelegationAmount.text = "N/A"
+			lastStakeAmount.text = "N/A"
 			lastTime.text = "N/A"
 			lastCycle.text = "N/A"
 		}
@@ -76,10 +82,12 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 		if let nextReward = data.estimatedNextReward {
 			MediaProxyService.load(url: nextReward.bakerLogo, to: nextBakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
-			let percentage = Decimal(nextReward.fee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let delegationPercentage = Decimal(nextReward.delegateFee * 100).rounded(scale: 2, roundingMode: .bankers)
+			let stakingPercentage = Decimal(nextReward.stakeFee * 100).rounded(scale: 2, roundingMode: .bankers)
 			
 			nextBaker.text = nextReward.bakerAlias
-			nextAmount.text = nextReward.amount.normalisedRepresentation + " (\(percentage)%)"
+			nextDelegationAmount.text = nextReward.delegateAmount.normalisedRepresentation + " (\(delegationPercentage)%)"
+			nextStakeAmount.text = nextReward.stakeAmount.normalisedRepresentation + " (\(stakingPercentage)%)"
 			nextTime.text = nextReward.dateOfPayment.timeAgoDisplay()
 			nextCycle.text = nextReward.cycle == 0 ? "N/A" : nextReward.cycle.description
 			
@@ -87,7 +95,8 @@ class TokenDetailsStakingRewardsCell: UITableViewCell {
 			nextBakerIcon.image = UIImage.unknownToken()
 			
 			nextBaker.text = "N/A"
-			nextAmount.text = "N/A"
+			nextDelegationAmount.text = "N/A"
+			nextStakeAmount.text = "N/A"
 			nextTime.text = "N/A"
 			nextCycle.text = "N/A"
 		}

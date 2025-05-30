@@ -102,6 +102,11 @@ class AccountsViewController: UIViewController, BottomSheetContainerDelegate {
 		}
 	}
 	
+	deinit {
+		cancellable = nil
+		viewModel.cleanup()
+	}
+	
 	func bottomSheetDataChanged() {
 		viewModel.isPresentingForConnectedApps = (bottomSheetContainer != nil)
 		viewModel.addressToMarkAsSelected = addressToMarkAsSelected

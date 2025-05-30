@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="dark"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Figtree-Bold.ttf">
+            <string>Figtree-Bold</string>
+        </array>
+        <array key="Figtree-SemiBold.ttf">
+            <string>Figtree-SemiBold</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TokenDetailsBalanceCell" rowHeight="84" id="5Ii-zA-fOG" customClass="TokenDetailsBalanceCell" customModule="Kukai_Mobile" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="481" height="87"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5Ii-zA-fOG" id="6Vq-rB-jAg">
+                <rect key="frame" x="0.0" y="0.0" width="481" height="87"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="neM-ZH-e1b">
+                        <rect key="frame" x="16.000000000000004" y="24" width="43.333333333333343" height="14"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LDC-rF-j9E">
+                        <rect key="frame" x="16" y="44" width="222.66666666666666" height="39"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="&lt;balance&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mYK-bA-h7Q">
+                                <rect key="frame" x="32" y="0.0" width="190.66666666666666" height="21"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="&lt;value&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M0S-MN-rKw">
+                                <rect key="frame" x="32" y="21" width="190.66666666666666" height="18"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="BWT-yR-fDJ">
+                                <rect key="frame" x="0.0" y="0.0" width="26" height="26"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="26" id="bJ2-Bv-JOh"/>
+                                    <constraint firstAttribute="height" constant="26" id="tcA-5x-neI"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                        <real key="value" value="13"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="mYK-bA-h7Q" firstAttribute="leading" secondItem="BWT-yR-fDJ" secondAttribute="trailing" constant="6" id="4Hf-hR-q9J"/>
+                            <constraint firstItem="mYK-bA-h7Q" firstAttribute="top" secondItem="BWT-yR-fDJ" secondAttribute="top" id="PPb-a0-0Vw"/>
+                            <constraint firstItem="M0S-MN-rKw" firstAttribute="top" secondItem="mYK-bA-h7Q" secondAttribute="bottom" id="Qop-Aq-lgf"/>
+                            <constraint firstAttribute="trailing" secondItem="mYK-bA-h7Q" secondAttribute="trailing" id="SAp-W1-mOy"/>
+                            <constraint firstItem="M0S-MN-rKw" firstAttribute="leading" secondItem="mYK-bA-h7Q" secondAttribute="leading" id="T3H-9t-F5Y"/>
+                            <constraint firstItem="BWT-yR-fDJ" firstAttribute="top" secondItem="LDC-rF-j9E" secondAttribute="top" id="a1Q-9a-f90"/>
+                            <constraint firstItem="BWT-yR-fDJ" firstAttribute="leading" secondItem="LDC-rF-j9E" secondAttribute="leading" id="asF-l0-SfT"/>
+                            <constraint firstItem="M0S-MN-rKw" firstAttribute="trailing" secondItem="mYK-bA-h7Q" secondAttribute="trailing" id="ldH-s7-dWF"/>
+                            <constraint firstAttribute="bottom" secondItem="M0S-MN-rKw" secondAttribute="bottom" id="z2t-uF-aBf"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Available Balance" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d38-zc-ckm">
+                        <rect key="frame" x="368.66666666666669" y="24" width="96.333333333333314" height="14"/>
+                        <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
+                        <color key="textColor" name="Txt10"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZc-F3-pHo">
+                        <rect key="frame" x="242.66666666666663" y="44" width="222.33333333333337" height="39"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="752" text="&lt;availableBalance&gt;" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bta-FO-wqQ">
+                                <rect key="frame" x="62.333333333333343" y="0.0" width="160" height="21"/>
+                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
+                                <color key="textColor" name="Txt2"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="&lt;availableValue&gt;" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cOj-k4-Hji">
+                                <rect key="frame" x="62.333333333333343" y="21" width="160" height="18"/>
+                                <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="12"/>
+                                <color key="textColor" name="Txt10"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="cOj-k4-Hji" firstAttribute="leading" secondItem="Bta-FO-wqQ" secondAttribute="leading" id="TdI-MK-t6a"/>
+                            <constraint firstAttribute="bottom" secondItem="cOj-k4-Hji" secondAttribute="bottom" id="fbm-b7-ngP"/>
+                            <constraint firstItem="Bta-FO-wqQ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="aZc-F3-pHo" secondAttribute="leading" id="gz5-6d-8Vt"/>
+                            <constraint firstItem="cOj-k4-Hji" firstAttribute="top" secondItem="Bta-FO-wqQ" secondAttribute="bottom" id="jUg-SL-R7j"/>
+                            <constraint firstItem="cOj-k4-Hji" firstAttribute="trailing" secondItem="Bta-FO-wqQ" secondAttribute="trailing" id="m7O-Zq-HcR"/>
+                            <constraint firstAttribute="trailing" secondItem="Bta-FO-wqQ" secondAttribute="trailing" id="u5N-Sr-t3S"/>
+                            <constraint firstItem="Bta-FO-wqQ" firstAttribute="top" secondItem="aZc-F3-pHo" secondAttribute="top" id="z7B-hj-HVa"/>
+                        </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="boolean" keyPath="maskToBounds" value="YES"/>
+                            <userDefinedRuntimeAttribute type="number" keyPath="customCornerRadius">
+                                <real key="value" value="8"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <constraints>
+                    <constraint firstItem="LDC-rF-j9E" firstAttribute="width" secondItem="aZc-F3-pHo" secondAttribute="width" id="7VR-Ke-x3H"/>
+                    <constraint firstAttribute="bottom" secondItem="LDC-rF-j9E" secondAttribute="bottom" constant="4" id="86a-bD-ixe"/>
+                    <constraint firstItem="aZc-F3-pHo" firstAttribute="leading" secondItem="LDC-rF-j9E" secondAttribute="trailing" constant="4" id="8nr-ts-ajv"/>
+                    <constraint firstItem="d38-zc-ckm" firstAttribute="trailing" secondItem="aZc-F3-pHo" secondAttribute="trailing" id="Gkh-PS-8QU"/>
+                    <constraint firstItem="d38-zc-ckm" firstAttribute="top" secondItem="6Vq-rB-jAg" secondAttribute="top" constant="24" id="I9J-Oa-CnN"/>
+                    <constraint firstItem="neM-ZH-e1b" firstAttribute="top" secondItem="6Vq-rB-jAg" secondAttribute="top" constant="24" id="M3N-Vh-9CY"/>
+                    <constraint firstItem="LDC-rF-j9E" firstAttribute="top" secondItem="neM-ZH-e1b" secondAttribute="bottom" constant="6" id="MhY-qC-pwK"/>
+                    <constraint firstItem="aZc-F3-pHo" firstAttribute="height" secondItem="LDC-rF-j9E" secondAttribute="height" id="PHI-wD-8hV"/>
+                    <constraint firstItem="LDC-rF-j9E" firstAttribute="leading" secondItem="6Vq-rB-jAg" secondAttribute="leading" constant="16" id="USF-d4-Wse"/>
+                    <constraint firstItem="LDC-rF-j9E" firstAttribute="leading" secondItem="neM-ZH-e1b" secondAttribute="leading" id="eIi-Ox-WnH"/>
+                    <constraint firstAttribute="trailing" secondItem="aZc-F3-pHo" secondAttribute="trailing" constant="16" id="iAf-SO-dGZ"/>
+                    <constraint firstItem="aZc-F3-pHo" firstAttribute="top" secondItem="d38-zc-ckm" secondAttribute="bottom" constant="6" id="sTx-kn-sHd"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <connections>
+                <outlet property="availableBalance" destination="Bta-FO-wqQ" id="rK6-14-RfI"/>
+                <outlet property="availableValue" destination="cOj-k4-Hji" id="Xkb-mG-bOk"/>
+                <outlet property="balance" destination="mYK-bA-h7Q" id="ty5-ro-WSY"/>
+                <outlet property="tokenIcon" destination="BWT-yR-fDJ" id="pOe-g4-Bfh"/>
+                <outlet property="value" destination="M0S-MN-rKw" id="nRR-sz-h5H"/>
+            </connections>
+            <point key="canvasLocation" x="200.76335877862596" y="53.87323943661972"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <namedColor name="Txt10">
+            <color red="0.52499997615814209" green="0.53299999237060547" blue="0.61599999666213989" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Txt2">
+            <color red="0.10999999940395355" green="0.10999999940395355" blue="0.15299999713897705" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

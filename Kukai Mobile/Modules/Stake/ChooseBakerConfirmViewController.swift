@@ -1,5 +1,5 @@
 //
-//  ConfirmStakeViewController.swift
+//  ChooseBakerConfirmViewController.swift
 //  Kukai Mobile
 //
 //  Created by Simon Mcloughlin on 21/07/2023.
@@ -10,8 +10,9 @@ import KukaiCoreSwift
 import ReownWalletKit
 import os.log
 
-class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
+class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, SlideButtonDelegate, EditFeesViewControllerDelegate {
 	
+	@IBOutlet var scrollView: UIScrollView!
 	@IBOutlet weak var closeButton: CustomisableButton!
 	
 	// Connected app
@@ -20,13 +21,22 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var connectedAppNameLabel: UILabel!
 	@IBOutlet weak var connectedAppMetadataStackView: UIStackView!
 	
-	@IBOutlet weak var containerView: GradientView!
+	// From
+	@IBOutlet weak var fromContainer: UIView!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
+	
+	// Baker
 	@IBOutlet weak var confirmBakerAddView: UIView!
 	@IBOutlet weak var bakerAddIcon: UIImageView!
 	@IBOutlet weak var bakerAddNameLabel: UILabel!
-	@IBOutlet weak var bakerAddSplitLabel: UILabel!
-	@IBOutlet weak var bakerAddSpaceLabel: UILabel!
-	@IBOutlet weak var bakerAddEstimatedRewardLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationSplitLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationApyLabel: UILabel!
+	@IBOutlet weak var bakerAddDelegationFreeSpaceLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingSplitLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingApyLabel: UILabel!
+	@IBOutlet weak var bakerAddStakingFreeSpaceLabel: UILabel!
 	
 	@IBOutlet weak var confirmBakerRemoveView: UIView!
 	@IBOutlet weak var bakerRemoveIcon: UIImageView!
@@ -39,6 +49,7 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
+	@IBOutlet weak var testnetWarningNetworkLabel: UILabel!
 	
 	private var currentDelegateData: TransactionService.DelegateData = TransactionService.DelegateData()
 	
@@ -48,8 +59,10 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
+		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
+		} else {
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
 		}
 		
 		self.currentDelegateData = TransactionService.shared.delegateData
@@ -86,20 +99,58 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 		}
 		
 		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
+		}
+		
+		
 		// Baker info config
 		if self.currentDelegateData.isAdd == true {
 			confirmBakerRemoveView.isHidden = true
 			
 			bakerAddNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 			if baker.name == nil && baker.delegation.fee == 0 && baker.delegation.capacity == 0 && baker.delegation.estimatedApy == 0 {
-				bakerAddSplitLabel.text = "N/A"
-				bakerAddSpaceLabel.text = "N/A"
-				bakerAddEstimatedRewardLabel.text = "N/A"
+				bakerAddDelegationSplitLabel.text = "N/A"
+				bakerAddDelegationApyLabel.text = "N/A"
+				bakerAddDelegationFreeSpaceLabel.text = "N/A"
+				bakerAddStakingSplitLabel.text = "N/A"
+				bakerAddStakingApyLabel.text = "N/A"
+				bakerAddStakingFreeSpaceLabel.text = "N/A"
 				
 			} else {
-				bakerAddSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
-				bakerAddSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0) + " XTZ"
-				bakerAddEstimatedRewardLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationSplitLabel.text = (Decimal(baker.delegation.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationApyLabel.text = Decimal(baker.delegation.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddDelegationFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.delegation.freeSpace, decimalPlaces: 0, allowNegative: true)
+				
+				if baker.delegation.freeSpace < 0 {
+					bakerAddDelegationFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
+				} else {
+					bakerAddDelegationFreeSpaceLabel.textColor = .colorNamed("Txt8")
+				}
+				
+				bakerAddStakingSplitLabel.text = (Decimal(baker.staking.fee) * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddStakingApyLabel.text = Decimal(baker.staking.estimatedApy * 100).rounded(scale: 2, roundingMode: .bankers).description + "%"
+				bakerAddStakingFreeSpaceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(baker.staking.freeSpace, decimalPlaces: 0, allowNegative: true)
+				
+				if baker.staking.freeSpace < 0 {
+					bakerAddStakingFreeSpaceLabel.textColor = .colorNamed("TxtAlert4")
+				} else {
+					bakerAddStakingFreeSpaceLabel.textColor = .colorNamed("Txt8")
+				}
 			}
 			
 		} else {
@@ -118,8 +169,6 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		containerView.gradientType = .tableViewCell
-		
 		updateFees(isFirstCall: true)
 	}
 	
@@ -158,6 +207,23 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	func didCompleteSlide() {
 		self.blockInteraction(exceptFor: [closeButton])
 		self.performAuth()
+		
+		// Leaving here for now, allows to mock the the send/update flow for testing UI only
+		/*
+		self.didSend = true
+		self.addPendingTransaction(opHash: "test")
+		
+		let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
+		
+		self.handleApproval(opHash: "test", slideButton: self.slideButton)
+		
+		TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
+		
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+			let current = DependencyManager.shared.selectedWalletAddress ?? ""
+			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: current, comparedToGroups: [])
+		}
+		 */
 	}
 	
 	override func authSuccessful() {
@@ -172,9 +238,14 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 			switch sendResult {
 				case .success(let opHash):
 					Logger.app.info("Sent: \(opHash)")
+					
+					let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
+					
 					self?.didSend = true
 					self?.addPendingTransaction(opHash: opHash)
 					self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
+					
+					TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
 					
 				case .failure(let sendError):
 					self?.unblockInteraction()
@@ -217,14 +288,19 @@ class ConfirmStakeViewController: SendAbstractConfirmViewController, SlideButton
 	}
 }
 
-extension ConfirmStakeViewController: BottomSheetCustomCalculateProtocol {
+extension ChooseBakerConfirmViewController: BottomSheetCustomCalculateProtocol {
 	
 	func bottomSheetHeight() -> CGFloat {
 		viewDidLoad()
 		
+		scrollView.setNeedsLayout()
 		view.setNeedsLayout()
+		scrollView.layoutIfNeeded()
 		view.layoutIfNeeded()
 		
-		return view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		var height = view.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+		height += scrollView.contentSize.height
+		
+		return height
 	}
 }

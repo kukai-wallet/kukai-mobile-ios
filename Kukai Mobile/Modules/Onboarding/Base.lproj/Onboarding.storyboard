@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -132,7 +132,7 @@ for your Digital Assets</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9hi-ft-eP7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11519" y="617"/>
+            <point key="canvasLocation" x="-11063" y="617"/>
         </scene>
         <!--Create Wallet-->
         <scene sceneID="0Al-36-3YA">
@@ -1479,6 +1479,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <outlet property="walletAddressTextField" destination="zN1-he-MJi" id="9KH-4y-avt"/>
                         <outlet property="warningView" destination="5d7-tx-uDZ" id="VPm-kl-0qd"/>
                         <segue destination="RNR-mr-nd3" kind="show" identifier="done" id="nii-SC-NQy"/>
+                        <segue destination="A0n-oG-wCz" kind="presentation" identifier="screenshotWarning" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="P3X-me-cU0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="T8J-us-3ph" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1688,6 +1689,14 @@ You will not be able to transact in this wallet.</string>
             </objects>
             <point key="canvasLocation" x="-9532" y="2304"/>
         </scene>
+        <!--screenshot-warning-->
+        <scene sceneID="9dV-2s-Nkn">
+            <objects>
+                <viewControllerPlaceholder storyboardName="RecoveryPhrase" referencedIdentifier="screenshot-warning" id="A0n-oG-wCz" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NEl-AM-muA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-10280" y="2853"/>
+        </scene>
         <!--Account Scanning View Controller-->
         <scene sceneID="qbm-47-wc0">
             <objects>
@@ -1764,7 +1773,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2zy-z4-nIW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-10551" y="3112"/>
+            <point key="canvasLocation" x="-10921" y="3141"/>
         </scene>
         <!--Looking for Devices-->
         <scene sceneID="ZYF-AR-5og">
@@ -2661,7 +2670,7 @@ You will not be able to transact in this wallet.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r6e-JS-TtU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-11519" y="1411"/>
+            <point key="canvasLocation" x="-11063" y="1411"/>
         </scene>
         <!--Onboarding Page View Controller-->
         <scene sceneID="PjW-is-Yde">
@@ -2913,7 +2922,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="l1U-wH-5Pn"/>
+        <segue reference="nii-SC-NQy"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>

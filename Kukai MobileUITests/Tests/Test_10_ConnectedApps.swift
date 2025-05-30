@@ -545,4 +545,15 @@ final class Test_10_ConnectedApps: XCTestCase {
 		}
 		sleep(2)
 	}
+	
+	public static func handlePermissionsIfNecessary(app: XCUIApplication) {
+		let springboard = XCUIApplication(bundleIdentifier: "com.apple.springboard")
+		let alert = springboard.alerts.firstMatch
+		
+		let allowButton = alert.scrollViews.buttons["Allow"]
+		if alert.exists && allowButton.exists {
+			allowButton.tap()
+		}
+		sleep(2)
+	}
 }

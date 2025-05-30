@@ -84,8 +84,7 @@ public class BalanceService {
 	// MARK: - Init
 	
 	init() {
-		lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
-		tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+		
 	}
 	
 	
@@ -156,8 +155,9 @@ public class BalanceService {
 	// MARK: - Cache
 	
 	public static func addressCacheKey(forAddress address: String) -> String {
-		if DependencyManager.shared.currentNetworkType == .ghostnet {
-			return address + "-ghostnet"
+		let current = DependencyManager.shared.currentNetworkType
+		if current != .mainnet {
+			return address + "-\(current.rawValue)"
 		}
 		
 		return address
@@ -176,29 +176,39 @@ public class BalanceService {
 		return cacheLoadingInProgress
 	}
 	
-	public func loadCache(address: String?) {
-		cacheLoadingInProgress = true
-		loadCachedExchangeDataIfNotLoaded()
-		loadEstimatedTotalsIfNotLoaded()
-		
-		if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)) {
+	public func loadCache(address: String?, completion: (() -> Void)?) {
+		DispatchQueue.global(qos: .background).async { [weak self] in
 			
-			DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
-			DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
-			DependencyManager.shared.activityService.loadCache(address: address)
+			if self?.lastFullRefreshDates.values.count == 0 {
+				self?.lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
+				self?.tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+			}
 			
-			// Had to be moved to here as if its called during transaction fetching, it can result in the pending being removed long before the refresh comes in to say groups were updated
-			// But the removal of pending is also what triggers the removal of the activity tab spinner, so it needs to be performed along side balance refreshing being finished
-			DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
+			self?.cacheLoadingInProgress = true
+			self?.loadCachedExchangeDataIfNotLoaded()
+			self?.loadEstimatedTotalsIfNotLoaded()
 			
-			self.account = account
+			if let account = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address)) {
+				
+				DependencyManager.shared.coinGeckoService.loadLastTezosPrice()
+				DependencyManager.shared.coinGeckoService.loadLastExchangeRates()
+				DependencyManager.shared.activityService.loadCache(address: address)
+				
+				// Had to be moved to here as if its called during transaction fetching, it can result in the pending being removed long before the refresh comes in to say groups were updated
+				// But the removal of pending is also what triggers the removal of the activity tab spinner, so it needs to be performed along side balance refreshing being finished
+				DependencyManager.shared.activityService.checkAndUpdatePendingTransactions(forAddress: address ?? "", comparedToGroups: DependencyManager.shared.activityService.transactionGroups)
+				
+				self?.account = account
+				
+			} else if let add = address {
+				// If local cache fails to parse, models must have change. Delete everything, will trigger a network refresh
+				self?.deleteAccountCachcedData(forAddress: add)
+			}
 			
-		} else if let add = address {
-			// If local cache fails to parse, models must have change. Delete everything, will trigger a network refresh
-			deleteAccountCachcedData(forAddress: add)
+			self?.cacheLoadingInProgress = false
+			
+			DispatchQueue.main.async { completion?() }
 		}
-		
-		cacheLoadingInProgress = false
 	}
 	
 	public func estimatedTotalXtz(forAddress: String) -> XTZAmount {
@@ -277,7 +287,7 @@ public class BalanceService {
 	// MARK: - Refresh
 	
 	private func fetchAllBalancesTokensAndPrices(forAddress address: String, refreshType: BalanceService.RefreshType, completion: @escaping ((KukaiError?) -> Void)) {
-		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
+		self.currentlyRefreshingAccount = Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), xtzFinalisedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 		
 		var error: KukaiError? = nil
 		balanceRequestDispathGroup.enter()
@@ -291,7 +301,7 @@ public class BalanceService {
 		if refreshType == .useCache || (refreshType == .useCacheIfNotStale && !isCacheStale(forAddress: address)) {
 			let cachedAccount = DiskService.read(type: Account.self, fromFileName: BalanceService.accountCacheFilename(withAddress: address))
 			
-			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
+			self.currentlyRefreshingAccount = cachedAccount ?? Account(walletAddress: address, xtzBalance: .zero(), xtzStakedBalance: .zero(), xtzUnstakedBalance: .zero(), xtzFinalisedBalance: .zero(), tokens: [], nfts: [], recentNFTs: [], liquidityTokens: [], delegate: nil, delegationLevel: nil)
 			self.balanceRequestDispathGroup.leave()
 			
 			loadCachedExchangeDataIfNotLoaded()
@@ -301,14 +311,11 @@ public class BalanceService {
 			
 		} else if refreshType == .refreshAccountOnly {
 			
-			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get() else {
-					error = result.getFailure()
-					self?.balanceRequestDispathGroup.leave()
-					return
+			// If experiemental network without tzkt, query some basic stuff from RPC directly, otherwise use tzkt
+			fetchTokenBalances(address: address) { [weak self] err in
+				if let e = err {
+					error = e
 				}
-				
-				self?.currentlyRefreshingAccount = res
 				self?.balanceRequestDispathGroup.leave()
 			}
 			
@@ -335,18 +342,14 @@ public class BalanceService {
 			self.balanceRequestDispathGroup.leave()
 			
 		} else {
-			// Get all balance data from TzKT
-			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
-				guard let res = try? result.get() else {
-					error = result.getFailure()
-					self?.balanceRequestDispathGroup.leave()
-					return
+			
+			// If experiemental network without tzkt, query some basic stuff from RPC directly, otherwise use tzkt
+			fetchTokenBalances(address: address) { [weak self] err in
+				if let e = err {
+					error = e
 				}
-				
-				self?.currentlyRefreshingAccount = res
 				self?.balanceRequestDispathGroup.leave()
 			}
-			
 			
 			// Get all exchange rate data from DipDup
 			fetchExchangeDataIfStale()
@@ -427,7 +430,9 @@ public class BalanceService {
 		
 		// When everything fetched, process data
 		balanceRequestDispathGroup.notify(queue: .global(qos: .background)) { [weak self] in
-			if let err = error {
+			
+			// ignore missing base URL errors, as this only happens on testnet setups where some of the tooling doesn't exist
+			if let err = error, !err.isMissingBaseURLError() {
 				self?.updateCacheDate(forAddress: address)
 				DispatchQueue.main.async { completion(err) }
 				
@@ -467,8 +472,87 @@ public class BalanceService {
 		}
 	}
 	
+	private func fetchTokenBalances(address: String, completion: @escaping ((KukaiError?) -> Void)) {
+		if DependencyManager.shared.currentNetworkType == .experimental && DependencyManager.shared.experimentalTzktUrl == nil {
+			let nodeClient = DependencyManager.shared.tezosNodeClient
+			var error: KukaiError? = nil
+			var balanceTuple = (balance: XTZAmount.zero(), staked: XTZAmount.zero(), unstaked: XTZAmount.zero(), finalisable: XTZAmount.zero())
+			var delegate: TzKTAccountDelegate? = nil
+			
+			let innerDispatch = DispatchGroup()
+			innerDispatch.enter()
+			innerDispatch.enter()
+			
+			nodeClient.getAllBalances(forAddress: address) { result in
+				guard let res = try? result.get() else {
+					error = result.getFailure()
+					innerDispatch.leave()
+					return
+				}
+				
+				balanceTuple = res
+				innerDispatch.leave()
+			}
+			
+			nodeClient.getDelegate(forAddress: address) { result in
+				guard let res = try? result.get() else {
+					
+					let err = result.getFailure()
+					if err.httpStatusCode != 404 {
+						error = err
+					}
+					
+					innerDispatch.leave()
+					return
+				}
+				
+				delegate = TzKTAccountDelegate(alias: nil, address: res, active: true)
+				innerDispatch.leave()
+			}
+			
+			/*
+			// Get liquidity baking contract
+			// Get tzBTC and SIRs address from storage
+			// Get balance of both
+			nodeClient.getLiquidityBakingAddresses { result in
+				
+			}
+			*/
+			
+			innerDispatch.notify(queue: DispatchQueue.global(qos: .background)) { [weak self] in
+				if let err = error {
+					completion(err)
+				} else {
+					self?.currentlyRefreshingAccount = Account(walletAddress: address,
+															   xtzBalance: balanceTuple.balance,
+															   xtzStakedBalance: balanceTuple.staked,
+															   xtzUnstakedBalance: balanceTuple.unstaked,
+															   xtzFinalisedBalance: balanceTuple.finalisable,
+															   tokens: [],
+															   nfts: [],
+															   recentNFTs: [],
+															   liquidityTokens: [],
+															   delegate: delegate,
+															   delegationLevel: delegate == nil ? nil : 1)
+					completion(nil)
+				}
+			}
+			
+		} else {
+			DependencyManager.shared.tzktClient.getAllBalances(forAddress: address) { [weak self] result in
+				guard let res = try? result.get() else {
+					completion(result.getFailure())
+					return
+				}
+				
+				self?.currentlyRefreshingAccount = res
+				completion(nil)
+			}
+		}
+	}
+	
 	private func fetchExchangeDataIfStale() {
-		// If we've checked for excahnge data less than 10 minutes ago, ignore
+		// If we've checked for exchange data less than 10 minutes ago, ignore
 		if (lastExchangeDataRefreshDate != nil && (lastExchangeDataRefreshDate ?? Date()).timeIntervalSince(Date()) < 60*10) {
 			loadCachedExchangeDataIfNotLoaded()
 			self.balanceRequestDispathGroup.leave()
@@ -551,6 +635,7 @@ public class BalanceService {
 									 xtzBalance: self?.currentlyRefreshingAccount.xtzBalance ?? .zero(),
 									 xtzStakedBalance: self?.currentlyRefreshingAccount.xtzStakedBalance ?? .zero(),
 									 xtzUnstakedBalance: self?.currentlyRefreshingAccount.xtzUnstakedBalance ?? .zero(),
+									 xtzFinalisedBalance: self?.currentlyRefreshingAccount.xtzFinalisedBalance ?? .zero(),
 									 tokens: newTokens,
 									 nfts: newNFTs,
 									 recentNFTs: self?.currentlyRefreshingAccount.recentNFTs ?? [],

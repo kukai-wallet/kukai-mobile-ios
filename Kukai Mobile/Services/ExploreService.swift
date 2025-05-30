@@ -118,10 +118,6 @@ public class ExploreService {
 		self.networkService = networkService
 		self.requestIfService = RequestIfService(networkService: networkService)
 		self.networkType = networkType
-		
-		let cacheKeyToUse = networkType == .mainnet ? exploreCacheKey_mainnet : exploreCacheKey_ghostnet
-		let lastCache = self.requestIfService.lastCache(forKey: cacheKeyToUse, responseType: ExploreEnvironment.self)
-		processRawData(item: lastCache)
 	}
 	
 	
@@ -130,6 +126,10 @@ public class ExploreService {
 	
 	/// Extract an exploreItem based on a contract address
 	public func item(forAddress: String) -> ExploreItem? {
+		if items.count == 0 {
+			loadCache()
+		}
+		
 		if let uuid = contractAddressToPrimaryKeyMap[forAddress] {
 			return items[uuid]
 		}
@@ -201,6 +201,12 @@ public class ExploreService {
 			
 			completion(Result.success(true))
 		}
+	}
+	
+	public func loadCache() {
+		let cacheKeyToUse = networkType == .mainnet ? exploreCacheKey_mainnet : exploreCacheKey_ghostnet
+		let lastCache = self.requestIfService.lastCache(forKey: cacheKeyToUse, responseType: ExploreEnvironment.self)
+		processRawData(item: lastCache)
 	}
 	
 	public func deleteCache() {

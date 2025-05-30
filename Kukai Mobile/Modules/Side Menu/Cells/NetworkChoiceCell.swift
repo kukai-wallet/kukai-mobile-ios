@@ -14,6 +14,8 @@ class NetworkChoiceCell: UITableViewCell {
 	@IBOutlet weak var descriptionLabel: UILabel!
 	@IBOutlet weak var checkedImage: UIImageView!
 	
+	public var selectable = true
+	
 	override func awakeFromNib() {
 		super.awakeFromNib()
 		containerView.gradientType = .tableViewCell
@@ -21,6 +23,8 @@ class NetworkChoiceCell: UITableViewCell {
 	
 	override func setSelected(_ selected: Bool, animated: Bool) {
 		super.setSelected(selected, animated: animated)
+		
+		guard selectable else { return }
 		
 		if selected {
 			checkedImage.image = UIImage(named: "btnChecked")

@@ -55,6 +55,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		viewModel.nft = nft
 		viewModel.sendDelegate = self
 		viewModel.makeDataSource(withCollectionView: collectionView)
+		viewModel.modelDelegate = self
 		collectionView.dataSource = viewModel.dataSource
 		collectionView.delegate = self
 		
@@ -247,7 +248,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 		
 		
 		let action = UIAction(title: "View Marketplace", image: UIImage(named: "ArrowWeb")) { action in
-			if let url = URL(string: "https://objkt.com/collection/\(nft.parentContract)") {
+			if let url = URL(string: "https://objkt.com/tokens/\(nft.parentContract)/\(nft.tokenId)") {
 				UIApplication.shared.open(url)
 			}
 		}
@@ -269,8 +270,22 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 extension CollectiblesDetailsViewController: CollectibleDetailSendDelegate {
 	
 	func sendTapped() {
+		TransactionService.shared.resetAllState()
 		TransactionService.shared.sendData.chosenNFT = viewModel.nft
 		TransactionService.shared.sendData.chosenAmount = TokenAmount(fromNormalisedAmount: 1, decimalPlaces: 0)
 		self.performSegue(withIdentifier: "send", sender: nil)
+	}
+}
+
+extension CollectiblesDetailsViewController: ThreeDimensionModelViewControllerDelegate {
+	
+	func threeDimensionModelLoadingError(_ error: (any Error)?) {
+		var string = "unkwown"
+		
+		if let err = error {
+			string = "\(err)"
+		}
+		
+		self.windowError(withTitle: "error".localized(), description: String.localized("error-3dmodel", withArguments: string))
 	}
 }

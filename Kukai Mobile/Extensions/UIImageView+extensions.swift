@@ -22,7 +22,7 @@ extension UIImageView {
 		}
 		
 		if token.isXTZ() {
-			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width+2, height: self.frame.height+2))
+			self.image = UIImage.tezosToken().resizedImage(size: CGSize(width: self.frame.width, height: self.frame.height))
 		} else {
 			var tokenURL = token.thumbnailURL
 			if fallbackToAvatar, tokenURL == nil, let address = token.tokenContractAddress {

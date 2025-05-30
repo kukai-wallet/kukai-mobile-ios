@@ -33,6 +33,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var activityAnimationImageView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 	private var activityAnimationInProgress = false
 	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
+	private var activityAnimationExperimentalTimer: Timer? = nil // Timer for use in experimental mode to replace tzkt account change monitoring
+	private var walletConnectOperationTypeOnResume: WalletConnectOperationType? = nil
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -55,8 +57,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		
 		// Load any initial data so we can draw UI immediately without lag
-		DependencyManager.shared.balanceService.loadCache(address: DependencyManager.shared.selectedWalletAddress)
-		
+		if !DependencyManager.shared.loginActive {
+			DependencyManager.shared.balanceService.loadCache(address: DependencyManager.shared.selectedWalletAddress, completion: nil)
+		}
+
 		
 		// Setup state listeners that need to be active once the tabview is present. Individual screens will respond as needed
 		DependencyManager.shared.$networkDidChange
@@ -64,20 +68,16 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 				
-				DispatchQueue.global(qos: .background).async {
-					DependencyManager.shared.balanceService.loadCache(address: address)
+				DependencyManager.shared.balanceService.loadCache(address: address) {
+					DependencyManager.shared.addressLoaded = address
+					self?.updateAccountButton()
 					
-					DispatchQueue.main.async {
-						DependencyManager.shared.addressLoaded = address
-						self?.updateAccountButton()
-						
-						AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
-						
-						self?.setupTzKTAccountListener()
-						self?.stopActivityAnimation(success: false)
-						self?.refreshType = .useCacheIfNotStale
-						self?.refresh(addresses: nil)
-					}
+					AccountViewModel.setupAccountActivityListener() // trigger reconnection, so that we switch networks
+					
+					self?.setupTzKTAccountListener()
+					self?.stopActivityAnimation(success: false)
+					self?.refreshType = .useCacheIfNotStale
+					self?.refresh(addresses: nil)
 				}
 			}.store(in: &bag)
 		
@@ -86,24 +86,19 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			.sink { [weak self] _ in
 				guard let address = DependencyManager.shared.selectedWalletAddress else { return }
 				
-				DispatchQueue.global(qos: .background).async {
-					DependencyManager.shared.balanceService.loadCache(address: address)
-					
-					DispatchQueue.main.async {
-						
-						// Check if we need to start or stop the activity animation
-						let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
-						if pendingAddresses.contains([address]) {
-							self?.startActivityAnimationIfNecessary(addressesToBeRefreshed: pendingAddresses)
-						} else {
-							self?.stopActivityAnimationIfNecessary()
-						}
-						
-						DependencyManager.shared.addressLoaded = address
-						
-						self?.refreshType = .useCacheIfNotStale
-						self?.refresh(addresses: nil)
+				DependencyManager.shared.balanceService.loadCache(address: address) {
+					// Check if we need to start or stop the activity animation
+					let pendingAddresses = DependencyManager.shared.activityService.addressesWithPendingOperation
+					if pendingAddresses.contains([address]) {
+						self?.startActivityAnimationIfNecessary(addressesToBeRefreshed: pendingAddresses)
+					} else {
+						self?.stopActivityAnimationIfNecessary()
 					}
+					
+					DependencyManager.shared.addressLoaded = address
+					
+					self?.refreshType = .useCacheIfNotStale
+					self?.refresh(addresses: nil)
 				}
 			}.store(in: &bag)
 		
@@ -128,13 +123,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				}
 				
 				if address == DependencyManager.shared.selectedWalletAddress {
-					DispatchQueue.global(qos: .background).async {
-						DependencyManager.shared.balanceService.loadCache(address: address)
-						
-						DispatchQueue.main.async {
-							self?.updateAccountButton()
-							DependencyManager.shared.addressRefreshed = address
-						}
+					DependencyManager.shared.balanceService.loadCache(address: address) {
+						self?.updateAccountButton()
+						DependencyManager.shared.addressRefreshed = address
 					}
 				}
 				
@@ -156,12 +147,41 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				}
 			}.store(in: &bag)
 		
+		
+		
+		// If we enter foreground without login, check for refresh needs
+		// else when login dismisses, check for refresh needs
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
-			AccountViewModel.reconnectAccountActivityListenerIfNeeded()
-			self?.supressAutoRefreshError = true
-			self?.refreshType = .refreshEverything
-			self?.refresh(addresses: nil)
+			if !DependencyManager.shared.loginActive {
+				AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+				self?.supressAutoRefreshError = true
+				self?.refreshType = .refreshEverything
+				self?.refresh(addresses: nil)
+			}
 		}.store(in: &bag)
+		
+		DependencyManager.shared.$loginActive
+			.dropFirst()
+			.sink { [weak self] active in
+				
+				// Debugging issue where `active` seems to be an old value sometimes
+				if DependencyManager.shared.loginActive {
+					AccountViewModel.reconnectAccountActivityListenerIfNeeded()
+					self?.supressAutoRefreshError = true
+					self?.refreshType = .refreshEverything
+					self?.refresh(addresses: nil)
+					
+					if let type = self?.walletConnectOperationTypeOnResume {
+						DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+							self?.processedOperations(ofType: type)
+							self?.walletConnectOperationTypeOnResume = nil
+						}
+					}
+						
+				}
+			}.store(in: &bag)
+		
+		
 		
 		ThemeManager.shared.$themeDidChange
 			.dropFirst()
@@ -232,13 +252,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.navigationController?.setNavigationBarHidden(false, animated: false)
 		self.navigationItem.hidesBackButton = true
 		
-		TransactionService.shared.resetAllState()
 		updateAccountButton()
 		runWatchWalletChecks()
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
+		if !DependencyManager.shared.loginActive, DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
 			self.refreshType = .useCacheIfNotStale
 			refresh(addresses: nil)
 		}
@@ -383,6 +402,17 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	func startActivityAnimationIfNecessary(addressesToBeRefreshed addresses: [String]) {
 		if !self.activityAnimationInProgress, let selectedAddress = DependencyManager.shared.selectedWalletAddress, addresses.contains([selectedAddress]) {
+			
+			// If RPC only mode, setup manual timer to assume transaction made it into the next block
+			if DependencyManager.shared.isRpcOnlyMode {
+				let seconds = DependencyManager.shared.tezosNodeClient.networkConstants?.secondsBetweenBlocks() ?? 8
+				activityAnimationExperimentalTimer = Timer.scheduledTimer(withTimeInterval: Double(seconds), repeats: false, block: { [weak self] _ in
+					Logger.app.info("Manual RPC only refresh trigger for address: \(addresses)")
+					self?.refreshType = .refreshEverything
+					self?.refresh(addresses: addresses)
+				})
+			}
+			
 			self.startActivityAnimation()
 		}
 	}
@@ -400,6 +430,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	
 	func stopActivityAnimationIfNecessary() {
 		if self.activityAnimationInProgress {
+			self.activityAnimationExperimentalTimer?.invalidate()
+			self.activityAnimationExperimentalTimer = nil
 			self.stopActivityAnimation(success: true)
 		}
 	}
@@ -449,8 +481,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 			records.append(BalanceService.FetchRequestRecord(address: address, type: refreshType))
 		}
 		
+		
+		// If no address is passed in, thats short hand for refreshing the current address. However refreshing the current address will simply trigger an expensive cacheLoad if the data is not stale
+		// Until we move to middleware, simply add another check here. If its not stale, just skip and avoid the reload
 		if records.count == 0 {
-			records.append(BalanceService.FetchRequestRecord(address: DependencyManager.shared.selectedWalletAddress ?? "", type: refreshType))
+			let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			if DependencyManager.shared.balanceService.account.walletAddress == currentAddress, !DependencyManager.shared.balanceService.isCacheStale(forAddress: currentAddress) {
+				// Do nothing for now
+				return
+				
+			} else {
+				records.append(BalanceService.FetchRequestRecord(address: DependencyManager.shared.selectedWalletAddress ?? "", type: refreshType))
+			}
 		}
 		
 		DependencyManager.shared.balanceService.fetch(records: records)
@@ -533,6 +575,11 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 	public func processedOperations(ofType: WalletConnectOperationType) {
 		self.loadingViewHideActivityAndFade(withDuration: 0.5)
 		
+		guard !DependencyManager.shared.loginActive else {
+			walletConnectOperationTypeOnResume = ofType
+			return
+		}
+		
 		if self.presentedViewController == nil {
 			switch ofType {
 				case .sendToken:
@@ -546,6 +593,9 @@ extension HomeTabBarController: WalletConnectServiceDelegate {
 					
 				case .delegate:
 					self.performSegue(withIdentifier: "wallet-connect-delegate", sender: nil)
+					
+				case .stake:
+					self.performSegue(withIdentifier: "wallet-connect-stake", sender: nil)
 					
 				case .generic:
 					self.performSegue(withIdentifier: "wallet-connect-generic", sender: nil)

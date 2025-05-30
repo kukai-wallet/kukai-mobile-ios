@@ -7,67 +7,61 @@
 
 import UIKit
 import KukaiCoreSwift
+import Combine
 
-class NetworkChooserViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NetworkChooserViewController: UIViewController, UITableViewDelegate {
 	
 	@IBOutlet weak var tableView: UITableView!
 	
-	private var selectedIndex: IndexPath = IndexPath(row: 0, section: 0)
+	private let viewModel = NetworkChooserViewModel()
+	private var cancellable: AnyCancellable?
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
 		GradientView.add(toView: self.view, withType: .fullScreenBackground)
 		
+		viewModel.makeDataSource(withTableView: tableView)
+		tableView.dataSource = viewModel.dataSource
 		tableView.delegate = self
-		tableView.dataSource = self
+		tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0.1, height: 0.1))
 		
-		let index = DependencyManager.shared.currentNetworkType == .mainnet ? 0 : 1
-		selectedIndex = IndexPath(row: index, section: 0)
+		cancellable = viewModel.$state.dropFirst().sink { [weak self] state in
+			switch state {
+				case .loading:
+					//self?.showLoadingModal(completion: nil)
+					let _ = ""
+					
+				case .failure(_, let errorString):
+					self?.windowError(withTitle: "error".localized(), description: errorString)
+				
+				case .success(_):
+					let _ = ""
+			}
+		}
     }
 	
-	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
-	}
-	
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return 2
-	}
-	
-	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: "NetworkChoiceCell", for: indexPath) as? NetworkChoiceCell else {
-			return UITableViewCell()
-		}
-		
-		if indexPath.row == 0 {
-			cell.networkLabel.text = "Mainnet"
-			cell.descriptionLabel.text = "Live network with real XTZ and Tokens with real values"
-			
-		} else {
-			cell.networkLabel.text = "Ghostnet"
-			cell.descriptionLabel.text = "A test network running the lastest Tezos protocol, with fake XTZ and tokens with no monetary value"
-		}
-		
-		return cell
+	override func viewWillAppear(_ animated: Bool) {
+		viewModel.refresh(animate: true)
 	}
 	
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		guard indexPath.row != 0, let networkType = viewModel.networkTypeFromIndex(indexPath: indexPath) else { return }
 		deselectCurrentSelection()
 		
-		selectedIndex = indexPath
+		viewModel.selectedIndex = indexPath
 		tableView.selectRow(at: indexPath, animated: true, scrollPosition: .none)
 		
-		DependencyManager.shared.tezosNodeClient.networkVersion = nil
-		if indexPath.row == 0 {
-			DependencyManager.shared.setDefaultMainnetURLs()
+		if networkType == .experimental {
+			self.performSegue(withIdentifier: "experimental", sender: nil)
+			
 		} else {
-			DependencyManager.shared.setDefaultGhostnetURLs()
+			DependencyManager.shared.setNetworkTo(networkTo: networkType)
+			self.navigationController?.popToHome()
 		}
-		
-		self.dismissBottomSheet()
 	}
 	
 	public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		if indexPath == selectedIndex {
+		if indexPath == viewModel.selectedIndex {
 			cell.setSelected(true, animated: true)
 			
 		} else {
@@ -76,8 +70,8 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate, UITab
 	}
 	
 	private func deselectCurrentSelection() {
-		tableView.deselectRow(at: selectedIndex, animated: true)
-		let previousCell = tableView.cellForRow(at: selectedIndex)
+		tableView.deselectRow(at: viewModel.selectedIndex, animated: true)
+		let previousCell = tableView.cellForRow(at: viewModel.selectedIndex)
 		previousCell?.setSelected(false, animated: true)
 	}
 }

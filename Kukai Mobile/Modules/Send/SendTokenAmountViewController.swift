@@ -9,14 +9,10 @@ import UIKit
 import KukaiCoreSwift
 
 class SendTokenAmountViewController: UIViewController {
-
-	@IBOutlet weak var toStackViewSocial: UIStackView!
-	@IBOutlet weak var toStackViewRegular: UIStackView!
 	
 	@IBOutlet weak var addressIcon: UIImageView!
 	@IBOutlet weak var addressAliasLabel: UILabel!
 	@IBOutlet weak var addressLabel: UILabel!
-	@IBOutlet weak var regularAddressLabel: UILabel!
 	
 	@IBOutlet weak var balanceLabel: UILabel!
 	@IBOutlet weak var inputContainer: UIView!
@@ -44,14 +40,14 @@ class SendTokenAmountViewController: UIViewController {
 		
 		// To section
 		if let alias = TransactionService.shared.sendData.destinationAlias {
-			toStackViewRegular.isHidden = true
-			addressAliasLabel.text = alias
 			addressIcon.image = TransactionService.shared.sendData.destinationIcon
+			addressAliasLabel.text = alias
 			addressLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
 			
 		} else {
-			toStackViewSocial.isHidden = true
-			regularAddressLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			addressIcon.image = TransactionService.shared.sendData.destinationIcon
+			addressAliasLabel.text = TransactionService.shared.sendData.destination?.truncateTezosAddress()
+			addressLabel.isHidden = true
 		}
 		
 		
@@ -107,7 +103,7 @@ class SendTokenAmountViewController: UIViewController {
 			TransactionService.shared.sendData.chosenAmount = amount
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
-			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey) { [weak self] estimationResult in
+			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey, isRemote: false) { [weak self] estimationResult in
 				
 				switch estimationResult {
 					case .success(let estimationResult):

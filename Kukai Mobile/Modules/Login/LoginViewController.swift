@@ -9,6 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import LocalAuthentication
 import OSLog
+import Combine
 
 protocol LoginViewControllerDelegate: AnyObject {
 	func authResults(success: Bool)
@@ -27,6 +28,7 @@ class LoginViewController: UIViewController {
 	@IBOutlet weak var digitView6: UIView!
 	
 	private var didDelegateCallSuccess = false
+	private var bag = [AnyCancellable]()
 	public weak var delegate: LoginViewControllerDelegate?
 	
 	private static var wrongGuessCount: Int {
@@ -59,16 +61,48 @@ class LoginViewController: UIViewController {
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
 		hiddenTextfield.numericOnly = true
+		
+		
+		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
+			if !StorageService.canSkipLogin() {
+				self?.runAuthChecks()
+			}
+		}.store(in: &bag)
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		
+		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+		
+		
 		// Hide biometric button if its not enabled, or we are in the middle of the edit passcode flow
-		if isEditPasscodeMode() || CurrentDevice.biometricTypeAuthorized() == .none || StorageService.isBiometricEnabled() == false {
+		if isEditPasscodeMode() || CurrentDevice.biometricTypeAuthorized() == .none || CurrentDevice.biometricTypeAuthorized() == .unavailable || StorageService.isBiometricEnabled() == false {
 			useBiometricsButton.isHidden = true
-			
-		} else if CurrentDevice.biometricTypeAuthorized() == .touchID {
+			self.hiddenTextfield.becomeFirstResponder()
+		}
+		
+		
+		// This code should only be executed on will appear if a delegate is set, meaning an internal screen is waiting for this info.
+		// Otherwise the system prompt for bio, may show up as user backgrounds the app
+		guard delegate != nil || sceneDelegate.firstLoad else { return }
+		
+		
+		sceneDelegate.firstLoad = false
+		runAuthChecks()
+	}
+	
+	override func viewDidDisappear(_ animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		if !didDelegateCallSuccess {
+			delegate?.authResults(success: false)
+		}
+	}
+	
+	private func runAuthChecks() {
+		
+		if CurrentDevice.biometricTypeAuthorized() == .touchID {
 			useBiometricsButton.setTitle("Try Touch ID Again", for: .normal)
 		}
 		
@@ -82,14 +116,6 @@ class LoginViewController: UIViewController {
 		} else {
 			// Edit passcode popup
 			self.hiddenTextfield.becomeFirstResponder()
-		}
-	}
-	
-	override func viewDidDisappear(_ animated: Bool) {
-		super.viewDidDisappear(animated)
-		
-		if !didDelegateCallSuccess {
-			delegate?.authResults(success: false)
 		}
 	}
 	
@@ -139,7 +165,6 @@ class LoginViewController: UIViewController {
 			StorageService.authWithBiometric { [weak self] success in
 				DispatchQueue.main.async {
 					if success {
-						StorageService.setLastLogin()
 						self?.next()
 						
 					} else {
@@ -186,6 +211,7 @@ class LoginViewController: UIViewController {
 		
 		reestablishConnectionsAfterLogin()
 		sceneDelegate.hidePrivacyProtectionWindow()
+		StorageService.setLastLogin()
 	}
 	
 	private static func reestablishConnectionsAfterLogin() {
@@ -221,7 +247,6 @@ extension LoginViewController: ValidatorTextFieldDelegate {
 				if result {
 					LoginViewController.wrongGuessCount = 0
 					LoginViewController.wrongGuessDelay = 0
-					StorageService.setLastLogin()
 					self?.next()
 				} else {
 					self?.displayErrorAndReset()

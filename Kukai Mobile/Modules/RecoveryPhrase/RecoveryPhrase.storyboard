@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y4C-2E-Wq5">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="y4C-2E-Wq5">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -803,7 +803,7 @@
                                         <rect key="frame" x="8.3333333333333321" y="4" width="5.3333333333333321" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt14"/>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" name="BG2-dark"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" name="BGB-alt4"/>
@@ -834,7 +834,7 @@
                                         <rect key="frame" x="7.6666666666666679" y="4" width="7" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt14"/>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" name="BG2-dark"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" name="BGB-alt4"/>
@@ -864,7 +864,7 @@
                                         <rect key="frame" x="7.6666666666666679" y="4" width="7" height="14"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="Txt14"/>
-                                        <nil key="highlightedColor"/>
+                                        <color key="highlightedColor" name="BG2-dark"/>
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" name="BGB-alt4"/>
@@ -961,7 +961,7 @@ Please store it carefully!</string>
         <!--Recovery Phrase Screenshot Warning View Controller-->
         <scene sceneID="pCr-bD-cdK">
             <objects>
-                <viewController id="sO4-Is-Oyd" customClass="RecoveryPhraseScreenshotWarningViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="screenshot-warning" id="sO4-Is-Oyd" customClass="RecoveryPhraseScreenshotWarningViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="INB-4f-atP">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1601,23 +1601,6 @@ Please store it carefully!</string>
             <point key="canvasLocation" x="-1821" y="-2951"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="5TX-Ez-aPl">
-            <size key="intrinsicContentSize" width="24" height="14"/>
-        </designable>
-        <designable name="dGg-HZ-YmH">
-            <size key="intrinsicContentSize" width="53.333333333333336" height="38"/>
-        </designable>
-        <designable name="hbe-iD-iGO">
-            <size key="intrinsicContentSize" width="108.66666666666667" height="38"/>
-        </designable>
-        <designable name="nxu-NE-n0L">
-            <size key="intrinsicContentSize" width="142.66666666666666" height="38"/>
-        </designable>
-        <designable name="uch-qJ-gRT">
-            <size key="intrinsicContentSize" width="71.333333333333329" height="38"/>
-        </designable>
-    </designables>
     <resources>
         <image name="AlertCautionColored" width="20" height="18"/>
         <image name="ArrowUp-right" width="128" height="128"/>
@@ -1628,6 +1611,9 @@ Please store it carefully!</string>
         </namedColor>
         <namedColor name="BG2">
             <color red="0.9649999737739563" green="0.9649999737739563" blue="0.98000001907348633" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="BG2-dark">
+            <color red="0.078000001609325409" green="0.078000001609325409" blue="0.11400000005960464" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="BG4">
             <color red="0.91399997472763062" green="0.9179999828338623" blue="0.96100002527236938" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

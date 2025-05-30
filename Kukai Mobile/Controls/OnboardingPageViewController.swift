@@ -14,11 +14,12 @@ protocol OnboardingPageViewControllerDelegate: AnyObject {
 
 /// A wrapper around the UIPageViewController that takes in a collection of viewControllers via an `IBInspectable`, and implements all the standard scroll logic and UIPageControl
 /// to create an onboarding / intro / explanitory section in the app, to visually explain a topic or collection of topics to the user.
-class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class OnboardingPageViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 	
+	public var pageController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
 	public var items: [UIViewController] = []
 	public var startIndex: Int = 0
-	private var pageControl: UIPageControl? = nil
+	public var pageControl: UIPageControl? = nil
 	
 	/**
 	comma separated string containing any number of UIViewController storyboard ids, used to init UIViewControllers to act as pages in the page view controller
@@ -30,20 +31,29 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	public weak var pageDelegate: OnboardingPageViewControllerDelegate? = nil
 	
 	required init?(coder: NSCoder) {
-		super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
+		super.init(coder: coder)
 	}
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		self.addChild(pageController)
+		self.view.addSubview(pageController.view)
+		NSLayoutConstraint.activate([
+			pageController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
+			pageController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
+			pageController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
+			pageController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
+		])
 		
 		let ids = commaSeperatedStoryboardIds.components(separatedBy: ",")
 		for id in ids {
 			items.append(self.storyboard?.instantiateViewController(identifier: id) ?? UIViewController())
 		}
 		
-		setViewControllers([items[0]], direction: .forward, animated: false, completion: nil)
-		self.dataSource = self
-		self.delegate = self
+		pageController.setViewControllers([items[0]], direction: .forward, animated: false, completion: nil)
+		pageController.dataSource = self
+		pageController.delegate = self
 		
 		pageControl = UIPageControl()
 		pageControl?.translatesAutoresizingMaskIntoConstraints = false
@@ -63,7 +73,7 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 		}
 		
 		
-		self.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
+		pageController.setViewControllers([items[startIndex]], direction: .forward, animated: false, completion: nil)
 		self.pageControl?.currentPage = startIndex
 		
 		if !showPageControl {
@@ -117,12 +127,13 @@ class OnboardingPageViewController: UIPageViewController, UIPageViewControllerDa
 	}
 	
 	public func scrollTo(index: Int) {
-		guard let currentVc = self.viewControllers?.first, let viewControllerIndex = items.firstIndex(of: currentVc) else {
+		guard let currentVc = pageController.viewControllers?.first, let viewControllerIndex = items.firstIndex(of: currentVc) else {
 			return
 		}
 		
 		let vc = items[index]
 		let isForward = viewControllerIndex < index
-		self.setViewControllers([vc], direction: isForward ? .forward : .reverse, animated: true, completion: nil)
+		pageController.setViewControllers([vc], direction: isForward ? .forward : .reverse, animated: true, completion: nil)
+		self.pageControl?.currentPage = index
 	}
 }

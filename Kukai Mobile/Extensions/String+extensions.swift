@@ -9,6 +9,10 @@ import UIKit
 
 extension String {
 	
+	var firstUppercased: String {
+		return prefix(1).uppercased() + dropFirst()
+	}
+	
 	/*
 	 05 = micheline expression
 	 01 = string

@@ -52,6 +52,11 @@ class CollectiblesFavouritesViewController: UIViewController, UICollectionViewDe
 			}.store(in: &bag)
     }
 	
+	deinit {
+		bag.forEach({ $0.cancel() })
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		viewModel.isVisible = true

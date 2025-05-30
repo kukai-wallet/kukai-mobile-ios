@@ -19,6 +19,21 @@ struct BackupCellData: Hashable {
 	let id = UUID()
 }
 
+struct SuggestedActionData: Hashable {
+	let id = UUID()
+	let image: UIImage?
+	let title: String
+	let description: String
+	let segue: String
+}
+
+struct StakedXTZData: Hashable {
+	let id = UUID()
+	let xtz: XTZAmount
+	let stake: XTZAmount
+	let isUnstakePending: Bool
+}
+
 struct UpdateWarningCellData: Hashable {
 	let id = UUID()
 }
@@ -41,7 +56,18 @@ struct AccountButtonData: Hashable {
 	let buttonType: CustomisableButton.customButtonType
 }
 
+enum AccountViewModelError: Error {
+	case networkError
+	case calendarAccessError
+}
+
+protocol AccountViewModelPopups: AnyObject {
+	func unstakePreformed()
+}
+
 class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
+	
+	public static let minXTZforStakeOnboarding = XTZAmount(fromNormalisedAmount: 3)
 	
 	struct accessibilityIdentifiers {
 		static let onramp = "account-onramp"
@@ -64,6 +90,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	var estimatedTotalCellDelegate: EstimatedTotalCellDelegate? = nil
 	
 	weak var tableViewButtonDelegate: UITableViewCellButtonDelegate? = nil
+	weak var popupDelegate: AccountViewModelPopups? = nil
 	
 	
 	// MARK: - Init
@@ -90,12 +117,20 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				if self?.dataSource != nil && self?.isVisible == true && selectedAddress == address {
 					self?.refresh(animate: true)
 				}
+				
+				if TransactionService.shared.didUnstake && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
+					self?.popupDelegate?.unstakePreformed()
+				}
 			}.store(in: &bag)
 		
 		AccountViewModel.setupAccountActivityListener()
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	
@@ -110,6 +145,10 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if let _ = item.base as? BackupCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "BackUpCell", for: indexPath) as? BackUpCell {
 				return cell
 				
+			} else if let obj = item.base as? SuggestedActionData, let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedActionCell", for: indexPath) as? SuggestedActionCell {
+				cell.setup(data: obj)
+				return cell
+				
 			} else if let _ = item.base as? UpdateWarningCellData, let cell = tableView.dequeueReusableCell(withIdentifier: "UpdateWarningCell", for: indexPath) as? UpdateWarningCell {
 				return cell
 				
@@ -119,12 +158,25 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 			} else if let amount = item.base as? XTZAmount, let cell = tableView.dequeueReusableCell(withIdentifier: "TokenBalanceCell", for: indexPath) as? TokenBalanceCell {
 				cell.symbolLabel.text = "XTZ"
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.valuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				
+				return cell
+				
+			} else if let obj = item.base as? StakedXTZData, let cell = tableView.dequeueReusableCell(withIdentifier: "TezAndStakeCell", for: indexPath) as? TezAndStakeCell {
+				cell.topBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.xtz.toNormalisedDecimal() ?? 0, decimalPlaces: obj.xtz.decimalPlaces, allowNegative: false)
+				cell.bottomBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.stake.toNormalisedDecimal() ?? 0, decimalPlaces: obj.stake.decimalPlaces, allowNegative: false)
+				cell.favCorner.isHidden = false
+				
+				let totalXtzValue = obj.xtz * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.topValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
+				
+				let totalStakeValue = obj.stake * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
+				cell.bottomValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalStakeValue, numberStyle: .currency, maximumFractionDigits: 2)
 				
 				return cell
 				
@@ -136,7 +188,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				
 				cell.favCorner.isHidden = !token.isFavourite
 				cell.symbolLabel.text = symbol
-				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces)
+				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces, allowNegative: false)
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
@@ -201,7 +253,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		let metadata = DependencyManager.shared.selectedWalletMetadata
 		let parentMetadata = metadata?.isChild == true ? DependencyManager.shared.walletList.parentMetadata(forChildAddress: metadata?.address ?? "") : nil
-		let isTestnet = DependencyManager.shared.currentNetworkType == .ghostnet
+		let isTestnet = DependencyManager.shared.currentNetworkType != .mainnet
 		var snapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		var data: [AnyHashableSendable] = []
 		
@@ -213,7 +265,6 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let balanceService = DependencyManager.shared.balanceService
 		if balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress() {
-			
 			if isEmptyAccount() {
 				data = handleRefreshForNewUser(startingData: data, metadata: metadata)
 				
@@ -250,34 +301,18 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	
 	private func isEmptyAccount() -> Bool {
 		let xtzBalance = DependencyManager.shared.balanceService.account.xtzBalance
-		let tokenCount = DependencyManager.shared.balanceService.account.tokens.count
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		return (xtzBalance == .zero() && tokenCount == 0)
+		return (xtzBalance == .zero() && currentAccountTokensCount == 0)
 	}
 	
 	private func handleRefreshForRegularUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?, parentMetadata: WalletMetadata?, selectedAddress: String) -> [AnyHashableSendable] {
 		var data = startingData
-		let currentAccount = DependencyManager.shared.balanceService.account
-		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
 		
-		/**
-		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
-		 
-		 -or-
-		 
-		 Is a social wallet, is not backed up and whose balance is either:
-			- Greater than or equal to 10 XTZ
-			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
-			- Contains 5 or more tokens
-		 */
-		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
-		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
-			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
-			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
-			currentAccountTokensCount >= 5
-		))
-		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
-			data.append(.init(BackupCellData()))
+		// Check if we need to add an action banner
+		if let userAction = handleUserActionBanners(metadata: metadata, parentMetadata: parentMetadata) {
+			data.append(userAction)
 		}
 		
 		
@@ -314,15 +349,60 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		tokensToDisplay.append(contentsOf: nonFavourites)
 		
 		data.append(.init(balancesMenuVC))
+		data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
 		
-		if tokensToDisplay.count > 0 {
-			data.append(.init(TotalEstimatedValue(tez: totalXTZ, value: totalCurrencyString)))
+		let stakedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
+		if stakedXtz > XTZAmount.zero() {
+			data.append(.init(StakedXTZData(xtz: DependencyManager.shared.balanceService.account.availableBalance, stake: stakedXtz, isUnstakePending: false)))
+		} else {
+			data.append(.init(DependencyManager.shared.balanceService.account.availableBalance))
 		}
 		
-		data.append(.init(DependencyManager.shared.balanceService.account.xtzBalance))
 		data.append(contentsOf: tokensToDisplay.map({.init($0)}))
 		
 		return data
+	}
+	
+	/// Only 1 banner will be displayed at a time, in order of custom preference
+	private func handleUserActionBanners(metadata: WalletMetadata?, parentMetadata: WalletMetadata?) -> AnyHashableSendable? {
+		let currentAccount = DependencyManager.shared.balanceService.account
+		let currentAccountTokensCount = (currentAccount.tokens.count + currentAccount.nfts.count)
+		
+		/**
+		 1. Backup warning, most important for security
+		 
+		 Is a regular/HD/child wallet that hasn't been backed up (or parent hasn't been backed up)
+		 
+		 -or-
+		 
+		 Is a social wallet, is not backed up and whose balance is either:
+			- Greater than or equal to 10 XTZ
+			- Non zero XTZ + at least 1 token (likley means the user has purchased a token worth at least some amount of XTZ)
+			- Contains 5 or more tokens
+		 */
+		let isNormalWalletAndNeedsBackup = (metadata?.type != .social && metadata?.type != .ledger && metadata?.backedUp == false && (parentMetadata == nil || parentMetadata?.backedUp != true))
+		let isSocialWalletAndNeedsBackup = (metadata?.type == .social && metadata?.backedUp == false && (
+			currentAccount.xtzBalance >= XTZAmount(fromNormalisedAmount: 10) ||
+			(currentAccount.xtzBalance > XTZAmount.zero() && currentAccountTokensCount > 0) ||
+			currentAccountTokensCount >= 5
+		))
+		
+		if isNormalWalletAndNeedsBackup || isSocialWalletAndNeedsBackup {
+			return .init(BackupCellData())
+		}
+		
+		
+		/**
+		 2. Suggested action, staking. Staking is important in order to secure the network and promote bakers who actively help the network
+		 */
+		let lockedXtz = DependencyManager.shared.balanceService.account.xtzStakedBalance + DependencyManager.shared.balanceService.account.xtzUnstakedBalance
+		if currentAccount.availableBalance >= AccountViewModel.minXTZforStakeOnboarding && (currentAccount.delegate == nil || lockedXtz == .zero()) && DependencyManager.shared.selectedWalletMetadata?.isWatchOnly != true {
+			return .init(SuggestedActionData(image: UIImage(named: "Currency"), title: "Suggested Action", description: "Start staking to maximize your rewards", segue: "stake-onboarding"))
+		}
+		
+		
+		// Else display nothing
+		return nil
 	}
 	
 	private func handleRefreshForNewUser(startingData: [AnyHashableSendable], metadata: WalletMetadata?) -> [AnyHashableSendable] {
@@ -356,7 +436,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	func token(atIndexPath: IndexPath) -> Token? {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
-		if obj is XTZAmount {
+		if obj is XTZAmount || obj is StakedXTZData {
 			let account = DependencyManager.shared.balanceService.account
 			return Token.xtz(withAmount: account.xtzBalance, stakedAmount: account.xtzStakedBalance, unstakedAmount: account.xtzUnstakedBalance)
 			
@@ -378,6 +458,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
 		
 		return obj is UpdateWarningCellData
+	}
+	
+	func isSuggestedAction(atIndexPath: IndexPath) -> String? {
+		let obj = dataSource?.itemIdentifier(for: atIndexPath)?.base
+		
+		return (obj as? SuggestedActionData)?.segue
 	}
 	
 	static func setupAccountActivityListener() {

@@ -17,6 +17,7 @@ public enum WalletConnectOperationType {
 	case sendNft
 	case batch
 	case delegate
+	case stake
 	case generic
 }
 
@@ -663,7 +664,7 @@ public class WalletConnectService {
 		// Map all wallet connect objects to kuaki objects
 		let convertedOps = params.kukaiOperations()
 		
-		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded()) { [weak self] result in
+		DependencyManager.shared.tezosNodeClient.estimate(operations: convertedOps, walletAddress: wallet.address, base58EncodedPublicKey: wallet.publicKeyBase58encoded(), isRemote: true) { [weak self] result in
 			guard let estimationResult = try? result.get() else {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
 				self?.delegateErrorOnMain(message: "Unable to estimate fees", error: result.getFailure())
@@ -674,51 +675,6 @@ public class WalletConnectService {
 		}
 	}
 	
-	
-	
-	
-	
-	// TODO: remove these when 1.2.0 allows us to access the updated version of kukaiCoreSwift
-	/**
-	 Filter and verify only 1 transaction exists thats performing an unstake operation. If so return this operation, otherwise return nil
-	 */
-	private static func temp_isUnstake(operations: [KukaiCoreSwift.Operation]) -> OperationTransaction? {
-		let filteredOperations = OperationFactory.Extractor.filterReveal(operations: operations)
-		if filteredOperations.count == 1,
-		   let op = filteredOperations.first as? OperationTransaction,
-		   op.parameters?["entrypoint"] as? String == "unstake",
-		   let valueDict = op.parameters?["value"] as? [String: String],
-		   Array(valueDict.keys) == ["prim"],
-		   Array(valueDict.values) == ["Unit"]
-		{
-			return op
-		}
-		
-		return nil
-	}
-	
-	/**
-	 Filter and verify only 1 transaction exists thats performing a finalise unstake operation If so return this operation, otherwise return nil
-	 */
-	private static func temp_isFinaliseUnstake(operations: [KukaiCoreSwift.Operation]) -> OperationTransaction? {
-		let filteredOperations = OperationFactory.Extractor.filterReveal(operations: operations)
-		if filteredOperations.count == 1,
-		   let op = filteredOperations.first as? OperationTransaction,
-		   op.parameters?["entrypoint"] as? String == "finalize_unstake",
-		   let valueDict = op.parameters?["value"] as? [String: String],
-		   Array(valueDict.keys) == ["prim"],
-		   Array(valueDict.values) == ["Unit"]
-		{
-			return op
-		}
-		
-		return nil
-	}
-	
-	
-	
-	
-	
 	// Central place to act somewhat as a viewModel to parse the incoming payload and add some hints to TransactionService on how to display it
 	private func processTransactions(estimationResult: FeeEstimatorService.EstimationResult, forWallet: Wallet) {
 		let operationsObj = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
@@ -727,25 +683,20 @@ public class WalletConnectService {
 		TransactionService.shared.currentRemoteOperationsAndFeesData = operationsObj
 		TransactionService.shared.currentRemoteForgedString = estimationResult.forgedString
 		
-		DependencyManager.shared.tezosNodeClient.getBalance(forAddress: forWallet.address) { [weak self] res in
-			let xtzBalance = (try? res.get()) ?? .zero()
-			let xtzSend = OperationFactory.Extractor.totalTezAmountSent(operations: operations)
-			
-			// Pop up XTZ lack of funds warning error, only if its not a unstake, or finalise_unstake operation, as those have different rules
-			if WalletConnectService.temp_isUnstake(operations: operations) == nil,
-			   WalletConnectService.temp_isFinaliseUnstake(operations: operations) == nil,
-			   (xtzSend + operationsObj.fee) > xtzBalance {
-				
+		
+		DependencyManager.shared.tzktClient.getAccount(forAddress: forWallet.address) { [weak self] result in
+			guard let res = try? result.get() else {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
-				self?.delegateErrorOnMain(message: String.localized("error-funds-body-wc2", withArguments: forWallet.address.truncateTezosAddress(), xtzBalance.normalisedRepresentation, (xtzSend + operationsObj.fee).normalisedRepresentation), error: nil)
-				
-			} else {
-				self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance)
+				self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
 			}
+			
+			let xtzBalance = res.xtzAvailableBalance
+			self?.processTransactionsAfterBalance(operationsObj: operationsObj, operations: operations, forWallet: forWallet, xtzBalance: xtzBalance, delegate: res.delegate?.address)
 		}
 	}
 	
-	private func processTransactionsAfterBalance(operationsObj: TransactionService.OperationsAndFeesData, operations: [KukaiCoreSwift.Operation], forWallet: Wallet, xtzBalance: XTZAmount) {
+	private func processTransactionsAfterBalance(operationsObj: TransactionService.OperationsAndFeesData, operations: [KukaiCoreSwift.Operation], forWallet: Wallet, xtzBalance: XTZAmount, delegate: String?) {
 		
 		if let op = OperationFactory.Extractor.isTezTransfer(operations: operations) {
 			let xtzAmount = XTZAmount(fromRpcAmount: op.amount) ?? .zero()
@@ -780,6 +731,69 @@ public class WalletConnectService {
 				}
 				
 				self?.checkForBaker(delegateOperation: delegateOperation, bakers: res)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isStake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .stake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self] result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.stakeData.chosenBaker = res
+				TransactionService.shared.stakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.stakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isUnstake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .unstake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self]  result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.unstakeData.chosenBaker = res
+				TransactionService.shared.unstakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.unstakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
+			}
+			
+		} else if let operation = OperationFactory.Extractor.isFinaliseUnstake(operations: operations) {
+			guard let delegate = delegate else {
+				WalletConnectService.rejectCurrentRequest(completion: nil)
+				self.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+				return
+			}
+			
+			TransactionService.shared.currentTransactionType = .finaliseUnstake
+			DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self]  result in
+				guard let res = try? result.get() else {
+					WalletConnectService.rejectCurrentRequest(completion: nil)
+					self?.delegateErrorOnMain(message: "error-unknown-later".localized(), error: nil)
+					return
+				}
+				
+				TransactionService.shared.finaliseUnstakeData.chosenBaker = res
+				TransactionService.shared.finaliseUnstakeData.chosenToken = Token.xtz(withAmount: xtzBalance)
+				TransactionService.shared.finaliseUnstakeData.chosenAmount = TokenAmount(fromRpcAmount: operation.amount, decimalPlaces: 6)
+				self?.mainThreadProcessedOperations(ofType: .stake)
 			}
 			
 		} else if OperationFactory.Extractor.containsAnUnknownOperation(operations: operations) {

@@ -25,6 +25,7 @@ struct MediaContent: Hashable {
 	let id = UUID()
 	let isImage: Bool
 	let isThumbnail: Bool
+	let isModel: Bool
 	let mediaURL: URL?
 	let mediaURL2: URL?
 	let width: Double
@@ -85,16 +86,18 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	private let mediaService = MediaProxyService()
 	private var playerController: AVPlayerViewController? = nil
 	private var player: AVPlayer? = nil
+	private var modelController: ThreeDimensionModelViewController? = nil
 	
 	private var sendData = SendContent(enabled: true)
 	private var descriptionData = DescriptionContent(description: "")
 	
 	weak var weakQuantityCell: CollectibleDetailQuantityCell? = nil
 	weak var sendDelegate: CollectibleDetailSendDelegate? = nil
+	weak var modelDelegate: ThreeDimensionModelViewControllerDelegate? = nil
 	var nft: NFT? = nil
 	var isFavourited = false
 	var isHidden = false
-	var mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: nil, mediaURL2: nil, width: 300, height: 300)
+	var mediaContent = MediaContent(isImage: true, isThumbnail: false, isModel: false, mediaURL: nil, mediaURL2: nil, width: 300, height: 300)
 	var quantityContent = QuantityContent(isOnSale: false, isAudio: false, isInteractableModel: false, isVideo: false, quantity: "1")
 	var nameContent = NameContent(name: "", collectionIcon: nil, collectionName: nil, collectionLink: nil)
 	var attributesContent = AttributesContent(expanded: true)
@@ -216,13 +219,13 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			Logger.app.info("Large imageURL: \(largeURL?.absoluteString ?? "-")")
 			
 			if let imageSize = MediaProxyService.sizeForImageIfCached(url: largeURL) {
-				mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: largeURL, mediaURL2: nil, width: imageSize.width, height: imageSize.height)
+				mediaContent = MediaContent(isImage: true, isThumbnail: false, isModel: false, mediaURL: largeURL, mediaURL2: nil, width: imageSize.width, height: imageSize.height)
 				
 			} else if let imageSize = MediaProxyService.sizeForImageIfCached(url: smallImage) {
-				mediaContent = MediaContent(isImage: true, isThumbnail: true, mediaURL: smallImage, mediaURL2: largeURL, width: imageSize.width, height: imageSize.height)
+				mediaContent = MediaContent(isImage: true, isThumbnail: true, isModel: false, mediaURL: smallImage, mediaURL2: largeURL, width: imageSize.width, height: imageSize.height)
 				
 			} else {
-				mediaContent = MediaContent(isImage: true, isThumbnail: false, mediaURL: largeURL, mediaURL2: nil, width: 300, height: 300)
+				mediaContent = MediaContent(isImage: true, isThumbnail: false, isModel: false, mediaURL: largeURL, mediaURL2: nil, width: 300, height: 300)
 			}
 			
 		} else if mainType == .imageAndAudio {
@@ -232,14 +235,21 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			Logger.app.info("imageURL: \(imageURL?.absoluteString ?? "-")")
 			Logger.app.info("audioURL: \(audioURL?.absoluteString ?? "-")")
 			
-			mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: audioURL, mediaURL2: imageURL, width: 300, height: 300)
+			mediaContent = MediaContent(isImage: false, isThumbnail: false, isModel: false, mediaURL: audioURL, mediaURL2: imageURL, width: 300, height: 300)
+			
+		} else if mainType == .model {
+			let artifactURL = MediaProxyService.url(fromUri: nft.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
+			
+			Logger.app.info("modelURL: \(artifactURL?.absoluteString ?? "-")")
+			
+			mediaContent = MediaContent(isImage: false, isThumbnail: false, isModel: true, mediaURL: artifactURL, mediaURL2: nil, width: 300, height: 300)
 			
 		} else {
 			let videoURL = MediaProxyService.url(fromUri: nft.artifactURI, ofFormat: MediaProxyService.Format.large.rawFormat())
 			
 			Logger.app.info("videoURL: \(videoURL?.absoluteString ?? "-")")
 			
-			mediaContent = MediaContent(isImage: false, isThumbnail: false, mediaURL: videoURL, mediaURL2: nil, width: 0, height: 0)
+			mediaContent = MediaContent(isImage: false, isThumbnail: false, isModel: false, mediaURL: videoURL, mediaURL2: nil, width: 0, height: 0)
 		}
 		
 		let isAudio =  mainType == .imageAndAudio || mainType == .audioOnly
@@ -405,7 +415,7 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 			
 			return parsedCell
 			
-		} else if let obj = item.base as? MediaContent, !obj.isImage, let parsedCell = cell as? CollectibleDetailAVCell {
+		} else if let obj = item.base as? MediaContent, !obj.isImage, !obj.isModel, let parsedCell = cell as? CollectibleDetailAVCell {
 
 			if !parsedCell.setup, let url = obj.mediaURL, !layoutOnly {
 				
@@ -431,6 +441,18 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 					let album = self.nft?.parentContract ?? ""
 					parsedCell.setup(mediaContent: obj, airPlayName: title, airPlayArtist: artist, airPlayAlbum: album, avplayerController: pvc, layoutOnly: layoutOnly)
 				}
+			}
+			
+			return parsedCell
+			
+		} else if let obj = item.base as? MediaContent, obj.isModel, let parsedCell = cell as? CollectibleDetailAVCell {
+			if !parsedCell.setup, !layoutOnly {
+				if self.modelController == nil {
+					modelController = ThreeDimensionModelViewController()
+					modelController?.delegate = modelDelegate
+				}
+				
+				parsedCell.setup(mediaContent: mediaContent, modelController: modelController ?? ThreeDimensionModelViewController(), layoutOnly: layoutOnly)
 			}
 			
 			return parsedCell

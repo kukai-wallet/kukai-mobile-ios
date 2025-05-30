@@ -8,9 +8,19 @@
 import UIKit
 
 class FeeInfoViewController: UIViewController {
-
+	
+	@IBInspectable var addGradient: Bool = true
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-		GradientView.add(toView: self.view, withType: .fullScreenBackground)
+		self.view.backgroundColor = .clear
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		
+		if addGradient {
+			GradientView.add(toView: self.view, withType: .fullScreenBackground)
+		}
+	}
 }

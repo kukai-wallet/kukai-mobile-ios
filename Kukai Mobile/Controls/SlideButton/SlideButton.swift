@@ -132,7 +132,9 @@ class SlideButton: UIView {
 				progressCoverView?.alpha = 1 - (diff / 100)
 				
 			} else if gestureRecognizer.state == .ended {
-				if (centerOfTouchedButtonView + (buttonView.frame.width/2)) >= (containerView.frame.width - padding) {
+				// On right side of check changed "- padding" to "- (padding * 4)" to make it feel a little smoother to users
+				// Users reported a bit of frustration having to hit it exactly while trying to swipe quickly
+				if (centerOfTouchedButtonView + (buttonView.frame.width/2)) >= (containerView.frame.width - (padding * 4)) {
 					
 					activityIndicator.isHidden = false
 					activityIndicator.startAnimating()

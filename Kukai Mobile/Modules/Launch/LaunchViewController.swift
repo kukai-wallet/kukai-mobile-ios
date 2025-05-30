@@ -140,21 +140,21 @@ class LaunchViewController: UIViewController, CAAnimationDelegate {
 		self.navigationItem.largeTitleDisplayMode = .never
 		
 		runOnce = true
-		let didCompleteOnboarding = StorageService.didCompleteOnboarding()
+		//let didCompleteOnboarding = StorageService.didCompleteOnboarding()
 		
-		if hasWallet && didCompleteOnboarding && !StorageService.isPasscodeNil()  {
+		if hasWallet && /*didCompleteOnboarding &&*/ !StorageService.isPasscodeNil()  {
 			if let sceneDelgate = (self.view.window?.windowScene?.delegate as? SceneDelegate) {
 				sceneDelgate.showPrivacyProtectionWindow()
 				self.performSegue(withIdentifier: "home", sender: nil)
 			}
 			
-		} else if hasWallet && !didCompleteOnboarding {
+		} /*else if hasWallet && !didCompleteOnboarding {
 			SentrySDK.capture(message: "Reinstall cache clear - hasWallet & notOnboarded")
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			StorageService.deleteKeychainItems()
 			self.performSegue(withIdentifier: "onboarding", sender: nil)
 			
-		} else if hasWallet && StorageService.isPasscodeNil() {
+		}*/ else if hasWallet && StorageService.isPasscodeNil() {
 			SentrySDK.capture(message: "Reinstall cache clear - hasWallet & passcodeNil")
 			let _ = WalletCacheService().deleteAllCacheAndKeys()
 			StorageService.deleteKeychainItems()

@@ -42,6 +42,13 @@ public class EnterAddressComponent: UIView {
 	private var currentSelectedType: AddressType = .tezosAddress
 	
 	public weak var delegate: EnterAddressComponentDelegate? = nil
+	public var allowEmpty: Bool = false {
+		didSet {
+			if (self.textField.text == nil || self.textField.text == "") && allowEmpty {
+				self.sendButton.isEnabled = true
+			}
+		}
+	}
 	
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -71,7 +78,7 @@ public class EnterAddressComponent: UIView {
 		textField.validatorTextFieldDelegate = self
 		
 		self.hideError(animate: false)
-		self.sendButton.isEnabled = false
+		self.sendButton.isEnabled = allowEmpty
 	}
 	
 	public func updateAvilableAddressTypes(_ types: [AddressType]) {
@@ -275,7 +282,7 @@ extension EnterAddressComponent: ValidatorTextFieldDelegate {
 			self.sendButton.isEnabled = true
 			
 		} else if text == "" {
-			self.sendButton.isEnabled = false
+			self.sendButton.isEnabled = allowEmpty
 			
 		} else {
 			self.sendButton.isEnabled = false

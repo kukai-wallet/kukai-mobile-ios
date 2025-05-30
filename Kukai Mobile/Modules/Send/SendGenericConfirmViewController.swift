@@ -23,26 +23,9 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	
 	// From
 	@IBOutlet weak var fromContainer: UIView!
-	
-	@IBOutlet weak var fromStackViewSocial: UIStackView!
-	@IBOutlet weak var fromSocialIcon: UIImageView!
-	@IBOutlet weak var fromSocialAlias: UILabel!
-	@IBOutlet weak var fromSocialAddress: UILabel!
-	
-	@IBOutlet weak var fromStackViewRegular: UIStackView!
-	@IBOutlet weak var fromRegularAddress: UILabel!
-	
-	// Send
-	@IBOutlet weak var largeDisplayStackView: UIStackView!
-	@IBOutlet weak var largeDisplayIcon: UIImageView!
-	@IBOutlet weak var largeDisplayAmount: UILabel!
-	@IBOutlet weak var largeDisplaySymbol: UILabel!
-	@IBOutlet weak var largeDisplayFiat: UILabel!
-	
-	@IBOutlet weak var smallDisplayStackView: UIStackView!
-	@IBOutlet weak var smallDisplayIcon: UIImageView!
-	@IBOutlet weak var smallDisplayAmount: UILabel!
-	@IBOutlet weak var smallDisplayFiat: UILabel!
+	@IBOutlet weak var fromIcon: UIImageView!
+	@IBOutlet weak var fromAlias: UILabel!
+	@IBOutlet weak var fromAddress: UILabel!
 	
 	// Operation
 	@IBOutlet weak var moreButton: CustomisableButton!
@@ -55,6 +38,7 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 	@IBOutlet weak var errorLabel: UILabel!
 	@IBOutlet weak var slideButton: SlideButton!
 	@IBOutlet weak var testnetWarningView: UIView!
+	@IBOutlet weak var testnetWarningNetworkLabel: UILabel!
 	
 	var dimBackground: Bool = true
 	
@@ -64,8 +48,10 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 		
 		feeButton.accessibilityIdentifier = "fee-button"
 		
-		if DependencyManager.shared.currentNetworkType != .ghostnet {
+		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
+		} else {
+			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
 		}
 		
 		
@@ -90,17 +76,6 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 				connectedAppURL = smallIconURL
 			}
 			
-			let media = TransactionService.walletMedia(forWalletMetadata: walletMetadataForRequestedAccount, ofSize: .size_22)
-			if let subtitle = media.subtitle {
-				fromStackViewRegular.isHidden = true
-				fromSocialAlias.text = media.title
-				fromSocialIcon.image = media.image
-				fromSocialAddress.text = subtitle
-			} else {
-				fromStackViewSocial.isHidden = true
-				fromRegularAddress.text = media.title
-			}
-			
 		} else {
 			self.isWalletConnectOp = false
 			self.currentSendData = TransactionService.shared.sendData
@@ -108,7 +83,25 @@ class SendGenericConfirmViewController: SendAbstractConfirmViewController, Slide
 			
 			connectedAppMetadataStackView.isHidden = true
 			connectedAppLabel.isHidden = true
-			fromContainer.isHidden = true
+		}
+		
+		
+		// From
+		guard let selectedMetadata = selectedMetadata else {
+			self.windowError(withTitle: "error".localized(), description: "error-no-wallet-short".localized())
+			self.dismissBottomSheet()
+			return
+		}
+		
+		let media = TransactionService.walletMedia(forWalletMetadata: selectedMetadata, ofSize: .size_22)
+		if let subtitle = media.subtitle {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.text = subtitle
+		} else {
+			fromIcon.image = media.image
+			fromAlias.text = media.title
+			fromAddress.isHidden = true
 		}
 		
 		

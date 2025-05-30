@@ -40,7 +40,6 @@ class PreLoginViewController: UIViewController {
 		
 		if sceneDelegate.firstLoad {
 			self.performSegue(withIdentifier: "login", sender: self)
-			sceneDelegate.firstLoad = false
 		}
 	}
 }

@@ -49,6 +49,11 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}.store(in: &bag)
 	}
 	
+	deinit {
+		bag.forEach({ $0.cancel() })
+		viewModel.cleanup()
+	}
+	
 	override func viewWillAppear(_ animated: Bool) {
 		viewModel.isVisible = true
 		

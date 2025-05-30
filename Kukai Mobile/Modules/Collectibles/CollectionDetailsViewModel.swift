@@ -47,6 +47,10 @@ class CollectionDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourceH
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	

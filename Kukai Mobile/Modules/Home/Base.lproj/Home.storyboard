@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23094" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="B7V-6A-7eN">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23084"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -115,6 +115,7 @@
                         <segue destination="5kq-lD-FPQ" kind="custom" identifier="wallet-connect-generic" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="bWZ-eJ-9bp"/>
                         <segue destination="SuN-lc-s6p" kind="custom" identifier="wallet-connect-delegate" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="xUf-Hg-Wxw"/>
                         <segue destination="8lA-J4-epy" kind="show" identifier="connected-apps" id="yER-q9-xAZ"/>
+                        <segue destination="nMz-6N-iys" kind="custom" identifier="wallet-connect-stake" customClass="BottomSheetCustomSegue" customModule="Kukai_Mobile" customModuleProvider="target" id="di3-hr-mfq"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="C8m-X9-tpS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1551,10 +1552,10 @@
             </objects>
             <point key="canvasLocation" x="-124" y="-2472"/>
         </scene>
-        <!--confirm-stake-->
+        <!--confirm-baker-->
         <scene sceneID="f6P-Cx-nlY">
             <objects>
-                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="confirm-stake" id="SuN-lc-s6p" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="confirm-baker" id="SuN-lc-s6p" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d1g-SF-82o" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-132" y="-2498"/>
@@ -1889,6 +1890,14 @@ For new accounts use the default path by selecting "Add Account" in the wallet m
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EQO-i3-gUm" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2907" y="-2282"/>
+        </scene>
+        <!--confirm-stake-->
+        <scene sceneID="yRx-aA-fdw">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Stake" referencedIdentifier="confirm-stake" id="nMz-6N-iys" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EFK-gb-nrG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-132" y="-2581"/>
         </scene>
     </scenes>
     <resources>

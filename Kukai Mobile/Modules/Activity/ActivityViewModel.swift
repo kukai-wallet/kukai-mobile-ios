@@ -57,6 +57,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	deinit {
+		cleanup()
+	}
+	
+	func cleanup() {
 		bag.forEach({ $0.cancel() })
 	}
 	
@@ -136,7 +140,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		let currentAddress = DependencyManager.shared.selectedWalletAddress ?? ""
 		let confirmed = DependencyManager.shared.activityService.transactionGroups
 		
-		var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender.address == currentAddress })
+		var pending = DependencyManager.shared.activityService.pendingTransactionGroups.filter({ $0.transactions.first?.sender?.address == currentAddress })
 		
 		pending.append(contentsOf: confirmed)
 		pending = pending.sorted { groupLeft, groupRight in
@@ -203,10 +207,10 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		
 		// Load
 		if forceRefresh {
-			brieflyHideCells(true)
+			//brieflyHideCells(true)
 			ds.applySnapshotUsingReloadData(self.currentSnapshot)
 			self.forceRefresh = false
-			brieflyHideCells(false)
+			//brieflyHideCells(false)
 			
 		} else {
 			ds.apply(self.currentSnapshot, animatingDifferences: animate)
