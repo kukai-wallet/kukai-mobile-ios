@@ -5,7 +5,7 @@
 //  Created by Simon Mcloughlin on 09/05/2023.
 //
 
-import Foundation
+import UIKit
 import KeychainSwift
 import Sodium
 
@@ -61,7 +61,7 @@ public class StorageService {
 		let specialKey = "PREWARMING_CHECK" // not a constant as can NOT be used elsewhere
 		
 		UserDefaults.standard.set(true, forKey: specialKey)
-		return UserDefaults.standard.bool(forKey: specialKey) == false
+		return UserDefaults.standard.bool(forKey: specialKey) == false || UIApplication.shared.isProtectedDataAvailable == false
 	}
 	
 	/// Allowing recovery from a strange prewarming issue where the keychain gets deleted during a warming, but the rest of the data remains, causing a weird edge case where the app has wallets but no PIN
