@@ -7,6 +7,7 @@
 
 import UIKit
 import KukaiCoreSwift
+import Sentry
 
 class SideMenuResetViewController: UIViewController {
 
@@ -37,6 +38,7 @@ class SideMenuResetViewController: UIViewController {
 	}
 	
 	public static func resetAllData() {
+		SentrySDK.capture(message: "Resetting all data")
 		let _ = WalletCacheService().deleteAllCacheAndKeys()
 		
 		TransactionService.shared.resetAllState()
