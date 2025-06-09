@@ -81,6 +81,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		return extensionPointIdentifier != .keyboard
 	}
 	
+	func applicationDidReceiveMemoryWarning(_ application: UIApplication) {
+		MediaProxyService.imageCache(forType: .permanent).clearMemory()
+		MediaProxyService.imageCache(forType: .temporary).clearMemory()
+		MediaProxyService.imageCache(forType: .detail).clearMemory()
+	}
 	
 	
 	// MARK: UISceneSession Lifecycle
