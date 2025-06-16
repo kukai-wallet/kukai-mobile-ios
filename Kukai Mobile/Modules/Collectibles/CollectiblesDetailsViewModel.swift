@@ -254,7 +254,8 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		
 		let isAudio =  mainType == .imageAndAudio || mainType == .audioOnly
 		let isVideo =  mainType == .videoOnly
-		quantityContent = QuantityContent(isOnSale: false, isAudio: isAudio, isInteractableModel: false, isVideo: isVideo, quantity: quantityString(forNFT: nft))
+		let is3Dmodel =  mainType == .model
+		quantityContent = QuantityContent(isOnSale: false, isAudio: isAudio, isInteractableModel: is3Dmodel, isVideo: isVideo, quantity: quantityString(forNFT: nft))
 		
 		section1Content.append(.init(mediaContent))
 		section1Content.append(.init(quantityContent))

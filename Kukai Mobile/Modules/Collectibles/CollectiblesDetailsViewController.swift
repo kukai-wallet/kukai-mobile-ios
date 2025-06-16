@@ -286,6 +286,8 @@ extension CollectiblesDetailsViewController: ThreeDimensionModelViewControllerDe
 			string = "\(err)"
 		}
 		
-		self.windowError(withTitle: "error".localized(), description: String.localized("error-3dmodel", withArguments: string))
+		DispatchQueue.main.async { [weak self] in
+			self?.windowError(withTitle: "error".localized(), description: String.localized("error-3dmodel", withArguments: string))
+		}
 	}
 }
