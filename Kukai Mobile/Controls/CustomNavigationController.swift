@@ -15,6 +15,14 @@ class CustomNavigationController: UINavigationController {
 		updateNavBar()
 	}
 	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		if ThemeManager.shared.currentInterfaceStyle() == .dark {
+			return .lightContent
+		} else {
+			return .darkContent
+		}
+	}
+	
 	func updateNavBar() {
 		for view in self.navigationBar.subviews {
 			

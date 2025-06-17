@@ -49,9 +49,29 @@ class LoginViewController: UIViewController {
 		}
 	}
 	
+	override var preferredStatusBarStyle: UIStatusBarStyle {
+		if ThemeManager.shared.currentInterfaceStyle() == .dark {
+			return .lightContent
+		} else {
+			return .darkContent
+		}
+	}
+	
 	private let defaultErrorMessage = "Incorrect passcode try again"
 	private let delayedErrorMessage = "Too many failed attempts. Wait % seconds before trying again"
 	private var delayTimer: Timer? = nil
+	
+	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+		
+		self.modalPresentationStyle = .overFullScreen
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		self.modalPresentationStyle = .overFullScreen
+	}
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,7 +81,6 @@ class LoginViewController: UIViewController {
 		hiddenTextfield.validator = LengthValidator(min: 6, max: 6)
 		hiddenTextfield.validatorTextFieldDelegate = self
 		hiddenTextfield.numericOnly = true
-		
 		
 		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
 			if !StorageService.canSkipLogin() {

@@ -54,12 +54,11 @@ class ThreeDimensionModelViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.view.backgroundColor = .gray
 		self.view.addSubview(sceneView)
 		sceneView.translatesAutoresizingMaskIntoConstraints = false
 		sceneView.allowsCameraControl = true
 		sceneView.autoenablesDefaultLighting = true
-		sceneView.backgroundColor = .gray //.colorNamed("BGFullNFT")
+		sceneView.backgroundColor = .colorNamed("BGFullNFT")
 		
 		self.view.addSubview(fullScreenButton)
 		fullScreenButton.translatesAutoresizingMaskIntoConstraints = false
