@@ -122,13 +122,6 @@ jobs:
           if [ ! $? -eq 0 ]; then
           echo "warning: sentry-cli - $ERROR"
           fi
-        
-      - name: Commit new version number
-        if: ${{ github.ref != 'refs/heads/main' && success() }}
-        run: |
-          git add .
-          git commit -m "bump version"
-          git push origin HEAD
 
       - name: Upload to TestFlight
         if: ${{ success() }}
@@ -136,3 +129,11 @@ jobs:
           APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
           APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
         run: xcrun altool --upload-app -t ios -f "build/Kukai Mobile.ipa" -u "$APPLEID_USERNAME" -p "$APPLEID_PASSWORD" --verbose
+
+
+      - name: Commit new version number
+        if: ${{ github.ref != 'refs/heads/main' && success() }}
+        run: |
+          git add .
+          git commit -m "bump version"
+          git push origin HEAD

@@ -236,6 +236,7 @@ class SendTokenConfirmViewController: SendAbstractConfirmViewController, SlideBu
 				
 				if isFirstCall {
 					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+						self?.updateAmountDisplay(withValue: amount)
 						self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
 					}
 				} else {
