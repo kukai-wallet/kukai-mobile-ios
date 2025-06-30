@@ -74,18 +74,21 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences
 		switch TransactionService.shared.currentTransactionType {
 			case .stake:
+				self.isStake = true
 				self.titleLabel.text = "Confirm Stake"
 				self.actionTitleLabel.text = "Stake:"
 				self.selectedToken = TransactionService.shared.stakeData.chosenToken
 				self.selectedBaker = TransactionService.shared.stakeData.chosenBaker
 				
 			case .unstake:
+				self.isStake = false
 				self.titleLabel.text = "Confirm Unstake"
 				self.actionTitleLabel.text = "Unstake:"
 				self.selectedToken = TransactionService.shared.unstakeData.chosenToken
 				self.selectedBaker = TransactionService.shared.unstakeData.chosenBaker
 				
 			default:
+				self.isStake = false
 				self.titleLabel.text = "Confirm Finalise"
 				self.actionTitleLabel.text = "Finalise:"
 				self.selectedToken = TransactionService.shared.finaliseUnstakeData.chosenToken
@@ -307,34 +310,17 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		
 		// Sum of send amount + fee is greater than balance, need to adjust send amount
 		// For safety, don't allow this logic coming from WC2, as its likely the user is communicating with a smart contract that likely won't accept recieving less than expected XTZ
-		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = chosenAmount, (amount + fee) >= token.availableBalance {
-			let oneTez = XTZAmount(fromNormalisedAmount: 1)
-			let updatedValue = ((token.availableBalance - oneTez) - fee)
-			
-			if updatedValue < .zero() {
-				updateAmountDisplay(withValue: .zero())
-				slideButton.isUserInteractionEnabled = false
-				slideButton.alpha = 0.6
-				
-				if isFirstCall {
-					DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-						self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
-					}
-				} else {
-					self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
+		if !isWalletConnectOp, let token = selectedToken, token.isXTZ(), let amount = chosenAmount, (isStake ? ((amount + fee) >= token.availableBalance) : (fee >= token.availableBalance) ) {
+			if isFirstCall {
+				DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+					self?.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
 				}
-				
 			} else {
-				updateAmountDisplay(withValue: updatedValue)
-				slideButton.isUserInteractionEnabled = true
-				slideButton.alpha = 1
+				self.windowError(withTitle: "error-funds-title".localized(), description: String.localized("error-funds-body", withArguments: token.availableBalance.normalisedRepresentation, fee.normalisedRepresentation))
 			}
 			
-			if isWalletConnectOp {
-				TransactionService.shared.currentRemoteOperationsAndFeesData.updateXTZAmount(to: updatedValue)
-			} else {
-				TransactionService.shared.currentOperationsAndFeesData.updateXTZAmount(to: updatedValue)
-			}
+			updateAmountDisplay(withValue: chosenAmount ?? .zero())
+			
 		} else {
 			updateAmountDisplay(withValue: chosenAmount ?? .zero())
 		}
