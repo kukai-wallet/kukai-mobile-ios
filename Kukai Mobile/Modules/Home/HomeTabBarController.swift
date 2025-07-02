@@ -291,9 +291,9 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		highlightedGradient.removeFromSuperlayer()
 		highlightedGradient = CAGradientLayer()
 		
-		let index = self.tabBar.items?.firstIndex(of: self.tabBar.selectedItem ?? UITabBarItem()) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
-		let position = CGRect(x: 0 + (widthPerItem * CGFloat(index)), y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		let position = CGRect(x: 0, y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		
 		highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
 		self.tabBar.layer.addSublayer(highlightedGradient)
 		
@@ -309,7 +309,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
 		
-		highlightedGradient.frame.origin.x = 0 + (widthPerItem * CGFloat(index))
+		highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
 	}
 	
 	func setupTzKTAccountListener() {
