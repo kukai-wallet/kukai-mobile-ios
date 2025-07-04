@@ -285,7 +285,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		gradientLayers.append( scanButton.addTitleButtonBackgroundGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
 		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
+		
 		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
+		
+		
+		highlightedGradient.removeFromSuperlayer()
+		highlightedGradient = CAGradientLayer()
+		
+		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
+		let position = CGRect(x: 0, y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+		
+		highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
+		self.tabBar.layer.addSublayer(highlightedGradient)
 		
 		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
 	}
@@ -298,14 +309,8 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
 		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
 		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
-		let position = CGRect(x: 0 + (widthPerItem * CGFloat(index)), y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
 		
-		if highlightedGradient.frame.width == 0 {
-			highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
-			self.tabBar.layer.addSublayer(highlightedGradient)
-		} else {
-			highlightedGradient.frame.origin.x = 0 + (widthPerItem * CGFloat(index))
-		}
+		highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
 	}
 	
 	func setupTzKTAccountListener() {
