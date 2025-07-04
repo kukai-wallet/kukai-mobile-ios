@@ -98,16 +98,18 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 				self.showLoadingView()
 				
 				DependencyManager.shared.tzktClient.bakerConfig(forAddress: delegate) { [weak self] result in
-					self?.hideLoadingView()
-					
-					guard let res = try? result.get() else {
-						self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
-						return
+					DispatchQueue.main.async {
+						self?.hideLoadingView()
+						
+						guard let res = try? result.get() else {
+							self?.windowError(withTitle: "error".localized(), description: result.getFailure().description)
+							return
+						}
+						
+						TransactionService.shared.resetAllState()
+						TransactionService.shared.stakeData.chosenBaker = res
+						self?.performSegue(withIdentifier: segue, sender: nil)
 					}
-					
-					TransactionService.shared.resetAllState()
-					TransactionService.shared.stakeData.chosenBaker = res
-					self?.performSegue(withIdentifier: segue, sender: nil)
 				}
 			} else {
 				self.performSegue(withIdentifier: segue, sender: nil)

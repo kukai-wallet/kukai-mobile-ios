@@ -735,17 +735,19 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			}
 			
 			DependencyManager.shared.dipDupClient.getChartDataFor(exchangeContract: exchangeData.address) { [weak self] result in
-				guard let self = self else {
-					completion(Result.failure(KukaiError.unknown()))
-					return
-				}
-				
-				switch result {
-					case .success(let graphData):
-						completion(Result.success(self.formatData(data: graphData)))
-						
-					case .failure(let error):
-						completion(Result.failure(KukaiError.internalApplicationError(error: error)))
+				DispatchQueue.main.async {
+					guard let self = self else {
+						completion(Result.failure(KukaiError.unknown()))
+						return
+					}
+					
+					switch result {
+						case .success(let graphData):
+							completion(Result.success(self.formatData(data: graphData)))
+							
+						case .failure(let error):
+							completion(Result.failure(KukaiError.internalApplicationError(error: error)))
+					}
 				}
 			}
 		}
@@ -857,15 +859,16 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 		
 		// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey, isRemote: false) { estimationResult in
-			
-			switch estimationResult {
-				case .success(let estimationResult):
-					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
-					TransactionService.shared.currentForgedString = estimationResult.forgedString
-					completion(nil)
-					
-				case .failure(let estimationError):
-					completion(estimationError.description)
+			DispatchQueue.main.async {
+				switch estimationResult {
+					case .success(let estimationResult):
+						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
+						TransactionService.shared.currentForgedString = estimationResult.forgedString
+						completion(nil)
+						
+					case .failure(let estimationError):
+						completion(estimationError.description)
+				}
 			}
 		}
 	}

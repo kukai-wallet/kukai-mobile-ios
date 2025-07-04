@@ -147,7 +147,7 @@ class ChooseBakerViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			
 			
 			// Return success
-			self?.state = .success(successMessage)
+			DispatchQueue.main.async { self?.state = .success(successMessage) }
 		}
 	}
 	

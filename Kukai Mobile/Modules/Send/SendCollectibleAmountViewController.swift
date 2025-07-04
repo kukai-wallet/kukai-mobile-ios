@@ -116,17 +116,18 @@ class SendCollectibleAmountViewController: UIViewController {
 			
 			// Estimate the cost of the operation (ideally display this to a user first and let them confirm)
 			DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWalletMetadata.address, base58EncodedPublicKey: selectedWalletMetadata.bas58EncodedPublicKey, isRemote: false) { [weak self] estimationResult in
-				
-				switch estimationResult {
-					case .success(let result):
-						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: result.operations)
-						TransactionService.shared.currentForgedString = result.forgedString
-						self?.loadingViewHideActivityAndFade()
-						self?.performSegue(withIdentifier: "confirm", sender: nil)
-						
-					case .failure(let estimationError):
-						self?.hideLoadingView()
-						self?.windowError(withTitle: "error".localized(), description: estimationError.description)
+				DispatchQueue.main.async {
+					switch estimationResult {
+						case .success(let result):
+							TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: result.operations)
+							TransactionService.shared.currentForgedString = result.forgedString
+							self?.loadingViewHideActivityAndFade()
+							self?.performSegue(withIdentifier: "confirm", sender: nil)
+							
+						case .failure(let estimationError):
+							self?.hideLoadingView()
+							self?.windowError(withTitle: "error".localized(), description: estimationError.description)
+					}
 				}
 			}
 		}
