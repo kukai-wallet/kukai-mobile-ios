@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HUx-IO-KJi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HUx-IO-KJi">
     <device id="retina6_0" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -18,19 +18,19 @@
         <!--Collectibles-->
         <scene sceneID="TYT-5j-i7q">
             <objects>
-                <viewController id="HUx-IO-KJi" customClass="CollectiblesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="HUx-IO-KJi" customClass="CollectiblesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3Ef-Ul-h0l">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n13-aX-p2X">
-                                <rect key="frame" x="0.0" y="200" width="390" height="561"/>
+                                <rect key="frame" x="0.0" y="257" width="390" height="587"/>
                                 <connections>
                                     <segue destination="xRK-Jy-uzj" kind="embed" identifier="pageControl" id="gcR-ky-GNp"/>
                                 </connections>
                             </containerView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bHe-PJ-idT">
-                                <rect key="frame" x="4" y="91" width="370" height="99"/>
+                                <rect key="frame" x="4" y="148" width="370" height="99"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IIR-aA-UNT">
                                         <rect key="frame" x="0.0" y="0.0" width="370" height="51"/>
@@ -56,7 +56,7 @@
                                                         <rect key="frame" x="12" y="0.0" width="358" height="37"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="bp6-MF-iOT">
-                                                                <rect key="frame" x="85.666666666666671" y="8.6666666666666714" width="20" height="20"/>
+                                                                <rect key="frame" x="85.666666666666671" y="8.6666666666666572" width="20" height="20"/>
                                                                 <color key="tintColor" name="TxtTestState"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="20" id="9eH-yD-vml"/>
@@ -170,7 +170,7 @@
                         <viewLayoutGuide key="safeArea" id="m63-98-6lD"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="m63-98-6lD" firstAttribute="bottom" secondItem="n13-aX-p2X" secondAttribute="bottom" id="7nz-Yy-fvW"/>
+                            <constraint firstAttribute="bottom" secondItem="n13-aX-p2X" secondAttribute="bottom" id="7nz-Yy-fvW"/>
                             <constraint firstItem="n13-aX-p2X" firstAttribute="leading" secondItem="m63-98-6lD" secondAttribute="leading" id="9bb-fP-uU0"/>
                             <constraint firstItem="m63-98-6lD" firstAttribute="trailing" secondItem="bHe-PJ-idT" secondAttribute="trailing" constant="16" id="Rey-jw-CKQ"/>
                             <constraint firstItem="n13-aX-p2X" firstAttribute="top" secondItem="bHe-PJ-idT" secondAttribute="bottom" constant="10" id="VVZ-wX-eXH"/>
@@ -205,7 +205,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="D8m-yg-0QC">
-                                <rect key="frame" x="0.0" y="91" width="390" height="753"/>
+                                <rect key="frame" x="0.0" y="148" width="390" height="696"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1xL-Fe-DP7">
                                     <size key="itemSize" width="390" height="210"/>
@@ -228,8 +228,8 @@
                     <navigationItem key="navigationItem" id="pLd-oE-F0n">
                         <rightBarButtonItems>
                             <barButtonItem id="cmi-aK-aIC">
-                                <view key="customView" contentMode="scaleToFill" id="XxX-Ne-aT3">
-                                    <rect key="frame" x="334" y="7" width="40" height="30"/>
+                                <view key="customView" contentMode="scaleToFill" misplaced="YES" id="XxX-Ne-aT3">
+                                    <rect key="frame" x="330" y="4.0000000000000009" width="40" height="36"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yxl-v0-paf" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -268,8 +268,8 @@
                                 </view>
                             </barButtonItem>
                             <barButtonItem id="o4E-TO-vnW">
-                                <view key="customView" contentMode="scaleToFill" id="7DH-Y1-lD4">
-                                    <rect key="frame" x="286" y="7" width="40" height="30"/>
+                                <view key="customView" contentMode="scaleToFill" misplaced="YES" id="7DH-Y1-lD4">
+                                    <rect key="frame" x="274" y="4.0000000000000009" width="40" height="36"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oJi-ls-hKZ" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -343,7 +343,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="wNl-Zt-aHg">
-                                <rect key="frame" x="0.0" y="91" width="390" height="753"/>
+                                <rect key="frame" x="0.0" y="148" width="390" height="696"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Xyb-du-L70">
                                     <size key="itemSize" width="128" height="128"/>
@@ -401,8 +401,8 @@
                             </constraints>
                         </view>
                         <barButtonItem key="rightBarButtonItem" id="FS0-ss-Mn0">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="RJp-GD-j8b" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="336" y="3" width="38" height="38"/>
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="RJp-GD-j8b" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                <rect key="frame" x="334" y="10" width="36" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
@@ -464,25 +464,25 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Attribute" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hcM-5z-IYd">
-                                <rect key="frame" x="16" y="71" width="358" height="24"/>
+                                <rect key="frame" x="16" y="118" width="358" height="24"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;desc&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Z9-gf-dJL">
-                                <rect key="frame" x="16" y="152" width="358" height="21.666666666666657"/>
+                                <rect key="frame" x="16" y="199" width="358" height="21.666666666666657"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;percentage&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fai-F2-lGz">
-                                <rect key="frame" x="16" y="189.66666666666666" width="358" height="17"/>
+                                <rect key="frame" x="16" y="236.66666666666666" width="358" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhw-hC-hrX">
-                                <rect key="frame" x="16" y="119" width="358" height="17"/>
+                                <rect key="frame" x="16" y="166" width="358" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
@@ -518,13 +518,13 @@
         <!--Collectibles Collections View Controller-->
         <scene sceneID="0Uo-EM-X4O">
             <objects>
-                <viewController storyboardIdentifier="collectibles-collections" id="8WH-Bk-dbW" customClass="CollectiblesCollectionsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-collections" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="8WH-Bk-dbW" customClass="CollectiblesCollectionsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fl1-Gf-tDh">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="tYI-6U-HjA">
-                                <rect key="frame" x="0.0" y="47" width="390" height="763"/>
+                                <rect key="frame" x="0.0" y="94" width="390" height="750"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="WlE-ll-Hvf">
                                     <size key="itemSize" width="128" height="128"/>
@@ -541,7 +541,7 @@
                             <constraint firstItem="tYI-6U-HjA" firstAttribute="top" secondItem="dqQ-qf-x7w" secondAttribute="top" id="331-LT-MR1"/>
                             <constraint firstItem="dqQ-qf-x7w" firstAttribute="trailing" secondItem="tYI-6U-HjA" secondAttribute="trailing" id="izg-cR-9iH"/>
                             <constraint firstItem="tYI-6U-HjA" firstAttribute="leading" secondItem="dqQ-qf-x7w" secondAttribute="leading" id="sNn-E1-W7X"/>
-                            <constraint firstItem="dqQ-qf-x7w" firstAttribute="bottom" secondItem="tYI-6U-HjA" secondAttribute="bottom" id="vAI-JA-VP0"/>
+                            <constraint firstAttribute="bottom" secondItem="tYI-6U-HjA" secondAttribute="bottom" id="vAI-JA-VP0"/>
                         </constraints>
                     </view>
                     <connections>
@@ -555,7 +555,8 @@
         <!--Onboarding Page View Controller-->
         <scene sceneID="A9i-Gi-lev">
             <objects>
-                <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="xRK-Jy-uzj" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <pageViewController autoresizesArchivedViewToFullSize="NO" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="xRK-Jy-uzj" customClass="OnboardingPageViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="commaSeperatedStoryboardIds" value="collectibles-collections,collectibles-favourites,collectibles-recents"/>
                         <userDefinedRuntimeAttribute type="boolean" keyPath="showPageControl" value="NO"/>
@@ -568,13 +569,13 @@
         <!--Collectibles Favourites View Controller-->
         <scene sceneID="F3l-bL-Ugw">
             <objects>
-                <viewController storyboardIdentifier="collectibles-favourites" id="6QN-xi-IAO" customClass="CollectiblesFavouritesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-favourites" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="6QN-xi-IAO" customClass="CollectiblesFavouritesViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OFj-Et-owQ">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Imd-xj-jLo">
-                                <rect key="frame" x="0.0" y="47" width="390" height="797"/>
+                                <rect key="frame" x="0.0" y="94" width="390" height="750"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="e8M-YR-gjb">
                                     <size key="itemSize" width="128" height="128"/>
@@ -605,13 +606,13 @@
         <!--Collectibles Recents View Controller-->
         <scene sceneID="mca-Al-7vz">
             <objects>
-                <viewController storyboardIdentifier="collectibles-recents" id="Erl-fO-mrP" customClass="CollectiblesRecentsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="collectibles-recents" extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="Erl-fO-mrP" customClass="CollectiblesRecentsViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zyw-jf-2vT">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="5Uq-bS-7Y5">
-                                <rect key="frame" x="0.0" y="47" width="390" height="797"/>
+                                <rect key="frame" x="0.0" y="94" width="390" height="750"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="xbt-lQ-NJx">
                                     <size key="itemSize" width="128" height="128"/>
@@ -640,20 +641,6 @@
             <point key="canvasLocation" x="-1558.4615384615383" y="-114.45497630331754"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="3EA-cA-JgY">
-            <size key="intrinsicContentSize" width="50" height="40"/>
-        </designable>
-        <designable name="RJp-GD-j8b">
-            <size key="intrinsicContentSize" width="44" height="34"/>
-        </designable>
-        <designable name="oJi-ls-hKZ">
-            <size key="intrinsicContentSize" width="54" height="44"/>
-        </designable>
-        <designable name="yxl-v0-paf">
-            <size key="intrinsicContentSize" width="54" height="44"/>
-        </designable>
-    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="qYR-8Y-gaw"/>
     </inferredMetricsTieBreakers>

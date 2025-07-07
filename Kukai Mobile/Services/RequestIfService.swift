@@ -113,8 +113,8 @@ public class RequestIfService {
 			return nil
 		}
 		
-		let publicKey = PublicKey(publicKeyData.bytes, signingCurve: .ed25519)
-		let valid = publicKey.verify(message: data.bytes, signature: signatureData.bytes)
+		let publicKey = PublicKey(publicKeyData.bytes(), signingCurve: .ed25519)
+		let valid = publicKey.verify(message: data.bytes(), signature: signatureData.bytes())
 		
 		if valid {
 			return try? JSONDecoder().decode(T.self, from: data)

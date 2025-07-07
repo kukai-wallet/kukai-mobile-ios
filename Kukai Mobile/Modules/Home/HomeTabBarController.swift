@@ -275,6 +275,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	public override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
+		/*
 		for x in gradientLayers {
 			x.removeFromSuperlayer()
 		}
@@ -299,6 +300,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		self.tabBar.layer.addSublayer(highlightedGradient)
 		
 		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
+		*/
 	}
 	
 	public func manuallySetSlectedTab(toIndex: Int) {
@@ -307,10 +309,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-		let index = self.tabBar.items?.firstIndex(of: item) ?? 0
-		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
+		//let index = self.tabBar.items?.firstIndex(of: item) ?? 0
+		//let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
 		
-		highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
+		//highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
 	}
 	
 	func setupTzKTAccountListener() {

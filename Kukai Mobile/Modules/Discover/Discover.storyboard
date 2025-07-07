@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="tpZ-ul-Zz4">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -21,13 +21,13 @@
         <!--Discover-->
         <scene sceneID="9Da-4s-rdi">
             <objects>
-                <viewController id="tpZ-ul-Zz4" customClass="DiscoverViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="tpZ-ul-Zz4" customClass="DiscoverViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mqi-LH-PTe">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" estimatedSectionHeaderHeight="-1" sectionFooterHeight="28" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ADy-i4-Fft">
-                                <rect key="frame" x="0.0" y="61" width="393" height="708"/>
+                                <rect key="frame" x="0.0" y="120" width="393" height="732"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokenBalanceHeaderCell" rowHeight="58" id="qpv-Jj-gog" customClass="TokenBalanceHeaderCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -317,7 +317,7 @@
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="leading" secondItem="xnx-a9-tVK" secondAttribute="leading" id="3ag-I5-Xlm"/>
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="trailing" secondItem="xnx-a9-tVK" secondAttribute="trailing" id="aai-Rw-oyl"/>
                             <constraint firstItem="ADy-i4-Fft" firstAttribute="top" secondItem="xnx-a9-tVK" secondAttribute="top" constant="2" id="qfh-ZX-AJK"/>
-                            <constraint firstItem="ADy-i4-Fft" firstAttribute="bottom" secondItem="xnx-a9-tVK" secondAttribute="bottom" id="tDD-df-FZF"/>
+                            <constraint firstItem="ADy-i4-Fft" firstAttribute="bottom" secondItem="mqi-LH-PTe" secondAttribute="bottom" id="tDD-df-FZF"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Discover" image="Discover" selectedImage="DiscoverOn" id="lqX-6I-1KF"/>
@@ -331,11 +331,6 @@
             <point key="canvasLocation" x="562.59541984732823" y="-1913.3802816901409"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="uLl-Eg-mC4">
-            <size key="intrinsicContentSize" width="30" height="34"/>
-        </designable>
-    </designables>
     <resources>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="Discover" width="26" height="26"/>

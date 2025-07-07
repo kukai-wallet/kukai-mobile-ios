@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Pq-Uv-YHX">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -21,13 +21,13 @@
         <!--Activity-->
         <scene sceneID="Kem-ja-hno">
             <objects>
-                <viewController id="1Pq-Uv-YHX" customClass="ActivityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" automaticallyAdjustsScrollViewInsets="NO" id="1Pq-Uv-YHX" customClass="ActivityViewController" customModule="Kukai_Mobile" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="HhN-HQ-m2z">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" estimatedSectionHeaderHeight="-1" sectionFooterHeight="18" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="5CJ-aj-OHP">
-                                <rect key="frame" x="0.0" y="61" width="393" height="708"/>
+                                <rect key="frame" x="0.0" y="120" width="393" height="732"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="ActivityToolbarCell" rowHeight="54" id="Yv4-zB-yUu" customClass="ActivityToolbarCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -237,7 +237,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="5CJ-aj-OHP" firstAttribute="top" secondItem="723-1V-1CZ" secondAttribute="top" constant="2" id="bvT-K7-N9b"/>
-                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="bottom" secondItem="723-1V-1CZ" secondAttribute="bottom" id="iOA-oi-KPF"/>
+                            <constraint firstItem="5CJ-aj-OHP" firstAttribute="bottom" secondItem="HhN-HQ-m2z" secondAttribute="bottom" id="iOA-oi-KPF"/>
                             <constraint firstItem="5CJ-aj-OHP" firstAttribute="trailing" secondItem="723-1V-1CZ" secondAttribute="trailing" id="tLC-0m-a4b"/>
                             <constraint firstItem="5CJ-aj-OHP" firstAttribute="leading" secondItem="723-1V-1CZ" secondAttribute="leading" id="tn8-wS-fCw"/>
                         </constraints>
@@ -253,11 +253,6 @@
             <point key="canvasLocation" x="-440.45801526717554" y="-1913.3802816901409"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="8Qq-8a-Xcf">
-            <size key="intrinsicContentSize" width="131" height="17"/>
-        </designable>
-    </designables>
     <resources>
         <image name="Activity" width="26" height="26"/>
         <image name="ActivityOn" width="26" height="26"/>
