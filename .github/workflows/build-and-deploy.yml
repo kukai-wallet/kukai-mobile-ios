@@ -5,7 +5,7 @@ on:
       - main
       - develop
       - hotfix-staging
-      - feature/iOS_26
+      - feature/ios_26
 
 jobs:
   deploy:
@@ -13,11 +13,11 @@ jobs:
     runs-on: macos-15
     steps:
       - name: Select Xcode version
-        if: github.ref != 'refs/heads/feature/iOS_26'
+        if: github.ref != 'refs/heads/feature/ios_26'
         run: sudo xcode-select -s '/Applications/Xcode_16.app/Contents/Developer'
 
       - name: Select Xcode version, for iOS 26 only
-        if: github.ref == 'refs/heads/feature/iOS_26'
+        if: github.ref == 'refs/heads/feature/ios_26'
         run: sudo xcode-select -s '/Applications/Xcode_26_beta.app/Contents/Developer'
         
       - name: Checkout repository
