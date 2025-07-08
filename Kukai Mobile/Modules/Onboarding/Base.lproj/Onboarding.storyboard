@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24093.8" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="amb-KQ-qIO">
     <device id="retina4_7" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24053.1"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -40,14 +40,14 @@
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="cKA-wQ-ndA">
-                                <rect key="frame" x="87.5" y="64" width="200" height="55"/>
+                                <rect key="frame" x="87.5" y="74" width="200" height="55"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="55" id="7I1-jc-Rg1"/>
                                     <constraint firstAttribute="width" constant="200" id="hxj-9F-Qx6"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="em4-VY-ISj">
-                                <rect key="frame" x="16" y="135" width="343" height="48"/>
+                                <rect key="frame" x="16" y="145" width="343" height="48"/>
                                 <string key="text">A Secure Home
 for your Digital Assets</string>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
@@ -143,7 +143,7 @@ for your Digital Assets</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n5P-c3-kPv">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="593"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="use_social_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="hDy-VV-EUb">
                                         <rect key="frame" x="100.5" y="32" width="174" height="136"/>
@@ -253,7 +253,7 @@ for your Digital Assets</string>
                     <navigationItem key="navigationItem" title="Create Wallet" id="4eZ-dV-F86">
                         <barButtonItem key="rightBarButtonItem" id="AGO-qg-vC2">
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" id="FWv-hS-Trj" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="276" y="5" width="83" height="34.5"/>
+                                <rect key="frame" x="319" y="10" width="36" height="24"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain"/>
@@ -294,7 +294,7 @@ for your Digital Assets</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9yM-Wm-jUE" customClass="AutoScrollView" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="593"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hoU-aE-01p">
                                         <rect key="frame" x="0.0" y="24" width="375" height="303"/>
@@ -361,13 +361,12 @@ for your Digital Assets</string>
                                                     <action selector="appleTapped:" destination="3EC-3V-hGn" eventType="touchUpInside" id="gin-CX-p3g"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Loj-qu-Rs8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Loj-qu-Rs8" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
                                                 <rect key="frame" x="32" y="175" width="311" height="56"/>
                                                 <color key="backgroundColor" name="BtnTer1"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="56" id="2pp-WC-vgi"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="20"/>
                                                 <color key="tintColor" name="TxtBtnTer1"/>
                                                 <inset key="imageEdgeInsets" minX="16" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Send" image="ArrowUp-right"/>
@@ -645,7 +644,7 @@ for your Digital Assets</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jgW-tR-UsW">
-                                <rect key="frame" x="0.0" y="208.5" width="375" height="159"/>
+                                <rect key="frame" x="0.0" y="213.5" width="375" height="159"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_kukai" translatesAutoresizingMaskIntoConstraints="NO" id="0hp-v9-I1J">
                                         <rect key="frame" x="87.5" y="0.0" width="200" height="55"/>
@@ -775,13 +774,13 @@ for your Digital Assets</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Create Kukai Passcode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Atf-wH-h54">
-                                <rect key="frame" x="16" y="96" width="343" height="36"/>
+                                <rect key="frame" x="16" y="106" width="343" height="36"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RbD-73-YAy">
-                                <rect key="frame" x="76" y="148" width="223" height="101"/>
+                                <rect key="frame" x="76" y="158" width="223" height="101"/>
                                 <string key="text">Use this passcode to unlock your Kukai Wallet on this device
 
 Passcode must have at least 3 unique digits, and no more than 3 sequential digits</string>
@@ -790,7 +789,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="u1I-vm-vcS">
-                                <rect key="frame" x="79.5" y="297" width="216" height="16"/>
+                                <rect key="frame" x="79.5" y="307" width="216" height="16"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hmf-ta-Xo2">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -879,7 +878,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                 </subviews>
                             </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zt3-Dy-pYo" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="79.5" y="329" width="216" height="34"/>
+                                <rect key="frame" x="79.5" y="339" width="216" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
@@ -925,7 +924,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6gY-nR-UMM">
-                                <rect key="frame" x="50" y="115.5" width="275" height="295"/>
+                                <rect key="frame" x="50" y="120.5" width="275" height="295"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Protect Your Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ec3-ZW-Tu6">
                                         <rect key="frame" x="0.0" y="182" width="275" height="36"/>
@@ -962,7 +961,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c6K-wg-8hR">
-                                <rect key="frame" x="24" y="442.5" width="327" height="64"/>
+                                <rect key="frame" x="24" y="447.5" width="327" height="64"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="faceid" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="YXX-dT-Ad9">
                                         <rect key="frame" x="16" y="16.5" width="32" height="30.5"/>
@@ -973,13 +972,13 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use Face ID" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dL1-a7-cL2">
-                                        <rect key="frame" x="64" y="21" width="182" height="22"/>
+                                        <rect key="frame" x="64" y="21" width="165" height="22"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="18"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="75D-Uf-Nij">
-                                        <rect key="frame" x="262" y="16.5" width="51" height="31"/>
+                                        <rect key="frame" x="245" y="17" width="68" height="30"/>
                                     </switch>
                                 </subviews>
                                 <color key="backgroundColor" name="BG3"/>
@@ -1080,7 +1079,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="S2I-PX-LET">
-                                <rect key="frame" x="0.0" y="80" width="375" height="587"/>
+                                <rect key="frame" x="0.0" y="90" width="375" height="577"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AlreadyHaveAWalletCell" rowHeight="102" id="zdp-mZ-dxj" customClass="AlreadyHaveAWalletCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -1194,7 +1193,7 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="E7i-BW-W2F" customClass="AutoScrollView" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="593"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="eB8-nJ-xzk">
                                         <rect key="frame" x="16" y="16" width="343" height="154"/>
@@ -1415,13 +1414,13 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                                         </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Import as Legacy Wallet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HJs-lP-kck">
-                                        <rect key="frame" x="32" y="694.5" width="230" height="17"/>
+                                        <rect key="frame" x="32" y="694.5" width="213" height="17"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="14"/>
                                         <color key="textColor" name="Txt6"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="fMd-6F-U16">
-                                        <rect key="frame" x="294" y="687.5" width="51" height="31"/>
+                                        <rect key="frame" x="277" y="688" width="68" height="30"/>
                                     </switch>
                                 </subviews>
                                 <constraints>
@@ -1495,14 +1494,14 @@ Passcode must have at least 3 unique digits, and no more than 3 sequential digit
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KmG-Ac-6Ne" customClass="EnterAddressComponent" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="16" y="88" width="343" height="91"/>
+                                <rect key="frame" x="16" y="98" width="343" height="91"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="91" placeholder="YES" id="4b5-95-hZa"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qpj-ie-wi2">
-                                <rect key="frame" x="16" y="227" width="343" height="120"/>
+                                <rect key="frame" x="16" y="237" width="343" height="120"/>
                                 <string key="text">Enter a Tezos address to view wallet content and activity. 
 
 You will not be able to transact in this wallet.</string>
@@ -1542,7 +1541,7 @@ You will not be able to transact in this wallet.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jBC-b7-fic" customClass="AutoScrollView" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="74" width="375" height="593"/>
                                 <subviews>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4JQ-2X-hOh">
                                         <rect key="frame" x="16" y="16" width="343" height="110"/>
@@ -1784,7 +1783,7 @@ You will not be able to transact in this wallet.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure you have Bluetooth enabled and your Ledger Nano X is unlocked" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="crb-15-1PS">
-                                <rect key="frame" x="16" y="72" width="343" height="34"/>
+                                <rect key="frame" x="16" y="82" width="343" height="34"/>
                                 <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
@@ -1888,7 +1887,7 @@ You will not be able to transact in this wallet.</string>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spinner" translatesAutoresizingMaskIntoConstraints="NO" id="U2k-Nc-Xad">
-                                <rect key="frame" x="165" y="130" width="45" height="45"/>
+                                <rect key="frame" x="165" y="140" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="8Ya-xb-fCd"/>
                                     <constraint firstAttribute="width" constant="45" id="r3r-39-RAz"/>
@@ -1917,7 +1916,7 @@ You will not be able to transact in this wallet.</string>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="r4H-ZR-0Ux">
-                                <rect key="frame" x="16" y="191" width="343" height="372"/>
+                                <rect key="frame" x="16" y="201" width="343" height="362"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="LedgerDeviceCell" rowHeight="65" id="hQV-ze-uKD" customClass="LedgerDeviceCell" customModule="Kukai_Mobile" customModuleProvider="target">
@@ -1933,13 +1932,13 @@ You will not be able to transact in this wallet.</string>
                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="x9X-Lr-Ybp">
                                                             <rect key="frame" x="8" y="10.5" width="235" height="40.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="&lt;title&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qyp-dG-jbM">
                                                                     <rect key="frame" x="0.0" y="0.0" width="235" height="19.5"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="16"/>
                                                                     <color key="textColor" name="Txt2"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" ambiguous="YES" text="&lt;subtitle&gt;" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u64-RF-MtO">
                                                                     <rect key="frame" x="0.0" y="23.5" width="235" height="17"/>
                                                                     <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="14"/>
                                                                     <color key="textColor" name="Txt10"/>
@@ -2026,13 +2025,13 @@ You will not be able to transact in this wallet.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Make sure your Ledger is unlocked and the Tezos app is installed and open" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0c3-xC-QSP">
-                                <rect key="frame" x="16" y="88" width="343" height="34"/>
+                                <rect key="frame" x="16" y="98" width="343" height="34"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt6"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gp8-Mj-qGa">
-                                <rect key="frame" x="77.5" y="158" width="220" height="76"/>
+                                <rect key="frame" x="77.5" y="168" width="220" height="76"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vBM-De-pMx">
                                         <rect key="frame" x="0.0" y="0.0" width="76" height="76"/>
@@ -2130,14 +2129,14 @@ You will not be able to transact in this wallet.</string>
                                 </constraints>
                             </view>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Spinner" translatesAutoresizingMaskIntoConstraints="NO" id="Rgy-WU-V4j">
-                                <rect key="frame" x="165" y="282" width="45" height="45"/>
+                                <rect key="frame" x="165" y="292" width="45" height="45"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="45" id="APs-Gm-zax"/>
                                     <constraint firstAttribute="width" constant="45" id="GWc-7J-LRo"/>
                                 </constraints>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="KukaiWheel" translatesAutoresizingMaskIntoConstraints="NO" id="8Fg-Sd-sxA">
-                                <rect key="frame" x="177.5" y="294.5" width="20" height="20"/>
+                                <rect key="frame" x="177.5" y="304.5" width="20" height="20"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="YDa-fi-s8u"/>
@@ -2166,7 +2165,7 @@ You will not be able to transact in this wallet.</string>
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Kbv-U5-ljA">
-                                <rect key="frame" x="16" y="351" width="343" height="316.5"/>
+                                <rect key="frame" x="16" y="361" width="343" height="316.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Checking device ..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q7E-Ta-CHG">
                                         <rect key="frame" x="0.0" y="0.0" width="343" height="17"/>
@@ -2283,19 +2282,19 @@ You will not be able to transact in this wallet.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm Kukai Passcode" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufG-9Z-lvf">
-                                <rect key="frame" x="16" y="96" width="343" height="36"/>
+                                <rect key="frame" x="16" y="106" width="343" height="36"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="30"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Use this passcode to unlock your Kukai Wallet on this device" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QTM-zd-0ig">
-                                <rect key="frame" x="76" y="148" width="223" height="34"/>
+                                <rect key="frame" x="76" y="158" width="223" height="34"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="Txt10"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="RRG-dN-TM2">
-                                <rect key="frame" x="79.5" y="230" width="216" height="16"/>
+                                <rect key="frame" x="79.5" y="240" width="216" height="16"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBo-Q8-8Hl">
                                         <rect key="frame" x="0.0" y="0.0" width="16" height="16"/>
@@ -2384,12 +2383,12 @@ You will not be able to transact in this wallet.</string>
                                 </subviews>
                             </stackView>
                             <textField hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zTe-bp-NGr" customClass="ValidatorTextField" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="79.5" y="303" width="216" height="34"/>
+                                <rect key="frame" x="79.5" y="313" width="216" height="34"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incorrect passcode try again" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mRz-Mx-H8d">
-                                <rect key="frame" x="76" y="270" width="223" height="17"/>
+                                <rect key="frame" x="76" y="280" width="223" height="17"/>
                                 <fontDescription key="fontDescription" name="Figtree-Regular" family="Figtree" pointSize="14"/>
                                 <color key="textColor" name="BGAlert4"/>
                                 <nil key="highlightedColor"/>
@@ -2442,7 +2441,7 @@ You will not be able to transact in this wallet.</string>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g6s-4i-43F">
-                                <rect key="frame" x="50" y="115.5" width="275" height="273.5"/>
+                                <rect key="frame" x="50" y="120.5" width="275" height="273.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back up Your Wallet" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sqa-zR-1Np">
                                         <rect key="frame" x="-34" y="182" width="343" height="36"/>
@@ -2477,7 +2476,7 @@ You will not be able to transact in this wallet.</string>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EIg-ad-QmA" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="45" y="443" width="285" height="56"/>
+                                <rect key="frame" x="45" y="448" width="285" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="3tn-0b-V3t"/>
                                 </constraints>
@@ -2500,7 +2499,7 @@ You will not be able to transact in this wallet.</string>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c29-Q0-bhN" customClass="CustomisableButton" customModule="Kukai_Mobile" customModuleProvider="target">
-                                <rect key="frame" x="45" y="523" width="285" height="56"/>
+                                <rect key="frame" x="45" y="528" width="285" height="56"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="56" id="jri-Gb-JOC"/>
                                 </constraints>
@@ -2922,7 +2921,7 @@ HD Wallets allow you to create many accounts within the same wallet, all of them
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="Uyr-Mh-l7I"/>
-        <segue reference="nii-SC-NQy"/>
+        <segue reference="Ura-gb-YOV"/>
         <segue reference="yeh-rk-pAd"/>
     </inferredMetricsTieBreakers>
     <resources>

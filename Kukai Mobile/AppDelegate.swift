@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import Sentry
 import os.log
-import Network
+import Network // TODO: remove when xcode beta bug fixed
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 	 With `NSFileProtectionComplete` turned on, values are unreadable inside xxxLaunchingWithOptions. This may result in booleans being returned as false simply because they can't be read, which can lead to broken cache logic
 	 */
 	func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-		nw_tls_create_options()
+		nw_tls_create_options() // TODO: Remove when xcode beta bug fixed
 		
 		setupTheme()
 		

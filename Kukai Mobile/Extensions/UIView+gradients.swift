@@ -142,7 +142,7 @@ extension UIView {
 			degrees: cssDegreesToIOS(117.79),
 			lineWidth: 1,
 			corners: [.allCorners],
-			cornerRadius: 8)
+			cornerRadius: self.customCornerRadius == 0 ? 8 : self.customCornerRadius)
 	}
 	
 	func addGradientButtonTertiaryHighlightedBorder() -> CAGradientLayer {
@@ -156,7 +156,7 @@ extension UIView {
 			degrees: cssDegreesToIOS(117.79),
 			lineWidth: 1,
 			corners: [.allCorners],
-			cornerRadius: 8)
+			cornerRadius: self.customCornerRadius == 0 ? 8 : self.customCornerRadius)
 	}
 	
 	func addGradientButtonTertiaryDisabledBorder() -> CAGradientLayer {
@@ -170,7 +170,7 @@ extension UIView {
 			degrees: cssDegreesToIOS(117.79),
 			lineWidth: 1,
 			corners: [.allCorners],
-			cornerRadius: 8)
+			cornerRadius: self.customCornerRadius == 0 ? 8 : self.customCornerRadius)
 	}
 	
 	func addSliderButton(withFrame frame: CGRect) -> CAGradientLayer {

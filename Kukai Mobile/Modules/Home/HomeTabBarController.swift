@@ -195,18 +195,35 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		
 		// Setup Shared UI elements (e.g. account name on tabview navigation bar)
-		let accountButtonWidth = self.view.frame.width - (32 + 88 + 20) // 16 * 2 for left/right gutter, 88 for left/right buttons, 20 for 10px spacing in between
+		sideMenuButton.translatesAutoresizingMaskIntoConstraints = false
+		accountButton.translatesAutoresizingMaskIntoConstraints = false
+		scanButton.translatesAutoresizingMaskIntoConstraints = false
+		
 		accountButton.titleLabel?.numberOfLines = 2
 		accountButton.titleLabel?.lineBreakMode = .byTruncatingMiddle
-		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: accountButtonWidth))
-		accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
 		
-		NSLayoutConstraint.activate([
-			sideMenuButton.heightAnchor.constraint(equalToConstant: 44),
-			sideMenuButton.widthAnchor.constraint(equalToConstant: 44),
-			scanButton.heightAnchor.constraint(equalToConstant: 44),
-			scanButton.widthAnchor.constraint(equalToConstant: 44)
-		])
+		
+		if #available(iOS 26.0, *) {
+			// iOS 26 seems to be much more strict on nav bar button sizes, probably due to new liquid glass animations
+			// Can't set buttons to be 44 x 44, or set account to occupy all the remaining space in middle
+			// iOS complains that the middle can't be bigger than 225, or taller than 38
+			//
+			// Left and right buttons are automatically glass-ified, so applying it to the middle also
+			accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: 225))
+			accountButton.configuration = .glass()
+			
+		} else {
+			let accountButtonWidth = self.view.frame.width - (32 + 88 + 40) // 16 * 2 for left/right gutter, 88 for left/right buttons, 20 for 10px spacing in between
+			accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .width, multiplier: 1, constant: accountButtonWidth))
+			accountButton.addConstraint(NSLayoutConstraint(item: accountButton as Any, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .height, multiplier: 1, constant: 44))
+			
+			NSLayoutConstraint.activate([
+				sideMenuButton.heightAnchor.constraint(equalToConstant: 44),
+				sideMenuButton.widthAnchor.constraint(equalToConstant: 44),
+				scanButton.heightAnchor.constraint(equalToConstant: 44),
+				scanButton.widthAnchor.constraint(equalToConstant: 44)
+			])
+		}
 		
 		
 		// Start listening for Wallet connect operation requests
@@ -275,32 +292,34 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	public override func viewDidLayoutSubviews() {
 		super.viewDidLayoutSubviews()
 		
-		/*
-		for x in gradientLayers {
-			x.removeFromSuperlayer()
+		if #available(iOS 26.0, *) {
+			
+		} else {
+			for x in gradientLayers {
+				x.removeFromSuperlayer()
+			}
+			
+			gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
+			gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
+			gradientLayers.append( scanButton.addTitleButtonBorderGradient() )
+			gradientLayers.append( scanButton.addTitleButtonBackgroundGradient() )
+			gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
+			gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
+			
+			gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
+			
+			
+			highlightedGradient.removeFromSuperlayer()
+			highlightedGradient = CAGradientLayer()
+			
+			let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
+			let position = CGRect(x: 0, y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
+			
+			highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
+			self.tabBar.layer.addSublayer(highlightedGradient)
+			
+			tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
 		}
-		
-		gradientLayers.append( sideMenuButton.addTitleButtonBorderGradient() )
-		gradientLayers.append( sideMenuButton.addTitleButtonBackgroundGradient() )
-		gradientLayers.append( scanButton.addTitleButtonBorderGradient() )
-		gradientLayers.append( scanButton.addTitleButtonBackgroundGradient() )
-		gradientLayers.append( accountButton.addTitleButtonBorderGradient() )
-		gradientLayers.append( accountButton.addTitleButtonBackgroundGradient() )
-		
-		gradientLayers.append( self.tabBar.addGradientTabBar(withFrame: CGRect(x: 0, y: 0, width: self.tabBar.bounds.width, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))) )
-		
-		
-		highlightedGradient.removeFromSuperlayer()
-		highlightedGradient = CAGradientLayer()
-		
-		let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
-		let position = CGRect(x: 0, y: -2, width: widthPerItem, height: self.tabBar.bounds.height + (UIApplication.shared.currentWindow?.safeAreaInsets.bottom ?? 0))
-		
-		highlightedGradient = self.tabBar.addTabbarHighlightedBackgroundGradient(rect: position)
-		self.tabBar.layer.addSublayer(highlightedGradient)
-		
-		tabBar(self.tabBar, didSelect: tabBar.selectedItem ?? UITabBarItem())
-		*/
 	}
 	
 	public func manuallySetSlectedTab(toIndex: Int) {
@@ -309,10 +328,15 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	}
 	
 	public override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
-		//let index = self.tabBar.items?.firstIndex(of: item) ?? 0
-		//let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
 		
-		//highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
+		if #available(iOS 26.0, *) {
+			
+		} else {
+			let index = self.tabBar.items?.firstIndex(of: item) ?? 0
+			let widthPerItem = (self.tabBar.frame.width / CGFloat(self.tabBar.items?.count ?? 1)).rounded()
+			
+			highlightedGradient.frame.origin.x = (0 + (widthPerItem * CGFloat(index)))
+		}
 	}
 	
 	func setupTzKTAccountListener() {
