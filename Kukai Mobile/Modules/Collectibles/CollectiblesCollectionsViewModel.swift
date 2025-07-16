@@ -180,7 +180,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		// Build snapshot data
-		displayCount = Int((UIScreen.main.bounds.width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
+		let width = min(UIApplication.shared.currentWindow?.bounds.width ?? 0, UIApplication.shared.currentWindow?.bounds.height ?? 0)
+		displayCount = Int((width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
 		imageURLsForCollectionGroups = []
 		imageURLsForCollectibles = []
 		nftCollectionRemainderCounts = []

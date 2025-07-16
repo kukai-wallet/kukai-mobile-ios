@@ -34,11 +34,11 @@ class DependencyManager {
 	static let defaultTezosDomainsURL_ghostnet = URL(string: "https://ghostnet-api.tezos.domains/graphql")!
 	static let defaultObjktURL_ghostnet = URL(string: "https://data.ghostnet.objkt.com/v3/graphql")!
 	
-	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.rionet.teztnets.com")!]
-	static let defaultTzktURL_protocolnet = URL(string: "https://api.rionet.tzkt.io")!
-	static let defaultExplorerURL_protocolnet = URL(string: "https://rionet.tzkt.io")!
+	static let defaultNodeURLs_protocolnet = [URL(string: "https://rpc.seoulnet.teztnets.com")!]
+	static let defaultTzktURL_protocolnet = URL(string: "https://api.seoulnet.tzkt.io")!
+	static let defaultExplorerURL_protocolnet = URL(string: "https://seoulnet.tzkt.io")!
 	
-	static let defaultNodeURLs_nextnet = [URL(string: "https://rpc.nextnet-20250610.teztnets.com")!]
+	static let defaultNodeURLs_nextnet = [URL(string: "https://rpc.nextnet-20250626.teztnets.com")!]
 	static let defaultTzktURL_nextnet = URL(string: "https://api.nextnet.tzkt.io")!
 	static let defaultExplorerURL_nextnet = URL(string: "https://nextnet.tzkt.io")!
 	
@@ -55,8 +55,8 @@ class DependencyManager {
 	
 	struct NetworkManagement {
 		static let ghostnetFaucet = URL(string: "https://faucet.ghostnet.teztnets.com/")!
-		static let protocolnetFaucet = URL(string: "https://faucet.rionet.teztnets.com/")!
-		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250610.teztnets.com/")!
+		static let protocolnetFaucet = URL(string: "https://faucet.seoulnet.teztnets.com/")!
+		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250626.teztnets.com/")!
 		
 		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
@@ -67,7 +67,7 @@ class DependencyManager {
 					return "Ghostnet"
 					
 				case .protocolnet:
-					return "Protocolnet - Rio"
+					return "Protocolnet - Seoul"
 					
 				case .nextnet:
 					return "Nextnet - S"
@@ -80,10 +80,10 @@ class DependencyManager {
 		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
 				case .ghostnet:
-					return "Quebec"
+					return "Rio"
 					
 				case .protocolnet:
-					return "Rio"
+					return "Seoul"
 					
 				case .nextnet:
 					return "S"

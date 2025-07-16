@@ -121,7 +121,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			self.reloadData(animate: animate, datasource: ds)
 			
 			// Return success
-			self.state = .success(nil)
+			DispatchQueue.main.async { self.state = .success(nil) }
 		}
 	}
 	

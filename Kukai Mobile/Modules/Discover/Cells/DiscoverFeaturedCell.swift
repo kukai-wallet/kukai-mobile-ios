@@ -41,6 +41,20 @@ class DiscoverFeaturedCell: UITableViewCell {
 		let flowLayout = (self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout)
 		flowLayout?.minimumLineSpacing = 0
 		flowLayout?.minimumInteritemSpacing = 0
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(customRotateLogic), name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+
+	@objc func customRotateLogic() {
+		self.collectionView?.collectionViewLayout.invalidateLayout()
+		
+		self.customAspectRatioLogicHasBeenRun = false
+		self.setNeedsLayout()
+		self.collectionView?.reloadData()
+	}
+
+	deinit {
+		NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
 	}
 	
 	/**

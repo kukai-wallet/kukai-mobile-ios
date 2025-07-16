@@ -45,6 +45,29 @@ class CollectibleDetailLayout: UICollectionViewLayout {
 		return CGSize(width: contentWidth, height: contentHeight)
 	}
 	
+	
+	override init() {
+		super.init()
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(customRotateLogic), name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+	
+	required init?(coder: NSCoder) {
+		super.init(coder: coder)
+		
+		NotificationCenter.default.addObserver(self, selector: #selector(customRotateLogic), name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+
+	@objc func customRotateLogic() {
+		cache = [[], []]
+		contentHeight = 0
+		self.collectionView?.collectionViewLayout.invalidateLayout()
+	}
+
+	deinit {
+		NotificationCenter.default.removeObserver(self, name: UIDevice.orientationDidChangeNotification, object: nil)
+	}
+	
 	override func prepare() {
 		guard cache[0].count == 0, let collectionView = collectionView else {
 			return
