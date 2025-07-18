@@ -142,9 +142,9 @@ class OnrampViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			query += "&signature=\(sanitised))"
 			
 			if let url = URL(string: "\(withBaseURL)\(query)") {
-				completion(Result.success(url))
+				DispatchQueue.main.async { completion(Result.success(url)) }
 			} else {
-				completion(Result.failure(KukaiError.unknown()))
+				DispatchQueue.main.async { completion(Result.failure(KukaiError.unknown())) }
 			}
 		}
 	}
