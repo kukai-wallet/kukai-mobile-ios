@@ -180,7 +180,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 		}
 		
 		// Build snapshot data
-		let width = min(UIApplication.shared.currentWindow?.bounds.width ?? 0, UIApplication.shared.currentWindow?.bounds.height ?? 0)
+		let width = min(UIApplication.shared.currentWindowIncludingSuspended?.bounds.width ?? 0, UIApplication.shared.currentWindowIncludingSuspended?.bounds.height ?? 0)
 		displayCount = Int((width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
 		imageURLsForCollectionGroups = []
 		imageURLsForCollectibles = []
@@ -200,21 +200,28 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 					guard !nftGroup.isHidden else { continue }
 					hashableData.append(.init(nftGroup))
 					
-					
-					// Process URLs and counts for easier later retreival
-					let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
-					var remainderCount: Int = 0
-					
-					if visibleNfts.count > displayCount {
-						remainderCount = visibleNfts.count - displayCount
+					if displayCount <= 0 {
+						// fallback for edge case where processing can't find screen
+						self.imageURLsForCollectionGroups.append(nil)
+						self.imageURLsForCollectibles.append([])
+						self.nftCollectionRemainderCounts.append(0)
+						
+					} else {
+						// Process URLs and counts for easier later retreival
+						let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
+						var remainderCount: Int = 0
+						
+						if visibleNfts.count > displayCount {
+							remainderCount = visibleNfts.count - displayCount
+						}
+						
+						let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
+						self.imageURLsForCollectionGroups.append(groupURL)
+						
+						let urls = visibleNfts.prefix(displayCount).map({ MediaProxyService.smallURL(forNFT: $0) })
+						self.imageURLsForCollectibles.append(urls)
+						self.nftCollectionRemainderCounts.append(remainderCount)
 					}
-					
-					let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
-					self.imageURLsForCollectionGroups.append(groupURL)
-					
-					let urls = visibleNfts.prefix(displayCount).map({ MediaProxyService.smallURL(forNFT: $0) })
-					self.imageURLsForCollectibles.append(urls)
-					self.nftCollectionRemainderCounts.append(remainderCount)
 				}
 			} else {
 				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]

@@ -151,14 +151,14 @@ public class EnterAddressComponent: UIView {
 					switch result {
 						case .success(let response):
 							if let add = response.data?.domain.address {
-								completion(Result.success((formattedText: formatted, address: add)))
+								DispatchQueue.main.async { completion(Result.success((formattedText: formatted, address: add))) }
 								
 							} else {
-								completion(Result.failure(KukaiError.unknown()))
+								DispatchQueue.main.async { completion(Result.failure(KukaiError.unknown())) }
 							}
 							
 						case .failure(let error):
-							completion(Result.failure(error))
+							DispatchQueue.main.async { completion(Result.failure(error)) }
 					}
 				})
 				
