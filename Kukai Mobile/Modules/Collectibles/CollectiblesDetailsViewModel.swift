@@ -297,49 +297,51 @@ class CollectiblesDetailsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				return
 			}
 			
-			// On sale
-			var needsUpdating = false
-			if data.isOnSale() {
-				self.quantityContent.isOnSale = true
-				self.weakQuantityCell?.setup(data: self.quantityContent)
-			}
-			
-			
-			// Last sale and floor price
-			let lastSale = data.lastSalePrice()
-			let floorPrice = data.floorPrice()
-			if lastSale != nil || floorPrice != nil {
-				
-				let lastSaleString = lastSale == nil ? "---" : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
-				let floorPriceString = floorPrice == nil ? "---" : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
-				let priceData = PricesContent(lastSalePrice: lastSaleString, floorPrice: floorPriceString)
-				self.currentSnapshot.insertItems([.init(priceData)], afterItem: .init(self.sendData))
-				needsUpdating = true
-			}
-			
-			
-			// Attributes
-			self.attributes = []
-			let totalEditions = data.fa.first?.editions ?? 1
-			for attribute in data.token.first?.attributes ?? [] {
-				let percentage = ((attribute.attribute.attribute_counts.first?.editions ?? 1) * 100) / totalEditions
-				let percentString = percentage.rounded(scale: 2, roundingMode: .bankers).description + "%"
-				let attObj = AttributeItem(name: attribute.attribute.name, value: attribute.attribute.value, percentage: percentString)
-				self.attributes.append(attObj)
-			}
-			
-			if self.attributes.count > 0 {
-				self.attributes = self.attributes.sorted { lhs, rhs in
-					return lhs.name < rhs.name
+			DispatchQueue.main.async {
+				// On sale
+				var needsUpdating = false
+				if data.isOnSale() {
+					self.quantityContent.isOnSale = true
+					self.weakQuantityCell?.setup(data: self.quantityContent)
 				}
-				self.currentSnapshot.insertItems([.init(self.attributesContent)], afterItem: .init(self.descriptionData))
-				self.currentSnapshot.appendItems(self.attributes.map({ .init($0) }), toSection: 1)
-				needsUpdating = true
-			}
-			
-			
-			if needsUpdating {
-				self.dataSource?.apply(self.currentSnapshot, animatingDifferences: animate)
+				
+				
+				// Last sale and floor price
+				let lastSale = data.lastSalePrice()
+				let floorPrice = data.floorPrice()
+				if lastSale != nil || floorPrice != nil {
+					
+					let lastSaleString = lastSale == nil ? "---" : "\((lastSale ?? .zero()).normalisedRepresentation) XTZ"
+					let floorPriceString = floorPrice == nil ? "---" : "\((floorPrice ?? .zero()).normalisedRepresentation) XTZ"
+					let priceData = PricesContent(lastSalePrice: lastSaleString, floorPrice: floorPriceString)
+					self.currentSnapshot.insertItems([.init(priceData)], afterItem: .init(self.sendData))
+					needsUpdating = true
+				}
+				
+				
+				// Attributes
+				self.attributes = []
+				let totalEditions = data.fa.first?.editions ?? 1
+				for attribute in data.token.first?.attributes ?? [] {
+					let percentage = ((attribute.attribute.attribute_counts.first?.editions ?? 1) * 100) / totalEditions
+					let percentString = percentage.rounded(scale: 2, roundingMode: .bankers).description + "%"
+					let attObj = AttributeItem(name: attribute.attribute.name, value: attribute.attribute.value, percentage: percentString)
+					self.attributes.append(attObj)
+				}
+				
+				if self.attributes.count > 0 {
+					self.attributes = self.attributes.sorted { lhs, rhs in
+						return lhs.name < rhs.name
+					}
+					self.currentSnapshot.insertItems([.init(self.attributesContent)], afterItem: .init(self.descriptionData))
+					self.currentSnapshot.appendItems(self.attributes.map({ .init($0) }), toSection: 1)
+					needsUpdating = true
+				}
+				
+				
+				if needsUpdating {
+					self.dataSource?.apply(self.currentSnapshot, animatingDifferences: animate)
+				}
 			}
 		}
 	}
