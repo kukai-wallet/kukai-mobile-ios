@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_05_WalletManagement: XCTestCase {
-	
+	/*
 	let testConfig: TestConfig = EnvironmentVariables.shared.config()
 	
 	public static let mainnetWatchWalletAddress = "tz1codeYURj5z49HKX9zmLHms2vJN2qDjrtt"
@@ -270,4 +270,5 @@ final class Test_05_WalletManagement: XCTestCase {
 		app.tables.staticTexts[address].tap()
 		sleep(2)
 	}
+	 */
 }

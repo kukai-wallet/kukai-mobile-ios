@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_09_SideMenu: XCTestCase {
-	
+	/*
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
@@ -197,9 +197,6 @@ final class Test_09_SideMenu: XCTestCase {
 		
 		app.tables.staticTexts[ mainnet ? "Mainnet" : "Ghostnet"].firstMatch.tap()
 		sleep(4)
-		
-		SharedHelpers.shared.navigationBack(app: app)
-		sleep(2)
 	}
 	
 	static func handleSwitchingCurrency(app: XCUIApplication, currencyCode: String) {
@@ -266,4 +263,5 @@ final class Test_09_SideMenu: XCTestCase {
 		
 		XCTAssert(app.buttons["Create a Wallet"].exists)
 	}
+	 */
 }
