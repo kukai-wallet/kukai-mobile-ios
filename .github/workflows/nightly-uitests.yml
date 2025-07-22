@@ -105,29 +105,34 @@ jobs:
             xcr_markdown=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
             curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
             -H "Expect:" \
-            -H 'Content-Type: text/json; charset=utf-8' \
+            -H 'Content-Type: application/json; charset=utf-8' \
             --data-raw '
             {
-                "text":"Automated UI test run complete",
                 "blocks": [
                     {
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "${xcr_markdown}"
+                            "text": "Automated UI test run complete\n\n'"${xcr_markdown}"'"
                         }
                     },
                     {
-                        "type": "button",
+                        "type": "section",
                         "text": {
-                            "type": "plain_text",
-                            "text": "Link to .xcresult"
+                            "type": "mrkdwn",
+                            "text": "Download full file from runner here:"
                         },
-                        "url": "${{ steps.upload_artifact.outputs.artifact-url }}"
+                        "accessory": {
+                            "type": "button",
+                            "text": {
+                                "type": "plain_text",
+                                "text": "Download"
+                            },
+                            "url": "${{ steps.upload_artifact.outputs.artifact-url }}",
+                        }
                     }
                 ]
             }'
-
 
 
             
