@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_08_Discover: XCTestCase {
-	/*
+	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
@@ -69,5 +69,4 @@ final class Test_08_Discover: XCTestCase {
 		app.tables.staticTexts["Ghostnet"].tap()
 		sleep(4)
 	}
-	 */
 }

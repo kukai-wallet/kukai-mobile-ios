@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_10_ConnectedApps: XCTestCase {
-	/*
+	
 	private static let sampleAppURL = URL(string: "https://wc2.kukai.tech/?network=ghostnet")!
 	
 	
@@ -570,5 +570,4 @@ final class Test_10_ConnectedApps: XCTestCase {
 		}
 		sleep(2)
 	}
-	 */
 }

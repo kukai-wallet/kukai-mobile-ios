@@ -9,7 +9,7 @@ import XCTest
 import KukaiCryptoSwift
 
 final class Test_04_Account: XCTestCase {
-	/*
+	
 	let testConfig: TestConfig = EnvironmentVariables.shared.config()
 	
    
@@ -608,8 +608,6 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public static func sendXTZ(app: XCUIApplication, amount: Decimal, to: String) {
-		let testConfig: TestConfig = EnvironmentVariables.shared.config()
-		
 		let tablesQuery = app.tables
 		tablesQuery.staticTexts["XTZ"].tap()
 		tablesQuery.buttons["primary-button"].tap()
@@ -620,7 +618,6 @@ final class Test_04_Account: XCTestCase {
 		app.buttons["primary-button"].tap()
 		sleep(4)
 		
-		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
 		Test_04_Account.slideButtonToComplete(inApp: app)
 		
 		sleep(2)
@@ -748,5 +745,4 @@ final class Test_04_Account: XCTestCase {
 		let dragDestination = element.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 100))
 		dragStart.press(forDuration: 1, thenDragTo: dragDestination)
 	}
-	 */
 }

@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_02_Onboarding: XCTestCase {
-	/*
+	
 	let testConfig: TestConfig = EnvironmentVariables.shared.config()
 	
 	
@@ -803,5 +803,4 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		return tempWord
 	}
-	 */
 }

@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_07_Activity: XCTestCase {
-	/*
+	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
@@ -92,5 +92,4 @@ final class Test_07_Activity: XCTestCase {
 		// Check for delegations
 		XCTAssert(normalCells.staticTexts["Baking Benjamins"].exists)
 	}
-	 */
 }

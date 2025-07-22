@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_09_SideMenu: XCTestCase {
-	/*
+	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
@@ -263,5 +263,4 @@ final class Test_09_SideMenu: XCTestCase {
 		
 		XCTAssert(app.buttons["Create a Wallet"].exists)
 	}
-	 */
 }

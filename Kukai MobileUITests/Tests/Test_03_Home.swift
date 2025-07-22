@@ -8,7 +8,6 @@
 import XCTest
 
 final class Test_03_Home: XCTestCase {
-/*
 	
 	// MARK: - Setup
 	
@@ -99,5 +98,4 @@ final class Test_03_Home: XCTestCase {
 		app.tables.staticTexts[account].tap()
 		sleep(2)
 	}
- */
 }

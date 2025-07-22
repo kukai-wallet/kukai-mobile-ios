@@ -8,7 +8,7 @@
 import XCTest
 
 final class Test_06_Collectibles: XCTestCase {
-	/*
+	
 	let testConfig: TestConfig = EnvironmentVariables.shared.config()
 	
 	
@@ -233,5 +233,4 @@ final class Test_06_Collectibles: XCTestCase {
 			ungroupCollections.tap()
 		}
 	}
-	 */
 }
