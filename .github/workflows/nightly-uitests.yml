@@ -19,10 +19,9 @@ jobs:
 
       - name: Setup Global Env
         run: |
-          echo "SEED_PHRASE_1=${{ secrets.UITEST_SEED_PHRASE_1 }}" >> $GITHUB_ENV
-          echo "SEED_PHRASE_PASSWORD=${{ secrets.UITEST_SEED_PHRASE_PASSWORD }}" >> $GITHUB_ENV
-          echo "GMAIL_ADDRESS=${{ secrets.UITEST_GMAIL_ADDRESS }}" >> $GITHUB_ENV
-          echo "GMAIL_PASSWORD=${{ secrets.UITEST_GMAIL_PASSWORD }}" >> $GITHUB_ENV
+          echo "CONFIG_1=${{ secrets.UITEST_CONFIG_1 }}" >> $GITHUB_ENV
+          echo "CONFIG_2=${{ secrets.UITEST_CONFIG_2 }}" >> $GITHUB_ENV
+          echo "CONFIG_3=${{ secrets.UITEST_CONFIG_3 }}" >> $GITHUB_ENV
 
       - name: Build and run tests
         run: |
@@ -35,10 +34,9 @@ jobs:
           clean \
           archive \
           test \
-          SEED_PHRASE_1="$SEED_PHRASE_1" \
-          SEED_PHRASE_PASSWORD="$SEED_PHRASE_PASSWORD" \
-          GMAIL_ADDRESS="$GMAIL_ADDRESS" \
-          GMAIL_PASSWORD="$GMAIL_PASSWORD"
+          CONFIG_1=="$CONFIG_1" \
+          CONFIG_2=="$CONFIG_2" \
+          CONFIG_3=="$CONFIG_3"
 
       - name: Upload xcresult file
         if: ${{ success() || failure() }}
@@ -73,7 +71,7 @@ jobs:
                         "type": "section",
                         "text": {
                             "type": "mrkdwn",
-                            "text": "Download full file from runner [here](${{ steps.upload_artifact.outputs.artifact-url }})"
+                            "text": "Download full file from runner <${{ steps.upload_artifact.outputs.artifact-url }}|Here>"
                         }
                     }
                 ]
