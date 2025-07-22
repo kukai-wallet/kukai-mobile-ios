@@ -98,14 +98,14 @@ jobs:
             echo EOF
           } >> $GITHUB_OUTPUT
 
-    #   - name: Share a file to that channel
-    #     if: ${{ success() || failure() }}
-    #     uses: slackapi/slack-github-action@v2.0.0
-    #     with:
-    #         method: files.uploadV2
-    #         token: ${{ secrets.SLACK_BOT_TOKEN }}
-    #         payload: |
-    #             channel: ${{ secrets.SLACK_CHANNEL_ID }}
-    #             initial_comment: "Automated UI test run complete\n\n${{echo "${steps.xcresultparser_output.outputs.output}"}}"
-    #             file: "TestResults.xcresult"
-    #             filename: "TestResults-${{ github.run_number }}.xcresult"
+      - name: Share a file to that channel
+        if: ${{ success() || failure() }}
+        uses: slackapi/slack-github-action@v2.0.0
+        with:
+            method: files.uploadV2
+            token: ${{ secrets.SLACK_BOT_TOKEN }}
+            payload: |
+                channel: ${{ secrets.SLACK_CHANNEL_ID }}
+                initial_comment: "Automated UI test run complete\n\n${{ echo "${steps.xcresultparser_output.outputs.output}" }}"
+                file: "TestResults.xcresult"
+                filename: "TestResults-${{ github.run_number }}.xcresult"
