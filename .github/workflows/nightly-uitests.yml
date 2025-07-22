@@ -91,8 +91,12 @@ jobs:
         if: ${{ success() || failure() }}
         id: xcresultparser_output
         run: |
-          xc_output=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
-          echo "$xc_output" >> $GITHUB_OUTPUT
+          multiline_output=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
+          {
+            echo 'output<<EOF'
+            echo "${multiline_output}"
+            echo EOF
+          } >> $GITHUB_OUTPUT
 
     #   - name: Share a file to that channel
     #     if: ${{ success() || failure() }}
@@ -102,6 +106,6 @@ jobs:
     #         token: ${{ secrets.SLACK_BOT_TOKEN }}
     #         payload: |
     #             channel: ${{ secrets.SLACK_CHANNEL_ID }}
-    #             initial_comment: "Automated UI test run complete\n\n${{steps.xcresultparser_output.outputs}}"
+    #             initial_comment: "Automated UI test run complete\n\n${{echo "${steps.xcresultparser_output.outputs.output}"}}"
     #             file: "TestResults.xcresult"
     #             filename: "TestResults-${{ github.run_number }}.xcresult"
