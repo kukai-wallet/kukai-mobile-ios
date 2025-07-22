@@ -31,12 +31,13 @@ jobs:
           -resultBundlePath TestResults \
           -configuration Beta \
           -archivePath $PWD/build/Kukai-mobile.xcarchive \
+          -enableCodeCoverage YES \
           clean \
           archive \
           test \
-          CONFIG_1=="$CONFIG_1" \
-          CONFIG_2=="$CONFIG_2" \
-          CONFIG_3=="$CONFIG_3"
+          CONFIG_1="$CONFIG_1" \
+          CONFIG_2="$CONFIG_2" \
+          CONFIG_3="$CONFIG_3"
 
       - name: Upload xcresult file
         if: ${{ success() || failure() }}
@@ -53,7 +54,7 @@ jobs:
       - name: Report to slack
         if: ${{ success() || failure() }}
         run: |
-            xcr_markdown=$(xcresultparser --output-format markdown --failed-tests-only "TestResults.xcresult")
+            xcr_markdown=$(xcresultparser --output-format txt --no-test-result --coverage --coverage-targets "Kukai" "TestResults-26.xcresult")
             curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
             -H "Expect:" \
             -H 'Content-Type: application/json; charset=utf-8' \
