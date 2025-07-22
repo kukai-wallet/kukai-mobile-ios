@@ -100,7 +100,7 @@ jobs:
 
       - name: Share a file to that channel
         if: ${{ success() || failure() }}
-        uses: slackapi/slack-github-action@v2.0.0
+        uses: slackapi/slack-github-action@v2.1.1
         with:
             method: files.uploadV2
             token: ${{ secrets.SLACK_BOT_TOKEN }}
