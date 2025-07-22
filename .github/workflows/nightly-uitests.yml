@@ -54,7 +54,7 @@ jobs:
       - name: Report to slack
         if: ${{ success() || failure() }}
         run: |
-            xcr_markdown=$(xcresultparser --output-format txt --no-test-result --coverage --coverage-targets "Kukai" "TestResults-26.xcresult")
+            xcr_markdown=$(xcresultparser --output-format txt --no-test-result --coverage --coverage-targets "Kukai" "TestResults.xcresult")
             curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
             -H "Expect:" \
             -H 'Content-Type: application/json; charset=utf-8' \
