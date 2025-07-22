@@ -82,30 +82,67 @@ jobs:
 
       - name: Upload xcresult file
         if: ${{ success() || failure() }}
+        id: upload_artifact
         uses: actions/upload-artifact@v4
         with:
           name: TestResults-${{ github.run_number }}.xcresult
           path: TestResults.xcresult
 
-      - name: Parse results
-        if: ${{ success() || failure() }}
-        id: xcresultparser_output
-        run: |
-          multiline_output=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
-          {
-            echo 'output<<EOF'
-            echo "${multiline_output}"
-            echo EOF
-          } >> $GITHUB_OUTPUT
+    #   - name: Parse results
+    #     if: ${{ success() || failure() }}
+    #     id: xcresultparser_output
+    #     run: |
+    #       multiline_output=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
+    #       {
+    #         echo 'output<<EOF'
+    #         echo "${multiline_output}"
+    #         echo EOF
+    #       } >> $GITHUB_OUTPUT
 
-      - name: Share a file to that channel
+      - name: Generate markdown from xcresult and post to slack
         if: ${{ success() || failure() }}
-        uses: slackapi/slack-github-action@v2.1.1
-        with:
-            method: files.uploadV2
-            token: ${{ secrets.SLACK_BOT_TOKEN }}
-            payload: |
-                channel: ${{ secrets.SLACK_CHANNEL_ID }}
-                initial_comment: "Automated UI test run complete\n\n${{ steps.xcresultparser_output.outputs.output }}"
-                file: "TestResults.xcresult"
-                filename: "TestResults-${{ github.run_number }}.xcresult"
+        run: |
+            xcr_markdown=$(xcresultparser --output-format txt --failed-tests-only "TestResults.xcresult")
+            curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
+            -H "Expect:" \
+            -H 'Content-Type: text/json; charset=utf-8' \
+            --data-raw '
+            {
+                "text":"Automated UI test run complete",
+                "blocks": [
+                    {
+                        "type": "section",
+                        "text": {
+                            "type": "mrkdwn",
+                            "text": "${xcr_markdown}"
+                        }
+                    },
+                    {
+                        "type": "button",
+                        "text": {
+                            "type": "plain_text",
+                            "text": "Link to .xcresult"
+                        },
+                        "url": "${{ steps.upload_artifact.outputs.artifact-url }}"
+                    }
+                ]
+            }'
+
+
+
+            
+
+
+
+
+
+        # uses: slackapi/slack-github-action@v2.1.1
+        # with:
+        #     method: files.uploadV2
+        #     token: ${{ secrets.SLACK_BOT_TOKEN }}
+        #     payload: |
+        #         channel: ${{ secrets.SLACK_CHANNEL_ID }}
+        #         title: "Automated UI test run complete"
+        #         initial_comment: "${{ steps.xcresultparser_output.outputs.output }}"
+        #         file: "TestResults.xcresult"
+        #         filename: "TestResults-${{ github.run_number }}.xcresult"
