@@ -65,18 +65,27 @@ jobs:
             coverage_percentage=$(echo "$coverage_clean_value * 100" | bc -l)
             coverage_formatted_percentage=$(printf "%.2f%%" "$coverage_percentage")
             
-            slack_message=""
+            app_version=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+            app_build=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+
+
+            slack_message_title="Automated UI test run for $app_version ($app_build): "
+            slack_message_emoji=""
+            slack_message_body=""
             if [[ $number_of_test_fails_string == "0" ]] 
             then
-                slack_message+="Automated UI test run: SUCCESS\n\n"
-                slack_message+="Tests: \t\t$number_of_tests_formatted\n"
+                slack_message_title+="SUCCESS "
+                slack_message_emoji="white_check_mark"
+                slack_message_body+="\n\nTests: \t\t$number_of_tests_formatted\n"
             else
-                slack_message+="Automated UI test run: FAILURE\n\n"
-                slack_message+="Tests: \t\t$number_of_tests_formatted\n"
-                slack_message+="Failures: \t$number_of_test_fails_formatted\n"
+                slack_message+="FAILURE "
+                slack_message_emoji="x"
+                slack_message_body+="\n\nTests: \t\t$number_of_tests_formatted\n"
+                slack_message_body+="Failures: \t$number_of_test_fails_formatted\n"
             fi
 
-            slack_message+="Coverage: \t${coverage_formatted_percentage}\n"
+            slack_message_body+="Coverage: \t${coverage_formatted_percentage}\n"
+
 
 
 
@@ -87,11 +96,26 @@ jobs:
             {
                 "blocks": [
                     {
-                        "type": "section",
-                        "text": {
-                            "type": "plain_text",
-                            "text": "${slack_message}"
-                        }
+                        "type": "rich_text",
+                        "elements": [
+                            {
+                                "type": "rich_text_section",
+                                "elements": [
+                                    {
+                                        "type": "text",
+                                        "text": "'"${slack_message_title}"'"
+                                    },
+                                    {
+                                        "type": "emoji",
+                                        "name": "'"${slack_message_emoji}"'"
+                                    },
+                                    {
+                                        "type": "text",
+                                        "text": "'"${slack_message_body}"'"
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "type": "section",

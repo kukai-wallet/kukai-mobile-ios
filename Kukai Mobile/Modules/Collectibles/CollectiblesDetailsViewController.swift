@@ -21,6 +21,7 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	private let viewModel = CollectiblesDetailsViewModel()
 	private var cancellable: AnyCancellable?
 	private var menu: MenuViewController? = nil
+	private var firstLoad = true
 	//private let avPickerView = AVRoutePickerView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
 	
 	override func viewDidLoad() {
@@ -84,7 +85,12 @@ class CollectiblesDetailsViewController: UIViewController, UICollectionViewDeleg
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		viewModel.refresh(animate: false)
+		
+		if firstLoad {
+			// stop triggering a refresh on popping back
+			viewModel.refresh(animate: false)
+			firstLoad = false
+		}
 		
 		self.navigationController?.setNavigationBarHidden(false, animated: true)
 	}

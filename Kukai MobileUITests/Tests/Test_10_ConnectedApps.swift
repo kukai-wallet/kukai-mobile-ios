@@ -27,7 +27,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 	
 	
 	// MARK: - Test functions
-	
+	/*
 	// TODO: reenable after WC2 modal updates + universal link updates are complete
 	func test_01_connectAndTest() throws {
 		let app = XCUIApplication()
@@ -139,7 +139,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 		handleSign(app: app, safari: safari, webview: webview)
 		disconnectFromSideMenuAndVerify(app: app, safari: safari, webview: webview)
 	}
-	
+	*/
 	/*
 	func test_03_objkt() {
 		let app = XCUIApplication()
