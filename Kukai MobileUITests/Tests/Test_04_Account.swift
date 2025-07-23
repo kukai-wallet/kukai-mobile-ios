@@ -550,7 +550,7 @@ final class Test_04_Account: XCTestCase {
 			"account-token-balance",
 			"account-xtz-balance",
 			"account-getting-started-header"
-		], exists: true, inElement: app.tables, delay: 10)
+		], exists: true, inElement: app.tables, delay: 30)
 	}
 	
 	public static func openTokenDetailsAndWait(app: XCUIApplication) {

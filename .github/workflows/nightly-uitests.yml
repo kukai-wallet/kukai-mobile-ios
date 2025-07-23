@@ -55,7 +55,31 @@ jobs:
       - name: Report to slack
         if: ${{ success() || failure() }}
         run: |
-            xcr_markdown=$(xcresultparser --output-format txt --no-test-result "TestResults.xcresult")
+            number_of_tests_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsCount._value // "0"')
+            number_of_tests_formatted=$(echo "$number_of_tests_string" | tr -d '"')
+            number_of_test_fails_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsFailedCount._value // "0"')
+            number_of_test_fails_formatted=$(echo "$number_of_test_fails_string" | tr -d '"')
+
+            coverage_percent_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.totalCoveragePercentage._value // "0"')
+            coverage_clean_value=$(echo "$coverage_percent_string" | sed 's/[^0-9\.]//g')
+            coverage_percentage=$(echo "$coverage_clean_value * 100" | bc -l)
+            coverage_formatted_percentage=$(printf "%.2f%%" "$coverage_percentage")
+            
+            slack_message=""
+            if [[ $number_of_test_fails_string == "0" ]] 
+            then
+                slack_message+="Automated UI test run: SUCCESS\n\n"
+                slack_message+="Tests: \t\t$number_of_tests_formatted\n"
+            else
+                slack_message+="Automated UI test run: FAILURE\n\n"
+                slack_message+="Tests: \t\t$number_of_tests_formatted\n"
+                slack_message+="Failures: \t$number_of_test_fails_formatted\n"
+            fi
+
+            slack_message+="Coverage: \t${coverage_formatted_percentage}\n"
+
+
+
             curl -0 -v -X POST ${{ secrets.SLACK_INCOMING_WEBHOOK }} \
             -H "Expect:" \
             -H 'Content-Type: application/json; charset=utf-8' \
@@ -66,7 +90,7 @@ jobs:
                         "type": "section",
                         "text": {
                             "type": "plain_text",
-                            "text": "Automated UI test run complete. '"${xcr_markdown}"'"
+                            "text": "${slack_message}"
                         }
                     },
                     {

@@ -67,18 +67,22 @@ final class Test_10_ConnectedApps: XCTestCase {
 		sleep(2)
 		
 		// WC2 modal has no identifiers for us to grab.
-		// The button we are looking for is the second highest button (below the X to close) to open the QRCode
-		var yPositions: [(index: Int, position: CGFloat)] = []
+		// The button we are looking for is the one before "Kukai"
 		for i in 0..<webview.buttons.count {
-			yPositions.append((index: i, position: webview.buttons.element(boundBy: i).frame.origin.y))
+			if webview.buttons.element(boundBy: i).label == "Kukai"{
+				
+				if i > 0 {
+					webview.buttons.element(boundBy: i - 1).tap()
+				} else {
+					XCTFail("Can't find the WC2 qrcode button")
+				}
+			}
 		}
-		yPositions = yPositions.sorted { $0.position < $1.position }
-		webview.buttons.element(boundBy: yPositions[1].index).tap()
 		sleep(2)
 		
 		
 		// same thing again to copy the QRCode
-		yPositions = []
+		var yPositions: [(index: Int, position: CGFloat)] = []
 		for i in 0..<webview.buttons.count {
 			yPositions.append((index: i, position: webview.buttons.element(boundBy: i).frame.origin.y))
 		}
