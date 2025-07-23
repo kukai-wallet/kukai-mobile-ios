@@ -294,6 +294,7 @@ final class Test_04_Account: XCTestCase {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
 		
 		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		
@@ -332,6 +333,8 @@ final class Test_04_Account: XCTestCase {
 	public func testSendOther() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
 		
 		// Send token to other account
 		sendToken(to: testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
@@ -395,23 +398,30 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		
-		// Can't assume the order of tokens, need to find the correct cell with "kUSD" in it
-		var newTokenString = ""
-		let cellQuery = app.tables.cells.containing(.staticText, identifier: "account-token-symbol")
-		let numberOfCells = cellQuery.count
-		for i in 0...numberOfCells {
-			let cell = cellQuery.element(boundBy: i)
-			let symbol = cell.staticTexts["account-token-symbol"].label
-			if symbol == tokenSymbol {
-				newTokenString = cell.staticTexts["account-token-balance"].label
-				break
+		
+		// Possible that we've sent all of the token, so check if it should be zero and missing, or if its still there, grab the value
+		if expectedToken > 0 {
+			// Can't assume the order of tokens, need to find the correct cell with the token symbol in it
+			var newTokenString = ""
+			let cellQuery = app.tables.cells.containing(.staticText, identifier: "account-token-symbol")
+			let numberOfCells = cellQuery.count
+			for i in 0...numberOfCells {
+				let cell = cellQuery.element(boundBy: i)
+				let symbol = cell.staticTexts["account-token-symbol"].label
+				if symbol == tokenSymbol {
+					newTokenString = cell.staticTexts["account-token-balance"].label
+					break
+				}
 			}
+			
+			let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
+			XCTAssert(expectedToken == newTokenBalance, "\(expectedToken) != \(newTokenBalance)")
+			
+		} else {
+			XCTAssert(!app.tables.staticTexts[tokenSymbol].exists)
 		}
 		
-		let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
-		
 		XCTAssert(expectedXTZ == newXTZBalance, "\(expectedXTZ) != \(newXTZBalance)")
-		XCTAssert(expectedToken == newTokenBalance, "\(expectedToken) != \(newTokenBalance)")
 	}
 	
 	public func testStakeXTZ() {
@@ -538,6 +548,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		SharedHelpers.shared.waitForAnyStaticText([
 			"account-token-balance",
+			"account-xtz-balance",
 			"account-getting-started-header"
 		], exists: true, inElement: app.tables, delay: 10)
 	}
@@ -649,7 +660,7 @@ final class Test_04_Account: XCTestCase {
 		
 		if isStaking {
 			tokenBalanceName = "account-xtz-balance"
-			fiatBalanceName = "ccount-xtz-fiat"
+			fiatBalanceName = "account-xtz-fiat"
 		} else {
 			tokenBalanceName = "account-token-balance"
 			fiatBalanceName = "account-token-fiat"
@@ -717,6 +728,12 @@ final class Test_04_Account: XCTestCase {
 	
 	public static func check(app: XCUIApplication, isDisplayingGhostnetWarning: Bool) {
 		SharedHelpers.shared.waitForStaticText("ghostnet-warning", exists: isDisplayingGhostnetWarning, inElement: app.tables, delay: 2)
+	}
+	
+	public static func makeSureLoggedInto(app: XCUIApplication, address: String) {
+		if !app.staticTexts[address].exists {
+			Test_05_WalletManagement.handleSwitchingTo(app: app, address: address)
+		}
 	}
 	
 	public static func tapBackup(app: XCUIApplication) {
