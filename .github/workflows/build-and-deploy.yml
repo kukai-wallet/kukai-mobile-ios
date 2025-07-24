@@ -194,34 +194,34 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
-      # Manually upload the dSYM's we care about to sentry, to avoid having annoying tool installed on dev machine
-      - name: Upload dSYM
-        if: ${{ success() }}
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-        run: |
-          export PATH=/usr/local/bin:$PATH
-          export SENTRY_ORG=kukai
-          export SENTRY_PROJECT=kukai-ios
-          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
+      # # Manually upload the dSYM's we care about to sentry, to avoid having annoying tool installed on dev machine
+      # - name: Upload dSYM
+      #   if: ${{ success() }}
+      #   env:
+      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      #   run: |
+      #     export PATH=/usr/local/bin:$PATH
+      #     export SENTRY_ORG=kukai
+      #     export SENTRY_PROJECT=kukai-ios
+      #     export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+      #     export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
-          echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
-          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
+      #     echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
+      #     echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
           
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+      #     ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
+      #     ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
           
-          if [ ! $? -eq 0 ]; then
-          echo "warning: sentry-cli - $ERROR"
-          fi
+      #     if [ ! $? -eq 0 ]; then
+      #     echo "warning: sentry-cli - $ERROR"
+      #     fi
       
-      - name: Upload to TestFlight
-        if: ${{ success() }}
-        env:
-          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
-          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
-        run: xcrun altool --upload-app -t ios -f "build/Kukai Mobile.ipa" -u "$APPLEID_USERNAME" -p "$APPLEID_PASSWORD" --verbose
+      # - name: Upload to TestFlight
+      #   if: ${{ success() }}
+      #   env:
+      #     APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
+      #     APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
+      #   run: xcrun altool --upload-app -t ios -f "build/Kukai Mobile.ipa" -u "$APPLEID_USERNAME" -p "$APPLEID_PASSWORD" --verbose
 
 
       - name: Commit new version number
@@ -231,14 +231,16 @@ jobs:
           git commit -m "bump version"
           git push origin HEAD
 
-      # Setup and run UITests while Testflight processing is taking place
+      # Setup and run UITests while Testflight processing is taking place. Skip if /main branch
       - name: Setup Global Env
+        if: github.ref != 'refs/heads/main'
         run: |
           echo "CONFIG_1=${{ secrets.UITEST_CONFIG_1 }}" >> $GITHUB_ENV
           echo "CONFIG_2=${{ secrets.UITEST_CONFIG_2 }}" >> $GITHUB_ENV
           echo "CONFIG_3=${{ secrets.UITEST_CONFIG_3 }}" >> $GITHUB_ENV
 
-      - name: Build and run tests
+      - name: Build and run tests for Beta profile only
+        if: github.ref != 'refs/heads/main'
         run: |
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator 
@@ -246,14 +248,19 @@ jobs:
           -scheme "Kukai Mobile Beta" \
           -resultBundlePath TestResults \
           -configuration Beta \
+          -archivePath $PWD/build/Kukai-mobile-test.xcarchive \
+          -derivedDataPath $PWD/build-test/ \
           -enableCodeCoverage YES \
+          clean \
+          archive \
           test \
           CONFIG_1="$CONFIG_1" \
           CONFIG_2="$CONFIG_2" \
           CONFIG_3="$CONFIG_3"
 
+
       - name: Upload xcresult file
-        if: ${{ success() || failure() }}
+        if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
         id: upload_artifact
         uses: actions/upload-artifact@v4
         with:
@@ -271,7 +278,7 @@ jobs:
       # Some part of the setup wasn't done correctly, but the integration reports no errors or codes, everything just fails silently and you have to guess.
       # Instead we use a link to the github run artifact, which is fine. No need to have it in two places anyway
       - name: Report to slack
-        if: ${{ success() || failure() }}
+        if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
         run: |
             number_of_tests_string=$(xcrun xcresulttool get --legacy --path TestResults.xcresult --format json | jq '.metrics.testsCount._value // "0"')
             number_of_tests_formatted=$(echo "$number_of_tests_string" | tr -d '"')
