@@ -8,18 +8,16 @@
 # If set to false, script will fallback to public/free runners without running UI tests
 #
 name: Build, Deploy and Test
-
-env:
-  XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.app/Contents/Developer" #"/Applications/Xcode_26.app/Contents/Developer"
-  XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" #"/Applications/Xcode-beta.app/Contents/Developer"
-  TEST_SIMULATOR_VERSION: "platform=iOS Simulator,name=iPhone 16,OS=18.5"
-
 on:
   push:
     branches:
       - main
       - develop
       - hotfix-staging
+env:
+  XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.app/Contents/Developer" #"/Applications/Xcode_26.app/Contents/Developer"
+  XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" #"/Applications/Xcode-beta.app/Contents/Developer"
+  TEST_SIMULATOR_VERSION: "platform=iOS Simulator,name=iPhone 16,OS=18.5"
 
 jobs:
 
@@ -34,7 +32,7 @@ jobs:
 
     steps:
       - name: Select Xcode version
-        run: sudo xcode-select -s $XCODE_VERSION_PUBLIC
+        run: sudo xcode-select -s '${{ env.XCODE_VERSION_PUBLIC }}'
         
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
@@ -168,7 +166,7 @@ jobs:
 
     steps:
       - name: Select Xcode version
-        run: sudo xcode-select -s $XCODE_VERSION_SELF
+        run: sudo xcode-select -s '${{ env.XCODE_VERSION_SELF }}'
         
       - name: Checkout repository
         uses: actions/checkout@v4.1.1
@@ -244,7 +242,7 @@ jobs:
         run: |
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator 
-          -destination $TEST_SIMULATOR_VERSION \
+          -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
           -scheme "Kukai Mobile Beta" \
           -resultBundlePath TestResults \
           -configuration Beta \
