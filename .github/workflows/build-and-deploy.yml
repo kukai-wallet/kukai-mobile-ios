@@ -3,7 +3,7 @@
 # Anything pushed to /main will go to production app store connect + testflight
 # Anything pushed to /develop or /hotfix-staging will go to beta app store connect + testflight
 # The script will also attempt to run XCUITests and report status back to slack. However this can ONLY be done on self-hosted runners due to many issues
-# For the sake of redundancy the repositry has a varible set (settings ->secrets and varibales -> actions -> varibales) called USE_SELF_HOSTED 
+# For the sake of redundancy the repositry has a varible set (settings -> secrets and varibales -> actions -> varibales) called USE_SELF_HOSTED 
 # which can be used to quickly toggle the use of the self-hosted runner incase of an emergency.
 # If set to false, script will fallback to public/free runners without running UI tests
 #
@@ -15,8 +15,10 @@ on:
       - develop
       - hotfix-staging
 env:
-  XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.app/Contents/Developer" #"/Applications/Xcode_26.app/Contents/Developer"
-  XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" #"/Applications/Xcode-beta.app/Contents/Developer"
+  XCODE_VERSION_PUBLIC: "/Applications/Xcode_16.app/Contents/Developer"
+  #XCODE_VERSION_PUBLIC: "/Applications/Xcode_26.app/Contents/Developer"
+  XCODE_VERSION_SELF: "/Applications/Xcode.app/Contents/Developer" 
+  #XCODE_VERSION_SELF: "/Applications/Xcode-beta.app/Contents/Developer"
   TEST_SIMULATOR_VERSION: "platform=iOS Simulator,name=iPhone 16,OS=18.5"
 
 jobs:
@@ -194,35 +196,34 @@ jobs:
         if: github.ref != 'refs/heads/main'
         run: xcodebuild -archivePath $PWD/build/Kukai-mobile.xcarchive -exportOptionsPlist "Kukai Mobile/ExportOptions-Beta.plist" -exportPath $PWD/build -allowProvisioningUpdates -exportArchive
 
-      # # Manually upload the dSYM's we care about to sentry, to avoid having annoying tool installed on dev machine
-      # - name: Upload dSYM
-      #   if: ${{ success() }}
-      #   env:
-      #     SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-      #   run: |
-      #     export PATH=/usr/local/bin:$PATH
-      #     export SENTRY_ORG=kukai
-      #     export SENTRY_PROJECT=kukai-ios
-      #     export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-      #     export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
+      # Manually upload the dSYM's we care about to sentry, to avoid having annoying tool installed on dev machine
+      - name: Upload dSYM
+        if: ${{ success() }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
+          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
-      #     echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
-      #     echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
+          echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
+          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
           
-      #     ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-      #     ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
           
-      #     if [ ! $? -eq 0 ]; then
-      #     echo "warning: sentry-cli - $ERROR"
-      #     fi
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
+          fi
       
-      # - name: Upload to TestFlight
-      #   if: ${{ success() }}
-      #   env:
-      #     APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
-      #     APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
-      #   run: xcrun altool --upload-app -t ios -f "build/Kukai Mobile.ipa" -u "$APPLEID_USERNAME" -p "$APPLEID_PASSWORD" --verbose
-
+      - name: Upload to TestFlight
+        if: ${{ success() }}
+        env:
+          APPLEID_USERNAME: ${{ secrets.APPLEID_USERNAME }}
+          APPLEID_PASSWORD: ${{ secrets.APPLEID_PASSWORD }}
+        run: xcrun altool --upload-app -t ios -f "build/Kukai Mobile.ipa" -u "$APPLEID_USERNAME" -p "$APPLEID_PASSWORD" --verbose
 
       - name: Commit new version number
         if: ${{ github.ref != 'refs/heads/main' && success() }}
@@ -295,15 +296,15 @@ jobs:
             slack_message_title="Test results for $app_version ($app_build): "
             slack_message_emoji=""
             slack_message_body=""
-            if [[ $number_of_test_fails_string == "0" ]] 
+            if [[ $number_of_test_fails_formatted == 0 ]] 
             then
                 slack_message_title+="SUCCESS "
                 slack_message_emoji="white_check_mark"
-                slack_message_body+="\n\nNo. Tests: \t\t$number_of_tests_formatted\n"
+                slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
             else
-                slack_message+="FAILURE "
+                slack_message_title+="FAILURE "
                 slack_message_emoji="x"
-                slack_message_body+="\n\nNo. Tests: \t\t$number_of_tests_formatted\n"
+                slack_message_body+="\n\nNo. Tests: \t$number_of_tests_formatted\n"
                 slack_message_body+="Failures: \t\t$number_of_test_fails_formatted\n"
             fi
 
