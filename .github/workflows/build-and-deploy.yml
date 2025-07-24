@@ -3,7 +3,8 @@
 # Anything pushed to /main will go to production app store connect + testflight
 # Anything pushed to /develop or /hotfix-staging will go to beta app store connect + testflight
 # The script will also attempt to run XCUITests and report status back to slack. However this can ONLY be done on self-hosted runners due to many issues
-# For the sake of redundancy the workflow_dispatch input can be used to quickly toggle the use of the self-hosted runner incase of an emergency.
+# For the sake of redundancy the repositry has a varible set (settings ->secrets and varibales -> actions -> varibales) called USE_SELF_HOSTED 
+# which can be used to quickly toggle the use of the self-hosted runner incase of an emergency.
 # If set to false, script will fallback to public/free runners without running UI tests
 #
 name: Build, Deploy and Test
@@ -20,13 +21,6 @@ on:
       - develop
       - hotfix-staging
 
-  workflow_dispatch:
-    inputs:
-      self-hosted:
-        description: "Should we use self-hosted runner"
-        required: true
-        default: 'false'
-
 jobs:
 
   # ===== PUBLIC INFRA =====
@@ -34,7 +28,7 @@ jobs:
   # So when we want to use something non-standard (e.g. sentry CLI) we must install it first
   # certs need to be passed in encoded in base64 strings, and then injected into the env, following githubs recommended setup
   build_deploy_public_infra:
-    if: ${{ github.event.inputs.self-hosted == 'false' }}
+    if: ${{ vars.USE_SELF_HOSTED == 'false' }}
     name: Deploying to Testflight from public infra
     runs-on: macos-15
 
@@ -168,7 +162,7 @@ jobs:
   # We can skip several steps in the above process, as we have our certs installed directly on the system already
   # and we can install whatever tooling we like once, ahead of time manually, instead of every run of the runner
   build_deploy_test_self_hosted:
-    if: ${{ github.event.inputs.self-hosted == 'true' }}
+    if: ${{ vars.USE_SELF_HOSTED == 'true' }}
     name: Deploying to Testflight, and running tests from self-hosted runner
     runs-on: self-hosted
 
