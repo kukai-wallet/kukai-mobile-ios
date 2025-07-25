@@ -410,9 +410,18 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	func startActivityAnimation() {
 		activityAnimationInProgress = true
 		
-		let sorted = self.tabBar.subviews.sorted { lhs, rhs in
-			return lhs.frame.origin.x < rhs.frame.origin.x
+		var sorted: [UIView] = []
+		if #available(iOS 26.0, *) {
+			sorted = self.tabBar.subviews.first?.subviews.last?.subviews.sorted { lhs, rhs in
+				return lhs.frame.origin.x < rhs.frame.origin.x
+			} ?? []
+			
+		} else {
+			sorted = self.tabBar.subviews.sorted { lhs, rhs in
+				return lhs.frame.origin.x < rhs.frame.origin.x
+			}
 		}
+		
 		
 		if activityAnimationImageView.superview == nil {
 			let activitySubview = sorted[sorted.count-2]
