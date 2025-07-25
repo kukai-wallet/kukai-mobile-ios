@@ -467,14 +467,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 	}
 	
 	static func setupAccountActivityListener() {
-		DispatchQueue.global().async {
-			let allWallets = DependencyManager.shared.walletList.addresses()
-			if DependencyManager.shared.tzktClient.isListening {
-				DependencyManager.shared.tzktClient.changeAddressToListenForChanges(addresses: allWallets)
-				
-			} else {
-				DependencyManager.shared.tzktClient.listenForAccountChanges(addresses: allWallets)
-			}
+		let allWallets = DependencyManager.shared.walletList.addresses()
+		if DependencyManager.shared.tzktClient.isListening {
+			DependencyManager.shared.tzktClient.changeAddressToListenForChanges(addresses: allWallets)
+			
+		} else {
+			DependencyManager.shared.tzktClient.listenForAccountChanges(addresses: allWallets)
 		}
 	}
 	

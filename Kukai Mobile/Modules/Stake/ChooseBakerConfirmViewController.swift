@@ -235,25 +235,27 @@ class ChooseBakerConfirmViewController: SendAbstractConfirmViewController, Slide
 		}
 		
 		DependencyManager.shared.tezosNodeClient.send(operations: selectedOperationsAndFees(), withWallet: wallet) { [weak self] sendResult in
-			switch sendResult {
-				case .success(let opHash):
-					Logger.app.info("Sent: \(opHash)")
-					
-					let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
-					
-					self?.didSend = true
-					self?.addPendingTransaction(opHash: opHash)
-					self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
-					
-					TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
-					
-				case .failure(let sendError):
-					self?.unblockInteraction()
-					self?.slideButton?.resetSlider()
-					
-					if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
-						self?.windowError(withTitle: "error".localized(), description: message)
-					}
+			DispatchQueue.main.async {
+				switch sendResult {
+					case .success(let opHash):
+						Logger.app.info("Sent: \(opHash)")
+						
+						let backupBakerInfoForStakeFlow = TransactionService.shared.delegateData.chosenBaker
+						
+						self?.didSend = true
+						self?.addPendingTransaction(opHash: opHash)
+						self?.handleApproval(opHash: opHash, slideButton: self?.slideButton)
+						
+						TransactionService.shared.stakeData.chosenBaker = backupBakerInfoForStakeFlow
+						
+					case .failure(let sendError):
+						self?.unblockInteraction()
+						self?.slideButton?.resetSlider()
+						
+						if let message = SendAbstractConfirmViewController.checkForExpectedLedgerErrors(sendError) {
+							self?.windowError(withTitle: "error".localized(), description: message)
+						}
+				}
 			}
 		}
 	}

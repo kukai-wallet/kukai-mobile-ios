@@ -67,12 +67,12 @@ class TokenDetailsBakerCell: UITableViewCell {
 				regularlyVotesIcon.image = UIImage.init(named: "vote_check")
 				regularlyVotesIcon.tintColor = .colorNamed("BGGood4")
 				
-			} else if filterTrueVotes.count >= 1 && data.votingParticipation.last == false {
+			} else if filterTrueVotes.count >= 1 && data.votingParticipation.first == false {
 				// Hasn't voted in most recent period = yellow warning
 				regularlyVotesIcon.image = UIImage.init(named: "vote_alert")
 				regularlyVotesIcon.tintColor = .colorNamed("TxtB-alt4")
 				
-			} else if filterTrueVotes.count >= 2 || data.votingParticipation.last == true {
+			} else if filterTrueVotes.count >= 2 || data.votingParticipation.first == true {
 				// Voted in at least 2 periods, or voted in most recent = yellow tick
 				regularlyVotesIcon.image = UIImage.init(named: "vote_check")
 				regularlyVotesIcon.tintColor = .colorNamed("TxtB-alt4")

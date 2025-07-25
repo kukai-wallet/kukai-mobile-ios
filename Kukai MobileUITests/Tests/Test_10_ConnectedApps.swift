@@ -28,7 +28,7 @@ final class Test_10_ConnectedApps: XCTestCase {
 	
 	// MARK: - Test functions
 	/*
-	 // TODO: reenable after WC2 modal updates + universal link updates are complete
+	// TODO: reenable after WC2 modal updates + universal link updates are complete
 	func test_01_connectAndTest() throws {
 		let app = XCUIApplication()
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
@@ -39,9 +39,11 @@ final class Test_10_ConnectedApps: XCTestCase {
 		safari.activate()
 		
 		sleep(2)
-		safari.textFields["TabBarItemTitle"].tap()
+		if safari.textFields["TabBarItemTitle"].exists {
+			safari.textFields["TabBarItemTitle"].tap()
+			sleep(2)
+		}
 		
-		sleep(2)
 		safari.typeText(Test_10_ConnectedApps.sampleAppURL.absoluteString)
 		safari.keyboards.buttons["Go"].tap()
 		
@@ -62,15 +64,30 @@ final class Test_10_ConnectedApps: XCTestCase {
 		
 		// Connect
 		webview.buttons["connect"].tap()
-		SharedHelpers.shared.waitForStaticText("QR Code", exists: true, inElement: webview, delay: 10)
 		sleep(2)
 		
-		webview.staticTexts["QR Code"].forceTap()
+		// WC2 modal has no identifiers for us to grab.
+		// The button we are looking for is the one before "Kukai"
+		for i in 0..<webview.buttons.count {
+			if webview.buttons.element(boundBy: i).label == "Kukai"{
+				
+				if i > 0 {
+					webview.buttons.element(boundBy: i - 1).tap()
+				} else {
+					XCTFail("Can't find the WC2 qrcode button")
+				}
+			}
+		}
 		sleep(2)
 		
-		webview.staticTexts["Copy to clipboard"].forceTap()
-		sleep(2)
 		
+		// same thing again to copy the QRCode
+		var yPositions: [(index: Int, position: CGFloat)] = []
+		for i in 0..<webview.buttons.count {
+			yPositions.append((index: i, position: webview.buttons.element(boundBy: i).frame.origin.y))
+		}
+		yPositions = yPositions.sorted { $0.position < $1.position }
+		webview.buttons.element(boundBy: yPositions[1].index).tap()
 		
 		handlePastingQRCode(app: app, springboard: springboard, dAppName: "Test Dapp")
 		
@@ -122,7 +139,8 @@ final class Test_10_ConnectedApps: XCTestCase {
 		handleSign(app: app, safari: safari, webview: webview)
 		disconnectFromSideMenuAndVerify(app: app, safari: safari, webview: webview)
 	}
-	
+	*/
+	/*
 	func test_03_objkt() {
 		let app = XCUIApplication()
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")

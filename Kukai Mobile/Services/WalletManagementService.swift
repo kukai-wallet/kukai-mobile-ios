@@ -103,12 +103,12 @@ class WalletManagementService {
 	public static func isUsedAccount(address: String, forceMainnet: Bool = true, completion: @escaping ((Bool) -> Void)) {
 		DependencyManager.shared.tzktClient.getAccount(forAddress: address, fromURL: forceMainnet ? DependencyManager.defaultTzktURL_mainnet : DependencyManager.shared.currentTzktURL) { result in
 			guard let res = try? result.get() else {
-				completion(false)
+				DispatchQueue.main.async { completion(false) }
 				return
 			}
 			
 			let result = (res.type == "user" || (res.balance ?? 0) > 0 || (res.tokenBalancesCount ?? 0) > 0)
-			completion(result)
+			DispatchQueue.main.async { completion(result) }
 		}
 	}
 	

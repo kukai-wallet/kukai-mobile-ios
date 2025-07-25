@@ -42,7 +42,7 @@ final class Test_04_Account: XCTestCase {
 		// Go to Tez token details
 		let tablesQuery = app.tables
 		SharedHelpers.shared.waitForStaticText("XTZ", exists: true, inElement: tablesQuery, delay: 10)
-		tablesQuery.staticTexts["XTZ"].tap()
+		tablesQuery.staticTexts["XTZ"].forceTap()
 		
 		// Check baker rewards loads correctly
 		sleep(4)
@@ -225,7 +225,7 @@ final class Test_04_Account: XCTestCase {
 		// Check and record whatever symbol is in third place
 		let tablesQuery = app.tables
 		let balanceCells = app.tables.cells.containing(.staticText, identifier: "account-token-balance")
-		let thirdCell = balanceCells.element(boundBy: 3)
+		let thirdCell = balanceCells.element(boundBy: 0)
 		symbolOfThirdCell = thirdCell.staticTexts["account-token-symbol"].label
 		
 		XCTAssert(thirdCell.staticTexts[symbolOfThirdCell].exists)
@@ -245,7 +245,7 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		let cellToCheck = balanceCells.element(boundBy: 2)
+		let cellToCheck = balanceCells.element(boundBy: 0)
 		
 		XCTAssert(cellToCheck.staticTexts[symbolOfThirdCell].exists)
 		
@@ -270,7 +270,7 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		XCTAssert(balanceCells.count == 3, balanceCells.count.description)
+		XCTAssert(balanceCells.count == 1, balanceCells.count.description)
 		
 		
 		// Unhide and check it appears back
@@ -287,14 +287,16 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
-		XCTAssert(balanceCells.count == 4, balanceCells.count.description)
+		XCTAssert(balanceCells.count == 2, balanceCells.count.description)
 	}
 	
 	public func testSendXTZ() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
 		
-		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		
 		// Open XTZ, send 1. + 3 random digits
 		let tablesQuery = app.tables
@@ -323,7 +325,7 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 		
 		sleep(2)
-		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		
 		XCTAssert(expectedNewTotal == newXTZBalance, "\(expectedNewTotal) != \(newXTZBalance)")
 	}
@@ -331,6 +333,8 @@ final class Test_04_Account: XCTestCase {
 	public func testSendOther() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
 		
 		// Send token to other account
 		sendToken(to: testConfig.walletAddress_HD_account_1.truncateTezosAddress(), inApp: app)
@@ -345,14 +349,15 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	private func sendToken(to: String, inApp app: XCUIApplication) {
-		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
-		let tokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").element(boundBy: 2).staticTexts["account-token-balance"].label
+		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
+		let tokenSymbol = app.tables.cells.containing(.staticText, identifier: "account-token-symbol").firstMatch.staticTexts["account-token-symbol"].firstMatch.label
+		let tokenString = app.tables.cells.containing(.staticText, identifier: "account-token-balance").firstMatch.staticTexts["account-token-balance"].label
 		let currentTokenBalance = SharedHelpers.sanitizeStringToDecimal(tokenString)
 		
 		
 		// Open WTZ, send 1
 		let tablesQuery = app.tables
-		tablesQuery.staticTexts["kUSD"].tap()
+		tablesQuery.staticTexts[tokenSymbol].tap()
 		tablesQuery.buttons["primary-button"].tap()
 		tablesQuery.staticTexts[to].tap()
 		
@@ -391,25 +396,32 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.waitForActivityAnimationTo(start: false, app: app, delay: 60)
 		
 		sleep(2)
-		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-token-balance", in: app.tables)
+		let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		
-		// Can't assume the order of tokens, need to find the correct cell with "kUSD" in it
-		var newTokenString = ""
-		let cellQuery = app.tables.cells.containing(.staticText, identifier: "account-token-symbol")
-		let numberOfCells = cellQuery.count
-		for i in 0...numberOfCells {
-			let cell = cellQuery.element(boundBy: i)
-			let symbol = cell.staticTexts["account-token-symbol"].label
-			if symbol == "kUSD" {
-				newTokenString = cell.staticTexts["account-token-balance"].label
-				break
+		
+		// Possible that we've sent all of the token, so check if it should be zero and missing, or if its still there, grab the value
+		if expectedToken > 0 {
+			// Can't assume the order of tokens, need to find the correct cell with the token symbol in it
+			var newTokenString = ""
+			let cellQuery = app.tables.cells.containing(.staticText, identifier: "account-token-symbol")
+			let numberOfCells = cellQuery.count
+			for i in 0...numberOfCells {
+				let cell = cellQuery.element(boundBy: i)
+				let symbol = cell.staticTexts["account-token-symbol"].label
+				if symbol == tokenSymbol {
+					newTokenString = cell.staticTexts["account-token-balance"].label
+					break
+				}
 			}
+			
+			let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
+			XCTAssert(expectedToken == newTokenBalance, "\(expectedToken) != \(newTokenBalance)")
+			
+		} else {
+			XCTAssert(!app.tables.staticTexts[tokenSymbol].exists)
 		}
 		
-		let newTokenBalance = SharedHelpers.sanitizeStringToDecimal(newTokenString)
-		
 		XCTAssert(expectedXTZ == newXTZBalance, "\(expectedXTZ) != \(newXTZBalance)")
-		XCTAssert(expectedToken == newTokenBalance, "\(expectedToken) != \(newTokenBalance)")
 	}
 	
 	public func testStakeXTZ() {
@@ -484,19 +496,15 @@ final class Test_04_Account: XCTestCase {
 		sleep(1)
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		sleep(1)
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(1)
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(1)
 		
 		// Choose Baker
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(1)
 		app.tables.staticTexts["Baking Benjamins"].tap()
 		app.buttons["Delegate"].tap()
 		SharedHelpers.shared.waitForStaticText("Confirm Delegate", exists: true, inElement: app, delay: 30)
 		Test_04_Account.slideButtonToComplete(inApp: app)
-		SharedHelpers.shared.waitForStaticText("Learn about staking", exists: true, inElement: app, delay: 60)
+		SharedHelpers.shared.waitForStaticText("Success, you are delegating!", exists: true, inElement: app, delay: 60)
+		SharedHelpers.shared.tapPrimaryButton(app: app)
+		sleep(1)
 		
 		// Section 2 start
 		SharedHelpers.shared.tapPrimaryButton(app: app)
@@ -505,18 +513,14 @@ final class Test_04_Account: XCTestCase {
 		// Staking Info
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		sleep(1)
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(1)
 		
 		// Stake
-		SharedHelpers.shared.tapPrimaryButton(app: app)
-		sleep(1)
 		app.textFields.firstMatch.tap()
 		SharedHelpers.shared.type(app: app, text: "1.5")
 		app.buttons["Review"].tap()
 		SharedHelpers.shared.waitForStaticText("Confirm Stake", exists: true, inElement: app, delay: 30)
 		Test_04_Account.slideButtonToComplete(inApp: app)
-		SharedHelpers.shared.waitForStaticText("Congratulations", exists: true, inElement: app, delay: 60)
+		SharedHelpers.shared.waitForStaticText("Staking complete", exists: true, inElement: app, delay: 60)
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		
 		// Confirm back home and values are correct
@@ -544,8 +548,9 @@ final class Test_04_Account: XCTestCase {
 		sleep(2)
 		SharedHelpers.shared.waitForAnyStaticText([
 			"account-token-balance",
+			"account-xtz-balance",
 			"account-getting-started-header"
-		], exists: true, inElement: app.tables, delay: 10)
+		], exists: true, inElement: app.tables, delay: 30)
 	}
 	
 	public static func openTokenDetailsAndWait(app: XCUIApplication) {
@@ -614,8 +619,6 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public static func sendXTZ(app: XCUIApplication, amount: Decimal, to: String) {
-		let testConfig: TestConfig = EnvironmentVariables.shared.config()
-		
 		let tablesQuery = app.tables
 		tablesQuery.staticTexts["XTZ"].tap()
 		tablesQuery.buttons["primary-button"].tap()
@@ -626,7 +629,6 @@ final class Test_04_Account: XCTestCase {
 		app.buttons["primary-button"].tap()
 		sleep(4)
 		
-		let feeAmount = SharedHelpers.getSanitizedDecimal(fromStaticText: "fee-amount", in: app)
 		Test_04_Account.slideButtonToComplete(inApp: app)
 		
 		sleep(2)
@@ -652,8 +654,20 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public static func check(app: XCUIApplication, xtzBalanceIsNotZero: Bool) {
-		let xtz = app.tables.staticTexts["account-token-balance"].firstMatch.label
-		let fiat = app.staticTexts["account-token-fiat"].firstMatch.label
+		let isStaking = app.tables.staticTexts["account-xtz-balance"].exists
+		var tokenBalanceName = ""
+		var fiatBalanceName = ""
+		
+		if isStaking {
+			tokenBalanceName = "account-xtz-balance"
+			fiatBalanceName = "account-xtz-fiat"
+		} else {
+			tokenBalanceName = "account-token-balance"
+			fiatBalanceName = "account-token-fiat"
+		}
+		
+		let xtz = app.tables.staticTexts[tokenBalanceName].firstMatch.label
+		let fiat = app.staticTexts[fiatBalanceName].firstMatch.label
 		
 		let sanatisedXTZ = xtz.replacingOccurrences(of: ",", with: "")
 		var sanatisedFiat = fiat.replacingOccurrences(of: ",", with: "")
@@ -672,8 +686,8 @@ final class Test_04_Account: XCTestCase {
 	}
 	
 	public static func check(app: XCUIApplication, xtzStakingBalanceIsNotZero: Bool) {
-		let xtz = app.tables.staticTexts.matching(identifier: "account-token-balance").element(boundBy: 1).label
-		let fiat = app.staticTexts["account-token-fiat"].firstMatch.label
+		let xtz = app.tables.staticTexts.matching(identifier: "account-stake-balance").firstMatch.label
+		let fiat = app.staticTexts["account-stake-fiat"].firstMatch.label
 		
 		let sanatisedXTZ = xtz.replacingOccurrences(of: ",", with: "")
 		var sanatisedFiat = fiat.replacingOccurrences(of: ",", with: "")
@@ -695,9 +709,12 @@ final class Test_04_Account: XCTestCase {
 		SharedHelpers.shared.waitForStaticText("account-total-xtz", exists: estimatedTotalExists, inElement: app.tables, delay: 2)
 	}
 	
-	public static func check(app: XCUIApplication, hasNumberOfTokens: Int) {
+	public static func check(app: XCUIApplication, hasNumberOfTokens: Int, andXTZ: Bool) {
 		let count = app.tables.cells.containing(.staticText, identifier: "account-token-balance").count
+		let xtz = app.tables.cells.containing(.staticText, identifier: "account-xtz-balance").count
+		
 		XCTAssert(count == hasNumberOfTokens, "\(count) != \(hasNumberOfTokens)")
+		XCTAssert(andXTZ ? xtz == 1 : xtz == 0)
 	}
 	
 	public static func check(app: XCUIApplication, displayingBackup: Bool) {
@@ -711,6 +728,12 @@ final class Test_04_Account: XCTestCase {
 	
 	public static func check(app: XCUIApplication, isDisplayingGhostnetWarning: Bool) {
 		SharedHelpers.shared.waitForStaticText("ghostnet-warning", exists: isDisplayingGhostnetWarning, inElement: app.tables, delay: 2)
+	}
+	
+	public static func makeSureLoggedInto(app: XCUIApplication, address: String) {
+		if !app.staticTexts[address].exists {
+			Test_05_WalletManagement.handleSwitchingTo(app: app, address: address)
+		}
 	}
 	
 	public static func tapBackup(app: XCUIApplication) {

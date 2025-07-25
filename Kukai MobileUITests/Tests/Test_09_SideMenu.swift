@@ -197,9 +197,6 @@ final class Test_09_SideMenu: XCTestCase {
 		
 		app.tables.staticTexts[ mainnet ? "Mainnet" : "Ghostnet"].firstMatch.tap()
 		sleep(4)
-		
-		SharedHelpers.shared.navigationBack(app: app)
-		sleep(2)
 	}
 	
 	static func handleSwitchingCurrency(app: XCUIApplication, currencyCode: String) {

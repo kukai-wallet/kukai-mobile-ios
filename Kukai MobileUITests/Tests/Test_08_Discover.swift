@@ -50,9 +50,6 @@ final class Test_08_Discover: XCTestCase {
 		app.tables.staticTexts["Mainnet"].tap()
 		sleep(4)
 		
-		SharedHelpers.shared.navigationBack(app: app)
-		sleep(2)
-		
 		
 		let mainnetItemCount = app.tables.cells.containing(.image, identifier: "discover-item-image").count
 		XCTAssert(mainnetItemCount > ghostnetItemCount)
@@ -71,8 +68,5 @@ final class Test_08_Discover: XCTestCase {
 		
 		app.tables.staticTexts["Ghostnet"].tap()
 		sleep(4)
-		
-		SharedHelpers.shared.navigationBack(app: app)
-		sleep(2)
 	}
 }

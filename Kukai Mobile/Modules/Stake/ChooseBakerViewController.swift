@@ -116,16 +116,18 @@ class ChooseBakerViewController: UIViewController {
 		}
 		
 		DependencyManager.shared.tezosNodeClient.estimate(operations: operations, walletAddress: selectedWallet.address, base58EncodedPublicKey: selectedWallet.publicKeyBase58encoded(), isRemote: false) { [weak self] estimationResult in
-			self?.hideLoadingView()
-			
-			switch estimationResult {
-				case .success(let estimationResult):
-					TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
-					TransactionService.shared.currentForgedString = estimationResult.forgedString
-					self?.performSegue(withIdentifier: "confirm", sender: nil)
-					
-				case .failure(let estimationError):
-					self?.windowError(withTitle: "error".localized(), description: estimationError.description)
+			DispatchQueue.main.async {
+				self?.hideLoadingView()
+				
+				switch estimationResult {
+					case .success(let estimationResult):
+						TransactionService.shared.currentOperationsAndFeesData = TransactionService.OperationsAndFeesData(estimatedOperations: estimationResult.operations)
+						TransactionService.shared.currentForgedString = estimationResult.forgedString
+						self?.performSegue(withIdentifier: "confirm", sender: nil)
+						
+					case .failure(let estimationError):
+						self?.windowError(withTitle: "error".localized(), description: estimationError.description)
+				}
 			}
 		}
 	}

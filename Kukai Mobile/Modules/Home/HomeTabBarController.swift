@@ -15,7 +15,6 @@ import OSLog
 
 public class HomeTabBarController: UITabBarController, UITabBarControllerDelegate {
 	
-	
 	@IBOutlet weak var sideMneuButtonContainer: UIBarButtonItem!
 	@IBOutlet weak var sideMenuButton: UIButton!
 	@IBOutlet weak var accountButton: UIButton!
