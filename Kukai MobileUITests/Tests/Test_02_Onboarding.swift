@@ -56,7 +56,7 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_04_Account.waitForInitalLoad(app: app)
 		
 		Test_04_Account.check(app: app, estimatedTotalExists: false)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 0, andXTZ: false)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		Test_04_Account.check(app: app, displayingGettingStarted: true)
 		
@@ -134,7 +134,7 @@ final class Test_02_Onboarding: XCTestCase {
 		Test_04_Account.waitForInitalLoad(app: app)
 		
 		Test_04_Account.check(app: app, estimatedTotalExists: false)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 0)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 0, andXTZ: false)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		Test_04_Account.check(app: app, displayingGettingStarted: true)
 		
@@ -150,7 +150,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 4)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 2, andXTZ: true)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		
@@ -325,7 +325,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 4)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 2, andXTZ: true)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		
@@ -370,7 +370,7 @@ final class Test_02_Onboarding: XCTestCase {
 		
 		// App state verification
 		Test_04_Account.check(app: app, estimatedTotalExists: true)
-		Test_04_Account.check(app: app, hasNumberOfTokens: 3)
+		Test_04_Account.check(app: app, hasNumberOfTokens: 3, andXTZ: false)
 		Test_04_Account.check(app: app, xtzBalanceIsNotZero: true)
 		Test_04_Account.check(app: app, displayingBackup: false)
 		

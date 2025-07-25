@@ -514,6 +514,13 @@ extension CollectiblesDetailsViewModel: CollectibleDetailLayoutDataDelegate {
 	
 	func configuredCell(forIndexPath indexPath: IndexPath) -> UICollectionViewCell {
 		let identifiers = currentSnapshot.itemIdentifiers(inSection: indexPath.section)
+		
+		if indexPath.row >= identifiers.count {
+			// Weird edge case crash due to cancelling a send, returning to this screen triggering a refresh
+			// Can't reproduce. Have disabled the return refresh, adding this here as a backup
+			return self.configure(cell: nil, withItem: identifiers.first ?? .init(DescriptionContent(description: "")), layoutOnly: true)
+		}
+		
 		let item = identifiers[indexPath.row]
 		let itemBase = item.base
 		

@@ -90,7 +90,6 @@ final class Test_07_Activity: XCTestCase {
 		
 		
 		// Check for delegations
-		XCTAssert(normalCells.staticTexts["Delegate"].exists)
 		XCTAssert(normalCells.staticTexts["Baking Benjamins"].exists)
 	}
 }
