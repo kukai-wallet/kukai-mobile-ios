@@ -51,6 +51,8 @@ public class BalanceService {
 	// MARK: - Global state properties
 	
 	public var tokenValueAndRate: [String: TokenValueAndRate] = [:]
+	public let tokenValueAndRateCoordinator = ReadWriteCoordinator(queueLabel: "tokenValueAndRateCoordinator")
+	
 	public var exchangeData: [DipDupExchangesAndTokens] = []
 	public var lastExchangeDataRefreshDate: Date? = nil
 	public var lastFullRefreshDates: [String: Date] = [:]
@@ -181,7 +183,9 @@ public class BalanceService {
 			
 			if self?.lastFullRefreshDates.values.count == 0 {
 				self?.lastFullRefreshDates = DiskService.read(type: [String: Date].self, fromFileName: BalanceService.cacheLastRefreshDates) ?? [:]
-				self?.tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+				self?.tokenValueAndRateCoordinator.enqueueWrite { [weak self] in
+					self?.tokenValueAndRate = DiskService.read(type: [String: TokenValueAndRate].self, fromFileName: BalanceService.cacheTokenPrices) ?? [:]
+				}
 			}
 			
 			self?.cacheLoadingInProgress = true
@@ -277,8 +281,11 @@ public class BalanceService {
 		account = Account(walletAddress: "")
 		exchangeData = []
 		
-		tokenValueAndRate = [:]
 		estimatedTotalXtz = [:]
+		
+		self.tokenValueAndRateCoordinator.enqueueWrite { [weak self] in
+			self?.tokenValueAndRate = [:]
+		}
 	}
 	
 	
@@ -675,7 +682,7 @@ public class BalanceService {
 		
 		for token in self.currentlyRefreshingAccount.tokens {
 			let dexRate = self.midPrice(forToken: token) // Use midPrice instead of dexRate to avoid calling multiple js calc library calls per token. MidPrice is close enough to give an estimate
-			self.tokenValueAndRate[token.id] = dexRate
+			self.tokenValueAndRateCoordinator.blockingWrite { self.tokenValueAndRate[token.id] = dexRate }
 			estimatedTotal += dexRate?.xtzValue ?? .zero()
 		}
 		
@@ -683,7 +690,10 @@ public class BalanceService {
 		self.estimatedTotalXtz[cacheKey] = self.currentlyRefreshingAccount.xtzBalance + estimatedTotal
 		
 		let _ = DiskService.write(encodable: self.estimatedTotalXtz, toFileName: BalanceService.cacheEstimatedTotals)
-		let _ = DiskService.write(encodable: self.tokenValueAndRate, toFileName: BalanceService.cacheTokenPrices)
+		
+		self.tokenValueAndRateCoordinator.read {
+			let _ = DiskService.write(encodable: self.tokenValueAndRate, toFileName: BalanceService.cacheTokenPrices)
+		}
 	}
 	
 	func updateTokenStates(forAddress address: String, selectedAccount: Bool = false) {

@@ -499,7 +499,7 @@ public class TokenDetailsViewModel: ViewModel, TokenDetailsChartCellDelegate {
 			let isHidden = token.isHidden
 			buttonData = TokenDetailsButtonData(isFavourited: isFav, canBeUnFavourited: true, isHidden: isHidden, canBeHidden: true, canBePurchased: false, canBeViewedOnline: true, hasMoreButton: true)
 			
-			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRate[token.id] {
+			if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRateCoordinator.read({ DependencyManager.shared.balanceService.tokenValueAndRate[token.id] }) {
 				var tokenPriceString = ""
 				let fiatPerToken = (tokenValueAndRate.marketRate * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ)
 				if fiatPerToken < 0.000001 {
