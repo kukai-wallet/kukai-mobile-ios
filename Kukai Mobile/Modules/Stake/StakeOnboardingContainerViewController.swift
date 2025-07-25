@@ -236,17 +236,21 @@ class StakeOnboardingContainerViewController: UIViewController {
 	}
 	
 	private func backupOperationCheckerSuccess() {
-		hideLoadingView()
-		handleOperationComplete()
+		DispatchQueue.main.async { [weak self] in
+			self?.hideLoadingView()
+			self?.handleOperationComplete()
+		}
 	}
 	
 	private func backupOperationCheckerFail() {
 		if numberOfManualChecks <= 1 {
 			backupOperationCompleteChecker(withTime: 12)
 		} else {
-			hideLoadingView()
-			self.windowError(withTitle: "error".localized(), description: "error-stake-wizard-unknown".localized())
-			self.navigationController?.popToDetails()
+			DispatchQueue.main.async { [weak self] in
+				self?.hideLoadingView()
+				self?.windowError(withTitle: "error".localized(), description: "error-stake-wizard-unknown".localized())
+				self?.navigationController?.popToDetails()
+			}
 		}
 	}
 	
