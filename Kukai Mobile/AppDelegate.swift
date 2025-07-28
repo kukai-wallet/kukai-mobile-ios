@@ -27,39 +27,38 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 			if let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.path {
 				Logger.app.info("Documents Directory: \(documentsPath)")
 			}
-		
-		#else
-			// If not running on simulator, Setup Sentry, but with Anonymous events
-			SentrySDK.start { options in
-				options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
-				options.enableWatchdogTerminationTracking = false
-				options.enableSigtermReporting = false
-				options.beforeSend = { (event) -> Event? in
-					
-					// Scrub any identifiable data to keep users anonymous
-					event.context?["app"]?.removeValue(forKey: "device_app_hash")
-					event.user = nil
-					
-					if event.level == .info, let message = event.message {
-						// Sentry for some bizarre reason relies on stacktraces to group everything. So `captureMessage()`'s in the same file will all be grouped together based on function name
-						// rather than based on message text. Overriding this behaviour globally (hopefully `.info` is only used for messages), as it makes no sense
-						event.fingerprint = [message.formatted]
-						
-					} else if (event.exceptions?.first?.type == "App Hanging") {
-						// Sentry tracks app hangs by stacktrace, which means in complex threaded code, the same underlying issue might get reported as hundreds of unique errors on the snetry dashboard
-						// Instead overwrite that logic and group them all by app version, so that we can track whether or not version changes improve the situation overall
-						let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-						let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
-						let newTitle = "App Hanging - \(version) (\(build))"
-						
-						event.message = SentryMessage(formatted: newTitle)
-						event.fingerprint = [newTitle]
-					}
-				
-					return event
-				}
-			}
 		#endif
+		
+		// If not running on simulator, Setup Sentry, but with Anonymous events
+		SentrySDK.start { options in
+			options.dsn = "https://6078bc46bd5c46e1aa6a416c8043f9f4@o1056238.ingest.sentry.io/4505443257024512"
+			options.enableWatchdogTerminationTracking = false
+			options.enableSigtermReporting = false
+			options.beforeSend = { (event) -> Event? in
+				
+				// Scrub any identifiable data to keep users anonymous
+				event.context?["app"]?.removeValue(forKey: "device_app_hash")
+				event.user = nil
+				
+				if event.level == .info, let message = event.message {
+					// Sentry for some bizarre reason relies on stacktraces to group everything. So `captureMessage()`'s in the same file will all be grouped together based on function name
+					// rather than based on message text. Overriding this behaviour globally (hopefully `.info` is only used for messages), as it makes no sense
+					event.fingerprint = [message.formatted]
+					
+				} else if (event.exceptions?.first?.type == "App Hanging") {
+					// Sentry tracks app hangs by stacktrace, which means in complex threaded code, the same underlying issue might get reported as hundreds of unique errors on the snetry dashboard
+					// Instead overwrite that logic and group them all by app version, so that we can track whether or not version changes improve the situation overall
+					let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
+					let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? ""
+					let newTitle = "App Hanging - \(version) (\(build))"
+					
+					event.message = SentryMessage(formatted: newTitle)
+					event.fingerprint = [newTitle]
+				}
+			
+				return event
+			}
+		}
 		
 		
 		// Setup any necessary settings, such as RAM limits
