@@ -147,25 +147,12 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 				}
 			}.store(in: &bag)
 		
-		
-		
-		// If we enter foreground without login, check for refresh needs
-		// else when login dismisses, check for refresh needs
-		NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification).sink { [weak self] _ in
-			if !DependencyManager.shared.loginActive {
-				AccountViewModel.reconnectAccountActivityListenerIfNeeded()
-				self?.supressAutoRefreshError = true
-				self?.refreshType = .refreshEverything
-				self?.refresh(addresses: nil)
-			}
-		}.store(in: &bag)
-		
 		DependencyManager.shared.$loginActive
 			.dropFirst()
 			.sink { [weak self] active in
 				
 				// Debugging issue where `active` seems to be an old value sometimes
-				if DependencyManager.shared.loginActive {
+				if !active {
 					AccountViewModel.reconnectAccountActivityListenerIfNeeded()
 					self?.supressAutoRefreshError = true
 					self?.refreshType = .refreshEverything
