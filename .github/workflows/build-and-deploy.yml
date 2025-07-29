@@ -272,6 +272,8 @@ jobs:
           -archivePath $PWD/build/Kukai-mobile-test.xcarchive \
           -derivedDataPath $PWD/build-test/ \
           -enableCodeCoverage YES \
+          clean \
+          archive \
           test \
           CONFIG_1="$CONFIG_1" \
           CONFIG_2="$CONFIG_2" \

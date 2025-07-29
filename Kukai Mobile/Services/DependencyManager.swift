@@ -218,6 +218,8 @@ class DependencyManager {
 		}
 	}
 	
+	var currencyChanged = false
+	
 	
 	// Combine publishers to serve as notifications across multiple screens
 	// `@Published` can't be assigned to a computed property. To avoid loosing ability to wrap around UserDefaults

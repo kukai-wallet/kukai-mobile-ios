@@ -63,6 +63,11 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		super.viewWillAppear(animated)
 		viewModel.isPresentedForSelectingToken = (self.parent != nil && self.tabBarController == nil)
 		viewModel.isVisible = true
+		
+		if DependencyManager.shared.currencyChanged {
+			viewModel.forceRefresh = true
+		}
+		
 		viewModel.refresh(animate: false)
 	}
 	
