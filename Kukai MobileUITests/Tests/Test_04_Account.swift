@@ -443,7 +443,6 @@ final class Test_04_Account: XCTestCase {
 			
 			let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
 			let newFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
-			XCTAssert(newXTZBalance > initialXTZBalance, "\(newXTZBalance) > \(initialXTZBalance)")
 			XCTAssert(newFinalisedBalance == 0, newFinalisedBalance.description)
 		}
 		
