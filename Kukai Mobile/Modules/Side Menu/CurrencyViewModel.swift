@@ -126,6 +126,7 @@ class CurrencyViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					}
 				}
 			
+			DependencyManager.shared.currencyChanged = true
 			DependencyManager.shared.balanceService.fetch(records: [BalanceService.FetchRequestRecord(address: walletAddress, type: .refreshEverything)])
 		}
 	}

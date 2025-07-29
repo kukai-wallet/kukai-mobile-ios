@@ -293,6 +293,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 			if self?.forceRefresh == true {
 				ds.applySnapshotUsingReloadData(snapshot)
 				self?.forceRefresh = false
+				DependencyManager.shared.currencyChanged = false
 			} else {
 				ds.apply(snapshot, animatingDifferences: animate)
 			}
