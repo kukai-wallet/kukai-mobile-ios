@@ -35,6 +35,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 	private var supressAutoRefreshError = false // Its jarring to the user if we auto refresh the balances sliently without interaction, and then display an error about a request timing out
 	private var activityAnimationExperimentalTimer: Timer? = nil // Timer for use in experimental mode to replace tzkt account change monitoring
 	private var walletConnectOperationTypeOnResume: WalletConnectOperationType? = nil
+	private var firstRefresh = true
 	
 	public var sideMenuTintView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
 	
@@ -97,8 +98,10 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 					
 					DependencyManager.shared.addressLoaded = address
 					
-					self?.refreshType = .useCacheIfNotStale
-					self?.refresh(addresses: nil)
+					DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.3) {
+						self?.refreshType = .useCacheIfNotStale
+						self?.refresh(addresses: nil)
+					}
 				}
 			}.store(in: &bag)
 		
@@ -244,7 +247,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		
 		// Loading screen for first time, or when cache has been blitzed, refresh everything
 		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		if !DependencyManager.shared.loginActive, DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
+		if firstRefresh, !DependencyManager.shared.loginActive, DependencyManager.shared.balanceService.isCacheStale(forAddress: selectedAddress) && DependencyManager.shared.balanceService.addressesWaitingToBeRefreshed.count == 0 {
 			self.refreshType = .useCacheIfNotStale
 			refresh(addresses: nil)
 		}
@@ -488,6 +491,7 @@ public class HomeTabBarController: UITabBarController, UITabBarControllerDelegat
 		}
 		
 		DependencyManager.shared.balanceService.fetch(records: records)
+		firstRefresh = false
 	}
 	
 	func refreshAllWallets() {
