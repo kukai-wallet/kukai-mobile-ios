@@ -206,13 +206,10 @@ jobs:
           export SENTRY_ORG=kukai
           export SENTRY_PROJECT=kukai-ios
           export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
           echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
-          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
           
           ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
 
           if [ ! $? -eq 0 ]; then
           echo "warning: sentry-cli - $ERROR"
@@ -281,21 +278,18 @@ jobs:
 
       # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
       - name: Upload dSYM
-        if: ${{ success() || failure() }}
+        if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
         env:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           export PATH=/usr/local/bin:$PATH
           export SENTRY_ORG=kukai
           export SENTRY_PROJECT=kukai-ios
-          export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile-test.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile-test.xcarchive/dSYMs/Sodium.framework.dSYM"
+          export CUSTOM_DSYM_PATH_TEST="$PWD/build/Kukai-mobile-test.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
           
-          echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
-          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
+          echo "CUSTOM_DSYM_PATH_TEST: $CUSTOM_DSYM_PATH_TEST"
           
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_TEST" 2>&1 >/dev/null)
           
           if [ ! $? -eq 0 ]; then
           echo "warning: sentry-cli - $ERROR"
