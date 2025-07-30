@@ -266,17 +266,15 @@ jobs:
           -scheme "Kukai Mobile Beta" \
           -resultBundlePath TestResults \
           -configuration Beta \
-          -archivePath $PWD/build/Kukai-mobile-test.xcarchive \
           -derivedDataPath $PWD/build-test/ \
           -enableCodeCoverage YES \
-          clean \
-          archive \
           test \
           CONFIG_1="$CONFIG_1" \
           CONFIG_2="$CONFIG_2" \
           CONFIG_3="$CONFIG_3"
 
       # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
+      # XCUITests don't run on an archived build, they run off the xcode version loaded into memory. The dSYM for this is located in the -derivedDataPath supplied above
       - name: Upload dSYM
         if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
         env:
@@ -285,7 +283,7 @@ jobs:
           export PATH=/usr/local/bin:$PATH
           export SENTRY_ORG=kukai
           export SENTRY_PROJECT=kukai-ios
-          export CUSTOM_DSYM_PATH_TEST="$PWD/build/Kukai-mobile-test.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
+          export CUSTOM_DSYM_PATH_TEST="$PWD/build-test/Build/Products/Beta-iphonesimulator/Kukai Mobile.app.dSYM"
           
           echo "CUSTOM_DSYM_PATH_TEST: $CUSTOM_DSYM_PATH_TEST"
           
