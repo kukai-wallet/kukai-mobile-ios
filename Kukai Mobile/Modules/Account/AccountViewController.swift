@@ -141,6 +141,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}
 	}
 	
+	/*
 	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 		guard let cell = cell as? UITableViewCellImageDownloading else {
 			return
@@ -148,6 +149,7 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		
 		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
 	}
+	*/
 	
 	func menuVCForBalancesMore() -> MenuViewController {
 		let actions: [UIAction] = [

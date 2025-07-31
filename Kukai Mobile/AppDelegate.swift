@@ -54,8 +54,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 					
 					event.message = SentryMessage(formatted: newTitle)
 					event.fingerprint = [newTitle]
+					
 				}
-			
+				else if (event.exceptions?.first?.type == "HTTPClientError") {
+					// We get lots of HTTP 500's while running the app. Its important to track what issues users are facing, but it causes a lot of nosie from the simualtor while testing
+					#if targetEnvironment(simulator)
+						return nil
+					#endif
+				}
+				
 				return event
 			}
 		}

@@ -44,6 +44,11 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellImageDownloading {
 		}
 	}
 	
+	override func prepareForReuse() {
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
+	}
+	
 	func downloadingImageViews() -> [SDAnimatedImageView] {
 		return [iconView]
 	}
