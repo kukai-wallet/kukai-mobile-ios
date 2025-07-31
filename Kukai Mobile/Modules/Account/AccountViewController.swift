@@ -123,21 +123,28 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 	}
 	
 	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let token = viewModel.token(atIndexPath: indexPath) else {
-			return
-		}
-		
-		if let c = cell as? TokenBalanceCell {
-			if token.isXTZ() {
-				c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
-			} else {
-				c.iconView.backgroundColor = .colorNamed("BG4")
-				MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownToken()) { res in
-					c.iconView.backgroundColor = .white
-				}
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let token = self?.viewModel.token(atIndexPath: indexPath) else {
+				return
 			}
-		} else if let c = cell as? TezAndStakeCell {
-			c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
+			
+			if let c = cell as? TokenBalanceCell {
+				if token.isXTZ() {
+					DispatchQueue.main.async { c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50)) }
+				} else {
+					DispatchQueue.main.async {
+						MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownGroup()) { res in
+							if res != nil {
+								c.iconView.backgroundColor = .white
+							} else {
+								c.iconView.backgroundColor = .colorNamed("BG4")
+							}
+						}
+					}
+				}
+			} else if let c = cell as? TezAndStakeCell {
+				DispatchQueue.main.async { c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50)) }
+			}
 		}
 	}
 	
