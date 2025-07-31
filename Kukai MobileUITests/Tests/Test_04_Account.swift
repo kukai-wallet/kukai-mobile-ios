@@ -76,6 +76,8 @@ final class Test_04_Account: XCTestCase {
 		
 		if enteredTokenDetials {
 			sleep(4)
+			app.buttons["1Y"].tap()
+			sleep(1)
 			XCTAssert(app.tables.staticTexts["chart-annotation-bottom"].exists)
 			SharedHelpers.shared.navigationBack(app: app)
 		}
@@ -430,7 +432,7 @@ final class Test_04_Account: XCTestCase {
 		Test_04_Account.waitForInitalLoad(app: app)
 		Test_04_Account.openTokenDetailsAndWait(app: app)
 		
-		let initialXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+		//let initialXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
 		let initialFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
 		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-last-baker"].exists)
 		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-next-baker"].exists)
@@ -441,7 +443,7 @@ final class Test_04_Account: XCTestCase {
 			Test_04_Account.handleFinalise(app: app)
 			Test_04_Account.openTokenDetailsAndWait(app: app)
 			
-			let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+			//let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
 			let newFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
 			XCTAssert(newFinalisedBalance == 0, newFinalisedBalance.description)
 		}
