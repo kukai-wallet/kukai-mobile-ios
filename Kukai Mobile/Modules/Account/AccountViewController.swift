@@ -173,6 +173,7 @@ extension AccountViewController: UITableViewCellButtonDelegate {
 extension AccountViewController: AccountViewModelPopups {
 	
 	func unstakePreformed() {
-		self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
+		// TODO: removing for now as this feature is set to change in next protocol version
+		//self.performSegue(withIdentifier: "unstake-reminder", sender: nil)
 	}
 }
