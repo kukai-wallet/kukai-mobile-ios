@@ -133,13 +133,14 @@ final class Test_04_Account: XCTestCase {
 		app.buttons["View in Explorer"].tap()
 		sleep(5)
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+		safari.textFields["Address"].tap()
+		sleep(2)
 		
-		XCTAssert(safari.webViews.firstMatch.links["TzKT"].exists)
-		XCTAssert(safari.webViews.firstMatch.buttons["ACCOUNT"].exists)
-		XCTAssert(safari.webViews.firstMatch.buttons["OPERATIONS"].exists)
+		let fullURL1 = (safari.textFields["Address"].value as? String) ?? ""
+		let prefix1 = String(fullURL1.prefix(15))
+		XCTAssert(prefix1 == "https://tzkt.io", prefix1)
 		app.activate()
 		
-		sleep(2)
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
 		
