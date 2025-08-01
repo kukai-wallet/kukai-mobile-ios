@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="dark"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -28,6 +28,7 @@
                 <outlet property="headerLabel" destination="3BH-hp-rC3" id="CJf-G8-X58"/>
                 <outlet property="inputControlsStackView" destination="7k6-7j-3jS" id="DIO-c9-DC6"/>
                 <outlet property="outerButtonStackview" destination="v9f-de-6RC" id="Ziz-Lk-E5h"/>
+                <outlet property="qrCodeButton" destination="DQz-ME-5XM" id="QGG-uw-BY3"/>
                 <outlet property="sendButton" destination="BeQ-m7-CDp" id="cHm-Jw-DmV"/>
                 <outlet property="sendToIcon" destination="vZE-UR-e9Q" id="BhT-1P-zoC"/>
                 <outlet property="textField" destination="NiH-S7-rDy" id="8wU-BW-bFe"/>
@@ -226,17 +227,6 @@
             <point key="canvasLocation" x="21.739130434782609" y="4.6875"/>
         </view>
     </objects>
-    <designables>
-        <designable name="BeQ-m7-CDp">
-            <size key="intrinsicContentSize" width="36" height="36"/>
-        </designable>
-        <designable name="NiH-S7-rDy">
-            <size key="intrinsicContentSize" width="104" height="21"/>
-        </designable>
-        <designable name="cJo-dB-oV7">
-            <size key="intrinsicContentSize" width="132" height="17"/>
-        </designable>
-    </designables>
     <resources>
         <image name="ChevronRight" width="10" height="18"/>
         <image name="ScanQR" width="24" height="24"/>
@@ -269,10 +259,10 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.29803921568627451" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29803921570000003" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

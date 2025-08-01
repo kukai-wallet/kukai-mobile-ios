@@ -200,9 +200,38 @@ final class Test_06_Collectibles: XCTestCase {
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
+	func testViewRichMediaOnMainnet() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenSideMenu(app: app)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
+		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		
+		SharedHelpers.shared.waitForStaticText("Dogamí", exists: true, inElement: app.collectionViews, delay: 30)
+		app.collectionViews.staticTexts["Dogamí"].firstMatch.tap()
+		sleep(2)
+		
+		app.collectionViews.staticTexts["Bucket Hat #5360"].tap()
+		sleep(15)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		
+		app.collectionViews.staticTexts["DOGAMI #7777"].tap()
+		sleep(15)
+		app.otherElements["Video"].tap()
+	}
+	
 	private func sendNFT(to: String, inApp app: XCUIApplication) {
 		sleep(2)
 		
+		app.collectionViews.buttons["primary-button"].tap()
+		app.tables.staticTexts[to].tap()
+		
+		// test a regression: cancelling send and returning was triggering a strange refresh that caused a crash
+		app.buttons["close"].tap()
+		sleep(2)
+		
+		// Go back to send flow and continue
 		app.collectionViews.buttons["primary-button"].tap()
 		app.tables.staticTexts[to].tap()
 		

@@ -118,9 +118,12 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 					self?.refresh(animate: true)
 				}
 				
+				// TODO: removing for now as this feature is set to change in next protocol version
+				/*
 				if TransactionService.shared.didUnstake && DependencyManager.shared.activityService.pendingTransactionGroups.count == 0 {
 					self?.popupDelegate?.unstakePreformed()
 				}
+				*/
 			}.store(in: &bag)
 		
 		AccountViewModel.setupAccountActivityListener()
