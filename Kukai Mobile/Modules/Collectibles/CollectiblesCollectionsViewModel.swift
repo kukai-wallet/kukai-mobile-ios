@@ -45,6 +45,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var nftCollectionRemainderCounts: [Int?] = []
 	var displayCount = 2
 	
+	let halfMegaByte: UInt = 500000
+	let oneHundredMegabyte: UInt = 100000000
+	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
 	
@@ -129,6 +132,11 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			} else if self.isSearching, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setup(title: obj.name, quantity: balance)
+				
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
+				}
+				
 				return cell
 				
 			} else if self.itemCount <= 1, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
@@ -140,6 +148,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setupViews(quantity: balance, isRichMedia: (type != .imageOnly && type != nil))
 				
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: oneHundredMegabyte)
+				}
+				
 				return cell
 				
 			} else if self.isGroupMode == false, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
@@ -149,12 +161,17 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let isRichMedia = (type != .imageOnly && type != nil)
 				
 				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
+				}
 				
 				return cell
 				
 			} else if let obj = item.base as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(title: title, displayCount: displayCount, totalCount: nftCollectionRemainderCounts[indexPath.row] ?? 0)
+				cell.setupCollectionImage(url: MediaProxyService.url(fromUri: obj.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat()))
+				cell.setupImages(imageURLs: self.willDisplayImages(forIndexPath: indexPath))
 				
 				return cell
 			} else if let _ = item.base as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
