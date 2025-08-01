@@ -104,12 +104,4 @@ class CollectiblesRecentsViewController: UIViewController, UICollectionViewDeleg
 			MediaProxyService.load(url: url, to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
 		}
 	}
-	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
 }

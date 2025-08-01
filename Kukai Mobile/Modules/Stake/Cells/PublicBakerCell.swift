@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
+class PublicBakerCell: UITableViewCell {
 	
 	@IBOutlet weak var bakerIcon: SDAnimatedImageView!
 	@IBOutlet weak var bakerNameLabel: UILabel!
@@ -66,7 +66,8 @@ class PublicBakerCell: UITableViewCell, UITableViewCellImageDownloading {
 		bakerNameLabel.accessibilityIdentifier = "baker-list-name"
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [bakerIcon]
+	override func prepareForReuse() {
+		bakerIcon.sd_cancelCurrentImageLoad()
+		bakerIcon = nil
 	}
 }

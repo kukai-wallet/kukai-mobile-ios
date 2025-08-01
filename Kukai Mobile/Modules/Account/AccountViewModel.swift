@@ -160,6 +160,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.symbolLabel.text = "XTZ"
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(amount.toNormalisedDecimal() ?? 0, decimalPlaces: amount.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
+				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				// cell.setPriceChange(value: 100) // Will be re-added when we have the actual values
 				
 				let totalXtzValue = amount * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
@@ -171,6 +172,7 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.topBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.xtz.toNormalisedDecimal() ?? 0, decimalPlaces: obj.xtz.decimalPlaces, allowNegative: false)
 				cell.bottomBalanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(obj.stake.toNormalisedDecimal() ?? 0, decimalPlaces: obj.stake.decimalPlaces, allowNegative: false)
 				cell.favCorner.isHidden = false
+				cell.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50))
 				
 				let totalXtzValue = obj.xtz * DependencyManager.shared.coinGeckoService.selectedCurrencyRatePerXTZ
 				cell.topValuelabel.text = DependencyManager.shared.coinGeckoService.format(decimal: totalXtzValue, numberStyle: .currency, maximumFractionDigits: 2)
@@ -189,6 +191,13 @@ class AccountViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 				cell.favCorner.isHidden = !token.isFavourite
 				cell.symbolLabel.text = symbol
 				cell.balanceLabel.text = DependencyManager.shared.coinGeckoService.formatLargeTokenDisplay(token.balance.toNormalisedDecimal() ?? 0, decimalPlaces: token.decimalPlaces, allowNegative: false)
+				MediaProxyService.load(url: token.thumbnailURL, to: cell.iconView, withCacheType: .permanent, fallback: UIImage.unknownGroup()) { res in
+					if res != nil {
+						cell.iconView.backgroundColor = .white
+					} else {
+						cell.iconView.backgroundColor = .colorNamed("BG4")
+					}
+				}
 				// cell.setPriceChange(value: Decimal(Int.random(in: -100..<100))) // Will be re-added when we have the actual values
 				
 				if let tokenValueAndRate = DependencyManager.shared.balanceService.tokenValueAndRateCoordinator.read({ DependencyManager.shared.balanceService.tokenValueAndRate[token.id] }) {

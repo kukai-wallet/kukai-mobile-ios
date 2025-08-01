@@ -54,12 +54,4 @@ class HiddenTokensBalancesViewController: UIViewController, UITableViewDelegate 
 			(self.parent as? HiddenTokensMainViewController)?.openTokenDetails()
 		}
 	}
-	
-	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
 }

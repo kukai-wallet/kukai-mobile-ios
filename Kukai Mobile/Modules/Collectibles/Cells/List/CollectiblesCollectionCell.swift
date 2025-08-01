@@ -9,7 +9,7 @@ import UIKit
 import KukaiCoreSwift
 import SDWebImage
 
-class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDownloading {
+class CollectiblesCollectionCell: UICollectionViewCell {
 	
 	@IBOutlet weak var collectionIcon: UIImageView!
 	@IBOutlet weak var collectionName: UILabel!
@@ -84,12 +84,9 @@ class CollectiblesCollectionCell: UICollectionViewCell, UITableViewCellImageDown
 	
 	override func prepareForReuse() {
 		for imageView in imageViews {
+			imageView.sd_cancelCurrentImageLoad()
 			imageView.image = nil
 			imageView.backgroundColor = .clear
 		}
-	}
-	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return imageViews
 	}
 }

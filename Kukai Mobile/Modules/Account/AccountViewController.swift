@@ -122,42 +122,6 @@ class AccountViewController: UIViewController, UITableViewDelegate, EstimatedTot
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		DispatchQueue.global(qos: .background).async { [weak self] in
-			guard let token = self?.viewModel.token(atIndexPath: indexPath) else {
-				return
-			}
-			
-			if let c = cell as? TokenBalanceCell {
-				if token.isXTZ() {
-					DispatchQueue.main.async { c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50)) }
-				} else {
-					DispatchQueue.main.async {
-						MediaProxyService.load(url: token.thumbnailURL, to: c.iconView, withCacheType: .permanent, fallback: UIImage.unknownGroup()) { res in
-							if res != nil {
-								c.iconView.backgroundColor = .white
-							} else {
-								c.iconView.backgroundColor = .colorNamed("BG4")
-							}
-						}
-					}
-				}
-			} else if let c = cell as? TezAndStakeCell {
-				DispatchQueue.main.async { c.iconView.image = UIImage.tezosToken().resizedImage(size: CGSize(width: 50, height: 50)) }
-			}
-		}
-	}
-	
-	/*
-	func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
-	*/
-	
 	func menuVCForBalancesMore() -> MenuViewController {
 		let actions: [UIAction] = [
 			UIAction(title: "Favorites", image: UIImage(named: "FavoritesOn")?.resizedImage(size: CGSize(width: 26, height: 26)), identifier: nil, handler: { [weak self] action in

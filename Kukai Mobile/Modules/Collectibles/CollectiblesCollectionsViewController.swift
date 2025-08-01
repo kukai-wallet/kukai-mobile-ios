@@ -130,14 +130,6 @@ class CollectiblesCollectionsViewController: UIViewController, UICollectionViewD
 		}
 	}
 	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
-	
 	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 		if indexPath.section == 0 {
 			return

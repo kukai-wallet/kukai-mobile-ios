@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class HiddenTokenCell: UITableViewCell, UITableViewCellImageDownloading {
+class HiddenTokenCell: UITableViewCell {
 	
 	@IBOutlet weak var hiddenIcon: UIImageView!
 	@IBOutlet weak var tokenIcon: SDAnimatedImageView!
@@ -21,7 +21,8 @@ class HiddenTokenCell: UITableViewCell, UITableViewCellImageDownloading {
 		containerView.gradientType = .tableViewCell
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [tokenIcon]
+	override func prepareForReuse() {
+		tokenIcon.sd_cancelCurrentImageLoad()
+		tokenIcon.image = nil
 	}
 }
