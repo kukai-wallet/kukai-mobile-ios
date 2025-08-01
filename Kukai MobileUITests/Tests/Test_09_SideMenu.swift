@@ -9,6 +9,8 @@ import XCTest
 
 final class Test_09_SideMenu: XCTestCase {
 	
+	let testConfig: TestConfig = EnvironmentVariables.shared.config()
+	
 	// MARK: - Setup
 	
 	override func setUpWithError() throws {
@@ -31,6 +33,14 @@ final class Test_09_SideMenu: XCTestCase {
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
+		
+		// Test showing QR
+		app.buttons["show_qr"].tap()
+		SharedHelpers.shared.waitForStaticText("Receive Address", exists: true, inElement: app, delay: 5)
+		app.buttons["Copy"].tap()
+		Test_04_Account.slideDownBottomSheet(inApp: app, element: app.staticTexts["Receive Address"].firstMatch)
+		
+		
 		// Test network change, verify ghostnet warning appears / disappears
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
 		Test_04_Account.check(app: app, isDisplayingGhostnetWarning: false)
@@ -38,6 +48,26 @@ final class Test_09_SideMenu: XCTestCase {
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
+		// While in mainnet, test onramps display
+		app.buttons["get_xtz"].tap()
+		sleep(1)
+		
+		app.tables.staticTexts["Coinbase"].tap()
+		sleep(2)
+		app.buttons["Done"].firstMatch.tap()
+		
+		app.tables.staticTexts["Transak"].tap()
+		sleep(2)
+		app.buttons["Done"].firstMatch.tap()
+		
+		app.tables.staticTexts["Moonpay"].tap()
+		sleep(2)
+		app.buttons["Done"].firstMatch.tap()
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		sleep(2)
+		
+		Test_03_Home.handleOpenSideMenu(app: app)
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
 		Test_04_Account.check(app: app, isDisplayingGhostnetWarning: true)
 		
@@ -85,6 +115,16 @@ final class Test_09_SideMenu: XCTestCase {
 		sleep(2)
 		
 		SharedHelpers.shared.waitForStaticText("Zero KB", exists: true, inElement: app.tables, delay: 5)
+		
+		
+		// Test clearing activity domains
+		app.tables.staticTexts["Activity Domains and Aliases"].tap()
+		sleep(2)
+		
+		SharedHelpers.shared.tapSecondaryButton(app: app)
+		sleep(2)
+		
+		SharedHelpers.shared.waitForStaticText("Network", exists: true, inElement: app.tables, delay: 5)
 	}
 	
 	func testSecurity() {

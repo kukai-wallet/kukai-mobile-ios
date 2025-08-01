@@ -29,6 +29,7 @@ public class EnterAddressComponent: UIView {
 	@IBOutlet weak var headerLabel: UILabel!
 	@IBOutlet weak var sendToIcon: UIImageView!
 	@IBOutlet weak var addressTypeButton: CustomisableButton!
+	@IBOutlet weak var qrCodeButton: UIButton!
 	@IBOutlet var sendButton: CustomisableButton!
 	@IBOutlet weak var textField: ValidatorTextField!
 	@IBOutlet weak var errorLabel: UILabel!
@@ -72,6 +73,7 @@ public class EnterAddressComponent: UIView {
 	}
 	
 	private func setup() {
+		qrCodeButton.accessibilityIdentifier = "qr-button"
 		sendButton.accessibilityIdentifier = "send-button"
 		
 		textField.validator = TezosAddressValidator(ownAddress: DependencyManager.shared.selectedWalletAddress ?? "")

@@ -206,6 +206,14 @@ final class Test_06_Collectibles: XCTestCase {
 		app.collectionViews.buttons["primary-button"].tap()
 		app.tables.staticTexts[to].tap()
 		
+		// test a regression: cancelling send and returning was triggering a strange refresh that caused a crash
+		app.buttons["close"].tap()
+		sleep(2)
+		
+		// Go back to send flow and continue
+		app.collectionViews.buttons["primary-button"].tap()
+		app.tables.staticTexts[to].tap()
+		
 		sleep(2)
 		SharedHelpers.shared.tapPrimaryButton(app: app)
 		

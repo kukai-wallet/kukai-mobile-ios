@@ -125,6 +125,7 @@ class ScanViewController: UIViewController, AVCaptureMetadataOutputObjectsDelega
 		self.view.addSubview(titleLabel)
 		
 		modalBackButton.imageWidth = 18
+		modalBackButton.accessibilityIdentifier = "close"
 		modalBackButton.imageHeight = 18
 		modalBackButton.customImage = UIImage(named: "Close") ?? UIImage()
 		modalBackButton.customImageTint = .colorNamed("BGB4")

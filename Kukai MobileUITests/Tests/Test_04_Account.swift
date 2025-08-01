@@ -351,6 +351,89 @@ final class Test_04_Account: XCTestCase {
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
+	public func testSendWalletTypeVerifiers() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
+		
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["XTZ"].tap()
+		
+		// Test QR reader shows up
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["qr-button"].tap()
+		sleep(1)
+		
+		Test_10_ConnectedApps.handlePermissionsIfNecessary(app: app)
+		app.buttons["close"].tap()
+		
+		
+		// Test tezos domain
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Tezos Domain"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon.gho")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz1bQnU...VnyF", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test google
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Google"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon@kukai.app")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2GGcK...WM1T", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Reddit
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Reddit"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simonmcl")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2JyuA...2jAm", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Twitter
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Twitter"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon_mcl")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2Vhpb...dECb", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Email
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Email"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon@kukai.app")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2GGcK...WM1T", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+	}
+	
 	private func sendToken(to: String, inApp app: XCUIApplication) {
 		let currentXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "account-xtz-balance", in: app.tables)
 		let tokenSymbol = app.tables.cells.containing(.staticText, identifier: "account-token-symbol").firstMatch.staticTexts["account-token-symbol"].firstMatch.label
