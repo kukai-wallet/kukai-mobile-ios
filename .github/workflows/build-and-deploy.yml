@@ -217,7 +217,9 @@ jobs:
 
       # Manually create release for sentry if running on /main
       - name: Create release on sentry
-        if: github.ref == 'refs/heads/main'
+        if: ${{ github.ref != 'refs/heads/main' && success() }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
         run: |
           export PATH=/usr/local/bin:$PATH
           export SENTRY_ORG=kukai
