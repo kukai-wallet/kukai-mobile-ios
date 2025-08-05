@@ -82,14 +82,6 @@ class ActivityViewController: UIViewController, UITableViewDelegate {
 		}
 	}
 	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad() })
-	}
-	
 	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
 		return 0.1
 	}

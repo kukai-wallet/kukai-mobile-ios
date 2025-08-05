@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class TokenBalanceCell: UITableViewCell, UITableViewCellImageDownloading {
+class TokenBalanceCell: UITableViewCell {
 
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var favCorner: UIImageView!
@@ -44,7 +44,9 @@ class TokenBalanceCell: UITableViewCell, UITableViewCellImageDownloading {
 		}
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [iconView]
+	override func prepareForReuse() {
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
+		iconView.backgroundColor = .colorNamed("BG4")
 	}
 }

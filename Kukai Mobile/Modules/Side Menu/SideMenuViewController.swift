@@ -41,6 +41,8 @@ class SideMenuViewController: UIViewController {
 	override func viewDidLoad() {
         super.viewDidLoad()
 		
+		getTezButton.accessibilityIdentifier = "get_xtz"
+		showQRButton.accessibilityIdentifier = "show_qr"
 		closeButton.accessibilityIdentifier = "side-menu-close-button"
 		
 		panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(touched(_:)))

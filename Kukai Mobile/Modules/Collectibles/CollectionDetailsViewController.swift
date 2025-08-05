@@ -141,12 +141,4 @@ class CollectionDetailsViewController: UIViewController, UICollectionViewDelegat
 			self.performSegue(withIdentifier: "detail", sender: obj)
 		}
 	}
-	
-	func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-		guard let cell = cell as? UITableViewCellImageDownloading else {
-			return
-		}
-		
-		cell.downloadingImageViews().forEach({ $0.sd_cancelCurrentImageLoad()})
-	}
 }

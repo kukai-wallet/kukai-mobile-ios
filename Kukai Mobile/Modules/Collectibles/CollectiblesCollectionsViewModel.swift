@@ -45,6 +45,9 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	var nftCollectionRemainderCounts: [Int?] = []
 	var displayCount = 2
 	
+	let halfMegaByte: UInt = 500000
+	let oneHundredMegabyte: UInt = 100000000
+	
 	weak var validatorTextfieldDelegate: ValidatorTextFieldDelegate? = nil
 	
 	
@@ -129,6 +132,11 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			} else if self.isSearching, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SearchResultCell", for: indexPath) as? SearchResultCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setup(title: obj.name, quantity: balance)
+				
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
+				}
+				
 				return cell
 				
 			} else if self.itemCount <= 1, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionSinglePageCell", for: indexPath) as? CollectiblesCollectionSinglePageCell {
@@ -140,6 +148,10 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
 				cell.setupViews(quantity: balance, isRichMedia: (type != .imageOnly && type != nil))
 				
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: oneHundredMegabyte)
+				}
+				
 				return cell
 				
 			} else if self.isGroupMode == false, let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
@@ -149,12 +161,17 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 				let isRichMedia = (type != .imageOnly && type != nil)
 				
 				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
+				if let url = willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb(), maxAnimatedImageSize: halfMegaByte)
+				}
 				
 				return cell
 				
 			} else if let obj = item.base as? Token, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionCell", for: indexPath) as? CollectiblesCollectionCell {
 				let title = obj.name ?? obj.tokenContractAddress?.truncateTezosAddress() ?? ""
 				cell.setup(title: title, displayCount: displayCount, totalCount: nftCollectionRemainderCounts[indexPath.row] ?? 0)
+				cell.setupCollectionImage(url: MediaProxyService.url(fromUri: obj.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat()))
+				cell.setupImages(imageURLs: self.willDisplayImages(forIndexPath: indexPath))
 				
 				return cell
 			} else if let _ = item.base as? LoadingContainerCellObject, self.isGroupMode, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "LoadingGroupModeCell", for: indexPath) as? LoadingGroupModeCell {
@@ -174,108 +191,116 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	}
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
-			return
-		}
-		
-		// Build snapshot data
 		let width = min(UIApplication.shared.currentWindowIncludingSuspended?.bounds.width ?? 0, UIApplication.shared.currentWindowIncludingSuspended?.bounds.height ?? 0)
-		displayCount = Int((width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
-		imageURLsForCollectionGroups = []
-		imageURLsForCollectibles = []
-		nftCollectionRemainderCounts = []
 		
-		var hashableData: [AnyHashableSendable] = []
-		isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
-		
-		// Add non hidden groups
-		if isGroupMode {
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let ds = self?.dataSource else {
+				DispatchQueue.main.async { [weak self] in
+					self?.state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
+				}
+				return
+			}
 			
-			// If needs shimmers
-			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-			let balanceService = DependencyManager.shared.balanceService
-			if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress()  {
-				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-					guard !nftGroup.isHidden else { continue }
-					hashableData.append(.init(nftGroup))
-					
-					if displayCount <= 0 {
-						// fallback for edge case where processing can't find screen
-						self.imageURLsForCollectionGroups.append(nil)
-						self.imageURLsForCollectibles.append([])
-						self.nftCollectionRemainderCounts.append(0)
+			// Build snapshot data
+			self?.displayCount = Int((width - 72) / 62) // 62 is width of imageView + 8px padding. 88 is a guess at padding/margin used
+			self?.imageURLsForCollectionGroups = []
+			self?.imageURLsForCollectibles = []
+			self?.nftCollectionRemainderCounts = []
+			
+			var hashableData: [AnyHashableSendable] = []
+			self?.isGroupMode = UserDefaults.standard.bool(forKey: StorageService.settingsKeys.collectiblesGroupModeEnabled)
+			
+			// Add non hidden groups
+			if self?.isGroupMode == true {
+				
+				// If needs shimmers
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				let balanceService = DependencyManager.shared.balanceService
+				if DependencyManager.shared.balanceService.hasBeenFetched(forAddress: selectedAddress), !balanceService.isCacheLoadingInProgress()  {
+					for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+						guard !nftGroup.isHidden else { continue }
+						hashableData.append(.init(nftGroup))
 						
-					} else {
-						// Process URLs and counts for easier later retreival
-						let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
-						var remainderCount: Int = 0
-						
-						if visibleNfts.count > displayCount {
-							remainderCount = visibleNfts.count - displayCount
+						if (self?.displayCount ?? 0) <= 0 {
+							// fallback for edge case where processing can't find screen
+							self?.imageURLsForCollectionGroups.append(nil)
+							self?.imageURLsForCollectibles.append([])
+							self?.nftCollectionRemainderCounts.append(0)
+							
+						} else {
+							// Process URLs and counts for easier later retreival
+							let visibleNfts = nftGroup.nfts?.filter({ !$0.isHidden }) ?? []
+							var remainderCount: Int = 0
+							
+							if visibleNfts.count > (self?.displayCount ?? 0) {
+								remainderCount = visibleNfts.count - (self?.displayCount ?? 0)
+							}
+							
+							let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
+							self?.imageURLsForCollectionGroups.append(groupURL)
+							
+							let urls = visibleNfts.prefix((self?.displayCount ?? 0)).map({ MediaProxyService.smallURL(forNFT: $0) })
+							self?.imageURLsForCollectibles.append(urls)
+							self?.nftCollectionRemainderCounts.append(remainderCount)
 						}
+					}
+				} else {
+					hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
+				}
+				
+			} else {
+				
+				// If needs shimmers
+				let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+				if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
+					hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
+					
+				} else {
+					for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+						guard !nftGroup.isHidden else { continue }
 						
-						let groupURL = MediaProxyService.url(fromUri: nftGroup.thumbnailURL, ofFormat: MediaProxyService.Format.icon.rawFormat())
-						self.imageURLsForCollectionGroups.append(groupURL)
-						
-						let urls = visibleNfts.prefix(displayCount).map({ MediaProxyService.smallURL(forNFT: $0) })
-						self.imageURLsForCollectibles.append(urls)
-						self.nftCollectionRemainderCounts.append(remainderCount)
+						let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden }).map({ AnyHashableSendable($0) })
+						hashableData.append(contentsOf: nonHiddenNFTs ?? [])
 					}
 				}
-			} else {
-				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
 			}
 			
-		} else {
+			// Build snapshot
+			self?.normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+			self?.normalSnapshot.appendSections([0, 1])
+			self?.normalSnapshot.appendItems([.init(self?.sortMenu)], toSection: 0)
 			
-			// If needs shimmers
-			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-			if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress) {
-				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
-			
+			if hashableData.count > 0 {
+				self?.normalSnapshot.appendItems(hashableData, toSection: 1)
 			} else {
-				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
-					guard !nftGroup.isHidden else { continue }
-					
-					let nonHiddenNFTs = nftGroup.nfts?.filter({ !$0.isHidden }).map({ AnyHashableSendable($0) })
-					hashableData.append(contentsOf: nonHiddenNFTs ?? [])
-				}
+				self?.normalSnapshot.appendItems([.init(CollectionEmptyObj())], toSection: 1)
+			}
+			
+			self?.itemCount = hashableData.count
+			
+			if let snap = self?.normalSnapshot {
+				ds.applySnapshotUsingReloadData(snap)
+			}
+			
+			/*
+			 if forceRefresh {
+			 ds.applySnapshotUsingReloadData(normalSnapshot)
+			 forceRefresh = false
+			 } else {
+			 ds.apply(normalSnapshot, animatingDifferences: animate)
+			 }
+			 */
+			
+			if let currentLayoutType = self?.getLayoutType(), currentLayoutType != self?.previousLayout {
+				self?.previousLayout = currentLayoutType
+				self?.needsLayoutChange = true
+			}
+			
+			// Return success
+			DispatchQueue.main.async { [weak self] in
+				self?.state = .success(nil)
 			}
 		}
-		
-		// Build snapshot
-		normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-		normalSnapshot.appendSections([0, 1])
-		normalSnapshot.appendItems([.init(sortMenu)], toSection: 0)
-		
-		if hashableData.count > 0 {
-			normalSnapshot.appendItems(hashableData, toSection: 1)
-		} else {
-			normalSnapshot.appendItems([.init(CollectionEmptyObj())], toSection: 1)
-		}
-		
-		itemCount = hashableData.count
-		
-		ds.applySnapshotUsingReloadData(normalSnapshot)
-		
-		/*
-		if forceRefresh {
-			ds.applySnapshotUsingReloadData(normalSnapshot)
-			forceRefresh = false
-		} else {
-			ds.apply(normalSnapshot, animatingDifferences: animate)
-		}
-		*/
-		
-		let currentLayoutType = getLayoutType()
-		if currentLayoutType != previousLayout {
-			previousLayout = currentLayoutType
-			needsLayoutChange = true
-		}
-		
-		// Return success
-		self.state = .success(nil)
 	}
 	
 	

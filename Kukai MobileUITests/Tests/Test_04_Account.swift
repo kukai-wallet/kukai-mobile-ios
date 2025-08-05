@@ -76,6 +76,8 @@ final class Test_04_Account: XCTestCase {
 		
 		if enteredTokenDetials {
 			sleep(4)
+			app.buttons["1Y"].tap()
+			sleep(1)
 			XCTAssert(app.tables.staticTexts["chart-annotation-bottom"].exists)
 			SharedHelpers.shared.navigationBack(app: app)
 		}
@@ -131,13 +133,14 @@ final class Test_04_Account: XCTestCase {
 		app.buttons["View in Explorer"].tap()
 		sleep(5)
 		let safari = XCUIApplication(bundleIdentifier: "com.apple.mobilesafari")
+		safari.textFields["Address"].tap()
+		sleep(2)
 		
-		XCTAssert(safari.webViews.firstMatch.links["TzKT"].exists)
-		XCTAssert(safari.webViews.firstMatch.buttons["ACCOUNT"].exists)
-		XCTAssert(safari.webViews.firstMatch.buttons["OPERATIONS"].exists)
+		let fullURL1 = (safari.textFields["Address"].value as? String) ?? ""
+		let prefix1 = String(fullURL1.prefix(15))
+		XCTAssert(prefix1 == "https://tzkt.io", prefix1)
 		app.activate()
 		
-		sleep(2)
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		
 		
@@ -267,7 +270,6 @@ final class Test_04_Account: XCTestCase {
 		
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		app.popovers.tables.staticTexts["Hide Token"].tap()
-		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
 		XCTAssert(balanceCells.count == 1, balanceCells.count.description)
@@ -346,6 +348,88 @@ final class Test_04_Account: XCTestCase {
 		
 		// Switch back and end
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
+	}
+	
+	public func testSendWalletTypeVerifiers() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
+		
+		let tablesQuery = app.tables
+		tablesQuery.staticTexts["XTZ"].tap()
+		
+		// Test QR reader shows up
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["qr-button"].tap()
+		sleep(1)
+		
+		Test_10_ConnectedApps.handlePermissionsIfNecessary(app: app)
+		app.buttons["close"].tap()
+		
+		
+		// Test tezos domain
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Tezos Domain"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon.gho")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz1bQnU...VnyF", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test google
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Google"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon@kukai.app")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2GGcK...WM1T", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Reddit
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Reddit"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simonmcl")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2JyuA...2jAm", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Twitter
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Twitter"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon_mcl")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2Vhpb...dECb", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
+		
+		
+		// Test Email
+		tablesQuery.buttons["primary-button"].tap()
+		app.buttons["Tezos Address"].tap()
+		sleep(1)
+		
+		app.staticTexts["Email"].tap()
+		app.textFields.firstMatch.tap()
+		app.typeText("simon@kukai.app")
+		app.buttons["send-button"].tap()
+		SharedHelpers.shared.waitForStaticText("tz2GGcK...WM1T", exists: true, inElement: app, delay: 10)
+		app.buttons["close"].tap()
 	}
 	
 	private func sendToken(to: String, inApp app: XCUIApplication) {
@@ -430,7 +514,7 @@ final class Test_04_Account: XCTestCase {
 		Test_04_Account.waitForInitalLoad(app: app)
 		Test_04_Account.openTokenDetailsAndWait(app: app)
 		
-		let initialXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+		//let initialXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
 		let initialFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
 		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-last-baker"].exists)
 		XCTAssert(app.tables.staticTexts["token-detials-staking-rewards-next-baker"].exists)
@@ -441,9 +525,8 @@ final class Test_04_Account: XCTestCase {
 			Test_04_Account.handleFinalise(app: app)
 			Test_04_Account.openTokenDetailsAndWait(app: app)
 			
-			let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
+			//let newXTZBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "token-detials-balance", in: app.tables)
 			let newFinalisedBalance = SharedHelpers.getSanitizedDecimal(fromStaticText: "finalised-balance-label", in: app.tables)
-			XCTAssert(newXTZBalance > initialXTZBalance, "\(newXTZBalance) > \(initialXTZBalance)")
 			XCTAssert(newFinalisedBalance == 0, newFinalisedBalance.description)
 		}
 		

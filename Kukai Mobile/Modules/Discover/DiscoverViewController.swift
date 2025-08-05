@@ -81,12 +81,6 @@ class DiscoverViewController: UIViewController, UITableViewDelegate, DiscoverFea
 		}
 	}
 	
-	func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-		if let c = cell as? DiscoverCell {
-			MediaProxyService.load(url: viewModel.willDisplayImage(forIndexPath: indexPath), to: c.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
-		}
-	}
-	
 	func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		if indexPath.section == 0 && indexPath.row == (DependencyManager.shared.currentNetworkType == .mainnet ? 1 : 2) {
 			let currentWindowBounds = self.view.window?.windowScene?.keyWindow?.bounds

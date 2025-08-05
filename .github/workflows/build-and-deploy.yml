@@ -206,13 +206,30 @@ jobs:
           export SENTRY_ORG=kukai
           export SENTRY_PROJECT=kukai-ios
           export CUSTOM_DSYM_PATH="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Kukai Mobile.app.dSYM"
-          export CUSTOM_DSYM_PATH_FRAMEWORK="$PWD/build/Kukai-mobile.xcarchive/dSYMs/Sodium.framework.dSYM"
           
           echo "CUSTOM_DSYM_PATH: $CUSTOM_DSYM_PATH"
-          echo "CUSTOM_DSYM_PATH_FRAMEWORK: $CUSTOM_DSYM_PATH_FRAMEWORK"
           
           ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH" 2>&1 >/dev/null)
-          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_FRAMEWORK" 2>&1 >/dev/null)
+
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
+          fi
+
+      # Manually create release for sentry if running on /main
+      - name: Create release on sentry
+        if: github.ref == 'refs/heads/main'
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
+
+          app_bundle=$(/usr/libexec/PlistBuddy -c "Print :CFBundleIdentifier" "$PWD/build/Kukai-mobile.xcarchive/Info.plist")
+          app_version=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleShortVersionString" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+          app_build=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
+          sentry_release_string="$app_bundle@$app_version+$app_build"
+
+          ERROR=$(sentry-cli releases new "$sentry_release_string")
+          ERROR=$(sentry-cli releases finalize "$sentry_release_string")
           
           if [ ! $? -eq 0 ]; then
           echo "warning: sentry-cli - $ERROR"
@@ -249,13 +266,32 @@ jobs:
           -scheme "Kukai Mobile Beta" \
           -resultBundlePath TestResults \
           -configuration Beta \
-          -archivePath $PWD/build/Kukai-mobile-test.xcarchive \
           -derivedDataPath $PWD/build-test/ \
           -enableCodeCoverage YES \
           test \
           CONFIG_1="$CONFIG_1" \
           CONFIG_2="$CONFIG_2" \
           CONFIG_3="$CONFIG_3"
+
+      # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
+      # XCUITests don't run on an archived build, they run off the xcode version loaded into memory. The dSYM for this is located in the -derivedDataPath supplied above
+      - name: Upload dSYM
+        if: ${{ github.ref != 'refs/heads/main' && (success() || failure()) }}
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        run: |
+          export PATH=/usr/local/bin:$PATH
+          export SENTRY_ORG=kukai
+          export SENTRY_PROJECT=kukai-ios
+          export CUSTOM_DSYM_PATH_TEST="$PWD/build-test/Build/Products/Beta-iphonesimulator/Kukai Mobile.app.dSYM"
+          
+          echo "CUSTOM_DSYM_PATH_TEST: $CUSTOM_DSYM_PATH_TEST"
+          
+          ERROR=$(sentry-cli upload-dif "$CUSTOM_DSYM_PATH_TEST" 2>&1 >/dev/null)
+          
+          if [ ! $? -eq 0 ]; then
+          echo "warning: sentry-cli - $ERROR"
+          fi
 
 
       - name: Upload xcresult file

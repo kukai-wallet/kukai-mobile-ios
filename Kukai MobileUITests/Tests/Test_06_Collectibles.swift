@@ -200,9 +200,59 @@ final class Test_06_Collectibles: XCTestCase {
 		Test_03_Home.switchToAccount(testConfig.walletAddress_HD.truncateTezosAddress(), inApp: app)
 	}
 	
+	func testViewRichMediaOnMainnet() {
+		let app = XCUIApplication()
+		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_03_Home.handleOpenSideMenu(app: app)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress.truncateTezosAddress())
+		
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		
+		// Check for grouped mode
+		app.buttons["colelctibles-tap-more"].tap()
+		sleep(1)
+		
+		let groupCollections = app.staticTexts["Group Collections"]
+		if groupCollections.exists {
+			groupCollections.tap()
+		}
+		sleep(2)
+		
+		
+		SharedHelpers.shared.waitForStaticText("Dogamí", exists: true, inElement: app.collectionViews, delay: 30)
+		app.collectionViews.staticTexts["Dogamí"].firstMatch.tap()
+		sleep(2)
+		
+		app.collectionViews.staticTexts["Bucket Hat #5360"].tap()
+		sleep(15)
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		
+		app.collectionViews.staticTexts["DOGAMI #7777"].tap()
+		sleep(15)
+		app.otherElements["Video"].tap()
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		SharedHelpers.shared.navigationBack(app: app)
+		
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
+		Test_03_Home.handleOpenSideMenu(app: app)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
+	}
+	
 	private func sendNFT(to: String, inApp app: XCUIApplication) {
 		sleep(2)
 		
+		app.collectionViews.buttons["primary-button"].tap()
+		app.tables.staticTexts[to].tap()
+		
+		// test a regression: cancelling send and returning was triggering a strange refresh that caused a crash
+		app.buttons["close"].tap()
+		sleep(2)
+		
+		// Go back to send flow and continue
 		app.collectionViews.buttons["primary-button"].tap()
 		app.tables.staticTexts[to].tap()
 		

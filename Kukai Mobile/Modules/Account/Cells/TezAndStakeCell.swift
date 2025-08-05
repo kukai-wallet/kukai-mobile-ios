@@ -8,7 +8,7 @@
 import UIKit
 import SDWebImage
 
-class TezAndStakeCell: UITableViewCell, UITableViewCellImageDownloading {
+class TezAndStakeCell: UITableViewCell {
 
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var favCorner: UIImageView!
@@ -31,7 +31,8 @@ class TezAndStakeCell: UITableViewCell, UITableViewCellImageDownloading {
 		bottomSymbolLabel.accessibilityIdentifier = "account-stake-symbol"
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [iconView]
+	override func prepareForReuse() {
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
 	}
 }

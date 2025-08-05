@@ -13,7 +13,7 @@ protocol ActivityItemCellProcotol {
 	func brieflyHideContainer(_ hide: Bool)
 }
 
-class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, ActivityItemCellProcotol {
+class ActivityItemCell: UITableViewCell, ActivityItemCellProcotol {
 	
 	@IBOutlet weak var containerView: GradientView!
 	@IBOutlet weak var iconView: SDAnimatedImageView!
@@ -190,8 +190,9 @@ class ActivityItemCell: UITableViewCell, UITableViewCellImageDownloading, Activi
 		}
 	}
 	
-	func downloadingImageViews() -> [SDAnimatedImageView] {
-		return [iconView]
+	override func prepareForReuse() {
+		iconView.sd_cancelCurrentImageLoad()
+		iconView.image = nil
 	}
 	
 	

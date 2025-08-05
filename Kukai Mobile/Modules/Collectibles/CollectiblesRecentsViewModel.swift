@@ -72,7 +72,7 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 		collectionView.register(UINib(nibName: "CollectiblesCollectionLargeCell", bundle: nil), forCellWithReuseIdentifier: "CollectiblesCollectionLargeCell")
 		collectionView.register(UINib(nibName: "LoadingCollectibleCell", bundle: nil), forCellWithReuseIdentifier: "LoadingCollectibleCell")
 		
-		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { collectionView, indexPath, item in
+		dataSource = UICollectionViewDiffableDataSource(collectionView: collectionView, cellProvider: { [weak self] collectionView, indexPath, item in
 			
 			if let obj = item.base as? NFT, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectiblesCollectionLargeCell", for: indexPath) as? CollectiblesCollectionLargeCell {
 				let balance: String? = obj.balance > 1 ? "x\(obj.balance)" : nil
@@ -82,6 +82,10 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 				let isRichMedia = (type != .imageOnly && type != nil)
 				
 				cell.setup(title: obj.name, quantity: balance, isRichMedia: isRichMedia)
+				
+				if let url = self?.willDisplayImages(forIndexPath: indexPath).first {
+					MediaProxyService.load(url: url, to: cell.iconView, withCacheType: .temporary, fallback: UIImage.unknownThumb())
+				}
 				
 				return cell
 				
@@ -97,39 +101,44 @@ class CollectiblesRecentsViewModel: ViewModel, UICollectionViewDiffableDataSourc
 	
 	
 	func refresh(animate: Bool, successMessage: String? = nil) {
-		guard let ds = dataSource else {
-			state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized())
-			return
-		}
-		
-		// Build snapshot
-		normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
-		normalSnapshot.appendSections([0])
-		
-		imageURLsForCollectibles = []
-		var hashableData: [AnyHashableSendable] = []
-		
-		// If needs shimmers
-		let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
-		let balanceService = DependencyManager.shared.balanceService
-		if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress), balanceService.isCacheLoadingInProgress() {
-			hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
-			
-		} else {
-			
-			let recentNFTs = DependencyManager.shared.balanceService.account.recentNFTs.filter({ $0.isHidden == false })
-			for nft in recentNFTs {
-				let url = MediaProxyService.mediumURL(forNFT: nft)
-				imageURLsForCollectibles.append([url])
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let ds = self?.dataSource else {
+				DispatchQueue.main.async { [weak self] in self?.state = .failure(KukaiError.unknown(withString: "error-no-datasource".localized()), "error-no-datasource".localized()) }
+				return
 			}
-			hashableData = recentNFTs.map({ .init($0) })
+			
+			// Build snapshot
+			self?.normalSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
+			self?.normalSnapshot.appendSections([0])
+			
+			self?.imageURLsForCollectibles = []
+			var hashableData: [AnyHashableSendable] = []
+			
+			// If needs shimmers
+			let selectedAddress = DependencyManager.shared.selectedWalletAddress ?? ""
+			let balanceService = DependencyManager.shared.balanceService
+			if DependencyManager.shared.balanceService.hasNotBeenFetched(forAddress: selectedAddress), balanceService.isCacheLoadingInProgress() {
+				hashableData = [.init(LoadingContainerCellObject()), .init(LoadingContainerCellObject())]
+				
+			} else {
+				
+				let recentNFTs = DependencyManager.shared.balanceService.account.recentNFTs.filter({ $0.isHidden == false })
+				for nft in recentNFTs {
+					let url = MediaProxyService.mediumURL(forNFT: nft)
+					self?.imageURLsForCollectibles.append([url])
+				}
+				hashableData = recentNFTs.map({ .init($0) })
+			}
+			
+			self?.normalSnapshot.appendItems(hashableData, toSection: 0)
+			
+			if let snap = self?.normalSnapshot {
+				ds.applySnapshotUsingReloadData(snap)
+			}
+			
+			// Return success
+			DispatchQueue.main.async { [weak self] in self?.state = .success(nil) }
 		}
-		
-		normalSnapshot.appendItems(hashableData, toSection: 0)
-		ds.applySnapshotUsingReloadData(normalSnapshot)
-		
-		// Return success
-		self.state = .success(nil)
 	}
 	
 	func nft(forIndexPath indexPath: IndexPath) -> NFT? {
