@@ -206,7 +206,20 @@ final class Test_06_Collectibles: XCTestCase {
 		Test_03_Home.handleOpenSideMenu(app: app)
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
 		Test_05_WalletManagement.handleSwitchingTo(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress.truncateTezosAddress())
+		
+		Test_04_Account.waitForInitalLoad(app: app)
 		Test_03_Home.handleOpenCollectiblesTab(app: app)
+		
+		// Check for grouped mode
+		app.buttons["colelctibles-tap-more"].tap()
+		sleep(1)
+		
+		let groupCollections = app.staticTexts["Group Collections"]
+		if groupCollections.exists {
+			groupCollections.tap()
+		}
+		sleep(2)
+		
 		
 		SharedHelpers.shared.waitForStaticText("Dogamí", exists: true, inElement: app.collectionViews, delay: 30)
 		app.collectionViews.staticTexts["Dogamí"].firstMatch.tap()

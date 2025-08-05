@@ -30,6 +30,8 @@ final class Test_09_SideMenu: XCTestCase {
 	func testSettings() {
 		let app = XCUIApplication()
 		Test_03_Home.handleLoginIfNeeded(app: app)
+		Test_04_Account.waitForInitalLoad(app: app)
+		Test_04_Account.makeSureLoggedInto(app: app, address: testConfig.walletAddress_HD)
 		Test_03_Home.handleOpenSideMenu(app: app)
 		sleep(2)
 		
