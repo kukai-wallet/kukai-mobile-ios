@@ -205,6 +205,7 @@ final class Test_06_Collectibles: XCTestCase {
 		Test_03_Home.handleLoginIfNeeded(app: app)
 		Test_03_Home.handleOpenSideMenu(app: app)
 		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: true)
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: Test_05_WalletManagement.mainnetWatchWalletAddress.truncateTezosAddress())
 		Test_03_Home.handleOpenCollectiblesTab(app: app)
 		
 		SharedHelpers.shared.waitForStaticText("Dogamí", exists: true, inElement: app.collectionViews, delay: 30)
@@ -219,6 +220,13 @@ final class Test_06_Collectibles: XCTestCase {
 		app.collectionViews.staticTexts["DOGAMI #7777"].tap()
 		sleep(15)
 		app.otherElements["Video"].tap()
+		
+		SharedHelpers.shared.navigationBack(app: app)
+		SharedHelpers.shared.navigationBack(app: app)
+		
+		Test_05_WalletManagement.handleSwitchingTo(app: app, address: testConfig.walletAddress_HD.truncateTezosAddress())
+		Test_03_Home.handleOpenSideMenu(app: app)
+		Test_09_SideMenu.handleSwitchingNetwork(app: app, mainnet: false)
 	}
 	
 	private func sendNFT(to: String, inApp app: XCUIApplication) {

@@ -270,7 +270,6 @@ final class Test_04_Account: XCTestCase {
 		
 		app.navigationBars.firstMatch.buttons["button-more"].tap()
 		app.popovers.tables.staticTexts["Hide Token"].tap()
-		SharedHelpers.shared.navigationBack(app: app)
 		sleep(2)
 		
 		XCTAssert(balanceCells.count == 1, balanceCells.count.description)
@@ -370,7 +369,6 @@ final class Test_04_Account: XCTestCase {
 		
 		
 		// Test tezos domain
-		tablesQuery.buttons["primary-button"].tap()
 		app.buttons["Tezos Address"].tap()
 		sleep(1)
 		
