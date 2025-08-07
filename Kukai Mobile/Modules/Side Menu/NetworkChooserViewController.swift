@@ -55,20 +55,6 @@ class NetworkChooserViewController: UIViewController, UITableViewDelegate {
 			self.performSegue(withIdentifier: "experimental", sender: nil)
 			
 		} else {
-			/*
-			self.showLoadingModal {
-				let previousNetwork = DependencyManager.shared.currentNetworkType
-				
-				DependencyManager.shared.setNetworkTo(networkTo: networkType)
-				DependencyManager.shared.tezosNodeClient.getNetworkInformation { success, error in
-					if let err = error {
-						DependencyManager.shared.setNetworkTo(networkTo: previousNetwork)
-						self.windowError(withTitle: "error".localized(), description: err.localizedDescription)
-					}
-				}
-				
-			}*/
-			
 			DependencyManager.shared.setNetworkTo(networkTo: networkType)
 			self.navigationController?.popToHome()
 		}

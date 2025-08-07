@@ -142,7 +142,7 @@ class DiscoverViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		if groups.count == 0 { return }
 		
 		
-		if DependencyManager.shared.currentNetworkType == .ghostnet {
+		if DependencyManager.shared.currentNetworkType != .mainnet {
 			currentSnapshot.appendSections(Array(0..<groups.count))
 			currentSnapshot.appendItems([.init(GhostnetWarningCellObj()), .init(menu), .init(groups[0])], toSection: 0)
 			
