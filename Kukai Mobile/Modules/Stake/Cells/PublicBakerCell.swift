@@ -28,6 +28,7 @@ class PublicBakerCell: UITableViewCell {
 	}
 	
 	public func setup(withBaker baker: TzKTBaker) {
+		bakerIcon.backgroundColor = .white
 		MediaProxyService.load(url: baker.logo, to: bakerIcon, withCacheType: .temporary, fallback: UIImage.unknownToken())
 		bakerNameLabel.text = baker.name ?? baker.address.truncateTezosAddress()
 		
@@ -68,6 +69,6 @@ class PublicBakerCell: UITableViewCell {
 	
 	override func prepareForReuse() {
 		bakerIcon.sd_cancelCurrentImageLoad()
-		bakerIcon = nil
+		bakerIcon.image = nil
 	}
 }

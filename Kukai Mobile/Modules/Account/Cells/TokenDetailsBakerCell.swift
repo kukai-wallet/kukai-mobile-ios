@@ -48,6 +48,7 @@ class TokenDetailsBakerCell: UITableViewCell {
 		if let bakerName = data.bakerName {
 			
 			// If we have baker data
+			bakerIcon.backgroundColor = .white
 			MediaProxyService.load(url: data.bakerIcon, to: bakerIcon, withCacheType: .permanent, fallback: UIImage.unknownToken())
 			
 			bakerButton.setTitle("Change Baker", for: .normal)
