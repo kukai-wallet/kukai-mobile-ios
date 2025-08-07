@@ -68,7 +68,7 @@ class StakeConfirmViewController: SendAbstractConfirmViewController, SlideButton
 		if DependencyManager.shared.currentNetworkType == .mainnet {
 			testnetWarningView.isHidden = true
 		} else {
-			testnetWarningNetworkLabel.text = DependencyManager.NetworkManagement.name()
+			testnetWarningNetworkLabel.text = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased
 		}
 		
 		// This screen handles Stake, Unstake, and Finalise Unstake, with minimal differences

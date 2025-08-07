@@ -256,9 +256,9 @@ public class WalletConnectService {
 			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
 				  let namespace = proposal.requiredNamespaces["tezos"],
 				  let chain = namespace.chains?.first,
-				  (chain.absoluteString == "tezos:\(tezosChainName)" || (chain.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+				  chain.absoluteString == "tezos:\(tezosChainName)"
 			else {
-				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+				let onDevice = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased ?? "Unknown"
 				WalletConnectService.rejectCurrentProposal(completion: nil)
 				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				completion(false)
@@ -282,10 +282,10 @@ public class WalletConnectService {
 			
 			// Check the chain is the current chain
 			guard let tezosChainName = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName(),
-				  (request.chainId.absoluteString == "tezos:\(tezosChainName)" || (request.chainId.absoluteString == "tezos:ghostnet" && tezosChainName == "ithacanet"))
+					request.chainId.absoluteString == "tezos:\(tezosChainName)"
 			else {
 				WalletConnectService.rejectCurrentRequest(completion: nil)
-				let onDevice = DependencyManager.shared.currentNetworkType == .mainnet ? "Mainnet" : "Ghostnet"
+				let onDevice = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName().firstUppercased ?? "Unknown"
 				self?.delegateErrorOnMain(message: "Request is for a different network than the one currently selected on device (\"\(onDevice)\"). Please check the dApp and apps settings to match sure they match", error: nil)
 				completion(false)
 				return
@@ -298,7 +298,7 @@ public class WalletConnectService {
 			let allowedMethods = session?.namespaces["tezos"]?.methods ?? []
 			
 			let requestedAccount = (try? request.params.get(RequestOperation.self).account) ?? ""
-			let normalisedChainName = (tezosChainName == "ithacanet") ? "ghostnet" : tezosChainName
+			let normalisedChainName = tezosChainName
 			let fullRequestedAccount = "tezos:\(normalisedChainName):\(requestedAccount)"
 			let requestedMethod = request.method
 			
@@ -354,7 +354,11 @@ public class WalletConnectService {
 	
 	// MARK: - Namespaces
 	
-	public static func createNamespace(forProposal proposal: Session.Proposal, address: String, currentNetworkType: TezosNodeClientConfig.NetworkType) -> [String: SessionNamespace]? {
+	public static func createNamespace(forProposal proposal: Session.Proposal, address: String) -> [String: SessionNamespace]? {
+		guard let network = DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() else {
+			return nil
+		}
+		
 		var sessionNamespaces = [String: SessionNamespace]()
 		
 		let supportedMethods = ["tezos_send", "tezos_sign", "tezos_getAccounts"]
@@ -368,8 +372,6 @@ public class WalletConnectService {
 		let optionalEvents = proposal.optionalNamespaces?["tezos"]?.methods.filter({ supportedEvents.contains([$0]) }) ?? []
 		let approvedEvents = requiredEvents?.union( optionalEvents )
 		
-		
-		let network = currentNetworkType == .mainnet ? "mainnet" : "ghostnet"
 		if let wcAccount = Account("tezos:\(network):\(address)") {
 			let accounts = [wcAccount]
 			let sessionNamespace = SessionNamespace(accounts: accounts, methods: approvedMethods ?? [], events: approvedEvents ?? [])
@@ -382,10 +384,10 @@ public class WalletConnectService {
 		}
 	}
 	
-	public static func updateNamespaces(forSession session: Session, toAddress: String/*, andNetwork newNetwork: TezosNodeClientConfig.NetworkType*/) -> [String: SessionNamespace]? {
+	public static func updateNamespaces(forSession session: Session, toAddress: String) -> [String: SessionNamespace]? {
 		var tezosNamespace = session.namespaces["tezos"]
 		
-		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.currentNetworkType == .mainnet ? "mainnet" : "ghostnet")
+		let previousNetwork = tezosNamespace?.accounts.first?.blockchain.reference ?? (DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "")
 		if let newAccount = Account("tezos:\(previousNetwork):\(toAddress)") {
 			tezosNamespace?.accounts = [newAccount]
 		}
@@ -529,7 +531,7 @@ public class WalletConnectService {
 		
 		guard let proposal = TransactionService.shared.walletConnectOperationData.proposal,
 			  let currentAccount = selectedAccountMeta,
-			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address, currentNetworkType: DependencyManager.shared.currentNetworkType) else {
+			  let namespaces = WalletConnectService.createNamespace(forProposal: proposal, address: currentAccount.address) else {
 			Logger.app.error("WC approveCurrentProposal can't find current prposal or current state")
 			WalletConnectService.completeRequest()
 			completion?(false, nil)
