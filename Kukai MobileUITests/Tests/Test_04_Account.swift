@@ -581,7 +581,7 @@ final class Test_04_Account: XCTestCase {
 		sleep(1)
 		
 		// Choose Baker
-		app.tables.staticTexts["Baking Benjamins"].tap()
+		app.tables.staticTexts["Tezos Foundation Ghost Baker"].tap()
 		app.buttons["Delegate"].tap()
 		SharedHelpers.shared.waitForStaticText("Confirm Delegate", exists: true, inElement: app, delay: 30)
 		Test_04_Account.slideButtonToComplete(inApp: app)
@@ -633,7 +633,7 @@ final class Test_04_Account: XCTestCase {
 			"account-token-balance",
 			"account-xtz-balance",
 			"account-getting-started-header"
-		], exists: true, inElement: app.tables, delay: 30)
+		], exists: true, inElement: app.tables, delay: 60)
 	}
 	
 	public static func openTokenDetailsAndWait(app: XCUIApplication) {

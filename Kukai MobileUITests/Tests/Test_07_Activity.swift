@@ -91,6 +91,6 @@ final class Test_07_Activity: XCTestCase {
 		
 		
 		// Check for delegations
-		XCTAssert(normalCells.staticTexts["Baking Benjamins"].exists)
+		XCTAssert(normalCells.staticTexts["Tezos Foundation Ghost Baker"].exists)
 	}
 }
