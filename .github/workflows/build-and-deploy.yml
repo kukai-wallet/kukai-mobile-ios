@@ -230,8 +230,7 @@ jobs:
           app_build=$(/usr/libexec/PlistBuddy -c "Print :ApplicationProperties:CFBundleVersion" $PWD/build/Kukai-mobile.xcarchive/Info.plist)
           sentry_release_string="$app_bundle@$app_version+$app_build"
 
-          ERROR=$(sentry-cli releases new "$sentry_release_string")
-          ERROR=$(sentry-cli releases finalize "$sentry_release_string")
+          ERROR=$(sentry-cli releases new --finalize "$sentry_release_string")
           
           if [ ! $? -eq 0 ]; then
           echo "warning: sentry-cli - $ERROR"
