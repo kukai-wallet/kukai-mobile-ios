@@ -178,7 +178,7 @@ class ActivityViewModel: ViewModel, UITableViewDiffableDataSourceHandler {
 		}
 		
 		// Build snapshot
-		let isTestnet = DependencyManager.shared.currentNetworkType == .ghostnet
+		let isTestnet = DependencyManager.shared.currentNetworkType != .mainnet
 		currentSnapshot = NSDiffableDataSourceSnapshot<SectionEnum, CellDataType>()
 		var data: [[AnyHashableSendable]] = [[]]
 		

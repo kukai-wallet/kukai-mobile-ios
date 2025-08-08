@@ -209,9 +209,17 @@ public class BalanceService {
 				self?.deleteAccountCachcedData(forAddress: add)
 			}
 			
-			self?.cacheLoadingInProgress = false
 			
-			DispatchQueue.main.async { completion?() }
+			// Check current chain information
+			if DependencyManager.shared.tezosNodeClient.networkVersion == nil {
+				DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] success, e in
+					self?.cacheLoadingInProgress = false
+					DispatchQueue.main.async { completion?() }
+				}
+			} else {
+				self?.cacheLoadingInProgress = false
+				DispatchQueue.main.async { completion?() }
+			}
 		}
 	}
 	
@@ -423,12 +431,12 @@ public class BalanceService {
 		
 		// Check current chain information
 		if DependencyManager.shared.tezosNodeClient.networkVersion == nil {
-			DependencyManager.shared.tezosNodeClient.getNetworkInformation { success, e in
+			DependencyManager.shared.tezosNodeClient.getNetworkInformation { [weak self] success, e in
 				if let err = error {
 					error = err
 				}
 				
-				self.balanceRequestDispathGroup.leave()
+				self?.balanceRequestDispathGroup.leave()
 			}
 		} else {
 			self.balanceRequestDispathGroup.leave()

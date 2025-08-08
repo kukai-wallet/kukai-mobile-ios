@@ -1530,7 +1530,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cEk-QQ-0qe">
                                                                 <rect key="frame" x="0.0" y="0.0" width="343" height="459"/>
                                                                 <subviews>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gts-0w-MIr">
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gts-0w-MIr" customClass="SDAnimatedImageView">
                                                                         <rect key="frame" x="14" y="10" width="40" height="40"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="40" id="NZV-VG-Cb8"/>
@@ -1872,7 +1872,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <rect key="frame" x="0.0" y="632" width="375" height="35"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="Jox-TU-EEL">
-                                        <rect key="frame" x="32" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="32" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="14" id="7uP-pF-BAq"/>
@@ -1880,13 +1880,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ghostnet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r6j-ya-NAZ">
-                                        <rect key="frame" x="58" y="10.5" width="190.5" height="14.5"/>
+                                        <rect key="frame" x="58" y="4" width="190.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="TRj-Bf-ZFE">
-                                        <rect key="frame" x="329" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="329" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="7JP-uD-O7k"/>
@@ -1894,7 +1894,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ShD-YP-DLs">
-                                        <rect key="frame" x="264.5" y="10.5" width="52.5" height="14.5"/>
+                                        <rect key="frame" x="264.5" y="4" width="52.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
@@ -1905,10 +1905,10 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     <constraint firstAttribute="trailing" secondItem="TRj-Bf-ZFE" secondAttribute="trailing" constant="32" id="4i5-cx-o1V"/>
                                     <constraint firstItem="ShD-YP-DLs" firstAttribute="centerY" secondItem="TRj-Bf-ZFE" secondAttribute="centerY" id="5MN-do-IZJ"/>
                                     <constraint firstItem="Jox-TU-EEL" firstAttribute="leading" secondItem="tW4-Rt-ciB" secondAttribute="leading" constant="32" id="B3f-XX-xyB"/>
-                                    <constraint firstItem="TRj-Bf-ZFE" firstAttribute="centerY" secondItem="tW4-Rt-ciB" secondAttribute="centerY" id="ES2-TR-s8c"/>
+                                    <constraint firstItem="TRj-Bf-ZFE" firstAttribute="top" secondItem="tW4-Rt-ciB" secondAttribute="top" constant="4" id="D2m-yW-2y2"/>
                                     <constraint firstAttribute="height" constant="35" id="GPK-z1-q9A"/>
                                     <constraint firstItem="TRj-Bf-ZFE" firstAttribute="leading" secondItem="ShD-YP-DLs" secondAttribute="trailing" constant="12" id="VT2-NA-LfG"/>
-                                    <constraint firstItem="Jox-TU-EEL" firstAttribute="centerY" secondItem="tW4-Rt-ciB" secondAttribute="centerY" id="apD-Dx-idk"/>
+                                    <constraint firstItem="Jox-TU-EEL" firstAttribute="top" secondItem="tW4-Rt-ciB" secondAttribute="top" constant="4" id="YaH-VH-d35"/>
                                     <constraint firstItem="ShD-YP-DLs" firstAttribute="leading" secondItem="r6j-ya-NAZ" secondAttribute="trailing" constant="16" id="cjQ-Lt-gw3"/>
                                     <constraint firstItem="r6j-ya-NAZ" firstAttribute="centerY" secondItem="Jox-TU-EEL" secondAttribute="centerY" id="l4T-eN-xBq"/>
                                     <constraint firstItem="r6j-ya-NAZ" firstAttribute="leading" secondItem="Jox-TU-EEL" secondAttribute="trailing" constant="12" id="rwG-iF-hR2"/>
@@ -2546,7 +2546,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                 <rect key="frame" x="0.0" y="632" width="375" height="35"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="bOT-1a-z2m">
-                                        <rect key="frame" x="32" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="32" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="14" id="K0k-4J-Hiy"/>
@@ -2554,13 +2554,13 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Ghostnet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xAE-kh-pGn">
-                                        <rect key="frame" x="58" y="10.5" width="190.5" height="14.5"/>
+                                        <rect key="frame" x="58" y="4" width="190.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="AlertKnockout" translatesAutoresizingMaskIntoConstraints="NO" id="9fL-TD-uxu">
-                                        <rect key="frame" x="329" y="10.5" width="14" height="14"/>
+                                        <rect key="frame" x="329" y="4" width="14" height="14"/>
                                         <color key="tintColor" name="TxtTestState"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="ieK-kE-7wT"/>
@@ -2568,7 +2568,7 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Only" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6TS-18-7fg">
-                                        <rect key="frame" x="264.5" y="10.5" width="52.5" height="14.5"/>
+                                        <rect key="frame" x="264.5" y="4" width="52.5" height="14.5"/>
                                         <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="12"/>
                                         <color key="textColor" name="TxtTestState"/>
                                         <nil key="highlightedColor"/>
@@ -2580,9 +2580,9 @@ Bakers validate and participate in Tezos governance. By delegating to a Baker, y
                                     <constraint firstItem="xAE-kh-pGn" firstAttribute="leading" secondItem="bOT-1a-z2m" secondAttribute="trailing" constant="12" id="6Y0-hY-aTA"/>
                                     <constraint firstItem="6TS-18-7fg" firstAttribute="leading" secondItem="xAE-kh-pGn" secondAttribute="trailing" constant="16" id="IhE-wm-XZW"/>
                                     <constraint firstAttribute="height" constant="35" id="WOj-Xw-wb4"/>
+                                    <constraint firstItem="bOT-1a-z2m" firstAttribute="top" secondItem="Gm0-lD-f5X" secondAttribute="top" constant="4" id="dMB-9z-g8d"/>
                                     <constraint firstItem="bOT-1a-z2m" firstAttribute="leading" secondItem="Gm0-lD-f5X" secondAttribute="leading" constant="32" id="gsz-gN-U2X"/>
-                                    <constraint firstItem="9fL-TD-uxu" firstAttribute="centerY" secondItem="Gm0-lD-f5X" secondAttribute="centerY" id="m8o-np-p5p"/>
-                                    <constraint firstItem="bOT-1a-z2m" firstAttribute="centerY" secondItem="Gm0-lD-f5X" secondAttribute="centerY" id="rxG-B5-ngg"/>
+                                    <constraint firstItem="9fL-TD-uxu" firstAttribute="top" secondItem="Gm0-lD-f5X" secondAttribute="top" constant="4" id="rVp-xi-luM"/>
                                     <constraint firstItem="9fL-TD-uxu" firstAttribute="leading" secondItem="6TS-18-7fg" secondAttribute="trailing" constant="12" id="uBa-bn-LVa"/>
                                     <constraint firstItem="xAE-kh-pGn" firstAttribute="centerY" secondItem="bOT-1a-z2m" secondAttribute="centerY" id="whn-da-3mr"/>
                                     <constraint firstAttribute="trailing" secondItem="9fL-TD-uxu" secondAttribute="trailing" constant="32" id="xOq-H8-r4p"/>
@@ -4092,28 +4092,28 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Transaction Processing ..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Vx-Eo-8P7">
-                                <rect key="frame" x="16" y="92" width="343" height="30.5"/>
+                                <rect key="frame" x="16" y="92" width="343" height="31.5"/>
                                 <fontDescription key="fontDescription" name="Figtree-Bold" family="Figtree" pointSize="26"/>
                                 <color key="textColor" name="Txt2"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Delegation rewards are paid manually by bakers about every 1-3 days." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8yx-SC-CuW">
-                                <rect key="frame" x="16" y="134.5" width="343" height="47"/>
+                                <rect key="frame" x="16" y="135.5" width="343" height="48"/>
                                 <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="Txt8"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bOE-2A-u3U">
-                                <rect key="frame" x="16" y="205.5" width="343" height="208.5"/>
+                                <rect key="frame" x="16" y="207.5" width="343" height="211.5"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="U2B-lB-dnt">
-                                        <rect key="frame" x="24" y="24" width="295" height="160.5"/>
+                                        <rect key="frame" x="24" y="24" width="295" height="163.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="6ZT-fQ-2Wq">
-                                                <rect key="frame" x="0.0" y="0.0" width="295" height="37.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="295" height="38.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BulletPoint" translatesAutoresizingMaskIntoConstraints="NO" id="kHs-Aq-8pd">
-                                                        <rect key="frame" x="0.0" y="11.5" width="15" height="15"/>
+                                                        <rect key="frame" x="0.0" y="12" width="15" height="15"/>
                                                         <color key="tintColor" name="BGB4"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="15" id="LMc-bX-Kvt"/>
@@ -4121,7 +4121,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You first reward will be paid in ~6-8 days, then again every ~1-3 days" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15j-59-KkM">
-                                                        <rect key="frame" x="39" y="0.0" width="256" height="37.5"/>
+                                                        <rect key="frame" x="39" y="0.0" width="256" height="38.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
                                                         <nil key="highlightedColor"/>
@@ -4129,10 +4129,10 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="603-Bt-kcn">
-                                                <rect key="frame" x="0.0" y="61.5" width="295" height="37.5"/>
+                                                <rect key="frame" x="0.0" y="62.5" width="295" height="38.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BulletPoint" translatesAutoresizingMaskIntoConstraints="NO" id="eZU-am-rdE">
-                                                        <rect key="frame" x="0.0" y="11.5" width="15" height="15"/>
+                                                        <rect key="frame" x="0.0" y="12" width="15" height="15"/>
                                                         <color key="tintColor" name="BGB4"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="15" id="aVS-5v-xce"/>
@@ -4140,7 +4140,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your rewards will auto-delegate as soon as you receive them" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZC1-2m-rH6">
-                                                        <rect key="frame" x="39" y="0.0" width="256" height="37.5"/>
+                                                        <rect key="frame" x="39" y="0.0" width="256" height="38.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
                                                         <nil key="highlightedColor"/>
@@ -4148,10 +4148,10 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="DdV-VK-zfK">
-                                                <rect key="frame" x="0.0" y="123" width="295" height="37.5"/>
+                                                <rect key="frame" x="0.0" y="125" width="295" height="38.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BulletPoint" translatesAutoresizingMaskIntoConstraints="NO" id="Xa3-uJ-AWe">
-                                                        <rect key="frame" x="0.0" y="11.5" width="15" height="15"/>
+                                                        <rect key="frame" x="0.0" y="12" width="15" height="15"/>
                                                         <color key="tintColor" name="BGB4"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="15" id="MmN-n1-wmC"/>
@@ -4159,7 +4159,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="This means you don’t have to delegate your rewards again" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Azz-pJ-Qo0">
-                                                        <rect key="frame" x="39" y="0.0" width="256" height="37.5"/>
+                                                        <rect key="frame" x="39" y="0.0" width="256" height="38.5"/>
                                                         <fontDescription key="fontDescription" name="Figtree-Medium" family="Figtree" pointSize="16"/>
                                                         <color key="textColor" name="Txt6"/>
                                                         <nil key="highlightedColor"/>
@@ -4199,7 +4199,7 @@ Bakers also vote on proposals to upgrade the network during the Governance proce
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continue to next step to earn even higher rewards by Staking" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QaS-xZ-24O">
-                                <rect key="frame" x="24" y="388" width="327" height="47"/>
+                                <rect key="frame" x="24" y="387" width="327" height="48"/>
                                 <fontDescription key="fontDescription" name="Figtree-SemiBold" family="Figtree" pointSize="20"/>
                                 <color key="textColor" name="BGGood4"/>
                                 <nil key="highlightedColor"/>

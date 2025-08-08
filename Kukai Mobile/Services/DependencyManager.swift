@@ -58,6 +58,18 @@ class DependencyManager {
 		static let protocolnetFaucet = URL(string: "https://faucet.seoulnet.teztnets.com/")!
 		static let nextnetFaucet = URL(string: "https://faucet.nextnet-20250626.teztnets.com/")!
 		
+		static func currentNetworkDisplayName() -> String {
+			
+			let current = DependencyManager.shared.currentNetworkType
+			
+			if current == .mainnet || current == .ghostnet {
+				return current.rawValue.firstUppercased
+			} else {
+				return current.rawValue.firstUppercased + " (\(DependencyManager.shared.tezosNodeClient.networkVersion?.chainName() ?? "..."))"
+			}
+		}
+		
+		/*
 		static func name(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
 				case .mainnet:
@@ -67,16 +79,18 @@ class DependencyManager {
 					return "Ghostnet"
 					
 				case .protocolnet:
-					return "Protocolnet - Seoul"
+					return "Protocolnet"
 					
 				case .nextnet:
-					return "Nextnet - S"
+					return "Nextnet"
 				
 				case .experimental:
 					return "Experimental"
 			}
 		}
+		*/
 		
+		/*
 		static func protocolName(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> String? {
 			switch networkType {
 				case .ghostnet:
@@ -95,6 +109,7 @@ class DependencyManager {
 					return nil
 			}
 		}
+		*/
 		
 		static func faucet(forNetworkType networkType: TezosNodeClientConfig.NetworkType = DependencyManager.shared.currentNetworkType) -> URL? {
 			switch networkType {
