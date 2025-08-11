@@ -279,7 +279,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			self?.itemCount = hashableData.count
 			
 			if let snap = self?.normalSnapshot {
-				ds.applySnapshotUsingReloadData(snap)
+				DispatchQueue.main.async { ds.applySnapshotUsingReloadData(snap) }
 			}
 			
 			/*
@@ -308,37 +308,44 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	// MARK: UI functions
 	
 	func searchFor(_ text: String) {
-		if searchSnapshot.sectionIdentifiers.count > 2 {
-			searchSnapshot.deleteSections([2])
-		}
-		
-		var searchResults: [NFT] = []
-		if text != "" {
-			for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+		DispatchQueue.global(qos: .background).async { [weak self] in
+			guard let self = self else { return }
+			
+			if searchSnapshot.sectionIdentifiers.count > 2 {
+				searchSnapshot.deleteSections([2])
+			}
+			
+			var searchResults: [NFT] = []
+			if text != "" {
+				for nftGroup in DependencyManager.shared.balanceService.account.nfts {
+					
+					let results = nftGroup.nfts?.filter({ nft in
+						return nft.name.range(of: text, options: .caseInsensitive) != nil
+					})
+					
+					if let res = results {
+						searchResults.append(contentsOf: res)
+					}
+				}
 				
-				let results = nftGroup.nfts?.filter({ nft in
-					return nft.name.range(of: text, options: .caseInsensitive) != nil
-				})
-				
-				if let res = results {
-					searchResults.append(contentsOf: res)
+				if searchResults.count > 0 {
+					searchSnapshot.appendSections([2])
+					searchSnapshot.appendItems(searchResults.map({ .init($0) }), toSection: 2)
+				} else {
+					searchSnapshot.appendSections([2])
+					searchSnapshot.appendItems([.init("No items found.\n\nYou do not own any matching items.")], toSection: 2)
 				}
 			}
 			
-			if searchResults.count > 0 {
-				searchSnapshot.appendSections([2])
-				searchSnapshot.appendItems(searchResults.map({ .init($0) }), toSection: 2)
-			} else {
-				searchSnapshot.appendSections([2])
-				searchSnapshot.appendItems([.init("No items found.\n\nYou do not own any matching items.")], toSection: 2)
+			let countIdentifier = searchSnapshot.itemIdentifiers(inSection: 1)
+			searchSnapshot.deleteItems(countIdentifier)
+			searchSnapshot.appendItems([.init(searchResults.count)], toSection: 1)
+			
+			DispatchQueue.main.async { [weak self] in
+				guard let self = self else { return }
+				self.dataSource?.apply(searchSnapshot, animatingDifferences: true)
 			}
 		}
-		
-		let countIdentifier = searchSnapshot.itemIdentifiers(inSection: 1)
-		searchSnapshot.deleteItems(countIdentifier)
-		searchSnapshot.appendItems([.init(searchResults.count)], toSection: 1)
-		
-		dataSource?.apply(searchSnapshot, animatingDifferences: true)
 	}
 	
 	/**
@@ -354,7 +361,7 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			}
 		}
 		
-		dataSource?.apply(tempNormal, animatingDifferences: true, completion: { [weak self] in
+		self.dataSource?.apply(tempNormal, animatingDifferences: true, completion: { [weak self] in
 			guard let self = self else { return }
 			
 			collectionView.collectionViewLayout = self.layout()
@@ -364,7 +371,8 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 			self.searchSnapshot.appendItems([.init(self.sortMenu)], toSection: 0)
 			self.searchSnapshot.appendItems([.init(0)], toSection: 1)
 			
-			DispatchQueue.main.async {
+			DispatchQueue.main.async { [weak self] in
+				guard let self = self else { return }
 				self.dataSource?.apply(self.searchSnapshot, animatingDifferences: true, completion: completion)
 			}
 		})
@@ -375,17 +383,15 @@ class CollectiblesCollectionsViewModel: ViewModel, UICollectionViewDiffableDataS
 	 */
 	func endSearching(forColelctionView collectionView: UICollectionView, completion: @escaping (() -> Void)) {
 		searchSnapshot.deleteSections([1, 2])
-		dataSource?.apply(searchSnapshot, animatingDifferences: true, completion: { [weak self] in
+		self.dataSource?.apply(searchSnapshot, animatingDifferences: true, completion: { [weak self] in
 			guard let self = self else { return }
-			
-			DispatchQueue.main.async {
-				collectionView.collectionViewLayout = self.layout()
 				
-				if self.needsRefreshAfterSearch {
-					self.refresh(animate: true)
-				} else {
-					self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
-				}
+			collectionView.collectionViewLayout = self.layout()
+			
+			if self.needsRefreshAfterSearch {
+				self.refresh(animate: true)
+			} else {
+				self.dataSource?.apply(self.normalSnapshot, animatingDifferences: true, completion: completion)
 			}
 		})
 	}
