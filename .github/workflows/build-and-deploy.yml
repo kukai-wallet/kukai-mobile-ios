@@ -258,21 +258,17 @@ jobs:
           echo "CONFIG_2=${{ secrets.UITEST_CONFIG_2 }}" >> $GITHUB_ENV
           echo "CONFIG_3=${{ secrets.UITEST_CONFIG_3 }}" >> $GITHUB_ENV
 
-      - name: Build and run tests for Beta profile only
+      - name: Build for testing
         if: github.ref != 'refs/heads/main'
         run: |
           xcodebuild -project "Kukai Mobile.xcodeproj" \
           -sdk iphonesimulator \
           -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
           -scheme "Kukai Mobile Beta" \
-          -resultBundlePath TestResults \
           -configuration Beta \
           -derivedDataPath $PWD/build-test/ \
           -enableCodeCoverage YES \
-          test \
-          CONFIG_1="$CONFIG_1" \
-          CONFIG_2="$CONFIG_2" \
-          CONFIG_3="$CONFIG_3"
+          build-for-testing
 
       # Manually upload the dSYM's again incase any issues happen during XCUITests and we want to symbolicate them
       # XCUITests don't run on an archived build, they run off the xcode version loaded into memory. The dSYM for this is located in the -derivedDataPath supplied above
@@ -294,6 +290,21 @@ jobs:
           echo "warning: sentry-cli - $ERROR"
           fi
 
+      - name: Run tests on already built project
+        if: github.ref != 'refs/heads/main'
+        run: |
+          xcodebuild -project "Kukai Mobile.xcodeproj" \
+          -sdk iphonesimulator \
+          -destination '${{ env.TEST_SIMULATOR_VERSION }}' \
+          -scheme "Kukai Mobile Beta" \
+          -resultBundlePath TestResults \
+          -configuration Beta \
+          -derivedDataPath $PWD/build-test/ \
+          -enableCodeCoverage YES \
+          test \
+          CONFIG_1="$CONFIG_1" \
+          CONFIG_2="$CONFIG_2" \
+          CONFIG_3="$CONFIG_3"
 
       - name: Upload xcresult file
         if: ${{ (success() || failure()) && github.ref != 'refs/heads/main' }}
