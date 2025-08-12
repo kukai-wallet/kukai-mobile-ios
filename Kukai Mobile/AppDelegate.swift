@@ -71,7 +71,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		// Setup any necessary settings, such as RAM limits
 		MediaProxyService.setupImageLibrary()
 		
-		
 		// process special arguments coming from XCUITest to do things like show keyboard and reset app data
 		processXCUITestArguments()
 		
